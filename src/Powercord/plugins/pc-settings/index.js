@@ -32,6 +32,7 @@ module.exports = class Settings extends Plugin {
 
   async pluginWillUnload () {
     powercord.api.settings.unregisterSettings('pc-general');
+    powercord.api.settings.unregisterSettings('pc-labs');
     uninject('pc-settings-items');
     uninject('pc-settings-actions');
     uninject('pc-settings-errorHandler');

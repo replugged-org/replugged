@@ -8,7 +8,7 @@ const { rmdirRf } = require('powercord/util');
 
 const PassphraseModal = require('./PassphraseModal.jsx');
 const Account = require('./PowercordAccount');
-const Labs = require('./Labs');
+const Labs = require('../Labs');
 
 module.exports = class GeneralSettings extends React.Component {
   constructor (props) {
@@ -53,31 +53,6 @@ module.exports = class GeneralSettings extends React.Component {
           opened={getSetting('advancedSettings', false)}
           onChange={() => toggleSetting('advancedSettings')}
         >
-          {/* <SwitchItem
-            note={Messages.REPLUGGED_SETTINGS_DEBUG_LOGS_DESC}
-            value={getSetting('debugLogs', false)}
-            onChange={() => {
-              toggleSetting('debugLogs');
-              this.askRestart();
-            }}
-          >
-            {Messages.REPLUGGED_SETTINGS_DEBUG_LOGS}
-          </SwitchItem>
-          {powercord.api.labs.isExperimentEnabled('pc-sdk')
-            ? <SwitchItem
-              note={'Replugged\'s SDK is a toolkit made to make plugin and theme developer\'s life easier. Once enabled, you can access it through the icon at the top right hand corner of Discord.'}
-              value={getSetting('sdkEnabled', false)}
-              onChange={() => toggleSetting('sdkEnabled')}
-            >
-              Enable Replugged SDK
-            </SwitchItem>
-            : <SwitchItem
-              note={Messages.REPLUGGED_SETTINGS_OVERLAY_DESC}
-              value={getSetting('openOverlayDevTools', false)}
-              onChange={() => toggleSetting('openOverlayDevTools')}
-            >
-              {Messages.REPLUGGED_SETTINGS_OVERLAY}
-            </SwitchItem>} */}
           <SwitchItem
             note={Messages.REPLUGGED_SETTINGS_KEEP_TOKEN_DESC}
             value={getSetting('hideToken', true)}
@@ -107,6 +82,25 @@ module.exports = class GeneralSettings extends React.Component {
             }}
           >
             {Messages.REPLUGGED_SETTINGS_EXP_WEB_PLATFORM}
+          </SwitchItem>
+          <SwitchItem
+            note={Messages.REPLUGGED_SETTINGS_DEVELOPER_MODE_DESC}
+            value={getSetting('developerMode', false)}
+            onChange={() => {
+              if (getSetting('developerMode', false)) {
+                powercord.api.settings.unregisterSettings('pc-labs');
+              } else {
+                powercord.api.settings.registerSettings('pc-labs', {
+                  category: 'pc-labs',
+                  label: 'Powercord Labs',
+                  render: Labs
+                });
+              }
+              toggleSetting('developerMode');
+              this.forceUpdate();
+            }}
+          >
+            {Messages.REPLUGGED_SETTINGS_DEVELOPER_MODE}
           </SwitchItem>
           <SwitchItem
             note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}
