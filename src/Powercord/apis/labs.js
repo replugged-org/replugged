@@ -40,8 +40,8 @@ class LabsAPI extends API {
    * @returns {Boolean} Whether the experiment is enabled or not
    */
   isExperimentEnabled (experimentId) {
-    const settings = powercord.settings.get('labs', {});
-    return !!settings[experimentId];
+    const labs = powercord.settings.get('labs', []);
+    return Array.isArray(labs) && labs.includes(experimentId);
   }
 
   /**
@@ -53,10 +53,14 @@ class LabsAPI extends API {
     if (!experiment) {
       throw new Error(`Tried to enable a non-registered experiment "${experimentId}"`);
     }
-    powercord.settings.set('labs', {
-      ...powercord.settings.get('labs', {}),
-      [`${experimentId}`]: true
-    });
+
+    let labs = powercord.settings.get('labs', [])?.filter(e => e !== experimentId);
+    if (!Array.isArray(labs)) {
+      labs = [];
+    }
+    labs.push(experimentId);
+    powercord.settings.set('labs', labs);
+
     if (experiment.callback) {
       experiment.callback(true);
     }
@@ -71,11 +75,13 @@ class LabsAPI extends API {
     if (!experiment) {
       throw new Error(`Tried to enable a non-registered experiment "${experimentId}"`);
     }
-    const settings = powercord.settings.get('labs', {});
-    if (settings[experimentId]) {
-      delete settings[experimentId];
+
+    let labs = powercord.settings.get('labs', [])?.filter(e => e !== experimentId);
+    if (!Array.isArray(labs)) {
+      labs = [];
     }
-    powercord.settings.set('labs', settings);
+    powercord.settings.set('labs', labs);
+
     if (experiment.callback) {
       experiment.callback(false);
     }
