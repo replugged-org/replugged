@@ -1,6 +1,5 @@
 import "./elevate";
-import envCheck from "./env_check";
-envCheck();
+import "./env_check";
 
 import "../polyfills";
 
