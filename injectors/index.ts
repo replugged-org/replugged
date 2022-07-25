@@ -108,20 +108,5 @@ const VALID_PLATFORMS = ["stable", "ptb", "canary", "dev", "development"];
     process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
   }
 })().catch((e) => {
-  if (e.code === "EACCES") {
-    // todo: this was linux only (?) so I assume this is now safe to delete
-    console.log(
-      process.argv[2] === "inject"
-        ? BasicMessages.PLUG_FAILED
-        : BasicMessages.UNPLUG_FAILED,
-      "\n"
-    );
-    console.log(
-      "Replugged wasn't able to inject itself due to missing permissions.",
-      "\n"
-    );
-    console.log("Try again with elevated permissions.");
-  } else {
-    console.error("fucky wucky", e);
-  }
+  console.error("fucky wucky", e);
 });
