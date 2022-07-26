@@ -45,22 +45,14 @@ global.PowercordNative = {
 };
 
 if (!window.__SPLASH__) {
-  window.require = function (mdl) {
-    switch (mdl) {
-      case 'powercord/compilers':
-      case 'powercord/components':
-      case 'powercord/components/settings':
-      case 'powercord/http':
-      case 'powercord/injector':
-      case 'powercord/util':
-      case 'powercord/webpack':
-      case 'powercord/constants':
-      case 'powercord/modal':
-      case 'powercord':
-      case 'electron':
-        return require(mdl);
-      default:
-        throw new Error('Unknown module');
-    }
-  };
+  require.cache['powercord/compilers'] = { exports: require('powercord/compilers') }
+  require.cache['powercord/components'] = { exports: require('powercord/components') }
+  require.cache['powercord/components/settings'] = { exports: require('powercord/components/settings') }
+  require.cache['powercord/http'] = { exports: require('powercord/http') }
+  require.cache['powercord/injector'] = { exports: require('powercord/injector') }
+  require.cache['powercord/util'] = { exports: require('powercord/util') }
+  require.cache['powercord/webpack'] = { exports: require('powercord/webpack') }
+  require.cache['powercord/constants'] = { exports: require('powercord/constants') }
+  require.cache['powercord/modal'] = { exports: require('powercord/modal') }
+  require.cache['powercord'] = { exports: require('../fake_node_modules/powercord') }
 }
