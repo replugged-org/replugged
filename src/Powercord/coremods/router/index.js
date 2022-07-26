@@ -55,9 +55,9 @@ async function injectSidebar () {
 
 async function forceRouterUpdate () {
   // Views
-  const { app } = getAllModules([ 'app' ]).find(m => Object.keys(m).length === 1);
+  const { app } = getAllModules([ 'app' ]).find(m => Object.keys(m).length === 2);
   const viewsInstance = getOwnerInstance(await waitFor(`.${app}`));
-  findInTree(viewsInstance._reactInternals || viewsInstance._reactInternalFiber, n => n && n.historyUnlisten, { walkable: [ 'child', 'stateNode' ] }).forceUpdate();
+  viewsInstance.forceUpdate();
 
   // Routes
   const { container } = await getModule([ 'container', 'downloadProgressCircle' ]);
