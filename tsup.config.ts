@@ -6,7 +6,9 @@ export default defineConfig({
     patcher: './src/patcher.js',
     preload: './src/preload.js',
     preloadSplash: './src/preloadSplash.js',
-    style: './src/Powercord/managers/style.css'
+    style: './src/Powercord/managers/style.css',
+    serialize: './src/fake_node_modules/powercord/webpack/serialize.js',
+    proxy: './src/fake_node_modules/powercord/webpack/proxy.js',
   },
   outDir: 'dist',
   clean: true,

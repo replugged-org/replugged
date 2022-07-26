@@ -1,1 +1,1 @@
-import './util'
+exports['util'] = require('./util')

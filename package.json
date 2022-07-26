@@ -12,6 +12,7 @@
     "inject": "node dist/injector.js inject --no-exit-codes",
     "uninject": "node dist/injector.js uninject --no-exit-codes",
     "build": "tsup",
+    "dev": "tsup --watch",
     "postinstall": "npm run build"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
