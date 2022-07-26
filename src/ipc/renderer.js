@@ -45,14 +45,36 @@ global.PowercordNative = {
 };
 
 if (!window.__SPLASH__) {
-  require.cache['powercord/compilers'] = { exports: require('powercord/compilers') }
-  require.cache['powercord/components'] = { exports: require('powercord/components') }
-  require.cache['powercord/components/settings'] = { exports: require('powercord/components/settings') }
-  require.cache['powercord/http'] = { exports: require('powercord/http') }
-  require.cache['powercord/injector'] = { exports: require('powercord/injector') }
-  require.cache['powercord/util'] = { exports: require('powercord/util') }
-  require.cache['powercord/webpack'] = { exports: require('powercord/webpack') }
-  require.cache['powercord/constants'] = { exports: require('powercord/constants') }
-  require.cache['powercord/modal'] = { exports: require('powercord/modal') }
-  require.cache['powercord'] = { exports: require('../fake_node_modules/powercord') }
+  const module = require('module')
+  const originalRequire = module.prototype.require;
+  module.prototype.require = function () {
+    switch (arguments[0]) {
+      case 'powercord/entities':
+        return require('powercord/entities')
+      case 'powercord/compilers':
+        return require('powercord/compilers');
+      case 'powercord/components':
+        return require('powercord/components');
+      case 'powercord/components/settings':
+        return require('powercord/components/settings');
+      case 'powercord/components/modal':
+        return require('powercord/components/modal');
+      case 'powercord/http':
+        return require('powercord/http');
+      case 'powercord/injector':
+        return require('powercord/injector');
+      case 'powercord/util':
+        return require('powercord/util');
+      case 'powercord/webpack':
+        return require('powercord/webpack');
+      case 'powercord/modal':
+        return require('powercord/modal');
+      case 'powercord/constants':
+        return require('powercord/constants');
+      case 'powercord':
+        return require('../fake_node_modules/powercord');
+    }
+
+      return originalRequire.apply(this, arguments);
+    }
 }

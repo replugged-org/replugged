@@ -8,9 +8,7 @@ const { Updatable } = require('powercord/entities');
 
 const PluginManager = require('./managers/plugins');
 const StyleManager = require('./managers/styles');
-console.log('yayyyayayay')
 const APIManager = require('./managers/apis');
-console.log('ffff')
 const modules = require('./modules');
 let coremods;
 
@@ -78,7 +76,6 @@ class Powercord extends Updatable {
     }
 
     // Webpack & Modules
-    console.log('oijsfijosojifsoijdjoifoji')
     await Webpack.init();
     await Promise.all(modules.map(mdl => mdl()));
     this.emit('initializing');

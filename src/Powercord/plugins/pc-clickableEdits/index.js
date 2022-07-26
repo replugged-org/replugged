@@ -1,6 +1,3 @@
-console.log(window.neko)
-debugger
-
 const { Plugin } = require('powercord/entities');
 const { FluxDispatcher, getModule, messages } = require('powercord/webpack');
 const { forceUpdateElement } = require('powercord/util');
