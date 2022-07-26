@@ -1,7 +1,12 @@
+console.log('gura #1')
 const { getModule, i18n } = require('powercord/webpack');
+console.log('gura #2')
 const { API } = require('powercord/entities');
+console.log('gura #3')
 const strings = require('../../../i18n');
+console.log('gura #4')
 const overrides = require('../../../i18n/overrides');
+console.log('gura #5')
 
 module.exports = class I18nAPI extends API {
   constructor () {

@@ -1,4 +1,6 @@
-module.exports = require('fs')
-  .readdirSync(__dirname)
-  .filter((file) => file !== 'index.js' && file !== '.DS_Store')
-  .map(filename => require(`${__dirname}/${filename}`));
+const flux = require('./flux')
+const jsx = require('./jsx')
+const localStorage = require('./localStorage')
+const libraries = require('./libraries')
+
+module.exports = [flux, jsx, localStorage, libraries]

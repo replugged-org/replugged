@@ -1,3 +1,5 @@
+import fixPath from 'fix-path';
+fixPath();
 const Module = require('module');
 const { join, dirname } = require('path');
 const { existsSync, unlinkSync } = require('fs');

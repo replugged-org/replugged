@@ -1,21 +1,26 @@
-import { readdir } from "fs/promises";
-import { join } from "path";
-import { AppDirGetter } from "./types";
+import { readdir } from 'fs/promises';
+import { join } from 'path';
+import { AppDirGetter } from './types';
 
 const PATHS = {
-  stable: "Discord",
-  ptb: "DiscordPTB",
-  canary: "DiscordCanary",
-  dev: "DiscordDevelopment",
+  stable: 'Discord',
+  ptb: 'DiscordPTB',
+  canary: 'DiscordCanary',
+  dev: 'DiscordDevelopment'
 };
 
 export const getAppDir: AppDirGetter = async (platform) => {
-  const discordPath = join(process.env.LOCALAPPDATA!, PATHS[platform]);
+  const appdata = process.env.LOCALAPPDATA;
+  if (!appdata) {
+    throw new Error('LOCALAPPDATA is not set');
+  }
+
+  const discordPath = join(appdata, PATHS[platform]);
   const discordDirectory = await readdir(discordPath);
 
   const currentBuild = discordDirectory
-    .filter((path) => path.startsWith("app-"))
+    .filter((path) => path.startsWith('app-'))
     .reverse()[0];
 
-  return join(discordPath, currentBuild, "resources", "app");
+  return join(discordPath, currentBuild, 'resources', 'app');
 };

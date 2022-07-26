@@ -8,7 +8,9 @@ const { Updatable } = require('powercord/entities');
 
 const PluginManager = require('./managers/plugins');
 const StyleManager = require('./managers/styles');
+console.log('yayyyayayay')
 const APIManager = require('./managers/apis');
+console.log('ffff')
 const modules = require('./modules');
 let coremods;
 
@@ -91,6 +93,7 @@ class Powercord extends Updatable {
       tokenModule.hideToken = () => void 0;
       setImmediate(() => tokenModule.showToken()); // just to be sure
     }
+
 
     window.addEventListener('beforeunload', () => {
       if (this.account && this.settings.get('settingsSync', false)) {

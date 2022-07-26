@@ -1,9 +1,9 @@
-import { join } from "path";
-import { existsSync } from "fs";
-import { execSync } from "child_process";
-import readline from "readline";
-import { BasicMessages, AnsiEscapes, PlatformNames } from "./log";
-import { AppDirGetter } from "./types";
+import { join } from 'path';
+import { existsSync } from 'fs';
+import { execSync } from 'child_process';
+import readline from 'readline';
+import { BasicMessages, AnsiEscapes, PlatformNames } from './log';
+import { AppDirGetter } from './types';
 
 // This is to ensure the homedir we get is the actual user's homedir instead of root's homedir
 const homedir = execSync('grep $(logname) /etc/passwd | cut -d ":" -f6')
@@ -12,54 +12,54 @@ const homedir = execSync('grep $(logname) /etc/passwd | cut -d ":" -f6')
 
 const KnownLinuxPaths = Object.freeze({
   stable: [
-    "/usr/share/discord",
-    "/usr/lib64/discord",
-    "/opt/discord",
-    "/opt/Discord",
-    `${homedir}/.local/bin/Discord`,
+    '/usr/share/discord',
+    '/usr/lib64/discord',
+    '/opt/discord',
+    '/opt/Discord',
+    `${homedir}/.local/bin/Discord`
   ],
   ptb: [
-    "/usr/share/discord-ptb",
-    "/usr/lib64/discord-ptb",
-    "/opt/discord-ptb",
-    "/opt/DiscordPTB",
-    `${homedir}/.local/bin/DiscordPTB`,
+    '/usr/share/discord-ptb',
+    '/usr/lib64/discord-ptb',
+    '/opt/discord-ptb',
+    '/opt/DiscordPTB',
+    `${homedir}/.local/bin/DiscordPTB`
   ],
   canary: [
-    "/usr/share/discord-canary",
-    "/usr/lib64/discord-canary",
-    "/opt/discord-canary",
-    "/opt/DiscordCanary",
-    `${homedir}/.local/bin/DiscordCanary`, // https://github.com/powercord-org/powercord/pull/370
+    '/usr/share/discord-canary',
+    '/usr/lib64/discord-canary',
+    '/opt/discord-canary',
+    '/opt/DiscordCanary',
+    `${homedir}/.local/bin/DiscordCanary` // https://github.com/powercord-org/powercord/pull/370
   ],
   dev: [
-    "/usr/share/discord-development",
-    "/usr/lib64/discord-development",
-    "/opt/discord-development",
-    "/opt/DiscordDevelopment",
-    `${homedir}/.local/bin/DiscordDevelopment`,
-  ],
+    '/usr/share/discord-development',
+    '/usr/lib64/discord-development',
+    '/opt/discord-development',
+    '/opt/DiscordDevelopment',
+    `${homedir}/.local/bin/DiscordDevelopment`
+  ]
 });
 
 const ProcessRegex = {
   stable: /discord$/i,
   ptb: /discord-?ptb$/i,
   canary: /discord-?canary$/i,
-  dev: /discord-?development$/i,
+  dev: /discord-?development$/i
 };
 
 export const getAppDir: AppDirGetter = async (
   platform: keyof typeof ProcessRegex
 ) => {
-  const discordProcess = execSync("ps x")
+  const discordProcess = execSync('ps x')
     .toString()
-    .split("\n")
-    .map((s) => s.split(" ").filter(Boolean))
+    .split('\n')
+    .map((s) => s.split(' ').filter(Boolean))
     .find(
       (p) =>
         p[4] &&
         ProcessRegex[platform].test(p[4]) &&
-        p.includes("--type=renderer")
+        p.includes('--type=renderer')
     );
 
   if (!discordProcess) {
@@ -69,14 +69,14 @@ export const getAppDir: AppDirGetter = async (
     if (!discordPath) {
       const readlineInterface = readline.createInterface({
         input: process.stdin,
-        output: process.stdout,
+        output: process.stdout
       });
 
       const askPath = (): Promise<string> =>
-        new Promise((resolve) => readlineInterface.question("> ", resolve));
+        new Promise((resolve) => readlineInterface.question('> ', resolve));
       console.log(
         `${AnsiEscapes.YELLOW}Failed to locate ${PlatformNames[platform]} installation folder.${AnsiEscapes.RESET}`,
-        "\n"
+        '\n'
       );
       console.log(
         `Please provide the path of your ${PlatformNames[platform]} installation folder`
@@ -85,17 +85,17 @@ export const getAppDir: AppDirGetter = async (
       readlineInterface.close();
 
       if (!existsSync(discordPath)) {
-        console.log("");
+        console.log('');
         console.log(BasicMessages.PLUG_FAILED);
-        console.log("The path you provided is invalid.");
-        process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+        console.log('The path you provided is invalid.');
+        process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
       }
     }
 
-    return join(discordPath, "resources", "app");
+    return join(discordPath, 'resources', 'app');
   }
 
-  const discordPath = discordProcess[4].split("/");
+  const discordPath = discordProcess[4].split('/');
   discordPath.splice(discordPath.length - 1, 1);
-  return join("/", ...discordPath, "resources", "app");
+  return join('/', ...discordPath, 'resources', 'app');
 };

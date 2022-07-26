@@ -1,4 +1,4 @@
-const util = require('util');
+import util from 'util'
 
 if (!util.promisify) {
   const kCustomPromisifiedSymbol = Symbol('util.promisify.custom');
