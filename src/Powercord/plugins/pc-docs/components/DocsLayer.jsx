@@ -1,7 +1,7 @@
 const { React, Flux, getModule } = require('powercord/webpack');
 const { PopoutWindow, Spinner } = require('powercord/components');
 const { getOwnerInstance } = require('powercord/util');
-const { WEBSITE } = require('powercord/constants');
+const { WEBSITE } = require('powercord/constants').default.default;
 const { get } = require('powercord/http');
 const DocPage = require('./DocPage');
 const SettingsView = require('./SettingsView');

@@ -1,6 +1,6 @@
 const { Plugin } = require('powercord/entities');
 const { getModule } = require('powercord/webpack');
-const { WEBSITE } = require('powercord/constants');
+const { WEBSITE } = require('powercord/constants').default.default;
 const { inject, uninject } = require('powercord/injector');
 
 module.exports = class RPC extends Plugin {

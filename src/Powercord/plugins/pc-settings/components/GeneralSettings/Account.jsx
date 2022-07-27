@@ -1,6 +1,6 @@
 const { React, i18n: { Messages } } = require('powercord/webpack');
 const { Icons } = require('powercord/components');
-const { WEBSITE } = require('powercord/constants');
+const { WEBSITE } = require('powercord/constants').default.default;
 
 module.exports = (props) => {
   const baseUrl = powercord.settings.get('backendURL', WEBSITE);

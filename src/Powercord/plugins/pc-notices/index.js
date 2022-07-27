@@ -5,7 +5,7 @@ const { Plugin } = require('powercord/entities');
 const { React, getModule, getModuleByDisplayName, constants: { Routes } } = require('powercord/webpack');
 const { forceUpdateElement, getOwnerInstance, waitFor, findInReactTree } = require('powercord/util');
 const { inject, uninject } = require('powercord/injector');
-const { GUILD_ID, DISCORD_INVITE } = require('powercord/constants');
+const { GUILD_ID, DISCORD_INVITE } = require('powercord/constants').default.default;
 
 const ToastContainer = require('./components/ToastContainer');
 const AnnouncementContainer = require('./components/AnnouncementContainer');

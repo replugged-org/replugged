@@ -2,7 +2,7 @@ const http = require('http');
 const { shell: { openExternal } } = require('electron');
 const { React, Flux, getModule, i18n: { Messages } } = require('powercord/webpack');
 const { Spinner, Card, FormTitle } = require('powercord/components');
-const { WEBSITE } = require('powercord/constants');
+const { WEBSITE } = require('powercord/constants').default.default;
 
 const LinkedAccounts = require('./LinkedAccounts.jsx');
 

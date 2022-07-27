@@ -2,7 +2,7 @@ const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require
 const { Card } = require('powercord/components');
 const { inject, uninject } = require('powercord/injector');
 const { Plugin } = require('powercord/entities');
-const { I18N_WEBSITE } = require('powercord/constants');
+const { I18N_WEBSITE } = require('powercord/constants').default.default;
 
 const strings = require('../../../../i18n');
 const strOverrides = require('../../../../i18n/overrides');

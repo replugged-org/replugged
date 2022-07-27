@@ -45,12 +45,12 @@ global.PowercordNative = {
 };
 
 if (!window.__SPLASH__) {
-  const module = require('module')
+  const module = require('module');
   const originalRequire = module.prototype.require;
   module.prototype.require = function () {
     switch (arguments[0]) {
       case 'powercord/entities':
-        return require('powercord/entities')
+        return require('powercord/entities');
       case 'powercord/compilers':
         return require('powercord/compilers');
       case 'powercord/components':
@@ -70,11 +70,11 @@ if (!window.__SPLASH__) {
       case 'powercord/modal':
         return require('powercord/modal');
       case 'powercord/constants':
-        return require('powercord/constants');
+        return require('powercord/constants').default.default;
       case 'powercord':
         return require('../fake_node_modules/powercord');
     }
 
-      return originalRequire.apply(this, arguments);
-    }
+    return originalRequire.apply(this, arguments);
+  };
 }

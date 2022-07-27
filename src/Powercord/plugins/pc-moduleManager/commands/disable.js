@@ -1,4 +1,4 @@
-const { CORE_PLUGINS } = require('powercord/constants');
+const { CORE_PLUGINS } = require('powercord/constants').default.default;
 const { resp } = require('../util');
 
 module.exports = {

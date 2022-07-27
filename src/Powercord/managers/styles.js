@@ -4,7 +4,7 @@ const { readFile, lstat } = require('fs').promises;
 const { rmdirRf } = require('powercord/util');
 
 const { Theme } = require('powercord/entities');
-const { SETTINGS_FOLDER } = require('powercord/constants');
+const { SETTINGS_FOLDER } = require('powercord/constants').default.default;
 
 const fileRegex = /\.((s?c|le)ss|styl)$/;
 

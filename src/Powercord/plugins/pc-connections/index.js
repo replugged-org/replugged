@@ -1,7 +1,7 @@
 const { Plugin } = require('powercord/entities');
 const { React, getModule } = require('powercord/webpack');
 const { inject, uninject } = require('powercord/injector');
-const { WEBSITE } = require('powercord/constants');
+const { WEBSITE } = require('powercord/constants').default.default;
 
 const SettingsConnections = require('./components/settings/ConnectedAccounts');
 const ProfileConnections = require('./components/profile/ConnectedAccounts');
