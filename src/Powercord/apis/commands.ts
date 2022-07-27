@@ -1,4 +1,4 @@
-const { API } = require('powercord/entities');
+import { API } from 'powercord/entities';
 
 /**
  * @typedef PowercordChatCommand
@@ -11,11 +11,25 @@ const { API } = require('powercord/entities');
  * @property {Boolean|undefined} showTyping Whether typing status should be shown or not
  */
 
+type PowercordChatCommand = {
+  command: string,
+  aliases: string[],
+  description: string,
+  usage: string,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  executor: Function,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  autocomplete?: Function,
+  showTyping?: boolean,
+}
+
 /**
  * Replugged chat commands API
  * @property {Object.<String, PowercordChatCommand>} commands Registered commands
  */
 class CommandsAPI extends API {
+  commands: Record<string, PowercordChatCommand> = {};
+
   constructor () {
     super();
 
@@ -50,7 +64,7 @@ class CommandsAPI extends API {
    * Registers a command
    * @param {PowercordChatCommand} command Command to register
    */
-  registerCommand (command) {
+  registerCommand (command: PowercordChatCommand) {
     // @todo: remove this once there's a proper implemention (if any) for fetching the command origin.
     const stackTrace = (new Error()).stack;
     const [ , origin ] = stackTrace.match(new RegExp(`${global._.escapeRegExp(powercord.pluginManager.pluginDir)}.([-\\w]+)`));
@@ -73,11 +87,11 @@ class CommandsAPI extends API {
    * Unregisters a command
    * @param {String} command Command name to unregister
    */
-  unregisterCommand (command) {
+  unregisterCommand (command: string) {
     if (this.commands[command]) {
       delete this.commands[command];
     }
   }
 }
 
-module.exports = CommandsAPI;
+export default CommandsAPI;

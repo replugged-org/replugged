@@ -19,9 +19,9 @@ export default class APIManager {
 
   // Start
   async startAPIs () {
-    const commands = require('../apis/commands');
+    const commands = require('../apis/commands').default;
     const connections = require('../apis/connections');
-    const i18n = require('../apis/i18n');
+    const i18n = require('../apis/i18n').default;
     const keybinds = require('../apis/keybinds');
     const labs = require('../apis/labs').default;
     const notices = require('../apis/notices');
