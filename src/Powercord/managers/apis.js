@@ -1,5 +1,3 @@
-import { join } from 'path';
-
 export default class APIManager {
   constructor () {
     this.apis = [];
