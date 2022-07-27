@@ -2,10 +2,9 @@ const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require
 
 const Clickable = getModuleByDisplayName('Clickable', false);
 const Link = getModuleByDisplayName('Link', false);
+const { copyLink, copyLinkIcon, copied } = getModule([ 'titleRegion' ], false);
 
 module.exports = function ({ url }) {
-  const { copyLink, copyLinkIcon, copied } = getModule([ 'titleRegion' ], false);
-
   const [ cooldown, setCooldown ] = React.useState(false);
   const timeoutRef = React.useRef();
   React.useEffect(() => () => clearTimeout(timeoutRef.current));
