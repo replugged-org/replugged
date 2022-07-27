@@ -2,7 +2,7 @@ const { join } = require('path');
 const { inject, uninject } = require('powercord/injector');
 const { React, getModule, getModuleByDisplayName, FluxDispatcher, constants: { Permissions }, i18n: { Messages } } = require('powercord/webpack');
 const { Icons: { Plugin: PluginIcon, Theme } } = require('powercord/components');
-const { SpecialChannels: { STORE_PLUGINS, STORE_THEMES } } = require('powercord/constants').default.default;
+const { SpecialChannels: { STORE_PLUGINS, STORE_THEMES } } = require('powercord/constants');
 const { forceUpdateElement } = require('powercord/util');
 const { loadStyle, unloadStyle } = require('../util');
 

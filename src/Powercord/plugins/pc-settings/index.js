@@ -1,7 +1,7 @@
 const { React, getModuleByDisplayName, getModule, i18n: { Messages } } = require('powercord/webpack');
 const { AsyncComponent, Menu } = require('powercord/components');
 const { inject, uninject } = require('powercord/injector');
-const { WEBSITE } = require('powercord/constants').default.default;
+const { WEBSITE } = require('powercord/constants');
 const { Plugin } = require('powercord/entities');
 const { sleep } = require('powercord/util');
 

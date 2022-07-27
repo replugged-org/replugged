@@ -1,5 +1,5 @@
 const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
-const { DISCORD_INVITE, SpecialChannels: { SUPPORT_MISC } } = require('powercord/constants').default.default;
+const { DISCORD_INVITE, SpecialChannels: { SUPPORT_MISC } } = require('powercord/constants');
 const { gotoOrJoinServer } = require('powercord/util');
 
 const Banned = React.memo(

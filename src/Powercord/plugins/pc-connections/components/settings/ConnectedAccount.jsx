@@ -1,7 +1,7 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
 const { AsyncComponent, Clickable, Icon } = require('powercord/components');
 const { SwitchItem } = require('powercord/components/settings');
-const { WEBSITE } = require('powercord/constants').default.default;
+const { WEBSITE } = require('powercord/constants');
 const { put } = require('powercord/http');
 
 const FormText = AsyncComponent.from(getModuleByDisplayName('FormText'));

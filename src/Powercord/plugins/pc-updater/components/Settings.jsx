@@ -3,7 +3,7 @@ const { Button, FormNotice, FormTitle, Tooltip, Icons: { FontAwesome } } = requi
 const { SwitchItem, TextInput, Category, ButtonItem } = require('powercord/components/settings');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { Confirm } = require('powercord/components/modal');
-const { REPO_URL, CACHE_FOLDER } = require('powercord/constants').default.default;
+const { REPO_URL, CACHE_FOLDER } = require('powercord/constants');
 const { clipboard } = require('electron');
 const { readdirSync, existsSync, lstatSync } = require('fs');
 

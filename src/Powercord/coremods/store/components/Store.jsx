@@ -1,5 +1,5 @@
 const { React, Router } = require('powercord/webpack');
-const { WEBSITE } = require('powercord/constants').default.default;
+const { WEBSITE } = require('powercord/constants');
 // eslint-disable-next-line no-unused-vars
 const { get } = require('powercord/http');
 

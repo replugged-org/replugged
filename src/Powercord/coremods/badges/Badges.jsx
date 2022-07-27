@@ -3,7 +3,7 @@ const { open: openModal } = require('powercord/modal');
 const { gotoOrJoinServer } = require('powercord/util');
 const { Clickable, Tooltip, Icons: { badges: BadgeIcons } } = require('powercord/components');
 const { React, getModule, i18n: { Messages } } = require('powercord/webpack');
-const { WEBSITE, I18N_WEBSITE, DISCORD_INVITE, REPO_URL } = require('powercord/constants').default.default;
+const { WEBSITE, I18N_WEBSITE, DISCORD_INVITE, REPO_URL } = require('powercord/constants');
 const DonateModal = require('./DonateModal');
 
 const Base = React.memo(({ color, tooltip, tooltipPosition, onClick, className, children, gap }) => {

@@ -1,6 +1,6 @@
 const { join } = require('path');
 const { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } = require('fs');
-const { SETTINGS_FOLDER } = require('powercord/constants').default.default;
+const { SETTINGS_FOLDER } = require('powercord/constants');
 const { Flux, FluxDispatcher } = require('powercord/webpack');
 const ActionTypes = require('./constants');
 

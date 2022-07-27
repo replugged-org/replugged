@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
 const { Spinner, FormNotice, AsyncComponent } = require('powercord/components');
-const { WEBSITE } = require('powercord/constants').default.default;
+const { WEBSITE } = require('powercord/constants');
 const { get } = require('powercord/http');
 
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));

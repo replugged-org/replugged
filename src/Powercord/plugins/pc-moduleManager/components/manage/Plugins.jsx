@@ -1,7 +1,7 @@
 const { React, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { Confirm } = require('powercord/components/modal');
-const { CORE_PLUGINS } = require('powercord/constants').default.default;
+const { CORE_PLUGINS } = require('powercord/constants');
 
 const InstalledProduct = require('../parts/InstalledProduct');
 const Base = require('./Base');

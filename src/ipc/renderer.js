@@ -70,7 +70,7 @@ if (!window.__SPLASH__) {
       case 'powercord/modal':
         return require('powercord/modal');
       case 'powercord/constants':
-        return require('powercord/constants').default.default;
+        return require('powercord/constants');
       case 'powercord':
         return require('../fake_node_modules/powercord');
     }

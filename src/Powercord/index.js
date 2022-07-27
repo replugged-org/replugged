@@ -3,7 +3,7 @@ const { shell: { openExternal } } = require('electron');
 const { get } = require('powercord/http');
 const { sleep } = require('powercord/util');
 const Webpack = require('powercord/webpack');
-const { WEBSITE } = require('powercord/constants').default.default;
+const { WEBSITE } = require('powercord/constants');
 const { Updatable } = require('powercord/entities');
 
 const PluginManager = require('./managers/plugins');

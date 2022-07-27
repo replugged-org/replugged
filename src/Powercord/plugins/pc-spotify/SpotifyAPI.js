@@ -1,4 +1,4 @@
-const { WEBSITE } = require('powercord/constants').default.default;
+const { WEBSITE } = require('powercord/constants');
 const { shell: { openExternal } } = require('electron');
 const { get, put, post, del } = require('powercord/http');
 const { getModule, http, spotify, constants: { Endpoints } } = require('powercord/webpack');

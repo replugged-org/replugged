@@ -1,7 +1,7 @@
 const { shell: { openExternal } } = require('electron');
 const { React, getModule } = require('powercord/webpack');
 const { Clickable, ErrorState } = require('powercord/components');
-const { WEBSITE } = require('powercord/constants').default.default;
+const { WEBSITE } = require('powercord/constants');
 const { get } = require('powercord/http');
 
 const StoreWrapper = require('./StoreWrapper');

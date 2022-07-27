@@ -1,6 +1,6 @@
 const { shell: { openExternal } } = require('electron');
 const { React, getModule } = require('powercord/webpack');
-const { WEBSITE } = require('powercord/constants').default.default;
+const { WEBSITE } = require('powercord/constants');
 
 let classes;
 setImmediate(async () => {

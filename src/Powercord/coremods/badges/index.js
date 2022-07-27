@@ -2,7 +2,7 @@ const { join } = require('path');
 const { React, getModule, getAllModules, getModuleByDisplayName } = require('powercord/webpack');
 const { forceUpdateElement, getOwnerInstance } = require('powercord/util');
 const { inject, uninject } = require('powercord/injector');
-const { WEBSITE } = require('powercord/constants').default.default;
+const { WEBSITE } = require('powercord/constants');
 const { get } = require('powercord/http');
 
 const { loadStyle, unloadStyle } = require('../util');
