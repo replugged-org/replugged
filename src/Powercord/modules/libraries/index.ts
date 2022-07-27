@@ -1,6 +1,6 @@
-const libraries = require('./libraries.json');
+import libraries from './libraries.json';
 
-module.exports = () => {
+export default () => {
   for (const library of libraries) {
     let elem;
 
@@ -16,6 +16,7 @@ module.exports = () => {
         break;
       default:
         console.error('Unsupported library type', library.type, 'for library', library.url);
+        continue;
     }
 
     document.head.appendChild(elem);

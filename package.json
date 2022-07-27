@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@types/node": "^18.6.1",
+    "@types/react": "^18.0.15",
     "codemirror": "^5.57.0",
     "copyfiles": "^2.4.1",
     "fix-path": "^4.0.0",

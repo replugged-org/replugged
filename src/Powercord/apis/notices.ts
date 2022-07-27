@@ -1,14 +1,4 @@
-const { API } = require('powercord/entities');
-
-/**
- * @typedef PowercordToast
- * @property {String} header
- * @property {String} content
- * @property {ToastButton[]|void} buttons
- * @property {Number|void} timeout
- * @property {String|void} className
- * @property {Boolean|void} hideProgressBar
- */
+import { API } from 'powercord/entities';
 
 /**
  * @typedef ToastButton
@@ -18,6 +8,37 @@ const { API } = require('powercord/entities');
  * @property {function} onClick
  * @property {String} text
  */
+
+type ToastButton = {
+  size?: string,
+  look?: string,
+  color?: string,
+  onClick: () => void,
+  text: string
+}
+
+
+/**
+ * @typedef PowercordToast
+ * @property {String} header
+ * @property {String} content
+ * @property {ToastButton[]|void} buttons
+ * @property {Number|void} timeout
+ * @property {String|void} className
+ * @property {Boolean|void} hideProgressBar
+ * @property {Function|void} callback
+ */
+
+type PowercordToast = {
+  header: string,
+  content: string,
+  buttons?: ToastButton[],
+  timeout?: number,
+  className?: string,
+  hideProgressBar?: boolean
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  callback?: Function;
+}
 
 /**
  * @typedef PowercordAnnouncement
@@ -29,17 +50,24 @@ const { API } = require('powercord/entities');
  * @property {String} button.text
  */
 
+type PowercordAnnouncement = {
+  message: string,
+  color?: string,
+  onClose?: () => void,
+  button?: any,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  onClick: Function,
+  text: string
+}
+
 /**
  * @property {Object.<String, PowercordToast>} toasts
  * @property {Object.<String, PowercordAnnouncement>} announcements
  */
-module.exports = class NoticesAPI extends API {
-  constructor () {
-    super();
 
-    this.announcements = {};
-    this.toasts = {};
-  }
+class NoticesAPI extends API {
+  toasts: Record<string, PowercordToast> = {};
+  announcements: Record<string, PowercordAnnouncement> = {};
 
   /**
    * Sends an announcement to the user (banner at the top of the client)
@@ -47,7 +75,7 @@ module.exports = class NoticesAPI extends API {
    * @param {PowercordAnnouncement} props Announcement
    * @emits NoticesAPI#announcementAdded
    */
-  sendAnnouncement (id, props) {
+  sendAnnouncement (id: string, props: PowercordAnnouncement) {
     if (this.announcements[id]) {
       return this.error(`ID ${id} is already used by another plugin!`);
     }
@@ -61,7 +89,7 @@ module.exports = class NoticesAPI extends API {
    * @param {String} id Announcement ID
    * @emits NoticesAPI#announcementClosed
    */
-  closeAnnouncement (id) {
+  closeAnnouncement (id: string) {
     if (!this.announcements[id]) {
       return;
     }
@@ -76,7 +104,7 @@ module.exports = class NoticesAPI extends API {
    * @param {PowercordToast} props Toast
    * @emits NoticesAPI#toastAdded
    */
-  sendToast (id, props) {
+  sendToast (id: string, props: PowercordToast) {
     if (this.toasts[id]) {
       return this.error(`ID ${id} is already used by another plugin!`);
     }
@@ -90,7 +118,7 @@ module.exports = class NoticesAPI extends API {
    * @param {String} id Toast ID
    * @emits NoticesAPI#toastLeaving
    */
-  closeToast (id) {
+  closeToast (id: string) {
     const toast = this.toasts[id];
     if (!toast) {
       return;
@@ -103,4 +131,6 @@ module.exports = class NoticesAPI extends API {
     this.emit('toastLeaving', id);
     setTimeout(() => delete this.toasts[id], 500);
   }
-};
+}
+
+export default NoticesAPI;

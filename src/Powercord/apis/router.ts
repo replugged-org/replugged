@@ -1,4 +1,4 @@
-const { API } = require('powercord/entities');
+import { API } from 'powercord/entities';
 
 /**
  * @typedef PowercordRoute
@@ -6,6 +6,11 @@ const { API } = require('powercord/entities');
  * @property {React.Component|function(): React.ReactNode} render Route renderer
  * @property {React.Component|function(): React.ReactNode|undefined} sidebar Sidebar renderer
  */
+type PowercordRoute = {
+  path: string;
+  component: React.Component;
+  sidebar: React.Component;
+}
 
 /**
  * @typedef PowercordDeeplink
@@ -16,11 +21,7 @@ const { API } = require('powercord/entities');
  * @property {PowercordRoute[]} routes Registered routes
  */
 class RouterAPI extends API {
-  constructor () {
-    super();
-
-    this.routes = [];
-  }
+  routes: PowercordRoute[] = []
 
   /**
    * Restores previous navigation if necessary
@@ -42,7 +43,7 @@ class RouterAPI extends API {
    * @param {PowercordRoute} route Route to register
    * @emits RouterAPI#routeAdded
    */
-  registerRoute (route) {
+  registerRoute (route: PowercordRoute) {
     if (this.routes.find(r => r.path === route.path)) {
       throw new Error(`Route ${route.path} is already registered!`);
     }
@@ -55,7 +56,7 @@ class RouterAPI extends API {
    * @param {String} path Route to unregister
    * @emits RouterAPI#routeRemoved
    */
-  unregisterRoute (path) {
+  unregisterRoute (path: string) {
     if (this.routes.find(r => r.path === path)) {
       this.routes = this.routes.filter(r => r.path !== path);
       this.emit('routeRemoved', path);
@@ -63,4 +64,4 @@ class RouterAPI extends API {
   }
 }
 
-module.exports = RouterAPI;
+export default RouterAPI;

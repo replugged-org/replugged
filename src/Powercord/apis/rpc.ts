@@ -1,4 +1,4 @@
-const { API } = require('powercord/entities');
+import { API } from 'powercord/entities';
 
 /**
  * @typedef DiscordRpcEvent
@@ -8,6 +8,11 @@ const { API } = require('powercord/entities');
  * @property {function(Object): void} handler RPC event handler
  * @property {any|undefined} validation Validator for incoming data
  */
+type DiscordRpcEvent = {
+  scope: string;
+  handler: (data: any) => void;
+  validation?: any;
+}
 
 /**
  * API to tinker with Discord's RPC socket
@@ -15,6 +20,9 @@ const { API } = require('powercord/entities');
  * @property {Object.<String, DiscordRpcEvent>} scopes RPC Scopes
  */
 class RpcAPI extends API {
+  scopes: Record<string, (arg: string) => boolean> = {};
+  events: Record<string, DiscordRpcEvent> = {};
+
   constructor () {
     super();
 
@@ -28,7 +36,7 @@ class RpcAPI extends API {
    * @param {function(String): Boolean} grant Grant method. Receives the origin as first argument
    * @emits RpcAPI#scopeAdded
    */
-  registerScope (scope, grant) {
+  registerScope (scope: string, grant: (arg: string) => boolean) {
     if (this.scopes[scope]) {
       throw new Error(`RPC scope ${scope} is already registered!`);
     }
@@ -42,7 +50,7 @@ class RpcAPI extends API {
    * @param {DiscordRpcEvent} properties RPC event properties
    * @emits RpcAPI#eventAdded
    */
-  registerEvent (name, properties) {
+  registerEvent (name: string, properties: DiscordRpcEvent) {
     if (this.events[name]) {
       throw new Error(`RPC event ${name} is already registered!`);
     }
@@ -55,7 +63,7 @@ class RpcAPI extends API {
    * @param {String} scope Scope to unregister
    * @emits RpcAPI#scopeRemoved
    */
-  unregisterScope (scope) {
+  unregisterScope (scope: string) {
     if (this.scopes[scope]) {
       delete this.scopes[scope];
       this.emit('scopeRemoved', scope);
@@ -67,7 +75,7 @@ class RpcAPI extends API {
    * @param {String} name Name of the event to unregister
    * @emits RpcAPI#eventRemoved
    */
-  unregisterEvent (name) {
+  unregisterEvent (name: string) {
     if (this.events[name]) {
       delete this.events[name];
       this.emit('eventRemoved', name);
@@ -75,4 +83,4 @@ class RpcAPI extends API {
   }
 }
 
-module.exports = RpcAPI;
+export default RpcAPI;

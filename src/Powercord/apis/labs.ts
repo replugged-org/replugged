@@ -1,4 +1,4 @@
-const { API } = require('powercord/entities');
+import { API } from 'powercord/entities';
 
 /**
  * @typedef PowercordExperiment
@@ -9,21 +9,25 @@ const { API } = require('powercord/entities');
  * @property {function({Boolean} enabled)|function()|null} callback
  */
 
+type PowercordExperiment = {
+  id: string,
+  name: string,
+  date: number,
+  description: string,
+  callback: (enabled: boolean) => void | null
+}
+
 /**
  * @property {PowercordExperiment[]} experiments
  */
 class LabsAPI extends API {
-  constructor () {
-    super();
-
-    this.experiments = [];
-  }
+  experiments: PowercordExperiment[] = [];
 
   /**
    * Registers an experiment
    * @param {PowercordExperiment} experiment
    */
-  registerExperiment (experiment) {
+  registerExperiment (experiment: PowercordExperiment) {
     this.experiments.push(experiment);
   }
 
@@ -31,7 +35,7 @@ class LabsAPI extends API {
    * Unregisters an experiment
    * @param {String} experimentId
    */
-  unregisterExperiment (experimentId) {
+  unregisterExperiment (experimentId: string) {
     this.experiments = this.experiments.filter(e => e.id !== experimentId);
   }
 
@@ -39,7 +43,7 @@ class LabsAPI extends API {
    * @param {String} experimentId
    * @returns {Boolean} Whether the experiment is enabled or not
    */
-  isExperimentEnabled () {
+  isExperimentEnabled (): boolean {
     return false;
   }
 
@@ -47,7 +51,7 @@ class LabsAPI extends API {
    * Enables an experiment
    * @param {String} experimentId
    */
-  enableExperiment (experimentId) {
+  enableExperiment (experimentId: string) {
     const experiment = this.experiments.find(e => e.id === experimentId);
     if (!experiment) {
       throw new Error(`Tried to enable a non-registered experiment "${experimentId}"`);
@@ -65,7 +69,7 @@ class LabsAPI extends API {
    * Disables an experiment
    * @param {String} experimentId
    */
-  disableExperiment (experimentId) {
+  disableExperiment (experimentId: string) {
     const experiment = this.experiments.find(e => e.id === experimentId);
     if (!experiment) {
       throw new Error(`Tried to enable a non-registered experiment "${experimentId}"`);
@@ -77,4 +81,4 @@ class LabsAPI extends API {
   }
 }
 
-module.exports = LabsAPI;
+export default LabsAPI;

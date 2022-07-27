@@ -8,8 +8,8 @@ const { Updatable } = require('powercord/entities');
 
 const PluginManager = require('./managers/plugins');
 const StyleManager = require('./managers/styles');
-const APIManager = require('./managers/apis');
-const modules = require('./modules');
+const APIManager = require('./managers/apis').default;
+const modules = require('./modules').default;
 let coremods;
 
 /**
