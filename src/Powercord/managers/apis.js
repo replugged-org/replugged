@@ -19,10 +19,10 @@ export default class APIManager {
   async startAPIs () {
     const commands = require('../apis/commands').default;
     const connections = require('../apis/connections');
-    const i18n = require('../apis/i18n').default;
-    const keybinds = require('../apis/keybinds');
+    const i18n = require('../apis/i18n');
+    const keybinds = require('../apis/keybinds').default;
     const labs = require('../apis/labs').default;
-    const notices = require('../apis/notices');
+    const notices = require('../apis/notices').default;
     const router = require('../apis/router').default;
     const rpc = require('../apis/rpc').default;
     const settings = require('../apis/settings');
@@ -38,6 +38,8 @@ export default class APIManager {
       rpc,
       settings
     };
+
+    console.log(apis);
 
     this.apis = [];
 

@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   require('./no-track'),
   require('./router'),
   require('./dev-lands'),
