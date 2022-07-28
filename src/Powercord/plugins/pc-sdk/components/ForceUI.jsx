@@ -49,7 +49,7 @@ class ForceUI extends React.PureComponent {
       const discordTextarea = document.querySelector('form > div > div > div');
       const instance = getOwnerInstance(discordTextarea);
 
-      const ChannelTextAreaForm = instance?._reactInternals?.return?.return;
+      const ChannelTextAreaForm = instance?._reactInternals?.return?.return?.return?.return?.return;
       if (ChannelTextAreaForm) {
         everyoneMdl.extractEveryoneRole = () => '@everyone';
         everyoneMdl.shouldShowEveryoneGuard = () => true;
