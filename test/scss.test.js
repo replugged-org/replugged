@@ -1,6 +1,6 @@
 /* eslint-env jest */
 const { join } = require('path');
-const ScssCompiler = require('../src/fake_node_modules/powercord/compilers/scss');
+const ScssCompiler = require('../src/fake_node_modules/powercord/compilers/scss').default;
 const rmdir = require('../src/fake_node_modules/powercord/util/rmdirRf').default;
 const cachePath = join(__dirname, '..', '.cache', 'scss');
 

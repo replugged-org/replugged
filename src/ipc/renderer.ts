@@ -1,18 +1,20 @@
 /* eslint-disable no-unused-vars */
 
-const { ipcRenderer, webFrame } = require('electron');
+import type { exec } from 'child_process';
+import module from 'module';
+import { ipcRenderer } from 'electron';
 
 if (!ipcRenderer) {
   throw new Error('Don\'t require stuff you shouldn\'t silly.');
 }
 
-global.PowercordNative = {
+const powercordNative = {
   /**
    * Open DevTools for the current window
    * @param {object} opts Options to pass to Electron
    * @param {boolean} externalWindow Whether the DevTools should be opened in an external window or not.
    */
-  openDevTools (opts, externalWindow) {
+  openDevTools (opts: object, externalWindow: boolean) {
     return ipcRenderer.invoke('POWERCORD_OPEN_DEVTOOLS', opts, externalWindow);
   },
 
@@ -31,24 +33,34 @@ global.PowercordNative = {
     return ipcRenderer.invoke('POWERCORD_CACHE_CLEAR');
   },
 
-  openBrowserWindow (opts) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  openBrowserWindow (_opts: unknown) {
     throw new Error('Not implemented');
   },
 
-  __compileSass (file) {
+  __compileSass (file: string) {
     return ipcRenderer.invoke('POWERCORD_COMPILE_MF_SASS', file);
   },
 
-  exec (...args) {
+  exec (...args: Parameters<typeof exec>) {
     return ipcRenderer.invoke('POWERCORD_EXEC_COMMAND', ...args);
   }
 };
 
+declare global {
+  // eslint-disable-next-line no-var
+  var PowercordNative: typeof powercordNative;
+}
+
+
+global.PowercordNative = powercordNative;
+
 if (!window.__SPLASH__) {
-  const module = require('module');
   const originalRequire = module.prototype.require;
-  module.prototype.require = function () {
-    switch (arguments[0]) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  module.prototype.require = function (id: string) {
+    switch (id) {
       case 'powercord/entities':
         return require('powercord/entities');
       case 'powercord/compilers':
@@ -75,6 +87,6 @@ if (!window.__SPLASH__) {
         return require('../fake_node_modules/powercord');
     }
 
-    return originalRequire.apply(this, arguments);
+    return originalRequire.apply(this, [ id ]);
   };
 }

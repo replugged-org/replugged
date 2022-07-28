@@ -1,9 +1,10 @@
-const { ipcRenderer } = require('electron');
-const { join } = require('path');
-require('./ipc/renderer');
+import { ipcRenderer } from 'electron';
+import './ipc/renderer';
+import StyleManager from './Powercord/managers/styles';
 
 // Add Replugged's modules
-require('module').Module.globalPaths.push(join(__dirname, 'fake_node_modules'));
+// TODO: Make sure we don';t need this
+// module.Module.globalPaths.push(join(__dirname, 'fake_node_modules'));
 
 // Discord's preload
 const preload = ipcRenderer.sendSync('POWERCORD_GET_PRELOAD');
@@ -11,12 +12,18 @@ if (preload) {
   require(preload);
 }
 
+declare global {
+  // eslint-disable-next-line no-var
+  var __SPLASH__: boolean | undefined;
+  // eslint-disable-next-line no-var
+  var sm: StyleManager;
+}
+
 window.__SPLASH__ = true;
 
 // CSS Injection
 function init () {
   document.body.classList.add('powercord');
-  const StyleManager = require('./Powercord/managers/styles');
   global.sm = new StyleManager();
   global.sm.loadThemes();
 }

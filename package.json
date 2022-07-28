@@ -27,6 +27,7 @@
     "@types/stylus": "^0.48.38",
     "codemirror": "^5.57.0",
     "copyfiles": "^2.4.1",
+    "electron": "^19.0.10",
     "fix-path": "^4.0.0",
     "less": "^3.12.2",
     "node-watch": "^0.6.4",
