@@ -42,7 +42,7 @@ const powercordNative = {
     return ipcRenderer.invoke('POWERCORD_COMPILE_MF_SASS', file);
   },
 
-  exec (...args: Parameters<typeof exec>) {
+  exec (...args: Parameters<typeof exec>): Promise<ReturnType<typeof exec>> {
     return ipcRenderer.invoke('POWERCORD_EXEC_COMMAND', ...args);
   }
 };
