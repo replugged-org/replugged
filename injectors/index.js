@@ -8,22 +8,6 @@ const readline = require('readline');
 const { AnsiEscapes, BasicMessages } = require('./log');
 const main = require('./main.js');
 
-async function promptYesNo (question) {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
-  return new Promise(resolve => {
-    rl.question(question, answer => {
-      rl.close();
-      resolve(
-        answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes'
-      );
-    });
-  });
-}
-
 let platformModule;
 try {
   platformModule = require(`./${process.platform}.js`);
@@ -48,27 +32,10 @@ const VALID_PLATFORMS = [ 'stable', 'ptb', 'canary', 'dev', 'development' ];
 
 (async () => {
   let platform = (
-    process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase())) || 'canary'
+    process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase())) || 'stable'
   ).toLowerCase();
   if (platform === 'development') {
     platform = 'dev';
-  }
-
-  if (platform !== 'canary' && process.argv[2] === 'inject') {
-    console.log(
-      `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}WARNING: using non-canary versions of Discord is not supported.${AnsiEscapes.RESET}`
-    );
-    console.log(
-      `${AnsiEscapes.YELLOW}These versions may not work properly and support will not be given.${AnsiEscapes.RESET}`
-    );
-    const response = await promptYesNo(
-      'Are you sure you want to continue? [y/n]: '
-    );
-    if (!response) {
-      console.log('Aborting...');
-      process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
-    }
-    console.log('Continuing...', '\n');
   }
 
   if (process.argv[2] === 'inject') {

@@ -21,10 +21,6 @@ module.exports = class Notices extends Plugin {
       this._welcomeNewUser();
       unlink(injectedFile);
     }
-
-    if (window.GLOBAL_ENV.RELEASE_CHANNEL !== 'canary') {
-      this._unsupportedBuild();
-    }
   }
 
   pluginWillUnload () {
@@ -79,13 +75,6 @@ module.exports = class Notices extends Plugin {
           }
         }
       }
-    });
-  }
-
-  _unsupportedBuild () {
-    powercord.api.notices.sendAnnouncement('pc-unsupported-build', {
-      color: 'orange',
-      message: `Replugged does not support the ${window.GLOBAL_ENV.RELEASE_CHANNEL} release of Discord. Please use Canary for best results.`
     });
   }
 };
