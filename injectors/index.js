@@ -4,8 +4,7 @@ require('../polyfills'); // And then do stuff
 
 const { join } = require('path');
 const { writeFile } = require('fs').promises;
-const readline = require('readline');
-const { AnsiEscapes, BasicMessages } = require('./log');
+const { BasicMessages } = require('./log');
 const main = require('./main.js');
 
 let platformModule;
