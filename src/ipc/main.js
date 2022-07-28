@@ -5,6 +5,7 @@ const { ipcMain, BrowserWindow } = require('electron');
 const sass = require('sass');
 const cp = require('child_process');
 const util = require('util');
+require('./browserWindow/listeners');
 
 const exec = util.promisify(cp.exec);
 

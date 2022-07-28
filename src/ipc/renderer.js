@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 const { ipcRenderer, webFrame } = require('electron');
+const BrowserWindow = require("./browserWindow/window");
 
 if (!ipcRenderer) {
   throw new Error('Don\'t require stuff you shouldn\'t silly.');
@@ -41,10 +42,44 @@ global.PowercordNative = {
 
   exec (...args) {
     return ipcRenderer.invoke('POWERCORD_EXEC_COMMAND', ...args);
+  },
+
+  createBrowserWindow(opts) {
+    const id = ipcRenderer.sendSync('REPLUGGED_BW_CREATE', opts);
+
+    return {
+      _windowId: id,
+      destroy() {
+        ipcRenderer.sendSync('REPLUGGED_BW_DESTROY', id);
+      },
+      getProp(prop) {
+        const data = ipcRenderer.sendSync('REPLUGGED_BW_GET_PROP', id, prop);
+
+        if (data.error) throw data.error;
+
+        return data.result;
+      },
+      callMethod(method, ...args) {
+        const data = ipcRenderer.sendSync('REPLUGGED_BW_CALL_METHOD', id, method, ...args);
+
+        if (data.error) throw data.error;
+
+        return data.result;
+      },
+      async callAsyncMethod(method, ...args) {
+        const data = await ipcRenderer.invoke("REPLUGGED_BW_CALL_ASYNC_METHOD", id, method, ...args);
+
+        if (data.error) throw data.error;
+
+        return data.result;
+      }
+    };
   }
 };
 
 if (!window.__SPLASH__) {
+  require("electron").BrowserWindow = BrowserWindow;
+
   window.require = function (mdl) {
     switch (mdl) {
       case 'powercord/compilers':
