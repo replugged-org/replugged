@@ -3,7 +3,7 @@ module.exports = class BrowserWindow {
         this._win = PowercordNative.createBrowserWindow(opts);
     }
 
-    get title() {this._win.getProp("title");}
+    get title() {return this._win.getProp("title");}
     get webContents() {throw "Unavailable.";}
     get id() {return this._win._windowId;}
     get fullScreen() {return this._win.getProp("fullScreen");}
@@ -34,12 +34,21 @@ module.exports = class BrowserWindow {
     async loadURL(url) {return this._win.callAsyncMethod("loadURL", url);} 
     async loadFile(file) {return this._win.callAsyncMethod("loadFile", file);} 
 
-    // FIXME: Needs a proper callback implementations via pointers
-    /* on(event, listener) {
-        this._win.callMethod("on", event, listener);
+    on(event, listener) {
+        this._win.on(event, listener);
     }
 
     off(event, listener) {
-        this._win.callMethod("off", event, listener);
-    } */ 
+        this._win.off(event, listener);
+    }
+
+    once(event, listener) {
+        const handle = (...args) => {
+            this.off(event, handle);
+
+            listener(...args);
+        };
+
+        this.on(event, handle);
+    }
 }

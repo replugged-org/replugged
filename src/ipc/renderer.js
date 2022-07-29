@@ -7,6 +7,16 @@ if (!ipcRenderer) {
   throw new Error('Don\'t require stuff you shouldn\'t silly.');
 }
 
+const callbacks = [];
+
+ipcRenderer.on("REPLUGGED_BW_LISTENER_FIRE", function (_, id, pointer, ...args) {
+  const callback = callbacks.find(c => c.pointer === pointer && c.windowId === id);
+
+  if (!callback) return;
+
+  callback.fire(...args);
+});
+
 global.PowercordNative = {
   /**
    * Open DevTools for the current window
@@ -49,8 +59,34 @@ global.PowercordNative = {
 
     return {
       _windowId: id,
+      on(event, listener) {
+        const {result: pointer, error} = ipcRenderer.sendSync("REPLUGGED_BW_ADD_LISTENER", id, event);
+
+        if (error) throw error;
+
+        callbacks.push({
+          windowId: id,
+          pointer,
+          event,
+          fire: listener
+        });
+      },
+      off(event, listener) {
+        const callback = callbacks.find(c => c.windowId === id && c.listener === listener && c.event === event);
+
+        if (!callback) return;
+
+        ipcRenderer.sendSync("REPLUGGED_BW_REMOVE_LISTENER", id, event, callback.pointer);
+        callbacks.splice(callbacks.indexOf(callback), 1);
+      },
       destroy() {
         ipcRenderer.sendSync('REPLUGGED_BW_DESTROY', id);
+
+        for (const callback of callbacks) {
+          if (callback.windowId !== id) continue;
+
+          callbacks.splice(callbacks.indexOf(callback), 1);
+        }
       },
       getProp(prop) {
         const data = ipcRenderer.sendSync('REPLUGGED_BW_GET_PROP', id, prop);
