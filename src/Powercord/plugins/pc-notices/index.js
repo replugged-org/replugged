@@ -15,6 +15,7 @@ module.exports = class Notices extends Plugin {
     this.loadStylesheet('style.scss');
     this._patchAnnouncements();
     this._patchToasts();
+    this._installFixPathAlert();
 
     const injectedFile = resolve(__dirname, '..', '..', '..', '__injected.txt');
     if (existsSync(injectedFile)) {
@@ -76,5 +77,18 @@ module.exports = class Notices extends Plugin {
         }
       }
     });
+  }
+
+  // Tell users to install if fix-path wasn't able to be installed by the updater due to the issue it's fixing
+  // We can remove this in a few weeks since most users will have installed it by then
+  _installFixPathAlert () {
+    try {
+      require('fix-path');
+    } catch (e) {
+      powercord.api.notices.sendAnnouncement('fix-path', {
+        color: 'red',
+        message: 'The Replugged updater is broken due to a previous update. Please run "npm install" in your replugged directory, then fully quit and restart Discord to fix the issue.'
+      });
+    }
   }
 };
