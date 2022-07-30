@@ -88,7 +88,15 @@
       display: flex;
 
       button + button {
-        margin-left: 10px;
+        margin-left: 100px;
+      }
+    }
+
+    .btn-group-sax {
+      display: flex;
+
+      button + button {
+        margin-right: 20px;
       }
     }
   }

@@ -3,17 +3,18 @@ const { Button, Spinner } = require('powercord/components');
 
 // @todo: merge with Product/
 module.exports = ({ id, installing, onUninstall }) =>
-  <div className='powercord-plugin-footer'>
-    {/* <Button
-      onClick={() => openExternal(`https://github.com/${REPO_URL}`)}
+
+  <div className='btn-group'>
+    {!id.startsWith('pc-') && <Button
+      onClick={() => window.open('https://test.com')}
       look={Button.Looks.LINK}
       size={Button.Sizes.SMALL}
-      color={Button.Colors.TRANSPARENT}
+      color={Button.Colors.BLUE}
     >
-      Repository
-    </Button> */}
+      Link
+    </Button>}
 
-    <div className='btn-group'>
+    <div className='btn-group-sax'>
       {!id.startsWith('pc-') && <Button
         disabled={installing}
         onClick={onUninstall}
