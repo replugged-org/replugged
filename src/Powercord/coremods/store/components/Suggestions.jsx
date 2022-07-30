@@ -29,7 +29,7 @@ module.exports = React.memo(
     );
     React.useEffect(() => {
       const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-      get(`${baseUrl}/api/v2/store/suggestions`).then(res => {
+      get(`${baseUrl}/api/v1/store/suggestions`).then(res => {
         if (!res.ok) {
           return setSuggestions({ state: States.ERRORED });
         }

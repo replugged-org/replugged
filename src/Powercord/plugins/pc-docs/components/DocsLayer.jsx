@@ -25,7 +25,7 @@ class DocsLayer extends React.PureComponent {
 
   async componentDidMount () {
     const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-    const sections = await get(`${baseUrl}/api/v2/docs/categories`).then(res => res.body).then(s => s.sort((a, b) => a.metadata.pos > b.metadata.pos ? 1 : -1));
+    const sections = await get(`${baseUrl}/api/v1/docs/categories`).then(res => res.body).then(s => s.sort((a, b) => a.metadata.pos > b.metadata.pos ? 1 : -1));
     sectionsCache = [];
     sections.forEach(section => {
       sectionsCache.push(

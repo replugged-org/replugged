@@ -23,7 +23,7 @@ class DocPage extends React.PureComponent {
 
   async componentDidMount () {
     const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-    const document = await get(`${baseUrl}/api/v2/docs/${this.props.category}/${this.props.doc}`).then(res => res.body);
+    const document = await get(`${baseUrl}/api/v1/docs/${this.props.category}/${this.props.doc}`).then(res => res.body);
     documentCache[this.key] = document;
     this.setState({ document });
   }
