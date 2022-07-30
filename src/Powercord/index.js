@@ -181,7 +181,7 @@ class Powercord extends Updatable {
       const baseUrl = this.settings.get('backendURL', WEBSITE);
       console.debug('%c[Replugged]', 'color: #7289da', 'Logging in to your account...');
 
-      const resp = await get(`${baseUrl}/api/v2/users/@me`)
+      const resp = await get(`${baseUrl}/api/v1/users/@me`)
         .set('Authorization', token)
         .catch(e => e);
 
@@ -192,7 +192,7 @@ class Powercord extends Updatable {
             message: 'Your Replugged account is no longer linked to your Discord account! Some integrations will be disabled.',
             button: {
               text: 'Link it back',
-              onClick: () => openExternal(`${WEBSITE}/api/v2/oauth/discord`)
+              onClick: () => openExternal(`${WEBSITE}/api/v1/oauth/discord`)
             }
           });
 

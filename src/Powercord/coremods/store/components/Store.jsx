@@ -45,7 +45,7 @@ module.exports = function () {
   const [ eligibility, setEligibility ] = React.useState(null)
   React.useEffect(() => {
     const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-    // get(`${baseUrl}/api/v2/store/forms/eligibility`).then(res => res.ok && setEligibility(res.body))
+    // get(`${baseUrl}/api/v1/store/forms/eligibility`).then(res => res.ok && setEligibility(res.body))
   }, [])
 
   return (
