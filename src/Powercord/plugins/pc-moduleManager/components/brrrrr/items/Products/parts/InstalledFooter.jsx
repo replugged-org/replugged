@@ -1,12 +1,12 @@
-const { React, i18n: { Messages } } = require('powercord/webpack');
+const { React, getModule, i18n: { Messages } } = require('powercord/webpack');
 const { Button, Spinner } = require('powercord/components');
-
+const { openURL } = getModule([ 'openURL' ], false);
 // @todo: merge with Product/
 module.exports = ({ id, installing, onUninstall }) =>
 
   <div className='btn-group-l'>
     {!id.startsWith('pc-') && <Button
-      onClick={() => window.open('https://test.com')}
+      onClick={() => openURL('https://test.com')}
       look={Button.Looks.LINK}
       size={Button.Sizes.SMALL}
       color={Button.Colors.BLUE}
