@@ -22,7 +22,7 @@ module.exports = {
 
     if (powercord.account && powercord.account.accounts.spotify) {
       const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-      const resp = await get(`${baseUrl}/1/users/@me/spotify`)
+      const resp = await get(`${baseUrl}/api/v1/users/@me/spotify`)
         .set('Authorization', powercord.account.token)
         .then(r => r.body);
 
