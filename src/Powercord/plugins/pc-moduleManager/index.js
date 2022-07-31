@@ -18,7 +18,6 @@ const SnippetButton = require('./components/SnippetButton');
 const InstallerButton = require('./components/installer/Button');
 const { cloneRepo, getRepoInfo } = require('./util');
 const { injectContextMenu } = require('powercord/util');
-const powercord = require('powercord/');
 
 // @todo: give a look to why quickcss.css file shits itself
 module.exports = class ModuleManager extends Plugin {
