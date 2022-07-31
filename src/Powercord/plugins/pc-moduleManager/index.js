@@ -18,20 +18,19 @@ const SnippetButton = require('./components/SnippetButton');
 const InstallerButton = require('./components/installer/Button');
 const { cloneRepo, getRepoInfo } = require('./util');
 const { injectContextMenu } = require('powercord/util');
-const powercord = require('powercord/');
 
 // @todo: give a look to why quickcss.css file shits itself
 module.exports = class ModuleManager extends Plugin {
-  async startPlugin() {
+  async startPlugin () {
     // this is for the new api
-    const currentAPI = powercord.settings.get('backendURL', WEBSITE)
+    const currentAPI = powercord.settings.get('backendURL', WEBSITE);
     if (currentAPI === 'https://powercord.dev') {
-      powercord.settings.set('backendURL', WEBSITE) // change it to replugged.dev
+      powercord.settings.set('backendURL', WEBSITE); // change it to replugged.dev
     }
 
     powercord.api.i18n.loadAllStrings(i18n);
     Object.values(commands).forEach(cmd => powercord.api.commands.registerCommand(cmd));
-    this.Menu = getModule(['MenuItem'], false);
+    this.Menu = getModule([ 'MenuItem' ], false);
 
     powercord.api.labs.registerExperiment({
       id: 'pc-moduleManager-themes2',
@@ -91,7 +90,7 @@ module.exports = class ModuleManager extends Plugin {
     }
   }
 
-  pluginWillUnload() {
+  pluginWillUnload () {
     document.querySelector('#powercord-quickcss').remove();
     powercord.api.settings.unregisterSettings('pc-moduleManager-plugins');
     powercord.api.settings.unregisterSettings('pc-moduleManager-themes');
@@ -105,11 +104,11 @@ module.exports = class ModuleManager extends Plugin {
     document.querySelectorAll('.powercord-snippet-apply').forEach(e => e.style.display = 'none');
   }
 
-  async _installerInjectPopover() {
+  async _installerInjectPopover () {
     const MiniPopover = await getModule(m => m.default && m.default.displayName === 'MiniPopover');
     inject('pc-installer-popover', MiniPopover, 'default', (args, res) => {
       const props = findInReactTree(res, r => r && r.message && r.setPopout);
-      if (!props || ![...STORE_THEMES, ...STORE_PLUGINS].includes(props.channel?.id)) {
+      if (!props || ![ ...STORE_THEMES, ...STORE_PLUGINS ].includes(props.channel?.id)) {
         return res;
       }
       this.log('Popover injected');
@@ -125,8 +124,8 @@ module.exports = class ModuleManager extends Plugin {
     MiniPopover.default.displayName = 'MiniPopover';
   }
 
-  async _installerInjectCtxMenu() {
-    injectContextMenu('pc-installer-ctx-menu', 'MessageContextMenu', ([{ target }], res) => {
+  async _installerInjectCtxMenu () {
+    injectContextMenu('pc-installer-ctx-menu', 'MessageContextMenu', ([ { target } ], res) => {
       if (!target || !target?.href || !target?.tagName || target.tagName.toLowerCase() !== 'a') {
         return res;
       }
@@ -170,7 +169,7 @@ module.exports = class ModuleManager extends Plugin {
     });
   }
 
-  async _injectSnippets() {
+  async _injectSnippets () {
     const MiniPopover = await getModule(m => m.default && m.default.displayName === 'MiniPopover');
     inject('pc-moduleManager-snippets', MiniPopover, 'default', (args, res) => {
       const props = findInReactTree(res, r => r && r.message && r.setPopout);
@@ -189,7 +188,7 @@ module.exports = class ModuleManager extends Plugin {
     MiniPopover.default.displayName = 'MiniPopover';
   }
 
-  async _applySnippet(message) {
+  async _applySnippet (message) {
     let css = '\n\n/**\n';
     const line1 = Messages.REPLUGGED_SNIPPET_LINE1.format({ date: new Date() });
     const line2 = Messages.REPLUGGED_SNIPPET_LINE2.format({
@@ -220,7 +219,7 @@ module.exports = class ModuleManager extends Plugin {
     this._saveQuickCSS(this._quickCSS + css);
   }
 
-  async _fetchEntities(type) {
+  async _fetchEntities (type) {
     powercord.api.notices.closeToast('missing-entities-notify');
 
     const entityManager = powercord[type === 'plugins' ? 'pluginManager' : 'styleManager'];
@@ -238,11 +237,11 @@ module.exports = class ModuleManager extends Plugin {
             React.createElement('li', null, `– ${entity}`))
           )
         ),
-        buttons: [{
+        buttons: [ {
           text: 'OK',
           color: 'green',
           look: 'outlined'
-        }],
+        } ],
         type: 'success'
       };
     } else {
@@ -256,7 +255,7 @@ module.exports = class ModuleManager extends Plugin {
     powercord.api.notices.sendToast('missing-entities-notify', props);
   }
 
-  async _loadQuickCSS() {
+  async _loadQuickCSS () {
     this._quickCSSElement = document.createElement('style');
     this._quickCSSElement.id = 'powercord-quickcss';
     document.head.appendChild(this._quickCSSElement);
@@ -266,14 +265,14 @@ module.exports = class ModuleManager extends Plugin {
     }
   }
 
-  async _saveQuickCSS(css) {
+  async _saveQuickCSS (css) {
     this._quickCSS = css.trim();
     this._quickCSSElement.innerHTML = this._quickCSS;
     await writeFile(this._quickCSSFile, this._quickCSS);
   }
 
-  async _openQuickCSSPopout() {
-    const popoutModule = await getModule(['setAlwaysOnTop', 'open']);
+  async _openQuickCSSPopout () {
+    const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ]);
     popoutModule.open('DISCORD_POWERCORD_QUICKCSS', (key) => (
       React.createElement(PopoutWindow, {
         windowKey: key,
