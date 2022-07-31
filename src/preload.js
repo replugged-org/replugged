@@ -277,7 +277,7 @@ if (global.NEW_BACKEND) {
 require('module').Module.globalPaths.push(join(__dirname, 'fake_node_modules'));
 
 // Initialize Replugged
-const Powercord = require('./Powercord');
+const Powercord = require('./Powercord').default;
 global.powercord = new Powercord();
 
 // https://github.com/electron/electron/issues/9047

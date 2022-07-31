@@ -1,15 +1,25 @@
-const { join } = require('path');
-const { shell: { openExternal } } = require('electron');
-const { get } = require('powercord/http');
-const { sleep } = require('powercord/util');
-const Webpack = require('powercord/webpack');
-const { WEBSITE } = require('powercord/constants');
-const { Updatable } = require('powercord/entities');
+import { join } from 'path';
+import electron from 'electron';
+const { shell: { openExternal } } = electron;
+import { get } from 'powercord/http';
+import { sleep } from 'powercord/util';
+import { init as _init } from 'powercord/webpack';
+import { WEBSITE } from 'powercord/constants';
+import { Updatable } from 'powercord/entities';
 
-const PluginManager = require('./managers/plugins');
-const StyleManager = require('./managers/styles');
-const APIManager = require('./managers/apis').default;
-const modules = require('./modules').default;
+import PluginManager from './managers/plugins';
+import StyleManager from './managers/styles';
+import APIManager from './managers/apis';
+import modules from './modules';
+import type CommandsAPI from './apis/commands';
+import type ConnectionsAPI from './apis/connections';
+import type I18nAPI from './apis/i18n';
+import type KeybindsAPI from './apis/keybinds';
+import type LabsAPI from './apis/labs';
+import type NoticesAPI from './apis/notices';
+import type RouterAPI from './apis/router';
+import type SettingsAPI from './apis/settings';
+import type RpcAPI from './apis/rpc';
 let coremods;
 
 /**
@@ -25,12 +35,30 @@ let coremods;
  * @property {LabsAPI} labs
  */
 
+type PowercordAPI = {
+  commands: CommandsAPI,
+  settings: SettingsAPI,
+  notices: NoticesAPI,
+  keybinds: KeybindsAPI,
+  router: RouterAPI,
+  connections: ConnectionsAPI,
+  i18n: I18nAPI,
+  rpc: RpcAPI,
+  labs: LabsAPI
+}
+
 /**
  * @typedef GitInfos
  * @property {String} upstream
  * @property {String} branch
  * @property {String} revision
  */
+
+type GitInfos = {
+  upstream: string,
+  branch: string,
+  revision: string
+};
 
 /**
  * Main Replugged class
@@ -44,6 +72,16 @@ let coremods;
  * @property {Boolean} initialized
  */
 class Powercord extends Updatable {
+  api: PowercordAPI;
+  styleManager: StyleManager;
+  pluginManager: PluginManager;
+  apiManager: APIManager;
+  gitInfos: GitInfos;
+  initialized: boolean;
+  account: object | null;
+  isLinking: boolean;
+  settings: SettingsAPI.SettingsCategory;
+
   constructor () {
     super(join(__dirname, '..', '..'), '', 'powercord');
 
@@ -76,7 +114,7 @@ class Powercord extends Updatable {
     }
 
     // Webpack & Modules
-    await Webpack.init();
+    await _init();
     await Promise.all(modules.map(mdl => mdl()));
     this.emit('initializing');
 
@@ -247,4 +285,4 @@ class Powercord extends Updatable {
   }
 }
 
-module.exports = Powercord;
+export default Powercord;
