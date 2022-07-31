@@ -1,0 +1,7 @@
+{
+  "name": "Replugged Websockets",
+  "version": "0.0.1",
+  "description": "Patches RPC to get Websocket utilities",
+  "author": "Replugged Team",
+  "license": "MIT"
+}
