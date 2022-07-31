@@ -4,7 +4,7 @@ const { Button, Spinner } = require('powercord/components');
 // @todo: merge with Product/
 module.exports = ({ id, installing, onUninstall }) =>
 
-  <div className='btn-group'>
+  <div className='btn-group-l'>
     {!id.startsWith('pc-') && <Button
       onClick={() => window.open('https://test.com')}
       look={Button.Looks.LINK}
@@ -14,7 +14,7 @@ module.exports = ({ id, installing, onUninstall }) =>
       Link
     </Button>}
 
-    <div className='btn-group-sax'>
+    <div className='btn-group'>
       {!id.startsWith('pc-') && <Button
         disabled={installing}
         onClick={onUninstall}
