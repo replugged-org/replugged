@@ -12,12 +12,12 @@ module.exports = class WSLinks extends Plugin {
   }
 
   async _patchWebSocketServer () {
-    const SocketsHandler = await getModule([ 'validateSocketClient' ]);
+    const SocketsHandler = await getModule(m => m.Z?.__proto__?.handleConnection, false).Z;
     console.log(SocketsHandler);
 
-    inject('pc-ws-onConnect', SocketsHandler, 'validateSocketClient', (args) => {
+    inject('pc-ws-onConnect', SocketsHandler, 'handleConnection', (args) => {
       console.log('[WSLinks] validateSocketClient');
-      const socket = args[0]._socket;
+      const socket = args[0];
       console.log(socket);
       if (socket.upgradeReq().url !== '/replugged') {
         return args;
