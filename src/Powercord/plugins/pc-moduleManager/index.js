@@ -5,7 +5,7 @@ const { PopoutWindow } = require('powercord/components');
 const { inject, uninject } = require('powercord/injector');
 const { findInReactTree, forceUpdateElement } = require('powercord/util');
 const { Plugin } = require('powercord/entities');
-const { SpecialChannels: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES } } = require('powercord/constants');
+const { SpecialChannels: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES }, WEBSITE } = require('powercord/constants');
 const { join } = require('path');
 const commands = require('./commands');
 const deeplinks = require('./deeplinks');
@@ -18,10 +18,17 @@ const SnippetButton = require('./components/SnippetButton');
 const InstallerButton = require('./components/installer/Button');
 const { cloneRepo, getRepoInfo } = require('./util');
 const { injectContextMenu } = require('powercord/util');
+const powercord = require('powercord/');
 
 // @todo: give a look to why quickcss.css file shits itself
 module.exports = class ModuleManager extends Plugin {
   async startPlugin () {
+    // this is for the new api
+    const currentAPI = powercord.settings.get('backendURL', WEBSITE);
+    if (currentAPI === 'https://powercord.dev') {
+      powercord.settings.set('backendURL', WEBSITE); // change it to replugged.dev
+    }
+
     powercord.api.i18n.loadAllStrings(i18n);
     Object.values(commands).forEach(cmd => powercord.api.commands.registerCommand(cmd));
     this.Menu = getModule([ 'MenuItem' ], false);
