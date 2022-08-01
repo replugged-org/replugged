@@ -8,9 +8,6 @@ yarn.lock
 pnpm-lock.yaml
 
 src/Powercord/plugins/*
-src/Powercord/more no work/*
-src/Powercord/no work/*
-src/Powercord/notes.json
 !src/Powercord/plugins/pc-*
 
 src/Powercord/coremods/react-devtools/ext
