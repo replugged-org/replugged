@@ -1,17 +1,18 @@
-const { React, i18n: { Messages } } = require('powercord/webpack');
+const { React, getModule, i18n: { Messages } } = require('powercord/webpack');
 const { Button, Spinner } = require('powercord/components');
-
+const { openURL } = getModule([ 'openURL' ], false);
 // @todo: merge with Product/
 module.exports = ({ id, installing, onUninstall }) =>
-  <div className='powercord-plugin-footer'>
-    {/* <Button
-      onClick={() => openExternal(`https://github.com/${REPO_URL}`)}
+
+  <div className='btn-group-l'>
+    {!id.startsWith('pc-') && <Button
+      onClick={() => openURL('https://test.com')}
       look={Button.Looks.LINK}
       size={Button.Sizes.SMALL}
-      color={Button.Colors.TRANSPARENT}
+      color={Button.Colors.BLUE}
     >
-      Repository
-    </Button> */}
+      Link
+    </Button>}
 
     <div className='btn-group'>
       {!id.startsWith('pc-') && <Button
