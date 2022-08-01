@@ -34,8 +34,8 @@ module.exports = class RDLinks extends Plugin {
     this.httpserv = this.app.listen(6473);
   }
 
-  async openInstallModal () {
-    await this.showNotification.showNotification('https://cdn.discordapp.com/attachments/1000955992068079716/1001282342641471488/unknown.png', 'Replugged', `Attention required with ${this.info.type} install prompt.`, {
+  openInstallModal () {
+    this.showNotification.showNotification('https://cdn.discordapp.com/attachments/1000955992068079716/1001282342641471488/unknown.png', 'Replugged', `Attention required with ${this.info.type} install prompt.`, {
       onClick: () => {
         focus();
       }
