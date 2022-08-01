@@ -15,8 +15,8 @@ module.exports = class RDLinks extends Plugin {
       res.send('Rise and shine, Mister Freeman. Rise and... shine. Not that I... wish to imply you have been sleeping on the job. No one is more deserving of a rest... and all the effort in the world would have gone to waste until... well, let\'s just say your hour has... come again. The right man in the wrong place can make all the difference in the world. So, wake up, Mister Freeman. Wake up and... smell the ashes...');
     });
 
-    this.app.get('/install/', (req, res) => {
-      this.info = getRepoInfo(req.query.address);
+    this.app.get('/install/', async (req, res) => {
+      this.info = await getRepoInfo(req.query.address);
       if (this.info) {
         if (this.info.isInstalled) {
           res.send(`${this.info.type} ${this.info.repoName} is already installed!`);
