@@ -4,77 +4,80 @@ const express = require('express');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { React, getModule } = require('powercord/webpack');
 const Modal = require('./components/ConfirmModal');
-const app = express();
-let httpserv;
 
-function openInstallModal (info, showNotification) {
-  showNotification.showNotification('https://cdn.discordapp.com/attachments/1000955992068079716/1001282342641471488/unknown.png', 'Replugged', `Attention required with ${info.type} install prompt.`, { onClick: () => {
-    focus();
-  } }, {});
-
-  openModal(() => React.createElement(Modal, {
-    red: true,
-    header: `Install ${info.type}`,
-    desc: `Are you sure you want to install the ${info.type} ${info.repoName}?`,
-    onConfirm: () => {
-      cloneRepo(info.url, powercord, info.type);
-
-      powercord.api.notices.sendToast(`PDPluginInstalling-${info.repoName}`, {
-        header: `Installing ${info.repoName}...`,
-        type: 'info',
-        timeout: 10e3,
-        buttons: [ {
-          text: 'Got It',
-          color: 'green',
-          size: 'medium',
-          look: 'outlined'
-        } ]
-      });
-    },
-    onCancel: () => {
-      closeModal();
-      powercord.api.notices.sendToast(`PDPluginInstallCancelled-${info.repoName}`, {
-        header: `Cancelled ${info.repoName} installation`,
-        type: 'info',
-        timeout: 10e3,
-        buttons: [ {
-          text: 'Got It',
-          color: 'green',
-          size: 'medium',
-          look: 'outlined'
-        } ]
-      });
-    }
-  }));
-}
 
 module.exports = class RDLinks extends Plugin {
   async startPlugin () {
-    const showNotification = await getModule([ 'showNotification' ]);
-    app.get('/', (req, res) => {
-      res.send('You are not supposed to be here.');
+    this.queue = new Set();
+    this.app = express();
+    this.showNotification = await getModule([ 'showNotification' ]);
+    this.app.get('/', (req, res) => {
+      res.send('Rise and shine, Mister Freeman. Rise and... shine. Not that I... wish to imply you have been sleeping on the job. No one is more deserving of a rest... and all the effort in the world would have gone to waste until... well, let\'s just say your hour has... come again. The right man in the wrong place can make all the difference in the world. So, wake up, Mister Freeman. Wake up and... smell the ashes...');
     });
 
-    app.get('/install/', (req, res) => {
-      const info = getRepoInfo(req.query.address);
-      if (info) {
-        if (info.isInstalled) {
-          res.send(`${info.type} ${info.repoName} is already installed!`);
+    this.app.get('/install/', (req, res) => {
+      this.info = getRepoInfo(req.query.address);
+      if (this.info) {
+        if (this.info.isInstalled) {
+          res.send(`${this.info.type} ${this.info.repoName} is already installed!`);
           return;
         }
         res.send(`Sent prompt to install ${req.query.address}`);
-        info.url = req.query.address;
-        openInstallModal(info, showNotification);
+        this.info.url = req.query.address;
+        this.openInstallModal();
       } else {
         res.send(`Cannot find repository: ${req.query.address}`);
       }
     });
 
 
-    httpserv = app.listen(6473);
+    this.httpserv = this.app.listen(6473);
+  }
+
+  async openInstallModal () {
+    await this.showNotification.showNotification('https://cdn.discordapp.com/attachments/1000955992068079716/1001282342641471488/unknown.png', 'Replugged', `Attention required with ${this.info.type} install prompt.`, {
+      onClick: () => {
+        focus();
+      }
+    }, {});
+
+    openModal(() => React.createElement(Modal, {
+      red: true,
+      header: `Install ${this.info.type}`,
+      desc: `Are you sure you want to install the ${this.info.type} ${this.info.repoName}?`,
+      onConfirm: () => {
+        cloneRepo(this.info.url, powercord, this.info.type);
+
+        powercord.api.notices.sendToast(`PDPluginInstalling-${this.info.repoName}`, {
+          header: `Installing ${this.info.repoName}...`,
+          type: 'info',
+          timeout: 10e3,
+          buttons: [ {
+            text: 'Got It',
+            color: 'green',
+            size: 'medium',
+            look: 'outlined'
+          } ]
+        });
+      },
+      onCancel: () => {
+        closeModal();
+        powercord.api.notices.sendToast(`PDPluginInstallCancelled-${this.info.repoName}`, {
+          header: `Cancelled ${this.info.repoName} installation`,
+          type: 'info',
+          timeout: 10e3,
+          buttons: [ {
+            text: 'Got It',
+            color: 'green',
+            size: 'medium',
+            look: 'outlined'
+          } ]
+        });
+      }
+    }));
   }
 
   async pluginWillUnload () {
-    httpserv.close();
+    this.httpserv.close();
   }
 };
