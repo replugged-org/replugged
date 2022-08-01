@@ -56,11 +56,17 @@ module.exports = class RDLinks extends Plugin {
     });
 
     app.get('/install/', (req, res) => {
-      res.send(`Sent prompt to install ${req.query.address}`);
       const info = getRepoInfo(req.query.address);
       if (info) {
+        if (info.isInstalled) {
+          res.send(`${info.type} ${info.repoName} is already installed!`);
+          return;
+        }
+        res.send(`Sent prompt to install ${req.query.address}`);
         info.url = req.query.address;
         openInstallModal(info, showNotification);
+      } else {
+        res.send(`Cannot find repository: ${req.query.address}`);
       }
     });
 
