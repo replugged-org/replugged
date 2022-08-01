@@ -3,7 +3,7 @@ const { getRepoInfo, cloneRepo } = require('../pc-moduleManager/util');
 const express = require('express');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { React, getModule } = require('powercord/webpack');
-const Modal = require('../pc-moduleManager/components/ConfirmModal');
+const Modal = require('./components/ConfirmModal');
 const app = express();
 let httpserv;
 
