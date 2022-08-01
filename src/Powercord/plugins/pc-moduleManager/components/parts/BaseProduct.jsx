@@ -1,5 +1,7 @@
 const { React, getModule, constants: { Routes }, i18n: { Messages } } = require('powercord/webpack');
-const { Tooltip, Clickable, Divider, Button, Icons: { Discord, Gear } } = require('powercord/components');
+const { Divider, Button } = require('powercord/components');
+
+const { shell: { openExternal } } = require('electron');
 
 const Details = require('./Details');
 const Permissions = require('./Permissions');
@@ -43,19 +45,37 @@ class BaseProduct extends React.PureComponent {
     return (
       <>
         <Divider/>
-        <div className='powercord-product-footer'>
-          {this.props.product.discord && // @todo: i18n
-          <Tooltip text='Go to their Discord support server'>
-            <Clickable onClick={() => this.goToDiscord(this.props.product.discord)}>
-              <Discord/>
-            </Clickable>
-          </Tooltip>}
-          {typeof this.props.goToSettings === 'function' && // @todo: i18n
-          <Tooltip text='Settings'>
-            <Clickable onClick={() => this.props.goToSettings()}>
-              <Gear/>
-            </Clickable>
-          </Tooltip>}
+        <div className=' powercord-product-footer'>
+          {this.props.product.discord &&
+          <Button
+            onClick={() => this.goToDiscord(this.props.product.discord)}
+            look={Button.Looks.LINK}
+            size={Button.Sizes.SMALL}
+            color={Button.Colors.TRANSPARENT}
+          > {Messages.REPLUGGED_PLUGINS_DISCORD}
+          </Button>
+          }
+
+          {this.props.product.website &&
+              <Button
+                onClick={() => openExternal(this.props.product.website)}
+                look={Button.Looks.LINK}
+                size={Button.Sizes.SMALL}
+                color={Button.Colors.TRANSPARENT}
+              > {Messages.REPLUGGED_PLUGINS_WEBSITE}
+              </Button>
+          }
+
+          {this.props.product.repository &&
+            <Button
+              onClick={() => openExternal(this.props.product.repository)}
+              look={Button.Looks.LINK}
+              size={Button.Sizes.SMALL}
+              color={Button.Colors.TRANSPARENT}
+            > {Messages.REPLUGGED_PLUGINS_GITHUB}
+            </Button>
+          }
+
           <div className='buttons'>
             {typeof this.props.onUninstall === 'function' &&
             <Button
@@ -65,7 +85,8 @@ class BaseProduct extends React.PureComponent {
               size={Button.Sizes.SMALL}
             >
               {Messages.APPLICATION_CONTEXT_MENU_UNINSTALL}
-            </Button>}
+            </Button>
+            }
           </div>
         </div>
       </>
