@@ -7,11 +7,8 @@ const Modal = require('../pc-moduleManager/components/ConfirmModal');
 const app = express();
 let httpserv;
 
-async function openInstallModal (info) {
-  const BOT_AVATARS = await getModule([ 'BOT_AVATARS' ]);
-  const showNotification = await getModule([ 'showNotification' ]);
-
-  showNotification.showNotification(BOT_AVATARS.replugged, 'Replugged', `Attention required with ${info.type} install prompt.`, { onClick: () => {
+function openInstallModal (info, showNotification) {
+  showNotification.showNotification('https://cdn.discordapp.com/attachments/1000955992068079716/1001282342641471488/unknown.png', 'Replugged', `Attention required with ${info.type} install prompt.`, { onClick: () => {
     focus();
   } }, {});
 
@@ -53,17 +50,17 @@ async function openInstallModal (info) {
 
 module.exports = class RDLinks extends Plugin {
   async startPlugin () {
+    const showNotification = await getModule([ 'showNotification' ]);
     app.get('/', (req, res) => {
       res.send('You are not supposed to be here.');
     });
 
     app.get('/install/', (req, res) => {
-      console.log(req.query);
       res.send(`Sent prompt to install ${req.query.address}`);
       const info = getRepoInfo(req.query.address);
       if (info) {
         info.url = req.query.address;
-        openInstallModal(info);
+        openInstallModal(info, showNotification);
       }
     });
 
