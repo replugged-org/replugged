@@ -66,13 +66,23 @@ class BaseProduct extends React.PureComponent {
               </Button>
           }
 
-          {this.props.product.repository &&
+          {
             <Button
-              onClick={() => openExternal(this.props.product.repository)}
+              onClick={async () => openExternal(await this.props.GitInfo)}
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
               color={Button.Colors.TRANSPARENT}
             > {Messages.REPLUGGED_PLUGINS_GITHUB}
+            </Button>
+          }
+
+          {
+            <Button
+              onClick={() => openExternal(this.props.Path)}
+              look={Button.Looks.LINK}
+              size={Button.Sizes.SMALL}
+              color={Button.Colors.TRANSPARENT}
+            > {Messages.REPLUGGED_PLUGINS_PATH}
             </Button>
           }
 
