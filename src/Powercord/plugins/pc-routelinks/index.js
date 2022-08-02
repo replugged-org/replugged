@@ -2,46 +2,38 @@ const { Plugin } = require('powercord/entities');
 const { getRepoInfo, cloneRepo } = require('../pc-moduleManager/util');
 const express = require('express');
 const { open: openModal, close: closeModal } = require('powercord/modal');
-const { React, getModule } = require('powercord/webpack');
+const { React } = require('powercord/webpack');
 const Modal = require('./components/ConfirmModal');
 
 
 module.exports = class RDLinks extends Plugin {
   async startPlugin () {
-    this.queue = new Set();
     this.app = express();
-    this.showNotification = await getModule([ 'showNotification' ]);
-    this.focus = await getModule([ 'focus' ]);
+    // this.showNotification = await getModule([ 'showNotification' ]);
 
     this.app.use((req, res, next) => {
-      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Origin', 'https://replugged.dev');
       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
       res.header('Access-Control-Allow-Methods', 'POST');
       next();
     });
 
-    this.app.post('/', (req, res) => {
-      if (req.header.origin === 'replugged.dev') {
-        res.sendStatus(400);
-      }
-      // res.sendStatus(400); for debug only, commented out so no good reply is sent in case of bad origin
-    });
-
     this.app.post('/install/', async (req, res) => {
-      if (req.header.origin !== 'replugged.dev') {
-        return;
-      }
       this.info = await getRepoInfo(req.query.address);
       if (this.info) {
         if (this.info.isInstalled) {
-          res.status(403).json({ error: 'Already installed',
+          res.status(403).json({ error: 'ALREADY-INSTALLED',
+            plainText: `${this.info.repoName} is already installed.`,
             installed: true,
             promptSent: false,
             cannotFind: false
           });
           return;
         }
-        res.status(200).json({ error: 'Success',
+        // eslint-disable-next-line no-warning-comments
+        // TODO QUEUE
+        res.status(200).json({ error: 'SUCCESS',
+          plainText: `Successfully sent prompt for ${this.info.repoName} install.`,
           installed: false,
           promptSent: true,
           cannotFind: false
@@ -49,7 +41,8 @@ module.exports = class RDLinks extends Plugin {
         this.info.url = req.query.address;
         this.openInstallModal();
       } else {
-        res.status(404).json({ error: 'Cannot find repository',
+        res.status(404).json({ error: 'CANNOT-FIND',
+          plainText: `Cannot find ${req.query.address}.`,
           installed: false,
           promptSent: false,
           cannotFind: true
@@ -62,16 +55,17 @@ module.exports = class RDLinks extends Plugin {
   }
 
   openInstallModal () {
-    this.showNotification.showNotification('https://cdn.discordapp.com/attachments/1000955992068079716/1001282342641471488/unknown.png', 'Replugged', `Attention required with ${this.info.type} install prompt.`, {
+    /* this.showNotification.showNotification('https://cdn.discordapp.com/attachments/1000955992068079716/1001282342641471488/unknown.png', 'Replugged', `Attention required with ${this.info.type} install prompt.`, {
       onClick: () => {
         global.DiscordNative.window.focus();
       }
-    }, {});
+    }, {}); */
+    global.DiscordNative.window.focus();
 
     openModal(() => React.createElement(Modal, {
       red: true,
       header: `Install ${this.info.type}`,
-      desc: `Are you sure you want to install the ${this.info.type} ${this.info.repoName} (from ${this.info.url}?`,
+      desc: `Are you sure you want to install the ${this.info.type} ${this.info.repoName} (from <a href="${this.info.url}">${this.info.url}</a>)?`,
       onConfirm: () => {
         cloneRepo(this.info.url, powercord, this.info.type);
 
