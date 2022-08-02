@@ -68,6 +68,9 @@ async function injectUsers () {
     if (badges.early) {
       res.props.children.push(render(Badges.EarlyUser, 'early'));
     }
+    if (badges.booster) {
+      res.props.children.push(render(Badges.Booster, 'booster'));
+    }
 
     return res;
   });

@@ -107,6 +107,17 @@ const EarlyUser = React.memo(({ color }) => (
   </Base>
 ));
 
+const Booster = React.memo(({ color }) => (
+  <Base
+    onClick={() => gotoOrJoinServer(DISCORD_INVITE)}
+    className='powercord-badge-booster'
+    tooltip={Messages.REPLUGGED_BADGES_BOOSTER}
+    color={color}
+  >
+    <BadgeIcons.Booster/>
+  </Base>
+));
+
 module.exports = {
   Custom,
   Developer,
@@ -115,5 +126,6 @@ module.exports = {
   Contributor,
   Translator,
   BugHunter,
-  EarlyUser
+  EarlyUser,
+  Booster
 };
