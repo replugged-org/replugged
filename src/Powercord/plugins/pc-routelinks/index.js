@@ -64,7 +64,7 @@ module.exports = class RDLinks extends Plugin {
   openInstallModal () {
     this.showNotification.showNotification('https://cdn.discordapp.com/attachments/1000955992068079716/1001282342641471488/unknown.png', 'Replugged', `Attention required with ${this.info.type} install prompt.`, {
       onClick: () => {
-        this.focus.focus();
+        global.DiscordNative.window.focus();
       }
     }, {});
 
