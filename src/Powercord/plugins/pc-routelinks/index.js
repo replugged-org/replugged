@@ -21,14 +21,14 @@ module.exports = class RDLinks extends Plugin {
     });
 
     this.app.post('/', (req, res) => {
-      if (req.header.origin === 'https://replugged.dev') {
+      if (req.header.origin === 'replugged.dev') {
         res.sendStatus(400);
       }
       // res.sendStatus(400); for debug only, commented out so no good reply is sent in case of bad origin
     });
 
     this.app.post('/install/', async (req, res) => {
-      if (req.header.origin !== 'https://replugged.dev') {
+      if (req.header.origin !== 'replugged.dev') {
         return;
       }
       this.info = await getRepoInfo(req.query.address);
