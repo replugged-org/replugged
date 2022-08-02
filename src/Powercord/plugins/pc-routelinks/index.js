@@ -50,7 +50,8 @@ module.exports = class RDLinks extends Plugin {
     openModal(() => React.createElement(Modal, {
       red: true,
       header: `Install ${this.info.type}`,
-      desc: `Are you sure you want to install the ${this.info.type} ${this.info.repoName} (from <a href="${this.info.url}">${this.info.url}</a>)?`,
+      desc: `Are you sure you want to install the ${this.info.type} ${this.info.repoName} from ?`,
+      url: this.info.url
       onConfirm: () => {
         cloneRepo(this.info.url, powercord, this.info.type);
 
