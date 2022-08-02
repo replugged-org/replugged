@@ -24,7 +24,7 @@ module.exports = class RDLinks extends Plugin {
       if (req.header.origin === 'https://replugged.dev') {
         res.sendStatus(400);
       }
-      // res.sendStatus(400); for debug only, commented out so no reply is sent in case of bad origin
+      // res.sendStatus(400); for debug only, commented out so no good reply is sent in case of bad origin
     });
 
     this.app.post('/install/', async (req, res) => {
