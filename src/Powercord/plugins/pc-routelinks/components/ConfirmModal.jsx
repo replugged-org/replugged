@@ -25,7 +25,7 @@ module.exports = class Modal extends React.Component {
       onConfirm={() => this.props.onConfirm()}
       onCancel={() => typeof this.props.onCancel !== 'undefined' ? this.props.onCancel() : closeModal()}
     >
-      <Text>{this.props.desc}</Text>
+      <Text>{this.props.desc} <a href='${this.props.url}'>${this.props.url}</Text>
     </Confirm>;
   }
 };
