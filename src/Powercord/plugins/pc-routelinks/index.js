@@ -9,7 +9,6 @@ const Modal = require('./components/ConfirmModal');
 module.exports = class RDLinks extends Plugin {
   async startPlugin () {
     this.app = express();
-    // this.showNotification = await getModule([ 'showNotification' ]);
 
     this.app.use((req, res, next) => {
       res.header('Access-Control-Allow-Origin', 'https://replugged.dev');
@@ -55,11 +54,6 @@ module.exports = class RDLinks extends Plugin {
   }
 
   openInstallModal () {
-    /* this.showNotification.showNotification('https://cdn.discordapp.com/attachments/1000955992068079716/1001282342641471488/unknown.png', 'Replugged', `Attention required with ${this.info.type} install prompt.`, {
-      onClick: () => {
-        global.DiscordNative.window.focus();
-      }
-    }, {}); */
     global.DiscordNative.window.focus();
 
     openModal(() => React.createElement(Modal, {
