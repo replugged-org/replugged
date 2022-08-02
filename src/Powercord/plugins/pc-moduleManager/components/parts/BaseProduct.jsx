@@ -5,6 +5,7 @@ const { shell: { openExternal } } = require('electron');
 
 const Details = require('./Details');
 const Permissions = require('./Permissions');
+const TIMEOUT = 10e3;
 
 class BaseProduct extends React.PureComponent {
   renderDetails () {
@@ -68,7 +69,7 @@ class BaseProduct extends React.PureComponent {
 
           {
             <Button
-              onClick={async () => openExternal(await this.props.GitInfo)}
+              onClick={async () => openExternal(await this.getGitInfo(this.props.Path))}
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
               color={Button.Colors.TRANSPARENT}
@@ -101,6 +102,18 @@ class BaseProduct extends React.PureComponent {
         </div>
       </>
     );
+  }
+
+  async getGitInfo (item) {
+    try {
+      return await PowercordNative.exec('git remote get-url origin', {
+        cwd: item,
+        timeout: TIMEOUT
+      }).then((r) => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)[1]);
+    } catch (e) {
+      console.warn('Failed to fetch git origin url; ignoring.');
+      return null;
+    }
   }
 
   async goToDiscord (code) {

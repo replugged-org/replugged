@@ -6,21 +6,8 @@ const { CORE_PLUGINS } = require('powercord/constants');
 const InstalledProduct = require('../parts/InstalledProduct');
 const Base = require('./Base');
 
-const TIMEOUT = 10e3;
 
 class Plugins extends Base {
-  async getGitInfo (item) {
-    try {
-      return await PowercordNative.exec('git remote get-url origin', {
-        cwd: item.entityPath,
-        timeout: TIMEOUT
-      }).then((r) => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)[1]);
-    } catch (e) {
-      console.warn('Failed to fetch git origin url; ignoring.');
-      return null;
-    }
-  }
-
   renderItem (item) {
     return (
       <InstalledProduct
@@ -31,7 +18,7 @@ class Plugins extends Base {
           this.forceUpdate();
         }}
         Path={item.entityPath}
-        GitInfo={this.getGitInfo(item)}
+        // GitInfo={this.getGitInfo(item)}
         onUninstall={() => this._uninstall(item.entityID)}
       />
     );
