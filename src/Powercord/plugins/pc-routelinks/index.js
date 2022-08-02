@@ -22,29 +22,20 @@ module.exports = class RDLinks extends Plugin {
       if (this.info) {
         if (this.info.isInstalled) {
           res.status(403).json({ error: 'ALREADY-INSTALLED',
-            plainText: `${this.info.repoName} is already installed.`,
-            installed: true,
-            promptSent: false,
-            cannotFind: false
+            plainText: `${this.info.repoName} is already installed.`
           });
           return;
         }
         // eslint-disable-next-line no-warning-comments
         // TODO QUEUE
         res.status(200).json({ error: 'SUCCESS',
-          plainText: `Successfully sent prompt for ${this.info.repoName} install.`,
-          installed: false,
-          promptSent: true,
-          cannotFind: false
+          plainText: `Successfully sent prompt for ${this.info.repoName} install.`
         });
         this.info.url = req.query.address;
         this.openInstallModal();
       } else {
         res.status(404).json({ error: 'CANNOT-FIND',
-          plainText: `Cannot find ${req.query.address}.`,
-          installed: false,
-          promptSent: false,
-          cannotFind: true
+          plainText: `Cannot find ${req.query.address}.`
         });
       }
     });
