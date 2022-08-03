@@ -60,6 +60,7 @@ class Themes extends Base {
           await this._toggle(item.entityID, v);
           this.forceUpdate();
         }}
+        Path={item.entityPath}
         onUninstall={() => this._uninstall(item.entityID)}
       />
     );
