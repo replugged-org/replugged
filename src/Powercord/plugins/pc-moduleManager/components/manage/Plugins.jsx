@@ -83,10 +83,6 @@ class Plugins extends Base {
     ));
   }
 
-  // _gitlink (pluginID) {
-  //   const plugins = [ pluginID ].concat(powercord.pluginManager.get(pluginID).dependents);
-  // }
-
   _uninstall (pluginID) {
     const plugins = [ pluginID ].concat(powercord.pluginManager.get(pluginID).dependents);
     openModal(() => (

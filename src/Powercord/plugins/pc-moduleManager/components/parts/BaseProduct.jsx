@@ -1,7 +1,7 @@
 const { React, getModule, constants: { Routes }, i18n: { Messages } } = require('powercord/webpack');
 const { Divider, Button } = require('powercord/components');
 
-const { shell: { openExternal } } = require('electron');
+const { shell: { openExternal, openPath } } = require('electron');
 
 const Details = require('./Details');
 const Permissions = require('./Permissions');
@@ -79,7 +79,7 @@ class BaseProduct extends React.PureComponent {
 
           {
             <Button
-              onClick={() => openExternal(this.props.Path)}
+              onClick={() => openPath(this.props.Path)}
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
               color={Button.Colors.TRANSPARENT}
