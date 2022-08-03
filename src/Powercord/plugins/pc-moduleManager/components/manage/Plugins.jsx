@@ -18,7 +18,6 @@ class Plugins extends Base {
           this.forceUpdate();
         }}
         Path={item.entityPath}
-        // GitInfo={this.getGitInfo(item)}
         onUninstall={() => this._uninstall(item.entityID)}
       />
     );

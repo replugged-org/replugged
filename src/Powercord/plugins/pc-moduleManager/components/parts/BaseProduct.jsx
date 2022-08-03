@@ -109,7 +109,7 @@ class BaseProduct extends React.PureComponent {
       return await PowercordNative.exec('git remote get-url origin', {
         cwd: item,
         timeout: TIMEOUT
-      }).then((r) => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)[1]);
+      }).then((r) => r.stdout.toString());
     } catch (e) {
       console.warn('Failed to fetch git origin url; ignoring.');
       return null;
