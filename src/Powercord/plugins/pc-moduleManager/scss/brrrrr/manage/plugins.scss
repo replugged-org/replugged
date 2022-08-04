@@ -91,6 +91,14 @@
         margin-left: 10px;
       }
     }
+
+    .btn-group-l {
+      display: flex;
+
+      button + button {
+        margin-left: 20px;
+      }
+    }
   }
 
   &-permissions, &-footer {

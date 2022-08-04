@@ -6,6 +6,7 @@ const { CORE_PLUGINS } = require('powercord/constants');
 const InstalledProduct = require('../parts/InstalledProduct');
 const Base = require('./Base');
 
+
 class Plugins extends Base {
   renderItem (item) {
     return (
@@ -16,6 +17,7 @@ class Plugins extends Base {
           await this._toggle(item.entityID, v);
           this.forceUpdate();
         }}
+        Path={item.entityPath}
         onUninstall={() => this._uninstall(item.entityID)}
       />
     );
