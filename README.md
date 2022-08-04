@@ -1,11 +1,8 @@
 # Replugged
 Maintained fork of [powercord](https://github.com/powercord-org/powercord) - a lightweight @discord client mod focused on simplicity and performance.
 
-# Installation
+# Installation/Uninstallation
 See the [installation page of the Replugged Wiki](https://github.com/replugged-org/replugged/wiki/Installation).
-
-# How can I install Replugged on Stable or PTB?
-Injecting to Stable or PTB is unsupported. These versions may not work properly and support will not be given. However, if you wish to use these versions, you can use `npm run plug stable` or `npm run plug ptb` respectively. The `unplug` command works the same way.
 
 # Is this against the ToS?
 Long story short... __yes__. Replugged is against the Discord Terms of Service — but, you should keep reading:  
