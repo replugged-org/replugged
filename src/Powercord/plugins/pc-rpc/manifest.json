@@ -1,7 +1,0 @@
-{
-  "name": "Replugged RPC",
-  "version": "1.0.0",
-  "description": "Patches RPC to get Replugged-specific features",
-  "author": "Replugged Team",
-  "license": "MIT"
-}
