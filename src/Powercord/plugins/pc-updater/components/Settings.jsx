@@ -21,7 +21,6 @@ module.exports = class UpdaterSettings extends React.PureComponent {
   }
 
   render () {
-    const isUnsupported = window.GLOBAL_ENV.RELEASE_CHANNEL !== 'canary';
     const moment = getModule([ 'momentProperties' ], false);
     // @todo: Make this be in its own store
     const awaitingReload = this.props.getSetting('awaiting_reload', false);
@@ -64,7 +63,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
     return <div className='powercord-updater powercord-text'>
       {awaitingReload
         ? this.renderReload()
-        : isUnsupported && this.renderUnsupported()}
+        : ''}
       <div className='top-section'>
         <div className='icon'>{icon}</div>
         <div className='status'>
@@ -238,13 +237,6 @@ module.exports = class UpdaterSettings extends React.PureComponent {
       </Button>
     </>;
     return this._renderFormNotice(Messages.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE, body);
-  }
-
-  renderUnsupported () {
-    const body = <p>
-      {Messages.REPLUGGED_UPDATES_UNSUPPORTED_DESC.format({ releaseChannel: window.GLOBAL_ENV.RELEASE_CHANNEL })}
-    </p>;
-    return this._renderFormNotice(Messages.REPLUGGED_UPDATES_UNSUPPORTED_TITLE, body);
   }
 
   _renderFormNotice (title, body) {

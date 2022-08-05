@@ -5,7 +5,7 @@ const { PopoutWindow } = require('powercord/components');
 const { inject, uninject } = require('powercord/injector');
 const { findInReactTree, forceUpdateElement } = require('powercord/util');
 const { Plugin } = require('powercord/entities');
-const { SpecialChannels: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES } } = require('powercord/constants');
+const { SpecialChannels: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES }, WEBSITE } = require('powercord/constants');
 const { join } = require('path');
 const commands = require('./commands');
 const deeplinks = require('./deeplinks');
@@ -22,6 +22,12 @@ const { injectContextMenu } = require('powercord/util');
 // @todo: give a look to why quickcss.css file shits itself
 module.exports = class ModuleManager extends Plugin {
   async startPlugin () {
+    // this is for the new api
+    const currentAPI = powercord.settings.get('backendURL', WEBSITE);
+    if (currentAPI === 'https://powercord.dev') {
+      powercord.settings.set('backendURL', WEBSITE); // change it to replugged.dev
+    }
+
     powercord.api.i18n.loadAllStrings(i18n);
     Object.values(commands).forEach(cmd => powercord.api.commands.registerCommand(cmd));
     this.Menu = getModule([ 'MenuItem' ], false);
@@ -31,6 +37,10 @@ module.exports = class ModuleManager extends Plugin {
       name: 'New themes features',
       date: 1587857509321,
       description: 'New Theme management UI & settings',
+      /* lexisother: Hi developer! Did you fix this experiment? Please remove the `broken` object! Thanks <3 */
+      broken: {
+        reason: 'there is no code related to this experiment'
+      },
       callback: () => {
         // We're supposed to do it properly but reload > all
         setImmediate(() => powercord.pluginManager.remount(this.entityID));
@@ -43,6 +53,10 @@ module.exports = class ModuleManager extends Plugin {
       name: 'Deeplinks',
       date: 1590242558077,
       description: 'Makes some powercord.dev links trigger in-app navigation, as well as some potential embedding if applicable',
+      /* lexisother: Hi developer! Did you fix this experiment? Please remove the `broken` object! Thanks <3 */
+      broken: {
+        reason: 'the deeplinks module is empty'
+      },
       callback: () => {
         // We're supposed to do it properly but reload > all
         setImmediate(() => powercord.pluginManager.remount(this.entityID));

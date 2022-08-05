@@ -1,4 +1,5 @@
-const { get } = require('powercord/http');
+const { get } = require("powercord/http");
+const { REPO_URL_REGEX } = require("./misc");
 
 /**
  * @type Map<string, 'plugin'|'theme'|null>
@@ -15,27 +16,32 @@ const typeCache = new Map();
 
 /**
  *
- * @param {string} identifier username/reponame
+ * @param {string} identifier username/reponame/branch (branch is optional)
  * @returns {Promise<'plugin'|'theme'|null>} Whether the URL is a plugin or theme repository, or null if it's neither
  */
-async function getRepoType (identifier) {
+async function getRepoType(identifier) {
+  const [username, repoName, branch] = identifier.split("/");
   const isTheme = await get(
-    `https://github.com/${identifier}/raw/HEAD/powercord_manifest.json`
+    `https://github.com/${username}/${repoName}/raw/${
+      branch || "HEAD"
+    }/powercord_manifest.json`
   )
     .then((r) => {
       if (r?.statusCode === 302) {
-        return 'theme';
+        return "theme";
       }
       return null;
     })
     .catch(() => null);
 
   const isPlugin = await get(
-    `https://github.com/${identifier}/raw/HEAD/manifest.json`
+    `https://github.com/${username}/${repoName}/raw/${
+      branch || "HEAD"
+    }/manifest.json`
   )
     .then((r) => {
       if (r?.statusCode === 302) {
-        return 'plugin';
+        return "plugin";
       }
       return null;
     })
@@ -55,21 +61,14 @@ async function getRepoType (identifier) {
  * @param {string} url The URL to check
  * @returns {PluginInfo|Promise<PluginInfo|null>}
  */
-module.exports = function getRepoInfo (url) {
-  let parsedUrl;
-  try {
-    parsedUrl = new URL(url);
-  } catch (e) {
+module.exports = function getRepoInfo(url) {
+  const urlMatch = url.match(REPO_URL_REGEX);
+  if (!urlMatch) {
     return null;
   }
+  const [, username, repoName, branch] = urlMatch;
 
-  const isGithub =
-    parsedUrl.hostname.split('.').slice(-2).join('.') === 'github.com';
-  const [ , username, repoName ] = parsedUrl.pathname.split('/');
-  if (!isGithub || !username || !repoName) {
-    return null;
-  }
-  const identifier = `${username}/${repoName}`;
+  const identifier = `${username}/${repoName}/${branch || ""}`;
 
   /**
    * @type {boolean}
@@ -82,7 +81,8 @@ module.exports = function getRepoInfo (url) {
   const data = {
     username,
     repoName,
-    isInstalled
+    branch,
+    isInstalled,
   };
 
   if (typeCache.has(identifier)) {
@@ -92,7 +92,7 @@ module.exports = function getRepoInfo (url) {
     }
     return {
       ...data,
-      type
+      type,
     };
   }
 
@@ -102,7 +102,7 @@ module.exports = function getRepoInfo (url) {
     }
     return {
       ...data,
-      type
+      type,
     };
   });
 };

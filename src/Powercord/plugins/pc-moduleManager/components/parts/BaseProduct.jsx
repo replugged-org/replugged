@@ -1,8 +1,11 @@
 const { React, getModule, constants: { Routes }, i18n: { Messages } } = require('powercord/webpack');
-const { Tooltip, Clickable, Divider, Button, Icons: { Discord, Gear } } = require('powercord/components');
+const { Divider, Button } = require('powercord/components');
+
+const { shell: { openExternal, openPath } } = require('electron');
 
 const Details = require('./Details');
 const Permissions = require('./Permissions');
+const TIMEOUT = 10e3;
 
 class BaseProduct extends React.PureComponent {
   renderDetails () {
@@ -43,19 +46,47 @@ class BaseProduct extends React.PureComponent {
     return (
       <>
         <Divider/>
-        <div className='powercord-product-footer'>
-          {this.props.product.discord && // @todo: i18n
-          <Tooltip text='Go to their Discord support server'>
-            <Clickable onClick={() => this.goToDiscord(this.props.product.discord)}>
-              <Discord/>
-            </Clickable>
-          </Tooltip>}
-          {typeof this.props.goToSettings === 'function' && // @todo: i18n
-          <Tooltip text='Settings'>
-            <Clickable onClick={() => this.props.goToSettings()}>
-              <Gear/>
-            </Clickable>
-          </Tooltip>}
+        <div className=' powercord-product-footer'>
+          {this.props.product.discord &&
+          <Button
+            onClick={() => this.goToDiscord(this.props.product.discord)}
+            look={Button.Looks.LINK}
+            size={Button.Sizes.SMALL}
+            color={Button.Colors.TRANSPARENT}
+          > {Messages.REPLUGGED_PLUGINS_DISCORD}
+          </Button>
+          }
+
+          {this.props.product.website &&
+              <Button
+                onClick={() => openExternal(this.props.product.website)}
+                look={Button.Looks.LINK}
+                size={Button.Sizes.SMALL}
+                color={Button.Colors.TRANSPARENT}
+              > {Messages.REPLUGGED_PLUGINS_WEBSITE}
+              </Button>
+          }
+
+          {
+            <Button
+              onClick={async () => openExternal(await this.getGitInfo(this.props.Path))}
+              look={Button.Looks.LINK}
+              size={Button.Sizes.SMALL}
+              color={Button.Colors.TRANSPARENT}
+            > {Messages.REPLUGGED_PLUGINS_GITHUB}
+            </Button>
+          }
+
+          {
+            <Button
+              onClick={() => openPath(this.props.Path)}
+              look={Button.Looks.LINK}
+              size={Button.Sizes.SMALL}
+              color={Button.Colors.TRANSPARENT}
+            > {Messages.REPLUGGED_PLUGINS_PATH}
+            </Button>
+          }
+
           <div className='buttons'>
             {typeof this.props.onUninstall === 'function' &&
             <Button
@@ -65,11 +96,24 @@ class BaseProduct extends React.PureComponent {
               size={Button.Sizes.SMALL}
             >
               {Messages.APPLICATION_CONTEXT_MENU_UNINSTALL}
-            </Button>}
+            </Button>
+            }
           </div>
         </div>
       </>
     );
+  }
+
+  async getGitInfo (item) {
+    try {
+      return await PowercordNative.exec('git remote get-url origin', {
+        cwd: item,
+        timeout: TIMEOUT
+      }).then((r) => r.stdout.toString());
+    } catch (e) {
+      console.warn('Failed to fetch git origin url; ignoring.');
+      return null;
+    }
   }
 
   async goToDiscord (code) {

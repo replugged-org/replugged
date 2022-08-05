@@ -9,6 +9,7 @@
     "lint": "eslint --ext js --ext jsx src",
     "plug": "node dist/injector.js inject --no-exit-codes",
     "unplug": "node dist/injector.js uninject --no-exit-codes",
+    "repair": "npm run unplug && git pull && npm run plug",
     "inject": "node dist/injector.js inject --no-exit-codes",
     "uninject": "node dist/injector.js uninject --no-exit-codes",
     "build": "tsup",
@@ -16,7 +17,7 @@
     "postinstall": "npm run build"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
-  "author": "aetheryx & Cynthia K. Rey",
+  "author": "Replugged",
   "bugs": {
     "url": "https://github.com/replugged-org/replugged/issues"
   },
