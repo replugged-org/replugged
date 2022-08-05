@@ -1,11 +1,25 @@
 {
-  "id": "updates-2022-08-04",
+  "id": "updates-2022-08-04-2",
   "date": "2022-08-04",
   "contents": [
     {
       "type": "HEADER",
       "color": "GREEN",
-      "text": "Built-in plugins have been moved!",
+      "text": "New backend",
+      "noMargin": true
+    },
+    {
+      "type": "CONTENTS",
+      "text": "The backend has been switched from Powercord to Replugged!",
+      "list": [
+        "You will need to log in again under Settings > Replugged > General Settings in order to access the backend or use Spotify.",
+        "Added profile badge for people who boost the [Replugged Discord Server](https://discord.gg/replugged) (thank you all!)"
+      ]
+    },
+    {
+      "type": "HEADER",
+      "color": "RED",
+      "text": "Built-in plugins are no longer built-in",
       "noMargin": true
     },
     {
@@ -28,5 +42,5 @@
       "text": "These plugins (and more) can be downloaded from #plugin-links in the [Replugged Discord Server](https://discord.gg/replugged)."
     }
   ],
-  "footer": "More updates coming very soon!"
+  "footer": "More updates coming soon!"
 }
