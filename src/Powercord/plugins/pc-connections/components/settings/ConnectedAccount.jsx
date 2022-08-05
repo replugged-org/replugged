@@ -78,7 +78,7 @@ module.exports = class ConnectedAccount extends React.PureComponent {
     }
 
     const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-    await put(`${baseUrl}/api/v2/users/@me/accounts/${type}`)
+    await put(`${baseUrl}/api/v1/users/@me/accounts/${type}`)
       .set('Authorization', powercord.account.token)
       .set('Content-Type', 'application/json')
       .send({ visibility: value });
