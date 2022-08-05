@@ -17,7 +17,7 @@ async function injectUsers () {
     React.useEffect(() => {
       if (!cache[props.user.id]) {
         const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-        cache[props.user.id] = get(`${baseUrl}/api/v2/users/${props.user.id}`)
+        cache[props.user.id] = get(`${baseUrl}/api/v1/users/${props.user.id}`)
           .catch((e) => e)
           .then((res) => {
             if (res.statusCode === 200 || res.statusCode === 404) {
@@ -68,6 +68,9 @@ async function injectUsers () {
     if (badges.early) {
       res.props.children.push(render(Badges.EarlyUser, 'early'));
     }
+    if (badges.booster) {
+      res.props.children.push(render(Badges.Booster, 'booster'));
+    }
 
     return res;
   });
@@ -106,7 +109,7 @@ async function injectGuilds () {
   });
 
   const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-  get(`${baseUrl}/api/v2/guilds/badges`).then(async res => {
+  get(`${baseUrl}/api/v1/guilds/badges`).then(async res => {
     cache._guilds = res.body;
     // const { container } = await getModule([ 'subscribeTooltipText' ]);
     // forceUpdateElement(`.${container}`);

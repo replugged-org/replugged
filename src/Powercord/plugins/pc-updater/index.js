@@ -326,6 +326,10 @@ module.exports = class Updater extends Plugin {
           return footer;
         }
 
+        close () {
+          closeModal();
+        }
+
         componentWillUnmount () {
           _this.settings.set('last_changelog', changelog.id);
         }

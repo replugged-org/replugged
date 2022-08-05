@@ -23,7 +23,7 @@ module.exports = class Installed extends React.Component {
       />
       <Container
         author={manifest.author}
-        version={manifest.version}
+        // version={manifest.version}
         description={manifest.description}
         license={manifest.license}
       />
@@ -31,6 +31,7 @@ module.exports = class Installed extends React.Component {
       <Footer
         id={id}
         buttons
+        onClick={() => this.process()}
         onUninstall={() => this.process(onUninstall)}
         onInstall={() => this.process(onInstall)}
       />
