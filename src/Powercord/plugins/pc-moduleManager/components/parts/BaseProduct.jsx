@@ -110,7 +110,7 @@ class BaseProduct extends React.PureComponent {
         cwd: item,
         timeout: TIMEOUT
       }).then((r) => r.stdout.toString()
-        .replace(/.git$/, '')
+        .replace(/\.git$/, '')
         .replace(/^git@(.+):/, 'https://$1/')
       );
     } catch (e) {
