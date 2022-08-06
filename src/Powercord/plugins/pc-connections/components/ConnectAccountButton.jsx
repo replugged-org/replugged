@@ -16,7 +16,7 @@ module.exports = class ConnectAccountButton extends React.Component {
 
   handleClick () {
     const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-    openExternal(`${baseUrl}/api/v2/oauth/${this.props.type}`);
+    openExternal(`${baseUrl}/api/v1/oauth/${this.props.type}`);
   }
 
   render () {
