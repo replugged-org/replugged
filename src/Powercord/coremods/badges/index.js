@@ -9,6 +9,7 @@ const { loadStyle, unloadStyle } = require('../util');
 const Badges = require('./Badges');
 
 const cache = { _guilds: {} };
+const REFRESH_INTERVAL = 1000 * 60 * 30;
 
 async function injectUsers () {
   const UserProfileBadgeList = getAllModules((m) => m.default?.displayName === 'UserProfileBadgeList')[1]; // Discord have two identical components but only 2nd is actually used?
@@ -16,7 +17,7 @@ async function injectUsers () {
     const [ badges, setBadges ] = React.useState(null);
     const userId = props.user.id;
     React.useEffect(async () => {
-      if (!cache[userId] || cache[userId].lastFetch < Date.now() - (1000 * 60 * 30)) {
+      if (!cache[userId] || cache[userId].lastFetch < Date.now() - REFRESH_INTERVAL) {
         const baseUrl = powercord.settings.get('backendURL', WEBSITE);
         cache[userId] = await get(`${baseUrl}/api/v1/users/${userId}`)
           .catch((e) => e)
@@ -123,7 +124,7 @@ async function injectGuilds () {
   });
 
   fetchGuilds();
-  setInterval(fetchGuilds, 1000 * 60 * 30);
+  setInterval(fetchGuilds, REFRESH_INTERVAL);
 }
 
 module.exports = async function () {
