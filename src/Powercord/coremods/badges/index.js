@@ -14,22 +14,26 @@ async function injectUsers () {
   const UserProfileBadgeList = getAllModules((m) => m.default?.displayName === 'UserProfileBadgeList')[1]; // Discord have two identical components but only 2nd is actually used?
   inject('pc-badges-users', UserProfileBadgeList, 'default', ([ props ], res) => {
     const [ badges, setBadges ] = React.useState(null);
-    React.useEffect(() => {
-      if (!cache[props.user.id]) {
+    const userId = props.user.id;
+    React.useEffect(async () => {
+      if (!cache[userId] || cache[userId].lastFetch < Date.now() - (1000 * 60 * 30)) {
         const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-        cache[props.user.id] = get(`${baseUrl}/api/v1/users/${props.user.id}`)
+        cache[userId] = await get(`${baseUrl}/api/v1/users/${userId}`)
           .catch((e) => e)
           .then((res) => {
             if (res.statusCode === 200 || res.statusCode === 404) {
-              return res.body.badges || {};
+              return {
+                badges: res.body.badges || {},
+                lastFetch: Date.now()
+              };
             }
 
-            delete cache[props.user.id];
+            delete cache[userId];
             return {};
           });
       }
 
-      cache[props.user.id].then((b) => setBadges(b));
+      setBadges(cache[userId].badges);
     }, []);
 
     if (!badges) {
