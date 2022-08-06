@@ -82,6 +82,13 @@ async function injectUsers () {
   UserProfileBadgeList.default.displayName = 'UserProfileBadgeList';
 }
 
+async function fetchGuilds () {
+  const baseUrl = powercord.settings.get('backendURL', WEBSITE);
+  get(`${baseUrl}/api/v1/guilds/badges`).then(async res => {
+    cache._guilds = res.body;
+  });
+}
+
 async function injectGuilds () {
   const GuildHeader = await getModule([ 'AnimatedBanner', 'default' ]);
   const GuildBadge = await getModuleByDisplayName('GuildBadge');
@@ -112,12 +119,8 @@ async function injectGuilds () {
     return res;
   });
 
-  const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-  get(`${baseUrl}/api/v1/guilds/badges`).then(async res => {
-    cache._guilds = res.body;
-    // const { container } = await getModule([ 'subscribeTooltipText' ]);
-    // forceUpdateElement(`.${container}`);
-  });
+  fetchGuilds();
+  setInterval(fetchGuilds, 1000 * 60 * 30);
 }
 
 module.exports = async function () {
