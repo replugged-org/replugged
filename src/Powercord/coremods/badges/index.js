@@ -29,7 +29,10 @@ async function injectUsers () {
             }
 
             delete cache[userId];
-            return {};
+            return {
+              badges: {},
+              lastFetch: Date.now()
+            };
           });
       }
 
