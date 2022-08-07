@@ -4,6 +4,7 @@
 
 .powercord-badge-wrapper {
   margin-right: 0;
+  cursor: pointer;
 }
 
 .powercord-badge {
