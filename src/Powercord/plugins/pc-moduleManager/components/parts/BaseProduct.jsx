@@ -53,6 +53,7 @@ class BaseProduct extends React.PureComponent {
             look={Button.Looks.LINK}
             size={Button.Sizes.SMALL}
             color={Button.Colors.TRANSPARENT}
+            className='server-invite'
           > {Messages.REPLUGGED_PLUGINS_DISCORD}
           </Button>
           }
@@ -63,6 +64,7 @@ class BaseProduct extends React.PureComponent {
                 look={Button.Looks.LINK}
                 size={Button.Sizes.SMALL}
                 color={Button.Colors.TRANSPARENT}
+                className='website'
               > {Messages.REPLUGGED_PLUGINS_WEBSITE}
               </Button>
           }
@@ -73,6 +75,7 @@ class BaseProduct extends React.PureComponent {
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
               color={Button.Colors.TRANSPARENT}
+              className='git-repo'
             > {Messages.REPLUGGED_PLUGINS_GITHUB}
             </Button>
           }
@@ -83,6 +86,7 @@ class BaseProduct extends React.PureComponent {
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
               color={Button.Colors.TRANSPARENT}
+              className='open-folder'
             > {Messages.REPLUGGED_PLUGINS_PATH}
             </Button>
           }
@@ -94,6 +98,7 @@ class BaseProduct extends React.PureComponent {
               color={Button.Colors.RED}
               look={Button.Looks.FILLED}
               size={Button.Sizes.SMALL}
+              className='uninstall'
             >
               {Messages.APPLICATION_CONTEXT_MENU_UNINSTALL}
             </Button>
