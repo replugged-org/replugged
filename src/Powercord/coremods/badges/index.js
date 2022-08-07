@@ -9,27 +9,35 @@ const { loadStyle, unloadStyle } = require('../util');
 const Badges = require('./Badges');
 
 const cache = { _guilds: {} };
+const REFRESH_INTERVAL = 1000 * 60 * 30;
 
 async function injectUsers () {
   const UserProfileBadgeList = getAllModules((m) => m.default?.displayName === 'UserProfileBadgeList')[1]; // Discord have two identical components but only 2nd is actually used?
   inject('pc-badges-users', UserProfileBadgeList, 'default', ([ props ], res) => {
     const [ badges, setBadges ] = React.useState(null);
-    React.useEffect(() => {
-      if (!cache[props.user.id]) {
+    const userId = props.user.id;
+    React.useEffect(async () => {
+      if (!cache[userId] || cache[userId].lastFetch < Date.now() - REFRESH_INTERVAL) {
         const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-        cache[props.user.id] = get(`${baseUrl}/api/v1/users/${props.user.id}`)
+        cache[userId] = await get(`${baseUrl}/api/v1/users/${userId}`)
           .catch((e) => e)
           .then((res) => {
             if (res.statusCode === 200 || res.statusCode === 404) {
-              return res.body.badges || {};
+              return {
+                badges: res.body.badges || {},
+                lastFetch: Date.now()
+              };
             }
 
-            delete cache[props.user.id];
-            return {};
+            delete cache[userId];
+            return {
+              badges: {},
+              lastFetch: Date.now()
+            };
           });
       }
 
-      cache[props.user.id].then((b) => setBadges(b));
+      setBadges(cache[userId].badges);
     }, []);
 
     if (!badges) {
@@ -78,6 +86,13 @@ async function injectUsers () {
   UserProfileBadgeList.default.displayName = 'UserProfileBadgeList';
 }
 
+async function fetchGuilds () {
+  const baseUrl = powercord.settings.get('backendURL', WEBSITE);
+  get(`${baseUrl}/api/v1/guilds/badges`).then(async res => {
+    cache._guilds = res.body;
+  });
+}
+
 async function injectGuilds () {
   const GuildHeader = await getModule([ 'AnimatedBanner', 'default' ]);
   const GuildBadge = await getModuleByDisplayName('GuildBadge');
@@ -108,12 +123,8 @@ async function injectGuilds () {
     return res;
   });
 
-  const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-  get(`${baseUrl}/api/v1/guilds/badges`).then(async res => {
-    cache._guilds = res.body;
-    // const { container } = await getModule([ 'subscribeTooltipText' ]);
-    // forceUpdateElement(`.${container}`);
-  });
+  fetchGuilds();
+  setInterval(fetchGuilds, REFRESH_INTERVAL);
 }
 
 module.exports = async function () {
