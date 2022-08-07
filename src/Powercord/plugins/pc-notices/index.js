@@ -19,20 +19,27 @@ module.exports = class Notices extends Plugin {
 
     const injectedFile = resolve(__dirname, '..', '..', '..', '__injected.txt');
     if (existsSync(injectedFile)) {
-      const connection = await getModule(['isTryingToConnect', 'isConnected']);
+      const connection = await getModule([ 'isTryingToConnect', 'isConnected' ]);
       const connectedListener = async () => {
-        if (!connection.isConnected()) return;
+        if (!connection.isConnected()) {
+          return;
+        }
         connection.removeChangeListener(connectedListener);
 
         // Run once discord is started:
         /* Check if user is in the replugged guild. Only show new
            user banner if they aren't already in the discord server. */
         const guildStore = await getModule([ 'getGuilds' ]);
-        if (!guildStore.getGuilds()[GUILD_ID]) this._welcomeNewUser();
-      }
+        if (!guildStore.getGuilds()[GUILD_ID]) {
+          this._welcomeNewUser();
+        }
+      };
 
-      if (connection.isConnected()) connectedListener();
-      else connection.addChangeListener(connectedListener);
+      if (connection.isConnected()) {
+        connectedListener();
+      } else {
+        connection.addChangeListener(connectedListener);
+      }
 
       unlink(injectedFile);
     }
