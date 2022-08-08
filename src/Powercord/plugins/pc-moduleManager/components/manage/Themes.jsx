@@ -13,7 +13,6 @@ class Themes extends Base {
     super();
     this.state = {
       ...this.state,
-      tab: 'INSTALLED',
       tryBeta: false
     };
 
@@ -26,29 +25,8 @@ class Themes extends Base {
         <ThemeSettings theme={this.state.settings} onClose={() => this.setState({ settings: null })}/>
       );
     }
-
-    const { topPill, item } = getModule([ 'topPill' ], false);
-    return (
-      <>
-        <div className='powercord-entities-manage-tabs'>
-          <TabBar
-            selectedItem={this.state.tab}
-            onItemSelect={tab => this.setState({ tab })}
-            type={topPill}
-          >
-            <TabBar.Item className={item} selectedItem={this.state.tab} id='INSTALLED'>
-              {Messages.MANAGE_USER_SHORTHAND}
-            </TabBar.Item>
-            <TabBar.Item className={item} selectedItem={this.state.tab} id='QUICK_CSS'>
-              {Messages.REPLUGGED_QUICKCSS}
-            </TabBar.Item>
-          </TabBar>
-        </div>
-        {this.state.tab === 'INSTALLED'
-          ? super.render()
-          : <QuickCSS openPopout={this.props.openPopout}/>}
-      </>
-    );
+    
+    return super.render()
   }
 
   renderItem (item) {

@@ -84,6 +84,14 @@ module.exports = class ModuleManager extends Plugin {
         ...props
       })
     });
+    powercord.api.settings.registerSettings('pc-moduleManager-css', {
+      category: this.entityID,
+      label: () => Messages.REPLUGGED_QUICKCSS,
+      render: (props) => React.createElement(QuickCSS, {
+        openPopout: () => this._openQuickCSSPopout(),
+        ...props
+      })
+    });
 
     if (powercord.api.labs.isExperimentEnabled('pc-moduleManager-deeplinks')) {
       deeplinks();
