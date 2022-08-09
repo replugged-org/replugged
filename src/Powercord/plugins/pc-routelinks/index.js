@@ -52,7 +52,7 @@ module.exports = class RDLinks extends Plugin {
     const max_port = 6480;
 
     const open = async (port) => new Promise((resolve) => {
-      const server = this.app.listen(port, () => {
+      const server = this.app.listen(port, 'localhost', () => {
         this.log(`Listening on port ${port}`);
         resolve(server);
       });
