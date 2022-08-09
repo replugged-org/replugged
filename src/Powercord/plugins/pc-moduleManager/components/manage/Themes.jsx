@@ -1,10 +1,8 @@
-const { React, getModule, i18n: { Messages } } = require('powercord/webpack');
-const { TabBar } = require('powercord/components');
+const { React, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { Confirm } = require('powercord/components/modal');
 
 const ThemeSettings = require('./ThemeSettings');
-const QuickCSS = require('./QuickCSS');
 const Base = require('./Base');
 const InstalledProduct = require('../parts/InstalledProduct');
 
@@ -25,8 +23,8 @@ class Themes extends Base {
         <ThemeSettings theme={this.state.settings} onClose={() => this.setState({ settings: null })}/>
       );
     }
-    
-    return super.render()
+
+    return super.render();
   }
 
   renderItem (item) {
