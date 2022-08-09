@@ -20,22 +20,24 @@ module.exports = class RDLinks extends Plugin {
     this.app.post('/install/', async (req, res) => {
       this.info = await getRepoInfo(req.query.address);
       if (this.info) {
+        this.info.url = req.query.address;
         if (this.info.isInstalled) {
-          res.status(403).json({ error: 'ALREADY-INSTALLED',
-            plainText: `${this.info.repoName} is already installed.`
+          res.status(403).json({
+            code: 'ALREADY-INSTALLED',
+            info: this.info
           });
           return;
         }
-        // eslint-disable-next-line no-warning-comments
-        // TODO QUEUE
-        res.status(200).json({ error: 'SUCCESS',
-          plainText: `Successfully sent prompt for ${this.info.repoName} install.`
+
+        res.status(200).json({
+          code: 'SUCCESS',
+          info: this.info
         });
-        this.info.url = req.query.address;
+
         this.openInstallModal();
       } else {
-        res.status(404).json({ error: 'CANNOT-FIND',
-          plainText: `Cannot find ${req.query.address}.`
+        res.status(404).json({
+          code: 'CANNOT-FIND'
         });
       }
     });
