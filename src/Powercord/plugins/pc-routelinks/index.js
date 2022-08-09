@@ -84,6 +84,9 @@ module.exports = class RDLinks extends Plugin {
             url = `https://github.com/${url}`;
           }
 
+          // Cache info so it's loaded when you click the link
+          getRepoInfo(url);
+
           res.props.onClick = (e) => {
             e.preventDefault();
             this.handleRequest(url).then(data => {
