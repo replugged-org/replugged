@@ -40,8 +40,28 @@ module.exports = class RDLinks extends Plugin {
       }
     });
 
+    const min_port = 6473;
+    const max_port = 6480;
 
-    this.httpserv = this.app.listen(6473);
+    const open = async (port) => new Promise((resolve) => {
+      const server = this.app.listen(port, () => {
+        this.log(`Listening on port ${port}`);
+        resolve(server);
+      });
+
+      server.on('error', (e) => {
+        if (e.code === 'EADDRINUSE') {
+          this.warn(`Port ${port} is already in use.`);
+          if (port >= max_port) {
+            this.error('All ports in range are busy, cannot start server.');
+          }
+          this.log(`Trying port ${port + 1}...`);
+          resolve(open(++port));
+        }
+      });
+    });
+
+    this.httpserv = await open(min_port);
   }
 
   openInstallModal () {
