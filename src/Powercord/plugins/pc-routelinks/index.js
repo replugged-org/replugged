@@ -89,8 +89,9 @@ module.exports = class RDLinks extends Plugin {
                 this.openInstallModal();
               }
               if (data.code === 'ALREADY-INSTALLED') {
-                powercord.api.notices.sendToast(`PDPluginAlreadyInstalled-${this.info.repoName}`, {
-                  header: `The ${this.info.type} ${this.info.repoName} is already installed.`,
+                powercord.api.notices.sendToast(`PDAlreadyInstalled-${this.info.repoName}`, {
+                  header: 'Plugin Already Installed',
+                  content: `${this.info.repoName} is already installed.`,
                   type: 'info',
                   timeout: 10e3,
                   buttons: [ {
