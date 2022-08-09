@@ -1,5 +1,5 @@
 const { Plugin } = require('powercord/entities');
-const { getRepoInfo, cloneRepo } = require('../pc-moduleManager/util');
+const { getRepoInfo, cloneRepo, INSTALLER_URL_REGEX } = require('../pc-moduleManager/util');
 const express = require('express');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { getModule, React } = require('powercord/webpack');
@@ -12,7 +12,6 @@ module.exports = class RDLinks extends Plugin {
   async handleRequest (address) {
     this.info = await getRepoInfo(address);
     if (this.info) {
-      this.info.url = address;
       if (this.info.isInstalled) {
         return ({
           code: 'ALREADY-INSTALLED',
@@ -77,19 +76,14 @@ module.exports = class RDLinks extends Plugin {
       const link = res.props?.href?.toLowerCase();
 
       if (link) {
-        const match = (/^https?:\/\/(?:www\.)?replugged\.dev\/install\?url=(.*)$/).exec(link);
+        const match = INSTALLER_URL_REGEX.exec(link);
         if (match) {
-          let url = decodeURIComponent(match[1]);
-          if (url.match(/^[\w-]+\/[\w-.]+$/)) {
-            url = `https://github.com/${url}`;
-          }
-
           // Cache info so it's loaded when you click the link
-          getRepoInfo(url);
+          getRepoInfo(link);
 
           res.props.onClick = (e) => {
             e.preventDefault();
-            this.handleRequest(url).then(data => {
+            this.handleRequest(link).then(data => {
               this.info = data.info;
               if (data.code === 'SUCCESS') {
                 this.openInstallModal();
@@ -108,8 +102,8 @@ module.exports = class RDLinks extends Plugin {
                 });
               }
               if (data.code === 'CANNOT-FIND') {
-                powercord.api.notices.sendToast(`PDPluginCannotFind-${url}`, {
-                  header: `Could not find a plugin or theme repository at ${url}`,
+                powercord.api.notices.sendToast(`PDPluginCannotFind-${link}`, {
+                  header: `Could not find a plugin or theme repository at ${link}`,
                   type: 'info',
                   timeout: 10e3,
                   buttons: [ {
