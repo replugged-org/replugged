@@ -1,17 +1,18 @@
 const { React } = require('powercord/webpack');
 const { Clickable } = require('powercord/components');
-const { cloneRepo, REPO_URL_REGEX } = require('../../util');
+const { cloneRepo, matchRepoURL } = require('../../util');
 
 module.exports = class Button extends React.Component {
   render () {
-    const [ GitURL, , RepoName ] = this.props.message.content.match(REPO_URL_REGEX) ?? [];
-    if (!GitURL) {
+    const match = matchRepoURL(this.props.message.content);
+    if (!match) {
       return <></>;
     }
+    const { url, repoName } = match;
 
     const installed = this.props.type === 'plugin'
-      ? powercord.pluginManager.isInstalled(RepoName)
-      : powercord.styleManager.isInstalled(RepoName);
+      ? powercord.pluginManager.isInstalled(repoName)
+      : powercord.styleManager.isInstalled(repoName);
 
     return (
       <div
@@ -24,7 +25,7 @@ module.exports = class Button extends React.Component {
             if (installed) {
               return;
             }
-            cloneRepo(GitURL, powercord, this.props.type);
+            cloneRepo(url, powercord, this.props.type);
           }}
         >
           {installed ? `${this.props.type === 'plugin' ? 'Plugin' : 'Theme'} Installed` : `Download ${this.props.type === 'plugin' ? 'Plugin' : 'Theme'}`}
