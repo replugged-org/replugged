@@ -48,10 +48,10 @@ module.exports = class RDLinks extends Plugin {
     global.DiscordNative.window.focus();
 
     openModal(() => React.createElement(Modal, {
-      red: true,
-      header: `Install ${this.info.type}`,
-      desc: `Are you sure you want to install the ${this.info.type} ${this.info.repoName} from ?`,
+      type: this.info.type,
+      repoName: this.info.repoName,
       url: this.info.url,
+      branch: this.info.branch,
       onConfirm: () => {
         cloneRepo(this.info.url, powercord, this.info.type);
 

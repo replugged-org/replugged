@@ -18,14 +18,14 @@ module.exports = class Modal extends React.Component {
     }
 
     return <Confirm
-      red={this.props.red || false}
-      header={this.props.header || null}
-      confirmText={this.props.confirmText || 'Confirm'}
-      cancelText={this.props.cancelText || 'Cancel'}
+      red={true}
+      header={`Install ${this.props.type}`}
+      confirmText={'Confirm'}
+      cancelText={'Cancel'}
       onConfirm={() => this.props.onConfirm()}
       onCancel={() => typeof this.props.onCancel !== 'undefined' ? this.props.onCancel() : closeModal()}
     >
-      <Text>{this.props.desc} <a href='${this.props.url}'>${this.props.url} </a></Text>
+      <Text>Are you sure you want to install the {this.props.type} {this.props.repoName} from <a href={this.props.url} target="_blank">{this.props.url}</a>{this.props.branch ? ` (${this.props.branch} branch)` : ''}?</Text>
     </Confirm>;
   }
 };
