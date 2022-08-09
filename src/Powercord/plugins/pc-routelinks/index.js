@@ -80,11 +80,11 @@ module.exports = class RDLinks extends Plugin {
         const match = (/^https?:\/\/(?:www\.)?replugged\.dev\/install\?url=(.*)$/).exec(link);
         if (match) {
           let url = decodeURIComponent(match[1]);
-          res.props.onClick = (e) => {
-            if (url.match(/^[\w-]+\/[\w-.]+$/)) {
-              url = `https://github.com/${url}`;
-            }
+          if (url.match(/^[\w-]+\/[\w-.]+$/)) {
+            url = `https://github.com/${url}`;
+          }
 
+          res.props.onClick = (e) => {
             e.preventDefault();
             this.handleRequest(url).then(data => {
               this.info = data.info;
