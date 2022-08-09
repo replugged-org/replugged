@@ -7,7 +7,7 @@ const { inject, uninject } = require('powercord/injector');
 
 const Anchor = getModule(m => m.default?.displayName === 'Anchor', false);
 const RPC = getModule([ 'setCommandHandler' ], false);
-const RPCError = getModule(m => m?.default?.prototype?.constructor && m.default?.toString?.().includes('RPCError'), false);
+const { default: RPCError } = getModule(m => m?.default?.prototype?.constructor && m.default?.toString?.().includes('RPCError'), false);
 const Socket = getModule([ 'validateSocketClient', 'getVoiceSettings' ], false);
 const { RPCErrors } = getModule([ 'RPCErrors' ], false);
 
@@ -27,7 +27,7 @@ module.exports = class RDLinks extends Plugin {
       return Promise.resolve();
     });
 
-    RPC.commands.PC_INSTALL_PLUGIN = {
+    RPC.commands.PC_INSTALL = {
       scope: 'PC_BACKEND',
       handler: async (e) => {
         const { address } = e.args ?? {};
@@ -37,7 +37,7 @@ module.exports = class RDLinks extends Plugin {
           throw new RPCError(RPCErrors.INVALID_PAYLOAD, 'Could not find repository');
         }
         if (!info.isInstalled) {
-          this.openInstallModal();
+          this.openInstallModal(info);
         }
         return info;
       }
@@ -85,7 +85,7 @@ module.exports = class RDLinks extends Plugin {
               } ]
             });
           } else {
-            this.openInstallModal();
+            this.openInstallModal(info);
           }
           return info;
         });
@@ -140,6 +140,6 @@ module.exports = class RDLinks extends Plugin {
   async pluginWillUnload () {
     uninject('installer-open-in-app');
     uninject('installer-rpc-validator');
-    delete RPC.commands.PC_INSTALL_PLUGIN;
+    delete RPC.commands.PC_INSTALL;
   }
 };
