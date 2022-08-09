@@ -6,34 +6,39 @@ const Modal = require('./components/ConfirmModal');
 const { inject, uninject } = require('powercord/injector');
 
 const Anchor = getModule(m => m.default?.displayName === 'Anchor', false);
-const RPC = getModule(['setCommandHandler'], false);
+const RPC = getModule([ 'setCommandHandler' ], false);
 const RPCError = getModule(m => m?.default?.prototype?.constructor && m.default?.toString?.().includes('RPCError'), false);
-const Socket = getModule(['validateSocketClient', 'getVoiceSettings'], false);
-const { RPCErrors } = getAllModules(['RPCErrors'], false);
+const Socket = getModule([ 'validateSocketClient', 'getVoiceSettings' ], false);
+const { RPCErrors } = getModule([ 'RPCErrors' ], false);
 
 module.exports = class RDLinks extends Plugin {
   async startPlugin () {
-    return
     const backendURL = powercord.settings.get('backendURL');
 
     inject('installer-rpc-validator', Socket, 'validateSocketClient', (args, res) => {
-      const [socket, origin] = args;
-      if (backendURL && origin !== backendURL) return res;
+      const [ socket, origin ] = args;
+      if (backendURL && origin !== backendURL) {
+        return res;
+      }
 
       socket.authorization.scopes.push('PC_BACKEND');
 
-      res.catch(() => {});
+      res.catch(error => void error);
       return Promise.resolve();
     });
 
-    RPC.commands['PC_INSTALL_PLUGIN'] = {
+    RPC.commands.PC_INSTALL_PLUGIN = {
       scope: 'PC_BACKEND',
       handler: async (e) => {
         const { address } = e.args ?? {};
         const info = await getRepoInfo(address);
 
-        if (!info) throw new RPCError(RPCErrors.INVALID_PAYLOAD, 'Could not find repository');
-        if (!info.isInstalled) this.openInstallModal();
+        if (!info) {
+          throw new RPCError(RPCErrors.INVALID_PAYLOAD, 'Could not find repository');
+        }
+        if (!info.isInstalled) {
+          this.openInstallModal();
+        }
         return info;
       }
     };
@@ -41,8 +46,12 @@ module.exports = class RDLinks extends Plugin {
     inject('installer-open-in-app', Anchor, 'default', (_, res) => {
       const link = res.props?.href?.toLowerCase();
 
-      if (!link) return res;
-      if (!INSTALLER_URL_REGEX.exec(link)) return res;
+      if (!link) {
+        return res;
+      }
+      if (!INSTALLER_URL_REGEX.exec(link)) {
+        return res;
+      }
 
       // Cache info so it's loaded when you click the link
       const repoInfo = getRepoInfo(link);
@@ -131,6 +140,6 @@ module.exports = class RDLinks extends Plugin {
   async pluginWillUnload () {
     uninject('installer-open-in-app');
     uninject('installer-rpc-validator');
-    delete RPC.commands['PC_INSTALL_PLUGIN'];
+    delete RPC.commands.PC_INSTALL_PLUGIN;
   }
 };
