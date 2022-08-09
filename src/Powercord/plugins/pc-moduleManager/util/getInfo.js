@@ -1,7 +1,7 @@
 // @ts-check
 
 const { get } = require('powercord/http');
-const { REPO_URL_REGEX } = require('./misc');
+const { matchRepoURL } = require('./misc');
 
 /**
  * @type Map<string, 'plugin'|'theme'|null>
@@ -52,11 +52,14 @@ async function getRepoType (identifier) {
  * @returns {PluginInfo|Promise<PluginInfo|null>}
  */
 module.exports = function getRepoInfo (url) {
-  const urlMatch = url.match(REPO_URL_REGEX);
-  if (!urlMatch) {
+  const repoData = matchRepoURL(url);
+  if (!repoData) {
     return null;
   }
-  const [ , username, repoName, branch ] = urlMatch;
+
+  // eslint-disable-next-line prefer-destructuring
+  url = repoData.url;
+  const { username, repoName, branch } = repoData;
 
   const identifier = `${username}/${repoName}/${branch || ''}`;
 
@@ -67,6 +70,7 @@ module.exports = function getRepoInfo (url) {
   const isInstalled = powercord.pluginManager.isInstalled(repoName) || powercord.styleManager.isInstalled(repoName);
 
   const data = {
+    url,
     username,
     repoName,
     branch,
