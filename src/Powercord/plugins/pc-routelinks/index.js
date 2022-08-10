@@ -1,5 +1,5 @@
 const { Plugin } = require('powercord/entities');
-const { getRepoInfo, cloneRepo, INSTALLER_URL_REGEX } = require('../pc-moduleManager/util');
+const { getRepoInfo, cloneRepo, isInstallerURL } = require('../pc-moduleManager/util');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { getModule, React } = require('powercord/webpack');
 const Modal = require('./components/ConfirmModal');
@@ -49,19 +49,22 @@ module.exports = class RDLinks extends Plugin {
       if (!link) {
         return res;
       }
-      if (!INSTALLER_URL_REGEX.exec(link)) {
+      if (!isInstallerURL(link)) {
         return res;
       }
 
+      const url = new URL(link);
+      const repoURL = url.searchParams.get('url');
+
       // Cache info so it's loaded when you click the link
-      const repoInfo = getRepoInfo(link);
+      const repoInfo = Promise.resolve(getRepoInfo(repoURL));
 
       res.props.onClick = (e) => {
         e.preventDefault();
         repoInfo.then(info => {
-          if (info) {
-            powercord.api.notices.sendToast(`PDPluginCannotFind-${link}`, {
-              header: `Could not find a plugin or theme repository at ${link}`,
+          if (!info) {
+            powercord.api.notices.sendToast(`PDPluginCannotFind-${repoURL}`, {
+              header: `Could not find a plugin or theme repository at ${repoURL}`,
               type: 'info',
               timeout: 10e3,
               buttons: [ {

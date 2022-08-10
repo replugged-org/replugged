@@ -1,13 +1,18 @@
-const INSTALLER_URL_REGEX = /https?:\/\/(?:www\.)?replugged\.dev\/install\?url=(.*)/;
+const INSTALLER_PATH_REGEX = /^\/install\?url=(.*)/;
 const REPO_URL_REGEX = /https?:\/\/(?:www\.)?github\.com\/([^/\s>]+)\/([^/\s>]+)(?:\/tree\/([^\s>]+))?/;
 
-exports.INSTALLER_URL_REGEX = INSTALLER_URL_REGEX;
 exports.REPO_URL_REGEX = REPO_URL_REGEX;
 
+exports.isInstallerURL = (url) => {
+  const backendURL = powercord.settings.get('backendURL');
+  return backendURL &&
+    url?.startsWith?.(backendURL) &&
+    INSTALLER_PATH_REGEX.test(url.slice(backendURL.length));
+};
+
 exports.matchRepoURL = (url) => {
-  const installerMatch = url.match(INSTALLER_URL_REGEX);
-  if (installerMatch) {
-    url = decodeURIComponent(installerMatch[1]);
+  if (exports.isInstallerURL(url)) {
+    url = new URL(url).searchParams.get('url');
   }
   if (url.match(/^[\w-]+\/[\w-.]+$/)) {
     url = `https://github.com/${url}`;
