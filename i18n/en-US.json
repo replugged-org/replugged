@@ -79,7 +79,7 @@
   "REPLUGGED_SETTINGS_DEBUG_LOGS": "Debug Logs",
   "REPLUGGED_SETTINGS_DEBUG_LOGS_DESC": "Saves console contents to a file. Useful for debugging if Discord is crashing unexpectedly.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Enable Discord Experiments",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****WARNING:**** Enabling this gives you access to features that can be detected by Discord and may result in an ****account termination****. Replugged is **not responsible** for what you do with this feature. Leave it disabled if you are unsure. The Replugged Team will **not** provide any support regarding any experiment.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****WARNING:**** Enabling this gives you access to features that can be detected by Discord and may result in an ****account termination****. Replugged is **not responsible** for what you do with this feature. Leave it disabled if you are unsure. The Replugged Team will **not** provide any support regarding any experiment. **Requires restart**.",
   "REPLUGGED_SETTINGS_EXP_WEB_PLATFORM": "Experimental Web Platform features",
   "REPLUGGED_SETTINGS_EXP_WEB_PLATFORM_DESC": "Enables Chromium's experimental Web Platform features that are in development, such as CSS \"backdrop-filter\". Since features are in development you may encounter issues and APIs may change at any time. **Requires restart**.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Keep token stored",
