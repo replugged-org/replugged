@@ -4,6 +4,7 @@ const { open: openModal, close: closeModal } = require('powercord/modal');
 const { getModule, React } = require('powercord/webpack');
 const Modal = require('./components/ConfirmModal');
 const { inject, uninject } = require('powercord/injector');
+const { WEBSITE } = require('powercord/constants');
 
 const Anchor = getModule(m => m.default?.displayName === 'Anchor', false);
 const RPC = getModule([ 'setCommandHandler' ], false);
@@ -13,7 +14,7 @@ const { RPCErrors } = getModule([ 'RPCErrors' ], false);
 
 module.exports = class RDLinks extends Plugin {
   async startPlugin () {
-    const backendURL = powercord.settings.get('backendURL', 'https://replugged.dev');
+    const backendURL = powercord.settings.get('backendURL', WEBSITE);
 
     inject('installer-rpc-validator', Socket, 'validateSocketClient', (args, res) => {
       const [ socket, origin ] = args;
