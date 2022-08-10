@@ -53,11 +53,8 @@ module.exports = class RDLinks extends Plugin {
         return res;
       }
 
-      const url = new URL(link);
-      const repoURL = url.searchParams.get('url');
-
       // Cache info so it's loaded when you click the link
-      const repoInfo = Promise.resolve(getRepoInfo(repoURL));
+      const repoInfo = Promise.resolve(getRepoInfo(link));
 
       res.props.onClick = (e) => {
         e.preventDefault();
