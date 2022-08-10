@@ -1,10 +1,8 @@
-const { React, getModule, i18n: { Messages } } = require('powercord/webpack');
-const { TabBar } = require('powercord/components');
+const { React, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { Confirm } = require('powercord/components/modal');
 
 const ThemeSettings = require('./ThemeSettings');
-const QuickCSS = require('./QuickCSS');
 const Base = require('./Base');
 const InstalledProduct = require('../parts/InstalledProduct');
 
@@ -13,7 +11,6 @@ class Themes extends Base {
     super();
     this.state = {
       ...this.state,
-      tab: 'INSTALLED',
       tryBeta: false
     };
 
@@ -27,28 +24,7 @@ class Themes extends Base {
       );
     }
 
-    const { topPill, item } = getModule([ 'topPill' ], false);
-    return (
-      <>
-        <div className='powercord-entities-manage-tabs'>
-          <TabBar
-            selectedItem={this.state.tab}
-            onItemSelect={tab => this.setState({ tab })}
-            type={topPill}
-          >
-            <TabBar.Item className={item} selectedItem={this.state.tab} id='INSTALLED'>
-              {Messages.MANAGE_USER_SHORTHAND}
-            </TabBar.Item>
-            <TabBar.Item className={item} selectedItem={this.state.tab} id='QUICK_CSS'>
-              {Messages.REPLUGGED_QUICKCSS}
-            </TabBar.Item>
-          </TabBar>
-        </div>
-        {this.state.tab === 'INSTALLED'
-          ? super.render()
-          : <QuickCSS openPopout={this.props.openPopout}/>}
-      </>
-    );
+    return super.render();
   }
 
   renderItem (item) {
