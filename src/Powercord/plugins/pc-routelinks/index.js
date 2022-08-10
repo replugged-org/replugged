@@ -13,7 +13,7 @@ const { RPCErrors } = getModule([ 'RPCErrors' ], false);
 
 module.exports = class RDLinks extends Plugin {
   async startPlugin () {
-    const backendURL = powercord.settings.get('backendURL');
+    const backendURL = powercord.settings.get('backendURL', 'https://replugged.dev');
 
     inject('installer-rpc-validator', Socket, 'validateSocketClient', (args, res) => {
       const [ socket, origin ] = args;

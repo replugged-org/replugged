@@ -4,7 +4,7 @@ const REPO_URL_REGEX = /https?:\/\/(?:www\.)?github\.com\/([^/\s>]+)\/([^/\s>]+)
 exports.REPO_URL_REGEX = REPO_URL_REGEX;
 
 exports.isInstallerURL = (url) => {
-  const backendURL = powercord.settings.get('backendURL');
+  const backendURL = powercord.settings.get('backendURL', 'https://replugged.dev');
   return backendURL &&
     url?.startsWith?.(backendURL) &&
     INSTALLER_PATH_REGEX.test(url.slice(backendURL.length));
