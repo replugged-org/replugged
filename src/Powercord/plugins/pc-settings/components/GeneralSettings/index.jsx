@@ -121,6 +121,7 @@ module.exports = class GeneralSettings extends React.Component {
               } else {
                 disableExperiments();
               }
+              this.askRestart();
             }}
           >
             {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
