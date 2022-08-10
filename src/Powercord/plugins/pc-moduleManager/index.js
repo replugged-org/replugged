@@ -224,7 +224,7 @@ module.exports = class ModuleManager extends Plugin {
       css += `${snippet}\n`;
       css += `/** ${message.id} */\n`;
     }
-    this._saveQuickCSS(this._quickCSS + css);
+    this._applyQuickCSS(this._quickCSS + css, true);
   }
 
   async _fetchEntities (type) {
