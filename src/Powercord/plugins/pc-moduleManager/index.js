@@ -52,7 +52,7 @@ module.exports = class ModuleManager extends Plugin {
       id: 'pc-moduleManager-deeplinks',
       name: 'Deeplinks',
       date: 1590242558077,
-      description: 'Makes some powercord.dev links trigger in-app navigation, as well as some potential embedding if applicable',
+      description: 'Makes some replugged.dev links trigger in-app navigation, as well as some potential embedding if applicable',
       /* lexisother: Hi developer! Did you fix this experiment? Please remove the `broken` object! Thanks <3 */
       broken: {
         reason: 'the deeplinks module is empty'
