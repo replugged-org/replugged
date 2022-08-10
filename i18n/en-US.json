@@ -54,6 +54,7 @@
   "REPLUGGED_PLUGINS_PATH": "Open Folder",
   "REPLUGGED_PRODUCT_LOOKING": "What are you looking for?",
   "REPLUGGED_QUICKCSS": "Quick CSS",
+  "REPLUGGED_QUICKCSS_ENABLED": "Quick CSS Enabled",
   "REPLUGGED_QUICKCSS_AUTOCOMPLETE": "Ctrl+Space for autocomplete",
   "REPLUGGED_QUICKCSS_POPPED_OUT": "Editor popped out",
   "REPLUGGED_QUICKCSS_SETTINGS": "CodeMirror Settings",
