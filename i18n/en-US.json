@@ -145,6 +145,8 @@
   "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL_HEADER": "Change release channel",
   "REPLUGGED_UPDATES_OPTS_RELEASE_STABLE_BTN": "Switch to stable",
   "REPLUGGED_UPDATES_OPTS_RELEASE_SWITCH": "Switch",
+  "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Show update checker toast",
+  "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Show an overlay over the client which says updates are being checked for, and if updates are found, prompt you to update. Only applies if update in background is disabled.",
   "REPLUGGED_UPDATES_PAUSE": "Pause Updates",
   "REPLUGGED_UPDATES_PAUSED": "Updates are paused.",
   "REPLUGGED_UPDATES_PAUSED_RESUME": "They will resume on next reload.",
