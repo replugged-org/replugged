@@ -209,7 +209,9 @@ class QuickCSS extends React.PureComponent {
 
   _handleCodeMirrorUpdate (newValue) {
     const { getSetting } = this.props;
-    if (!getSetting('qcss-enabled', true)) return;
+    if (!getSetting('qcss-enabled', true)) {
+      return;
+    }
     powercord.pluginManager.get('pc-moduleManager')._applyQuickCSS(newValue, true);
   }
 
