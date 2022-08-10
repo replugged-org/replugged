@@ -286,7 +286,7 @@ module.exports = class ModuleManager extends Plugin {
   async _clearQuickCSSElement () {
     this._quickCSSElement.innerHTML = '';
   }
-  
+
   async _openQuickCSSPopout () {
     const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ]);
     popoutModule.open('DISCORD_POWERCORD_QUICKCSS', (key) => (
