@@ -224,7 +224,7 @@ module.exports = class ModuleManager extends Plugin {
       css += `${snippet}\n`;
       css += `/** ${message.id} */\n`;
     }
-    this._saveQuickCSS(this._quickCSS + css);
+    this._applyQuickCSS(this._quickCSS + css, true);
   }
 
   async _fetchEntities (type) {
@@ -269,14 +269,22 @@ module.exports = class ModuleManager extends Plugin {
     document.head.appendChild(this._quickCSSElement);
     if (existsSync(this._quickCSSFile)) {
       this._quickCSS = await readFile(this._quickCSSFile, 'utf8');
-      this._quickCSSElement.innerHTML = this._quickCSS;
+      if (this.settings.get('qcss-enabled', true)) {
+        this._quickCSSElement.innerHTML = this._quickCSS;
+      }
     }
   }
 
-  async _saveQuickCSS (css) {
+  async _applyQuickCSS (css, save = false) {
     this._quickCSS = css.trim();
     this._quickCSSElement.innerHTML = this._quickCSS;
-    await writeFile(this._quickCSSFile, this._quickCSS);
+    if (save) {
+      await writeFile(this._quickCSSFile, this._quickCSS);
+    }
+  }
+
+  async _clearQuickCSSElement () {
+    this._quickCSSElement.innerHTML = '';
   }
 
   async _openQuickCSSPopout () {

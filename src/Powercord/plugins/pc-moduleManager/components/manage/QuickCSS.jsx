@@ -24,8 +24,23 @@ class QuickCSS extends React.PureComponent {
   }
 
   render () {
+    const { getSetting, toggleSetting } = this.props;
+
     return (
       <>
+        <SwitchItem
+          value={getSetting('qcss-enabled', true)}
+          onChange={v => {
+            toggleSetting('qcss-enabled', true);
+            if (v) {
+              powercord.pluginManager.get('pc-moduleManager')._applyQuickCSS(this.state.cm.getValue());
+            } else {
+              powercord.pluginManager.get('pc-moduleManager')._clearQuickCSSElement();
+            }
+          }}
+        >
+          {Messages.REPLUGGED_QUICKCSS_ENABLED}
+        </SwitchItem>
         <div
           className={[ 'powercord-quickcss', this.props.popout && 'popout', !this.props.popout && this.props.guestWindow && 'popped-out' ].filter(Boolean).join(' ')}
           style={{ '--editor-height': `${this.props.getSetting('cm-height', 350)}px` }}
@@ -193,7 +208,11 @@ class QuickCSS extends React.PureComponent {
   }
 
   _handleCodeMirrorUpdate (newValue) {
-    powercord.pluginManager.get('pc-moduleManager')._saveQuickCSS(newValue);
+    const { getSetting } = this.props;
+    if (!getSetting('qcss-enabled', true)) {
+      return;
+    }
+    powercord.pluginManager.get('pc-moduleManager')._applyQuickCSS(newValue, true);
   }
 
   _handleResizeBegin () {
