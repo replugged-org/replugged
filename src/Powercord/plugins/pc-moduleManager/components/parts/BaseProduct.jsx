@@ -8,6 +8,15 @@ const Permissions = require('./Permissions');
 const TIMEOUT = 10e3;
 
 class BaseProduct extends React.PureComponent {
+
+  state = {
+    gitInfo: null
+  }
+
+  async componentDidMount() {
+    await this.getGitInfo(this.props.path).then(i => this.setState({ gitInfo: i }))
+  }
+
   renderDetails () {
     return (
       <>
@@ -69,7 +78,7 @@ class BaseProduct extends React.PureComponent {
               </Button>
           }
 
-          {(fs.existsSync(`${this.props.Path}\\.git`)
+          {(this.state.gitInfo != null
             ? <Button
               onClick={async () => openExternal(await this.getGitInfo(this.props.Path))}
               look={Button.Looks.LINK}
