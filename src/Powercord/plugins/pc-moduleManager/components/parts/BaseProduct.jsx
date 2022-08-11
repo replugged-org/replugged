@@ -134,18 +134,28 @@ class BaseProduct extends React.PureComponent {
       invite = (await inviteRemoteStore.resolveInvite(code)).invite;
     }
 
-    if (guildsStore.getGuilds()[invite.guild.id]) {
-      const channel = await getModule([ 'getLastSelectedChannelId' ]);
-      const router = await getModule([ 'transitionTo' ]);
-      // eslint-disable-next-line new-cap
-      router.transitionTo(Routes.CHANNEL(invite.guild.id, channel.getChannelId(invite.guild.id)));
-    } else {
-      const windowManager = await getModule([ 'flashFrame', 'minimize' ]);
-      const { INVITE_BROWSER: { handler: popInvite } } = await getModule([ 'INVITE_BROWSER' ]);
-      const oldMinimize = windowManager.minimize;
-      windowManager.minimize = () => void 0;
-      popInvite({ args: { code } });
-      windowManager.minimize = oldMinimize;
+    try {
+      if (guildsStore.getGuilds()[invite.guild.id]) {
+        const channel = await getModule([ 'getLastSelectedChannelId' ]);
+        const router = await getModule([ 'transitionTo' ]);
+        // eslint-disable-next-line new-cap
+        router.transitionTo(Routes.CHANNEL(invite.guild.id, channel.getChannelId(invite.guild.id)));
+      } else {
+        const windowManager = await getModule([ 'flashFrame', 'minimize' ]);
+        const { INVITE_BROWSER: { handler: popInvite } } = await getModule([ 'INVITE_BROWSER' ]);
+        const oldMinimize = windowManager.minimize;
+        windowManager.minimize = () => void 0;
+        popInvite({ args: { code } });
+        windowManager.minimize = oldMinimize;
+      }
+    } catch (e) {
+      console.error(e);
+      powercord.api.notices.sendToast('invalid-invite', {
+        header: 'Invalid Invite',
+        content: "This Discord invite no longer exists, or is invalid. Contact the plugin developer to get a new one.",
+        type: 'danger',
+        timeout: 10e3
+      });
     }
   }
 }
