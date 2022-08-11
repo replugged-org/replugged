@@ -74,6 +74,16 @@ class SettingsStore extends Flux.Store {
   }
 
   getSetting (category, nodePath, defaultValue) {
+    const oldPath = `${category}.${nodePath.replaceAll('.', '\\.')}`;
+    if (settingsMgr.get(oldPath) !== void 0) {
+      const previous = settingsMgr.get(oldPath);
+      console.log(oldPath);
+      settingsMgr.delete(oldPath);
+      settingsMgr.set(`${category}.${nodePath}`, previous);
+      this._persist();
+
+      return previous;
+    }
     return settingsMgr.get(`${category}.${nodePath}`, defaultValue);
   }
 
