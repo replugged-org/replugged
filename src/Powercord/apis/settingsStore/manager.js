@@ -1,17 +1,6 @@
 // WARNING ! Need to stay in version ~6.x.x until Replugged support ESM modules
 const dotProp = require('dot-prop');
-
-
-/* eslint-disable no-undef */
-if (globalThis.structuredClone) {
-  globalThis.structuredClone = function (value) {
-    if (!value) {
-      return value;
-    }
-    return JSON.parse(JSON.stringify(value));
-  };
-}
-/* eslint-enable no-undef */
+const { structuredClone } = require('powercord/util');
 
 class ConfigManager {
   /**
