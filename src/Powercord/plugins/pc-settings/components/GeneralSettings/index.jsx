@@ -1,10 +1,12 @@
-const { React, getModule, i18n: { Messages } } = require('powercord/webpack');
+const { React, i18n: { Messages } } = require('powercord/webpack');
 const { Icons: { FontAwesome } } = require('powercord/components');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { TextInput, SwitchItem, ButtonItem, Category } = require('powercord/components/settings');
 const { Confirm } = require('powercord/components/modal');
 const { WEBSITE, CACHE_FOLDER } = require('powercord/constants');
 const { rmdirRf } = require('powercord/util');
+
+const { enableExperiments, disableExperiments } = require('../../experiments');
 
 const PassphraseModal = require('./PassphraseModal.jsx');
 const Account = require('./PowercordAccount');
@@ -114,8 +116,12 @@ module.exports = class GeneralSettings extends React.Component {
             onChange={async () => {
               toggleSetting('experiments');
               // Update modules
-              const experimentsModule = await getModule(r => r.isDeveloper !== void 0);
-              experimentsModule._changeCallbacks.forEach(cb => cb());
+              if (getSetting('experiments')) {
+                enableExperiments();
+              } else {
+                disableExperiments();
+              }
+              this.askRestart();
             }}
           >
             {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}

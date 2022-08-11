@@ -5,8 +5,11 @@ const { WEBSITE } = require('powercord/constants');
 const { Plugin } = require('powercord/entities');
 const { sleep } = require('powercord/util');
 
+const { enableExperiments } = require('./experiments');
+
 const ErrorBoundary = require('./components/ErrorBoundary');
 const GeneralSettings = require('./components/GeneralSettings');
+// const powercord = require('powercord/');
 // const Labs = require('./components/Labs');
 
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
@@ -27,7 +30,9 @@ module.exports = class Settings extends Plugin {
 
     // this.patchSettingsContextMenu();
     this.patchSettingsComponent();
-    this.patchExperiments();
+    if (powercord.settings.get('experiments')) {
+      enableExperiments();
+    }
   }
 
   async pluginWillUnload () {
@@ -35,20 +40,6 @@ module.exports = class Settings extends Plugin {
     uninject('pc-settings-items');
     uninject('pc-settings-actions');
     uninject('pc-settings-errorHandler');
-  }
-
-  async patchExperiments () {
-    try {
-      const experimentsModule = await getModule(r => r.isDeveloper !== void 0);
-      Object.defineProperty(experimentsModule, 'isDeveloper', {
-        get: () => powercord.settings.get('experiments', false)
-      });
-
-      // Ensure components do get the update
-      experimentsModule._changeCallbacks.forEach(cb => cb());
-    } catch (_) {
-      // memes
-    }
   }
 
   async patchSettingsComponent () {
