@@ -11,11 +11,11 @@ class BaseProduct extends React.PureComponent {
     super(props);
     this.state = {
       gitInfo: null
-    }
+    };
   }
 
-  async componentDidMount() {
-    await this.getGitInfo(this.props.Path).then(i => this.setState({ gitInfo: i }))
+  async componentDidMount () {
+    await this.getGitInfo(this.props.Path).then(i => this.setState({ gitInfo: i }));
   }
 
   renderDetails () {
@@ -79,7 +79,7 @@ class BaseProduct extends React.PureComponent {
               </Button>
           }
 
-          {this.state.gitInfo != null &&
+          {this.state.gitInfo &&
             <Button
               onClick={async () => openExternal(this.state.gitInfo)}
               look={Button.Looks.LINK}
@@ -125,7 +125,7 @@ class BaseProduct extends React.PureComponent {
         cwd: item,
         timeout: TIMEOUT,
         env: {
-            GIT_CEILING_DIRECTORIES: require("path").join(this.props.Path, "..") 
+          GIT_CEILING_DIRECTORIES: require('path').join(this.props.Path, '..')
         }
       }).then((r) => r.stdout.toString()
         .replace(/\.git$/, '')
