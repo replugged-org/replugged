@@ -31,7 +31,6 @@ const settingsMgr = new ConfigManager(Object.fromEntries(
 ));
 
 function setSetting (category, setting, value) {
-  console.log('setSettings');
   settingsMgr.set(`${category}.${setting}`, value);
 }
 
@@ -40,7 +39,6 @@ function updateSettings (category, newSettings) {
 }
 
 function updateSetting (category, setting, value) {
-  console.log('updateSettings');
   if (value === void 0) {
     settingsMgr.delete(`${category}.${setting}`);
   } else {
@@ -77,7 +75,6 @@ class SettingsStore extends Flux.Store {
     const oldPath = `${category}.${nodePath.replaceAll('.', '\\.')}`;
     if (settingsMgr.get(oldPath) !== void 0) {
       const previous = settingsMgr.get(oldPath);
-      console.log(oldPath);
       settingsMgr.delete(oldPath);
       settingsMgr.set(`${category}.${nodePath}`, previous);
       this._persist();
