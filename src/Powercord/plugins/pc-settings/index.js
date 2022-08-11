@@ -81,7 +81,7 @@ module.exports = class Settings extends Plugin {
                 props: Object.assign({}, res.props.children[0].props, {
                   href: WEBSITE,
                   title: 'Replugged',
-                  className: `${res.props.children[0].props.className} powercord-pc-icon`
+                  className: `${res.props.children[0].props.className} replugged-rp-icon`
                 })
               })
             );
