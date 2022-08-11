@@ -7,13 +7,15 @@ const Permissions = require('./Permissions');
 const TIMEOUT = 10e3;
 
 class BaseProduct extends React.PureComponent {
-
-  state = {
-    gitInfo: null
+  constructor (props) {
+    super(props);
+    this.state = {
+      gitInfo: null
+    }
   }
 
   async componentDidMount() {
-    await this.getGitInfo(this.props.Path).then(i => this.setState({ gitInfo: (i) }))
+    await this.getGitInfo(this.props.Path).then(i => this.setState({ gitInfo: i }))
   }
 
   renderDetails () {
