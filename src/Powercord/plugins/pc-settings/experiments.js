@@ -12,7 +12,7 @@ async function enableExperiments () {
 
   const userMod = getModule([ 'getUsers' ], false).__proto__;
   const developerModule = await getModule([ 'isDeveloper' ]);
-  
+
   const nodes = Object.values(findInTree(developerModule, (o) => o?.nodes).nodes);
 
   function getHandler (handlerName) {
@@ -21,7 +21,8 @@ async function enableExperiments () {
 
   // Call the handler with fake data and mask the error that will always occur
   try {
-    getHandler('ExperimentStore').OVERLAY_INITIALIZE({
+    const overlayHandler = getHandler('ExperimentStore').OVERLAY_INITIALIZE;
+    overlayHandler({
       user: { ...userMod.getCurrentUser(),
         flags: 1 }
     });
@@ -33,7 +34,8 @@ async function enableExperiments () {
     hasFlag: () => true });
 
   // Call the second handler without data now that the flag always returns true
-  getHandler('DeveloperExperimentStore').CONNECTION_OPEN();
+  const connectionHandler = getHandler('DeveloperExperimentStore').CONNECTION_OPEN;
+  connectionHandler();
 
   // Unpatch getCurrentUser
   userMod.getCurrentUser = oldGCUser;
