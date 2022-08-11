@@ -91,7 +91,7 @@ module.exports = function () {
     id: 'pc-moduleManager-store',
     name: 'Replugged Store',
     date: 1571961600000,
-    description: 'Powercord Plugin and Theme store',
+    description: 'Replugged Plugin and Theme store',
     /* lexisother: Hi developer! Did you fix this experiment? Please remove the `broken` object! Thanks <3 */
     broken: {
       reason: 'channel injection is broken?'
