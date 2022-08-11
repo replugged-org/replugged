@@ -1,8 +1,25 @@
+/* eslint-disable no-debugger */
 const { React, getModule } = require('powercord/webpack');
-const { ButtonItem } = require('powercord/components/settings');
-const { getOwnerInstance } = require('powercord/util');
+const { ButtonItem, KeybindRecorder } = require('powercord/components/settings');
+const { getOwnerInstance, findInTree } = require('powercord/util');
 
 class ForceUI extends React.PureComponent {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      isDebugger: false
+    };
+  }
+
+  componentDidMount () {
+    document.addEventListener('keyup', this.toggleDebugger.bind(this));
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('keyup', this.toggleDebugger);
+  }
+
   render () {
     return (
       <div id='force-ui' className='category'>
@@ -13,6 +30,7 @@ class ForceUI extends React.PureComponent {
           show those elements to your heart's desire.
         </p>
         {this.renderForceMentionEveryone()}
+        {this.renderToggleDebugger()}
       </div>
     );
   }
@@ -30,7 +48,37 @@ class ForceUI extends React.PureComponent {
     );
   }
 
+  renderToggleDebugger () {
+    return <>
+      <KeybindRecorder
+        defaultValue={[ [ 0, 119 ] ]}
+        onChange={(e) =>
+          console.log(e)
+        }
+        document={this.props.window.document}
+        note='There are several components that disappear when they lose focus. Use this to keep them in their place.'
+      >
+        Keybind Debugger
+      </KeybindRecorder>
+    </>;
+  }
+
   // Handlers
+  toggleDebugger (key) {
+    const keybind = this.props.getSetting('debugkeybind', 'F8');
+
+    if (!document.hasFocus()) {
+      return;
+    }
+
+    if (key.key.toUpperCase() === keybind) {
+      this.setState({ isDebugger: !this.state.isDebugger });
+      if (this.state.isDebugger) {
+        debugger;
+      }
+    }
+  }
+
   forceMentionEveryone () {
     const { applyChatRestrictions } = getModule([ 'applyChatRestrictions' ], false);
     const everyoneMdl = getModule([ 'extractEveryoneRole' ], false);
@@ -49,7 +97,7 @@ class ForceUI extends React.PureComponent {
       const discordTextarea = document.querySelector('form > div > div > div');
       const instance = getOwnerInstance(discordTextarea);
 
-      const ChannelTextAreaForm = instance?._reactInternals?.return?.return?.return?.return?.return;
+      const ChannelTextAreaForm = findInTree(instance._reactInternals, t => t.stateNode?.hasOwnProperty('contentWarningProps'), { walkable: [ 'return' ] });
       if (ChannelTextAreaForm) {
         everyoneMdl.extractEveryoneRole = () => '@everyone';
         everyoneMdl.shouldShowEveryoneGuard = () => true;
@@ -81,4 +129,4 @@ class ForceUI extends React.PureComponent {
  * Offline & Login screens
  * Typing indicator
  */
-module.exports = ForceUI;
+module.exports = powercord.api.settings.connectStores('pc-sdk')(ForceUI);

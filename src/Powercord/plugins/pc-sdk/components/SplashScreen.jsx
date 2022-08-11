@@ -82,43 +82,47 @@ class SplashScreen extends React.PureComponent {
   }
 
   openSplashScreen (keepState) {
-    const baseAsar = dirname(module.paths[0]);
-    const splashIndex = formatUrl({
-      protocol: 'file',
-      slashes: true,
-      pathname: join(baseAsar, 'app_bootstrap/splash/index.html')
-    });
-    const windowSettings = {
-      /*
-       * Here's a c/c of the comment I've found in Discord's src code regarding this:
-       * - citron note: atom seems to add about 50px height to the frame on mac but not windows
-       */
-      height: process.platform === 'darwin' ? 300 : 350,
-      width: 300,
-      transparent: false,
-      frame: false,
-      resizable: false,
-      center: true,
-      show: true,
-      webPreferences: {
-        preload: join(__dirname, '../../../../preloadSplash.js'),
-        nodeIntegration: true
-      }
-    };
+    try {
+      const baseAsar = dirname(module.paths[0]);
+      const splashIndex = formatUrl({
+        protocol: 'file',
+        slashes: true,
+        pathname: join(baseAsar, 'app_bootstrap/splash/index.html')
+      });
+      const windowSettings = {
+        /*
+        * Here's a c/c of the comment I've found in Discord's src code regarding this:
+        * - citron note: atom seems to add about 50px height to the frame on mac but not windows
+        */
+        height: process.platform === 'darwin' ? 300 : 350,
+        width: 300,
+        transparent: false,
+        frame: false,
+        resizable: false,
+        center: true,
+        show: true,
+        webPreferences: {
+          preload: join(__dirname, '../../../../preloadSplash.js'),
+          nodeIntegration: true
+        }
+      };
 
-    // this._window = PowercordNative.openBrowserWindow(windowSettings);
-    this._window = new BrowserWindow(windowSettings);
-    this._window.loadURL(splashIndex);
-    this._window.webContents.openDevTools({ mode: 'detach' });
-    this._window.on('close', () => {
-      if (!this._closeScheduled) {
-        this.setState({ opened: false });
-        delete this._window;
-      }
-    });
+      // this._window = PowercordNative.openBrowserWindow(windowSettings);
+      this._window = new BrowserWindow(windowSettings);
+      this._window.loadURL(splashIndex);
+      this._window.webContents.openDevTools({ mode: 'detach' });
+      this._window.on('close', () => {
+        if (!this._closeScheduled) {
+          this.setState({ opened: false });
+          delete this._window;
+        }
+      });
 
-    if (!keepState) {
-      this.setState({ opened: true });
+      if (!keepState) {
+        this.setState({ opened: true });
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 

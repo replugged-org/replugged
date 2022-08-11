@@ -41,6 +41,19 @@ global.PowercordNative = {
 
   exec (...args) {
     return ipcRenderer.invoke('POWERCORD_EXEC_COMMAND', ...args);
+  },
+
+  trickRegisterUserInteractionHandler (replace, effect) {
+    const { app } = window.DiscordNative;
+    const original = app.registerUserInteractionHandler;
+
+    app.registerUserInteractionHandler = replace;
+    try {
+      effect();
+    } catch (error) {
+      console.error(error);
+    }
+    app.registerUserInteractionHandler = original;
   }
 };
 

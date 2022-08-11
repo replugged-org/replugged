@@ -21,7 +21,7 @@ class SdkWindow extends React.PureComponent {
         <div className='powercord-text powercord-sdk'>
           <AdvancedScrollerAuto className='powercord-sdk-container powercord-sdk-scroller' ref={this.scrollerRef}>
             <div>
-              <ForceUI/>
+              <ForceUI window={this.props.guestWindow}/>
               <SplashScreen/>
               <Settings/>
             </div>
