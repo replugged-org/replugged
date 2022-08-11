@@ -2,7 +2,6 @@ const { React, getModule, constants: { Routes }, i18n: { Messages } } = require(
 const { Divider, Button } = require('powercord/components');
 
 const { shell: { openExternal, openPath } } = require('electron');
-const fs = require('fs');
 const Details = require('./Details');
 const Permissions = require('./Permissions');
 const TIMEOUT = 10e3;
@@ -14,7 +13,7 @@ class BaseProduct extends React.PureComponent {
   }
 
   async componentDidMount() {
-    await this.getGitInfo(this.props.path).then(i => this.setState({ gitInfo: i }))
+    await this.getGitInfo(this.props.Path).then(i => this.setState({ gitInfo: (i) }))
   }
 
   renderDetails () {
@@ -80,7 +79,7 @@ class BaseProduct extends React.PureComponent {
 
           {(this.state.gitInfo != null
             ? <Button
-              onClick={async () => openExternal(await this.getGitInfo(this.props.Path))}
+              onClick={async () => openExternal(this.state.gitInfo)}
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
               color={Button.Colors.TRANSPARENT}
@@ -123,7 +122,10 @@ class BaseProduct extends React.PureComponent {
     try {
       return await PowercordNative.exec('git remote get-url origin', {
         cwd: item,
-        timeout: TIMEOUT
+        timeout: TIMEOUT,
+        env: {
+            GIT_CEILING_DIRECTORIES: require("path").join(this.props.Path, "..") 
+        }
       }).then((r) => r.stdout.toString()
         .replace(/\.git$/, '')
         .replace(/^git@(.+):/, 'https://$1/')
