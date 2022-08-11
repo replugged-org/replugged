@@ -1,6 +1,7 @@
-// Credit to Beefers for this snippet
+// Credit to Beefers and several others for this snippet
 
 const { getModule } = require('powercord/webpack');
+const { findInTree } = require('powercord/util');
 
 let hasEnabled = false;
 
@@ -9,22 +10,20 @@ async function enableExperiments () {
     return;
   }
 
-  // Get the module used to get the current user, but not the one used elsewhere because discord™️
   const userMod = getModule([ 'getUsers' ], false).__proto__;
-
-  // Get the connection open handler
-  const { CONNECTION_OPEN } = (await getModule([ 'isDeveloper' ]))._dispatcher._orderedActionHandlers;
+  const developerModule = await getModule([ 'isDeveloper' ]);
+  
+  const nodes = Object.values(findInTree(developerModule, (o) => o?.nodes).nodes);
 
   function getHandler (handlerName) {
-    return CONNECTION_OPEN.find((x) => x.name === handlerName).actionHandler;
+    return nodes.find((x) => x.name === handlerName).actionHandler;
   }
 
   // Call the handler with fake data and mask the error that will always occur
   try {
-    getHandler('ExperimentStore')({
+    getHandler('ExperimentStore').OVERLAY_INITIALIZE({
       user: { ...userMod.getCurrentUser(),
-        flags: 1 },
-      type: 'CONNECTION_OPEN'
+        flags: 1 }
     });
   } catch (e) {}
 
@@ -34,7 +33,7 @@ async function enableExperiments () {
     hasFlag: () => true });
 
   // Call the second handler without data now that the flag always returns true
-  getHandler('DeveloperExperimentStore')();
+  getHandler('DeveloperExperimentStore').CONNECTION_OPEN();
 
   // Unpatch getCurrentUser
   userMod.getCurrentUser = oldGCUser;
@@ -42,7 +41,7 @@ async function enableExperiments () {
   hasEnabled = true;
 }
 
-async function disableExperiments () {
+function disableExperiments () {
   hasEnabled = false;
 }
 
