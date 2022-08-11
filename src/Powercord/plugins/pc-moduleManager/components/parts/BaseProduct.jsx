@@ -77,8 +77,8 @@ class BaseProduct extends React.PureComponent {
               </Button>
           }
 
-          {(this.state.gitInfo != null
-            ? <Button
+          {this.state.gitInfo != null &&
+            <Button
               onClick={async () => openExternal(this.state.gitInfo)}
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
@@ -86,8 +86,7 @@ class BaseProduct extends React.PureComponent {
               className='git-repo'
             > {Messages.REPLUGGED_PLUGINS_GITHUB}
             </Button>
-            : <p></p>
-          )}
+          }
 
           {
             <Button
