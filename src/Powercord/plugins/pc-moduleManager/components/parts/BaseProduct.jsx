@@ -2,6 +2,7 @@ const { React, getModule, constants: { Routes }, i18n: { Messages } } = require(
 const { Divider, Button } = require('powercord/components');
 
 const { shell: { openExternal, openPath } } = require('electron');
+const Path = require('path');
 const Details = require('./Details');
 const Permissions = require('./Permissions');
 const TIMEOUT = 10e3;
@@ -125,7 +126,7 @@ class BaseProduct extends React.PureComponent {
         cwd: item,
         timeout: TIMEOUT,
         env: {
-          GIT_CEILING_DIRECTORIES: require('path').join(this.props.Path, '..')
+          GIT_CEILING_DIRECTORIES: Path.join(this.props.Path, '..')
         }
       }).then((r) => r.stdout.toString()
         .replace(/\.git$/, '')
