@@ -69,9 +69,8 @@ class BaseProduct extends React.PureComponent {
               </Button>
           }
 
-          {(fs.existsSync(this.props.Path + '\\.git')
-            ?
-            <Button
+          {(fs.existsSync(`${this.props.Path}\\.git`)
+            ? <Button
               onClick={async () => openExternal(await this.getGitInfo(this.props.Path))}
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
@@ -79,8 +78,7 @@ class BaseProduct extends React.PureComponent {
               className='git-repo'
             > {Messages.REPLUGGED_PLUGINS_GITHUB}
             </Button>
-            :
-            <p></p>
+            : <p></p>
           )}
 
           {
