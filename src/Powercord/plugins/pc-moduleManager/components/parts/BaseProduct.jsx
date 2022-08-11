@@ -2,7 +2,7 @@ const { React, getModule, constants: { Routes }, i18n: { Messages } } = require(
 const { Divider, Button } = require('powercord/components');
 
 const { shell: { openExternal, openPath } } = require('electron');
-
+const fs = require("fs")
 const Details = require('./Details');
 const Permissions = require('./Permissions');
 const TIMEOUT = 10e3;
@@ -69,7 +69,7 @@ class BaseProduct extends React.PureComponent {
               </Button>
           }
 
-          {
+          { (fs.existsSync(this.props.Path + '\\.git') ? 
             <Button
               onClick={async () => openExternal(await this.getGitInfo(this.props.Path))}
               look={Button.Looks.LINK}
@@ -77,8 +77,9 @@ class BaseProduct extends React.PureComponent {
               color={Button.Colors.TRANSPARENT}
               className='git-repo'
             > {Messages.REPLUGGED_PLUGINS_GITHUB}
-            </Button>
-          }
+            </Button> :
+            <p></p>
+          )}
 
           {
             <Button
