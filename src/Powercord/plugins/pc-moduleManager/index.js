@@ -278,9 +278,12 @@ module.exports = class ModuleManager extends Plugin {
   async _applyQuickCSS (css, save = false) {
     this._quickCSS = css.trim();
     this._quickCSSElement.innerHTML = this._quickCSS;
-    if (save) {
-      await writeFile(this._quickCSSFile, this._quickCSS);
-    }
+    await this._saveQuickCSS(null, false);
+  }
+
+  async _saveQuickCSS (css, apply = true) {
+    if (apply) await this._applyQuickCSS(css, false);
+    await writeFile(this._quickCSSFile, this._quickCSS);
   }
 
   async _clearQuickCSSElement () {
