@@ -10,6 +10,13 @@ module.exports = {
       defaultValue
     });
   },
+  setSetting (category, settings) {
+    FluxDispatcher.dispatch({
+      type: ActionTypes.SET_SETTING,
+      category,
+      settings
+    });
+  },
   updateSettings (category, settings) {
     FluxDispatcher.dispatch({
       type: ActionTypes.UPDATE_SETTINGS,

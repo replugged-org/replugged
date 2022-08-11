@@ -3,6 +3,7 @@ const { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } = requ
 const { SETTINGS_FOLDER } = require('powercord/constants');
 const { Flux, FluxDispatcher } = require('powercord/webpack');
 const ActionTypes = require('./constants');
+const ConfigManager = require('./manager.js');
 
 if (!existsSync(SETTINGS_FOLDER)) {
   mkdirSync(SETTINGS_FOLDER);
@@ -23,47 +24,37 @@ function loadSettings (file) {
   }
 }
 
-const settings = Object.fromEntries(
+const settingsMgr = new ConfigManager(Object.fromEntries(
   readdirSync(SETTINGS_FOLDER)
     .filter(f => !f.startsWith('.') && f.endsWith('.json'))
     .map(loadSettings)
-);
+));
+
+function setSetting (category, setting, value) {
+  console.log('setSettings');
+  settingsMgr.set(`${category}.${setting}`, value);
+}
 
 function updateSettings (category, newSettings) {
-  if (!settings[category]) {
-    settings[category] = {};
-  }
-  Object.assign(settings[category], newSettings);
+  settingsMgr.set(category, newSettings);
 }
 
 function updateSetting (category, setting, value) {
-  if (!settings[category]) {
-    settings[category] = {};
-  }
+  console.log('updateSettings');
   if (value === void 0) {
-    delete settings[category][setting];
+    settingsMgr.delete(`${category}.${setting}`);
   } else {
-    settings[category][setting] = value;
+    settingsMgr.set(`${category}.${setting}`, value);
   }
 }
 
 function toggleSetting (category, setting, defaultValue) {
-  if (!settings[category]) {
-    settings[category] = {};
-  }
-  const previous = settings[category][setting];
-  if (previous === void 0) {
-    settings[category][setting] = !defaultValue;
-  } else {
-    settings[category][setting] = !previous;
-  }
+  const previous = settingsMgr.get(`${category}.${setting}`, defaultValue);
+  settingsMgr.set(`${category}.${setting}`, !previous);
 }
 
 function deleteSetting (category, setting) {
-  if (!settings[category]) {
-    settings[category] = {};
-  }
-  delete settings[category][setting];
+  settingsMgr.delete(category, setting);
 }
 
 class SettingsStore extends Flux.Store {
@@ -75,24 +66,15 @@ class SettingsStore extends Flux.Store {
   }
 
   getAllSettings () {
-    return settings;
+    return settingsMgr.all;
   }
 
   getSettings (category) {
-    return settings[category] || {};
+    return settingsMgr.get(category) || {};
   }
 
   getSetting (category, nodePath, defaultValue) {
-    const nodePaths = nodePath.split('.');
-    let currentNode = this.getSettings(category);
-
-    for (const fragment of nodePaths) {
-      currentNode = currentNode[fragment];
-    }
-
-    return (currentNode === void 0 || currentNode === null)
-      ? defaultValue
-      : currentNode;
+    return settingsMgr.get(`${category}.${nodePath}`, defaultValue);
   }
 
   getSettingsKeys (category) {
@@ -100,17 +82,19 @@ class SettingsStore extends Flux.Store {
   }
 
   _persist () {
-    for (const category in settings) {
+    for (const category in settingsMgr.all) {
       const file = join(SETTINGS_FOLDER, `${category}.json`);
-      const data = JSON.stringify(settings[category], null, 2);
+      const data = JSON.stringify(settingsMgr.get(category), null, 2);
       writeFileSync(file, data);
     }
   }
 }
 
 module.exports = new SettingsStore(FluxDispatcher, {
+  [ActionTypes.SET_SETTING]: ({ category, settings, value }) => setSetting(category, settings, value),
+  [ActionTypes.DELETE_SETTING]: ({ category, setting }) => deleteSetting(category, setting),
+
   [ActionTypes.UPDATE_SETTINGS]: ({ category, settings }) => updateSettings(category, settings),
   [ActionTypes.TOGGLE_SETTING]: ({ category, setting, defaultValue }) => toggleSetting(category, setting, defaultValue),
-  [ActionTypes.UPDATE_SETTING]: ({ category, setting, value }) => updateSetting(category, setting, value),
-  [ActionTypes.DELETE_SETTING]: ({ category, setting }) => deleteSetting(category, setting)
+  [ActionTypes.UPDATE_SETTING]: ({ category, setting, value }) => updateSetting(category, setting, value)
 });

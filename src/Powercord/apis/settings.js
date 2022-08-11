@@ -97,7 +97,9 @@ class SettingsAPI extends API {
       settings: store.getSettings(category),
       getSetting: (setting, defaultValue) => store.getSetting(category, setting, defaultValue),
       updateSetting: (setting, value) => actions.updateSetting(category, setting, value),
-      toggleSetting: (setting, defaultValue) => actions.toggleSetting(category, setting, defaultValue)
+      toggleSetting: (setting, defaultValue) => actions.toggleSetting(category, setting, defaultValue),
+      deleteSetting: (setting) => actions.deleteSetting(category, setting),
+      setSetting: (settings) => actions.setSetting(category, settings)
     };
   }
 
