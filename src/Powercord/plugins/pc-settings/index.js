@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 const { React, getModuleByDisplayName, getModule, i18n: { Messages } } = require('powercord/webpack');
 const { AsyncComponent, Menu } = require('powercord/components');
 const { inject, uninject } = require('powercord/injector');
@@ -9,6 +10,7 @@ const { enableExperiments } = require('./experiments');
 
 const ErrorBoundary = require('./components/ErrorBoundary');
 const GeneralSettings = require('./components/GeneralSettings');
+const RepluggedLink = require('./components/RepluggedLink');
 // const powercord = require('powercord/');
 // const Labs = require('./components/Labs');
 
@@ -44,6 +46,8 @@ module.exports = class Settings extends Plugin {
 
   async patchSettingsComponent () {
     const SettingsView = await getModuleByDisplayName('SettingsView');
+    const SocialLinks = await getModuleByDisplayName('SocialLinks');
+
     inject('pc-settings-items', SettingsView.prototype, 'getPredicateSections', (_, sections) => {
       if (sections.length < 10) {
         return sections;
@@ -63,22 +67,18 @@ module.exports = class Settings extends Plugin {
         );
       }
 
-      if (sections.find(c => c.section === 'CUSTOM')) {
-        sections.find(c => c.section === 'CUSTOM').element = ((_element) => function () {
-          const res = _element();
-          if (res.props.children && res.props.children.length === 3) {
-            res.props.children.unshift(
-              Object.assign({}, res.props.children[0], {
-                props: Object.assign({}, res.props.children[0].props, {
-                  href: WEBSITE,
-                  title: 'Replugged',
-                  className: `${res.props.children[0].props.className} powercord-pc-icon`
-                })
-              })
-            );
-          }
+      const socialsSection = sections.find(c => c.element === SocialLinks);
+      if (socialsSection) {
+        socialsSection.element = () => {
+          const res = SocialLinks();
+          res.props.children.unshift(
+            React.createElement(RepluggedLink, {
+              className: 'replugged-settings-icon',
+              href: WEBSITE
+            })
+          );
           return res;
-        })(sections.find(c => c.section === 'CUSTOM').element);
+        };
       }
 
       const latestCommitHash = powercord.gitInfos.revision.substring(0, 7);
