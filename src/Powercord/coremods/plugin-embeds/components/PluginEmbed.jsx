@@ -1,5 +1,4 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
-const { get } = require('powercord/http');
 const fetchManifest = require('../utils/fetchManifest');
 const CopyLink = require('./CopyLink');
 const PluginEmbedIcon = require('./PluginEmbedIcon');
@@ -41,8 +40,9 @@ module.exports = function ({ url, match }) {
     );
   }
 
+  console.log(data);
   return (
-    <div className={wrapper}>
+    <div className={wrapper} style={{ flexFlow: 'column' }}>
       <LegacyText size={LegacyText.Sizes.SIZE_12} className={titleRegion}>
         <strong className={title}>{data.author}</strong>
         <a
@@ -67,7 +67,7 @@ module.exports = function ({ url, match }) {
           <LegacyText size={LegacyText.Sizes.SIZE_14} className={subHead}>
             {data.name}
           </LegacyText>
-          <LegacyText size={LegacyText.Sizes.SIZE_16} className={buildDetails}>
+          <LegacyText size={LegacyText.Sizes.SIZE_16} className={buildDetails} style={{ maxWidth: '300px' }}>
             {data.description}
           </LegacyText>
         </div>
