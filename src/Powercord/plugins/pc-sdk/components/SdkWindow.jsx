@@ -23,7 +23,7 @@ class SdkWindow extends React.PureComponent {
             <div>
               <ForceUI window={this.props.guestWindow}/>
               <SplashScreen/>
-              <Settings/>
+              <Settings exposeDevShortcuts={this.props.exposeDevShortcuts}/>
             </div>
           </AdvancedScrollerAuto>
         </div>

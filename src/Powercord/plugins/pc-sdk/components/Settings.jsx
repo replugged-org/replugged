@@ -15,11 +15,14 @@ class Settings extends React.PureComponent {
         </SwitchItem>
         <SwitchItem
           note={<>
-            Binds useful short aliases to the developer tools' console, letting you test things out more quickly.
-            You can find a full reference of available aliases in <a href='#'>the documentation</a>.
-          </>}
-          value={this.props.getSetting('openOverlayDevTools', false)}
-          onChange={() => this.props.toggleSetting('openOverlayDevTools')}
+            Binds useful short aliases to the developer tools' console in isolated context, letting you test things out more quickly.
+            You can find a full reference of available aliases in <a href='https://replugged.dev/sdk/shortcuts'>the documentation</a>.
+          </>} // TODO: Make documentation lol
+          value={this.props.getSetting('shortcuts', false)}
+          onChange={() => {
+            this.props.toggleSetting('shortcuts');
+            this.props.exposeDevShortcuts(this.props.getSetting('shortcuts', false));
+          }}
         >
           DevTools Shortcuts
         </SwitchItem>
@@ -31,8 +34,8 @@ class Settings extends React.PureComponent {
             unusable without Replugged due to a <a href='https://github.com/electron/electron/issues/19468' target='_blank'>bug in Electron</a>.
             More details in our <a href='#'>troubleshooting guide</a>.
           </>}
-          value={this.props.getSetting('openOverlayDevTools', false)}
-          onChange={() => this.props.toggleSetting('openOverlayDevTools')}
+          value={this.props.getSetting('reactDevTools', false)}
+          onChange={() => this.props.toggleSetting('reactDevTools')}
         >
           Enable React DevTools
         </SwitchItem>

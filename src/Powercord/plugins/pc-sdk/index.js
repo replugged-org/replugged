@@ -1,16 +1,11 @@
 const { React, getModule, contextMenu } = require('powercord/webpack');
 const { PopoutWindow, Tooltip, ContextMenu, Icons: { CodeBraces } } = require('powercord/components');
 const { inject, uninject } = require('powercord/injector');
-const { getOwnerInstance, waitFor } = require('powercord/util');
+const { getOwnerInstance, findInReactTree, waitFor } = require('powercord/util');
 const { Plugin } = require('powercord/entities');
 const SdkWindow = require('./components/SdkWindow');
 
 module.exports = class SDK extends Plugin {
-  constructor () {
-    super();
-    this._storeListener = this._storeListener.bind(this);
-  }
-
   async startPlugin () {
     powercord.api.labs.registerExperiment({
       id: 'pc-sdk',
@@ -20,16 +15,36 @@ module.exports = class SDK extends Plugin {
       callback: () => void 0
     });
 
+    this.popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ]);
+
     this.loadStylesheet('scss/style.scss');
-    this.sdkEnabled = powercord.settings.get('sdkEnabled');
-    powercord.api.settings.store.addChangeListener(this._storeListener);
     this._addPopoutIcon();
+    this.exposeDevShortcuts(this.settings.get('shortcuts', false));
   }
 
   pluginWillUnload () {
     uninject('pc-sdk-icon');
-    powercord.api.settings.store.removeChangeListener(this._storeListener);
     powercord.api.labs.unregisterExperiment('pc-sdk');
+    this.exposeDevShortcuts(false);
+    this.popoutModule.close('DISCORD_REPLUGGED_SANDBOX');
+  }
+
+  exposeDevShortcuts (expose = true) {
+    if (expose && powercord.api.labs.isExperimentEnabled('pc-sdk')) {
+      Object.assign(window, {
+        ...require('powercord/webpack'),
+        injector: require('powercord/injector'),
+        require,
+        remount: powercord.pluginManager.remount
+      });
+    } else {
+      delete window.require;
+      delete window.injector;
+      delete window.remount;
+      for (const key in require('powercord/webpack')) {
+        delete window[key];
+      }
+    }
   }
 
   async _addPopoutIcon () {
@@ -73,7 +88,7 @@ module.exports = class SDK extends Plugin {
           }
         })));
 
-        res.props.children.props.children[1].props.children.props.children[0].unshift(Switcher);
+        findInReactTree(res, i => i[i.length - 1]?.key === 'members').unshift(Switcher);
       }
       return res;
     });
@@ -83,21 +98,12 @@ module.exports = class SDK extends Plugin {
   }
 
   async _openSdk () {
-    const popoutModule = await getModule([ 'setAlwaysOnTop', 'open' ]);
-    popoutModule.open('DISCORD_REPLUGGED_SANDBOX', (key) =>
+    this.popoutModule.open('DISCORD_REPLUGGED_SANDBOX', (key) =>
       React.createElement(PopoutWindow, {
         windowKey: key,
         title: 'SDK'
-      }, React.createElement(SdkWindow))
+      }, React.createElement(SdkWindow, { exposeDevShortcuts: this.exposeDevShortcuts }))
     );
-    popoutModule.setAlwaysOnTop('DISCORD_REPLUGGED_SANDBOX', true);
-  }
-
-  _storeListener () {
-    if (this.sdkEnabled !== powercord.settings.get('sdkEnabled')) {
-      this.sdkEnabled = powercord.settings.get('sdkEnabled');
-      const { title } = getModule([ 'title', 'chatContent' ], false);
-      getOwnerInstance(document.querySelector(`.${title}`)).forceUpdate();
-    }
+    this.popoutModule.setAlwaysOnTop('DISCORD_REPLUGGED_SANDBOX', true);
   }
 };

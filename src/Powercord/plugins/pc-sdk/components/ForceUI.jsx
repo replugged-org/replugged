@@ -56,7 +56,7 @@ class ForceUI extends React.PureComponent {
           console.log(e)
         }
         document={this.props.window.document}
-        note='There are several components that disappear when they lose focus. Use this to keep them in their place.'
+        note='There are several components that disappear when they lose focus. Use this to keep them in their place. Only works when the SDKWindow is open.'
       >
         Keybind Debugger
       </KeybindRecorder>
@@ -74,7 +74,7 @@ class ForceUI extends React.PureComponent {
     if (key.key.toUpperCase() === keybind) {
       this.setState({ isDebugger: !this.state.isDebugger });
       if (this.state.isDebugger) {
-        debugger;
+        debugger; // Small bug where you have to click it twice to disable?
       }
     }
   }
