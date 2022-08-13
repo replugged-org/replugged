@@ -28,7 +28,7 @@ class Plugins extends Base {
     return this._sortItems(plugins);
   }
 
-  async fetchMissing () { // @todo: better impl + i18n
+  async fetchMissing () {
     // noinspection JSIgnoredPromiseFromCall
     await powercord.pluginManager.get('pc-moduleManager')._fetchEntities('plugins');
     this.forceUpdate();
