@@ -29,7 +29,6 @@ class Plugins extends Base {
   }
 
   async fetchMissing () {
-    // noinspection JSIgnoredPromiseFromCall
     await powercord.pluginManager.get('pc-moduleManager')._fetchEntities('plugins');
     this.forceUpdate();
   }
