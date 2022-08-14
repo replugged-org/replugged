@@ -171,7 +171,7 @@ module.exports = class PluginManager {
   startPlugins (sync = false) {
     const missingPlugins = [];
     const isOverlay = (/overlay/).test(location.pathname);
-    readdirSync(this.pluginDir).sort(this._sortPlugins).forEach(filename => !this.isInstalled(filename) && this.mount(filename));
+    readdirSync(this.pluginDir).forEach(filename => !this.isInstalled(filename) && this.mount(filename));
     for (const plugin of [ ...this.plugins.values() ]) {
       if (powercord.settings.get('disabledPlugins', []).includes(plugin.entityID)) {
         continue;
@@ -199,13 +199,6 @@ module.exports = class PluginManager {
 
   shutdownPlugins () {
     return this._bulkUnload([ ...powercord.pluginManager.plugins.keys() ]);
-  }
-
-  _sortPlugins (pluginA, pluginB) {
-    const priority = [ 'pc-commands', 'pc-settings', 'pc-moduleManager', 'pc-updater' ].reverse();
-    const priorityA = priority.indexOf(pluginA);
-    const priorityB = priority.indexOf(pluginB);
-    return (priorityA === priorityB ? 0 : (priorityA < priorityB ? 1 : -1));
   }
 
   async _bulkUnload (plugins) {
