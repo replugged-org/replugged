@@ -8,14 +8,10 @@ module.exports = [
   require('./updater'),
   require('./moduleManager'),
   require('./settings'),
-  require('./commands')
+  require('./commands'),
+  require('./notices')
 
   // These are still WIP
-  // require('./connections'),
-  // require('./docs'),
-  // require('./i18n'),
-  // require('./notices'),
   // require('./routelinks'),
   // require('./sdk'),
-  // require('./spotify'),
 ];
