@@ -101,6 +101,7 @@ async function _saveQuickCSS (css, apply = true) {
 
 async function _applyQuickCSS (css, save = false) {
   _quickCSS = css.trim();
+  powercord.api.moduleManager._quickCSS = _quickCSS;
   _quickCSSElement.innerHTML = _quickCSS;
   if (save) {
     await _saveQuickCSS(null, false);
@@ -220,64 +221,69 @@ async function _installerInjectPopover () {
   MiniPopover.default.displayName = 'MiniPopover';
 }
 
-module.exports = {
-  default: async () => {
+
+module.exports = async () => {
   // this is for the new api
-    const currentAPI = powercord.settings.get('backendURL', WEBSITE);
-    if (currentAPI === 'https://powercord.dev') {
-      powercord.settings.set('backendURL', WEBSITE); // change it to replugged.dev
-    }
+  const currentAPI = powercord.settings.get('backendURL', WEBSITE);
+  if (currentAPI === 'https://powercord.dev') {
+    powercord.settings.set('backendURL', WEBSITE); // change it to replugged.dev
+  }
 
-    powercord.api.i18n.loadAllStrings(i18n);
-    Object.values(commands).forEach(cmd => powercord.api.commands.registerCommand(cmd));
+  powercord.api.i18n.loadAllStrings(i18n);
+  Object.values(commands).forEach(cmd => powercord.api.commands.registerCommand(cmd));
 
-    _loadQuickCSS();
-    _injectSnippets();
-    await _installerInjectPopover();
-    await _installerInjectCtxMenu();
-    loadStyle(join(__dirname, 'scss/style.scss'));
-    powercord.api.settings.registerSettings('pc-moduleManager-plugins', {
-      category: 'moduleManager',
-      label: () => Messages.REPLUGGED_PLUGINS,
-      render: Plugins
-    });
-    powercord.api.settings.registerSettings('pc-moduleManager-themes', {
-      category: 'moduleManager',
-      label: () => Messages.REPLUGGED_THEMES,
-      render: (props) => React.createElement(Themes, {
-        openPopout: () => _openQuickCSSPopout(),
-        ...props
-      })
-    });
-    powercord.api.settings.registerSettings('pc-moduleManager-css', {
-      category: 'moduleManager',
-      label: () => Messages.REPLUGGED_QUICKCSS,
-      render: (props) => React.createElement(QuickCSS, {
-        openPopout: () => _openQuickCSSPopout(),
-        ...props
-      })
-    });
+  _loadQuickCSS();
+  _injectSnippets();
+  await _installerInjectPopover();
+  await _installerInjectCtxMenu();
+  loadStyle(join(__dirname, 'scss/style.scss'));
+  powercord.api.settings.registerSettings('pc-moduleManager-plugins', {
+    category: 'moduleManager',
+    label: () => Messages.REPLUGGED_PLUGINS,
+    render: Plugins
+  });
+  powercord.api.settings.registerSettings('pc-moduleManager-themes', {
+    category: 'moduleManager',
+    label: () => Messages.REPLUGGED_THEMES,
+    render: (props) => React.createElement(Themes, {
+      openPopout: () => _openQuickCSSPopout(),
+      ...props
+    })
+  });
+  powercord.api.settings.registerSettings('pc-moduleManager-css', {
+    category: 'moduleManager',
+    label: () => Messages.REPLUGGED_QUICKCSS,
+    render: (props) => React.createElement(QuickCSS, {
+      openPopout: () => _openQuickCSSPopout(),
+      ...props
+    })
+  });
 
-    if (powercord.api.labs.isExperimentEnabled('pc-moduleManager-deeplinks')) {
-      deeplinks();
-    }
+  if (powercord.api.labs.isExperimentEnabled('pc-moduleManager-deeplinks')) {
+    deeplinks();
+  }
 
-    return () => {
-      document.querySelector('#powercord-quickcss').remove();
-      powercord.api.settings.unregisterSettings('pc-moduleManager-plugins');
-      powercord.api.settings.unregisterSettings('pc-moduleManager-themes');
-      powercord.api.settings.unregisterSettings('pc-moduleManager-css');
-      powercord.api.labs.unregisterExperiment('pc-moduleManager-themes2');
-      powercord.api.labs.unregisterExperiment('pc-moduleManager-deeplinks');
-      Object.values(commands).forEach(cmd => powercord.api.commands.unregisterCommand(cmd.command));
-      uninject('pc-moduleManager-snippets');
-      uninject('pc-installer-popover');
-      uninject('pc-installer-ctx-menu');
-      uninject('pc-installer-lazy-contextmenu');
-      document.querySelectorAll('.powercord-snippet-apply').forEach(e => e.style.display = 'none');
-    };
-  },
-  _applySnippet,
-  _fetchEntities,
-  _clearQuickCSSElement
+  powercord.api.moduleManager = {
+    _applySnippet,
+    _fetchEntities,
+    _clearQuickCSSElement,
+    _quickCSS
+  };
+
+  return () => {
+    document.querySelector('#powercord-quickcss').remove();
+    powercord.api.settings.unregisterSettings('pc-moduleManager-plugins');
+    powercord.api.settings.unregisterSettings('pc-moduleManager-themes');
+    powercord.api.settings.unregisterSettings('pc-moduleManager-css');
+    powercord.api.labs.unregisterExperiment('pc-moduleManager-themes2');
+    powercord.api.labs.unregisterExperiment('pc-moduleManager-deeplinks');
+    Object.values(commands).forEach(cmd => powercord.api.commands.unregisterCommand(cmd.command));
+    uninject('pc-moduleManager-snippets');
+    uninject('pc-installer-popover');
+    uninject('pc-installer-ctx-menu');
+    uninject('pc-installer-lazy-contextmenu');
+    document.querySelectorAll('.powercord-snippet-apply').forEach(e => e.style.display = 'none');
+
+    delete powercord.api.moduleManager;
+  };
 };

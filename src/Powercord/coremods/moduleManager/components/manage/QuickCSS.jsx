@@ -33,9 +33,9 @@ class QuickCSS extends React.PureComponent {
           onChange={v => {
             toggleSetting('qcss-enabled', true);
             if (v) {
-              powercord.pluginManager.get('pc-moduleManager')._applyQuickCSS(this.state.cm.getValue());
+              powercord.api.moduleManager._applyQuickCSS(this.state.cm.getValue());
             } else {
-              powercord.pluginManager.get('pc-moduleManager')._clearQuickCSSElement();
+              powercord.api.moduleManager._clearQuickCSSElement();
             }
           }}
         >
@@ -199,7 +199,7 @@ class QuickCSS extends React.PureComponent {
 
   setupCodeMirror (cm) {
     cm.on('change', () => this._handleCodeMirrorUpdate(cm.getValue()));
-    cm.setValue(powercord.pluginManager.get('pc-moduleManager')._quickCSS);
+    cm.setValue(powercord.api.moduleManager._quickCSS);
     if (this.props.popout) {
       setTimeout(() => cm.refresh(), 100);
     }
@@ -212,7 +212,7 @@ class QuickCSS extends React.PureComponent {
     if (!getSetting('qcss-enabled', true)) {
       return;
     }
-    powercord.pluginManager.get('pc-moduleManager')._applyQuickCSS(newValue, true);
+    powercord.api.moduleManager._applyQuickCSS(newValue, true);
   }
 
   _handleResizeBegin () {

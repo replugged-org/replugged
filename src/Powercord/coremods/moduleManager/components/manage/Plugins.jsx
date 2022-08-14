@@ -28,7 +28,7 @@ class Plugins extends Base {
   }
 
   async fetchMissing () {
-    await powercord.pluginManager.get('pc-moduleManager')._fetchEntities('plugins');
+    await powercord.api.moduleManager._fetchEntities('plugins');
     this.forceUpdate();
   }
 

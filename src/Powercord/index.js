@@ -222,7 +222,7 @@ class Powercord extends Updatable {
     const success = await super._update(force);
     if (success) {
       await PowercordNative.exec('npm install --only=prod', { cwd: this.entityPath });
-      const updater = this.pluginManager.get('pc-updater');
+      const { updater } = powercord.api;
       if (!document.querySelector('#powercord-updater, .powercord-updater')) {
         powercord.api.notices.sendToast('powercord-updater', {
           header: 'Update complete!',

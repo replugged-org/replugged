@@ -52,7 +52,7 @@ class Themes extends Base {
 
   fetchMissing () { // @todo: better impl + i18n
     // noinspection JSIgnoredPromiseFromCall
-    powercord.pluginManager.get('pc-moduleManager')._fetchEntities('themes');
+    powercord.api.moduleManager._fetchEntities('themes');
   }
 
   getItems () {
