@@ -1,4 +1,3 @@
-const { CORE_PLUGINS } = require('powercord/constants');
 const { resp } = require('../util');
 
 module.exports = {
@@ -13,7 +12,7 @@ module.exports = {
       return resp(false, `Could not find plugin or theme matching "${id}".`);
     } else if (isPlugin && isTheme) { // Duplicate name
       return resp(false, `"${id}" is in use by both a plugin and theme. You will have to disable it from settings.`);
-    } else if (isPlugin && CORE_PLUGINS.includes(id)) { // Core internal plugin
+    } else if (isPlugin) { // Core internal plugin
       return resp(false, `"${id}" provides core functionality and cannot be disabled.`);
     }
 
@@ -29,8 +28,6 @@ module.exports = {
   autocomplete (args) {
     const plugins = Array.from(powercord.pluginManager.plugins.values())
       .filter(plugin =>
-        !CORE_PLUGINS.includes(plugin) &&
-        plugin.entityID !== 'pc-commands' &&
         plugin.entityID.toLowerCase().includes(args[0]?.toLowerCase()) &&
         powercord.pluginManager.isEnabled(plugin.entityID)
       );

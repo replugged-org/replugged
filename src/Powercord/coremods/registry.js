@@ -4,5 +4,16 @@ module.exports = [
   require('./store'),
   require('./badges'),
   require('./utility-classes'),
-  require('./react-devtools')
+  require('./react-devtools'),
+  require('./updater'),
+  require('./moduleManager'),
+  require('./settings')
+  // require('./commands')
+  // require('./connections'),
+  // require('./docs'),
+  // require('./i18n'),
+  // require('./notices'),
+  // require('./routelinks'),
+  // require('./sdk'),
+  // require('./spotify'),
 ];
