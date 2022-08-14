@@ -1,7 +1,8 @@
+const { loadStyle } = require('../util');
+
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { Confirm } = require('powercord/components/modal');
-const { Plugin } = require('powercord/entities');
 
 const { join } = require('path');
 
@@ -9,65 +10,34 @@ const Settings = require('./components/Settings.jsx');
 
 const changelog = require('../../../../changelogs.json');
 
-module.exports = class Updater extends Plugin {
-  constructor () {
-    super();
+const settings = powercord.api.settings.buildCategoryObject('pc-updater');
 
+class Updater {
+  constructor () {
     this.checking = false;
     this.cwd = { cwd: join(__dirname, ...Array(4).fill('..')) };
-  }
 
-  async startPlugin () {
-    this.settings.set('paused', false);
-    this.settings.set('failed', false);
-    this.settings.set('checking', false);
-    this.settings.set('updating', false);
-    this.settings.set('awaiting_reload', false);
-    this.settings.set('checking_progress', null);
-
-    this.loadStylesheet('style.scss');
-    powercord.api.settings.registerSettings('pc-updater', {
-      category: this.entityID,
-      label: 'Updater', // Note to self: add this string to i18n last :^)
-      render: Settings
-    });
-
-    let minutes = Number(this.settings.get('interval', 15));
-    if (minutes < 1) {
-      this.settings.set('interval', 1);
-      minutes = 1;
-    }
-
-    this._interval = setInterval(this.checkForUpdates.bind(this), minutes * 60 * 1000);
-    setTimeout(() => {
-      this.checkForUpdates();
-    }, 10e3);
-
-    const lastChangelog = this.settings.get('last_changelog', '');
-    if (changelog.id !== lastChangelog) {
-      this.openChangeLogs();
-    }
-  }
-
-  pluginWillUnload () {
-    powercord.api.settings.unregisterSettings('pc-updater');
-    clearInterval(this._interval);
+    this.failed = false;
+    this.checking = false;
+    this.updating = false;
+    this.awaiting_reload = false;
+    this.checking_progress = null;
   }
 
   async checkForUpdates (allConcurrent = false) {
     if (
-      this.settings.get('disabled', false) ||
-      this.settings.get('paused', false) ||
-      this.settings.get('checking', false) ||
-      this.settings.get('updating', false)
+      this.disabled ||
+      this.checking ||
+      this.updating ||
+      powercord.settings.get('paused', false)
     ) {
       return;
     }
 
-    this.settings.set('checking', true);
-    this.settings.set('checking_progress', [ 0, 0 ]);
-    const disabled = this.settings.get('entities_disabled', []).map(e => e.id);
-    const skipped = this.settings.get('entities_skipped', []);
+    this.checking = true;
+    this.checking_progress = [ 0, 0 ];
+    const disabled = settings.get('entities_disabled', []).map(e => e.id);
+    const skipped = settings.get('entities_skipped', []);
     const plugins = [ ...powercord.pluginManager.plugins.values() ].filter(p => !p.isInternal);
     const themes = [ ...powercord.styleManager.themes.values() ];
 
@@ -79,7 +49,7 @@ module.exports = class Updater extends Plugin {
     let done = 0;
     const updates = [];
     const entitiesLength = entities.length;
-    const parallel = allConcurrent ? entitiesLength : this.settings.get('concurrency', 2);
+    const parallel = allConcurrent ? entitiesLength : powercord.settings.get('concurrency', 2);
     await Promise.all(Array(parallel).fill(null).map(async () => {
       let entity;
       while ((entity = entities.shift())) {
@@ -106,18 +76,18 @@ module.exports = class Updater extends Plugin {
         } catch (e) {
           console.error('An error occurred while checking for updates for %s', entity.manifest?.name ?? 'Replugged', e);
         } finally {
-          this.settings.set('checking_progress', [ ++done, entitiesLength ]);
+          this.checking_progress = [ ++done, entitiesLength ];
         }
       }
     }));
 
-    this.settings.set('updates', updates);
-    this.settings.set('last_check', Date.now());
-    this.settings.set('checking', false);
+    this.updates = updates;
+    this.checking = false;
+    settings.set('last_check', Date.now());
     if (updates.length > 0) {
-      if (this.settings.get('automatic', false)) {
+      if (settings.get('automatic', false)) {
         this.doUpdate();
-      } else if (this.settings.get('toastenabled', true) && !document.querySelector('#powercord-updater, .powercord-updater')) {
+      } else if (settings.get('toastenabled', true) && !document.querySelector('#powercord-updater, .powercord-updater')) {
         powercord.api.notices.sendToast('powercord-updater', {
           header: Messages.REPLUGGED_UPDATES_TOAST_AVAILABLE_HEADER,
           content: Messages.REPLUGGED_UPDATES_TOAST_AVAILABLE_DESC,
@@ -142,9 +112,9 @@ module.exports = class Updater extends Plugin {
   }
 
   async doUpdate (force = false) {
-    this.settings.set('failed', false);
-    this.settings.set('updating', true);
-    const updates = this.settings.get('updates', []);
+    this.failed = false;
+    this.updating = true;
+    const updates = settings.get('updates', []);
     const failed = [];
     for (const update of [ ...updates ]) {
       let entity = powercord;
@@ -164,8 +134,8 @@ module.exports = class Updater extends Plugin {
 
     this.settings.set('updating', false);
     if (failed.length > 0) {
-      this.settings.set('failed', true);
-      this.settings.set('updates', failed);
+      this.failed = true;
+      this.updates = failed;
       if (this.settings.get('toastenabled', true) && !document.querySelector('#powercord-updater, .powercord-updater')) {
         powercord.api.notices.sendToast('powercord-updater', {
           header: Messages.REPLUGGED_UPDATES_TOAST_FAILED,
@@ -215,16 +185,16 @@ module.exports = class Updater extends Plugin {
 
   // UTILS
   skipUpdate (id, commit) {
-    this.settings.set('entities_skipped', {
-      ...this.settings.get('entities_skipped', {}),
+    settings.set('entities_skipped', {
+      ...settings.get('entities_skipped', {}),
       [id]: commit
     });
     this._removeUpdate(id);
   }
 
   disableUpdates (entity) {
-    this.settings.set('entities_disabled', [
-      ...this.settings.get('entities_disabled', []),
+    settings.set('entities_disabled', [
+      ...settings.get('entities_disabled', []),
       {
         id: entity.id,
         name: entity.name,
@@ -235,11 +205,11 @@ module.exports = class Updater extends Plugin {
   }
 
   enableUpdates (id) {
-    this.settings.set('entities_disabled', this.settings.get('entities_disabled', []).filter(d => d.id !== id));
+    settings.set('entities_disabled', settings.get('entities_disabled', []).filter(d => d.id !== id));
   }
 
   _removeUpdate (id) {
-    this.settings.set('updates', this.settings.get('updates', []).filter(u => u.id !== id));
+    settings.set('updates', settings.get('updates', []).filter(u => u.id !== id));
   }
 
   async getGitInfos () {
@@ -282,7 +252,6 @@ module.exports = class Updater extends Plugin {
 
   async _getChangeLogsComponent () {
     if (!this._ChangeLog) {
-      const _this = this;
       const { video } = await getModule([ 'video', 'added' ]);
       const DiscordChangeLog = await getModuleByDisplayName('ChangelogStandardTemplate');
 
@@ -331,7 +300,7 @@ module.exports = class Updater extends Plugin {
         }
 
         componentWillUnmount () {
-          _this.settings.set('last_changelog', changelog.id);
+          settings.set('last_changelog', changelog.id);
         }
       }
 
@@ -369,4 +338,40 @@ module.exports = class Updater extends Plugin {
       body
     };
   }
+}
+
+module.exports = async () => {
+  loadStyle(join(__dirname, 'style.scss'));
+
+  const updater = new Updater();
+  powercord.api.updater = updater;
+
+  powercord.api.settings.registerSettings('pc-updater', {
+    category: 'updater',
+    label: 'Updater', // Note to self: add this string to i18n last :^)
+    render: Settings
+  });
+
+  let minutes = Number(settings.get('interval', 15));
+  if (minutes < 1) {
+    settings.set('interval', 1);
+    minutes = 1;
+  }
+
+  updater._interval = setInterval(() => updater.checkForUpdates(), minutes * 60 * 1000);
+  setTimeout(() => {
+    updater.checkForUpdates();
+  }, 10e3);
+
+  const lastChangelog = settings.get('last_changelog', '');
+  if (changelog.id !== lastChangelog) {
+    updater.openChangeLogs();
+  }
+
+
+  return () => {
+    powercord.api.settings.unregisterSettings('pc-updater');
+    clearInterval(updater._interval);
+    delete powercord.api.updater;
+  };
 };
