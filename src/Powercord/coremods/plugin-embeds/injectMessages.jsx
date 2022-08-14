@@ -1,10 +1,10 @@
 const { getModule, React } = require('powercord/webpack');
 const PluginEmbed = require('./components/PluginEmbed');
 
+const SimpleMarkdown = getModule([ 'defaultRules', 'astParserFor' ], false);
 const regex = /^https?:\/\/(?:www\.)?github\.com\/([^/\s>]+)\/([^/\s>]+)(?:\/tree\/([^\s>]+))?/;
 
-module.exports = function () {
-  const SimpleMarkdown = getModule([ 'defaultRules', 'astParserFor' ], false);
+module.exports.injectMessages = function () {
   SimpleMarkdown.defaultRules.pluginLink = {
     order: SimpleMarkdown.defaultRules.url.order - 0.5,
     match (source) {
@@ -25,4 +25,8 @@ module.exports = function () {
       );
     }
   };
+};
+
+module.exports.uninjectMessages = function () {
+  delete SimpleMarkdown.defaultRules.pluginLink;
 };
