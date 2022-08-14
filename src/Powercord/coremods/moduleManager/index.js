@@ -229,8 +229,7 @@ module.exports = {
     }
 
     powercord.api.i18n.loadAllStrings(i18n);
-    // TEMP DISABLE
-    // Object.values(commands).forEach(cmd => powercord.api.commands.registerCommand(cmd));
+    Object.values(commands).forEach(cmd => powercord.api.commands.registerCommand(cmd));
 
     _loadQuickCSS();
     _injectSnippets();
