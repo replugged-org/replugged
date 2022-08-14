@@ -1,4 +1,5 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
+const { Button, Tooltip } = require('powercord/components');
 const fetchManifest = require('../utils/fetchManifest');
 const CopyLink = require('./CopyLink');
 const PluginEmbedIcon = require('./PluginEmbedIcon');
@@ -9,7 +10,6 @@ if (!LegacyText) {
 }
 
 // Components
-const Button = getModule([ 'BorderColors', 'Colors' ], false);
 const Alert = getModuleByDisplayName('Alert', false);
 const ModalApi = getModule([ 'openModal', 'useModalsStore' ], false);
 
@@ -71,25 +71,27 @@ module.exports = function ({ url, match }) {
             {data.description}
           </LegacyText>
         </div>
-        <Button
-          size={Button.Sizes.MEDIUM}
-          color={
-            // *TODO: IMPLEMENT THE INSTALLED CHECK
-            // data.invalid
-            //   ? Button.Colors.GREY
-            //   : isInstalled
-            //     ? Button.Colors.BLUE
-            //     : Button.Colors.GREEN
-            Button.Colors.GREEN
-          }
-          // disabled={data.invalid || isInstalled}
+        <Tooltip position={'top'} text={'This doesn\'t do anything yet.'}>
+          <Button
+            size={Button.Sizes.MEDIUM}
+            color={
+              // *TODO: IMPLEMENT THE INSTALLED CHECK
+              // data.invalid
+              //   ? Button.Colors.GREY
+              //   : isInstalled
+              //     ? Button.Colors.BLUE
+              //     : Button.Colors.GREEN
+              Button.Colors.GREY
+            }
+            // disabled={data.invalid || isInstalled}
 
-          // *TODO: IMPLEMENT PLUGIN INSTALLING
-          // onClick={() => importPlugin(url)}>
-        >
-          {/* {data.invalid ? i18n.INVALID : isInstalled ? i18n.INSTALLED : i18n.INSTALL} */}
-          Install
-        </Button>
+            // *TODO: IMPLEMENT PLUGIN INSTALLING
+            // onClick={() => importPlugin(url)}>
+          >
+            {/* {data.invalid ? i18n.INVALID : isInstalled ? i18n.INSTALLED : i18n.INSTALL} */}
+            Install
+          </Button>
+        </Tooltip>
       </div>
     </div>
   );
