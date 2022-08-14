@@ -63,7 +63,7 @@ class Updater {
               }
               const manifestVersion = entity.manifest?.version ?? null;
               const manifestNewVersion = await entity._getUpdateVersion();
-              if ((entity !== powercord) && (manifestVersion === manifestNewVersion)) {
+              if (manifestVersion === manifestNewVersion) {
                 continue;
               }
               updates.push({
