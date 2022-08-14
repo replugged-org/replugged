@@ -5,9 +5,9 @@ module.exports = [
   require('./badges'),
   require('./utility-classes'),
   require('./react-devtools'),
+  require('./settings'),
   require('./updater'),
   require('./moduleManager'),
-  require('./settings'),
   require('./commands'),
   require('./notices'),
   require('./routelinks')
