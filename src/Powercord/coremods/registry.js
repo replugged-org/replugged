@@ -7,8 +7,10 @@ module.exports = [
   require('./react-devtools'),
   require('./updater'),
   require('./moduleManager'),
-  require('./settings')
-  // require('./commands')
+  require('./settings'),
+  require('./commands')
+
+  // These are still WIP
   // require('./connections'),
   // require('./docs'),
   // require('./i18n'),
