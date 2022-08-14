@@ -63,6 +63,10 @@ class Powercord extends Updatable {
     this.isLinking = false;
     // this.hookRPCServer();
 
+    this.manifest = {
+      version: require('../../package.json').version
+    };
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.init());
     } else {
