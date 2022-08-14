@@ -1,5 +1,5 @@
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
-const { Button, Tooltip } = require('powercord/components');
+const { Tooltip } = require('powercord/components');
 const fetchManifest = require('../utils/fetchManifest');
 const CopyLink = require('./CopyLink');
 const PluginEmbedIcon = require('./PluginEmbedIcon');
@@ -10,6 +10,7 @@ if (!LegacyText) {
 }
 
 // Components
+const { default: Button, ButtonSizes } = getModule([ 'ButtonColors' ], false);
 const Alert = getModuleByDisplayName('Alert', false);
 const ModalApi = getModule([ 'openModal', 'useModalsStore' ], false);
 
@@ -22,11 +23,13 @@ const {
   content,
   title,
   titleRegion,
+  button,
   icon,
   infoLink,
   infoIcon,
   buildInfo,
   buildDetails,
+  disabledButtonOverride,
   subHead
 } = getModule([ 'titleRegion' ], false);
 
@@ -42,7 +45,7 @@ module.exports = function ({ url, match }) {
 
   console.log(data);
   return (
-    <div className={wrapper} style={{ flexFlow: 'column' }}>
+    <div className={wrapper}>
       <LegacyText size={LegacyText.Sizes.SIZE_12} className={titleRegion}>
         <strong className={title}>{data.author}</strong>
         <a
@@ -71,22 +74,29 @@ module.exports = function ({ url, match }) {
             {data.description}
           </LegacyText>
         </div>
-        <Tooltip position={'top'} text={'This doesn\'t do anything yet.'}>
+        <Tooltip
+          position={'top'}
+          text={'This doesn\'t do anything yet.'}
+          style={{
+            display: 'flex',
+            flex: '1 0 auto' }}
+        >
           <Button
-            size={Button.Sizes.MEDIUM}
-            color={
-              // *TODO: IMPLEMENT THE INSTALLED CHECK
-              // data.invalid
-              //   ? Button.Colors.GREY
-              //   : isInstalled
-              //     ? Button.Colors.BLUE
-              //     : Button.Colors.GREEN
-              Button.Colors.GREY
-            }
+            size={ButtonSizes.MEDIUM}
+            className={`${button} ${disabledButtonOverride}`}
+            disabled
+            // color={
+            // *TODO: IMPLEMENT THE INSTALLED CHECK
+            // data.invalid
+            //   ? Button.Colors.GREY
+            //   : isInstalled
+            //     ? Button.Colors.BLUE
+            //     : Button.Colors.GREEN
+            // }
             // disabled={data.invalid || isInstalled}
 
-            // *TODO: IMPLEMENT PLUGIN INSTALLING
-            // onClick={() => importPlugin(url)}>
+          // *TODO: IMPLEMENT PLUGIN INSTALLING
+          // onClick={() => importPlugin(url)}>
           >
             {/* {data.invalid ? i18n.INVALID : isInstalled ? i18n.INSTALLED : i18n.INSTALL} */}
             Install
