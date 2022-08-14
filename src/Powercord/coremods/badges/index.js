@@ -134,6 +134,7 @@ module.exports = async function () {
 
   return function () {
     unloadStyle(styleId);
+    uninject('pc-badges-users');
     uninject('pc-badges-users-render');
     uninject('pc-badges-users-update');
     uninject('pc-badges-users-fetch');
