@@ -83,7 +83,7 @@ class Powercord extends Updatable {
     // Start
     await this.startup();
     this.fetchAccount();
-    this.gitInfos = await this.pluginManager.get('pc-updater').getGitInfos();
+    this.gitInfos = await this.api.updater.getGitInfos();
 
     // Token manipulation stuff
     if (this.settings.get('hideToken', true)) {
