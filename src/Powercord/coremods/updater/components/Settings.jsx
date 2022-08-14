@@ -13,7 +13,6 @@ const Update = require('./Update');
 module.exports = class UpdaterSettings extends React.PureComponent {
   constructor () {
     super();
-    this.plugin = powercord.pluginManager.get('pc-updater');
     this.state = {
       opened: false,
       copied: false
@@ -110,13 +109,13 @@ module.exports = class UpdaterSettings extends React.PureComponent {
             {updates.length > 0 && <Button
               size={Button.Sizes.SMALL}
               color={failed ? Button.Colors.RED : Button.Colors.GREEN}
-              onClick={() => failed ? this.plugin.askForce() : this.plugin.doUpdate()}
+              onClick={() => failed ? powercord.api.updater.askForce() : powercord.api.updater.doUpdate()}
             >
               {failed ? Messages.REPLUGGED_UPDATES_FORCE : Messages.REPLUGGED_UPDATES_UPDATE}
             </Button>}
             <Button
               size={Button.Sizes.SMALL}
-              onClick={() => this.plugin.checkForUpdates(true)}
+              onClick={() => powercord.api.updater.checkForUpdates()}
             >
               {Messages.REPLUGGED_UPDATES_CHECK}
             </Button>
@@ -141,8 +140,8 @@ module.exports = class UpdaterSettings extends React.PureComponent {
           {...update}
           key={update.id}
           updating={updating}
-          onSkip={() => this.askSkipUpdate(() => this.plugin.skipUpdate(update.id, update.commits[0].id))}
-          onDisable={() => this.askDisableUpdates(false, () => this.plugin.disableUpdates(update))}
+          onSkip={() => this.askSkipUpdate(() => powercord.api.updater.skipUpdate(update.id, update.commits[0].id))}
+          onDisable={() => this.askDisableUpdates(false, () => powercord.api.updater.disableUpdates(update))}
         />)}
       </div>}
 
@@ -160,7 +159,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
             </div>
             <div className='name'>{entity.name}</div>
             <div className='actions'>
-              <Button color={Button.Colors.GREEN} onClick={() => this.plugin.enableUpdates(entity.id)}>
+              <Button color={Button.Colors.GREEN} onClick={() => powercord.api.updater.enableUpdates(entity.id)}>
                 {Messages.REPLUGGED_UPDATES_ENABLE}
               </Button>
             </div>
@@ -202,22 +201,10 @@ module.exports = class UpdaterSettings extends React.PureComponent {
         <ButtonItem
           note={Messages.REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC}
           button={Messages.REPLUGGED_UPDATES_OPTS_CHANGE_LOGS}
-          onClick={() => this.plugin.openChangeLogs()}
+          onClick={() => powercord.api.updater.openChangeLogs()}
         >
           {Messages.REPLUGGED_UPDATES_OPTS_CHANGE_LOGS}
         </ButtonItem>
-        {/* <ButtonItem
-          note={Messages.REPLUGGED_UPDATES_OPTS_RELEASE_DESC}
-          button={powercord.gitInfos.branch === 'v2'
-            ? Messages.REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN
-            : Messages.REPLUGGED_UPDATES_OPTS_RELEASE_STABLE_BTN}
-          onClick={() => this.askChangeChannel(
-            () => this.plugin.changeBranch(powercord.gitInfos.branch === 'v2' ? 'v2-dev' : 'v2')
-          )}
-        >
-          {Messages.REPLUGGED_UPDATES_OPTS_RELEASE}
-        </ButtonItem> */}
-
         <Category
           name={Messages.REPLUGGED_UPDATES_OPTS_DEBUG}
           description={Messages.REPLUGGED_UPDATES_OPTS_DEBUG_DESC}

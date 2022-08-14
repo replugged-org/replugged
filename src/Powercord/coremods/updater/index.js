@@ -14,28 +14,27 @@ const settings = powercord.api.settings.buildCategoryObject('pc-updater');
 
 class Updater {
   constructor () {
-    this.checking = false;
     this.cwd = { cwd: join(__dirname, ...Array(4).fill('..')) };
 
-    this.failed = false;
-    this.checking = false;
-    this.updating = false;
-    this.awaiting_reload = false;
-    this.checking_progress = null;
+    settings.set('failed', false);
+    settings.set('checking', false);
+    settings.set('updating', false);
+    settings.set('awaiting_reload', false);
+    settings.set('checking_progress', null);
   }
 
   async checkForUpdates (allConcurrent = false) {
     if (
-      this.disabled ||
-      this.checking ||
-      this.updating ||
-      powercord.settings.get('paused', false)
+      settings.get('disabled', false) ||
+      settings.get('paused', false) ||
+      settings.get('checking', false) ||
+      settings.get('updating', false)
     ) {
       return;
     }
 
-    this.checking = true;
-    this.checking_progress = [ 0, 0 ];
+    settings.set('checking', true);
+    settings.set('checking_progress', [ 0, 0 ]);
     const disabled = settings.get('entities_disabled', []).map(e => e.id);
     const skipped = settings.get('entities_skipped', []);
     const plugins = [ ...powercord.pluginManager.plugins.values() ].filter(p => !p.isInternal);
@@ -49,7 +48,7 @@ class Updater {
     let done = 0;
     const updates = [];
     const entitiesLength = entities.length;
-    const parallel = allConcurrent ? entitiesLength : powercord.settings.get('concurrency', 2);
+    const parallel = allConcurrent ? entitiesLength : settings.get('concurrency', 2);
     await Promise.all(Array(parallel).fill(null).map(async () => {
       let entity;
       while ((entity = entities.shift())) {
@@ -76,13 +75,13 @@ class Updater {
         } catch (e) {
           console.error('An error occurred while checking for updates for %s', entity.manifest?.name ?? 'Replugged', e);
         } finally {
-          this.checking_progress = [ ++done, entitiesLength ];
+          settings.set('checking_progress', [ ++done, entitiesLength ]);
         }
       }
     }));
 
-    this.updates = updates;
-    this.checking = false;
+    settings.set('updates', updates);
+    settings.set('checking', false);
     settings.set('last_check', Date.now());
     if (updates.length > 0) {
       if (settings.get('automatic', false)) {
@@ -112,8 +111,8 @@ class Updater {
   }
 
   async doUpdate (force = false) {
-    this.failed = false;
-    this.updating = true;
+    settings.set('failed', false);
+    settings.set('updating', true);
     const updates = settings.get('updates', []);
     const failed = [];
     for (const update of [ ...updates ]) {
@@ -126,16 +125,16 @@ class Updater {
 
       const success = await entity._update(force);
       updates.shift();
-      this.settings.get('updates', updates);
+      settings.get('updates', updates);
       if (!success) {
         failed.push(update);
       }
     }
 
-    this.settings.set('updating', false);
+    settings.set('updating', false);
     if (failed.length > 0) {
-      this.failed = true;
-      this.updates = failed;
+      settings.set('failed', true);
+      settings.set('updates', failed);
       if (this.settings.get('toastenabled', true) && !document.querySelector('#powercord-updater, .powercord-updater')) {
         powercord.api.notices.sendToast('powercord-updater', {
           header: Messages.REPLUGGED_UPDATES_TOAST_FAILED,
@@ -347,7 +346,7 @@ module.exports = async () => {
   powercord.api.updater = updater;
 
   powercord.api.settings.registerSettings('pc-updater', {
-    category: 'updater',
+    category: 'pc-updater',
     label: 'Updater', // Note to self: add this string to i18n last :^)
     render: Settings
   });
