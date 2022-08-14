@@ -9,9 +9,6 @@ module.exports = [
   require('./moduleManager'),
   require('./settings'),
   require('./commands'),
-  require('./notices')
-
-  // These are still WIP
-  // require('./routelinks'),
-  // require('./sdk'),
+  require('./notices'),
+  require('./routelinks')
 ];
