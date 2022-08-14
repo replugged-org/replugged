@@ -181,6 +181,7 @@ async function _loadQuickCSS () {
   document.head.appendChild(_quickCSSElement);
   if (existsSync(_quickCSSFile)) {
     _quickCSS = await readFile(_quickCSSFile, 'utf8');
+    powercord.api.moduleManager._quickCSS = _quickCSS;
     if (powercord.settings.get('qcss-enabled', true)) {
       _quickCSSElement.innerHTML = _quickCSS;
     }
@@ -223,6 +224,14 @@ async function _installerInjectPopover () {
 
 
 module.exports = async () => {
+  powercord.api.moduleManager = {
+    _applyQuickCSS,
+    _applySnippet,
+    _fetchEntities,
+    _clearQuickCSSElement,
+    _quickCSS
+  };
+
   // this is for the new api
   const currentAPI = powercord.settings.get('backendURL', WEBSITE);
   if (currentAPI === 'https://powercord.dev') {
@@ -232,8 +241,8 @@ module.exports = async () => {
   powercord.api.i18n.loadAllStrings(i18n);
   Object.values(commands).forEach(cmd => powercord.api.commands.registerCommand(cmd));
 
-  _loadQuickCSS();
-  _injectSnippets();
+  await _loadQuickCSS();
+  await _injectSnippets();
   await _installerInjectPopover();
   await _installerInjectCtxMenu();
   loadStyle(join(__dirname, 'scss/style.scss'));
@@ -262,13 +271,6 @@ module.exports = async () => {
   if (powercord.api.labs.isExperimentEnabled('pc-moduleManager-deeplinks')) {
     deeplinks();
   }
-
-  powercord.api.moduleManager = {
-    _applySnippet,
-    _fetchEntities,
-    _clearQuickCSSElement,
-    _quickCSS
-  };
 
   return () => {
     document.querySelector('#powercord-quickcss').remove();
