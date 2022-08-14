@@ -47,7 +47,7 @@ const runMigrations = require('./migrations');
  */
 class Powercord extends Updatable {
   constructor () {
-    super(join(__dirname, '..', '..'), '', 'plugin', 'powercord');
+    super(join(__dirname, '..', '..'), '', 'base', 'powercord');
 
     this.api = {};
     this.gitInfos = {
