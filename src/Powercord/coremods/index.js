@@ -18,7 +18,8 @@ module.exports = {
       }
     }
 
-    powercord.reload_coremods = reload;
+
+    powercord._reload_coremods = reload;
   },
 
   unload () {
