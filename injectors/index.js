@@ -4,7 +4,7 @@ require('../polyfills'); // And then do stuff
 
 const { join } = require('path');
 const { writeFile } = require('fs').promises;
-const { BasicMessages } = require('./log');
+const { BasicMessages, AnsiEscapes } = require('./log');
 const main = require('./main.js');
 
 let platformModule;
@@ -30,10 +30,15 @@ try {
 const VALID_PLATFORMS = [ 'stable', 'ptb', 'canary', 'dev', 'development' ];
 
 (async () => {
-  let platform = (
-    process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase())) || 'stable'
-  ).toLowerCase();
-  if (platform === 'development') {
+  let platform = process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()));
+
+  if (!platform) {
+    return console.log(`
+${AnsiEscapes.BOLD}${AnsiEscapes.RED}No valid platform specified! Correct usage is: npm run ${process.argv[2] === 'inject' ? 'plug' : 'unplug'} <platform>.${AnsiEscapes.RESET}\n
+List of valid platforms:
+${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}
+    `);
+  } else if (platform === 'development') {
     platform = 'dev';
   }
 
@@ -77,7 +82,19 @@ const VALID_PLATFORMS = [ 'stable', 'ptb', 'canary', 'dev', 'development' ];
       '\n'
     );
     console.log('Try again with elevated permissions.');
+  } else if (e.code === 'ENOENT') {
+    console.log(
+      process.argv[2] === 'inject'
+        ? BasicMessages.PLUG_FAILED
+        : BasicMessages.UNPLUG_FAILED,
+      '\n'
+    );
+    console.log(
+      'Replugged wasn\'t able to inject itself due to missing files.',
+      '\n'
+    );
+    console.log('Try reinstalling Discord or Replugged.');
   } else {
-    console.error('fucky wucky', e);
+    console.error(`${AnsiEscapes.BOLD}${AnsiEscapes.RED}An unknown fucky wucky has occurred! Error info:${AnsiEscapes.RESET}\n`, e);
   }
 });
