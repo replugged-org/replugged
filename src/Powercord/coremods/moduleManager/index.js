@@ -81,8 +81,7 @@ async function _injectSnippets () {
 
     res.props.children.unshift(
       React.createElement(SnippetButton, {
-        message: props.message,
-        main: this
+        message: props.message
       })
     );
     return res;

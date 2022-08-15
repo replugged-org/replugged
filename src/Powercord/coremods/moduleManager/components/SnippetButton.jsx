@@ -4,12 +4,12 @@ const { Clickable } = require('powercord/components');
 // @todo: Figure out a way to re-enable the button if the snippet gets removed. Requires reload for now.
 class SnippetButton extends React.Component {
   render () {
-    const applied = this.props._quickCSS.includes(`Snippet ID: ${this.props.message.id}`);
+    const applied = powercord.api.moduleManager._quickCSS.includes(`Snippet ID: ${this.props.message.id}`);
     return (
       <div className={[ 'powercord-snippet-apply', applied && 'applied' ].filter(Boolean).join(' ')}>
         <Clickable onClick={() => {
           if (!applied) {
-            this.props._applySnippet(this.props.message).then(() => this.forceUpdate()); // yes ik its ew
+            powercord.api.moduleManager._applySnippet(this.props.message).then(() => this.forceUpdate()); // yes ik its ew
           }
         }}>
           {applied ? Messages.REPLUGGED_SNIPPET_APPLIED : Messages.REPLUGGED_SNIPPET_APPLY}
