@@ -40,6 +40,8 @@ ${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.
     `);
   } else if (platform === 'development') {
     platform = 'dev';
+  } else {
+    platform = platform.toLowerCase();
   }
 
   if (process.argv[2] === 'inject') {
