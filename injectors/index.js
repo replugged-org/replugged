@@ -29,15 +29,13 @@ try {
 
 const VALID_PLATFORMS = [ 'stable', 'ptb', 'canary', 'dev', 'development' ];
 
-(async () => {
-  let platform = process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()));
+let platform = (
+  process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase())) || 'stable'
+).toLowerCase();
 
-  if (!platform) {
-    return console.log(`
-${AnsiEscapes.BOLD}${AnsiEscapes.RED}No valid platform specified! Correct usage is: npm run ${process.argv[2] === 'inject' ? 'plug' : 'unplug'} <platform>.${AnsiEscapes.RESET}\n
-List of valid platforms:
-${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}
-    `);
+(async () => {
+  if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
+    console.log(`${AnsiEscapes.YELLOW}No valid platform specified, defaulting to "${platform}".${AnsiEscapes.RESET}\n`);
   } else if (platform === 'development') {
     platform = 'dev';
   } else {
@@ -56,7 +54,9 @@ ${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.
       // @todo: prompt to (re)start automatically
       console.log(BasicMessages.PLUG_SUCCESS, '\n');
       console.log(
-        'You now have to completely close the Discord client, from the system tray or through the task manager.'
+        `You now have to completely close the Discord client, from the system tray or through the task manager.\n
+To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run plug <platform>${AnsiEscapes.RESET}
+List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
       );
     }
   } else if (process.argv[2] === 'uninject') {
@@ -64,7 +64,9 @@ ${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.
       // @todo: prompt to (re)start automatically
       console.log(BasicMessages.UNPLUG_SUCCESS, '\n');
       console.log(
-        'You now have to completely close the Discord client, from the system tray or through the task manager.'
+        `You now have to completely close the Discord client, from the system tray or through the task manager.\n
+To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run unplug <platform>${AnsiEscapes.RESET}
+List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
       );
     }
   } else {
@@ -80,7 +82,7 @@ ${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.
       '\n'
     );
     console.log(
-      'Replugged wasn\'t able to inject itself due to missing permissions.',
+      `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself due to missing permissions.${AnsiEscapes.RESET}`,
       '\n'
     );
     console.log('Try again with elevated permissions.');
@@ -92,11 +94,12 @@ ${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.
       '\n'
     );
     console.log(
-      'Replugged wasn\'t able to inject itself due to missing files.',
+      `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself because Discord could not be found.${AnsiEscapes.RESET}`,
       '\n'
     );
-    console.log('Try reinstalling Discord or Replugged.');
+    console.log(`Make sure that specified platform (${platform}) is installed, or try again with a different platform using: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run ${process.argv[2] === 'inject' ? 'plug' : 'unplug'} <platform>${AnsiEscapes.RESET}
+List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
   } else {
-    console.error(`${AnsiEscapes.BOLD}${AnsiEscapes.RED}An unknown fucky wucky has occurred! Error info:${AnsiEscapes.RESET}\n`, e);
+    console.error(`${AnsiEscapes.BOLD}${AnsiEscapes.RED}Something went wrong! Error info:${AnsiEscapes.RESET}\n`, e);
   }
 });
