@@ -2,12 +2,23 @@ const { React, getModule, constants: { Routes }, i18n: { Messages } } = require(
 const { Divider, Button } = require('powercord/components');
 
 const { shell: { openExternal, openPath } } = require('electron');
-
+const path = require('path');
 const Details = require('./Details');
 const Permissions = require('./Permissions');
 const TIMEOUT = 10e3;
 
 class BaseProduct extends React.PureComponent {
+  constructor (props) {
+    super(props);
+    this.state = {
+      gitInfo: null
+    };
+  }
+
+  async componentDidMount () {
+    await this.getGitInfo(this.props.path).then(i => this.setState({ gitInfo: i }));
+  }
+
   renderDetails () {
     return (
       <>
@@ -69,9 +80,9 @@ class BaseProduct extends React.PureComponent {
               </Button>
           }
 
-          {
+          {this.state.gitInfo &&
             <Button
-              onClick={async () => openExternal(await this.getGitInfo(this.props.Path))}
+              onClick={async () => openExternal(this.state.gitInfo)}
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
               color={Button.Colors.TRANSPARENT}
@@ -82,7 +93,7 @@ class BaseProduct extends React.PureComponent {
 
           {
             <Button
-              onClick={() => openPath(this.props.Path)}
+              onClick={() => openPath(this.props.path)}
               look={Button.Looks.LINK}
               size={Button.Sizes.SMALL}
               color={Button.Colors.TRANSPARENT}
@@ -113,7 +124,10 @@ class BaseProduct extends React.PureComponent {
     try {
       return await PowercordNative.exec('git remote get-url origin', {
         cwd: item,
-        timeout: TIMEOUT
+        timeout: TIMEOUT,
+        env: {
+          GIT_CEILING_DIRECTORIES: path.join(this.props.path, '..')
+        }
       }).then((r) => r.stdout.toString()
         .replace(/\.git$/, '')
         .replace(/^git@(.+):/, 'https://$1/')
