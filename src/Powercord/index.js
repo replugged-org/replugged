@@ -12,6 +12,8 @@ const APIManager = require('./managers/apis');
 const modules = require('./modules');
 let coremods;
 
+const runMigrations = require('./migrations');
+
 /**
  * @typedef PowercordAPI
  * @property {CommandsAPI} commands
@@ -112,6 +114,9 @@ class Powercord extends Updatable {
     await this.apiManager.startAPIs();
     this.settings = powercord.api.settings.buildCategoryObject('pc-general');
     this.emit('settingsReady');
+
+    // Migrations
+    await runMigrations(this);
 
     // Style Manager
     this.styleManager.loadThemes();
