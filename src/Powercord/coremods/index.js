@@ -1,9 +1,13 @@
 const coremods = require('./registry');
+const reload = require('./__reload');
 const unloadFuncs = [];
 
 module.exports = {
   async load () {
-    for (const mod of coremods) {
+    for (let mod of coremods) {
+      if (typeof mod === 'object') {
+        mod = mod.default;
+      }
       try {
         const unload = await mod();
         if (typeof unload === 'function') {
@@ -13,6 +17,9 @@ module.exports = {
         console.error(e); // Stronger logging + warning
       }
     }
+
+
+    powercord._reload_coremods = reload;
   },
 
   unload () {
