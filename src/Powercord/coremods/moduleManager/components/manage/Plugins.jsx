@@ -16,7 +16,7 @@ class Plugins extends Base {
           await this._toggle(item.entityID, v);
           this.forceUpdate();
         }}
-        Path={item.entityPath}
+        path={item.entityPath}
         onUninstall={() => this._uninstall(item.entityID)}
       />
     );
