@@ -93,7 +93,7 @@
     "REPLUGGED_SNIPPET_APPLY": "Snippet anwenden",
     "REPLUGGED_SNIPPET_LINE1": "Snippet aus #css-snippets angewandt am {date, date, medium} um {date, time, medium}",
     "REPLUGGED_SNIPPET_LINE2": "Erstellt von {authorTag} ({authorId})",
-    "REPLUGGED_THEMES": "Themes",
+    "REPLUGGED_THEMES": "Themen",
     "REPLUGGED_THEMES_EXPLORE": "Theme Store erkunden",
     "REPLUGGED_THEMES_INSTALLED": "Installierte Themes",
     "REPLUGGED_THEMES_LOAD_MISSING": "Fehlende Themes laden",
