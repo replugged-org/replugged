@@ -162,5 +162,10 @@
     "REPLUGGED_UPDATE_PASSPHRASE": "Passphrase ändern",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Diese Passphrase wird verwendet, um deine Daten zu verschlüsseln bevor sie an die Replugged Server gesendet werden. Es wird empfohlen eins zu setzen, da deine Daten ansonsten unverschlüsselt versendet werden.",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Wenn du die Einstellungssynchronisierung schon auf einem anderen Computer eingestellt hast, gib die selbe Passphrase ein. **Wenn eine andere Passphrase verwendet wird, werden bestehende Daten überschrieben, also pass auf**.",
-    "REPLUGGED_BADGES_SUPPORT": "Replugged Support"
+    "REPLUGGED_BADGES_SUPPORT": "Replugged Support",
+    "REPLUGGED_PLUGINS_WEBSITE": "Webseite",
+    "REPLUGGED_PLUGINS_PATH": "Ordner öffnen",
+    "REPLUGGED_QUICKCSS_ENABLED": "QuickCSS aktiviert",
+    "REPLUGGED_PLUGINS_GITHUB": "Repository",
+    "REPLUGGED_PLUGINS_DISCORD": "Discord"
 }
