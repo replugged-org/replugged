@@ -157,5 +157,17 @@
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Možete birati između stabilne verzije ili razvojne verzije. Stabilna verzija će dobiti samo velika ažuriranja, sigurnosna i kritična ažuriranja. Ako niste sigurni, ostanite na stabilnoj verziji.",
     "REPLUGGED_CUTIE_TIER_EASTER_PRICE": "**$1,337,420.69 USD**",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Prikaži sloj preko klijenta koji kaže da se provjeravaju ažuriranja, a ako se ažuriranja pronađu, traži da ažurirate. Primjenjuje se samo ako je ažuriranje u pozadini onemogućeno.",
-    "REPLUGGED_UPDATES_TOAST_AVAILABLE_DESC": "Kliknite \"Ažuriraj sada\" da biste ažurirali sada ili \"Otvorite Ažuriranja\" da biste saznali više."
+    "REPLUGGED_UPDATES_TOAST_AVAILABLE_DESC": "Kliknite \"Ažuriraj sada\" da biste ažurirali sada ili \"Otvorite Ažuriranja\" da biste saznali više.",
+    "REPLUGGED_UPDATES_UPDATING": "Ažuriranje Repluggeda…",
+    "REPLUGGED_UPDATES_UNSUPPORTED_TITLE": "Nepodržana verzija Discorda",
+    "REPLUGGED_UPDATES_TOAST_FAILED": "Instalacija nekih ažuriranja nije uspjela…",
+    "REPLUGGED_UPDATES_UNSUPPORTED_DESC": "Koristite nepodržanu verziju Discorda ({releaseChannel}). Dodaci i teme možda neće u potpunosti raditi na ovoj verziji i može doći do rušenja.",
+    "REPLUGGED_UPDATES_UPDATING_ITEM": "Ažuriranje…",
+    "REPLUGGED_UPDATES_UPSTREAM": "Uzvodno:",
+    "REPLUGGED_UPDATES_UPSTREAM_OFFICIAL": "Službeno",
+    "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged je ažuran.",
+    "REPLUGGED_UPDATE_PASSPHRASE": "Ažurirajte lozinku",
+    "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Ako već koristite sinkronizaciju na drugim računalima, stavite istu šifru koju ste koristili. **Korištenje druge zaporke prebrisat će stare podatke, stoga budite oprezni**.",
+    "REPLUGGED_UPDATES_UPDATE": "Ažurirajte Sada",
+    "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Ova šifra će se koristiti za šifriranje vaših podataka prije slanja na poslužitelje Repluggeda. Preporuča se da ga postavite, ali ovo možete ostaviti praznim da biste svoje podatke poslali nekriptirani."
 }
