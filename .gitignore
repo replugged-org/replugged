@@ -8,11 +8,11 @@ yarn.lock
 pnpm-lock.yaml
 
 src/Powercord/plugins/*
-!src/Powercord/plugins/pc-*
+!src/Powercord/plugins/.gitkeep
 
 src/Powercord/coremods/react-devtools/ext
 src/Powercord/themes/*
-!src/Powercord/themes/.exists
+!src/Powercord/themes/.gitkeep
 
 settings/*.json
 

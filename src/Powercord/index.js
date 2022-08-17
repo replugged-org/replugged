@@ -12,6 +12,8 @@ const APIManager = require('./managers/apis');
 const modules = require('./modules');
 let coremods;
 
+const runMigrations = require('./migrations');
+
 /**
  * @typedef PowercordAPI
  * @property {CommandsAPI} commands
@@ -45,7 +47,7 @@ let coremods;
  */
 class Powercord extends Updatable {
   constructor () {
-    super(join(__dirname, '..', '..'), '', 'powercord');
+    super(join(__dirname, '..', '..'), '', 'base', 'powercord');
 
     this.api = {};
     this.gitInfos = {
@@ -60,6 +62,10 @@ class Powercord extends Updatable {
     this.account = null;
     this.isLinking = false;
     // this.hookRPCServer();
+
+    this.manifest = {
+      version: require('../../package.json').version
+    };
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.init());
@@ -83,7 +89,7 @@ class Powercord extends Updatable {
     // Start
     await this.startup();
     this.fetchAccount();
-    this.gitInfos = await this.pluginManager.get('pc-updater').getGitInfos();
+    this.gitInfos = await this.api.updater.getGitInfos();
 
     // Token manipulation stuff
     if (this.settings.get('hideToken', true)) {
@@ -112,6 +118,9 @@ class Powercord extends Updatable {
     await this.apiManager.startAPIs();
     this.settings = powercord.api.settings.buildCategoryObject('pc-general');
     this.emit('settingsReady');
+
+    // Migrations
+    await runMigrations(this);
 
     // Style Manager
     this.styleManager.loadThemes();
@@ -222,7 +231,7 @@ class Powercord extends Updatable {
     const success = await super._update(force);
     if (success) {
       await PowercordNative.exec('npm install --only=prod', { cwd: this.entityPath });
-      const updater = this.pluginManager.get('pc-updater');
+      const { updater } = powercord.api;
       if (!document.querySelector('#powercord-updater, .powercord-updater')) {
         powercord.api.notices.sendToast('powercord-updater', {
           header: 'Update complete!',
