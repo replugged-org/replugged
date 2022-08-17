@@ -182,6 +182,13 @@ module.exports = class UpdaterSettings extends React.PureComponent {
         >
           {Messages.REPLUGGED_UPDATES_OPTS_TOAST_ENABLED}
         </SwitchItem>
+        <SwitchItem
+          value={this.props.getSetting('checkversion', true)}
+          onChange={() => this.props.toggleSetting('checkversion', true)}
+          note={Messages.REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC}
+        >
+          {Messages.REPLUGGED_UPDATES_OPTS_CHECK_VER}
+        </SwitchItem>
         <TextInput
           note={Messages.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC}
           onChange={val => this.props.updateSetting('interval', (Number(val) && Number(val) >= 10) ? Math.ceil(Number(val)) : 10, 15)}
