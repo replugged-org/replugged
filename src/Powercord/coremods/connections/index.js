@@ -31,11 +31,38 @@ async function patchSettingsConnections() {
   UserSettingsConnections.default.displayName = 'UserSettingsConnections';
 }
 
+// [userId][type] -> {account}, "pending", or undefined
+const _accountCache = {};
+
 function fetchAccount(type, userId) {
-  const connection = powercord.api.connections.get(type)
-  const account = connection.fetchAccount(userId);
-  //todo: cache accounts & do promise shenanigans
-  return account
+  console.group("pc-connections-fetchAccount")
+  console.log("requested account:", type, userId)
+
+  let account = _accountCache[userId]?.[type];
+  console.log("account:", account)
+
+  // if we have a fetched account, return it
+  if (account && account !== "pending") {
+    console.log("returing account:", account)
+    console.groupEnd()
+    return account
+  }
+
+  // otherwise, if the value is empty we should start fetching it
+  else if (!account) {
+    console.log("fetching account:", type, userId)
+
+    _accountCache[userId] ??= {}; // ensure we have an object for this user's accounts
+    _accountCache[userId][type] = "pending";
+
+    const connection = powercord.api.connections.get(type)
+    connection.fetchAccount(userId).then(account => {
+      _accountCache[userId][type] = account;
+      console.log("finished fetching account:", type, userId, _accountCache[userId][type]);
+    })
+  }
+
+  console.groupEnd()
 }
 
 async function patchUserConnections() {
