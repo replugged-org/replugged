@@ -169,5 +169,5 @@
     "REPLUGGED_PLUGINS_GITHUB": "Repository",
     "REPLUGGED_PLUGINS_DISCORD": "Discord",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Updatebenachrichtigungen anzeigen",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Zeige ein pop-up über den client an, welches anzeigt das nach Updates gesucht wird und wenn welche gefunden wurden, wird es dich audfordern zu Updaten. Trifft nur ein wenn Hintergrundaktualisierungen aktiviert sind."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Zeigt ein Popup an, dass nach Updates gesucht wird und fordert zum Update auf, falls welche verfügbar sind. Nur dann aktiv, wenn automatische Updates im Hintergrund deaktiviert sind."
 }
