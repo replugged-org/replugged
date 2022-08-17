@@ -156,8 +156,8 @@
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Toon een overlay over de client waarin staat dat er wordt gecontroleerd op updates en als er updates worden gevonden, zul je gevraagd worden om bij te werken. Is alleen van toepassing als updaten op de achtergrond is uitgeschakeld.",
     "REPLUGGED_UPDATES_SKIP_MODAL_TITLE": "Een update overslaan",
     "REPLUGGED_UPDATES_UPDATE": "Update Nu",
-    "REPLUGGED_UPDATES_TOAST_AVAILABLE_DESC": "Klik \"Update Nu\" om te updaten of \"Open Updater\"",
-    "REPLUGGED_UPDATES_SKIP_MODAL": "Weet je zeker dat je deze update wilt overslaan? Replugged zal wachten voor een nieuwere versie voor het updaten.",
+    "REPLUGGED_UPDATES_TOAST_AVAILABLE_DESC": "Klik \"Update Nu\" om te updaten of \"Open Updater\" voor meer informatie.",
+    "REPLUGGED_UPDATES_SKIP_MODAL": "Weet u zeker dat je deze update wilt overslaan? Replugged zal wachten voor een nieuwere versie voor het opnieuw updaten.",
     "REPLUGGED_UPDATES_UNSUPPORTED_DESC": "Je gebruikt een niet ondersteunde Discord versie ({releaseChannel}). Plugins en thema's werken mogelijk niet volledig en je kunt crashes ervaren.",
     "REPLUGGED_UPDATES_UNSUPPORTED_TITLE": "Niet ondersteunde Discord versie",
     "REPLUGGED_UPDATES_UPDATING": "Replugged updaten…",
@@ -167,5 +167,7 @@
     "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged is up-to-date.",
     "REPLUGGED_UPDATE_PASSPHRASE": "Update wachtwoord",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Deze wachtwoordzin zal gebruikt worden om je data te versleutelen voordat het naar Replugged's servers gestuurd word. Het is aanbevolen om er een in te stellen, maar je kan dit veld leeg laten voor je data onversleuteld te versturen.",
-    "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Als je synchronisatie al op andere apparaten gebruikt, gebruik dan dezelfde wachtwoordzin die je ergens anders hebt gebruikt. **Als je een andere wachtwoordzin gebruikt, worden oude gegevens overschreven, dus wees voorzichtig**."
+    "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Als je synchronisatie al op andere apparaten gebruikt, gebruik dan dezelfde wachtwoordzin die je ergens anders hebt gebruikt. **Als je een andere wachtwoordzin gebruikt, worden oude gegevens overschreven, dus wees voorzichtig**.",
+    "REPLUGGED_UPDATES_TOAST_AVAILABLE_HEADER": "Updates zijn beschikbaar!",
+    "REPLUGGED_UPDATES_TOAST_FAILED": "Sommige updates konden niet worden geïnstalleerd…"
 }
