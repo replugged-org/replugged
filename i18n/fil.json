@@ -1,1 +1,17 @@
-{}
+{
+    "REPLUGGED_CUTIE_DONATE": "Donasyon",
+    "REPLUGGED_CUTIE_TIER_3_PRICE": "**$10**/buwan",
+    "REPLUGGED_CUTIE_TIER_EASTER_PRICE": "**$1,337,420.69**",
+    "REPLUGGED_PLUGINS": "Mga plugin",
+    "REPLUGGED_PLUGINS_LICENSE": "Lisensya",
+    "REPLUGGED_PLUGINS_GITHUB": "Repository",
+    "REPLUGGED_PLUGINS_WEBSITE": "Website",
+    "REPLUGGED_PLUGINS_DISCORD": "Discord",
+    "REPLUGGED_PRODUCT_LOOKING": "Ano ang hinahanap mo?",
+    "REPLUGGED_QUICKCSS": "Quick CSS",
+    "REPLUGGED_QUICKCSS_SETTINGS": "Setting ng CodeMirror",
+    "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
+    "REPLUGGED_CUTIE_TIER_1_PRICE": "**$1**/buwan",
+    "REPLUGGED_BADGES_DEVELOPER": "Developer ng Replugged",
+    "REPLUGGED_PLUGINS_VERSION": "Bersyon"
+}
