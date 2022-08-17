@@ -141,7 +141,7 @@
     "REPLUGGED_UPDATES_OPTS_RELEASE_SWITCH": "Wechseln",
     "REPLUGGED_UPDATES_PAUSE": "Updates pausieren",
     "REPLUGGED_UPDATES_PAUSED": "Updates sind pausiert.",
-    "REPLUGGED_UPDATES_PAUSED_RESUME": "Beim nächsten Neuladen wird sich Replugged wieder aktualisieren.",
+    "REPLUGGED_UPDATES_PAUSED_RESUME": "Sie werden nach dem neuladen fortgeführt.",
     "REPLUGGED_UPDATES_PAUSE_MODAL": "Bist du dir sicher, dass du Updates pausieren möchtest? Replugged wird dann bis zum nächsten Neuladen nicht mehr nach Updates suchen.",
     "REPLUGGED_UPDATES_RESUME": "Updates fortsetzen",
     "REPLUGGED_UPDATES_REVISION": "Revision:",
@@ -150,7 +150,7 @@
     "REPLUGGED_UPDATES_SKIP_MODAL_TITLE": "Überspringe ein Update",
     "REPLUGGED_UPDATES_TOAST_AVAILABLE_DESC": "Klicke auf \"Update\", um jetzt zu aktualisieren oder auf \"Updater öffnen\", um mehr zu erfahren.",
     "REPLUGGED_UPDATES_TOAST_AVAILABLE_HEADER": "Es sind Updates verfügbar!",
-    "REPLUGGED_UPDATES_TOAST_FAILED": "Einige Updates konnten nicht erfolgreich installiert werden…",
+    "REPLUGGED_UPDATES_TOAST_FAILED": "Einige Updates sind fehlgeschlagen…",
     "REPLUGGED_UPDATES_UNSUPPORTED_DESC": "Du verwendest einen Build von Discord der nicht unterstützt wird: ({releaseChannel}). Plugins sowie Themes könnten Fehler aufweisen und Abstürze sind zu erwarten.",
     "REPLUGGED_UPDATES_UNSUPPORTED_TITLE": "Nicht unterstützte Discord Version",
     "REPLUGGED_UPDATES_UPDATE": "Jetzt aktualisieren",
@@ -169,5 +169,5 @@
     "REPLUGGED_PLUGINS_GITHUB": "Repository",
     "REPLUGGED_PLUGINS_DISCORD": "Discord",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Updatebenachrichtigungen anzeigen",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Zeige ein Popup an, dass nach Updates gesucht wird und fordere zum Update auf, falls welche verfügbar sind. Nur dann aktiv, wenn automatische Updates im Hintergrund deaktiviert sind."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Zeige ein pop-up über den client an, welches anzeigt das nach Updates gesucht wird und wenn welche gefunden wurden, wird es dich audfordern zu Updaten. Trifft nur ein wenn Hintergrundaktualisierungen aktiviert sind."
 }
