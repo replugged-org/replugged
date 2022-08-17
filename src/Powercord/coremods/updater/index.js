@@ -357,7 +357,7 @@ module.exports = async () => {
     description: 'Sends the device\'s, discord\'s, and replugged\'s debug info in chat.',
     executor: () => ({
       send: true,
-      result: debugInfo(settings)
+      result: debugInfo(settings.get)
     })
   });
 

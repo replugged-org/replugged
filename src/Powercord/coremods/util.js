@@ -1,4 +1,4 @@
-const { React, getModule, i18n: { Messages, _chosenLocale: currentLocale } } = require('powercord/webpack');
+const { React, getModule, i18n: { _chosenLocale: currentLocale } } = require('powercord/webpack');
 const { createElement } = require('powercord/util');
 const { resolveCompiler } = require('powercord/compilers');
 const { REPO_URL, CACHE_FOLDER } = require('powercord/constants');
@@ -27,7 +27,7 @@ module.exports = {
     }
   },
 
-  debugInfo (settings) {
+  debugInfo (getSetting) {
     const { getRegisteredExperiments, getExperimentOverrides } = getModule([ 'initialize', 'getExperimentOverrides' ], false);
     const { apiManager: { apis }, api: { commands: { commands }, settings: { store: settingsStore } } } = powercord;
     const superProperties = getModule([ 'getSuperPropertiesBase64' ], false).getSuperProperties();
@@ -91,7 +91,7 @@ module.exports = {
     Upstream="${powercord.gitInfos.upstream.replace(REPO_URL, 'Official')}"
     Revision="${powercord.gitInfos.revision.substring(0, 7)}"
     Branch="${powercord.gitInfos.branch}"
-    Latest="${!settings.get('updates', []).find(update => update.id === 'powercord')}"
+    Latest="${!getSetting('updates', []).find(update => update.id === 'powercord')}"
 
     [LISTINGS]
     RepluggedPath="${maskPath(powercord.basePath)}"
