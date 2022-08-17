@@ -31,6 +31,13 @@ async function patchSettingsConnections() {
   UserSettingsConnections.default.displayName = 'UserSettingsConnections';
 }
 
+function fetchAccount(type, userId) {
+  const connection = powercord.api.connections.get(type)
+  const account = connection.fetchAccount(userId);
+  //todo: cache accounts & do promise shenanigans
+  return account
+}
+
 async function patchUserConnections() {
 
   // User Profile Modal -> User Info section
@@ -38,12 +45,21 @@ async function patchUserConnections() {
     m => m?.ConnectedUserAccounts,
     Passport => {
       inject('pc-connections-profile', Passport, 'ConnectedUserAccounts', ([props]) => {
+        console.group("pc-connections-profile")
+        console.log("b4:", props)
 
-        for (const connection of powercord.api.connections.connections) {
-          const account = connection.fetchAccount(props.userId);
+        for (const { type } of powercord.api.connections.connections) {
+          // don't add this account if it's already in the array
+          if (props.connectedAccounts.some(account => account.type === type)) continue;
+
+          const account = fetchAccount(type, props.userId);
+
           if (account) props.connectedAccounts.push(account);
         }
 
+        console.log("a5ter:", props)
+
+        console.groupEnd()
         return [props];
       }, true);
     }
@@ -52,9 +68,10 @@ async function patchUserConnections() {
   // this module handles accessing Connections and users' connected Accounts
   lazyPatchProfileModal('ConnectableAccounts',
     m => m?.default?.getByUrl,
-    ConnectableAccounts => {
-      ConnectableAccounts = ConnectableAccounts.default;
+    m => {
+      console.group("pc-connections-lazy-modal-ConnectableAccounts")
 
+      ConnectableAccounts = m.default;
       console.log(ConnectableAccounts);
 
       for (const property in ConnectableAccounts) {
@@ -74,15 +91,30 @@ async function patchUserConnections() {
 
       // filter must insert all connections (the filtering has already happened)
       inject("pc-connections-ConnectableAccounts-filter", ConnectableAccounts, "filter", ([filter], connectionsArray) => {
+        console.group("pc-connections-ConnectableAccounts-filter")
+
+        console.log("b4:", filter, connectionsArray)
+
         connectionsArray = connectionsArray.concat(powercord.api.connections.connections)
-        console.log(connectionsArray)
+        console.log("a5ter:", connectionsArray)
+
+        console.groupEnd()
         return connectionsArray;
       });
 
 
       // must return true for ConnectableAccounts.get to be called
-      inject("pc-connections-ConnectableAccounts-isSupported", ConnectableAccounts, "isSupported",
-        ([type], supported) => supported || powercord.api.connections.get(type) !== null
+      inject("pc-connections-ConnectableAccounts-isSupported", ConnectableAccounts, "isSupported", ([type], supported) => {
+        console.group("pc-connections-ConnectableAccounts-isSupported")
+
+        console.log("b4:", type, supported)
+        supported ||= powercord.api.connections.get(type) !== null
+
+        console.log("a5ter:", supported)
+
+        console.groupEnd()
+        return supported
+      }
       );
 
 
@@ -95,7 +127,22 @@ async function patchUserConnections() {
         console.log("overwriting ConnectableAccounts.get")
         const originalGet = ConnectableAccounts.get
 
-        ConnectableAccounts.get = (type) => powercord.api.connections.get(type) ?? originalGet(type)
+        ConnectableAccounts.get = (type) => {
+          if (type === "spotify") return originalGet(type); // spams log otherwise
+
+          console.group("pc-connections-ConnectableAccounts-get")
+
+          console.log("getting type:", type)
+
+          let ret = powercord.api.connections.get(type)
+          console.log("pc:", ret)
+
+          ret ??= originalGet(type)
+          console.log("disc:", ret)
+
+          console.groupEnd()
+          return ret
+        }
 
         /*ConnectableAccounts.get = (type) => {
           if (type !== "spotify") console.log(ConnectableAccounts.get, typeof ConnectableAccounts.get)
@@ -123,6 +170,7 @@ async function patchUserConnections() {
 
         ConnectableAccounts.get.__powercordOriginal_get = originalGet
       }
+      console.groupEnd()
     }
   );
 }
