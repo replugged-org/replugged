@@ -380,7 +380,7 @@ module.exports = async () => {
 
   return () => {
     powercord.api.settings.unregisterSettings('pc-updater');
-    powercord.api.commands.unregisterCommand('debug')
+    powercord.api.commands.unregisterCommand('debug');
     clearInterval(updater._interval);
     delete powercord.api.updater;
   };

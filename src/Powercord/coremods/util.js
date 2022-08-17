@@ -59,8 +59,8 @@ module.exports = {
     Locale="${currentLocale}"
     OS="${window.platform.os.family}${window.platform.os.architecture === 64 ? ' 64-bit' : ''}"
     Architecture="${superProperties.os_arch}"
-    ${process.platform === 'linux' ?
-      `Distro="${superProperties.distro || 'n/a'}"`
+    ${process.platform === 'linux'
+    ? `Distro="${superProperties.distro || 'n/a'}"`
     : ''}
     ReleaseChannel="${superProperties.release_channel}"
     AppVersion="${superProperties.client_version}"
@@ -70,17 +70,17 @@ module.exports = {
 
     [PROCESS VERSIONS]
     React="${React.version}"
-    Electron="${process.versions['electron']}"
-    Chrome="${process.versions['chrome']}"
-    Node="${process.versions['node']}"
+    Electron="${process.versions.electron}"
+    Chrome="${process.versions.chrome}"
+    Node="${process.versions.node}"
 
     [REPLUGGED]
     Commands="${Object.keys(commands).length}"
     Settings="${Object.keys(settingsStore.getAllSettings()).length}"
     Plugins="${powercord.pluginManager.getPlugins()
-              .filter(plugin => powercord.pluginManager.isEnabled(plugin)).length}/${powercord.pluginManager.plugins.size}"
+    .filter(plugin => powercord.pluginManager.isEnabled(plugin)).length}/${powercord.pluginManager.plugins.size}"
     Themes="${powercord.styleManager.getThemes()
-              .filter(theme => powercord.styleManager.isEnabled(theme)).length}/${powercord.styleManager.themes.size}"
+    .filter(theme => powercord.styleManager.isEnabled(theme)).length}/${powercord.styleManager.themes.size}"
     Labs="${enabledLabs.length}/${powercord.api.labs.experiments.length}"
     SettingsSync="${powercord.settings.get('settingsSync', false)}"
     CachedFiles="${cachedFiles}"

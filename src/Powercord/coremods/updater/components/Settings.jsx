@@ -10,7 +10,6 @@ const { readdirSync, existsSync, lstatSync } = require('fs');
 
 const Icons = require('./Icons');
 const Update = require('./Update');
-const { debug } = require('console');
 
 module.exports = class UpdaterSettings extends React.PureComponent {
   constructor () {
@@ -435,7 +434,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
     />;
   }
 
-  handleDebugInfoCopy (plugins) {
+  handleDebugInfoCopy () {
     this.setState({ copied: true });
     clipboard.writeText(debugInfo(this.props.getSetting));
     setTimeout(() => this.setState({ copied: false }), 2500);

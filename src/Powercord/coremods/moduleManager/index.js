@@ -228,7 +228,8 @@ module.exports = async () => {
     _applySnippet,
     _fetchEntities,
     _clearQuickCSSElement,
-    _quickCSS
+    _quickCSS,
+    _quickCSSFile
   };
 
   // this is for the new api
