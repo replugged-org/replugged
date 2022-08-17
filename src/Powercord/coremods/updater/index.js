@@ -61,6 +61,11 @@ class Updater {
               if (commits[0] && skipped[entity.updateIdentifier] === commits[0].id) {
                 continue;
               }
+              const manifestVersion = entity.manifest?.version ?? null;
+              const manifestNewVersion = await entity._getUpdateVersion();
+              if (manifestVersion === manifestNewVersion) {
+                continue;
+              }
               updates.push({
                 id: entity.updateIdentifier,
                 name: entity.manifest?.name ?? 'Replugged',

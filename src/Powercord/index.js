@@ -47,7 +47,7 @@ const runMigrations = require('./migrations');
  */
 class Powercord extends Updatable {
   constructor () {
-    super(join(__dirname, '..', '..'), '', 'powercord');
+    super(join(__dirname, '..', '..'), '', 'base', 'powercord');
 
     this.api = {};
     this.gitInfos = {
@@ -62,6 +62,10 @@ class Powercord extends Updatable {
     this.account = null;
     this.isLinking = false;
     // this.hookRPCServer();
+
+    this.manifest = {
+      version: require('../../package.json').version
+    };
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.init());
