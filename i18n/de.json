@@ -6,7 +6,7 @@
     "REPLUGGED_BADGES_HUNTER": "Replugged Bugfinder",
     "REPLUGGED_BADGES_STAFF": "Replugged Mitarbeiter",
     "REPLUGGED_BADGES_TRANSLATOR": "Replugged Übersetzer",
-    "REPLUGGED_BADGES_BOOSTER": "Replugged Server Booster",
+    "REPLUGGED_BADGES_BOOSTER": "Replugged Server-Booster",
     "REPLUGGED_COMMAND_PREFIX": "Commandprefix",
     "REPLUGGED_CUTIE_DONATE": "Spenden",
     "REPLUGGED_CUTIE_SUBTITLE": "Und erhalte ein paar coole Dinge",
@@ -167,5 +167,7 @@
     "REPLUGGED_PLUGINS_PATH": "Ordner öffnen",
     "REPLUGGED_QUICKCSS_ENABLED": "QuickCSS aktiviert",
     "REPLUGGED_PLUGINS_GITHUB": "Repository",
-    "REPLUGGED_PLUGINS_DISCORD": "Discord"
+    "REPLUGGED_PLUGINS_DISCORD": "Discord",
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Updatebenachrichtigungen anzeigen",
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Zeige ein Popup an, dass nach Updates gesucht wird und fordere zum Update auf, falls welche verfügbar sind. Nur dann aktiv, wenn automatische Updates im Hintergrund deaktiviert sind."
 }
