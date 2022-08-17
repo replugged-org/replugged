@@ -153,5 +153,9 @@
     "REPLUGGED_UPDATES_FORCE_MODAL": "Geforceerd updaten kan locale bewerkingen aan Replugged overschrijven. Als je er een paar gemaakt hebt, sla ze op! Deze actie is niet terug te draaien.",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY_DESC": "Hoeveel gelijktijdige taken Replugged in de achtergrond zal starten om voor updates te checken. Minimaal 1. Als je het niet zeker weet, laat 2 staan.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Je kan kiezen tussen de stabiele branch, of de ontwikkelingsbranch. De stabiele branch krijgt alleen grote, beveiligings, en kritieke updates. Als je het niet zeker weet, blijf op stabiel.",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Toon een overlay over de client waarin staat dat er wordt gecontroleerd op updates en als er updates worden gevonden, zul je gevraagd worden om bij te werken. Is alleen van toepassing als updaten op de achtergrond is uitgeschakeld."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Toon een overlay over de client waarin staat dat er wordt gecontroleerd op updates en als er updates worden gevonden, zul je gevraagd worden om bij te werken. Is alleen van toepassing als updaten op de achtergrond is uitgeschakeld.",
+    "REPLUGGED_UPDATES_SKIP_MODAL_TITLE": "Een update overslaan",
+    "REPLUGGED_UPDATES_UPDATE": "Update Nu",
+    "REPLUGGED_UPDATES_TOAST_AVAILABLE_DESC": "Klik \"Update Nu\" om te updaten of \"Open Updater\"",
+    "REPLUGGED_UPDATES_SKIP_MODAL": "Weet je zeker dat je deze update wilt overslaan? Replugged zal wachten voor een nieuwere versie voor het updaten."
 }
