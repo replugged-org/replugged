@@ -185,6 +185,7 @@ async function _loadQuickCSS () {
       _quickCSSElement.innerHTML = _quickCSS;
     }
   }
+  powercord.api.moduleManager._quickCSSElement = _quickCSSElement;
 }
 
 async function _clearQuickCSSElement () {
