@@ -169,5 +169,5 @@
     "REPLUGGED_PLUGINS_DISCORD": "Discord",
     "REPLUGGED_PLUGINS_PATH": "Открыть папку",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Показывает оверлей, сообщающий о текущей проверка обновлений, и предлагает установить их, если они присутствуют. Применяется лишь если обновления в фоне отключены.",
-    "REPLUGGED_QUICKCSS_ENABLED": "Быстрая CSS активирован"
+    "REPLUGGED_QUICKCSS_ENABLED": "Включить моментальный CSS"
 }
