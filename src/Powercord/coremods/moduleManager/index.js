@@ -228,7 +228,8 @@ module.exports = async () => {
     _applySnippet,
     _fetchEntities,
     _clearQuickCSSElement,
-    _quickCSS
+    _quickCSS,
+    _quickCSSFile
   };
 
   // this is for the new api
@@ -272,7 +273,7 @@ module.exports = async () => {
   }
 
   return () => {
-    document.querySelector('#powercord-quickcss').remove();
+    document.querySelector('#powercord-quickcss')?.remove();
     powercord.api.settings.unregisterSettings('pc-moduleManager-plugins');
     powercord.api.settings.unregisterSettings('pc-moduleManager-themes');
     powercord.api.settings.unregisterSettings('pc-moduleManager-css');

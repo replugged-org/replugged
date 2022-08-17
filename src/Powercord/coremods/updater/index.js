@@ -1,4 +1,4 @@
-const { loadStyle } = require('../util');
+const { loadStyle, debugInfo } = require('../util');
 
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
@@ -356,6 +356,16 @@ module.exports = async () => {
     render: Settings
   });
 
+  powercord.api.commands.registerCommand({
+    command: 'debug',
+    usage: '{c}',
+    description: 'Sends the device\'s, discord\'s, and replugged\'s debug info in chat.',
+    executor: () => ({
+      send: true,
+      result: debugInfo(settings.get)
+    })
+  });
+
   let minutes = Number(settings.get('interval', 15));
   if (minutes < 1) {
     settings.set('interval', 1);
@@ -375,6 +385,7 @@ module.exports = async () => {
 
   return () => {
     powercord.api.settings.unregisterSettings('pc-updater');
+    powercord.api.commands.unregisterCommand('debug');
     clearInterval(updater._interval);
     delete powercord.api.updater;
   };
