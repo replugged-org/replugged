@@ -1,1 +1,23 @@
-{}
+{
+    "REPLUGGED_ACCOUNT": "Tài khoản Replugged",
+    "REPLUGGED_BADGES_CONTRIBUTOR": "Người đóng góp cho Replugged",
+    "REPLUGGED_BADGES_DEVELOPER": "Người trong đội ngũ phát triển Replugged",
+    "REPLUGGED_BADGES_SUPPORT": "Hỗ trợ viên của Replugged",
+    "REPLUGGED_BADGES_HUNTER": "Người tìm lỗi cho Replugged",
+    "REPLUGGED_BADGES_STAFF": "Người trong đội ngũ quản lý của Replugged",
+    "REPLUGGED_BADGES_TRANSLATOR": "Dịch giả cho Replugged",
+    "REPLUGGED_COMMAND_PREFIX": "Tiền tố của câu lệnh",
+    "REPLUGGED_CUTIE_DONATE": "Ủng hộ cho quá trình phát triển của Replugged",
+    "REPLUGGED_CUTIE_SUBTITLE": "Và nhận được những đặc quyền xịn xò",
+    "REPLUGGED_CUTIE_TIER_1_PRICE": "**$1**/Tháng",
+    "REPLUGGED_CUTIE_TIER_2_DESC": "**Huy hiệu riêng có thể tùy biến** trên profile.",
+    "REPLUGGED_CUTIE_TIER_2_PRICE": "**$5**/Tháng",
+    "REPLUGGED_CUTIE_TIER_3_PRICE": "**$10**/Tháng",
+    "REPLUGGED_CUTIE_TIER_EASTER_DESC": "**Đội ngũ phát triển Replugged** sẽ đến tận nhà bạn để cho bạn một cái **ôm thật chặt luôn**.",
+    "REPLUGGED_CUTIE_TITLE": "Hỗ trợ cho quá trình phát triển Replugged",
+    "REPLUGGED_CUTIE_TIER_EASTER_PRICE": "**$1,337,420.69**",
+    "REPLUGGED_BADGES_EARLY": "Những người sử dụng Replugged đời đầu",
+    "REPLUGGED_BADGES_BOOSTER": "Người đã boost server Discord của Replugged",
+    "REPLUGGED_CUTIE_TIER_1_DESC": "**Role cá nhân có thể tùy biến** trong server Discord của Replugged, và **màu profile riêng** cho huy hiệu trên profile Replugged.",
+    "REPLUGGED_CUTIE_TIER_3_DESC": "**Huy hiệu riêng có thể tùy chỉnh** trong **1** server của bạn."
+}
