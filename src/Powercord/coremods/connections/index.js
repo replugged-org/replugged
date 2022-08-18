@@ -83,9 +83,10 @@ async function patchConnectionsManager() {
   console.log(ConnectionsManager)
 
   // overwrite the behavior of the disconnect account modal
-  inject("pc-connections-ConnectionsManager-disconnect-pre", ConnectionsManager, 'disconnect', (args, res) => {
+  inject("pc-connections-ConnectionsManager-disconnect-pre", ConnectionsManager, 'disconnect', (args) => {
     console.group("pc-connections-ConnectionsManager-disconnect-pre")
-    console.log(args, res)
+    console.log(args)
+    const [type] = args;
 
     if (powercord.api.connections.some(c => c.type === type)) {
       // this is a powercord connection, overwrite the onDisconnect behavior
