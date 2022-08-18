@@ -249,7 +249,7 @@ class Powercord extends Updatable {
           } ]
         });
       }
-      updater.settings.set('awaiting_reload', true);
+      updater.setAwaitingReload();
     }
     return success;
   }

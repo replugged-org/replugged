@@ -23,6 +23,10 @@ class Updater {
     settings.set('checking_progress', null);
   }
 
+  setAwaitingReload () {
+    settings.set('awaiting_reload', true);
+  }
+
   async checkForUpdates (allConcurrent = false) {
     if (
       settings.get('disabled', false) ||
