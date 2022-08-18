@@ -96,6 +96,7 @@ class ThemeSettings extends React.PureComponent {
     }
     return plugins.map(plugin => (
       <InstalledProduct
+        key={plugin.file}
         isEnabled={this.props.getSetting('_enabledPlugins', []).includes(plugin.file)}
         product={{
           name: plugin.name,

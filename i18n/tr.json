@@ -6,7 +6,7 @@
     "REPLUGGED_BADGES_HUNTER": "Replugged Hata Avcısı",
     "REPLUGGED_BADGES_STAFF": "Replugged Personeli",
     "REPLUGGED_BADGES_TRANSLATOR": "Replugged Tercümanı",
-    "REPLUGGED_BADGES_BOOSTER": "Replugged Server Booster",
+    "REPLUGGED_BADGES_BOOSTER": "Replugged Sunucu Destekleyicisi",
     "REPLUGGED_COMMAND_PREFIX": "Komut öneki",
     "REPLUGGED_CUTIE_DONATE": "Bağış Yap",
     "REPLUGGED_CUTIE_SUBTITLE": "Ve tatlı avantajlar elde et",
@@ -81,7 +81,7 @@
     "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Discord'un token'inizi localStorage'dan kaldırmasını engeller, istenmeyen çıkışların sayısını azaltır.",
     "REPLUGGED_SETTINGS_NO_CLYDE": "Clyde'i Ortadan Kaldır",
     "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "[Clyde'i]({clydeUrl}) eklenti geliştiricilerinin şeçtiği avatar ve isimlerle değiştirir - varsayılan olarak \"Replugged\" seçeneğine geri döner.",
-    "REPLUGGED_SETTINGS_OVERLAY": "Overlay DevTools",
+    "REPLUGGED_SETTINGS_OVERLAY": "DevTools Kaplaması",
     "REPLUGGED_SETTINGS_OVERLAY_DESC": "Discord'un oyun içi arayüzünde neler olduğunu kontrol etmenizi sağlayan bir DevTools penceresi açar.",
     "REPLUGGED_SETTINGS_RESTART": "Bu ayarın etkili olması için Discord'u yeniden başlatmanızı gerektirir. Discord'u şimdi yeniden başlatmak istiyor musunuz?",
     "REPLUGGED_SETTINGS_SYNC": "Ayar Senkronizasyonu",
@@ -166,5 +166,8 @@
     "REPLUGGED_QUICKCSS_ENABLED": "Quick CSS Etkinleştirildi",
     "REPLUGGED_PLUGINS_WEBSITE": "Website",
     "REPLUGGED_PLUGINS_DISCORD": "Discord",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Güncelleme denetleyicisini göster"
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Güncelleme denetleyicisini göster",
+    "REPLUGGED_BADGES_SUPPORT": "Replugged İçin Yardım",
+    "REPLUGGED_PLUGINS_GITHUB": "Repositori",
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Eklentilerin güncelleme için kontrol edildiğini söyleyen bir bildirim göster, eğer gücelleme bulunduysa senden güncellenmesini iste. Sadece arkaplan güncellemeleri kapalı ise çalışır."
 }

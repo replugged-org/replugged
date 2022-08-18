@@ -10,6 +10,7 @@ class Plugins extends Base {
   renderItem (item) {
     return (
       <InstalledProduct
+        key={item.entityID}
         product={item.manifest}
         isEnabled={powercord.pluginManager.isEnabled(item.entityID)}
         onToggle={async v => {

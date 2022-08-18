@@ -30,10 +30,11 @@ class Themes extends Base {
   renderItem (item) {
     return (
       <InstalledProduct
+        key={item.entityID}
         product={item.manifest}
         isEnabled={powercord.styleManager.isEnabled(item.entityID)}
         onToggle={async v => {
-          await this._toggle(item.entityID, v);
+          this._toggle(item.entityID, v);
           this.forceUpdate();
         }}
         path={item.entityPath}

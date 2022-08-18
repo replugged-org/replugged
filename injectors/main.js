@@ -11,7 +11,7 @@ exports.inject = async ({ getAppDir }, platform) => {
      * @todo: verify if there is nothing in discord_desktop_core as well
      * @todo: prompt to automatically uninject and continue
      */
-    console.log('Looks like you already have an injector in place. Try unplugging (`npm run unplug`) and try again.', '\n');
+    console.log(`${AnsiEscapes.RED}Looks like you already have an injector in place. Try unplugging (\`npm run unplug\`) and try again.${AnsiEscapes.RESET}`, '\n');
     console.log(`${AnsiEscapes.YELLOW}NOTE:${AnsiEscapes.RESET} If you already have BetterDiscord or another client mod injected, Replugged cannot run along with it!`);
     console.log('Read our FAQ for more details: https://replugged.dev/faq#bd-and-pc');
     return false;
@@ -39,7 +39,7 @@ exports.uninject = async ({ getAppDir }, platform) => {
   const appDir = await getAppDir(platform);
 
   if (!existsSync(appDir)) {
-    console.log('There is nothing to unplug. You are already running Discord without mods.');
+    console.log(`${AnsiEscapes.BOLD}${AnsiEscapes.RED}There is nothing to unplug. You are already running Discord without mods.${AnsiEscapes.RESET}`);
     return false;
   }
 
