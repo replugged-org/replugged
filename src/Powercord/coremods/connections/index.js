@@ -39,14 +39,14 @@ async function patchSettingsConnections () {
 
 async function patchConnectedAccountsStore () {
   const ConnectedAccountsStore = await getModule(m => m.__proto__?.getLocalAccounts);
-  const currentUserId = (await getModule([ 'getCurrentUser' ])).getCurrentUser().id;
+  const CurrentUser = await getModule([ 'getCurrentUser' ]);
 
   // return all of this user's plugin connections from the ConnectedAccountsStore
   inject('pc-connections-ConnectedAccountsStore', ConnectedAccountsStore.__proto__, 'getAccounts', (_, connectedAccounts) => {
     for (const { type } of powercord.api.connections.connections) {
       if (connectedAccounts.some(a => a.type === type)) continue;
 
-      const account = fetchAccount(type, currentUserId);
+      const account = fetchAccount(type, CurrentUser.getCurrentUser().id);
       if (account) {
         account.integrations ??= [];
         account.visibility ??= 1;
