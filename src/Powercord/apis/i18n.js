@@ -13,7 +13,7 @@ module.exports = class I18nAPI extends API {
   }
 
   startAPI () {
-    getModule([ 'locale', 'theme' ]).then(module => {
+    getModule([ 'locale', 'addChangeListener' ]).then(module => {
       this.locale = module.locale;
       module.addChangeListener(() => {
         if (module.locale !== this.locale) {
