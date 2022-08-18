@@ -14,21 +14,113 @@ function log(...data) {
   console.log(`%c[Replugged:Coremod:Connections]`, 'color: #7289da', ...data);
 }
 
-// doesn't do much, probably needs rewriting if i can't get discord to make the elements
 async function patchSettingsConnections() {
-  const UserSettingsConnections = await getModule(m => m.default?.displayName === 'UserSettingsConnections');
-  inject('pc-connections-settings', UserSettingsConnections, 'default', (args, res) => {
-    log(UserSettingsConnections, "\n", args, "\n", res)
-    if (!res.props.children) {
-      return res;
+  console.group("patchSettingsConnections")
+
+  const ConnectAccountButton = await getModule(m => m?.default?.displayName === "ConnectAccountButton");
+
+  // set the behavior of the connect account button (discord checks for an onConnect function)
+  inject("pc-connections-settings", ConnectAccountButton, 'default', ([props]) => {
+    console.group("pc-connections-settings")
+    console.log("b4:", props)
+
+    if (powercord.api.connections.some(c => c.type === props.type)) {
+      // this is a powercord connection, add the onConnect funciton
+      const connection = powercord.api.connections.get(props.type);
+      props.onConnect = connection.onConnect;
     }
 
-    const connectedAccounts = res.props.children[2].props.children;
-    connectedAccounts.push(React.createElement(SettingsConnections, {}));
-    return res;
+    console.log("a5ter:", props)
+    console.groupEnd()
+    return [props]
+  }, true);
+
+  console.groupEnd()
+}
+
+async function patchConnectedAccountsStore() {
+  console.group("patchConnectedAccountsStore")
+
+  const ConnectedAccountsStore = await getModule(m => m.__proto__?.getLocalAccounts);
+  const currentUser = (await getModule(["getCurrentUser"])).getCurrentUser();
+
+  console.log(ConnectedAccountsStore)
+
+  // return all of this user's plugin connections from the ConnectedAccountsStore
+  inject("pc-connections-ConnectedAccountsStore-getAccounts", ConnectedAccountsStore.__proto__, 'getAccounts', (_, connectedAccounts) => {
+    console.group("pc-connections-ConnectedAccountsStore-getAccounts")
+
+    console.log("%cconnectedAccounts b4:", 'color:limegreen')
+    console.log(connectedAccounts);
+
+    for (const { type } of powercord.api.connections.connections) {
+      if (connectedAccounts.some(a => a.type === type)) continue;
+
+      let account = fetchAccount(type, currentUser.id);
+      if (account) {
+        account = {
+          ...account,
+          integrations: [],
+          visibility: 1
+        }
+
+        connectedAccounts.push(account);
+      }
+    }
+
+    console.log("a5ter:", connectedAccounts);
+
+    console.groupEnd();
+    return connectedAccounts;
   });
 
-  UserSettingsConnections.default.displayName = 'UserSettingsConnections';
+  console.groupEnd()
+}
+
+async function patchConnectionsManager() {
+  console.group("patchConnectionsManager")
+  const ConnectionsManager = (await getModule(m => m?.default?.completeTwoWayLink)).default;
+  console.log(ConnectionsManager)
+
+  // overwrite the behavior of the disconnect account modal
+  inject("pc-connections-ConnectionsManager-disconnect-pre", ConnectionsManager, 'disconnect', (args, res) => {
+    console.group("pc-connections-ConnectionsManager-disconnect-pre")
+    console.log(args, res)
+
+    if (powercord.api.connections.some(c => c.type === type)) {
+      // this is a powercord connection, overwrite the onDisconnect behavior
+      const connection = powercord.api.connections.get(type);
+      connection.onDisconnect?.(); // call method if it exists, otherwise do nothing
+
+      console.groupEnd()
+      return false; // don't run the original function
+    }
+
+    console.groupEnd()
+    return args
+  }, true);
+
+  // overwrite the behavior of the account visibility switch
+  inject("pc-connections-ConnectionsManager-setVisibility-pre", ConnectionsManager, 'setVisibility', (args) => {
+    console.group("pc-connections-ConnectionsManager-setVisibility-pre");
+
+    [type, _, visible] = args;
+    console.log(type, visible)
+
+    if (powercord.api.connections.some(c => c.type === type)) {
+      // this is a powercord connection, overwrite the setVisibility behavior
+      const connection = powercord.api.connections.get(type);
+      connection.setVisibility?.(visible === 1); // call method if it exists, otherwise do nothing
+
+      console.groupEnd()
+      return false; // don't run the original function
+    }
+
+    console.groupEnd()
+    return args
+  }, true);
+
+  console.groupEnd()
 }
 
 // [userId][type] -> {account}, "pending", or undefined
@@ -144,13 +236,8 @@ async function patchUserConnections() {
       }
       );
 
-
-      // TODO: why is the account appearing multiple times now????
-      console.log(ConnectableAccounts.get, typeof ConnectableAccounts.get)
-      console.log(ConnectableAccounts.get.__powercordOriginal_get, typeof ConnectableAccounts.get.__powercordOriginal_get)
-
       // have to overwrite get to prevent the original from being called, as it crashes w/ unknown connection types
-      if (typeof ConnectableAccounts.get.__powercordOriginal_get === "undefined") {
+      if (typeof ConnectableAccounts.__powercordOriginal_get === "undefined") {
         console.log("overwriting ConnectableAccounts.get")
         const originalGet = ConnectableAccounts.get
 
@@ -170,32 +257,7 @@ async function patchUserConnections() {
           console.groupEnd()
           return ret
         }
-
-        /*ConnectableAccounts.get = (type) => {
-          if (type !== "spotify") console.log(ConnectableAccounts.get, typeof ConnectableAccounts.get)
-          if (type !== "spotify") console.log(ConnectableAccounts.get.__powercordOriginal_get, typeof ConnectableAccounts.get.__powercordOriginal_get)
-          let ret = powercord.api.connections.get(type) ?? originalGet(type)
-
-          // convert old icon format to what discord's looking for
-          /*if (ret.icon.color) {
-            if (ret.icon.color.endsWith('.png')) {
-              ret.icon.darkPNG = ret.icon.color;
-              ret.icon.lightPNG = ret.icon.color;
-              ret.icon.whitePNG = ret.icon.color;
-            }
-            if (ret.icon.color.endsWith('.svg')) {
-              ret.icon.darkSVG = ret.icon.color;
-              ret.icon.lightSVG = ret.icon.color;
-              ret.icon.whiteSVG = ret.icon.color;
-            }
-          }*/
-        //debug
-        /*  if (type !== "spotify") console.log(ret)
-
-          return ret;
-        }*/
-
-        ConnectableAccounts.get.__powercordOriginal_get = originalGet
+        ConnectableAccounts.__powercordOriginal_get = originalGet
       }
       console.groupEnd()
     }
@@ -213,6 +275,8 @@ module.exports = async () => {
   const styleId = loadStyle(join(__dirname, 'style.css'));
   patchSettingsConnections();
   patchUserConnections();
+  patchConnectedAccountsStore();
+  patchConnectionsManager();
   log("Patching complete")
 
   return () => {

@@ -15,6 +15,10 @@ module.exports = class ConnectionsAPI extends API {
     return this.connections.filter.bind(this.connections);
   }
 
+  get some() {
+    return this.connections.some.bind(this.connections);
+  }
+
   registerConnection (connection) {
     if (this.get(connection.type)) {
       throw new Error('This type of connection already exists!');
