@@ -49,6 +49,7 @@ class Updater {
     const updates = [];
     const entitiesLength = entities.length;
     const parallel = allConcurrent ? entitiesLength : settings.get('concurrency', 2);
+    const checkVersion = settings.get('checkversion', true);
     await Promise.all(Array(parallel).fill(null).map(async () => {
       let entity;
       while ((entity = entities.shift())) {
@@ -61,7 +62,7 @@ class Updater {
               if (commits[0] && skipped[entity.updateIdentifier] === commits[0].id) {
                 continue;
               }
-              if (settings.get('checkversion', true)) {
+              if (checkVersion) {
                 const manifestVersion = entity.manifest?.version ?? null;
                 const manifestNewVersion = await entity._getUpdateVersion();
                 if (manifestVersion === manifestNewVersion) {
