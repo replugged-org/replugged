@@ -169,5 +169,7 @@
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "You can choose between the stable branch, or the development branch. Stable branch will only get major updates, security and critical updates. If unsure, stay on stable.",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Show an overlay over the client which says updates are being checked for, and if updates are found, prompt you to update. Only applies if update in background is disabled.",
     "REPLUGGED_UPDATES_UNSUPPORTED_DESC": "You're using an unsupported build of Discord ({releaseChannel}). Plugins and themes might not fully work on this build, and you may experience crashes.",
-    "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "This passphrase will be used to encrypt your data before sending it to Replugged's servers. It's recommended to set one, but you can just leave this empty to send your data unencrypted."
+    "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "This passphrase will be used to encrypt your data before sending it to Replugged's servers. It's recommended to set one, but you can just leave this empty to send your data unencrypted.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Check manifest version",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged will only show updates if the manifest version has changed."
 }

@@ -102,12 +102,12 @@
     "REPLUGGED_THEMES_UNINSTALL": "Desinstalar tema",
     "REPLUGGED_THEMES_UNINSTALL_SURE": "¿Seguro que quieres desinstalar este tema?",
     "REPLUGGED_THEMES_WIP1": "Esta parte de Replugged aún no se ha terminado.",
-    "REPLUGGED_THEMES_WIP2": "Estamos trabajando en ello y lo lanzará antes de 2021.",
+    "REPLUGGED_THEMES_WIP2": "Estamos trabajando en ello y lo lanzaremos antes de 2021.",
     "REPLUGGED_UNLINK": "Desvincular",
     "REPLUGGED_UPDATES_AVAILABLE": "Actualizaciones disponibles.",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_DESC": "Algunas actualizaciones requieren una recarga del cliente para completarse.",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "Se requiere recarga",
-    "REPLUGGED_UPDATES_BRANCH": "Branch:",
+    "REPLUGGED_UPDATES_BRANCH": "Rama:",
     "REPLUGGED_UPDATES_CHECK": "Buscar actualizaciones",
     "REPLUGGED_UPDATES_CHECKING": "Buscando actualizaciones…",
     "REPLUGGED_UPDATES_CHECKING_STATUS": "Comprobando {checked}/{total}",
@@ -129,7 +129,7 @@
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Actualizar límite de concurrencia",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY_DESC": "Cuántas tareas concurrentes Replugged ejecutará en segundo plano para buscar actualizaciones. Mínimo 1. Si no está seguro, deje 2.",
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Información de depuración",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Cosas que t puede resultarle útil para solucionar problemas o flexionar algunas estadísticas.",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Cosas que te pueden resultar útil para solucionar problemas o flexionar algunas estadísticas.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Actualizar intervalo de verificación",
     "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Con qué frecuencia Replugged buscará actualizaciones (en minutos). Mínimo 10 minutos.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Cambiar canal de publicación",
@@ -169,5 +169,7 @@
     "REPLUGGED_PLUGINS_PATH": "Abrir Carpeta",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Mostrar notificaciones de actualizaciones",
     "REPLUGGED_PLUGINS_GITHUB": "Repositorio",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Muestra un overlay sobre el cliente que dice que se están buscando actualizaciones, y si se encuentran actualizaciones, le pide que las actualice. Solo se aplica si la actualización en segundo plano está desactivada."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Muestra un overlay sobre el cliente que dice que se están buscando actualizaciones, y si se encuentran actualizaciones, le pide que las actualice. Solo se aplica si la actualización en segundo plano está desactivada.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Comprobar versión del manifiesto",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged solo mostrara actualizaciones si la versión del manifiesto ha cambiado."
 }

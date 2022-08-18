@@ -66,7 +66,7 @@
     "REPLUGGED_QUICKCSS_SETTINGS_MATCH_BRACKETS": "匹配括號",
     "REPLUGGED_QUICKCSS_SETTINGS_MATCH_BRACKETS_DESC": "當滑鼠在括號旁，會突出顯示匹配的括號。",
     "REPLUGGED_QUICKCSS_SETTINGS_TABS": "使用tabs以進行縮排",
-    "REPLUGGED_QUICKCSS_SETTINGS_WRAP": "收起長的行",
+    "REPLUGGED_QUICKCSS_SETTINGS_WRAP": "後端網址長的行",
     "REPLUGGED_REFRESH_ACCOUNTS": "刷新帳戶",
     "REPLUGGED_SETTINGS_ADVANCED_DESC": "如果你不知道你在做什麽不要碰這裏的東西。出乎意料的事情會發生在你的貓上。",
     "REPLUGGED_SETTINGS_BACKEND": "後端網址",
@@ -76,7 +76,7 @@
     "REPLUGGED_SETTINGS_CACHE_DISCORD_DESC": "刪除存儲在Discord緩存資料夾的所以東西。因爲東西需要重新取得，所以你可能會暫時感覺Discord變慢了。",
     "REPLUGGED_SETTINGS_CACHE_REPLUGGED": "清除Replugged的緩存",
     "REPLUGGED_SETTINGS_CACHE_REPLUGGED_DESC": "清除Replugged的緩存。因爲某些文件要重新建立，下次重新啟動可能會感覺比較慢。",
-    "REPLUGGED_SETTINGS_DEBUG_LOGS": "Debug日誌",
+    "REPLUGGED_SETTINGS_DEBUG_LOGS": "調試日誌",
     "REPLUGGED_SETTINGS_DEBUG_LOGS_DESC": "將控制台內容保存到文件中。如果Discord意外崩潰，對debug很有用。",
     "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "啟用Discord試驗",
     "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****警告:****啟用此可讓你訪問Discord可檢測到的功能，並可能導致****帳戶終止****。Replugged對你使用此功能所做的事情**不負責**。如果您不確定，請將其禁用。Replugged團隊將**不**為任何試驗提供任何幫助。**需要重新啟動**。",
@@ -169,5 +169,5 @@
     "REPLUGGED_UPDATE_PASSPHRASE": "更新密碼片語",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "此密碼片語將用於加密你的數據，然後再將其發送到Replugged的服務器。建議設定一個密碼片語，但你亦可以將其留空以發送未加密的數據。",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "如果您已經在其他機器上使用同步，請輸入你使用的相同密碼。 **使用另一個密碼會覆蓋舊數據，所以請小心**。",
-    "REPLUGGED_LINKING_WAITING": "正在連接你的帳戶…"
+    "REPLUGGED_LINKING_WAITING": "正在连接你的帐户…"
 }

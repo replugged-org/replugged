@@ -169,5 +169,7 @@
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Deze wachtwoordzin zal gebruikt worden om je data te versleutelen voordat het naar Replugged's servers gestuurd word. Het is aanbevolen om er een in te stellen, maar je kan dit veld leeg laten voor je data onversleuteld te versturen.",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Als je synchronisatie al op andere apparaten gebruikt, gebruik dan dezelfde wachtwoordzin die je ergens anders hebt gebruikt. **Als je een andere wachtwoordzin gebruikt, worden oude gegevens overschreven, dus wees voorzichtig**.",
     "REPLUGGED_UPDATES_TOAST_AVAILABLE_HEADER": "Updates zijn beschikbaar!",
-    "REPLUGGED_UPDATES_TOAST_FAILED": "Sommige updates konden niet worden geïnstalleerd…"
+    "REPLUGGED_UPDATES_TOAST_FAILED": "Sommige updates konden niet worden geïnstalleerd…",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Manifest-versie controleren",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged zal alleen updates laten zien als de manifest-versie is veranderd."
 }

@@ -15,9 +15,9 @@
     "REPLUGGED_CUTIE_TIER_2_DESC": "Erhalte ein **vollständig anpassbares** individuelles Abzeichen auf deinem Profil.",
     "REPLUGGED_CUTIE_TIER_2_PRICE": "**$5**/Monat",
     "REPLUGGED_CUTIE_TIER_3_DESC": "Erhalte ein **vollständig anpassbares** Badge für **einer** deiner Server.",
-    "REPLUGGED_CUTIE_TIER_3_PRICE": "**10 €**/Monat",
+    "REPLUGGED_CUTIE_TIER_3_PRICE": "**$10 USD**/Monat",
     "REPLUGGED_CUTIE_TIER_EASTER_DESC": "Die **Replugged Entwickler** werden dich besuchen, wo auch immer du wohnst, um **dich zu umarmen**.",
-    "REPLUGGED_CUTIE_TIER_EASTER_PRICE": "**1.337.420,69 €**",
+    "REPLUGGED_CUTIE_TIER_EASTER_PRICE": "**$1.337.420,69 USD**",
     "REPLUGGED_CUTIE_TITLE": "Unterstütze Repluggeds Entwicklung",
     "REPLUGGED_GENERAL_SETTINGS": "Allgemeine Einstellungen",
     "REPLUGGED_I18N_CONTRIBUTE": "Psst! Willst du uns helfen Replugged zu übersetzen? Geh zu unserem [Weblate]({weblateUrl})!",
@@ -45,7 +45,7 @@
     "REPLUGGED_PLUGINS_PERMISSIONS_USE_EUD": "Deine Daten sammeln und verwenden",
     "REPLUGGED_PLUGINS_SEARCH": "Plugins suchen…",
     "REPLUGGED_PLUGINS_UNINSTALL": "Deinstalliere {pluginCount, plural, =1 {Plugin} other {Plugins}}",
-    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "Bist du sicher, dass du {pluginCount, plural, =1 {dieses Plugin} other {diese Plugins}} deinstallieren willst?",
+    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "Bist du sicher, dass du {pluginCount, plural, =1 {this plugin} other {these plugins}} deinstallieren willst?",
     "REPLUGGED_PLUGINS_VERSION": "Version",
     "REPLUGGED_PRODUCT_LOOKING": "Wonach suchst du?",
     "REPLUGGED_QUICKCSS": "Quick CSS",
@@ -169,5 +169,7 @@
     "REPLUGGED_PLUGINS_GITHUB": "Repository",
     "REPLUGGED_PLUGINS_DISCORD": "Discord",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Updatebenachrichtigungen anzeigen",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Zeigt ein Popup an, dass nach Updates gesucht wird und fordert zum Update auf, falls welche verfügbar sind. Nur dann aktiv, wenn automatische Updates im Hintergrund deaktiviert sind."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Zeigt ein Popup an, dass nach Updates gesucht wird und fordert zum Update auf, falls welche verfügbar sind. Nur dann aktiv, wenn automatische Updates im Hintergrund deaktiviert sind.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged zeigt nur Aktualisierungen an, wenn sich die Manifestversion geändert hat.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Manifestversion prüfen"
 }

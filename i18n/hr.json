@@ -169,5 +169,7 @@
     "REPLUGGED_UPDATE_PASSPHRASE": "Ažurirajte lozinku",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Ako već koristite sinkronizaciju na drugim računalima, stavite istu šifru koju ste koristili. **Korištenje druge zaporke prebrisat će stare podatke, stoga budite oprezni**.",
     "REPLUGGED_UPDATES_UPDATE": "Ažurirajte Sada",
-    "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Ova šifra će se koristiti za šifriranje vaših podataka prije slanja na poslužitelje Repluggeda. Preporuča se da ga postavite, ali ovo možete ostaviti praznim da biste svoje podatke poslali nekriptirani."
+    "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Ova šifra će se koristiti za šifriranje vaših podataka prije slanja na poslužitelje Repluggeda. Preporuča se da ga postavite, ali ovo možete ostaviti praznim da biste svoje podatke poslali nekriptirani.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Provjerite verziju manifesta",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged će prikazati ažuriranja samo ako se verzija manifesta promijenila."
 }

@@ -169,5 +169,7 @@
     "REPLUGGED_PLUGINS_PATH": "Abre a Pasta de Ficheiros",
     "REPLUGGED_QUICKCSS_ENABLED": "Quick CSS Ativado",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Mostrar update checker toast",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Mostra um overlay sobre o cliente, que diz que está à procura de atualizações, e, que se for encontrada alguma, propõe a que esta seja efetuada. Apenas se aplica se a opção de atualização em segundo plano estiver desativada."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Mostra um overlay sobre o cliente, que diz que está à procura de atualizações, e, que se for encontrada alguma, propõe a que esta seja efetuada. Apenas se aplica se a opção de atualização em segundo plano estiver desativada.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Verificar a versão do manifest",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged só mostrará actualizações se a versão do manifest tiver sido alterada."
 }
