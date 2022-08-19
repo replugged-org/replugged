@@ -166,7 +166,7 @@
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Показывать уведомления проверки обновлений",
     "REPLUGGED_PLUGINS_GITHUB": "Репозиторий",
     "REPLUGGED_PLUGINS_WEBSITE": "Веб-сайт",
-    "REPLUGGED_PLUGINS_DISCORD": "Discord",
+    "REPLUGGED_PLUGINS_DISCORD": "Дискорд",
     "REPLUGGED_PLUGINS_PATH": "Открыть папку",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Показывает оверлей, сообщающий о текущей проверка обновлений, и предлагает установить их, если они присутствуют. Применяется лишь если обновления в фоне отключены.",
     "REPLUGGED_QUICKCSS_ENABLED": "Быстрая CSS активирован",
