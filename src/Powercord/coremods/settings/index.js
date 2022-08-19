@@ -20,7 +20,7 @@ const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 function _renderWrapper (label, Component) {
   return React.createElement(ErrorBoundary, null,
     React.createElement(FormSection, {},
-      React.createElement(FormTitle, { tag: 'h2' }, label),
+      React.createElement(FormTitle, { tag: 'h1' }, label),
       React.createElement(Component)
     )
   );
