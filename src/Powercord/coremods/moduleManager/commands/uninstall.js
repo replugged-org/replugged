@@ -16,8 +16,6 @@ module.exports = {
       return resp(false, `Could not find plugin or theme matching "${id}".`);
     } else if (isPlugin && isTheme) { // Duplicate name
       return resp(false, `"${id}" is in use by both a plugin and theme. You will have to uninstall it from settings.`);
-    } else if (isPlugin && id.startsWith('pc-')) { // Internal plugin
-      return resp(false, `"${id}" provides core functionality and cannot be uninstalled.`);
     }
 
     const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;

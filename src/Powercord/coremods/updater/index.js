@@ -7,7 +7,6 @@ const { Confirm } = require('powercord/components/modal');
 const { join } = require('path');
 
 const Settings = require('./components/Settings.jsx');
-
 const changelog = require('../../../../changelogs.json');
 
 const settings = powercord.api.settings.buildCategoryObject('pc-updater');
@@ -238,7 +237,8 @@ class Updater {
       .then(r => r.stdout.toString().trim());
 
     const upstream = await PowercordNative.exec('git remote get-url origin', this.cwd)
-      .then(r => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)[1]);
+      .then(r => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)?.[1] ||
+          r.stdout.toString().trim().match(/(.*):(.*\/.*)/)[2])
 
     return {
       upstream,

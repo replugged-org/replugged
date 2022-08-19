@@ -29,6 +29,11 @@ module.exports = class PluginManager {
 
   // Mount/load/enable/install shit
   mount (pluginID) {
+    if (pluginID.startsWith('.')) {
+      console.debug('%c[Replugged]', 'color: #7289da', 'Ignoring dotfile', pluginID);
+      return;
+    }
+
     let manifest;
     try {
       manifest = Object.assign({
