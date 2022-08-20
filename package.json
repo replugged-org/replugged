@@ -11,7 +11,8 @@
     "unplug": "node injectors/index.js uninject --no-exit-codes",
     "repair": "npm run unplug && git pull && npm run plug",
     "inject": "node injectors/index.js inject --no-exit-codes",
-    "uninject": "node injectors/index.js uninject --no-exit-codes"
+    "uninject": "node injectors/index.js uninject --no-exit-codes",
+    "move-plugins": "node injectors/moveplugs.js"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",
@@ -21,6 +22,7 @@
   "dependencies": {
     "codemirror": "^5.57.0",
     "fix-path": "^3.0.0",
+    "fs-extra": "^10.1.0",
     "less": "^3.12.2",
     "node-watch": "^0.6.4",
     "sass": "^1.35.2",
