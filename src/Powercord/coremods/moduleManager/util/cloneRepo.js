@@ -11,7 +11,7 @@ module.exports = async function download (url, powercord, type) {
       dir = join(__dirname, '..', '..', '..', '..', '..', 'plugins');
       break;
     case 'theme':
-      dir = join(__dirname, '..', '..', '..', 'themes');
+      dir = join(__dirname, '..', '..', '..', '..', '..', 'themes');
       break;
   }
 

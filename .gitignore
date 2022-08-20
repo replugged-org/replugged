@@ -7,15 +7,13 @@ package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
-src/Powercord/plugins/*
-!src/Powercord/plugins/.gitkeep
 
 plugins/*
 !plugins/.gitkeep
 
 src/Powercord/coremods/react-devtools/ext
-src/Powercord/themes/*
-!src/Powercord/themes/.gitkeep
+themes/*
+!themes/.gitkeep
 
 settings/*.json
 
