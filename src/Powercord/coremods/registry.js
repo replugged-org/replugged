@@ -10,5 +10,6 @@ module.exports = [
   require('./moduleManager'),
   require('./commands'),
   require('./notices'),
-  require('./routelinks')
+  require('./routelinks'),
+  require('./plugin-embeds')
 ];

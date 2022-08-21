@@ -171,5 +171,14 @@
     "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged is up to date.",
     "REPLUGGED_UPDATE_PASSPHRASE": "Update passphrase",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "This passphrase will be used to encrypt your data before sending it to Replugged's servers. It's recommended to set one, but you can just leave this empty to send your data unencrypted.",
-    "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "If you're already using sync on other machines, put the same passphrase you used. **Using another passphrase will overwrite old data, so be careful**."
+    "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "If you're already using sync on other machines, put the same passphrase you used. **Using another passphrase will overwrite old data, so be careful**.",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Copy Link",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "View Repo",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Copied!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "What is this?",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "This is a Replugged feature. It allows you to install plugins or themes straight from chat.\nSimply hit the install button on the embed.",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin already installed!",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Theme already installed!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Install Plugin",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Install Theme"
 }

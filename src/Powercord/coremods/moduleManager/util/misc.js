@@ -1,7 +1,7 @@
 const { WEBSITE } = require('powercord/constants');
 
 const INSTALLER_PATH_REGEX = /^\/install\?url=(.*)/;
-const REPO_URL_REGEX = /https?:\/\/(?:www\.)?github\.com\/([^/\s>]+)\/([^/\s>]+)(?:\/tree\/([^\s>]+))?/;
+const REPO_URL_REGEX = /https?:\/\/(?:www\.)?github\.com\/([^/\s>]+)\/([^/\s>]+)(?:\/tree\/([^/\s>]+))?\/?(?=\s|$)/;
 
 exports.REPO_URL_REGEX = REPO_URL_REGEX;
 
