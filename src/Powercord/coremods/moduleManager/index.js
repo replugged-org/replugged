@@ -185,6 +185,7 @@ async function _loadQuickCSS () {
       _quickCSSElement.innerHTML = _quickCSS;
     }
   }
+  powercord.api.moduleManager._quickCSSElement = _quickCSSElement;
 }
 
 async function _clearQuickCSSElement () {
@@ -228,7 +229,9 @@ module.exports = async () => {
     _applySnippet,
     _fetchEntities,
     _clearQuickCSSElement,
-    _quickCSS
+    _quickCSS,
+    _quickCSSFile,
+    _quickCSSElement
   };
 
   // this is for the new api
@@ -272,7 +275,7 @@ module.exports = async () => {
   }
 
   return () => {
-    document.querySelector('#powercord-quickcss').remove();
+    document.querySelector('#powercord-quickcss')?.remove();
     powercord.api.settings.unregisterSettings('pc-moduleManager-plugins');
     powercord.api.settings.unregisterSettings('pc-moduleManager-themes');
     powercord.api.settings.unregisterSettings('pc-moduleManager-css');

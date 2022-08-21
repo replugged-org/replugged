@@ -4,6 +4,7 @@ const { SwitchItem, TextInput, Category, ButtonItem } = require('powercord/compo
 const { open: openModal, close: closeModal } = require('powercord/modal');
 const { Confirm } = require('powercord/components/modal');
 const { REPO_URL, CACHE_FOLDER } = require('powercord/constants');
+const { debugInfo } = require('../../util');
 const { clipboard } = require('electron');
 const { readdirSync, existsSync, lstatSync } = require('fs');
 
@@ -181,6 +182,13 @@ module.exports = class UpdaterSettings extends React.PureComponent {
           note={Messages.REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC}
         >
           {Messages.REPLUGGED_UPDATES_OPTS_TOAST_ENABLED}
+        </SwitchItem>
+        <SwitchItem
+          value={this.props.getSetting('checkversion', true)}
+          onChange={() => this.props.toggleSetting('checkversion', true)}
+          note={Messages.REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC}
+        >
+          {Messages.REPLUGGED_UPDATES_OPTS_CHECK_VER}
         </SwitchItem>
         <TextInput
           note={Messages.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC}
@@ -433,18 +441,9 @@ module.exports = class UpdaterSettings extends React.PureComponent {
     />;
   }
 
-  handleDebugInfoCopy (plugins) {
-    const extract = document.querySelector('.debug-info > code')
-      .innerText.replace(/([A-Z/ ]+) (?=\s(?!C:\\).*?:)/g, '\n[$1]').replace(/(.*?):\s(.*.+)/g, '$1="$2"').replace(/[ -](\w*(?=.*=))/g, '$1');
-
+  handleDebugInfoCopy () {
     this.setState({ copied: true });
-    clipboard.writeText(
-      `\`\`\`ini
-      # Debugging Information | Result created: ${new Date().toUTCString()}
-      ${extract.substring(0, extract.indexOf('\nPlugins', extract.indexOf('\nPlugins') + 1))}
-      Plugins="${plugins.join(', ')}"${window.bdplugins ? `\nBDPlugins="${Object.keys(window.bdplugins).join(', ')}"` : ''}
-      \`\`\``.replace(/ {6}|n\/a/g, '').replace(/(?![0-9]{1,3}) \/ (?=[0-9]{1,3})/g, '/')
-    );
+    clipboard.writeText(debugInfo(this.props.getSetting));
     setTimeout(() => this.setState({ copied: false }), 2500);
   }
 };

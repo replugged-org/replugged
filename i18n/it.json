@@ -11,13 +11,13 @@
     "REPLUGGED_CUTIE_DONATE": "Dona",
     "REPLUGGED_CUTIE_SUBTITLE": "E ottieni vantaggi",
     "REPLUGGED_CUTIE_TIER_1_DESC": "Ottieni un **ruolo completamente personalizzato** sul server di Replugged, e **colori personalizzati** per i badge del tuo profilo Replugged.",
-    "REPLUGGED_CUTIE_TIER_1_PRICE": "**$1** al mese",
+    "REPLUGGED_CUTIE_TIER_1_PRICE": "**1€** al mese",
     "REPLUGGED_CUTIE_TIER_2_DESC": "Ottieni un badge **completamente personalizzabile** sul tuo profilo.",
-    "REPLUGGED_CUTIE_TIER_2_PRICE": "**$5** al mese",
+    "REPLUGGED_CUTIE_TIER_2_PRICE": "**5€** al mese",
     "REPLUGGED_CUTIE_TIER_3_DESC": "Ottieni un badge **completamente personalizzabile** per **uno** dei tuoi server.",
-    "REPLUGGED_CUTIE_TIER_3_PRICE": "**$10** al mese",
+    "REPLUGGED_CUTIE_TIER_3_PRICE": "**10€** al mese",
     "REPLUGGED_CUTIE_TIER_EASTER_DESC": "**Gli Sviluppatori di Replugged** verranno a visitarti ovunque tu viva e ti **daranno un abbraccio**.",
-    "REPLUGGED_CUTIE_TIER_EASTER_PRICE": "**$1,337,420.69**",
+    "REPLUGGED_CUTIE_TIER_EASTER_PRICE": "**1,337,420.69$**",
     "REPLUGGED_CUTIE_TITLE": "Supporta lo sviluppo di Replugged",
     "REPLUGGED_GENERAL_SETTINGS": "Settaggi Generali",
     "REPLUGGED_I18N_CONTRIBUTE": "Psst! Vuoi aiutare a tradurre Replugged? Vai su [Weblate]({weblateUrl})!",
@@ -169,5 +169,7 @@
     "REPLUGGED_PLUGINS_GITHUB": "Repo",
     "REPLUGGED_BADGES_SUPPORT": "Supporto Replugged",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Mostra il toast del controllo aggiornamenti",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Mostra un overlay sul client che dice che gli aggiornamenti sono in fase di verifica e, se vengono trovati aggiornamenti, ti chiede di aggiornare. Si applica solo se l'aggiornamento in background è disabilitato."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Mostra un overlay sul client che dice che gli aggiornamenti sono in fase di verifica e, se vengono trovati aggiornamenti, ti chiede di aggiornare. Si applica solo se l'aggiornamento in background è disabilitato.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Controlla la versione del manifest",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged mostrerà gli aggiornamenti solo se la versione del manifest è cambiata."
 }

@@ -1,4 +1,4 @@
-const { loadStyle } = require('../util');
+const { loadStyle, debugInfo } = require('../util');
 
 const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
@@ -7,7 +7,6 @@ const { Confirm } = require('powercord/components/modal');
 const { join } = require('path');
 
 const Settings = require('./components/Settings.jsx');
-
 const changelog = require('../../../../changelogs.json');
 
 const settings = powercord.api.settings.buildCategoryObject('pc-updater');
@@ -21,6 +20,10 @@ class Updater {
     settings.set('updating', false);
     settings.set('awaiting_reload', false);
     settings.set('checking_progress', null);
+  }
+
+  setAwaitingReload () {
+    settings.set('awaiting_reload', true);
   }
 
   async checkForUpdates (allConcurrent = false) {
@@ -49,6 +52,7 @@ class Updater {
     const updates = [];
     const entitiesLength = entities.length;
     const parallel = allConcurrent ? entitiesLength : settings.get('concurrency', 2);
+    const checkVersion = settings.get('checkversion', true);
     await Promise.all(Array(parallel).fill(null).map(async () => {
       let entity;
       while ((entity = entities.shift())) {
@@ -61,10 +65,12 @@ class Updater {
               if (commits[0] && skipped[entity.updateIdentifier] === commits[0].id) {
                 continue;
               }
-              const manifestVersion = entity.manifest?.version ?? null;
-              const manifestNewVersion = await entity._getUpdateVersion();
-              if (manifestVersion === manifestNewVersion) {
-                continue;
+              if (checkVersion) {
+                const manifestVersion = entity.manifest?.version ?? null;
+                const manifestNewVersion = await entity._getUpdateVersion();
+                if (manifestVersion === manifestNewVersion) {
+                  continue;
+                }
               }
               updates.push({
                 id: entity.updateIdentifier,
@@ -231,7 +237,8 @@ class Updater {
       .then(r => r.stdout.toString().trim());
 
     const upstream = await PowercordNative.exec('git remote get-url origin', this.cwd)
-      .then(r => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)[1]);
+      .then(r => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)?.[1] ||
+          r.stdout.toString().trim().match(/(.*):(.*\/.*)/)[2])
 
     return {
       upstream,
@@ -356,6 +363,16 @@ module.exports = async () => {
     render: Settings
   });
 
+  powercord.api.commands.registerCommand({
+    command: 'debug',
+    usage: '{c}',
+    description: 'Sends the device\'s, discord\'s, and replugged\'s debug info in chat.',
+    executor: () => ({
+      send: true,
+      result: debugInfo(settings.get)
+    })
+  });
+
   let minutes = Number(settings.get('interval', 15));
   if (minutes < 1) {
     settings.set('interval', 1);
@@ -375,6 +392,7 @@ module.exports = async () => {
 
   return () => {
     powercord.api.settings.unregisterSettings('pc-updater');
+    powercord.api.commands.unregisterCommand('debug');
     clearInterval(updater._interval);
     delete powercord.api.updater;
   };

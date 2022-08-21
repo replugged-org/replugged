@@ -47,7 +47,7 @@ const runMigrations = require('./migrations');
  */
 class Powercord extends Updatable {
   constructor () {
-    super(join(__dirname, '..', '..'), '', 'base', 'powercord');
+    super(join(__dirname, '..', '..'), 'base', '', 'powercord');
 
     this.api = {};
     this.gitInfos = {
@@ -249,7 +249,7 @@ class Powercord extends Updatable {
           } ]
         });
       }
-      updater.settings.set('awaiting_reload', true);
+      updater.setAwaitingReload();
     }
     return success;
   }
