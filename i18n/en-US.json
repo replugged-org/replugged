@@ -176,7 +176,7 @@
   "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "View Repo",
   "REPLUGGED_PLUGIN_EMBED_COPIED": "Copied!",
   "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "What is this?",
-  "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "This is a Replugged feature. It allows you to install plugins straight from  chat.\nSimply hit the install button on the embed.",
+  "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "This is a Replugged feature. It allows you to install plugins or themes straight from chat.\nSimply hit the install button on the embed.",
   "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin already installed!",
   "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Theme already installed!",
   "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Install Plugin",
