@@ -171,5 +171,13 @@
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Updatebenachrichtigungen anzeigen",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Zeigt ein Popup an, dass nach Updates gesucht wird und fordert zum Update auf, falls welche verfügbar sind. Nur dann aktiv, wenn automatische Updates im Hintergrund deaktiviert sind.",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged zeigt nur Aktualisierungen an, wenn sich die Manifestversion geändert hat.",
-    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Manifestversion prüfen"
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Manifestversion prüfen",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Kopiert!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Was ist das?",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin bereits installiert!",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Link kopieren",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Theme bereits installiert!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Plugin installieren",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Theme installieren",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Repo ansehen"
 }

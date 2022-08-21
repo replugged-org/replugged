@@ -171,5 +171,14 @@
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Tätä tunnuslausetta käytetään sinun datasi salaamiseen ennen kuin se lähetetään Repluggedin palvelimille. On suositeltavaa asettaa yksi, mutta voit jättää tämän tyhjäksi, lähettääksesi datasi salaamattomana.",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Jos jo käytät synkkausta muilla laitteilla, aseta sama tunnuslause mitä käytit. **Toisen tunnuslauseen käyttö kirjoittaa vanhan datan päälle, joten ole varovainen**.",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Tarkista manifesti versio",
-    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged näyttää vain päivityksiä jos manifesti versio on muuttunut."
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged näyttää vain päivityksiä jos manifesti versio on muuttunut.",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Kopioi Linkki",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Katso Repo",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Kopioitu!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Mikä tämä on?",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugini on jo asennettu!",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Teema on jo asennettu!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Asenna Plugini",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Asenna Teema",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Tämä on Replugged ominaisuus. Se mahdollistaa pluginien ja teemojen latauksen suoraan chatistä.\nKlikkaa vain asennus nappia embedissä."
 }

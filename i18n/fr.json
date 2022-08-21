@@ -171,5 +171,14 @@
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Affiche le toast des MAJ",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Affiche un overlay informant qu'une recherche des mises à jour est en cours, et vous demande de les installer si elles sont trouvées. S'applique uniquement si la recherche en arrière-plan est désactivée.",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Vérifier la version du manifest",
-    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged va uniquement afficher les mises à jour si la version dans le manifest a été modifier."
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged va uniquement afficher les mises à jour si la version dans le manifest a été modifier.",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin déjà installé!",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Thème déjà installé!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Installer le plugin",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Installer le thème",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Copié!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Qu'est-ce que c'est ?",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Voir le repo",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Copier le lien",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Ceci est une fonction de Replugged. Elle permet d'installer des plugins et thèmes directement du chat.\nAppuie sur le button installer dans l'embed."
 }
