@@ -10,10 +10,10 @@ module.exports = () => {
   const rmdirOpt = {recursive: true}
 
   // This function recursively moves all subdirectories and files from src to dest
-  var copyRecursiveSync = function(src, dest) {
-    var exists = fs.existsSync(src);
-    var stats = exists && fs.statSync(src);
-    var isDirectory = exists && stats.isDirectory();
+  let copyRecursiveSync = function(src, dest) {
+    let exists = fs.existsSync(src);
+    let stats = exists && fs.statSync(src);
+    let isDirectory = exists && stats.isDirectory();
     if (isDirectory) {
       try {
         fs.mkdirSync(dest);
