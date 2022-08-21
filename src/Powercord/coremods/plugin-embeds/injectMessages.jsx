@@ -1,7 +1,7 @@
 const { getModule, React } = require('powercord/webpack');
 const PluginEmbed = require('./components/PluginEmbed');
 
-const { matchRepoURL } = require('../moduleManager/util');
+const { matchRepoURL, isInstallerURL } = require('../moduleManager/util');
 
 const SimpleMarkdown = getModule([ 'defaultRules', 'astParserFor' ], false);
 
@@ -14,6 +14,11 @@ module.exports.injectMessages = function () {
 
     const match = matchRepoURL(res.props.href);
     if (match) {
+      if (res.props.title !== res.props.href) { // Named link, should only trigger if it's an installer link
+        if (!isInstallerURL(res.props.href)) {
+          return res;
+        }
+      }
       return (
         <PluginEmbed match={match} />
       );
