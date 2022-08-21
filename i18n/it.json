@@ -169,5 +169,7 @@
     "REPLUGGED_PLUGINS_GITHUB": "Repo",
     "REPLUGGED_BADGES_SUPPORT": "Supporto Replugged",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Mostra il toast del controllo aggiornamenti",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Mostra un overlay sul client che dice che gli aggiornamenti sono in fase di verifica e, se vengono trovati aggiornamenti, ti chiede di aggiornare. Si applica solo se l'aggiornamento in background è disabilitato."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Mostra un overlay sul client che dice che gli aggiornamenti sono in fase di verifica e, se vengono trovati aggiornamenti, ti chiede di aggiornare. Si applica solo se l'aggiornamento in background è disabilitato.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Controlla la versione del manifest",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged mostrerà gli aggiornamenti solo se la versione del manifest è cambiata."
 }

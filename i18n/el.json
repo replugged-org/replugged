@@ -54,7 +54,7 @@
     "REPLUGGED_PLUGINS_DISCORD": "Discord",
     "REPLUGGED_PLUGINS_PATH": "Άνοιγμα φακέλου",
     "REPLUGGED_PRODUCT_LOOKING": "Τι ψάχνετε;",
-    "REPLUGGED_QUICKCSS": "Quick CSS",
+    "REPLUGGED_QUICKCSS": "Γρήγορο CSS",
     "REPLUGGED_QUICKCSS_ENABLED": "Quick CSS ενεργοποιημένο",
     "REPLUGGED_QUICKCSS_AUTOCOMPLETE": "Ctrl+Space για αυτόματη συμπλήρωση",
     "REPLUGGED_QUICKCSS_POPPED_OUT": "Ο συντάκτης εμφανίστηκε",
@@ -152,7 +152,7 @@
     "REPLUGGED_UPDATES_PAUSE_MODAL": "Είστε βέβαιοι ότι θέλετε να θέσετε σε παύση τις ενημερώσεις; Το Replugged δεν θα ελέγξει για ενημερώσεις μέχρι την επόμενη επαναφόρτωση.",
     "REPLUGGED_UPDATES_RESUME": "Συνέχιση ενημερώσεων",
     "REPLUGGED_UPDATES_REVISION": "Αναθεώρηση:",
-    "REPLUGGED_UPDATES_SKIP": "παράλειψη ενημέρωσης",
+    "REPLUGGED_UPDATES_SKIP": "Παράλειψη ενημέρωσης",
     "REPLUGGED_UPDATES_SKIP_MODAL": "Είστε βέβαιοι ότι θέλετε να παραλείψετε αυτήν την ενημέρωση; Το Replugged θα περιμένει να κυκλοφορήσει μια νεότερη έκδοση προτού ενημερώσει ξανά.",
     "REPLUGGED_UPDATES_SKIP_MODAL_TITLE": "Παράλειψη ενημέρωσης",
     "REPLUGGED_UPDATES_TOAST_AVAILABLE_DESC": "Κάντε κλικ στο \"Ενημέρωση τώρα\" για ενημέρωση τώρα ή στο \"Άνοιγμα ενημέρωσης\" για να μάθετε περισσότερα.",
@@ -169,5 +169,7 @@
     "REPLUGGED_UPDATE_PASSPHRASE": "Ενημέρωση συνθηματικού",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Αυτό το συνθηματικό θα χρησιμοποιηθεί για την κρυπτογράφηση των δεδομένων σας πριν την αποστολή τους στους διακομιστές του Replugged. Συνιστάται να ορίσετε ένα, αλλά μπορείτε απλώς να το αφήσετε κενό για να στείλετε τα δεδομένα σας μη κρυπτογραφημένα.",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Εάν χρησιμοποιείτε ήδη συγχρονισμό σε άλλα μηχανήματα, βάλτε το ίδιο συνθηματικό που χρησιμοποιήσατε. **Η χρήση άλλου συνθηματικού θα αντικαταστήσει τα παλιά δεδομένα, επομένως να είστε προσεκτικοί**.",
-    "REPLUGGED_LINKING_WAITING": "Σύνδεση λογαριασμού…"
+    "REPLUGGED_LINKING_WAITING": "Σύνδεση λογαριασμού…",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Ελέγξτε την εκδοχή του δηλωτικού",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Το Replugged θα εμφανίσει ενημερώσεις μόνο αν η έκδοση του δηλωτικού έχει αλλάξει."
 }
