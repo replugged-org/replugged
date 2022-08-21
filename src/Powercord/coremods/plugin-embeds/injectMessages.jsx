@@ -12,6 +12,9 @@ module.exports.injectMessages = function () {
   SimpleMarkdown.defaultRules.link.react = (...args) => {
     const res = originalFn(...args);
 
+    if (!res?.props?.href) {
+      return res;
+    }
     const match = matchRepoURL(res.props.href);
     if (match) {
       if (res.props.title !== res.props.href) { // Named link, should only trigger if it's an installer link
