@@ -11,6 +11,7 @@ let LegacyText = getModuleByDisplayName('LegacyText', false);
 if (!LegacyText) {
   LegacyText = getModuleByDisplayName('Text', false);
 }
+const Anchor = getModuleByDisplayName('Anchor', false);
 
 // Components
 const { default: Button, ButtonSizes } = getModule([ 'ButtonColors' ], false);
@@ -53,7 +54,7 @@ module.exports = function ({ match }) {
 
   if (!data) {
     return (
-      <a href={url}>{url}</a>
+      <Anchor href={url}>{url}</Anchor>
     );
   }
 
