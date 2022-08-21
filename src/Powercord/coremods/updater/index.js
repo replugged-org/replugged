@@ -146,7 +146,7 @@ class Updater {
     if (failed.length > 0) {
       settings.set('failed', true);
       settings.set('updates', failed);
-      if (this.settings.get('toastenabled', true) && !document.querySelector('#powercord-updater, .powercord-updater')) {
+      if (settings.get('toastenabled', true) && !document.querySelector('#powercord-updater, .powercord-updater')) {
         powercord.api.notices.sendToast('powercord-updater', {
           header: Messages.REPLUGGED_UPDATES_TOAST_FAILED,
           type: 'danger',
@@ -238,7 +238,7 @@ class Updater {
 
     const upstream = await PowercordNative.exec('git remote get-url origin', this.cwd)
       .then(r => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)?.[1] ||
-          r.stdout.toString().trim().match(/(.*):(.*\/.*)/)[2])
+          r.stdout.toString().trim().match(/(.*):(.*\/.*)/)[2]);
 
     return {
       upstream,
