@@ -11,9 +11,9 @@ module.exports = () => {
 
   // This function recursively moves all subdirectories and files from src to dest
   let copyRecursiveSync = function(src, dest) {
-    let exists = fs.existsSync(src);
-    let stats = exists && fs.statSync(src);
-    let isDirectory = exists && stats.isDirectory();
+    const exists = fs.existsSync(src);
+    const stats = exists && fs.statSync(src);
+    const isDirectory = exists && stats.isDirectory();
     if (isDirectory) {
       try {
         fs.mkdirSync(dest);
