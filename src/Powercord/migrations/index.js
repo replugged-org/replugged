@@ -28,7 +28,9 @@ module.exports = async (powercord) => {
     try {
       await fn();
       migrations.push(id);
-    } catch (e) {}
+    } catch (e) {
+      console.log('%c[Replugged:Migrations]', 'color: #7289da', `${e}`)
+    }
     console.log('%c[Replugged:Migrations]', 'color: #7289da', `Finished migration ${id}`);
   }
 
