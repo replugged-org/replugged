@@ -44,7 +44,9 @@ async function patchConnectedAccountsStore () {
   // return all of this user's plugin connections from the ConnectedAccountsStore
   inject('pc-connections-ConnectedAccountsStore', ConnectedAccountsStore.__proto__, 'getAccounts', (_, connectedAccounts) => {
     for (const { type } of powercord.api.connections.connections) {
-      if (connectedAccounts.some(a => a.type === type)) continue;
+      if (connectedAccounts.some(a => a.type === type)) {
+        continue;
+      }
 
       const account = fetchAccount(type, CurrentUser.getCurrentUser().id);
       if (account) {
@@ -82,7 +84,7 @@ async function patchConnectionsManager () {
 
     const connection = powercord.api.connections.get(type);
     if (connection) {
-      connection.setVisibility?.(visible == 1); // == incase discord makes a smart decision ever and changes visible to a boolean
+      connection.setVisibility?.(visible === 1);
 
       return false;
     }
@@ -91,6 +93,35 @@ async function patchConnectionsManager () {
   }, true);
 }
 
+async function lazyPatchProfileModal (id, filter, patch) {
+  const m = getModule(filter, false);
+  if (m) {
+    patch(m);
+  } else {
+    const { useModalsStore } = await getModule([ 'useModalsStore' ]);
+    inject(`pc-connections-lazy-modal-${id}`, useModalsStore, 'setState', a => {
+      const og = a[0];
+      a[0] = (...args) => {
+        const ret = og(...args);
+        try {
+          if (ret?.default?.length) {
+            const el = ret.default[0];
+            if (el && el.render && el.render.toString().indexOf(',friendToken:') !== -1) {
+              uninject(`pc-connections-lazy-modal-${id}`);
+              patch(getModule(filter, false));
+            }
+          }
+        } catch (e) {
+          this.error(e);
+        }
+        return ret;
+      };
+      return a;
+    }, true);
+  }
+}
+
+
 async function patchUserConnections () {
   // User Profile Modal -> User Info section's list of connections
   lazyPatchProfileModal('Passport',
@@ -98,10 +129,14 @@ async function patchUserConnections () {
     Passport => {
       inject('pc-connections-profile', Passport, 'ConnectedUserAccounts', ([ props ]) => {
         for (const { type } of powercord.api.connections.connections) {
-          if (props.connectedAccounts.some(a => a.type === type)) continue;
+          if (props.connectedAccounts.some(a => a.type === type)) {
+            continue;
+          }
 
           const account = fetchAccount(type, props.userId);
-          if (account) props.connectedAccounts.push(account);
+          if (account) {
+            props.connectedAccounts.push(account);
+          }
         }
 
         return [ props ];
@@ -154,30 +189,3 @@ module.exports = async () => {
     uninject('pc-connections-ConnectableAccounts-isSupported');
   };
 };
-
-async function lazyPatchProfileModal (id, filter, patch) {
-  const m = getModule(filter, false);
-  if (m) patch(m);
-  else {
-    const { useModalsStore } = await getModule([ 'useModalsStore' ]);
-    inject(`pc-connections-lazy-modal-${id}`, useModalsStore, 'setState', a => {
-      const og = a[0];
-      a[0] = (...args) => {
-        const ret = og(...args);
-        try {
-          if (ret?.default?.length) {
-            const el = ret.default[0];
-            if (el && el.render && el.render.toString().indexOf(',friendToken:') !== -1) {
-              uninject(`pc-connections-lazy-modal-${id}`);
-              patch(getModule(filter, false));
-            }
-          }
-        } catch (e) {
-          this.error(e);
-        }
-        return ret;
-      };
-      return a;
-    }, true);
-  }
-}
