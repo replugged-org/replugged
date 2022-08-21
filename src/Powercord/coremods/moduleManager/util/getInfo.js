@@ -3,47 +3,69 @@
 const { get } = require('powercord/http');
 const { matchRepoURL } = require('./misc');
 
+
 /**
- * @type Map<string, 'plugin'|'theme'|null>
+ * @typedef RepoInfo
+ * @property {'plugin'|'theme'} type
+ * @property {string} name
+ * @property {string} description
+ * @property {string} author
  */
-const typeCache = new Map();
+
+/**
+ * @type Map<string, RepoInfo|null>
+ */
+const infoCache = new Map();
 
 /**
  * @typedef PluginInfo
  * @property {string} username
  * @property {string} repoName
  * @property {'plugin'|'theme'} type Whether the URL is a plugin or theme repository
+ * @property {string} name
+ * @property {string} description
+ * @property {string} author
  * @property {boolean} isInstalled Whether the plugin/theme is installed
  */
-
 /**
  *
  * @param {string} identifier username/reponame/branch (branch is optional)
- * @returns {Promise<'plugin'|'theme'|null>} Whether the URL is a plugin or theme repository, or null if it's neither
+ * @returns {Promise<RepoInfo|null>} Whether the URL is a plugin or theme repository, or null if it's neither
  */
-async function getRepoType (identifier) {
+async function getRepoManifestData (identifier) {
   const [ username, repoName, branch ] = identifier.split('/');
-  const isTheme = await get(`https://github.com/${username}/${repoName}/raw/${branch || 'HEAD'}/powercord_manifest.json`).then((r) => {
-    if (r?.statusCode === 302) {
-      return 'theme';
+  const isTheme = await get(`https://raw.githubusercontent.com/${username}/${repoName}/${branch || 'HEAD'}/powercord_manifest.json`).then((r) => {
+    if (r?.statusCode === 200) {
+      const json = JSON.parse(r.body);
+      return {
+        type: 'theme',
+        name: json.name,
+        description: json.description,
+        author: json.author
+      };
     }
     return null;
   }).catch(() => null);
 
-  const isPlugin = await get(`https://github.com/${username}/${repoName}/raw/${branch || 'HEAD'}/manifest.json`).then((r) => {
-    if (r?.statusCode === 302) {
-      return 'plugin';
+  const isPlugin = await get(`https://raw.githubusercontent.com/${username}/${repoName}/${branch || 'HEAD'}/manifest.json`).then((r) => {
+    if (r?.statusCode === 200) {
+      const json = JSON.parse(r.body);
+      return {
+        type: 'plugin',
+        name: json.name,
+        description: json.description,
+        author: json.author
+      };
     }
     return null;
   }).catch(() => null);
   // Wait for either promise to resolve
   // If neither resolves, use null.
 
-  // @ts-ignore
-  const type = isTheme || isPlugin || null;
+  const data = isTheme || isPlugin || null;
 
-  typeCache.set(identifier, type);
-  return type;
+  infoCache.set(identifier, data);
+  return data;
 }
 
 /**
@@ -77,24 +99,24 @@ module.exports = function getRepoInfo (url) {
     isInstalled
   };
 
-  if (typeCache.has(identifier)) {
-    const type = typeCache.get(identifier);
-    if (!type) {
+  if (infoCache.has(identifier)) {
+    const info = infoCache.get(identifier);
+    if (!info) {
       return null;
     }
     return {
       ...data,
-      type
+      ...info
     };
   }
 
-  return getRepoType(identifier).then(type => {
-    if (!type) {
+  return getRepoManifestData(identifier).then(info => {
+    if (!info) {
       return null;
     }
     return {
       ...data,
-      type
+      ...info
     };
   });
 };
