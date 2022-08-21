@@ -1,6 +1,6 @@
 {
   "name": "replugged",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "index.js",
