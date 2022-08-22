@@ -179,9 +179,10 @@ async function _loadQuickCSS () {
   _quickCSSElement.id = 'powercord-quickcss';
   document.head.appendChild(_quickCSSElement);
   if (existsSync(_quickCSSFile)) {
+    const settings = powercord.api.settings.buildCategoryObject('pc-moduleManager');
     _quickCSS = await readFile(_quickCSSFile, 'utf8');
     powercord.api.moduleManager._quickCSS = _quickCSS;
-    if (powercord.settings.get('qcss-enabled', true)) {
+    if (settings.get('qcss-enabled', true)) {
       _quickCSSElement.innerHTML = _quickCSS;
     }
   }
