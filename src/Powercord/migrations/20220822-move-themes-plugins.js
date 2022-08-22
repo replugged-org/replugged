@@ -7,28 +7,18 @@ module.exports = () => {
   const oldThemes = join(__dirname, '..', 'themes');
   const newThemes = join(__dirname, '..', '..', '..', 'themes');
 
-  const rmdirOpt = {recursive: true}
 
   // This function recursively moves all subdirectories and files from src to dest
   let moveRecursiveSync = function(src, dest) {
     const exists = fs.existsSync(src);
     const stats = exists && fs.statSync(src);
-    const isDirectory = exists && stats.isDirectory();
-    if (isDirectory) {
-      try {
-        fs.mkdirSync(dest);
-      } catch (e) {}
-      fs.readdirSync(src).forEach(function(childItemName) {
-        moveRecursiveSync(join(src, childItemName),
-                          join(dest, childItemName));
-      });
-    } else {
-      fs.renameSync(src, dest);
-    }
+    fs.readdirSync(src).forEach((name) => {
+      fs.renameSync(join(src, name), join(dest, name));
+    });
   };
 
   moveRecursiveSync(oldPlugs, newPlugs);
-  fs.rmdirSync(oldPlugs, rmdirOpt);
+  fs.rmdirSync(oldPlugs);
   moveRecursiveSync(oldThemes, newThemes);
-  fs.rmdirSync(oldThemes, rmdirOpt);
+  fs.rmdirSync(oldThemes);
 };
