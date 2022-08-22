@@ -1,6 +1,6 @@
 *.template.js
-/src/Powercord/plugins/*
-!/src/Powercord/plugins/pc-*
+/plugins/*
+!/plugins/pc-*
 
 # tmp
 /src/core.old/*
