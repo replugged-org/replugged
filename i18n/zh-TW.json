@@ -165,7 +165,7 @@
     "REPLUGGED_UPDATES_UPDATING_ITEM": "正在更新…",
     "REPLUGGED_UPDATES_UPSTREAM": "上游代碼倉儲：",
     "REPLUGGED_UPDATES_UPSTREAM_OFFICIAL": "官方",
-    "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged目前已經是最新版本。",
+    "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged已經是最新版本。",
     "REPLUGGED_UPDATE_PASSPHRASE": "更新密碼片語",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "此密碼片語將用於加密你的數據，然後再將其發送到Replugged的服務器。建議設定一個密碼片語，但你亦可以將其留空以發送未加密的數據。",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "如果您已經在其他機器上使用同步，請輸入你使用的相同密碼。 **使用另一個密碼會覆蓋舊數據，所以請小心**。",
