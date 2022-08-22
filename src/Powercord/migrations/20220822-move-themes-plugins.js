@@ -2,15 +2,15 @@ const fs = require('fs');
 const { join } = require('path');
 
 module.exports = () => {
-  const oldPlugs = join(__dirname, '..', 'plugins')
-  const newPlugs = join(__dirname, '..', '..', '..', 'plugins')
-  const oldThemes = join(__dirname, '..', 'themes')
-  const newThemes = join(__dirname, '..', '..', '..', 'themes')
+  const oldPlugs = join(__dirname, '..', 'plugins');
+  const newPlugs = join(__dirname, '..', '..', '..', 'plugins');
+  const oldThemes = join(__dirname, '..', 'themes');
+  const newThemes = join(__dirname, '..', '..', '..', 'themes');
 
   const rmdirOpt = {recursive: true}
 
   // This function recursively moves all subdirectories and files from src to dest
-  let copyRecursiveSync = function(src, dest) {
+  let moveRecursiveSync = function(src, dest) {
     const exists = fs.existsSync(src);
     const stats = exists && fs.statSync(src);
     const isDirectory = exists && stats.isDirectory();
@@ -19,16 +19,16 @@ module.exports = () => {
         fs.mkdirSync(dest);
       } catch (e) {}
       fs.readdirSync(src).forEach(function(childItemName) {
-        copyRecursiveSync(join(src, childItemName),
+        moveRecursiveSync(join(src, childItemName),
                           join(dest, childItemName));
       });
     } else {
-      fs.copyFileSync(src, dest);
+      fs.renameSync(src, dest);
     }
   };
 
-  copyRecursiveSync(oldPlugs, newPlugs);
-  fs.rmdirSync(oldPlugs, rmdirOpt)
-  copyRecursiveSync(oldThemes, newThemes);
-  fs.rmdirSync(oldThemes, rmdirOpt)
+  moveRecursiveSync(oldPlugs, newPlugs);
+  fs.rmdirSync(oldPlugs, rmdirOpt);
+  moveRecursiveSync(oldThemes, newThemes);
+  fs.rmdirSync(oldThemes, rmdirOpt);
 };
