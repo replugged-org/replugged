@@ -16,10 +16,10 @@ exports.matchRepoURL = (url) => {
   if (exports.isInstallerURL(url)) {
     url = new URL(url).searchParams.get('url');
   }
-  if (url.match(/^[\w-]+\/[\w-.]+$/)) {
+  if (url?.match(/^[\w-]+\/[\w-.]+$/)) {
     url = `https://github.com/${url}`;
   }
-  const urlMatch = url.match(REPO_URL_REGEX);
+  const urlMatch = url?.match(REPO_URL_REGEX);
   if (!urlMatch) {
     return null;
   }
