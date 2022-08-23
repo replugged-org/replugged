@@ -10,16 +10,17 @@ module.exports = () => {
 
   // This function recursively moves all subdirectories and files from src to dest
   let moveRecursiveSync = function(src, dest) {
-    const exists = fs.existsSync(src);
-    if (exists)  {
-      fs.readdirSync(src).forEach((name) => {
-        fs.renameSync(join(src, name), join(dest, name));
-      });
-    }
+    fs.readdirSync(src).forEach((name) => {
+      fs.renameSync(join(src, name), join(dest, name));
+    });
   };
 
-  moveRecursiveSync(oldPlugs, newPlugs);
-  fs.rmdirSync(oldPlugs);
-  moveRecursiveSync(oldThemes, newThemes);
-  fs.rmdirSync(oldThemes);
+  if (fs.existsSync(oldPlugs)) {
+    moveRecursiveSync(oldPlugs, newPlugs);
+    fs.rmdirSync(oldPlugs);
+  }
+  if (fs.existsSync(oldThemes)) {
+    moveRecursiveSync(oldThemes, newThemes);
+    fs.rmdirSync(oldThemes);
+  }
 };
