@@ -169,5 +169,16 @@
     "REPLUGGED_PLUGINS_PATH": "Otwórz Folder",
     "REPLUGGED_QUICKCSS_ENABLED": "Szybki CSS Włączony",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Pokazuj tosty aktualizatora",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Pokaż nakładkę na której jest pokazane, jakie aktualizacje zostały sprawdzone, a gdy aktualizacje zostanę znalezione, proszącą cię aby je zaktualizować. Zostaje zaplikowany, tylko jeśli aktualizacja w tle są wyłączone."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Pokaż nakładkę na której jest pokazane, jakie aktualizacje zostały sprawdzone, a gdy aktualizacje zostanę znalezione, proszącą cię aby je zaktualizować. Zostaje zaplikowany, tylko jeśli aktualizacja w tle są wyłączone.",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Kopiuj link",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Oto funkcja Replugged. Pozwala Ci zainstalować pluginy i motywy prosto z chatu.\nPo prostu wciśnij przycisk \"Zainstaluj\" w wiadomości.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Sprawdź wersję manifestu",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged pokaże aktualizacje tylko jeśli wersja manifestu się zmieniła.",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Wyświetl repozytorium",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Skopiowano!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Co to jest?",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin jest już zainstalowany!",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Motyw jest już zainstalowany!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Zainstaluj Plugin",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Zainstaluj Motyw"
 }
