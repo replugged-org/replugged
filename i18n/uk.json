@@ -163,7 +163,7 @@
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Цей пароль буде використовуватися для шифрування даних перед тим, як ви відправте їх на сервера Replugged. Ми рекомендуємо встановити його, але ви можете просто залишити це поле порожнім, щоб відправляти дані в незашифрованому вигляді.",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Якщо ви вже використовуєте синхронізацію на іншому пристрої, впишіть той же пароль, що ви використовували. **Використання іншого паролю, перепише старі дані, тому будьте обережні**.",
     "REPLUGGED_BADGES_SUPPORT": "Підтримка Replugged",
-    "REPLUGGED_PLUGINS_GITHUB": "",
+    "REPLUGGED_PLUGINS_GITHUB": "Репозиторій",
     "REPLUGGED_PLUGINS_WEBSITE": "Веб-сторінка",
     "REPLUGGED_PLUGINS_DISCORD": "Discord",
     "REPLUGGED_PLUGINS_PATH": "Відкрити папку",
@@ -179,5 +179,6 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Плагін уже встановлено!",
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Тему вже встановлено!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Встановити плагін",
-    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Встановити тему"
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Встановити тему",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Переглянути репозиторій"
 }
