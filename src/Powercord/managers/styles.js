@@ -130,6 +130,14 @@ module.exports = class StyleManager {
     this.themes.set(themeID, new Theme(themeID, manifest));
   }
 
+  async remount (themeID) {
+    try {
+      await this.unmount(themeID);
+    } catch (e) {}
+    this.mount(themeID);
+    this.themes.get(themeID).apply();
+  }
+
   unmount (themeID) {
     const theme = this.themes.get(themeID);
     if (!theme) {
