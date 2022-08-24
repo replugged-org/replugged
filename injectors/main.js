@@ -17,6 +17,12 @@ exports.inject = async ({ getAppDir }, platform) => {
     return false;
   }
 
+  if (appDir.includes('flatpak')) {
+    console.log(`${AnsiEscapes.YELLOW}NOTE:${AnsiEscapes.RESET} You seem to be using the Flatpak version of Discord.`);
+    console.log('You\'ll need to allow Discord to access Powercord\'s installation directory');
+    console.log('Some Powercord features such as auto updates won\'t work properly with Flatpaks.', '\n');
+  }
+
   await mkdir(appDir);
   await Promise.all([
     writeFile(
