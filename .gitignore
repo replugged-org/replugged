@@ -12,7 +12,6 @@ user/*
 
 src/Powercord/coremods/react-devtools/ext
 
-!themes/.gitkeep
 
 settings/*.json
 
