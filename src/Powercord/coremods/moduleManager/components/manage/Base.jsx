@@ -91,7 +91,7 @@ class Base extends React.Component {
           {
             type: 'button',
             name: Messages[`REPLUGGED_${this.state.key}_OPEN_FOLDER`],
-            onClick: () => shell.openPath(join(__dirname, '..', '..', '..', '..', '..', '..', this.constructor.name.toLowerCase()))
+            onClick: () => shell.openPath(join(__dirname, '..', '..', '..', '..', '..', '..', '..', this.constructor.name.toLowerCase()))
           },
           {
             type: 'button',

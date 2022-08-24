@@ -4,7 +4,7 @@ const { rmdirRf } = require('powercord/util');
 
 module.exports = class PluginManager {
   constructor () {
-    this.pluginDir = resolve(__dirname, '..', '..', '..', 'plugins');
+    this.pluginDir = resolve(__dirname, '..', '..', '..', 'user', 'plugins');
     this.plugins = new Map();
 
     this.manifestKeys = [ 'name', 'version', 'description', 'author', 'license' ];
