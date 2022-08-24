@@ -25,11 +25,12 @@ class QuickCSS extends React.PureComponent {
 
   render () {
     const { getSetting, toggleSetting } = this.props;
+    const quickCSSEnabled = getSetting('qcss-enabled', true);
 
     return (
       <>
         <SwitchItem
-          value={getSetting('qcss-enabled', true)}
+          value={quickCSSEnabled}
           onChange={v => {
             toggleSetting('qcss-enabled', true);
             if (v) {
@@ -42,7 +43,7 @@ class QuickCSS extends React.PureComponent {
           {Messages.REPLUGGED_QUICKCSS_ENABLED}
         </SwitchItem>
         <div
-          className={[ 'powercord-quickcss', this.props.popout && 'popout', !this.props.popout && this.props.guestWindow && 'popped-out' ].filter(Boolean).join(' ')}
+          className={[ 'powercord-quickcss', this.props.popout && 'popout', !this.props.popout && this.props.guestWindow && 'popped-out', !quickCSSEnabled && 'disabled' ].filter(Boolean).join(' ')}
           style={{ '--editor-height': `${this.props.getSetting('cm-height', 350)}px` }}
           ref={this.ref}
         >
