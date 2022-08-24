@@ -3,9 +3,9 @@ const { join } = require('path');
 
 module.exports = () => {
   const oldPlugs = join(__dirname, '..', 'plugins');
-  const newPlugs = join(__dirname, '..', '..', '..', 'plugins');
+  const newPlugs = join(__dirname, '..', '..', '..', 'user', 'plugins');
   const oldThemes = join(__dirname, '..', 'themes');
-  const newThemes = join(__dirname, '..', '..', '..', 'themes');
+  const newThemes = join(__dirname, '..', '..', '..', 'user', 'themes');
 
 
   // This function recursively moves all subdirectories and files from src to dest
