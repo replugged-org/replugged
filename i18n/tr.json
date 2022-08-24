@@ -169,5 +169,16 @@
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Güncelleme denetleyicisini göster",
     "REPLUGGED_BADGES_SUPPORT": "Replugged İçin Yardım",
     "REPLUGGED_PLUGINS_GITHUB": "Repositori",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Eklentilerin güncelleme için kontrol edildiğini söyleyen bir bildirim göster, eğer gücelleme bulunduysa senden güncellenmesini iste. Sadece arkaplan güncellemeleri kapalı ise çalışır."
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Eklentilerin güncelleme için kontrol edildiğini söyleyen bir bildirim göster, eğer gücelleme bulunduysa senden güncellenmesini iste. Sadece arkaplan güncellemeleri kapalı ise çalışır.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged, yalnızca manifest sürümü değiştiğinde güncellemeleri gösterecektir.",
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Manifest sürününü yoklayın",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Repositoriye Gözat",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Kopyalandı!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Bu nedir?",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Eklenti zaten indirilmiş!",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Tema zaten indirilmiş!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Eklentiyi İndir",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Temayı İndir",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Linki Kopyala",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Bu bir Replugged özelliğidir. Eklenti veya temaları chat den ayrılmadan indirmenizi sağlar.\nTek yapmanız gereken şey indir düğmesine basmak."
 }

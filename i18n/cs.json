@@ -171,5 +171,14 @@
     "REPLUGGED_PLUGINS_PATH": "Otevřít složku",
     "REPLUGGED_QUICKCSS_ENABLED": "Zapnout rychlé CSS",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Zkontrolovat verzi manifestu",
-    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged ukáže aktualizaci pouze pokud se změní verze manifestu."
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged ukáže aktualizaci pouze pokud se změní verze manifestu.",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Zkopírovat odkaz",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Otevřít repozitář",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Zkopírováno!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Co to je?",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Toto je funkce Repluggedu. Umožňuje ti instalovat pluginy a motivy přímo z chatu.\nJednoduše zmáčkni instalační tlačítko v embedu.",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin je již nainstalován!",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Motiv je již nainstalován!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Instalovat plugin",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Instalovat motiv"
 }

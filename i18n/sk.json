@@ -171,5 +171,13 @@
     "REPLUGGED_LINKING_WAITING": "Prepojujeme tvoj účet…",
     "REPLUGGED_CUTIE_TIER_1_PRICE": "**1 USD**/mesiac",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Skontrolovať verziu manifestu",
-    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged ukáže aktualizáciu iba ak sa zmení verzia manifestu."
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged ukáže aktualizáciu iba ak sa zmení verzia manifestu.",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Zobraziť repo",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Kopírovať odkaz",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Skopírované!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Čo to je?",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin je už nainštalovaný!",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Motív je už nainštalovaný!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Inštalovať plugin",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Inštalovať motív"
 }

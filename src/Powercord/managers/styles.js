@@ -17,7 +17,7 @@ const ErrorTypes = Object.freeze({
 module.exports = class StyleManager {
   constructor () {
     this._coreStyles = [];
-    this.themesDir = join(__dirname, '../themes');
+    this.themesDir = join(__dirname, '..', '..', '..', 'themes');
     this.themes = new Map();
 
     if (!window.__SPLASH__) {
@@ -128,6 +128,14 @@ module.exports = class StyleManager {
 
     manifest.effectiveTheme = join(this.themesDir, filename, manifest.effectiveTheme);
     this.themes.set(themeID, new Theme(themeID, manifest));
+  }
+
+  async remount (themeID) {
+    try {
+      await this.unmount(themeID);
+    } catch (e) {}
+    this.mount(themeID);
+    this.themes.get(themeID).apply();
   }
 
   unmount (themeID) {

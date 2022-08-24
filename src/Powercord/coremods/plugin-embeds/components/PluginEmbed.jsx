@@ -61,7 +61,7 @@ module.exports = function ({ match }) {
   return (
     <div className={wrapper} onMouseEnter={fetchInfo}>
       <LegacyText size={LegacyText.Sizes.SIZE_12} className={titleRegion}>
-        <strong className={title}>{data.author}</strong>
+        <strong className={title}>{data.username}</strong>
         <a
           className={infoLink}
           onClick={() => {

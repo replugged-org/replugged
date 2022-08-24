@@ -9,10 +9,10 @@ module.exports = async function download (url, powercord, type) {
     let dir;
     switch (type) {
       case 'plugin':
-        dir = join(__dirname, '..', '..', '..', 'plugins');
+        dir = join(__dirname, '..', '..', '..', '..', '..', 'plugins');
         break;
       case 'theme':
-        dir = join(__dirname, '..', '..', '..', 'themes');
+        dir = join(__dirname, '..', '..', '..', '..', '..', 'themes');
         break;
     }
 

@@ -165,11 +165,20 @@
     "REPLUGGED_UPDATES_UPDATING_ITEM": "正在更新…",
     "REPLUGGED_UPDATES_UPSTREAM": "上游代碼倉儲：",
     "REPLUGGED_UPDATES_UPSTREAM_OFFICIAL": "官方",
-    "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged目前已經是最新版本。",
+    "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged已經是最新版本。",
     "REPLUGGED_UPDATE_PASSPHRASE": "更新密碼片語",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "此密碼片語將用於加密你的數據，然後再將其發送到Replugged的服務器。建議設定一個密碼片語，但你亦可以將其留空以發送未加密的數據。",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "如果您已經在其他機器上使用同步，請輸入你使用的相同密碼。 **使用另一個密碼會覆蓋舊數據，所以請小心**。",
     "REPLUGGED_LINKING_WAITING": "正在連接你的帳戶…",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "檢查清單版本",
-    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "當清單版本被更改後，Replugged才會顯示更新。"
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "當清單版本被更改後，Replugged才會顯示更新。",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "複製鏈接",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "查看倉儲",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "已複製！",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "這是什麽？",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "這是一個Replugged的功能。它可以讓你直接從聊天中安裝插件或主題。\n你只需點擊界面上的安裝按鈕。",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "插件已經安裝！",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "主題已經安裝！",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "安裝插件",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "安裝主題"
 }

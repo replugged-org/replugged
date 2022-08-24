@@ -171,5 +171,14 @@
     "REPLUGGED_PLUGINS_GITHUB": "Repositorio",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Muestra un overlay sobre el cliente que dice que se están buscando actualizaciones, y si se encuentran actualizaciones, le pide que las actualice. Solo se aplica si la actualización en segundo plano está desactivada.",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Comprobar versión del manifiesto",
-    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged solo mostrara actualizaciones si la versión del manifiesto ha cambiado."
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged solo mostrara actualizaciones si la versión del manifiesto ha cambiado.",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Copiar Enlace",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Ver Repositorio",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Copiado!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "¿Que es esto?",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Complemento ya instalado!",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Tema ya instalado!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Instalar Complemento",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Instalar Tema",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Esta es una característica de Replugged. Permite instalar complementos o temas directamente del mensaje.\nSimplemente presiona el botón de instalar."
 }
