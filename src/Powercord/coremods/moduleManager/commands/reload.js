@@ -12,31 +12,23 @@ module.exports = {
       return resp(false, `Could not find plugin or theme matching "${id}".`);
     } else if (isPlugin && isTheme) { // Duplicate name
       return resp(false, `"${id}" is in use by both a plugin and theme. You will have to reload it from settings.`);
-    } else if (isPlugin) { // Core internal plugin
-      return resp(false, `"${id}" provides core functionality and cannot be reloaded.`);
     }
 
     const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;
-    if (!manager.isEnabled(id)) {
-      return resp(false, `"${id}" is already disabled.`);
-    }
 
-    manager.disable(id);
-    manager.enable(id)
+    manager.remount(id);
     return resp(true, `${isPlugin ? 'Plugin' : 'Theme'} "${id}" reloaded!`);
   },
 
   autocomplete (args) {
     const plugins = Array.from(powercord.pluginManager.plugins.values())
       .filter(plugin =>
-        plugin.entityID.toLowerCase().includes(args[0]?.toLowerCase()) &&
-        powercord.pluginManager.isEnabled(plugin.entityID)
+        plugin.entityID.toLowerCase().includes(args[0]?.toLowerCase())
       );
 
     const themes = Array.from(powercord.styleManager.themes.values())
       .filter(theme =>
-        theme.entityID.toLowerCase().includes(args[0]?.toLowerCase()) &&
-        powercord.styleManager.isEnabled(theme.entityID)
+        theme.entityID.toLowerCase().includes(args[0]?.toLowerCase())
       );
 
     if (args.length > 1) {
