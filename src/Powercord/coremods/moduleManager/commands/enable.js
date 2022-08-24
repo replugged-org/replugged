@@ -11,7 +11,7 @@ module.exports = {
     if (!isPlugin && !isTheme) { // No match
       return resp(false, `Could not find plugin or theme matching "${id}".`);
     } else if (isPlugin && isTheme) { // Duplicate name
-      return resp(false, `"${id}" is in use by both a plugin and theme. You will have to disable it from settings.`);
+      return resp(false, `"${id}" is in use by both a plugin and theme. You will have to enable it from settings.`);
     }
 
     const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;
