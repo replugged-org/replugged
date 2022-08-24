@@ -8,8 +8,7 @@ yarn.lock
 pnpm-lock.yaml
 
 user/*
-
-!plugins/.gitkeep
+!user/*/.gitkeep
 
 src/Powercord/coremods/react-devtools/ext
 
