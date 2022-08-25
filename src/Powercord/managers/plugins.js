@@ -1,10 +1,11 @@
 const { resolve } = require('path');
 const { readdirSync } = require('fs');
 const { rmdirRf } = require('powercord/util');
+const { PLUGINS_FOLDER } = require('powercord/constants');
 
 module.exports = class PluginManager {
   constructor () {
-    this.pluginDir = resolve(__dirname, '..', '..', '..', 'user', 'plugins');
+    this.pluginDir = resolve(PLUGINS_FOLDER);
     this.plugins = new Map();
 
     this.manifestKeys = [ 'name', 'version', 'description', 'author', 'license' ];

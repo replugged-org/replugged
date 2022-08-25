@@ -2,6 +2,7 @@ const { join } = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const { REPO_URL_REGEX } = require('./misc');
+const { PLUGINS_FOLDER , THEMES_FOLDER } = require('powercord/constants');
 
 module.exports = async function download (url, powercord, type) {
   return new Promise((resolve) => {
@@ -9,10 +10,10 @@ module.exports = async function download (url, powercord, type) {
     let dir;
     switch (type) {
       case 'plugin':
-        dir = join(__dirname, '..', '..', '..', '..', '..', 'user', 'plugins');
+        dir = join(PLUGINS_FOLDER, this.constructor.name.toLowerCase());
         break;
       case 'theme':
-        dir = join(__dirname, '..', '..', '..', '..', '..', 'user', 'themes');
+        dir = join(THEMES_FOLDER, this.constructor.name.toLowerCase());
         break;
     }
 

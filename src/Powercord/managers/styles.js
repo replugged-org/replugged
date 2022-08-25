@@ -2,6 +2,7 @@ const { join, resolve } = require('path');
 const { readdirSync, existsSync } = require('fs');
 const { readFile, lstat } = require('fs').promises;
 const { rmdirRf } = require('powercord/util');
+const { THEMES_FOLDER } = require('powercord/constants');
 
 const { Theme } = require('powercord/entities');
 const { SETTINGS_FOLDER } = require('powercord/constants');
@@ -17,7 +18,7 @@ const ErrorTypes = Object.freeze({
 module.exports = class StyleManager {
   constructor () {
     this._coreStyles = [];
-    this.themesDir = join(__dirname, '..', '..', '..', 'user', 'themes');
+    this.themesDir = join(THEMES_FOLDER);
     this.themes = new Map();
 
     if (!window.__SPLASH__) {
