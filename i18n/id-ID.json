@@ -163,10 +163,10 @@
     "REPLUGGED_UPDATE_PASSPHRASE": "Perbarui frasa sandi",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Frasa sandi ini akan digunakan untuk mengenkripsi data Anda sebelum mengirimkannya ke server Replugged. Disarankan untuk menyetelnya, tetapi Anda dapat membiarkannya kosong untuk mengirim data Anda tidak terenkripsi.",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Jika Anda sudah menggunakan sinkronisasi di komputer lain, masukkan frasa sandi yang sama dengan yang Anda gunakan. **Menggunakan frasa sandi lain akan menimpa data lama, jadi berhati-hatilah**.",
-    "REPLUGGED_PLUGINS_GITHUB": "",
-    "REPLUGGED_PLUGINS_WEBSITE": "",
+    "REPLUGGED_PLUGINS_GITHUB": "Repositori",
+    "REPLUGGED_PLUGINS_WEBSITE": "Situs web",
     "REPLUGGED_PLUGINS_DISCORD": "",
-    "REPLUGGED_PLUGINS_PATH": "",
+    "REPLUGGED_PLUGINS_PATH": "Buka Folder",
     "REPLUGGED_QUICKCSS_ENABLED": "",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": ""
