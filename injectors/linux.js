@@ -7,7 +7,7 @@ const { BasicMessages, AnsiEscapes, PlatformNames } = require('./log');
 // This is to ensure the homedir we get is the actual user's homedir instead of root's homedir
 const homedir = execSync('grep $(logname) /etc/passwd | cut -d ":" -f6').toString().trim();
 
-const installDirFile = __dirname + '/../.installdir-';
+const installDirFile = join(__dirname, '../.installdir-');
 
 const KnownLinuxPaths = Object.freeze({
   stable: [
