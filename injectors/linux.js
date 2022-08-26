@@ -1,11 +1,13 @@
 const { join } = require('path');
-const { existsSync } = require('fs');
+const { existsSync, readFileSync, writeFileSync } = require('fs');
 const { execSync } = require('child_process');
 const readline = require('readline');
 const { BasicMessages, AnsiEscapes, PlatformNames } = require('./log');
 
 // This is to ensure the homedir we get is the actual user's homedir instead of root's homedir
 const homedir = execSync('grep $(logname) /etc/passwd | cut -d ":" -f6').toString().trim();
+
+const installDirFile = __dirname + '/../.installdir-';
 
 const KnownLinuxPaths = Object.freeze({
   stable: [
@@ -45,7 +47,7 @@ const ProcessRegex = {
   dev: /discord-?development$/i
 };
 
-exports.getAppDir = async (platform) => {
+async function findAppDir(platform) {
   const discordProcess = execSync('ps x')
     .toString()
     .split('\n')
@@ -80,4 +82,15 @@ exports.getAppDir = async (platform) => {
   const discordPath = discordProcess[4].split('/');
   discordPath.splice(discordPath.length - 1, 1);
   return join('/', ...discordPath, 'resources', 'app');
-};
+}
+
+exports.getAppDir = async (platform) => {
+  const installDirPath = installDirFile + platform;
+  if (existsSync(installDirPath)) {
+    return readFileSync(installDirPath, 'utf8');
+  } else {
+    const appDir = await findAppDir(platform);
+    writeFileSync(installDirPath, appDir);
+    return appDir;
+  }
+}
