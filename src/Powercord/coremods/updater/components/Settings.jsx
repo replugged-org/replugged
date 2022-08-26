@@ -307,7 +307,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
   // --- DEBUG STUFF (Intentionally left english-only)
   renderDebugInfo () {
     const { getRegisteredExperiments, getExperimentOverrides } = getModule([ 'initialize', 'getExperimentOverrides' ], false);
-    const { apiManager: { apis }, api: { commands: { commands }, settings: { store: settingsStore } } } = powercord;
+    const { apiManager: { apis }, api: { commands: { commands }, settings: { store: settingsStore }, connections: { connections } } } = powercord;
     const superProperties = getModule([ 'getSuperPropertiesBase64' ], false).getSuperProperties();
     const unauthorizedPlugins = Array.from(powercord.pluginManager.plugins.values()).filter(plugin =>
       plugin.__shortCircuit).map(plugin => plugin.manifest.name);
@@ -387,6 +387,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
             <div className='column'>Cached Files:&#10;{cachedFiles}</div>
             <div className='column'>{`Account:\n${!!powercord.account}`}</div>
             <div className='column'>APIs:&#10;{apis.length}</div>
+            <div className='column'>Connections:&#10;{connections.length}</div>
           </div>
 
           <b>Git </b>

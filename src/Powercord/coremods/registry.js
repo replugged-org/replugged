@@ -11,5 +11,6 @@ module.exports = [
   require('./commands'),
   require('./notices'),
   require('./routelinks'),
-  require('./plugin-embeds')
+  require('./plugin-embeds'),
+  require('./connections')
 ];
