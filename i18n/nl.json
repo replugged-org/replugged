@@ -171,5 +171,13 @@
     "REPLUGGED_UPDATES_TOAST_AVAILABLE_HEADER": "Updates zijn beschikbaar!",
     "REPLUGGED_UPDATES_TOAST_FAILED": "Sommige updates konden niet worden geïnstalleerd…",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Manifest-versie controleren",
-    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged zal alleen updates laten zien als de manifest-versie is veranderd."
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged zal alleen updates laten zien als de manifest-versie is veranderd.",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "thema al geïnstalleerd!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Installeer Plugin",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Installeer Thema",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Kopieer Link",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Gekopieerd!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Wat is dit?",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Dit is een replugged functie. Het laat je plugins en thema's downloaden van chat.\nDruk gewoon op de instaleer knop in de embed.",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin al geïnstalleerd!"
 }
