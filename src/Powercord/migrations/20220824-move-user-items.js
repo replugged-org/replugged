@@ -1,14 +1,14 @@
 const fs = require('fs');
 const { join } = require('path');
+const { PLUGINS_FOLDER , THEMES_FOLDER , SETTINGS_FOLDER } = require('powercord/constants');
 
 module.exports = () => {
   const oldPlugs = join(__dirname, '..', '..', '..', 'plugins');
-  const newPlugs = join(__dirname, '..', '..', '..', 'user', 'plugins');
+  const newPlugs = join(PLUGINS_FOLDER);
   const oldThemes = join(__dirname, '..', '..', '..', 'themes');
-  const newThemes = join(__dirname, '..', '..', '..', 'user', 'themes');
+  const newThemes = join(THEMES_FOLDER);
   const oldSettings = join(__dirname, '..', '..', '..', 'settings');
-  const newSettings = join(__dirname, '..', '..', '..', 'user', 'settings');
-
+  const newSettings = join(SETTINGS_FOLDER);
 
   // This function recursively moves all subdirectories and files from src to dest
   let moveRecursiveSync = function(src, dest) {

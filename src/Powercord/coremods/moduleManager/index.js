@@ -6,7 +6,7 @@ const { React, getModule, i18n: { Messages } } = require('powercord/webpack');
 const { PopoutWindow } = require('powercord/components');
 const { inject, uninject } = require('powercord/injector');
 const { findInReactTree, forceUpdateElement } = require('powercord/util');
-const { SpecialChannels: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES }, WEBSITE } = require('powercord/constants');
+const { SpecialChannels: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES }, WEBSITE, CSS_FILE } = require('powercord/constants');
 const { join } = require('path');
 const commands = require('./commands');
 const deeplinks = require('./deeplinks');
@@ -23,7 +23,7 @@ const { injectContextMenu } = require('powercord/util');
 const Menu = getModule([ 'MenuItem' ], false);
 
 let _quickCSS = '';
-const _quickCSSFile = join(__dirname, 'quickcss.css');
+const _quickCSSFile = join(CSS_FILE);
 let _quickCSSElement;
 
 async function _installerInjectCtxMenu () {
