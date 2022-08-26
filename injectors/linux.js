@@ -7,12 +7,18 @@ const { BasicMessages, AnsiEscapes, PlatformNames } = require('./log');
 // This is to ensure the homedir we get is the actual user's homedir instead of root's homedir
 const homedir = execSync('grep $(logname) /etc/passwd | cut -d ":" -f6').toString().trim();
 
+const flatpakDir = '/var/lib/flatpak/app/com.discordapp';
+
+const homeFlatpakDir = `${homedir}/.local/share/flatpak/app/com.discordapp`;
+
 const KnownLinuxPaths = Object.freeze({
   stable: [
     '/usr/share/discord',
     '/usr/lib64/discord',
     '/opt/discord',
     '/opt/Discord',
+    `${flatpakDir}.Discord/current/active/files/discord`,
+    `${homeFlatpakDir}.Discord/current/active/files/discord`,
     `${homedir}/.local/bin/Discord`
   ],
   ptb: [
@@ -27,6 +33,8 @@ const KnownLinuxPaths = Object.freeze({
     '/usr/lib64/discord-canary',
     '/opt/discord-canary',
     '/opt/DiscordCanary',
+    `${flatpakDir}.DiscordCanary/current/active/files/discord-canary`,
+    `${homeFlatpakDir}.DiscordCanary/current/active/files/discord-canary`,
     `${homedir}/.local/bin/DiscordCanary` // https://github.com/powercord-org/powercord/pull/370
   ],
   dev: [
