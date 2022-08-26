@@ -47,14 +47,26 @@ async function patchSettingsComponent () {
 
     const changelog = sections.find(c => c.section === 'changelog');
     if (changelog) {
-      const settingsSections = Object.keys(powercord.api.settings.tabs).map(s => _makeSection(s));
+      const coreSections = Object.keys(powercord.api.settings.tabs)
+        .filter(s => ['pc-commands', 'pc-i18n', 'pc-moduleManager', 'pc-notices', 'pc-settings', 'pc-updater'].indexOf(s) >= 0)
+        .map(s => _makeSection(s));
+      const pluginSections = Object.keys(powercord.api.settings.tabs)
+        .filter(s => ['pc-commands', 'pc-i18n', 'pc-moduleManager', 'pc-notices', 'pc-settings', 'pc-updater'].indexOf(s) < 0)
+        .map(s => _makeSection(s));
+      
       sections.splice(
         sections.indexOf(changelog), 0,
         {
           section: 'HEADER',
           label: 'Replugged'
         },
-        ...settingsSections,
+        ...coreSections,
+        { section: 'DIVIDER' },
+        {
+          section: 'HEADER',
+          label: 'Plugins'
+        },
+        ...pluginSections,
         { section: 'DIVIDER' }
       );
     }
