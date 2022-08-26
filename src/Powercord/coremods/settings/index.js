@@ -52,6 +52,7 @@ async function patchSettingsComponent () {
         .map(s => _makeSection(s));
       const pluginSections = Object.keys(powercord.api.settings.tabs)
         .filter(s => ['pc-commands', 'pc-i18n', 'pc-moduleManager', 'pc-notices', 'pc-settings', 'pc-updater'].indexOf(s) < 0)
+        .sort()
         .map(s => _makeSection(s));
       
       sections.splice(
