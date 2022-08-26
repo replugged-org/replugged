@@ -22,20 +22,27 @@ exports.inject = async ({ getAppDir }, platform) => {
   if (appDir.includes('flatpak')) {
     const discordName = (platform === 'canary' ? 'DiscordCanary' : 'Discord');
     const overrideCommand = `${appDir.startsWith('/var') ? 'sudo flatpak override' : 'flatpak override --user'} com.discordapp.${discordName} --filesystem=${join(__dirname, '..')}`;
+    const updateScript = `
+    #!/bin/bash
+    shopt -s globstar
+    
+    for folder in ${join(__dirname, '..')}/**/.git; do
+      (cd "$folder/.." && echo "Pulling $PWD" && git pull)
+    done`;
     const readlineInterface = readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
 
     const askExecCmd = () => new Promise(resolve => readlineInterface.question('Would you like to execute the command now? y/N: ', resolve));
+    const askViewScript = () => new Promise(resolve => readlineInterface.question('To update Replugged and its plugins, you need to pull in changes with git manually. A script is available for this however. View it? Y/n: ', resolve));
 
     console.log(`${AnsiEscapes.YELLOW}NOTE:${AnsiEscapes.RESET} You seem to be using the Flatpak version of Discord.`);
-    console.log('Some Powercord features such as auto updates won\'t work properly with Flatpaks.', '\n');
-    console.log('You\'ll need to allow Discord to access Powercord\'s installation directory');
-    console.log(`You can allow access to Powercord's directory with this command: ${AnsiEscapes.YELLOW}${overrideCommand}${AnsiEscapes.RESET}`);
+    console.log('Some Replugged features such as auto updates won\'t work properly with Flatpaks.', '\n');
+    console.log('You\'ll need to allow Discord to access Replugged\'s installation directory');
+    console.log(`You can allow access to Replugged's directory with this command: ${AnsiEscapes.YELLOW}${overrideCommand}${AnsiEscapes.RESET}`);
 
     const doCmd = await askExecCmd();
-    readlineInterface.close();
 
     if (doCmd === 'y' || doCmd === 'yes') {
       console.log('Running...');
@@ -43,6 +50,12 @@ exports.inject = async ({ getAppDir }, platform) => {
     } else {
       console.log('OK. The command will not be executed.', '\n');
     }
+
+    const viewScript = await askViewScript();
+    if (viewScript === '' || viewScript === 'y' || viewScript === 'yes') {
+      console.log(`${AnsiEscapes.YELLOW}${updateScript}${AnsiEscapes.RESET}`);
+    }
+    readlineInterface.close();
   }
 
   await mkdir(appDir);
