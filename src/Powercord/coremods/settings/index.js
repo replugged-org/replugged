@@ -48,11 +48,11 @@ async function patchSettingsComponent () {
     const changelog = sections.find(c => c.section === 'changelog');
     if (changelog) {
       const coreSections = Object.keys(powercord.api.settings.tabs)
-        .filter(s => ['pc-commands', 'pc-i18n', 'pc-moduleManager', 'pc-notices', 'pc-settings', 'pc-updater'].indexOf(s) >= 0)
+        .filter(s => ['pc-moduleManager-themes', 'pc-moduleManager-css', 'pc-moduleManager-plugins', 'pc-general', 'pc-updater'].indexOf(s) >= 0)
         .map(s => _makeSection(s));
       const pluginSections = Object.keys(powercord.api.settings.tabs)
-        .filter(s => ['pc-commands', 'pc-i18n', 'pc-moduleManager', 'pc-notices', 'pc-settings', 'pc-updater'].indexOf(s) < 0)
-        .sort()
+        .filter(s => ['pc-moduleManager-themes', 'pc-moduleManager-css', 'pc-moduleManager-plugins', 'pc-general', 'pc-updater'].indexOf(s) < 0)
+        .sort((a, b) => powercord.api.settings.tabs[a].label < powercord.api.settings.tabs[b].label)
         .map(s => _makeSection(s));
       
       sections.splice(
@@ -65,7 +65,7 @@ async function patchSettingsComponent () {
         { section: 'DIVIDER' },
         {
           section: 'HEADER',
-          label: 'Plugins'
+          label: Messages.REPLUGGED_PLUGINS_SETTINGS
         },
         ...pluginSections,
         { section: 'DIVIDER' }
