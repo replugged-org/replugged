@@ -17,6 +17,8 @@ const RepluggedLink = require('./components/RepluggedLink');
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 
+const SECTIONS = [ 'pc-moduleManager-themes', 'pc-moduleManager-css', 'pc-moduleManager-plugins', 'pc-general', 'pc-updater' ];
+
 function _renderWrapper (label, Component) {
   return React.createElement(ErrorBoundary, null,
     React.createElement(FormSection, {},
@@ -47,14 +49,27 @@ async function patchSettingsComponent () {
 
     const changelog = sections.find(c => c.section === 'changelog');
     if (changelog) {
-      const settingsSections = Object.keys(powercord.api.settings.tabs).map(s => _makeSection(s));
+      const coreSections = Object.keys(powercord.api.settings.tabs)
+        .filter(s => SECTIONS.includes(s))
+        .map(s => _makeSection(s));
+      const pluginSections = Object.keys(powercord.api.settings.tabs)
+        .filter(s => !SECTIONS.includes(s))
+        .sort((a, b) => powercord.api.settings.tabs[a].label.localeCompare(powercord.api.settings.tabs[b].label))
+        .map(s => _makeSection(s));
+
       sections.splice(
         sections.indexOf(changelog), 0,
         {
           section: 'HEADER',
           label: 'Replugged'
         },
-        ...settingsSections,
+        ...coreSections,
+        { section: 'DIVIDER' },
+        {
+          section: 'HEADER',
+          label: Messages.REPLUGGED_PLUGINS_SETTINGS
+        },
+        ...pluginSections,
         { section: 'DIVIDER' }
       );
     }
