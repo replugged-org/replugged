@@ -171,5 +171,15 @@
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Šis slaptažodis bus naudojamas tavo duomenims užšifruoti prieš siunčiant juos į „Replugged“ serverius. Rekomenduojama jį nustatyti, bet gali tiesiog palikti šį lauką tuščią, kad duomenys būtų siunčiami nešifruoti.",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Jei jau naudoji sinchronizavimą kituose įrenginiuose, įvesk tą patį slaptažodį, kurį naudoji. **Atsargiai! Naudojant kitą slaptažodį, bus perrašyti seni duomenys**.",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Tikrinti konfigūracijos versiją",
-    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "„Replugged“ rodys atnaujinimą, jei konfigūracijos versija pasikeitė."
+    "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "„Replugged“ rodys atnaujinimą, jei konfigūracijos versija pasikeitė.",
+    "REPLUGGED_PLUGINS_SETTINGS": "Įskiepio nustatymai",
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Kopijuoti nuorodą",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Rodyti šaltinį",
+    "REPLUGGED_PLUGIN_EMBED_COPIED": "Nukopijuota!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Kas čia?",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Įskiepis jau įdiegtas!",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Tai yra „Replugged“ funkcija. Ji tau leidžia įdiegti įskiepius ir temas tiesiai iš pokalbių lango.\nTiesiog nuspausk mygtuką, matomą po žinute.",
+    "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Tema jau įdiegta!",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Įdiegti įskiepį",
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Įdiegti temą"
 }

@@ -178,7 +178,8 @@
     "REPLUGGED_PLUGIN_EMBED_COPY": "Kopieer Link",
     "REPLUGGED_PLUGIN_EMBED_COPIED": "Gekopieerd!",
     "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Wat is dit?",
-    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Dit is een replugged functie. Het laat je plugins en thema's downloaden van chat.\nDruk gewoon op de instaleer knop in de embed.",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Dit is een Replugged-functie. Hiermee kun je plugins of thema's rechtstreeks vanuit de chat installeren.\nDruk gewoon op de installatieknop op de embed.",
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin al geïnstalleerd!",
-    "REPLUGGED_PLUGINS_SETTINGS": "Plugin Instellingen"
+    "REPLUGGED_PLUGINS_SETTINGS": "Plugin Instellingen",
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Bekijk Repo"
 }
