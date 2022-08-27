@@ -19,5 +19,5 @@ jobs:
 
       - name: Build the flake
         run: nix build
-      - name: Build the flake
+      - name: Check the flake
         run: nix flake check
