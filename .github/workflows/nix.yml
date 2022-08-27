@@ -1,3 +1,4 @@
+name: Build the Nix flake
 on:
   push:
     paths:
