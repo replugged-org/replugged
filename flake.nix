@@ -25,3 +25,4 @@
       devShell = npmlock2nix.shell { src = self; };
     });
 }
+
