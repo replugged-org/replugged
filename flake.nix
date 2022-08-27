@@ -20,9 +20,9 @@
     in
     {
       packages.replugged = npmPkg;
-      defaultPackage = self.packages.${system}.replugged;
+      packages.default = self.packages.${system}.replugged;
 
-      devShell = npmlock2nix.shell { src = self; };
+      devShells.default = npmlock2nix.shell { src = self; };
     });
 }
 
