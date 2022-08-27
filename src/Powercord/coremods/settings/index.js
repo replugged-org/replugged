@@ -17,6 +17,8 @@ const RepluggedLink = require('./components/RepluggedLink');
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 
+const SECTIONS = [ 'pc-moduleManager-themes', 'pc-moduleManager-css', 'pc-moduleManager-plugins', 'pc-general', 'pc-updater' ];
+
 function _renderWrapper (label, Component) {
   return React.createElement(ErrorBoundary, null,
     React.createElement(FormSection, {},
@@ -48,13 +50,13 @@ async function patchSettingsComponent () {
     const changelog = sections.find(c => c.section === 'changelog');
     if (changelog) {
       const coreSections = Object.keys(powercord.api.settings.tabs)
-        .filter(s => ['pc-moduleManager-themes', 'pc-moduleManager-css', 'pc-moduleManager-plugins', 'pc-general', 'pc-updater'].indexOf(s) >= 0)
+        .filter(s => SECTIONS.includes(s))
         .map(s => _makeSection(s));
       const pluginSections = Object.keys(powercord.api.settings.tabs)
-        .filter(s => ['pc-moduleManager-themes', 'pc-moduleManager-css', 'pc-moduleManager-plugins', 'pc-general', 'pc-updater'].indexOf(s) < 0)
-        .sort((a, b) => powercord.api.settings.tabs[a].label < powercord.api.settings.tabs[b].label)
+        .filter(s => !SECTIONS.includes(s))
+        .sort((a, b) => powercord.api.settings.tabs[a].label.localeCompare(powercord.api.settings.tabs[b].label))
         .map(s => _makeSection(s));
-      
+
       sections.splice(
         sections.indexOf(changelog), 0,
         {
@@ -71,6 +73,8 @@ async function patchSettingsComponent () {
         { section: 'DIVIDER' }
       );
     }
+
+    console.log(sections);
 
     const socialsSection = sections.find(c => c.element === SocialLinks);
     if (socialsSection) {
