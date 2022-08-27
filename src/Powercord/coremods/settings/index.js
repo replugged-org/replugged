@@ -74,8 +74,6 @@ async function patchSettingsComponent () {
       );
     }
 
-    console.log(sections);
-
     const socialsSection = sections.find(c => c.element === SocialLinks);
     if (socialsSection) {
       socialsSection.element = () => {
