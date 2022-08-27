@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Eklentiyi İndir",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Temayı İndir",
     "REPLUGGED_PLUGIN_EMBED_COPY": "Linki Kopyala",
-    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Bu bir Replugged özelliğidir. Eklenti veya temaları chat den ayrılmadan indirmenizi sağlar.\nTek yapmanız gereken şey indir düğmesine basmak."
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Bu bir Replugged özelliğidir. Eklenti veya temaları chat den ayrılmadan indirmenizi sağlar.\nTek yapmanız gereken şey indir düğmesine basmak.",
+    "REPLUGGED_PLUGINS_SETTINGS": "Eklenti Ayarları"
 }

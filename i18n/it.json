@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Che cos'è questo?",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Installa Tema",
     "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Mostra Repo",
-    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Questa è una funzione di Replugged. Ti permette di installare plugins o temi direttamente dalla chat.\nBasta cliccare il tasto installa nell'embed."
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Questa è una funzione di Replugged. Ti permette di installare plugins o temi direttamente dalla chat.\nBasta cliccare il tasto installa nell'embed.",
+    "REPLUGGED_PLUGINS_SETTINGS": "Impostazioni Plugin"
 }

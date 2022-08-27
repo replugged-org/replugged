@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Тему вже встановлено!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Встановити плагін",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Встановити тему",
-    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Переглянути репозиторій"
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Переглянути репозиторій",
+    "REPLUGGED_PLUGINS_SETTINGS": "Налаштування плагінів"
 }

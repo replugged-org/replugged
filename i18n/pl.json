@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin jest już zainstalowany!",
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Motyw jest już zainstalowany!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Zainstaluj Plugin",
-    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Zainstaluj Motyw"
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Zainstaluj Motyw",
+    "REPLUGGED_PLUGINS_SETTINGS": "Ustawienia Pluginu"
 }

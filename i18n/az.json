@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin artıq quraşdırılıb!",
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Mövzu artıq quraşdırılıb!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Plugini yükləyin",
-    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Mövzunu yükləyin"
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Mövzunu yükləyin",
+    "REPLUGGED_PLUGINS_SETTINGS": "Plugin Parametrləri"
 }
