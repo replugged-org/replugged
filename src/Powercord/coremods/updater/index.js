@@ -67,9 +67,13 @@ class Updater {
               }
               if (checkVersion) {
                 const manifestVersion = entity.manifest?.version ?? null;
-                const manifestNewVersion = await entity._getUpdateVersion();
-                if (manifestVersion === manifestNewVersion) {
+                const manifestNewInfo = await entity._getUpdateInfo();
+                if (manifestVersion === manifestNewInfo.version) {
                   continue;
+                }
+                if (commits[0] && manifestNewInfo.id !== commits[0].id) {
+                  const howManyGoByeBye = commits.findIndex(c => c.id === manifestNewInfo.id);
+                  commits.splice(0, howManyGoByeBye);
                 }
               }
               updates.push({
