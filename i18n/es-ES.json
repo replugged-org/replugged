@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Tema ya instalado!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Instalar Complemento",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Instalar Tema",
-    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Esta es una característica de Replugged. Permite instalar complementos o temas directamente del mensaje.\nSimplemente presiona el botón de instalar."
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Esta es una característica de Replugged. Permite instalar complementos o temas directamente del mensaje.\nSimplemente presiona el botón de instalar.",
+    "REPLUGGED_PLUGINS_SETTINGS": "Ajustes del Plugin"
 }
