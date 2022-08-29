@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Εγκατάσταση του προσθέτου",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Εγκατάσταση του θέματος",
     "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Προβολή αποθετηρίου",
-    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Αυτή είναι μια λειτουργία του Replugged. Επιτρέπει την εγκατάσταση προσθέτων ή θεμάτων κατευθείαν από την συνομιλία.\nΑπλώς πατήστε το κουμπί εγκατάστασης στο ένθετο."
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Αυτή είναι μια λειτουργία του Replugged. Επιτρέπει την εγκατάσταση προσθέτων ή θεμάτων κατευθείαν από την συνομιλία.\nΑπλώς πατήστε το κουμπί εγκατάστασης στο ένθετο.",
+    "REPLUGGED_PLUGINS_SETTINGS": "Ρυθμίσεις προσθέτων"
 }
