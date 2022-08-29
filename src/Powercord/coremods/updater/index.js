@@ -359,7 +359,7 @@ module.exports = async () => {
 
   powercord.api.settings.registerSettings('pc-updater', {
     category: 'pc-updater',
-    label: 'Updater', // Note to self: add this string to i18n last :^)
+    label: Messages.REPLUGGED_UPDATES_UPDATER, // Note to self: add this string to i18n last :^)
     render: Settings
   });
 
