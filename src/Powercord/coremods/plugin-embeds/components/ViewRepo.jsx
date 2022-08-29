@@ -10,7 +10,7 @@ module.exports = function ({ url }) {
   }
 
   return (
-    <Clickable className={copyLink} onClick={handleClick}>
+    <Clickable className={copyLink} onClick={handleClick} style={{ paddingRight: 0 }}>
       {Messages.REPLUGGED_PLUGIN_EMBED_VIEW_REPO}
     </Clickable>
   );

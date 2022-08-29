@@ -179,5 +179,7 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Theme bereits installiert!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Plugin installieren",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Theme installieren",
-    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Repo ansehen"
+    "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Repo ansehen",
+    "REPLUGGED_PLUGINS_SETTINGS": "Plugin Einstellungen",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Dies ist eine Feature, mit dem du Plugins oder Themen direkt aus dem Chat installieren kannst.\nKlicke einfach den Installieren Button auf dem Embed."
 }
