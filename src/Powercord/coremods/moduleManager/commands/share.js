@@ -44,8 +44,8 @@ module.exports = {
   description: 'Share a plugin or theme that you have',
   usage: '{c} [ plugin/theme ID]',
   executor ([ id, ...args ]) {
+    const isPlugin = args.includes('--plugin') || powercord.pluginManager.plugins.has(id);
     if (!args.includes('--theme') && !args.includes('--plugin')) {
-      const isPlugin = powercord.pluginManager.plugins.has(id);
       const isTheme = powercord.styleManager.themes.has(id);
 
       if (!isPlugin && !isTheme) { // No match
@@ -58,7 +58,7 @@ module.exports = {
     const manager = args.includes('--plugin') || isPlugin ? powercord.pluginManager : powercord.styleManager;
     const entity = manager.get(id);
     
-    const data = fs.readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
+    let data = fs.readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
     data = data.split('\n').map(e => e.trim());
     
     let url = '';
@@ -118,5 +118,4 @@ module.exports = {
       ]
     };
   }
-
-    
+}
