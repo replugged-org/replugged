@@ -36,7 +36,7 @@ async function _installerInjectCtxMenu () {
     if (info instanceof Promise) {
       info.then(() => forceUpdateElement('#message'));
     } else if (info) {
-      const { type, isInstalled } = info;
+      const { type, isInstalled, url } = info;
 
       const label = type === 'plugin' ? 'Plugin' : 'Theme';
 
@@ -61,7 +61,7 @@ async function _installerInjectCtxMenu () {
             seperate: true,
             id: 'InstallerContextLink',
             label: `Install ${label}`,
-            action: () => cloneRepo(target.href, powercord, type)
+            action: () => cloneRepo(url, powercord, type)
           })
         );
       }
