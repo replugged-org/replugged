@@ -359,14 +359,14 @@ module.exports = async () => {
 
   powercord.api.settings.registerSettings('pc-updater', {
     category: 'pc-updater',
-    label: Messages.REPLUGGED_UPDATES_UPDATER, // Note to self: add this string to i18n last :^)
+    label: Messages.REPLUGGED_UPDATES_UPDATER,
     render: Settings
   });
 
   powercord.api.commands.registerCommand({
     command: 'debug',
     usage: '{c}',
-    description: 'Sends the device\'s, discord\'s, and replugged\'s debug info in chat.',
+    description: Messages.REPLUGGED_UPDATER_DEBUG_COMMAND_DESC,
     executor: () => ({
       send: true,
       result: debugInfo(settings.get)
