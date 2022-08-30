@@ -31,7 +31,7 @@ function autocompleteFlags (args) {
   if (!lastArg.startsWith('-')) {
     return false;
   }
-  const flags = [ '--repo', '--no-repo', '--open', '--no-send', '--embed', '--no-embed' ];
+  const flags = [ '--repo', '--no-repo', '--open', '--no-send', '--embed', '--no-embed', '--theme', '--plugin' ];
   return {
     commands: flags.filter(flag => flag.startsWith(lastArg) && !args.includes(flag))
       .map(x => ({ command: x })),
@@ -44,16 +44,18 @@ module.exports = {
   description: 'Share a plugin or theme that you have',
   usage: '{c} [ plugin/theme ID]',
   executor ([ id, ...args ]) {
-    const isPlugin = powercord.pluginManager.plugins.has(id);
-    const isTheme = powercord.styleManager.themes.has(id);
+    if (!args.includes('--theme') && !args.includes('--plugin')) {
+      const isPlugin = powercord.pluginManager.plugins.has(id);
+      const isTheme = powercord.styleManager.themes.has(id);
 
-    if (!isPlugin && !isTheme) { // No match
-      return resp(false, `Could not find plugin or theme matching "${id}".`);
-    } else if (isPlugin && isTheme) { // Duplicate name
-      return resp(false, `"${id}" is in use by both a plugin and theme. You will have to enable it from settings.`);
+      if (!isPlugin && !isTheme) { // No match
+        return resp(false, `Could not find plugin or theme matching "${id}".`);
+      } else if (isPlugin && isTheme) { // Duplicate name
+        return resp(false, `"${id}" is in use by both a plugin and theme. You will have to specify with --theme or --plugin flag.`);
+      }
     }
     
-    const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;
+    const manager = args.includes('--plugin') || isPlugin ? powercord.pluginManager : powercord.styleManager;
     const entity = manager.get(id);
     
     const data = fs.readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
@@ -90,7 +92,7 @@ module.exports = {
     }
     return resp(false, 'Unable to find a url in the .git config file');
 
-  }
+  },
   autocomplete ([ id, ...args ]) {
     if (args.length) {
       return autocompleteFlags(args);
