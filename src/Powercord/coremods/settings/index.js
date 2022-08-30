@@ -64,11 +64,11 @@ async function patchSettingsComponent () {
           label: 'Replugged'
         },
         ...coreSections,
-        { section: 'DIVIDER' },
-        {
+        pluginSections.length ? { section: 'DIVIDER' } : null,
+        pluginSections.length ? {
           section: 'HEADER',
           label: Messages.REPLUGGED_PLUGINS_SETTINGS
-        },
+        } : null,
         ...pluginSections,
         { section: 'DIVIDER' }
       );
