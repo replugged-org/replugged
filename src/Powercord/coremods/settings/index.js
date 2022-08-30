@@ -57,20 +57,26 @@ async function patchSettingsComponent () {
         .sort((a, b) => powercord.api.settings.tabs[a].label.localeCompare(powercord.api.settings.tabs[b].label))
         .map(s => _makeSection(s));
 
-      sections.splice(
-        sections.indexOf(changelog), 0,
+      const newSections = [
         {
           section: 'HEADER',
           label: 'Replugged'
         },
         ...coreSections,
-        { section: 'DIVIDER' },
-        {
-          section: 'HEADER',
-          label: Messages.REPLUGGED_PLUGINS_SETTINGS
-        },
+        pluginSections?.length ? { section: 'DIVIDER' } : null,
+        pluginSections?.length
+          ? {
+            section: 'HEADER',
+            label: Messages.REPLUGGED_PLUGINS_SETTINGS
+          }
+          : null,
         ...pluginSections,
         { section: 'DIVIDER' }
+      ];
+
+      sections.splice(
+        sections.indexOf(changelog), 0,
+        ...newSections.filter(Boolean)
       );
     }
 
