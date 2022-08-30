@@ -43,7 +43,7 @@
     "REPLUGGED_PLUGINS_PERMISSIONS_USE_EUD": "Συγκέντρωση και χρησιμοποίηση των δεδομένων σας",
     "REPLUGGED_PLUGINS_SEARCH": "Αναζήτηση προσθέτων…",
     "REPLUGGED_PLUGINS_UNINSTALL": "Απεγκατάσταση {pluginCount, plural, =1 {πρόσθετου} other {προσθέτων}}",
-    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "Είστε βέβαιοι ότι θέλετε να απεγκαταστήσετε {pluginCount, plural, =1 {this plugin} other {these plugins}};",
+    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "Είστε βέβαιοι ότι θέλετε να απεγκαταστήσετε {pluginCount, plural, =1 {αυτό το πρόσθετο} other {αυτά τα πρόσθετα}};",
     "REPLUGGED_PLUGINS_VERSION": "Έκδοση",
     "REPLUGGED_PLUGINS_GITHUB": "Αποθετήριο",
     "REPLUGGED_PLUGINS_WEBSITE": "Ιστοσελίδα",

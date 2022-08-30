@@ -45,7 +45,7 @@
     "REPLUGGED_PLUGINS_PERMISSIONS_USE_EUD": "Coletar e usar seus dados",
     "REPLUGGED_PLUGINS_SEARCH": "Procurar plugins…",
     "REPLUGGED_PLUGINS_UNINSTALL": "Desinstalar {pluginCount, plural, =1 {plugin} other {plugins}}",
-    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "Tem certeza que deseja desinstalar {pluginCount, plural, =1 {este plugin} por {estes plugins}}?",
+    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "Tem certeza que deseja desinstalar {pluginCount, plural, =1 {este plugin} other {estes plugins}}?",
     "REPLUGGED_PLUGINS_VERSION": "Versão",
     "REPLUGGED_PRODUCT_LOOKING": "O que você está procurando?",
     "REPLUGGED_QUICKCSS": "CSS rápido",
