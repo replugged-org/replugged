@@ -11,7 +11,7 @@
     "REPLUGGED_CUTIE_DONATE": "Пожертвовать",
     "REPLUGGED_CUTIE_SUBTITLE": "И получи приятные плюшки",
     "REPLUGGED_CUTIE_TIER_1_DESC": "Получи **полностью настраиваемую роль** на сервере Replugged и **любые цвета** для значков Replugged'а.",
-    "REPLUGGED_CUTIE_TIER_1_PRICE": "**$1 USD**/месяц",
+    "REPLUGGED_CUTIE_TIER_1_PRICE": "**1 доллар США**/месяц",
     "REPLUGGED_CUTIE_TIER_2_DESC": "Получи **полностью настраиваемый** значок в своём профиле.",
     "REPLUGGED_CUTIE_TIER_2_PRICE": "**$5 USD**/месяц",
     "REPLUGGED_CUTIE_TIER_3_DESC": "Получи **полностью настраиваемый** значок для **одного** из своих серверов.",
@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Тема уже установлена!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Установить плагин",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Установить тему",
-    "REPLUGGED_PLUGIN_EMBED_COPY": "Копировать ссылку"
+    "REPLUGGED_PLUGIN_EMBED_COPY": "Копировать ссылку",
+    "REPLUGGED_PLUGINS_SETTINGS": "Настройки Плагинов"
 }
