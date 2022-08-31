@@ -24,7 +24,7 @@ module.exports = {
     return resp(true, Messages.REPLUGGED_COMMAND_DISABLE_DISABLED.format({
       type: isPlugin ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME,
       id
-    });
+    })
   },
 
   autocomplete (args) {

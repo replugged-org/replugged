@@ -12,7 +12,7 @@ module.exports = {
     if (!isPlugin && !isTheme) { // No match
       return resp(false, Messages.REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME.format({ id }));
     } else if (isPlugin && isTheme) { // Duplicate name
-      return resp(false, Messages.REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE({ id }));
+      return resp(false, Messages.REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE.format({ id }));
     }
 
     const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;

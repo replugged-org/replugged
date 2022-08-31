@@ -9,7 +9,7 @@ module.exports = {
     const themes = powercord.styleManager.getThemes();
     const result = {
       type: 'rich',
-      title: Messages.REPLUGGED_COMMAND_LIST_OF_INSTALLED({
+      title: Messages.REPLUGGED_COMMAND_LIST_OF_INSTALLED.format({
         type: Messages.REPLUGGED_THEMES,
         count: themes.length
       }),

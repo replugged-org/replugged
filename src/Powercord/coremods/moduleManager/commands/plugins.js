@@ -10,7 +10,7 @@ module.exports = {
 
     const result = {
       type: 'rich',
-      title: Messages.REPLUGGED_COMMAND_LIST_OF_INSTALLED({
+      title: Messages.REPLUGGED_COMMAND_LIST_OF_INSTALLED.format({
         type: Messages.REPLUGGED_PLUGINS,
         count: plugins.length
       }),

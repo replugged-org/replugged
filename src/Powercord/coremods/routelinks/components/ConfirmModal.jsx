@@ -28,7 +28,7 @@ module.exports = class Modal extends React.Component {
       <Text> {Messages.REPLUGGED_MODULE_MANAGER_CONFIRM_INSTALL.format({
         type: this.props.type,
         name: this.props.repoName,
-        url: `<a href={this.props.url} target="_blank">${this.props.url}</a>`
+        url: `<a href={this.props.url} target="_blank">${this.props.url}</a>`,
         branch: this.props.branch ? `(${this.props.branch} branch)`: ''
       })} </Text>
     </Confirm>;
