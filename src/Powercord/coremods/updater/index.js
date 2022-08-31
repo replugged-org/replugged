@@ -240,9 +240,15 @@ class Updater {
     const revision = await PowercordNative.exec(`git rev-parse ${branch}`, this.cwd)
       .then(r => r.stdout.toString().trim());
 
-    const upstream = await PowercordNative.exec('git remote get-url origin', this.cwd)
-      .then(r => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)?.[1] ||
+    let upstream = '???';
+
+    const remoteBranch = await powercord.getUpstreamBranch();
+    if (remoteBranch) {
+      const remote = remoteBranch.split('/')[0];
+      upstream = await PowercordNative.exec(`git remote get-url ${remote}`, this.cwd)
+        .then(r => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)?.[1] ||
           r.stdout.toString().trim().match(/(.*):(.*\/.*)/)[2]);
+    }
 
     return {
       upstream,
