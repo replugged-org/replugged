@@ -1,6 +1,6 @@
 const { getRepoInfo, cloneRepo, isInstallerURL } = require('../moduleManager/util');
 const { open: openModal, close: closeModal } = require('powercord/modal');
-const { getModule, React } = require('powercord/webpack');
+const { getModule, React, i18n: { Messages } } = require('powercord/webpack');
 const Modal = require('./components/ConfirmModal');
 const { inject, uninject } = require('powercord/injector');
 const { WEBSITE } = require('powercord/constants');
@@ -27,7 +27,7 @@ function openInstallModal (info) {
         type: 'info',
         timeout: 10e3,
         buttons: [ {
-          text: 'Got It',
+          text: Messages.REPLUGGED_BUTTON_GOT_IT,
           color: 'green',
           size: 'medium',
           look: 'outlined'
@@ -41,7 +41,7 @@ function openInstallModal (info) {
         type: 'info',
         timeout: 10e3,
         buttons: [ {
-          text: 'Got It',
+          text: Messages.REPLUGGED_BUTTON_GOT_IT,
           color: 'green',
           size: 'medium',
           look: 'outlined'
@@ -102,11 +102,11 @@ module.exports = async () => {
       repoInfo.then(info => {
         if (!info) {
           powercord.api.notices.sendToast(`PDPluginCannotFind-${repoURL}`, {
-            header: `Could not find a plugin or theme repository at ${repoURL}`,
+            header: `${Messages.REPLUGGED_TOAST_COULD_NOT_FIND_REPO} ${repoURL}`,
             type: 'info',
             timeout: 10e3,
             buttons: [ {
-              text: 'Got It',
+              text: Messages.REPLUGGED_BUTTON_GOT_IT,
               color: 'green',
               size: 'medium',
               look: 'outlined'
@@ -114,12 +114,12 @@ module.exports = async () => {
           });
         } else if (info.isInstalled) {
           powercord.api.notices.sendToast(`PDAlreadyInstalled-${info.repoName}`, {
-            header: 'Plugin Already Installed',
-            content: `${info.repoName} is already installed.`,
+            header: Messages.REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED,
+            content: `${info.repoName} ${Messages.REPLUGGED_TOAST_IS_ALREADY_INSTALLED}`,
             type: 'info',
             timeout: 10e3,
             buttons: [ {
-              text: 'Got It',
+              text: Messages.REPLUGGED_BUTTON_GOT_IT,
               color: 'green',
               size: 'medium',
               look: 'outlined'

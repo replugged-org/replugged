@@ -366,7 +366,7 @@ module.exports = async () => {
   powercord.api.commands.registerCommand({
     command: 'debug',
     usage: '{c}',
-    description: Messages.REPLUGGED_UPDATER_DEBUG_COMMAND_DESC,
+    description: Messages.REPLUGGED_COMMAND_DEBUG_DESC,
     executor: () => ({
       send: true,
       result: debugInfo(settings.get)

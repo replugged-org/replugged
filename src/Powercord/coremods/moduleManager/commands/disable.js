@@ -1,8 +1,9 @@
 const { resp } = require('../util');
+const { i18n: { Messages } } = require('powercord/webpack');
 
 module.exports = {
   command: 'disable',
-  description: 'Disable a plugin/theme',
+  description: Messages.REPLUGGED_COMMAND_DISABLE_DESC,
   usage: '{c} [ plugin/theme ID ]',
   executor ([ id ]) {
     const isPlugin = powercord.pluginManager.plugins.has(id);

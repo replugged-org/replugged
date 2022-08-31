@@ -1,12 +1,12 @@
 const Modal = require('../components/ConfirmModal');
-const { React } = require('powercord/webpack');
+const { React, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 
 const { resp } = require('../util');
 
 module.exports = {
   command: 'uninstall',
-  description: 'Uninstall a plugin/theme',
+  description: Messages.REPLUGGED_COMMAND_UNINSTALL_DESC,
   usage: '{c} [ plugin/theme ID ]',
   executor ([ id ]) {
     const isPlugin = powercord.pluginManager.plugins.has(id);

@@ -1,8 +1,9 @@
 const { resp } = require('../util');
+const { i18n: { Messages } } = require('powercord/webpack');
 
 module.exports = {
   command: 'enable',
-  description: 'Enable a plugin/theme',
+  description: Messages.REPLUGGED_COMMAND_ENABLE_DESC,
   usage: '{c} [ plugin/theme ID ]',
   executor ([ id ]) {
     const isPlugin = powercord.pluginManager.plugins.has(id);

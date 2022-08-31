@@ -1,4 +1,4 @@
-const { getModule, channels } = require('powercord/webpack');
+const { getModule, channels, i18n: { Messages } } = require('powercord/webpack');
 
 module.exports = async function monkeypatchMessages () {
   const messages = await getModule([ 'sendMessage', 'editMessage' ]);
@@ -26,7 +26,7 @@ module.exports = async function monkeypatchMessages () {
     } catch (e) {
       result = {
         send: false,
-        result: `An error occurred while executing the command: ${e.message}.\nCheck the console for more details.`
+        result: `${Messages.REPLUGGED_COMMAND_ERROR_AN_ERROR_OCCURRED} ${e.message}.\n${Messages.REPLUGGED_COMMAND_ERROR_CHECK_CONSOLE}`
       };
 
       console.error('An error occurred while executing command %s: %o', command.command, e);

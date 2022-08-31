@@ -1,7 +1,9 @@
+const { i18n: { Messages } } = require('powercord/webpack')
+
 module.exports = {
   command: 'help',
   aliases: [ 'h' ],
-  description: 'Gives you a list of commands or information on a specific command.',
+  description: Messages.REPLUGGED_COMMAND_HELP_DESC,
   usage: '{c} [ commandName ]',
   executor ([ commandName ]) {
     let result;
