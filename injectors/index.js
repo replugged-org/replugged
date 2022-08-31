@@ -33,6 +33,11 @@ let platform = (
   process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase())) || 'stable'
 ).toLowerCase();
 
+if (!VALID_PLATFORMS.includes(platform)) {
+	console.log(`${AnsiEscapes.RED}Platform you specified isn't valid, please specify a valid one.${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+	process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+}
+
 (async () => {
   if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
     console.log(`${AnsiEscapes.YELLOW}No valid platform specified, defaulting to "${platform}".${AnsiEscapes.RESET}\n`);
@@ -43,7 +48,14 @@ let platform = (
   }
 
   if (process.argv[2] === 'inject') {
-    if (await main.inject(platformModule, platform)) {
+	try {
+		result = await main.inject(platformModule, platform);
+	} catch (e) {
+		// this runs if path generator crashes (app folder doesnt exist)
+		console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+		process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+	}
+    if (result) {
       if (!process.argv.includes('--no-welcome-message')) {
         await writeFile(
           join(__dirname, '../src/__injected.txt'),
@@ -60,7 +72,14 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
       );
     }
   } else if (process.argv[2] === 'uninject') {
-    if (await main.uninject(platformModule, platform)) {
+    try {
+		result = await main.uninject(platformModule, platform);
+	} catch (e) {
+		// this runs if path generator crashes (app folder doesnt exist)
+		console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+		process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+	}
+	if (result) {
       // @todo: prompt to (re)start automatically
       console.log(BasicMessages.UNPLUG_SUCCESS, '\n');
       console.log(
