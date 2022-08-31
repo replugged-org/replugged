@@ -131,6 +131,11 @@ class Updater {
     const updates = settings.get('updates', []);
     const failed = [];
     for (const update of [ ...updates ]) {
+      if (!update.commits || update.commits.length === 0) {
+        updates.shift();
+        continue;
+      }
+
       let entity = powercord;
       if (update.id.startsWith('plugin')) {
         entity = powercord.pluginManager.get(update.id.replace('plugins_', ''));
@@ -138,7 +143,7 @@ class Updater {
         entity = powercord.styleManager.get(update.id.replace('themes_', ''));
       }
 
-      const success = await entity._update(force);
+      const success = await entity._update(force, update.commits[0].id);
       updates.shift();
       settings.get('updates', updates);
       if (!success) {
