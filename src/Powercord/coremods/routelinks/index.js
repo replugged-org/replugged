@@ -1,6 +1,6 @@
 const { getRepoInfo, cloneRepo, isInstallerURL } = require('../moduleManager/util');
 const { open: openModal, close: closeModal } = require('powercord/modal');
-const { getModule, React } = require('powercord/webpack');
+const { getModule, React, i18n: { Messages } } = require('powercord/webpack');
 const Modal = require('./components/ConfirmModal');
 const { inject, uninject } = require('powercord/injector');
 const { WEBSITE } = require('powercord/constants');
@@ -23,11 +23,13 @@ function openInstallModal (info) {
       cloneRepo(info.url, powercord, info.type);
 
       powercord.api.notices.sendToast(`PDPluginInstalling-${info.repoName}`, {
-        header: `Installing ${info.repoName}...`,
+        header: Messages.REPLUGGED_TOAST_INSTALL_HEADER.format({
+          name: info.repoName
+        }),
         type: 'info',
         timeout: 10e3,
         buttons: [ {
-          text: 'Got It',
+          text: Messages.REPLUGGED_BUTTON_GOT_IT,
           color: 'green',
           size: 'medium',
           look: 'outlined'
@@ -37,11 +39,13 @@ function openInstallModal (info) {
     onCancel: () => {
       closeModal();
       powercord.api.notices.sendToast(`PDPluginInstallCancelled-${info.repoName}`, {
-        header: `Cancelled ${info.repoName} installation`,
+        header: Messages.REPLUGGED_TOAST_INSTALL_CANCELLED_HEADER.format({
+          name: info.repoName
+        }),
         type: 'info',
         timeout: 10e3,
         buttons: [ {
-          text: 'Got It',
+          text: Messages.REPLUGGED_BUTTON_GOT_IT,
           color: 'green',
           size: 'medium',
           look: 'outlined'
@@ -102,11 +106,13 @@ module.exports = async () => {
       repoInfo.then(info => {
         if (!info) {
           powercord.api.notices.sendToast(`PDPluginCannotFind-${repoURL}`, {
-            header: `Could not find a plugin or theme repository at ${repoURL}`,
+            header: Messages.REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME_AT_REPO.format({
+              repoURL
+            }),
             type: 'info',
             timeout: 10e3,
             buttons: [ {
-              text: 'Got It',
+              text: Messages.REPLUGGED_BUTTON_GOT_IT,
               color: 'green',
               size: 'medium',
               look: 'outlined'
@@ -114,12 +120,14 @@ module.exports = async () => {
           });
         } else if (info.isInstalled) {
           powercord.api.notices.sendToast(`PDAlreadyInstalled-${info.repoName}`, {
-            header: 'Plugin Already Installed',
-            content: `${info.repoName} is already installed.`,
+            header: Messages.REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED,
+            content: Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({
+              name: info.repoName
+            }),
             type: 'info',
             timeout: 10e3,
             buttons: [ {
-              text: 'Got It',
+              text: Messages.REPLUGGED_BUTTON_GOT_IT,
               color: 'green',
               size: 'medium',
               look: 'outlined'

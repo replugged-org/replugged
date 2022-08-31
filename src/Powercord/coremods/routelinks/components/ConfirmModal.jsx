@@ -1,4 +1,4 @@
-const { React } = require('powercord/webpack');
+const { React, i18n: { Messages } } = require('powercord/webpack');
 const { Confirm } = require('powercord/components/modal');
 const {
   Text
@@ -20,12 +20,17 @@ module.exports = class Modal extends React.Component {
     return <Confirm
       red={true}
       header={`Install ${this.props.type}`}
-      confirmText={'Confirm'}
-      cancelText={'Cancel'}
+      confirmText={Messages.REPLUGGED_CONFIRM}
+      cancelText={Messages.REPLUGGED_CANCEL}
       onConfirm={() => this.props.onConfirm()}
       onCancel={() => typeof this.props.onCancel !== 'undefined' ? this.props.onCancel() : closeModal()}
-    >
-      <Text>Are you sure you want to install the {this.props.type} {this.props.repoName} from <a href={this.props.url} target="_blank">{this.props.url}</a>{this.props.branch ? ` (${this.props.branch} branch)` : ''}?</Text>
+    > //Are you sure you want to install the {} {} from ?
+      <Text> {Messages.REPLUGGED_MODULE_MANAGER_CONFIRM_INSTALL.format({
+        type: this.props.type,
+        name: this.props.repoName,
+        url: `<a href={this.props.url} target="_blank">${this.props.url}</a>`,
+        branch: this.props.branch ? `(${this.props.branch} branch)`: ''
+      })} </Text>
     </Confirm>;
   }
 };

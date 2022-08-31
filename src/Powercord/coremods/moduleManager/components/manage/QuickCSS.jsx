@@ -99,7 +99,7 @@ class QuickCSS extends React.PureComponent {
               {!this.props.popout && <div className='powercord-quickcss-resizer' onMouseDown={this._handleResizeBegin}/>}
             </>}
         </div>
-        {!this.props.popout && <p className='powercord-text'>Psst! You can resize the QuickCSS editor if you want! Grab the bottom of the editor and resize it however you like.</p>}
+        {!this.props.popout && <p className='powercord-text'>{Messages.REPLUGGED_QUICKCSS_RESIZE_NOTICE}</p>}
       </>
     );
   }
