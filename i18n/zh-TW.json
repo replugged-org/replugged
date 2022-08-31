@@ -96,7 +96,7 @@
     "REPLUGGED_SETTINGS_TRANSPARENT_GLASSCORD": "看起來你安裝了Glasscord，這代表著您你無法直接在Replugged中更新此設置。了解有關配置Glasscord的更多信息[here]({glasscordCfgUrl})",
     "REPLUGGED_SNIPPET_APPLIED": "Snippet已應用",
     "REPLUGGED_SNIPPET_APPLY": "應用Snippet",
-    "REPLUGGED_SNIPPET_LINE1": "#css-snippets 的snippet在 {date, time, medium} 應用了 {date, date, medium}",
+    "REPLUGGED_SNIPPET_LINE1": "在#css-snippets的snippet於 {date, time, medium} 應用了在 {date, date, medium} 發佈的snippet",
     "REPLUGGED_SNIPPET_LINE2": "由 {authorTag} ({authorId}) 製作",
     "REPLUGGED_THEMES": "主題",
     "REPLUGGED_THEMES_EXPLORE": "探索主題商店",
