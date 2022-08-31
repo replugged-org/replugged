@@ -72,8 +72,8 @@ class Updater {
                   continue;
                 }
                 if (commits[0] && manifestNewInfo.id !== commits[0].id) {
-                  const howManyGoByeBye = commits.findIndex(c => c.id === manifestNewInfo.id);
-                  commits.splice(0, howManyGoByeBye);
+                  const extraneousCommitAmount = commits.findIndex(c => c.id === manifestNewInfo.id);
+                  commits.splice(0, extraneousCommitAmount);
                 }
               }
               updates.push({
