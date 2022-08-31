@@ -35,19 +35,28 @@ module.exports = {
     if (info.isInstalled) {
       return {
         send: false,
-        result: `\`${info.repoName}\` ${Messages.REPLUGGED_COMMAND_INSTALL_ERROR_ALREADY_INSTALLED}`
+        result: Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({
+          name: info.repoName
+        })
       };
     }
 
     openModal(() => React.createElement(Modal, {
       red: true,
-      header: `${Messages.REPLUGGED_INSTALL_ARE_YOU_SURE_HEADER} ${info.type}`,
-      desc: `${Messages.REPLUGGED_INSTALL_ARE_YOU_SURE_DESC} ${info.type} ${info.repoName}?`,
+      header: Messages.REPLUGGED_COMMAND_INSTALL_MODAL_HEADER.format({
+        type: info.type
+      }),
+      desc: Messages.REPLUGGED_INSTALL_MODAL_DESC.format({
+        type: info.type,
+        name: info.repoName
+      }),
       onConfirm: () => {
         cloneRepo(url, powercord, info.type);
 
         powercord.api.notices.sendToast(`PDPluginInstalling-${info.repoName}`, {
-          header: `${Messages.REPLUGGED_PLUGINS_INSTALLING_HEADER} ${info.repoName}...`,
+          header: Messages.REPLUGGED_TOAST_INSTALL_HEADER.format({
+            name: info.repoName
+          }),
           type: 'info',
           timeout: 10e3,
           buttons: [ {

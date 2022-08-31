@@ -10,7 +10,10 @@ module.exports = {
 
     const result = {
       type: 'rich',
-      title: `List of Installed Plugins (${plugins.length})`,
+      title: Messages.REPLUGGED_COMMAND_LIST_OF_INSTALLED({
+        type: Messages.REPLUGGED_PLUGINS,
+        count: plugins.length
+      }),
       description: `\`${plugins.join('\n')}\``
     };
 

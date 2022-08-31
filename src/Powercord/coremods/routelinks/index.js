@@ -23,7 +23,9 @@ function openInstallModal (info) {
       cloneRepo(info.url, powercord, info.type);
 
       powercord.api.notices.sendToast(`PDPluginInstalling-${info.repoName}`, {
-        header: `Installing ${info.repoName}...`,
+        header: Messages.REPLUGGED_TOAST_INSTALL_HEADER.format({
+          name: info.repoName
+        }),
         type: 'info',
         timeout: 10e3,
         buttons: [ {
@@ -37,7 +39,9 @@ function openInstallModal (info) {
     onCancel: () => {
       closeModal();
       powercord.api.notices.sendToast(`PDPluginInstallCancelled-${info.repoName}`, {
-        header: `Cancelled ${info.repoName} installation`,
+        header: Messages.REPLUGGED_TOAST_INSTALL_CANCELLED_HEADER.format({
+          name: info.repoName
+        }),
         type: 'info',
         timeout: 10e3,
         buttons: [ {
@@ -102,7 +106,9 @@ module.exports = async () => {
       repoInfo.then(info => {
         if (!info) {
           powercord.api.notices.sendToast(`PDPluginCannotFind-${repoURL}`, {
-            header: `${Messages.REPLUGGED_TOAST_COULD_NOT_FIND_REPO} ${repoURL}`,
+            header: Messages.REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME_AT_REPO.format({
+              repoURL
+            }),
             type: 'info',
             timeout: 10e3,
             buttons: [ {
@@ -115,7 +121,9 @@ module.exports = async () => {
         } else if (info.isInstalled) {
           powercord.api.notices.sendToast(`PDAlreadyInstalled-${info.repoName}`, {
             header: Messages.REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED,
-            content: `${info.repoName} ${Messages.REPLUGGED_TOAST_IS_ALREADY_INSTALLED}`,
+            content: Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({
+              name: info.repoName
+            }),
             type: 'info',
             timeout: 10e3,
             buttons: [ {

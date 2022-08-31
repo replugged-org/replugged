@@ -13,9 +13,9 @@ module.exports = {
     const isTheme = powercord.styleManager.themes.has(id);
 
     if (!isPlugin && !isTheme) { // No match
-      return resp(false, `Could not find plugin or theme matching "${id}".`);
+      return resp(false, Messages.REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME.format({ id }));
     } else if (isPlugin && isTheme) { // Duplicate name
-      return resp(false, `"${id}" is in use by both a plugin and theme. You will have to uninstall it from settings.`);
+      return resp(false, Messages.REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE.format({ id }));
     }
 
     const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;
@@ -23,18 +23,20 @@ module.exports = {
 
     openModal(() => React.createElement(Modal, {
       red: true,
-      header: `Uninstall ${id}`,
-      desc: `Are you sure you want to uninstall and delete ${id}? This cannot be undone.`,
+      header: Messages.REPLUGGED_COMMAND_UNINSTALL_MODAL_HEADER.format({ id }),
+      desc: Messages.REPLUGGED_COMMAND_UNINSTALL_MODAL_DESC.format({ id }),
       onConfirm: () => {
         manager.uninstall(id);
 
         powercord.api.notices.sendToast(`PDPluginUninstalled-${id}`, {
-          header: `${isPlugin ? 'Plugin' : 'Theme'} Uninstalled`,
-          content: `${id} uninstalled and deleted`,
+          header: Messages.REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER.format({
+            type: isPlugin ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME
+          }),
+          content: Messages.REPLUGGED_COMMAND_UNINSTALL_TOAST_CONTENT.format({ id }),
           type: 'info',
           timeout: 10e3,
           buttons: [ {
-            text: 'Got It',
+            text: Messages.REPLUGGED_BUTTON_GOT_IT,
             color: 'green',
             size: 'medium',
             look: 'outlined'
