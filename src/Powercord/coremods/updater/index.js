@@ -68,7 +68,7 @@ class Updater {
               if (checkVersion) {
                 const manifestVersion = entity.manifest?.version ?? null;
                 const manifestNewInfo = await entity._getUpdateInfo();
-                if (manifestVersion === manifestNewInfo.version) {
+                if (manifestNewInfo == null || manifestVersion === manifestNewInfo.version) {
                   continue;
                 }
                 if (commits[0] && manifestNewInfo.id !== commits[0].id) {
