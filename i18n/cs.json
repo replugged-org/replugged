@@ -110,7 +110,7 @@
     "REPLUGGED_UPDATES_BRANCH": "Větev:",
     "REPLUGGED_UPDATES_CHECK": "Zkontrolovat aktualizace",
     "REPLUGGED_UPDATES_CHECKING": "Kontroluji aktualizace…",
-    "REPLUGGED_UPDATES_CHECKING_STATUS": "Zkontrolováno {checked} z {total}",
+    "REPLUGGED_UPDATES_CHECKING_STATUS": "Zkontrolováno {checked}/{total}",
     "REPLUGGED_UPDATES_DISABLE": "Zakázat aktualizace",
     "REPLUGGED_UPDATES_DISABLED": "Aktualizace jsou zakázány.",
     "REPLUGGED_UPDATES_DISABLED_SECTION": "Zakázané aktualizace",
@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin je již nainstalován!",
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Motiv je již nainstalován!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Instalovat plugin",
-    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Instalovat motiv"
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Instalovat motiv",
+    "REPLUGGED_PLUGINS_SETTINGS": "Nastavení pluginů"
 }
