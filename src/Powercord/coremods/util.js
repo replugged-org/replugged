@@ -1,4 +1,4 @@
-const { React, getModule, i18n: { _chosenLocale: currentLocale } } = require('powercord/webpack');
+const { React, getModule, i18n: { Messages, _chosenLocale: currentLocale } } = require('powercord/webpack');
 const { createElement } = require('powercord/util');
 const { resolveCompiler } = require('powercord/compilers');
 const { REPO_URL, CACHE_FOLDER } = require('powercord/constants');
@@ -99,5 +99,33 @@ module.exports = {
     Experiments="${experimentOverrides > 0 ? Object.keys(getExperimentOverrides()).join(', ') : 'n/a'}"
     Labs="${enabledLabs.length ? enabledLabs.map(e => e.name).join(', ') : 'n/a'}"
     Plugins="${plugins.join(', ')}"\`\`\``;
+  },
+  
+  formatURL(url) {
+    return url
+      .replace('.git', '')
+      .replace('git@github.com:', 'https://github.com/')
+      .replace('url = ', '');
+  },
+  
+  getURL(entity, type=null) {
+    if (typeof entity === 'string') {
+      if (type) {
+        entity = type === 'plugin' ? powercord.pluginManager.get(entity) : powercord.styleManager.get(entity);
+      } else {
+        return false;
+      }
+    }
+    let data = fs.readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
+    data = data.split('\n').map(e => e.trim());
+    
+    let url = '';
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].startsWith('url = ')) {
+        url = this.formatURL(data[i]);
+        break;
+      }
+    }
+    return url;
   }
 };
