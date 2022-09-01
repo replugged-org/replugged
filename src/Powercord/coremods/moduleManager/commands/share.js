@@ -2,17 +2,10 @@ const { getModule, constants: { ComponentActions } } = require('powercord/webpac
 const fs = require('fs');
 const path = require('path');
 const { resp } = require('../util');
+const { getURL } = require('../../util');
 
 const { openURL } = getModule([ 'openURL' ], false);
 const { ComponentDispatch } = getModule([ 'ComponentDispatch' ], false);
-
-function formatUrl (url) {
-  return url
-    .replace('.git', '')
-    .replace('git@github.com:', 'https://github.com/')
-    .replace('url = ', '');
-}
-
 
 function appendText (text) {
   ComponentDispatch.dispatchToLastSubscribed(
@@ -31,7 +24,7 @@ function autocompleteFlags (args) {
   if (!lastArg.startsWith('-')) {
     return false;
   }
-  const flags = [ '--repo', '--no-repo', '--open', '--no-send', '--embed', '--no-embed', '--theme', '--plugin' ];
+  const flags = [ '--repo', '--open', '--no-send', '--theme', '--plugin' ];
   return {
     commands: flags.filter(flag => flag.startsWith(lastArg) && !args.includes(flag))
       .map(x => ({ command: x })),
@@ -41,7 +34,7 @@ function autocompleteFlags (args) {
 
 module.exports = {
   command: 'share',
-  description: 'Share a plugin or theme that you have',
+  description: Messages.REPLUGGED_COMMAND_SHARE_DESC,
   usage: '{c} [ plugin/theme ID]',
   executor ([ id, ...args ]) {
     const isPlugin = args.includes('--plugin') || powercord.pluginManager.plugins.has(id);
@@ -49,34 +42,23 @@ module.exports = {
       const isTheme = powercord.styleManager.themes.has(id);
 
       if (!isPlugin && !isTheme) { // No match
-        return resp(false, `Could not find plugin or theme matching "${id}".`);
+        return resp(false, Messages.REPLUGGED_ENTITY_NOT_FOUND.replace('{id}', id);
       } else if (isPlugin && isTheme) { // Duplicate name
-        return resp(false, `"${id}" is in use by both a plugin and theme. You will have to specify with --theme or --plugin flag.`);
+        return resp(false, Messages.REPLUGGED_COMMAND_SHARE_BOTH_ENTITY.replace('{id}', id);
       }
     }
     
     const manager = args.includes('--plugin') || isPlugin ? powercord.pluginManager : powercord.styleManager;
     const entity = manager.get(id);
+    const url = getURL(entity);
     
-    let data = fs.readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
-    data = data.split('\n').map(e => e.trim());
-    
-    let url = '';
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].startsWith('url = ')) {
-        url = formatUrl(data[i]);
-        break;
-      }
-    }
     if (url !== '') {
       if (args.includes('--open')) {
         openURL(url);
         return;
       }
-      if ((!args.includes('--no-repo')) || args.includes('--repo')) {
-        if ((args.includes('--no-embed')) && !args.includes('--embed')) {
-          url = `<${url}>`;
-        }
+      if (args.includes('--repo')) {
+        url = `<${url}>`;
       } else {
         url = `<https://replugged.dev/install?url=${url}>`;
       }
@@ -90,7 +72,7 @@ module.exports = {
         result: url
       };
     }
-    return resp(false, 'Unable to find a url in the .git config file');
+    return resp(false, Messages.REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND.replace('{id}', id);
 
   },
   autocomplete ([ id, ...args ]) {
