@@ -1,9 +1,10 @@
-const { React, getModule, i18n: { Messages, _chosenLocale: currentLocale } } = require('powercord/webpack');
+const { React, getModule, i18n: { _chosenLocale: currentLocale } } = require('powercord/webpack');
 const { createElement } = require('powercord/util');
 const { resolveCompiler } = require('powercord/compilers');
 const { REPO_URL, CACHE_FOLDER } = require('powercord/constants');
 
 const { readdirSync, existsSync, lstatSync } = require('fs');
+const path = require('path');
 
 module.exports = {
   loadStyle (file) {
@@ -116,7 +117,7 @@ module.exports = {
         return false;
       }
     }
-    let data = fs.readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
+    let data = readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
     data = data.split('\n').map(e => e.trim());
     
     let url = '';
