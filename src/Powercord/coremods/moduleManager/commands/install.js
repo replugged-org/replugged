@@ -43,7 +43,7 @@ module.exports = {
 
     openModal(() => React.createElement(Modal, {
       red: true,
-      header: Messages.REPLUGGED_COMMAND_INSTALL_MODAL_HEADER.format({
+      header: Messages.REPLUGGED_INSTALL_MODAL_HEADER.format({
         type: info.type
       }),
       desc: Messages.REPLUGGED_INSTALL_MODAL_DESC.format({
