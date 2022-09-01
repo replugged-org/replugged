@@ -4,7 +4,6 @@ const { resolveCompiler } = require('powercord/compilers');
 const { REPO_URL, CACHE_FOLDER } = require('powercord/constants');
 
 const { readdirSync, existsSync, lstatSync } = require('fs');
-const path = require('path');
 
 module.exports = {
   loadStyle (file) {
@@ -100,33 +99,5 @@ module.exports = {
     Experiments="${experimentOverrides > 0 ? Object.keys(getExperimentOverrides()).join(', ') : 'n/a'}"
     Labs="${enabledLabs.length ? enabledLabs.map(e => e.name).join(', ') : 'n/a'}"
     Plugins="${plugins.join(', ')}"\`\`\``;
-  },
-  
-  formatURL(url) {
-    return url
-      .replace('.git', '')
-      .replace('git@github.com:', 'https://github.com/')
-      .replace('url = ', '');
-  },
-  
-  getURL(entity, type=null) {
-    if (typeof entity === 'string') {
-      if (type) {
-        entity = type === 'plugin' ? powercord.pluginManager.get(entity) : powercord.styleManager.get(entity);
-      } else {
-        return false;
-      }
-    }
-    let data = readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
-    data = data.split('\n').map(e => e.trim());
-    
-    let url = '';
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].startsWith('url = ')) {
-        url = this.formatURL(data[i]);
-        break;
-      }
-    }
-    return url;
   }
 };

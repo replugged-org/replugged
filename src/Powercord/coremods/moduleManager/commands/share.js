@@ -1,8 +1,5 @@
-const { getModule, constants: { ComponentActions } } = require('powercord/webpack');
-const fs = require('fs');
-const path = require('path');
-const { resp } = require('../util');
-const { getURL } = require('../../util');
+const { getModule, i18n: { Messages }, constants: { ComponentActions } } = require('powercord/webpack');
+const { resp, getWebURL } = require('../util');
 
 const { openURL } = getModule([ 'openURL' ], false);
 const { ComponentDispatch } = getModule([ 'ComponentDispatch' ], false);
@@ -24,7 +21,7 @@ function autocompleteFlags (args) {
   if (!lastArg.startsWith('-')) {
     return false;
   }
-  const flags = [ '--repo', '--open', '--no-send', '--theme', '--plugin' ];
+  const flags = [ '--repo', '--open', '--no-send', '--embed', '--theme', '--plugin' ];
   return {
     commands: flags.filter(flag => flag.startsWith(lastArg) && !args.includes(flag))
       .map(x => ({ command: x })),
@@ -42,25 +39,29 @@ module.exports = {
       const isTheme = powercord.styleManager.themes.has(id);
 
       if (!isPlugin && !isTheme) { // No match
-        return resp(false, Messages.REPLUGGED_ENTITY_NOT_FOUND.replace('{id}', id);
+        return resp(false, Messages.REPLUGGED_ENTITY_NOT_FOUND.format({ id }));
       } else if (isPlugin && isTheme) { // Duplicate name
-        return resp(false, Messages.REPLUGGED_COMMAND_SHARE_BOTH_ENTITY.replace('{id}', id);
+        return resp(false, Messages.REPLUGGED_COMMAND_SHARE_BOTH_ENTITY.format({ id }));
       }
     }
-    
+
     const manager = args.includes('--plugin') || isPlugin ? powercord.pluginManager : powercord.styleManager;
     const entity = manager.get(id);
-    const url = getURL(entity);
-    
+    let url = getWebURL(entity);
+
     if (url !== '') {
       if (args.includes('--open')) {
         openURL(url);
         return;
       }
       if (args.includes('--repo')) {
-        url = `<${url}>`;
+        url = `${url}`;
       } else {
-        url = `<https://replugged.dev/install?url=${url}>`;
+        url = `https://replugged.dev/install?url=${url}`;
+      }
+
+      if (!args.includes('--embed')) {
+        url = `<${url}>`;
       }
 
       if (args.includes('--no-send')) {
@@ -72,8 +73,7 @@ module.exports = {
         result: url
       };
     }
-    return resp(false, Messages.REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND.replace('{id}', id);
-
+    return resp(false, Messages.REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND.format({ id }));
   },
   autocomplete ([ id, ...args ]) {
     if (args.length) {
@@ -100,4 +100,4 @@ module.exports = {
       ]
     };
   }
-}
+};
