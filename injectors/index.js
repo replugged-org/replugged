@@ -123,13 +123,13 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
       console.log(BasicMessages.UNPLUG_SUCCESS, '\n');
       console.log(
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
-  To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run unplug <platform>${AnsiEscapes.RESET}
-  List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
+To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run unplug <platform>${AnsiEscapes.RESET}
+List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
       );
     }
   } else {
-      console.log(`Unsupported argument "${process.argv[2]}", exiting.`);
-      process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+    console.log(`Unsupported argument "${process.argv[2]}", exiting.`);
+    process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
   }
 })().catch(e => {
   if (e.code === 'EACCES') {
