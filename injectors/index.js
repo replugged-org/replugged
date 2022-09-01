@@ -49,7 +49,29 @@ if (!VALID_PLATFORMS.includes(platform)) {
 
   if (process.argv[2] === 'inject') {
 	try {
-		result = await main.inject(platformModule, platform);
+    if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
+      for (var i = 0; i < VALID_PLATFORMS.length; i++) {
+        const current = VALID_PLATFORMS[i];
+        try
+        {
+          result = await main.inject(platformModule, current);
+          platform = current;
+          break;
+        }
+        catch (e) {
+          console.log(`${AnsiEscapes.RED}${current} is not installed, skipping.${AnsiEscapes.RESET}`);
+        }
+      }
+
+      if (result) {
+        console.log(`${AnsiEscapes.GREEN}${platform} is installed, successfully plugged.${AnsiEscapes.RESET}\n`);
+      } else {
+        console.log(`\n${AnsiEscapes.RED}No valid platform is installed, exiting.${AnsiEscapes.RESET}\n`);
+        process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+      }
+    } else {
+      result = await main.inject(platformModule, platform);
+    }
 	} catch (e) {
 		// this runs if path generator crashes (app folder doesnt exist)
 		console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
@@ -73,24 +95,41 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
     }
   } else if (process.argv[2] === 'uninject') {
     try {
-		result = await main.uninject(platformModule, platform);
-	} catch (e) {
-		// this runs if path generator crashes (app folder doesnt exist)
-		console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
-		process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
-	}
-	if (result) {
+      if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
+        for (var i = 0; i < VALID_PLATFORMS.length; i++) {
+          const current = VALID_PLATFORMS[i];
+          result = await main.uninject(platformModule, current, true);
+          platform = current;
+          if (result) break;
+          console.log(`${AnsiEscapes.RED}${current} is not plugged, skipping.${AnsiEscapes.RESET}`);
+        }
+
+        if (result) {
+          console.log(`${AnsiEscapes.GREEN}${platform} is plugged, successfully unplugged.${AnsiEscapes.RESET}\n`);
+        } else {
+          console.log(`\n${AnsiEscapes.RED}No valid platform is plugged, exiting.${AnsiEscapes.RESET}\n`);
+          process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+        }
+      } else {
+        result = await main.uninject(platformModule, platform, false);
+      }
+    } catch (e) {
+      // this runs if path generator crashes (app folder doesnt exist)
+      console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+      process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+    }
+    if (result) {
       // @todo: prompt to (re)start automatically
       console.log(BasicMessages.UNPLUG_SUCCESS, '\n');
       console.log(
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
-To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run unplug <platform>${AnsiEscapes.RESET}
-List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
+  To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run unplug <platform>${AnsiEscapes.RESET}
+  List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
       );
     }
   } else {
-    console.log(`Unsupported argument "${process.argv[2]}", exiting.`);
-    process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+      console.log(`Unsupported argument "${process.argv[2]}", exiting.`);
+      process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
   }
 })().catch(e => {
   if (e.code === 'EACCES') {

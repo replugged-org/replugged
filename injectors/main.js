@@ -76,11 +76,11 @@ exports.inject = async ({ getAppDir }, platform) => {
   return true;
 };
 
-exports.uninject = async ({ getAppDir }, platform) => {
+exports.uninject = async ({ getAppDir }, platform, silent) => {
   const appDir = await getAppDir(platform);
 
   if (!existsSync(appDir)) {
-    console.log(`${AnsiEscapes.BOLD}${AnsiEscapes.RED}There is nothing to unplug. You are already running Discord without mods.${AnsiEscapes.RESET}`);
+    if (!silent) console.log(`${AnsiEscapes.BOLD}${AnsiEscapes.RED}There is nothing to unplug. You are already running Discord without mods.${AnsiEscapes.RESET}`);
     return false;
   }
 
