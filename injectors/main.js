@@ -95,6 +95,6 @@ exports.exists = async ({ getAppDir }, platform) => {
   return existsSync(join(appDir, '..'));
 };
 
-exports.checkPlatform = async ({ getAppDir }, platform) => {
+exports.checkPlatform = (platform) => {
   return this.VALID_PLATFORMS.includes(platform);
 };
