@@ -55,7 +55,10 @@ if (!VALID_PLATFORMS.includes(platform)) {
           {
             result = await main.inject(platformModule, current);
             platform = current;
-            if (!result) continue;
+            if (!result) {
+              console.log(`${AnsiEscapes.YELLOW}${current} is installed but already plugged, skipping.${AnsiEscapes.RESET}`);
+              continue;
+            }
             break;
           }
           catch (e) {
