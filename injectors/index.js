@@ -55,6 +55,7 @@ if (!VALID_PLATFORMS.includes(platform)) {
           {
             result = await main.inject(platformModule, current);
             platform = current;
+            if (!result) continue;
             break;
           }
           catch (e) {
