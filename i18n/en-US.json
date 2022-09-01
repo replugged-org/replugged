@@ -18,7 +18,7 @@
     "REPLUGGED_COMMAND_DEBUG_DESC": "Sends the device's, discord's, and replugged's debug info in chat.",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Disable a plugin/theme",
     "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" disabled!",
-    "REPLuGGED_COMMAND_ENABLE_DESC": "Enable a plugin/theme",
+    "REPLUGGED_COMMAND_ENABLE_DESC": "Enable a plugin/theme",
     "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" enabled!",
     "REPLUGGED_COMMAND_ECHO_DESC": "Returns the specified arguments.",
     "REPLUGGED_COMMAND_HELP_DESC": "Gives you a list of commands or information on a specific command.",
