@@ -23,7 +23,7 @@ const { injectContextMenu } = require('powercord/util');
 const Menu = getModule([ 'MenuItem' ], false);
 
 let _quickCSS = '';
-const _quickCSSFile = join(__dirname, 'quickcss.css');
+const _quickCSSFile = join(__dirname, '..', '..', '..', '..', 'quickcss.css');
 let _quickCSSElement;
 
 async function _installerInjectCtxMenu () {
