@@ -50,8 +50,8 @@ if (!main.VALID_PLATFORMS.includes(platform)) {
       const exists = await main.checkPlatform(platformModule, process.argv[4]?.toLowerCase());
       if (!exists) {
         for (const current of main.VALID_PLATFORMS) {
-          try
-          {
+          const installed = await main.exists(platformModule, current);
+          if (installed) {
             result = await main.inject(platformModule, current);
             platform = current;
             if (!result) {
@@ -59,8 +59,7 @@ if (!main.VALID_PLATFORMS.includes(platform)) {
               continue;
             }
             break;
-          }
-          catch (e) {
+          } else {
             console.log(`${AnsiEscapes.RED}${current} is not installed, skipping.${AnsiEscapes.RESET}`);
           }
         }
@@ -100,10 +99,14 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `$
       const exists = await main.checkPlatform(platformModule, process.argv[4]?.toLowerCase());
       if (!exists) {
         for (const current of main.VALID_PLATFORMS) {
-          result = await main.uninject(platformModule, current, true);
-          platform = current;
-          if (result) break;
-          console.log(`${AnsiEscapes.RED}${current} is not plugged, skipping.${AnsiEscapes.RESET}`);
+          const installed = await main.exists(platformModule, current);
+          if (installed) {
+            result = await main.uninject(platformModule, current, true);
+            platform = current;
+            if (result) break;
+          } else {
+            console.log(`${AnsiEscapes.RED}${current} is not plugged, skipping.${AnsiEscapes.RESET}`);
+          }
         }
 
         if (result) {
