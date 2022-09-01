@@ -52,7 +52,7 @@
     "REPLUGGED_PLUGINS": "Pluginlər",
     "REPLUGGED_PLUGINS_DISABLE": "Pluginləri deaktiv edin",
     "REPLUGGED_PLUGINS_DISABLE_NOTE": "Bu, aşağıdakı plaginləri deaktiv edəcək:",
-    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "{pluginCount, plural, =1 {bu plugin} digər {bu plaginləri}} silmək istədiyinizə əminsiniz?",
+    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "{pluginCount, plural, =1 {bu plugin} other {bu plaginləri}} silmək istədiyinizə əminsiniz?",
     "REPLUGGED_QUICKCSS_AUTOCOMPLETE": "Avtomatik tamamlama üçün Ctrl+Boşluq",
     "REPLUGGED_QUICKCSS_POPPED_OUT": "Redaktor çıxdı",
     "REPLUGGED_QUICKCSS_SETTINGS": "CodeMirror Parametrləri",

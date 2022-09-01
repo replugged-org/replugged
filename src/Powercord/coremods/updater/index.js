@@ -67,9 +67,13 @@ class Updater {
               }
               if (checkVersion) {
                 const manifestVersion = entity.manifest?.version ?? null;
-                const manifestNewVersion = await entity._getUpdateVersion();
-                if (manifestVersion === manifestNewVersion) {
+                const manifestNewInfo = await entity._getUpdateInfo();
+                if (manifestNewInfo === null || manifestVersion === manifestNewInfo.version) {
                   continue;
+                }
+                if (commits[0] && manifestNewInfo.id !== commits[0].id) {
+                  const extraneousCommitAmount = commits.findIndex(c => c.id === manifestNewInfo.id);
+                  commits.splice(0, extraneousCommitAmount);
                 }
               }
               updates.push({
@@ -127,6 +131,11 @@ class Updater {
     const updates = settings.get('updates', []);
     const failed = [];
     for (const update of [ ...updates ]) {
+      if (!update.commits || update.commits.length === 0) {
+        updates.shift();
+        continue;
+      }
+
       let entity = powercord;
       if (update.id.startsWith('plugin')) {
         entity = powercord.pluginManager.get(update.id.replace('plugins_', ''));
@@ -134,7 +143,7 @@ class Updater {
         entity = powercord.styleManager.get(update.id.replace('themes_', ''));
       }
 
-      const success = await entity._update(force);
+      const success = await entity._update(force, update.commits[0].id);
       updates.shift();
       settings.get('updates', updates);
       if (!success) {
@@ -236,9 +245,15 @@ class Updater {
     const revision = await PowercordNative.exec(`git rev-parse ${branch}`, this.cwd)
       .then(r => r.stdout.toString().trim());
 
-    const upstream = await PowercordNative.exec('git remote get-url origin', this.cwd)
-      .then(r => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)?.[1] ||
+    let upstream = '???';
+
+    const remoteBranch = await powercord.getUpstreamBranch();
+    if (remoteBranch) {
+      const remote = remoteBranch.split('/')[0];
+      upstream = await PowercordNative.exec(`git remote get-url ${remote}`, this.cwd)
+        .then(r => r.stdout.toString().match(/github\.com[:/]([\w-_]+\/[\w-_]+)/)?.[1] ||
           r.stdout.toString().trim().match(/(.*):(.*\/.*)/)[2]);
+    }
 
     return {
       upstream,
@@ -359,14 +374,14 @@ module.exports = async () => {
 
   powercord.api.settings.registerSettings('pc-updater', {
     category: 'pc-updater',
-    label: 'Updater', // Note to self: add this string to i18n last :^)
+    label: Messages.REPLUGGED_UPDATES_UPDATER,
     render: Settings
   });
 
   powercord.api.commands.registerCommand({
     command: 'debug',
     usage: '{c}',
-    description: 'Sends the device\'s, discord\'s, and replugged\'s debug info in chat.',
+    description: Messages.REPLUGGED_COMMAND_DEBUG_DESC,
     executor: () => ({
       send: true,
       result: debugInfo(settings.get)

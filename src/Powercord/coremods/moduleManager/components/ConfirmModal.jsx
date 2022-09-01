@@ -1,4 +1,4 @@
-const { React } = require('powercord/webpack');
+const { React, i18n: { Messages } } = require('powercord/webpack');
 const { Confirm } = require('powercord/components/modal');
 const {
   Text
@@ -20,8 +20,8 @@ module.exports = class Modal extends React.Component {
     return <Confirm
       red={this.props.red || false}
       header={this.props.header || null}
-      confirmText={this.props.confirmText || 'Confirm'}
-      cancelText={this.props.cancelText || 'Cancel'}
+      confirmText={this.props.confirmText || Messages.REPLUGGED_CONFIRM}
+      cancelText={this.props.cancelText || Messages.REPLUGGED_CANCEL}
       onConfirm={() => this.props.onConfirm()}
       onCancel={() => typeof this.props.onCancel !== 'undefined' ? this.props.onCancel() : closeModal()}
     >

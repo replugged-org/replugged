@@ -11,79 +11,82 @@ const Badges = require('./Badges');
 const cache = { _guilds: {} };
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
+let userInjectionsMax = 0;
+
 async function injectUsers () {
-  const UserProfileBadgeList = getAllModules((m) => m.default?.displayName === 'UserProfileBadgeList')[1]; // Discord have two identical components but only 2nd is actually used?
-  inject('pc-badges-users', UserProfileBadgeList, 'default', ([ props ], res) => {
-    const [ badges, setBadges ] = React.useState(null);
-    const userId = props.user.id;
-    React.useEffect(async () => {
-      if (!cache[userId] || cache[userId].lastFetch < Date.now() - REFRESH_INTERVAL) {
-        const baseUrl = powercord.settings.get('backendURL', WEBSITE);
-        cache[userId] = await get(`${baseUrl}/api/v1/users/${userId}`)
-          .catch((e) => e)
-          .then((res) => {
-            if (res.statusCode === 200 || res.statusCode === 404) {
+  getAllModules((m) => m.default?.displayName === 'UserProfileBadgeList').forEach((UserProfileBadgeList, i) => {
+    userInjectionsMax = i;
+
+    inject(`pc-badges-users-${i}`, UserProfileBadgeList, 'default', ([ props ], res) => {
+      const [ badges, setBadges ] = React.useState(null);
+      const userId = props.user.id;
+      React.useEffect(async () => {
+        if (!cache[userId] || cache[userId].lastFetch < Date.now() - REFRESH_INTERVAL) {
+          const baseUrl = powercord.settings.get('backendURL', WEBSITE);
+          cache[userId] = await get(`${baseUrl}/api/v1/users/${userId}`)
+            .catch((e) => e)
+            .then((res) => {
+              if (res.statusCode === 200 || res.statusCode === 404) {
+                return {
+                  badges: res.body.badges || {},
+                  lastFetch: Date.now()
+                };
+              }
+
+              delete cache[userId];
               return {
-                badges: res.body.badges || {},
+                badges: {},
                 lastFetch: Date.now()
               };
-            }
+            });
+        }
 
-            delete cache[userId];
-            return {
-              badges: {},
-              lastFetch: Date.now()
-            };
-          });
+        setBadges(cache[userId].badges);
+      }, []);
+
+      if (!badges) {
+        return res;
       }
 
-      setBadges(cache[userId].badges);
-    }, []);
+      const render = (Component, key, props = {}) => (
+        React.createElement(Component, {
+          key: `pc-${key}`,
+          color: badges.custom && badges.custom.color,
+          ...props
+        })
+      );
 
-    if (!badges) {
+      if (badges.custom && badges.custom.name && badges.custom.icon) {
+        res.props.children.push(render(Badges.Custom, 'cutie', badges.custom));
+      }
+      if (badges.developer) {
+        res.props.children.push(render(Badges.Developer, 'developer'));
+      }
+      if (badges.staff) {
+        res.props.children.push(render(Badges.Staff, 'staff'));
+      }
+      if (badges.support) {
+        res.props.children.push(render(Badges.Support, 'support'));
+      }
+      if (badges.contributor) {
+        res.props.children.push(render(Badges.Contributor, 'contributor'));
+      }
+      if (badges.translator) {
+        res.props.children.push(render(Badges.Translator, 'translator'));
+      }
+      if (badges.hunter) {
+        res.props.children.push(render(Badges.BugHunter, 'hunter'));
+      }
+      if (badges.early) {
+        res.props.children.push(render(Badges.EarlyUser, 'early'));
+      }
+      if (badges.booster) {
+        res.props.children.push(render(Badges.Booster, 'booster'));
+      }
+
       return res;
-    }
-
-    const render = (Component, key, props = {}) => (
-      React.createElement(Component, {
-        key: `pc-${key}`,
-        color: badges.custom && badges.custom.color,
-        ...props
-      })
-    );
-
-    if (badges.custom && badges.custom.name && badges.custom.icon) {
-      res.props.children.push(render(Badges.Custom, 'cutie', badges.custom));
-    }
-    if (badges.developer) {
-      res.props.children.push(render(Badges.Developer, 'developer'));
-    }
-    if (badges.staff) {
-      res.props.children.push(render(Badges.Staff, 'staff'));
-    }
-    if (badges.support) {
-      res.props.children.push(render(Badges.Support, 'support'));
-    }
-    if (badges.contributor) {
-      res.props.children.push(render(Badges.Contributor, 'contributor'));
-    }
-    if (badges.translator) {
-      res.props.children.push(render(Badges.Translator, 'translator'));
-    }
-    if (badges.hunter) {
-      res.props.children.push(render(Badges.BugHunter, 'hunter'));
-    }
-    if (badges.early) {
-      res.props.children.push(render(Badges.EarlyUser, 'early'));
-    }
-    if (badges.booster) {
-      res.props.children.push(render(Badges.Booster, 'booster'));
-    }
-
-    return res;
+    });
   });
-
-  UserProfileBadgeList.default.displayName = 'UserProfileBadgeList';
 }
 
 async function fetchGuilds () {
@@ -134,7 +137,9 @@ module.exports = async function () {
 
   return function () {
     unloadStyle(styleId);
-    uninject('pc-badges-users');
+    for (let i = 0; i <= userInjectionsMax; ++i) {
+      uninject(`pc-badges-users-${i}`);
+    }
     uninject('pc-badges-users-render');
     uninject('pc-badges-users-update');
     uninject('pc-badges-users-fetch');

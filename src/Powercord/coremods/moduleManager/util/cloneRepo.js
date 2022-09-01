@@ -2,6 +2,7 @@ const { join } = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const { REPO_URL_REGEX } = require('./misc');
+const { i18n: { Messages } } = require('powercord/webpack');
 
 module.exports = async function download (url, powercord, type) {
   return new Promise((resolve) => {
@@ -45,12 +46,14 @@ module.exports = async function download (url, powercord, type) {
 
       if (data.includes('already exists')) {
         powercord.api.notices.sendToast(`PDAlreadyInstalled-${repoName}`, {
-          header: 'Plugin Already Installed',
-          content: `${repoName} is already installed.`,
+          header: Messages.REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_HEADER,
+          content: Messages.REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_CONTENT.format({
+            name: repoName
+          }),
           type: 'info',
           timeout: 10e3,
           buttons: [ {
-            text: 'Got It',
+            text: Messages.REPLUGGED_BUTTON_GOT_IT,
             color: 'green',
             size: 'medium',
             look: 'outlined'
@@ -77,12 +80,14 @@ module.exports = async function download (url, powercord, type) {
             await powercord.pluginManager.remount(repoName);
             if (powercord.pluginManager.plugins.has(repoName)) {
               powercord.api.notices.sendToast(`PDPluginInstalled-${repoName}`, {
-                header: 'Plugin Installed',
-                content: `${repoName} installed`,
+                header: Messages.REPLUGGED_TOAST_PLUGIN_INSTALLED_HEADER,
+                content: Messages.REPLUGGED_INSTALLED_PLUGIN_THEME.format({
+                  name: repoName
+                }),
                 type: 'info',
                 timeout: 10e3,
                 buttons: [ {
-                  text: 'Got It',
+                  text: Messages.REPLUGGED_BUTTON_GOT_IT,
                   color: 'green',
                   size: 'medium',
                   look: 'outlined'
@@ -97,12 +102,14 @@ module.exports = async function download (url, powercord, type) {
             await powercord.styleManager.loadThemes();
             if (powercord.styleManager.themes.has(repoName)) {
               powercord.api.notices.sendToast(`PDPluginInstalled-${repoName}`, {
-                header: 'Theme Installed',
-                content: `${repoName} installed`,
+                header: Messages.REPLUGGED_TOAST_THEME_INSTALLED_HEADER,
+                content: Messages.REPLUGGED_INSTALLED_PLUGIN_THEME.format({
+                  name: repoName
+                }),
                 type: 'info',
                 timeout: 10e3,
                 buttons: [ {
-                  text: 'Got It',
+                  text: Messages.REPLUGGED_BUTTON_GOT_IT,
                   color: 'green',
                   size: 'medium',
                   look: 'outlined'
@@ -116,12 +123,12 @@ module.exports = async function download (url, powercord, type) {
           }
         } else {
           powercord.api.notices.sendToast('PDNoManifest', {
-            header: `This ${type} has no manifest, it may not be a ${type}`,
-            content: `This ${type} has no manifest, it may not be a ${type}`,
+            header: Messages.REPLUGGED_TOAST_NO_MANIFEST.format({ type }),
+            content: Messages.REPLUGGED_TOAST_NO_MANIFEST.format({ type }),
             type: 'info',
             timeout: 10e3,
             buttons: [ {
-              text: 'Got It',
+              text: Messages.REPLUGGED_BUTTON_GOT_IT,
               color: 'green',
               size: 'medium',
               look: 'outlined'

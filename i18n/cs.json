@@ -44,8 +44,8 @@
     "REPLUGGED_PLUGINS_PERMISSIONS_KEYPRESSES": "Odposlouchávat zmáčknutí kláves",
     "REPLUGGED_PLUGINS_PERMISSIONS_USE_EUD": "Sbírat a používat tvoje data",
     "REPLUGGED_PLUGINS_SEARCH": "Hledat pluginy…",
-    "REPLUGGED_PLUGINS_UNINSTALL": "Odinstalovat {pluginCount, plural, =1 {plugin} jiných {plugins}}",
-    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "Opravdu chceš odinstalovat {pluginCount, plural, =1 {this plugin} jiných {these plugins}}?",
+    "REPLUGGED_PLUGINS_UNINSTALL": "Odinstalovat {pluginCount, plural, =1 {plugin} other {plugins}}",
+    "REPLUGGED_PLUGINS_UNINSTALL_SURE": "Opravdu chceš odinstalovat {pluginCount, plural, =1 {this plugin} other {these plugins}}?",
     "REPLUGGED_PLUGINS_VERSION": "Verze",
     "REPLUGGED_PRODUCT_LOOKING": "Co hledáš?",
     "REPLUGGED_QUICKCSS": "Rychlé nastavení CSS",
@@ -110,7 +110,7 @@
     "REPLUGGED_UPDATES_BRANCH": "Větev:",
     "REPLUGGED_UPDATES_CHECK": "Zkontrolovat aktualizace",
     "REPLUGGED_UPDATES_CHECKING": "Kontroluji aktualizace…",
-    "REPLUGGED_UPDATES_CHECKING_STATUS": "Zkontrolováno {checked} z {total}",
+    "REPLUGGED_UPDATES_CHECKING_STATUS": "Zkontrolováno {checked}/{total}",
     "REPLUGGED_UPDATES_DISABLE": "Zakázat aktualizace",
     "REPLUGGED_UPDATES_DISABLED": "Aktualizace jsou zakázány.",
     "REPLUGGED_UPDATES_DISABLED_SECTION": "Zakázané aktualizace",
@@ -180,5 +180,6 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_PLUGIN": "Plugin je již nainstalován!",
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Motiv je již nainstalován!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Instalovat plugin",
-    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Instalovat motiv"
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Instalovat motiv",
+    "REPLUGGED_PLUGINS_SETTINGS": "Nastavení pluginů"
 }

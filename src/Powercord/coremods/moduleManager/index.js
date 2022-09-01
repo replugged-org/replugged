@@ -36,19 +36,23 @@ async function _installerInjectCtxMenu () {
     if (info instanceof Promise) {
       info.then(() => forceUpdateElement('#message'));
     } else if (info) {
-      const { type, isInstalled } = info;
+      const { type, isInstalled, url } = info;
 
-      const label = type === 'plugin' ? 'Plugin' : 'Theme';
+      const label = type === 'plugin' ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME;
 
       if (isInstalled) {
         res.props.children.splice(
           4,
           0,
           React.createElement(Menu.MenuItem, {
-            name: `${label} Installed`,
+            name: Messages.REPLUGGED_INSTALLED_PLUGIN_THEME.format({
+              name: label
+            }),
             seperate: true,
             id: 'InstallerContextLink',
-            label: `${label} Installed`,
+            label: Messages.REPLUGGED_INSTALLED_PLUGIN_THEME.format({
+              name: label
+            }),
             action: () => console.log('lol what it\'s already installed idiot')
           })
         );
@@ -57,11 +61,15 @@ async function _installerInjectCtxMenu () {
           4,
           0,
           React.createElement(Menu.MenuItem, {
-            name: `Install ${label}`,
+            name: Messages.REPLUGGED_MODULE_MANAGER_INSTALL_LABEL.format({
+              type: label
+            }),
             seperate: true,
             id: 'InstallerContextLink',
-            label: `Install ${label}`,
-            action: () => cloneRepo(target.href, powercord, type)
+            label: Messages.REPLUGGED_MODULE_MANAGER_INSTALL_LABEL.format({
+              type: label
+            }),
+            action: () => cloneRepo(url, powercord, type)
           })
         );
       }
@@ -149,15 +157,20 @@ async function _fetchEntities (type) {
   let props;
   if (missingEntities.length > 0) {
     props = {
-      header: `Found ${missingEntities.length} missing ${entity}!`,
+      header: Messages.REPLUGGED_MODULE_MANAGER_FOUND_MISSING.format({
+        missingCount: missingEntities.length,
+        type: entity
+      }),
       content: React.createElement('div', null,
-        `The following ${subjectiveEntity} retrieved:`,
+        Messages.REPLUGGED_MODULE_MANAGER_MISSING_RETRIEVED.format({
+          type: subjectiveEntity
+        }),
         React.createElement('ul', null, missingEntities.map(entity =>
           React.createElement('li', null, `– ${entity}`))
         )
       ),
       buttons: [ {
-        text: 'OK',
+        text: Messages.REPLUGGED_OK,
         color: 'green',
         look: 'outlined'
       } ],
@@ -165,7 +178,9 @@ async function _fetchEntities (type) {
     };
   } else {
     props = {
-      header: `No missing ${type} were found - try again later!`,
+      header: Messages.REPLUGGED_MODULE_MANAGER_NO_MISSING.format({
+        type
+      }),
       type: 'danger',
       timeout: 10e3
     };
