@@ -45,9 +45,10 @@ if (!main.VALID_PLATFORMS.includes(platform)) {
     platform = platform.toLowerCase();
   }
 
+  const exists = await main.checkPlatform(platformModule, process.argv[4]?.toLowerCase());
+
   if (process.argv[2] === 'inject') {
     try {
-      const exists = await main.checkPlatform(platformModule, process.argv[4]?.toLowerCase());
       if (!exists) {
         for (const current of main.VALID_PLATFORMS) {
           const installed = await main.exists(platformModule, current);
@@ -96,7 +97,6 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `$
     }
   } else if (process.argv[2] === 'uninject') {
     try {
-      const exists = await main.checkPlatform(platformModule, process.argv[4]?.toLowerCase());
       if (!exists) {
         for (const current of main.VALID_PLATFORMS) {
           const installed = await main.exists(platformModule, current);
