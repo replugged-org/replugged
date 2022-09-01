@@ -50,8 +50,7 @@ if (!VALID_PLATFORMS.includes(platform)) {
   if (process.argv[2] === 'inject') {
     try {
       if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
-        for (var i = 0; i < VALID_PLATFORMS.length; i++) {
-          const current = VALID_PLATFORMS[i];
+        for (const current of VALID_PLATFORMS) {
           try
           {
             result = await main.inject(platformModule, current);
@@ -96,8 +95,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
   } else if (process.argv[2] === 'uninject') {
     try {
       if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
-        for (var i = 0; i < VALID_PLATFORMS.length; i++) {
-          const current = VALID_PLATFORMS[i];
+        for (const current of VALID_PLATFORMS) {
           result = await main.uninject(platformModule, current, true);
           platform = current;
           if (result) break;
