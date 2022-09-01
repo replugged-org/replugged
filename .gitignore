@@ -17,6 +17,8 @@ themes/*
 
 settings/*.json
 
+quickcss.css
+
 config.json
 *injected.txt
 *.nogit.*
