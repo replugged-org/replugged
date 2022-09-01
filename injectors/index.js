@@ -27,19 +27,17 @@ try {
   }
 }
 
-const VALID_PLATFORMS = [ 'stable', 'ptb', 'canary', 'dev', 'development' ];
-
 let platform = (
-  process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase())) || 'stable'
+  process.argv.find(x => main.VALID_PLATFORMS.includes(x.toLowerCase())) || 'stable'
 ).toLowerCase();
 
-if (!VALID_PLATFORMS.includes(platform)) {
-	console.log(`${AnsiEscapes.RED}Platform you specified isn't valid, please specify a valid one.${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+if (!main.VALID_PLATFORMS.includes(platform)) {
+	console.log(`${AnsiEscapes.RED}Platform you specified isn't valid, please specify a valid one.${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
 	process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
 }
 
 (async () => {
-  if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
+  if (!process.argv.find(x => main.VALID_PLATFORMS.includes(x.toLowerCase()))) {
     console.log(`${AnsiEscapes.YELLOW}No valid platform specified, defaulting to "${platform}".${AnsiEscapes.RESET}\n`);
   } else if (platform === 'development') {
     platform = 'dev';
@@ -49,8 +47,9 @@ if (!VALID_PLATFORMS.includes(platform)) {
 
   if (process.argv[2] === 'inject') {
     try {
-      if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
-        for (const current of VALID_PLATFORMS) {
+      const exists = await main.checkPlatform(platformModule, process.argv[4]?.toLowerCase());
+      if (!exists) {
+        for (const current of main.VALID_PLATFORMS) {
           try
           {
             result = await main.inject(platformModule, current);
@@ -77,7 +76,7 @@ if (!VALID_PLATFORMS.includes(platform)) {
       }
     } catch (e) {
       // this runs if path generator crashes (app folder doesnt exist)
-      console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+      console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
       process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
     }
     if (result) {
@@ -93,13 +92,14 @@ if (!VALID_PLATFORMS.includes(platform)) {
       console.log(
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run plug <platform>${AnsiEscapes.RESET}
-List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
+List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
       );
     }
   } else if (process.argv[2] === 'uninject') {
     try {
-      if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
-        for (const current of VALID_PLATFORMS) {
+      const exists = await main.checkPlatform(platformModule, process.argv[4]?.toLowerCase());
+      if (!exists) {
+        for (const current of main.VALID_PLATFORMS) {
           result = await main.uninject(platformModule, current, true);
           platform = current;
           if (result) break;
@@ -117,7 +117,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
       }
     } catch (e) {
       // this runs if path generator crashes (app folder doesnt exist)
-      console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+      console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
       process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
     }
     if (result) {
@@ -126,7 +126,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
       console.log(
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run unplug <platform>${AnsiEscapes.RESET}
-List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
+List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
       );
     }
   } else {
@@ -158,7 +158,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
       '\n'
     );
     console.log(`Make sure that specified platform (${platform}) is installed, or try again with a different platform using: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run ${process.argv[2] === 'inject' ? 'plug' : 'unplug'} <platform>${AnsiEscapes.RESET}
-List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
   } else {
     console.error(`${AnsiEscapes.BOLD}${AnsiEscapes.RED}Something went wrong! Error info:${AnsiEscapes.RESET}\n`, e);
   }
