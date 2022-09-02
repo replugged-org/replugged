@@ -281,7 +281,7 @@
     "REPLUGGED_COMMAND_HELP_FIELD_USAGE": "Použití",
     "REPLUGGED_COMMAND_HELP_COMMAND_FOOTER": "Převzato z příkazu \"{commandOrigin}\".",
     "REPLUGGED_COMMAND_INSTALL_DESC": "Nainstaluje plugin nebo motiv.",
-    "REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL": "Neplatná URL! Prosím, uveďte platnou URL na GitHubu nebo uživatel/repozitář.",
+    "REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL": "Neplatná URL! Prosím, uveď platnou URL na GitHubu nebo uživatel/repozitář.",
     "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "Požadovaný plugin nebo motiv nebyl nalezen nebo je neplatný.",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Vypíše seznam nainstalovaných pluginů.",
     "REPLUGGED_COMMAND_THEMES_DESC": "Vypíše seznam nainstalovaných motivů.",
