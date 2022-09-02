@@ -56,7 +56,7 @@ exports.getWebURL = (entity, type = null) => {
     if (type) {
       entity = type === 'plugin' ? powercord.pluginManager.get(entity) : powercord.styleManager.get(entity);
     } else {
-      return false;
+      return null;
     }
   }
   let data = fs.readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
