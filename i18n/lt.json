@@ -181,5 +181,16 @@
     "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Tai yra „Replugged“ funkcija. Ji tau leidžia įdiegti įskiepius ir temas tiesiai iš pokalbių lango.\nTiesiog nuspausk mygtuką, matomą po žinute.",
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Tema jau įdiegta!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Įdiegti įskiepį",
-    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Įdiegti temą"
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Įdiegti temą",
+    "REPLUGGED_COMMAND_ENABLE_DESC": "Aktyvuoti įskiepį/temą",
+    "REPLUGGED_BUTTON_GOT_IT": "Supratau",
+    "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} įdiegta",
+    "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Parsisiųsti {type}",
+    "REPLUGGED_CANCEL": "Atšaukti",
+    "REPLUGGED_CONFIRM": "Patvirtinti",
+    "REPLUGGED_OK": "Gerai",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Išsiunčia tavo įrenginio, „Discord“ ir „Replugged“ veikimo žurnalą į pokalbį.",
+    "REPLUGGED_COMMAND_DISABLE_DESC": "Deaktyvuoti įskiepį/temą",
+    "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" deaktyvuota!",
+    "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" aktyvuota!"
 }
