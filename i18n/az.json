@@ -181,5 +181,10 @@
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "Mövzu artıq quraşdırılıb!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Plugini yükləyin",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Mövzunu yükləyin",
-    "REPLUGGED_PLUGINS_SETTINGS": "Plugin Parametrləri"
+    "REPLUGGED_PLUGINS_SETTINGS": "Plugin Parametrləri",
+    "REPLUGGED_BUTTON_GOT_IT": "Anladım",
+    "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} Quraşdırılıb",
+    "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Yüklə {type}",
+    "REPLUGGED_CANCEL": "Ləğv et",
+    "REPLUGGED_CONFIRM": "Təsdiq edin"
 }
