@@ -54,9 +54,7 @@ module.exports = {
         openURL(url);
         return;
       }
-      if (args.includes('--repo')) {
-        url = `${url}`;
-      } else {
+      if (!args.includes('--repo')) {
         url = `https://replugged.dev/install?url=${url}`;
       }
 
