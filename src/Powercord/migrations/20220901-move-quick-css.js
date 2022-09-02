@@ -1,4 +1,4 @@
-const { existsSync, renameSync, mkdirSync } = require('fs');
+const { existsSync, renameSync } = require('fs');
 
 module.exports = () => {
   /*
