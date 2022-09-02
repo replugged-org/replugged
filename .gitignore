@@ -17,7 +17,8 @@ themes/*
 
 settings/*.json
 
-quickcss.css
+settings/quickcss/*
+!settings/quickcss/.gitkeep
 
 config.json
 *injected.txt

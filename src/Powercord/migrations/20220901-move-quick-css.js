@@ -1,4 +1,4 @@
-const { existsSync, renameSync } = require('fs');
+const { existsSync, renameSync, mkdirSync } = require('fs');
 
 module.exports = () => {
   /*
@@ -7,6 +7,6 @@ module.exports = () => {
   */
 
   if (existsSync(`${__dirname}/../coremods/moduleManager/quickcss.css`)) {
-    renameSync(`${__dirname}/../coremods/moduleManager/quickcss.css`, `${__dirname}/../../../themes/quickcss.css`);
+    renameSync(`${__dirname}/../coremods/moduleManager/quickcss.css`, `${__dirname}/../../../settings/quickcss/main.css`);
   }
 };
