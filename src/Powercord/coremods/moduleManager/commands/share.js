@@ -91,11 +91,11 @@ module.exports = {
       commands: [
         ...plugins.map(plugin => ({
           command: plugin.entityID,
-          description: `Plugin - ${plugin.manifest.description}`
+          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ 'description': plugin.manifest.description })
         })),
         ...themes.map(theme => ({
           command: theme.entityID,
-          description: `Theme - ${theme.manifest.description}`
+          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ 'description': theme.manifest.description })
         }))
       ]
     };
