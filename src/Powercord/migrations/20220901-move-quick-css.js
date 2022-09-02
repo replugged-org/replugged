@@ -7,6 +7,6 @@ module.exports = () => {
   */
 
   if (existsSync(`${__dirname}/../coremods/moduleManager/quickcss.css`)) {
-    renameSync(`${__dirname}/../coremods/moduleManager/quickcss.css`, `${__dirname}/../../../quickcss.css`);
+    renameSync(`${__dirname}/../coremods/moduleManager/quickcss.css`, `${__dirname}/../../../themes/quickcss.css`);
   }
 };
