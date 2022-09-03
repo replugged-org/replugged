@@ -28,11 +28,13 @@ module.exports = class Button extends React.Component {
             cloneRepo(url, powercord, this.props.type);
           }}
         >
-          {installed ? Messages.REPLUGGED_BUTTON_INSTALLER_INSTALLED.format({
-            type: this.props.type === 'plugin' ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME
-          }) : Messages.REPLUGGED_BUTTON_INSTALLER_DOWNLOAD.format({
-            type: this.props.type === 'plugin' ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME
-          })}
+          {installed
+            ? Messages.REPLUGGED_BUTTON_INSTALLER_INSTALLED.format({
+              type: this.props.type === 'plugin' ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME
+            })
+            : Messages.REPLUGGED_BUTTON_INSTALLER_DOWNLOAD.format({
+              type: this.props.type === 'plugin' ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME
+            })}
         </Clickable>
       </div>
     );
