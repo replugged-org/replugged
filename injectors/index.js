@@ -95,14 +95,22 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `$
   } else if (process.argv[2] === 'uninject') {
     try {
       if (!exists) {
+        result = false;
+
         for (const current of main.VALID_PLATFORMS) {
-          const installed = await main.exists(platformModule, current);
-          if (installed) {
-            result = await main.uninject(platformModule, current, true);
-            platform = current;
-            if (result) break;
-          } else {
-            console.log(`${AnsiEscapes.RED}${current} is not plugged, skipping.${AnsiEscapes.RESET}`);
+          try {
+            const installed = await main.exists(platformModule, current);
+            if (installed) {
+              result = await main.uninject(platformModule, current, true);
+              platform = current;
+              if (result) break;
+            } else if (current !== 'development') {
+              console.log(`${AnsiEscapes.RED}${current} is not plugged, skipping.${AnsiEscapes.RESET}`);
+            }
+          } catch (e) {
+            if (current !== 'development') {
+              console.log(`${AnsiEscapes.RED}${current} is not plugged, skipping.${AnsiEscapes.RESET}`);
+            }
           }
         }
 
