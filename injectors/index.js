@@ -48,16 +48,18 @@ let platform = process.argv[4]?.toLowerCase();
     try {
       if (!exists) {
         for (const current of main.VALID_PLATFORMS) {
-          try {
-            result = await main.inject(platformModule, current);
-            platform = current;
-            if (!result) {
-              console.log(`${AnsiEscapes.YELLOW}${current} is installed but already plugged, skipping.${AnsiEscapes.RESET}`);
-              continue;
+          if (current !== 'development') {
+            try {
+              result = await main.inject(platformModule, current);
+              platform = current;
+              if (!result) {
+                console.log(`${AnsiEscapes.YELLOW}${current} is installed but already plugged, skipping.${AnsiEscapes.RESET}`);
+                continue;
+              }
+              break;
+            } catch (e) {
+              console.log(`${AnsiEscapes.RED}${current} is not installed, skipping.${AnsiEscapes.RESET}`);
             }
-            break;
-          } catch (e) {
-            console.log(`${AnsiEscapes.RED}${current} is not installed, skipping.${AnsiEscapes.RESET}`);
           }
         }
 
@@ -97,16 +99,14 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `$
         result = false;
 
         for (const current of main.VALID_PLATFORMS) {
-          try {
-            result = await main.uninject(platformModule, current, true);
-            platform = current;
-            if (result) break;
-            if (current !== 'development') {
+          if (current !== 'development') {
+            try {
+              result = await main.uninject(platformModule, current, true);
+              platform = current;
+              if (result) break;
               console.log(`${AnsiEscapes.RED}${current} is not plugged, skipping.${AnsiEscapes.RESET}`);
-            }
-          } catch (e) {
-            if (current !== 'development') {
-              console.log(`${AnsiEscapes.RED}${current} is not plugged, skipping.${AnsiEscapes.RESET}`);
+            } catch (e) {
+              console.log(`${AnsiEscapes.RED}${current} is not installed, skipping.${AnsiEscapes.RESET}`);
             }
           }
         }
@@ -114,7 +114,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `$
         if (result) {
           console.log(`${AnsiEscapes.GREEN}${platform} is plugged, successfully unplugged.${AnsiEscapes.RESET}\n`);
         } else {
-          console.log(`\n${AnsiEscapes.RED}No valid platform is plugged, exiting.${AnsiEscapes.RESET}\n`);
+          console.log(`\n${AnsiEscapes.RED}No valid platform is plugged/installed, exiting.${AnsiEscapes.RESET}\n`);
           process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
         }
       } else {
