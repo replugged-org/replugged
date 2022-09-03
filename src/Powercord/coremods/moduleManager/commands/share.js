@@ -39,7 +39,7 @@ module.exports = {
       const isTheme = powercord.styleManager.themes.has(id);
 
       if (!isPlugin && !isTheme) { // No match
-        return resp(false, Messages.REPLUGGED_ENTITY_NOT_FOUND.format({ id }));
+        return resp(false, Messages.REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME.format({ id }));
       } else if (isPlugin && isTheme) { // Duplicate name
         return resp(false, Messages.REPLUGGED_COMMAND_SHARE_BOTH_ENTITY.format({ id }));
       }
@@ -85,7 +85,7 @@ module.exports = {
       .filter(theme => theme.entityID.toLowerCase().includes(id?.toLowerCase()));
 
     return {
-      header: 'replugged entities list',
+      header: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST,
       commands: [
         ...plugins.map(plugin => ({
           command: plugin.entityID,
