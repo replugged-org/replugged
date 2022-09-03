@@ -1,4 +1,4 @@
-const { i18n: { Messages } } = require('powercord/webpack')
+const { i18n: { Messages } } = require('powercord/webpack');
 
 module.exports = {
   command: 'echo',
