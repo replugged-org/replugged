@@ -99,12 +99,10 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `$
 
         for (const current of main.VALID_PLATFORMS) {
           try {
-            const installed = await main.plugged(platformModule, current);
-            if (installed) {
-              result = await main.uninject(platformModule, current, true);
-              platform = current;
-              if (result) break;
-            } else if (current !== 'development') {
+            result = await main.uninject(platformModule, current, true);
+            platform = current;
+            if (result) break;
+            if (current !== 'development') {
               console.log(`${AnsiEscapes.RED}${current} is not plugged, skipping.${AnsiEscapes.RESET}`);
             }
           } catch (e) {

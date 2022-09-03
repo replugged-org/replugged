@@ -98,8 +98,3 @@ exports.exists = async ({ getAppDir }, platform) => {
   const appDir = await getAppDir(platform);
   return existsSync(join(appDir, '..'));
 };
-
-exports.plugged = async ({ getAppDir }, platform) => {
-  const appDir = await getAppDir(platform);
-  return existsSync(appDir);
-};
