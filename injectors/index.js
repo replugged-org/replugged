@@ -27,9 +27,7 @@ try {
   }
 }
 
-let platform = (
-  process.argv.find(x => main.checkPlatform(x.toLowerCase())) || 'stable'
-).toLowerCase();
+let platform = (process.argv[4] || 'stable').toLowerCase();
 
 if (!main.VALID_PLATFORMS.includes(platform)) {
 	console.log(`${AnsiEscapes.RED}Platform you specified isn't valid, please specify a valid one.${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
@@ -37,15 +35,15 @@ if (!main.VALID_PLATFORMS.includes(platform)) {
 }
 
 (async () => {
-  if (!process.argv.find(x => main.checkPlatform(x.toLowerCase()))) {
+  const exists = main.checkPlatform(platform);
+
+  if (!exists) {
     console.log(`${AnsiEscapes.YELLOW}No valid platform specified, defaulting to "${platform}".${AnsiEscapes.RESET}\n`);
   } else if (platform === 'development') {
     platform = 'dev';
   } else {
     platform = platform.toLowerCase();
   }
-
-  const exists = main.checkPlatform(process.argv[4]?.toLowerCase());
 
   if (process.argv[2] === 'inject') {
     try {
