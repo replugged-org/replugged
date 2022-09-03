@@ -38,8 +38,6 @@ let platform = process.argv[4]?.toLowerCase();
       process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
     } else if (platform === 'development') {
       platform = 'dev';
-    } else {
-      platform = platform.toLowerCase();
     }
   } else {
     platform = 'stable';
