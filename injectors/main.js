@@ -93,8 +93,3 @@ exports.uninject = async ({ getAppDir }, platform, silent) => {
 exports.checkPlatform = (platform) => {
   return this.VALID_PLATFORMS.includes(platform);
 };
-
-exports.exists = async ({ getAppDir }, platform) => {
-  const appDir = await getAppDir(platform);
-  return existsSync(join(appDir, '..'));
-};

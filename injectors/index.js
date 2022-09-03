@@ -48,8 +48,7 @@ let platform = process.argv[4]?.toLowerCase();
     try {
       if (!exists) {
         for (const current of main.VALID_PLATFORMS) {
-          const installed = await main.exists(platformModule, current);
-          if (installed) {
+          try {
             result = await main.inject(platformModule, current);
             platform = current;
             if (!result) {
@@ -57,7 +56,7 @@ let platform = process.argv[4]?.toLowerCase();
               continue;
             }
             break;
-          } else {
+          } catch (e) {
             console.log(`${AnsiEscapes.RED}${current} is not installed, skipping.${AnsiEscapes.RESET}`);
           }
         }
@@ -72,6 +71,7 @@ let platform = process.argv[4]?.toLowerCase();
         result = await main.inject(platformModule, platform);
       }
     } catch (e) {
+      console.log(e);
       // this runs if path generator crashes (app folder doesnt exist)
       console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
       process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
