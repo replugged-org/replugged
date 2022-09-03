@@ -32,13 +32,18 @@ let platform = process.argv[4]?.toLowerCase();
 (async () => {
   const exists = main.checkPlatform(platform);
 
-  if (!exists) {
-    platform = 'stable';
-    console.log(`${AnsiEscapes.YELLOW}No valid platform specified, defaulting to "${platform}".${AnsiEscapes.RESET}\n`);
-  } else if (platform === 'development') {
-    platform = 'dev';
+  if (platform) {
+    if (!exists) {
+      console.log(`${AnsiEscapes.RED}Platform you specified isn't valid, please specify a valid one.${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+      process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+    } else if (platform === 'development') {
+      platform = 'dev';
+    } else {
+      platform = platform.toLowerCase();
+    }
   } else {
-    platform = platform.toLowerCase();
+    platform = 'stable';
+    console.log(`${AnsiEscapes.YELLOW}No platform specified, defaulting to "${platform}".${AnsiEscapes.RESET}\n`);
   }
 
   if (process.argv[2] === 'inject') {
