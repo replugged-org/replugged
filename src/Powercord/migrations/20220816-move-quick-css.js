@@ -8,7 +8,7 @@ module.exports = () => {
   */
 
   if (existsSync(`${__dirname}/../plugins/pc-moduleManager/quickcss.css`)) {
-    renameSync(`${__dirname}/../plugins/pc-moduleManager/quickcss.css`, `${__dirname}/../coremods/moduleManager/quickcss.css`);
+    renameSync(`${__dirname}/../plugins/pc-moduleManager/quickcss.css`, `${__dirname}/../../../settings/quickcss/main.css`);
     rmdirSync(`${__dirname}/../plugins/pc-moduleManager`);
   }
 };
