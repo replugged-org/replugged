@@ -99,7 +99,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `$
 
         for (const current of main.VALID_PLATFORMS) {
           try {
-            const installed = await main.exists(platformModule, current);
+            const installed = await main.plugged(platformModule, current);
             if (installed) {
               result = await main.uninject(platformModule, current, true);
               platform = current;
