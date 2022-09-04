@@ -284,5 +284,11 @@
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_HEADER": "Pistikprogramm on juba Installitud",
     "REPLUGGED_TOAST_PLUGIN_INSTALLED_HEADER": "Plugin Installitud",
     "REPLUGGED_THEME": "Teema",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_LOCALE": "Asukoht:"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_LOCALE": "Asukoht:",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Installitud Pistikprogrammid ja Teemad",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Teema - {description}",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} on kasutusel nii pistikprogrammi kui ka teema jaoks. Peate määrama --theme või --plugin lipuga.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Pistikprogramm - {description}",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Jaga installitud pistikprogrammi või teemat",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Plugina {id} URL-i ei leitud"
 }
