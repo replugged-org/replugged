@@ -275,5 +275,12 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_CACHED_FILES": "Önbelleğe Alınmış Dosyalar:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_ACCOUNT": "Hesap:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_APIS": "API'ler:",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_CONNECTIONS": "Bağlantılar:"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_CONNECTIONS": "Bağlantılar:",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Yüklü Eklentiler ve Temalar",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Yüklü bir eklentiyi veya temayı paylaşın",
+    "REPLUGGED_SETTINGS_NO_SLASH_PREFIX": "Discord tarafından zaten kullanımda olduğu için ve Replugged otomatik tamamlamaları devre dışı bırakabileceği için önek `/` olarak ayarlanmamalıdır.",
+    "REPLUGGED_COMMAND_ECHO_DESC": "Belirtilen bağımsız değişkenleri döndürür.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Eklenti - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "{id} eklentisi için bir URL bulunamadı"
 }

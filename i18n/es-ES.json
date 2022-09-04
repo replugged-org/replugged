@@ -274,5 +274,17 @@
     "REPLUGGED_COMMAND_INSTALL_DESC": "Instala un complemento o tema.",
     "REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL": "¡URL no valida! Por favor ingresa una URL de GitHub valida o un usuario/repositorio.",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Muestra una lista de complementos instalados.",
-    "REPLUGGED_UPDATES_UPDATER": "Actualizador"
+    "REPLUGGED_UPDATES_UPDATER": "Actualizador",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Complementos y Temas instalados",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Comparte un complemento o tema instalado",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} se usa en un complemento y tema. Debes especificarlo con la etiqueta --tema o --complemento.",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM": "Upstream:",
+    "REPLUGGED_COMMAND_ECHO_DESC": "Muestra el argumento especificado.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Complemento - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "No se encontró la url del complemento {id}",
+    "REPLUGGED_MODULE_MANAGER_MISSING_RETRIEVED": "El siguiente{type} recuperado:",
+    "REPLUGGED_MODULE_MANAGER_NO_MISSING": "El {type} no encontrado se encontro - ¡Intenta mas tarde!",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH": "Ramal:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "Versión mas reciente:"
 }

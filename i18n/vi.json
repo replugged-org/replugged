@@ -285,5 +285,11 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM": "Nguồn:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_REVISION": "Phiên bản:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH": "Nhánh:",
-    "REPLUGGED_UPDATES_UPDATER": "Trình cập nhật"
+    "REPLUGGED_UPDATES_UPDATER": "Trình cập nhật",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Các Plugin và Chủ đề được cài đặt",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "Tên {id} đang được sử dụng bởi một plugin và chủ đề. Bạn sẽ phải xác định rõ hơn bằng cách sử dụng tùy chọn \"--theme\" cho chủ đề hoặc \"--plugin\" cho plugin.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Chủ đề - {description}",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Chia sẻ plugin hoặc chủ đề đã cài đặt",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Không thể tìm đường dẫn cho plugin {id}"
 }
