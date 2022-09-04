@@ -285,5 +285,11 @@
     "REPLUGGED_MODULE_MANAGER_CONFIRM_INSTALL": "Are you sure you want to install the {type} {name} from {url}{branch}?",
     "REPLUGGED_MODULE_MANAGER_FOUND_MISSING": "Found {missingCount} missing {type}!",
     "REPLUGGED_THEME": "Theme",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_CONNECTIONS": "Connections:"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_CONNECTIONS": "Connections:",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Installed Plugins and Themes",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Share an installed plugin or theme",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} is in use by both a plugin and theme. You will have to specify with --theme or --plugin flag.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Theme - {description}",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Unable to find a url for the plugin {id}"
 }

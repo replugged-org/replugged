@@ -282,5 +282,11 @@
     "REPLUGGED_COMMAND_ECHO_DESC": "Belirtilen bağımsız değişkenleri döndürür.",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Eklenti - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
-    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "{id} eklentisi için bir URL bulunamadı"
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "{id} eklentisi için bir URL bulunamadı",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} hem bir eklenti hem de tema tarafından kullanılıyor. Bunu --theme veya --plugin komutları ile belirtmelisiniz.",
+    "REPLUGGED_COMMAND_HELP_COMMAND_FOOTER": "\"{commandOrigin}\" komutundan aktarılmış.",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM": "Upstream:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_REVISION": "Revizyon:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH": "Dal:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "En Son:"
 }

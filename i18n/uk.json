@@ -285,5 +285,11 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "Найновіший:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Місцезнаходження Discord",
     "REPLUGGED_UPDATES_UPDATER": "Оновлювач",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_LABS": "Лабораторії:"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_LABS": "Лабораторії:",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Встановлені плагіни і теми",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Плагін - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Тема - {description}",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Поділитися установленим плагіном чи темою",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} використовується і плагіном, і темою. Вам знодобиться уточнити з аргументами --theme або --plugin.",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Не вдалося знайти посилання для плагіну {id}"
 }

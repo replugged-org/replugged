@@ -285,5 +285,11 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_PROCESS_VERSIONS": "Versioni Processo",
     "REPLUGGED_UPDATES_OPTS_DEBUG_LOCALE": "Lingua:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM": "Upstream:",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH": "Branch:"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH": "Branch:",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Installati Plugins e Temi",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} è in uso sia da un plugin che da un tema. Dovrai specificare utilizzando la bandiera del plugin o del --tema--.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Condividi un plugin o tema installato",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Impossibile trovare un indirizzo per il plugin {id}"
 }

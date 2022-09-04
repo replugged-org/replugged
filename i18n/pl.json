@@ -285,5 +285,11 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "Najnowsze:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH": "Ścieżka Replugged",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Ścieżka Discord",
-    "REPLUGGED_UPDATES_UPDATER": "Aktualizator"
+    "REPLUGGED_UPDATES_UPDATER": "Aktualizator",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Zainstalowane Pluginy i Motywy",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Motyw - {description}",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Udostępnij zainstalowany plugin lub motyw",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} jest w użyciu zarówno przez plugin jak i motyw. Będziesz musiał określić to za pomocą flagi --theme lub --plugin.",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Nie można znaleźć adresu url dla pluginu {id}"
 }

@@ -188,7 +188,7 @@
     "REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE": "\"{id}\" wordt gebruikt door zowel een plugin als een thema. Je zult het moeten uitschakelen via de instellingen.",
     "REPLUGGED_MODULE_MANAGER_CONFIRM_INSTALL": "Weet je zeker dat je de/het {type} {name} van {url}{branch} wilt installeren?",
     "REPLUGGED_NOTICES_WELCOME_NEW_USER": "Welkom! Replugged is successvol geïnstallerd in je Discord client. Voel je vrij om lid te worden van onze Discord-server voor aankondigingen, ondersteuning en meer!",
-    "REPLUGGED_SETTINGS_EXP": "Replugged Experiments",
+    "REPLUGGED_SETTINGS_EXP": "Replugged Experimenten",
     "REPLUGGED_SETTINGS_EXP_DESC": "Schakel experimentele opties voor Replugged in, op eigen risico.",
     "REPLUGGED_SETTINGS_ERROR_RENDER_PANEL": "Er is een fout opgetreden tijdens het renderen van het instellingenpaneel.",
     "REPLUGGED_SETTINGS_NO_SLASH_PREFIX": "Prefix mag niet worden ingesteld op `/` omdat het al in gebruik is door Discord en het automatisch aanvullen van Replugged kan uitschakelen.",
@@ -285,5 +285,10 @@
     "REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL": "Ongeldige URL! Geef geen geldige GitHub-URL of gebruikersnaam/repository op.",
     "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "De gevraagde plugin of het opgevraagde thema kon niet worden gevonden of is ongeldig.",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Laat een lijst met momenteel geïnstalleerde plugins zien.",
-    "REPLUGGED_COMMAND_RELOAD_DESC": "Herlaad een plugin/thema"
+    "REPLUGGED_COMMAND_RELOAD_DESC": "Herlaad een plugin/thema",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Instaleer Plug-ins en Thema's",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Thema - {description}",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Deel een geïnstalleerde plugin of thema",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Kan url van plugin {id} niet vinden"
 }
