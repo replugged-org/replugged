@@ -285,5 +285,11 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH": "Ветка:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "Последняя:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH": "Путь Replugged",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Путь Discord"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Путь Discord",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Установленные Плагины и Темы",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} используется и плагином, и темой. Необходимо выбрать используя флаги --theme или --plugin.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Плагин - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Тема - {description}",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Поделится установленным плагином или темой",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Не удалось найти URL для плагина {id}"
 }

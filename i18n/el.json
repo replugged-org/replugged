@@ -221,5 +221,10 @@
     "REPLUGGED_INSTALL_MODAL_HEADER": "Εγκατάσταση {type}",
     "REPLUGGED_MODULE_MANAGER_INSTALL_LABEL": "Εγκατάσταση {type}",
     "REPLUGGED_MODULE_MANAGER_FOUND_MISSING": "Βρέθηκε {missingCount} missing {type}!",
-    "REPLUGGED_INSTALL_MODAL_DESC": "Είστε σίγουροι ότι θέλετε να εγκαταστήσετε το{type} {name};"
+    "REPLUGGED_INSTALL_MODAL_DESC": "Είστε σίγουροι ότι θέλετε να εγκαταστήσετε το{type} {name};",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Εγκατεστημένα πρόσθετα και θέματα",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Πρόσθετο - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Θέμα - {description}",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Μοιραστείτε ένα εγκατεστημένο πρόσθετο ή θέμα",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "Η ταυτότητα {id} χρησιμοποιείται τόσο από μια προσθήκη όσο και από ένα θέμα. Θα πρέπει να καθορίσετε με σημαία --theme ή --plugin."
 }

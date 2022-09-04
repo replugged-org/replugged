@@ -285,5 +285,11 @@
     "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "Das angeforderte Plugin oder Theme konnte nicht gefunden werden oder ist ungültig.",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Zeigt eine Liste der aktuell installierten Plugins aus.",
     "REPLUGGED_COMMAND_RELOAD_DESC": "Ein Plugin/Theme neu laden",
-    "REPLUGGED_TOAST_INSTALL_HEADER": "Installiere {name}..."
+    "REPLUGGED_TOAST_INSTALL_HEADER": "Installiere {name}...",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Teile ein installiertes Plugin oder Theme",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} wird sowohl von einem Plugin als auch von einem Theme benutzt. Du musst es mit der --theme oder --plugin flag bestimmen.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Installierte Plugins und Themes",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Theme - {description}",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Die URL für das Plugin {id} kann nicht gefunden werden."
 }

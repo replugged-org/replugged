@@ -285,5 +285,11 @@
     "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "Požadovaný plugin nebo motiv nebyl nalezen nebo je neplatný.",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Vypíše seznam nainstalovaných pluginů.",
     "REPLUGGED_COMMAND_THEMES_DESC": "Vypíše seznam nainstalovaných motivů.",
-    "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Component stack:"
+    "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Component stack:",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Nainstalované pluginy a motivy",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} je používán jak pluginem, tak i motivem. Bude potřeba toto upřesnit pomocí flagů --theme nebo --plugin.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin – {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Motiv – {description}",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Sdílej nainstalovaný plugin nebo motiv",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Nebylo možné najít URL pro plugin {id}"
 }

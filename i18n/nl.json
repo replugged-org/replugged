@@ -290,5 +290,6 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Thema - {description}",
     "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Deel een geïnstalleerde plugin of thema",
-    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Kan url van plugin {id} niet vinden"
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Kan url van plugin {id} niet vinden",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} wordt gebruikt door een plugin en een thema. Je zal moeten specificeren met een --theme of --plugin flag."
 }
