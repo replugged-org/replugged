@@ -285,5 +285,11 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH": "Vetva:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "Aktuálne:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH": "Priečinok inštalácie Replugged",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Priečinok Discordu"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Priečinok Discordu",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Nainštalované pluginy a motívy",
+    "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Zdieľaj nainštalovaný plugin alebo motív",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} je používaný ako pluginom, tak aj motívom. Bude potrebné toto upresniť pomocou flagov --theme alebo --plugin.",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin – {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Motív – {description}",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Nebolo možné nájsť URL pre plugin {id}"
 }
