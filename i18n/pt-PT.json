@@ -226,8 +226,18 @@
     "REPLUGGED_INSTALLED_PLUGIN_THEME": "{name} instalado",
     "REPLUGGED_INSTALL_MODAL_HEADER": "Instalar {type}",
     "REPLUGGED_MODULE_MANAGER_INSTALL_LABEL": "Instalar {type}",
-    "REPLUGGED_MODULE_MANAGER_FOUND_MISSING": "Encontrou {missingCount} {type} em falta!",
+    "REPLUGGED_MODULE_MANAGER_FOUND_MISSING": "Encontrou {missingCount} ausência(s) de {type}!",
     "REPLUGGED_MODULE_MANAGER_MISSING_RETRIEVED": "O seguinte {type} foi recuperado:",
     "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id}\" recarregado!",
-    "REPLUGGED_COMMAND_SAY_DESC": "Envia os argumentos especificados."
+    "REPLUGGED_COMMAND_SAY_DESC": "Envia os argumentos especificados.",
+    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Lista de Instalados {type} ({count}",
+    "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} está em uso tanto por um plugin quanto por um tema. Você terá que especificar com a flag --theme ou --plugin.",
+    "REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE": "\"{id}\" está em uso tanto por um plugin quanto por um tema. Você terá que desativá-lo nas configurações.",
+    "REPLUGGED_MODULE_MANAGER_NO_MISSING": "Nenhum {type} ausente foi encontrado - tente novamente mais tarde!",
+    "REPLUGGED_MODULE_MANAGER_CONFIRM_INSTALL": "Tem certeza de que deseja instalar o {type} {name} from {url}{branch}?",
+    "REPLUGGED_NOTICES_JOIN_SERVER_BUTTON": "Entrar no Servidor",
+    "REPLUGGED_PLUGIN": "Plugin",
+    "REPLUGGED_NOTICES_WELCOME_NEW_USER": "Bem-vindo! O Replugged foi injetado com sucesso no seu cliente do Discord. Sinta-se à vontade para se juntar ao nosso servidor do Discord para anúncios, suporte e muito mais!",
+    "REPLUGGED_QUICKCSS_RESIZE_NOTICE": "Psst! Tu podes redimensionar o editor QuickCSS se quiseres! Agarra a parte inferior do editor e redimensiona-o como quiseres.",
+    "REPLUGGED_SETTINGS_EXP": "Experimentos do Replugged"
 }
