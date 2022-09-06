@@ -230,7 +230,7 @@ class Powercord extends Updatable {
   async _update (force = false) {
     const success = await super._update(force);
     if (success) {
-      await PowercordNative.exec('npm install --only=prod', { cwd: this.entityPath });
+      await PowercordNative.exec('npm ci', { cwd: this.entityPath });
       const { updater } = powercord.api;
       if (!document.querySelector('#powercord-updater, .powercord-updater')) {
         powercord.api.notices.sendToast('powercord-updater', {
