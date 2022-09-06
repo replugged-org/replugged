@@ -268,5 +268,6 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_LESS": "Näytä vähemmän",
     "REPLUGGED_UPDATES_OPTS_DEBUG_UNAUTHORIZED_PLUGINS": "Luvattomat pluginit:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_BETTERDISCORD_PLUGINS": "BetterDiscord-pluginit:",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_THEMES": "Teemat:"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_THEMES": "Teemat:",
+    "REPLUGGED_COMMAND_HELP_LIST_FOOTER": "Suorita {prefix}help <komennonNimi> saadaksesi lisätietoja tietystä komennosta."
 }
