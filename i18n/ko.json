@@ -170,7 +170,7 @@
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "",
     "REPLUGGED_LINKING_WAITING": "계정 연결 중…",
     "REPLUGGED_CUTIE_TIER_1_PRICE": "**$1 USD** /월",
-    "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id}\" 재장전!",
+    "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id}\" 가 재로딩 되었습니다!",
     "REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER": "{type} 제거",
     "REPLUGGED_MODULE_MANAGER_NO_MISSING": "누락 없음{type}찾았습니다 - 나중에 다시 시도하십시오!",
     "REPLUGGED_COMMAND_UNINSTALL_MODAL_HEADER": "{id} 제거",
@@ -194,7 +194,7 @@
     "REPLUGGED_COMMAND_HELP_COMMAND_NOT_FOUND": "명령어 `{commandName}`를 찾을수 없음.",
     "REPLUGGED_COMMAND_HELP_LIST_TITLE": "명령 목록",
     "REPLUGGED_COMMAND_HELP_FIELD_USAGE": "사용법",
-    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "설치된 목록 {type} ({count})",
+    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "설치된 {type} ({count})목록",
     "REPLUGGED_COMMAND_ENABLE_DESC": "플러그인/테마 활성화",
     "REPLUGGED_OK": "OK",
     "REPLUGGED_COMMAND_HELP_DESC": "특정 명령어에 대한 정보 또는 명령어 목록을 제공합니다.",
@@ -209,5 +209,5 @@
     "REPLUGGED_COMMAND_HELP_COMMAND_FOOTER": "\"{commandOrigin}\"에서 상속되었습니다.",
     "REPLUGGED_COMMAND_INSTALL_DESC": "플러그인 또는 테마를 설치합니다.",
     "REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL": "URL이 잘못되었습니다. 올바른 GitHub URL 또는 유저네임/리포지토리를 지정하십시오.",
-    "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "요청하신 플러그인 또는 테마를 찾을 수 없거나 잘못되었습니다."
+    "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "요청하신 플러그인 또는 테마가 찾을 수 없거나 잘못되었습니다."
 }
