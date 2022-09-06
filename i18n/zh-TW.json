@@ -76,7 +76,7 @@
     "REPLUGGED_SETTINGS_CACHE_DISCORD_DESC": "刪除存儲在Discord緩存資料夾的所以東西。因爲東西需要重新取得，所以你可能會暫時感覺Discord變慢了。",
     "REPLUGGED_SETTINGS_CACHE_REPLUGGED": "清除Replugged的緩存",
     "REPLUGGED_SETTINGS_CACHE_REPLUGGED_DESC": "清除Replugged的緩存。因爲某些文件要重新建立，下次重新啟動可能會感覺比較慢。",
-    "REPLUGGED_SETTINGS_DEBUG_LOGS": "調試日誌",
+    "REPLUGGED_SETTINGS_DEBUG_LOGS": "除錯日誌",
     "REPLUGGED_SETTINGS_DEBUG_LOGS_DESC": "將控制台內容保存到文件中。如果Discord意外崩潰，對debug很有用。",
     "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "啟用Discord試驗",
     "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****警告:****啟用此可讓你訪問Discord可檢測到的功能，並可能導致****帳戶終止****。Replugged對你使用此功能所做的事情**不負責**。如果您不確定，請將其禁用。Replugged團隊將**不**為任何試驗提供任何幫助。**需要重新啟動**。",
@@ -289,7 +289,7 @@
     "REPLUGGED_NOTICES_WELCOME_NEW_USER": "歡迎！Replugged已成功注入到你的Discord客戶端。隨時加入我們的Discord伺服器以獲得公告、幫助和更多的信息！",
     "REPLUGGED_SETTINGS_EXP": "Replugged 試驗功能",
     "REPLUGGED_SETTINGS_EXP_DESC": "啟用Replugged的試驗選項，請自行承擔風險。",
-    "REPLUGGED_SETTINGS_ERROR_HEADER": "Huh，有點奇怪",
+    "REPLUGGED_SETTINGS_ERROR_HEADER": "額，奇怪了",
     "REPLUGGED_TOAST_INSTALL_HEADER": "正在安裝 {name}...",
     "REPLUGGED_UPDATES_UPDATER": "更新器"
 }
