@@ -289,5 +289,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "Versión mas reciente:",
     "REPLUGGED_MODULE_MANAGER_FOUND_MISSING": "Encontrado {missingCount} cosa {type}!",
     "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Pila de componentes:",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_PROCESS_VERSIONS": "Versiones de proceso"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_PROCESS_VERSIONS": "Versiones de proceso",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_LABS": "Laboratorios:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_RELEASE_CHANNEL": "Canal de publicación:"
 }
