@@ -20,6 +20,9 @@ settings/*.json
 settings/quickcss/*
 !settings/quickcss/.gitkeep
 
+settings/coremods/*
+!settings/coremods/.gitkeep
+
 config.json
 *injected.txt
 *.nogit.*
