@@ -1,5 +1,5 @@
 module.exports = async (powercord) => {
-  const settings = powercord.api.settings.buildCategoryObject('rp-migrations');
+  const settings = powercord.api.settings.buildCategoryObject('coremods/migrations');
   const migrations = settings.get('migrations-ran', []);
 
   const toRun = [];

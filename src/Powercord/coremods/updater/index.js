@@ -9,7 +9,7 @@ const { join } = require('path');
 const Settings = require('./components/Settings.jsx');
 const changelog = require('../../../../changelogs.json');
 
-const settings = powercord.api.settings.buildCategoryObject('pc-updater');
+const settings = powercord.api.settings.buildCategoryObject('coremods/updater');
 
 class Updater {
   constructor () {
