@@ -33,19 +33,17 @@ const {
   infoIcon,
   buildInfo,
   buildDetails,
-  disabledButtonOverride,
   subHead
 } = getModule([ 'titleRegion' ], false);
 
 module.exports = function ({ match }) {
   const { url } = match;
   const [ data, setData ] = React.useState(null);
-  const [ isInstalling, setIsInstalling ] = React.useState(false);
 
-  const fetchInfo = () => {
+  const fetchInfo = async () => {
     const repoInfo = getRepoInfo(url);
     if (repoInfo instanceof Promise) {
-      repoInfo.then(setData);
+      await repoInfo.then(setData);
     } else {
       setData(repoInfo);
     }
@@ -94,19 +92,25 @@ module.exports = function ({ match }) {
         </div>
         <Button
           size={ButtonSizes.MEDIUM}
-          className={`${button} ${data.isInstalled ? ButtonColors.RED : isInstalling ? disabledButtonOverride : ''}`}
-          disabled={isInstalling}
+          className={`${button} ${data.isInstalled ? ButtonColors.RED : ''}`}
+          disabled={data.isInstalling}
           onClick={async () => {
-            if (isInstalling) {
+            if (data.isInstalling) {
               return;
             }
             if (!data.isInstalled) {
-              setIsInstalling(true);
+              setData({
+                ...data,
+                isInstalling: true
+              });
               // Give React time to update the button since the clone command causes the client to freeze for a sec
               setTimeout(async () => {
-                await cloneRepo(data.url, powercord, data.type);
-                setIsInstalling(false);
-                fetchInfo();
+                const isInstalled = await cloneRepo(data.url, powercord, data.type);
+                setData({
+                  ...data,
+                  isInstalling: false,
+                  isInstalled
+                });
               }, 100);
             } else {
               const isConfirmed = await promptUninstall(data.repoName, data.type === 'plugin');
@@ -121,7 +125,7 @@ module.exports = function ({ match }) {
         >
           {data.isInstalled
             ? Messages[`REPLUGGED_PLUGIN_EMBED_UNINSTALL_${data.type.toUpperCase()}`]
-            : isInstalling
+            : data.isInstalling
               ? Messages[`REPLUGGED_PLUGIN_EMBED_INSTALLING_${data.type.toUpperCase()}`]
               : Messages[`REPLUGGED_PLUGIN_EMBED_INSTALL_${data.type.toUpperCase()}`]}
         </Button>
