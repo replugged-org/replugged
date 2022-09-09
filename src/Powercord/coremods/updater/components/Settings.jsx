@@ -312,7 +312,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
     const unauthorizedPlugins = Array.from(powercord.pluginManager.plugins.values()).filter(plugin =>
       plugin.__shortCircuit).map(plugin => plugin.manifest.name);
     const plugins = powercord.pluginManager.getPlugins().filter(plugin =>
-      !powercord.pluginManager.get(plugin).isInternal && powercord.pluginManager.isEnabled(plugin)
+      powercord.pluginManager.isEnabled(plugin)
     );
 
     const enabledLabs = powercord.api.labs.experiments.filter(e => powercord.api.labs.isExperimentEnabled(e.id));

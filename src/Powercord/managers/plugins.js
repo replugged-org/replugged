@@ -164,10 +164,6 @@ module.exports = class PluginManager {
   }
 
   async uninstall (pluginID) {
-    if (pluginID.startsWith('pc-')) {
-      throw new Error(`You cannot uninstall an internal plugin. (Tried to uninstall ${pluginID})`);
-    }
-
     await this.unmount(pluginID);
     await rmdirRf(resolve(this.pluginDir, pluginID));
   }

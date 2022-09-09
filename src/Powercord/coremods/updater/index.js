@@ -40,7 +40,7 @@ class Updater {
     settings.set('checking_progress', [ 0, 0 ]);
     const disabled = settings.get('entities_disabled', []).map(e => e.id);
     const skipped = settings.get('entities_skipped', []);
-    const plugins = [ ...powercord.pluginManager.plugins.values() ].filter(p => !p.isInternal);
+    const plugins = [ ...powercord.pluginManager.plugins.values() ];
     const themes = [ ...powercord.styleManager.themes.values() ];
 
     const entities = plugins.concat(themes).filter(e => !disabled.includes(e.updateIdentifier) && e.isUpdatable());

@@ -50,7 +50,6 @@ module.exports = {
   autocomplete (args) {
     const plugins = Array.from(powercord.pluginManager.plugins.values())
       .filter(plugin =>
-        !plugin.entityID.startsWith('pc-') &&
         plugin.entityID.toLowerCase().includes(args[0]?.toLowerCase())
       );
 

@@ -5,7 +5,7 @@ const { openURL } = getModule([ 'openURL' ], false);
 module.exports = ({ id, installing, onUninstall }) =>
 
   <div className='btn-group-l'>
-    {!id.startsWith('pc-') && <Button
+    {<Button
       onClick={() => openURL('https://test.com')}
       look={Button.Looks.LINK}
       size={Button.Sizes.SMALL}
@@ -15,7 +15,7 @@ module.exports = ({ id, installing, onUninstall }) =>
     </Button>}
 
     <div className='btn-group'>
-      {!id.startsWith('pc-') && <Button
+      {<Button
         disabled={installing}
         onClick={onUninstall}
         color={Button.Colors.RED}
