@@ -51,6 +51,18 @@ module.exports = function ({ match }) {
 
   React.useEffect(fetchInfo, []);
 
+  React.useEffect(async () => {
+    if (!data || !data.isInstalling) {
+      return;
+    }
+    const isInstalled = await cloneRepo(data.url, powercord, data.type);
+    setData({
+      ...data,
+      isInstalling: false,
+      isInstalled
+    });
+  }, [ data?.isInstalling ]);
+
   if (!data) {
     return (
       <Anchor href={url}>{url}</Anchor>
@@ -103,15 +115,6 @@ module.exports = function ({ match }) {
                 ...data,
                 isInstalling: true
               });
-              // Give React time to update the button since the clone command causes the client to freeze for a sec
-              setTimeout(async () => {
-                const isInstalled = await cloneRepo(data.url, powercord, data.type);
-                setData({
-                  ...data,
-                  isInstalling: false,
-                  isInstalled
-                });
-              }, 100);
             } else {
               const isConfirmed = await promptUninstall(data.repoName, data.type === 'plugin');
               if (isConfirmed) {
