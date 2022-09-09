@@ -33,12 +33,14 @@ const {
   infoIcon,
   buildInfo,
   buildDetails,
+  disabledButtonOverride,
   subHead
 } = getModule([ 'titleRegion' ], false);
 
 module.exports = function ({ match }) {
   const { url } = match;
   const [ data, setData ] = React.useState(null);
+  const [ isInstalling, setIsInstalling ] = React.useState(false);
 
   const fetchInfo = () => {
     const repoInfo = getRepoInfo(url);
@@ -92,10 +94,20 @@ module.exports = function ({ match }) {
         </div>
         <Button
           size={ButtonSizes.MEDIUM}
-          className={`${button} ${data.isInstalled ? ButtonColors.RED : ''}`}
+          className={`${button} ${data.isInstalled ? ButtonColors.RED : isInstalling ? disabledButtonOverride : ''}`}
+          disabled={isInstalling}
           onClick={async () => {
+            if (isInstalling) {
+              return;
+            }
             if (!data.isInstalled) {
-              cloneRepo(data.url, powercord, data.type).then(fetchInfo);
+              setIsInstalling(true);
+              // Give React time to update the button since the clone command causes the client to freeze for a sec
+              setTimeout(async () => {
+                await cloneRepo(data.url, powercord, data.type);
+                setIsInstalling(false);
+                fetchInfo();
+              }, 100);
             } else {
               const isConfirmed = await promptUninstall(data.repoName, data.type === 'plugin');
               if (isConfirmed) {
@@ -107,7 +119,11 @@ module.exports = function ({ match }) {
             }
           }}
         >
-          {data.isInstalled ? Messages[`REPLUGGED_PLUGIN_EMBED_UNINSTALL_${data.type.toUpperCase()}`] : Messages[`REPLUGGED_PLUGIN_EMBED_INSTALL_${data.type.toUpperCase()}`]}
+          {data.isInstalled
+            ? Messages[`REPLUGGED_PLUGIN_EMBED_UNINSTALL_${data.type.toUpperCase()}`]
+            : isInstalling
+              ? Messages[`REPLUGGED_PLUGIN_EMBED_INSTALLING_${data.type.toUpperCase()}`]
+              : Messages[`REPLUGGED_PLUGIN_EMBED_INSTALL_${data.type.toUpperCase()}`]}
         </Button>
       </div>
     </div>
