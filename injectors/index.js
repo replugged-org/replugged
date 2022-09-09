@@ -162,8 +162,6 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `$
         }
       }
     } catch (e) {
-      console.log(e);
-
       // this runs if path generator crashes (app folder doesnt exist)
       console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
       process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
