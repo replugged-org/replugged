@@ -17,11 +17,8 @@ themes/*
 
 settings/*.json
 
-settings/quickcss/*
-!settings/quickcss/.gitkeep
-
-settings/coremods/*
-!settings/coremods/.gitkeep
+settings/**/*.json
+settings/quickcss/*.css
 
 config.json
 *injected.txt
