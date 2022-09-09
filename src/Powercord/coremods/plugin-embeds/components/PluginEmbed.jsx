@@ -37,7 +37,7 @@ const {
   subHead
 } = getModule([ 'titleRegion' ], false);
 
-module.exports = function ({ match }) {
+module.exports = function ({ match, props }) {
   const { url } = match;
   const [ data, setData ] = React.useState(null);
 
@@ -54,7 +54,7 @@ module.exports = function ({ match }) {
 
   if (!data) {
     return (
-      <Anchor href={url}>{url}</Anchor>
+      <Anchor href={props.href}>{props.title}</Anchor>
     );
   }
 
