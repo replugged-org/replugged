@@ -83,7 +83,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `$
     }
   } else if (process.argv[2] === 'uninject') {
     try {
-      result = await main.uninject(platformModule, platform, false);
+      result = await main.uninject(platformModule, platform);
     } catch (e) {
       // this runs if path generator crashes (app folder doesnt exist)
       console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${main.VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
