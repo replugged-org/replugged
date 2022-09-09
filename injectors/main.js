@@ -6,7 +6,7 @@ const { AnsiEscapes } = require('./log');
 const readline = require('readline');
 const { exec } = require('child_process');
 
-exports.VALID_PLATFORMS = [ 'stable', 'ptb', 'canary', 'dev', 'development' ];
+exports.VALID_PLATFORMS = [ 'stable', 'canary', 'dev', 'ptb', 'development' ];
 
 exports.inject = async ({ getAppDir }, platform) => {
   const appDir = await getAppDir(platform);
@@ -92,4 +92,9 @@ exports.uninject = async ({ getAppDir }, platform, silent) => {
 
 exports.checkPlatform = (platform) => {
   return this.VALID_PLATFORMS.includes(platform);
+};
+
+exports.checkInstalled = async ({ getAppDir }, platform) => {
+  const appDir = await getAppDir(platform);
+  return existsSync(join(appDir, '..'));
 };
