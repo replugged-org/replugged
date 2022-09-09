@@ -5,7 +5,7 @@ const ViewRepo = require('./ViewRepo');
 const CopyLink = require('./CopyLink');
 const PluginEmbedIcon = require('./PluginEmbedIcon');
 
-const { cloneRepo, getRepoInfo } = require('../../moduleManager/util');
+const { cloneRepo, getRepoInfo, promptUninstall } = require('../../moduleManager/util');
 
 let LegacyText = getModuleByDisplayName('LegacyText', false);
 if (!LegacyText) {
@@ -14,7 +14,7 @@ if (!LegacyText) {
 const Anchor = getModuleByDisplayName('Anchor', false);
 
 // Components
-const { default: Button, ButtonSizes } = getModule([ 'ButtonColors' ], false);
+const { default: Button, ButtonSizes, ButtonColors } = getModule([ 'ButtonColors' ], false);
 const Alert = getModuleByDisplayName('Alert', false);
 const ModalApi = getModule([ 'openModal', 'useModalsStore' ], false);
 
@@ -33,7 +33,6 @@ const {
   infoIcon,
   buildInfo,
   buildDetails,
-  disabledButtonOverride,
   subHead
 } = getModule([ 'titleRegion' ], false);
 
@@ -93,15 +92,22 @@ module.exports = function ({ match }) {
         </div>
         <Button
           size={ButtonSizes.MEDIUM}
-          className={`${button} ${data.isInstalled ? disabledButtonOverride : ''}`}
-          disabled={data.isInstalled}
-          onClick={() => {
+          className={`${button} ${data.isInstalled ? ButtonColors.RED : ''}`}
+          onClick={async () => {
             if (!data.isInstalled) {
               cloneRepo(data.url, powercord, data.type).then(fetchInfo);
+            } else {
+              const isConfirmed = await promptUninstall(data.repoName, data.type === 'plugin');
+              if (isConfirmed) {
+                setData({
+                  ...data,
+                  isInstalled: false
+                });
+              }
             }
           }}
         >
-          {data.isInstalled ? Messages[`REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_${data.type.toUpperCase()}`] : Messages[`REPLUGGED_PLUGIN_EMBED_INSTALL_${data.type.toUpperCase()}`]}
+          {data.isInstalled ? Messages[`REPLUGGED_PLUGIN_EMBED_UNINSTALL_${data.type.toUpperCase()}`] : Messages[`REPLUGGED_PLUGIN_EMBED_INSTALL_${data.type.toUpperCase()}`]}
         </Button>
       </div>
     </div>
