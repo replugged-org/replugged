@@ -15,37 +15,37 @@ const { API } = require('powercord/entities');
  * @property {Object.<String, PowercordChatCommand>} commands Registered commands
  */
 class CommandsAPI extends API {
-  constructor() {
+  constructor () {
     super();
 
     this.commands = {};
   }
 
-  get prefix() {
+  get prefix () {
     return powercord.settings.get('prefix', '.');
   }
 
-  get find() {
+  get find () {
     const arr = Object.values(this.commands);
     return arr.find.bind(arr);
   }
 
-  get filter() {
+  get filter () {
     const arr = Object.values(this.commands);
     return arr.filter.bind(arr);
   }
 
-  get map() {
+  get map () {
     const arr = Object.values(this.commands);
     return arr.map.bind(arr);
   }
 
-  get sort() {
+  get sort () {
     const arr = Object.values(this.commands);
     return arr.sort.bind(arr);
   }
 
-  get size() {
+  get size () {
     return Object.keys(this.commands).length;
   }
 
@@ -53,7 +53,7 @@ class CommandsAPI extends API {
    * Registers a command
    * @param {PowercordChatCommand} command Command to register
    */
-  registerCommand(command) {
+  registerCommand (command) {
     if (typeof command === 'string') {
       throw new Error(`Command “${command}” must be an object!`);
     }
@@ -71,7 +71,7 @@ class CommandsAPI extends API {
    * Unregisters a command
    * @param {String} command Command name to unregister
    */
-  unregisterCommand(command) {
+  unregisterCommand (command) {
     if (this.commands[command]) {
       this.emit('commandRemoved', this.commands[command]);
 
