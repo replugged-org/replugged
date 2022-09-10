@@ -1,5 +1,4 @@
 .idea
-.vscode
 /.cache
 /.logs
 node_modules
