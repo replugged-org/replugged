@@ -30,13 +30,9 @@ try {
 
 const VALID_PLATFORMS = [ 'stable', 'ptb', 'canary', 'dev', 'development' ];
 
-const checkPlatform = (platform) => {
-  return VALID_PLATFORMS.includes(platform);
-};
+const checkPlatform = (platform) => VALID_PLATFORMS.includes(platform);
 
-const checkInstalled = (appDir) => {
-  return existsSync(join(appDir, '..'));
-};
+const checkInstalled = (appDir) => existsSync(join(appDir, '..'));
 
 let platform = process.argv[4]?.toLowerCase();
 
@@ -72,6 +68,8 @@ let platform = process.argv[4]?.toLowerCase();
       process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
     }
   }
+
+  let result;
 
   if (process.argv[2] === 'inject') {
     try {

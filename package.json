@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint --ext js --ext jsx --fix src",
+    "lint": "eslint --ext js --ext jsx --fix .",
     "plug": "node injectors/index.js inject --no-exit-codes",
     "unplug": "node injectors/index.js uninject --no-exit-codes",
     "repair": "npm run unplug && git pull && npm run plug",
