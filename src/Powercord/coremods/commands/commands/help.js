@@ -1,3 +1,5 @@
+
+const { ApplicationCommandOptionType } = require('powercord/commands');
 const { i18n: { Messages } } = require('powercord/webpack');
 
 module.exports = {
@@ -5,6 +7,39 @@ module.exports = {
   aliases: [ 'h' ],
   description: Messages.REPLUGGED_COMMAND_HELP_DESC,
   usage: '{c} [ commandName ]',
+  options: [
+    {
+      name: 'command',
+      displayName: 'command',
+      description: 'The command to get information on.',
+      displayDescription: 'The command to get information on.',
+      type: ApplicationCommandOptionType.STRING,
+      required: false,
+      get choices () {
+        const choices = [];
+
+        powercord.api.commands.map(command => {
+          choices.push({
+            name: command.command,
+            displayName: command.command,
+            value: command.command
+          });
+
+          for (const alias of (command.aliases || [])) {
+            choices.push({
+              name: alias,
+              displayName: alias,
+              value: alias
+            });
+          }
+
+          return command;
+        });
+
+        return choices.sort((a, b) => a.name.localeCompare(b.name));
+      }
+    }
+  ],
   executor ([ commandName ]) {
     let result;
 
@@ -49,7 +84,7 @@ module.exports = {
           } ],
           footer: {
             text: Messages.REPLUGGED_COMMAND_HELP_COMMAND_FOOTER.format({
-              commandOrigin: command.origin
+              commandOrigin: command.origin ?? 'Replugged'
             })
           }
         };
@@ -59,20 +94,6 @@ module.exports = {
     return {
       send: false,
       result
-    };
-  },
-  autocomplete (args) {
-    if (args.length > 1) {
-      return false;
-    }
-
-    return {
-      commands: powercord.api.commands.filter(command =>
-        [ command.command, ...(command.aliases || []) ].some(commandName =>
-          commandName.includes(args[0])
-        )
-      ),
-      header: 'replugged command list'
     };
   }
 };

@@ -54,6 +54,7 @@ if (!window.__SPLASH__) {
       case 'powercord/injector':
       case 'powercord/util':
       case 'powercord/webpack':
+      case 'powercord/commands':
       case 'powercord/constants':
       case 'powercord/modal':
       case 'powercord':
