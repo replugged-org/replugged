@@ -3,6 +3,7 @@ require('./env_check')(); // Perform checks
 require('../polyfills'); // And then do stuff
 
 const { join } = require('path');
+const { existsSync } = require('fs');
 const { writeFile } = require('fs').promises;
 const { BasicMessages, AnsiEscapes } = require('./log');
 const main = require('./main.js');
@@ -29,32 +30,50 @@ try {
 
 const VALID_PLATFORMS = [ 'stable', 'ptb', 'canary', 'dev', 'development' ];
 
-let platform = (
-  process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase())) || 'stable'
-).toLowerCase();
+const checkPlatform = (platform) => VALID_PLATFORMS.includes(platform);
 
-if (!VALID_PLATFORMS.includes(platform)) {
-	console.log(`${AnsiEscapes.RED}Platform you specified isn't valid, please specify a valid one.${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
-	process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
-}
+const checkInstalled = (appDir) => existsSync(join(appDir, '..'));
+
+let platform = process.argv[4]?.toLowerCase();
 
 (async () => {
-  if (!process.argv.find(x => VALID_PLATFORMS.includes(x.toLowerCase()))) {
-    console.log(`${AnsiEscapes.YELLOW}No valid platform specified, defaulting to "${platform}".${AnsiEscapes.RESET}\n`);
-  } else if (platform === 'development') {
-    platform = 'dev';
+  if (platform) {
+    const exists = checkPlatform(platform);
+    if (!exists) {
+      console.log(`${AnsiEscapes.RED}Platform you specified isn't valid, please specify a valid one.${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+      process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+    } else if (platform === 'development') {
+      platform = 'dev';
+    }
   } else {
-    platform = platform.toLowerCase();
+    for (const current of VALID_PLATFORMS) {
+      try {
+        const appDir = await platformModule.getAppDir(current);
+        const installed = checkInstalled(appDir);
+        if (installed) {
+          console.log(`${AnsiEscapes.YELLOW}No platform specified, defaulting to "${current}".${AnsiEscapes.RESET}`);
+          platform = current;
+          break;
+        }
+      } catch (e) {}
+    }
+
+    if (!platform) {
+      console.log(`${AnsiEscapes.RED}Could not find any installations of Discord.${AnsiEscapes.RESET}`);
+      process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+    }
   }
 
+  let result;
+
   if (process.argv[2] === 'inject') {
-	try {
-		result = await main.inject(platformModule, platform);
-	} catch (e) {
-		// this runs if path generator crashes (app folder doesnt exist)
-		console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
-		process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
-	}
+    try {
+      result = await main.inject(platformModule, platform);
+    } catch (e) {
+      // this runs if path generator crashes (app folder doesnt exist)
+      console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+      process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+    }
     if (result) {
       if (!process.argv.includes('--no-welcome-message')) {
         await writeFile(
@@ -73,13 +92,13 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
     }
   } else if (process.argv[2] === 'uninject') {
     try {
-		result = await main.uninject(platformModule, platform);
-	} catch (e) {
-		// this runs if path generator crashes (app folder doesnt exist)
-		console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
-		process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
-	}
-	if (result) {
+      result = await main.uninject(platformModule, platform);
+    } catch (e) {
+      // this runs if path generator crashes (app folder doesnt exist)
+      console.log(`${AnsiEscapes.RED}Platform you specified isn't installed on this device!${AnsiEscapes.RESET}\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
+      process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
+    }
+    if (result) {
       // @todo: prompt to (re)start automatically
       console.log(BasicMessages.UNPLUG_SUCCESS, '\n');
       console.log(

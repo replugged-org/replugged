@@ -54,7 +54,7 @@ const ProcessRegex = {
   dev: /discord-?development$/i
 };
 
-async function findAppDir(platform) {
+async function findAppDir (platform) {
   const discordProcess = execSync('ps x')
     .toString()
     .split('\n')
@@ -95,9 +95,8 @@ exports.getAppDir = async (platform) => {
   const installDirPath = installDirFile + platform;
   if (existsSync(installDirPath)) {
     return readFileSync(installDirPath, 'utf8');
-  } else {
-    const appDir = await findAppDir(platform);
-    writeFileSync(installDirPath, appDir);
-    return appDir;
   }
-}
+  const appDir = await findAppDir(platform);
+  writeFileSync(installDirPath, appDir);
+  return appDir;
+};
