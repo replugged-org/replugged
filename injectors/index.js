@@ -34,7 +34,7 @@ const checkPlatform = (platform) => {
   return VALID_PLATFORMS.includes(platform);
 };
 
-const checkInstalled = async (appDir) => {
+const checkInstalled = (appDir) => {
   return existsSync(join(appDir, '..'));
 };
 
@@ -56,7 +56,7 @@ let platform = process.argv[4]?.toLowerCase();
       platform = current;
       try {
         const appDir = await platformModule.getAppDir(current);
-        const installed = await checkInstalled(appDir);
+        const installed = checkInstalled(appDir);
         if (installed) {
           console.log(`${AnsiEscapes.YELLOW}No platform specified, defaulting to "${current}".${AnsiEscapes.RESET}`);
           platformFound = true;
