@@ -1,7 +1,9 @@
+const { i18n: { Messages } } = require('powercord/webpack');
+
 module.exports = {
   command: 'help',
   aliases: [ 'h' ],
-  description: 'Gives you a list of commands or information on a specific command.',
+  description: Messages.REPLUGGED_COMMAND_HELP_DESC,
   usage: '{c} [ commandName ]',
   executor ([ commandName ]) {
     let result;
@@ -15,32 +17,40 @@ module.exports = {
 
       result = {
         type: 'rich',
-        title: 'List of Commands',
+        title: Messages.REPLUGGED_COMMAND_HELP_LIST_TITLE,
         description: powercord.api.commands
           .map(({ command, description }) =>
             `\`${command.padEnd((longestCommandName * 2) - command.length, ' \u200b')} |\` \u200b \u200b*${description}*`
           )
           .join('\n'),
         footer: {
-          text: `Run ${powercord.api.commands.prefix}help <commandName> for more information regarding a specific command.`
+          text: Messages.REPLUGGED_COMMAND_HELP_LIST_FOOTER.format({
+            prefix: powercord.api.commands.prefix
+          })
         }
       };
     } else {
       const command = powercord.api.commands.find(c => [ c.command, ...(c.aliases || []) ].includes(commandName));
       if (!command) {
-        result = `Command \`${commandName}\` not found.`;
+        result = Messages.REPLUGGED_COMMAND_HELP_COMMAND_NOT_FOUND.format({
+          commandName
+        });
       } else {
         result = {
           type: 'rich',
-          title: `Help for ${commandName}`,
+          title: Messages.REPLUGGED_COMMAND_HELP_COMMAND_TITLE.format({
+            commandName
+          }),
           description: command.description,
           fields: [ {
-            name: 'Usage',
+            name: Messages.REPLUGGED_COMMAND_HELP_FIELD_USAGE,
             value: `\`${command.usage.replace('{c}', powercord.api.commands.prefix + command.command)}\n\``,
             inline: false
           } ],
           footer: {
-            text: `Inherited from "${command.origin}".`
+            text: Messages.REPLUGGED_COMMAND_HELP_COMMAND_FOOTER.format({
+              commandOrigin: command.origin
+            })
           }
         };
       }

@@ -1,23 +1,27 @@
 const { resp } = require('../util');
+const { i18n: { Messages } } = require('powercord/webpack');
 
 module.exports = {
   command: 'reload',
-  description: 'Reload a plugin/theme',
+  description: Messages.REPLUGGED_COMMAND_RELOAD_DESC,
   usage: '{c} [ plugin/theme ID ]',
   executor ([ id ]) {
     const isPlugin = powercord.pluginManager.plugins.has(id);
     const isTheme = powercord.styleManager.themes.has(id);
 
     if (!isPlugin && !isTheme) { // No match
-      return resp(false, `Could not find plugin or theme matching "${id}".`);
+      return resp(false, Messages.REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME.format({ id }));
     } else if (isPlugin && isTheme) { // Duplicate name
-      return resp(false, `"${id}" is in use by both a plugin and theme. You will have to reload it from settings.`);
+      return resp(false, Messages.REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE.format({ id }));
     }
 
     const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;
 
     manager.remount(id);
-    return resp(true, `${isPlugin ? 'Plugin' : 'Theme'} "${id}" reloaded!`);
+    return resp(true, Messages.REPLUGGED_COMMAND_RELOAD_RELOADED.format({
+      type: isPlugin ? 'Plugin' : 'Theme',
+      id
+    }));
   },
 
   autocomplete (args) {
@@ -36,15 +40,15 @@ module.exports = {
     }
 
     return {
-      header: 'replugged entities list',
+      header: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST,
       commands: [
         ...plugins.map(plugin => ({
           command: plugin.entityID,
-          description: `Plugin - ${plugin.manifest.description}`
+          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ description: plugin.manifest.description })
         })),
         ...themes.map(theme => ({
           command: theme.entityID,
-          description: `Theme - ${theme.manifest.description}`
+          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ description: theme.manifest.description })
         }))
       ]
     };

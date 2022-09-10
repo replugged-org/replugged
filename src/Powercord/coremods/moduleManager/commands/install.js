@@ -1,11 +1,11 @@
 const { cloneRepo, getRepoInfo } = require('../util');
 const Modal = require('../components/ConfirmModal');
-const { React } = require('powercord/webpack');
+const { React, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 
 module.exports = {
   command: 'install',
-  description: 'Install a plugin or theme.',
+  description: Messages.REPLUGGED_COMMAND_INSTALL_DESC,
   usage: '{c} [ plugin URL ]',
   async executor (args) {
     let url = args[0];
@@ -20,7 +20,7 @@ module.exports = {
     } catch (e) {
       return {
         send: false,
-        result: 'Invalid URL! Please specify a valid GitHub URL or username/repository.'
+        result: Messages.REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL
       };
     }
 
@@ -28,30 +28,39 @@ module.exports = {
     if (!info) {
       return {
         send: false,
-        result: 'The requested plugin or theme could not be found or is invalid.'
+        result: Messages.REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND
       };
     }
 
     if (info.isInstalled) {
       return {
         send: false,
-        result: `\`${info.repoName}\` is already installed!`
+        result: Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({
+          name: info.repoName
+        })
       };
     }
 
     openModal(() => React.createElement(Modal, {
       red: true,
-      header: `Install ${info.type}`,
-      desc: `Are you sure you want to install the ${info.type} ${info.repoName}?`,
+      header: Messages.REPLUGGED_INSTALL_MODAL_HEADER.format({
+        type: info.type
+      }),
+      desc: Messages.REPLUGGED_INSTALL_MODAL_DESC.format({
+        type: info.type,
+        name: info.repoName
+      }),
       onConfirm: () => {
         cloneRepo(url, powercord, info.type);
 
         powercord.api.notices.sendToast(`PDPluginInstalling-${info.repoName}`, {
-          header: `Installing ${info.repoName}...`,
+          header: Messages.REPLUGGED_TOAST_INSTALL_HEADER.format({
+            name: info.repoName
+          }),
           type: 'info',
           timeout: 10e3,
           buttons: [ {
-            text: 'Got It',
+            text: Messages.REPLUGGED_BUTTON_GOT_IT,
             color: 'green',
             size: 'medium',
             look: 'outlined'

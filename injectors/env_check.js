@@ -8,7 +8,7 @@ const nodeModulesPath = join(rootPath, 'node_modules');
 
 function installDeps () {
   console.log('Installing dependencies, please wait...');
-  execSync('npm install --only=prod', {
+  execSync('npm ci', {
     cwd: rootPath,
     stdio: [ null, null, null ]
   });

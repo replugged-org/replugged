@@ -7,7 +7,7 @@
     "REPLUGGED_BADGES_STAFF": "Staf Replugged",
     "REPLUGGED_BADGES_SUPPORT": "Dukungan Replugged",
     "REPLUGGED_BADGES_TRANSLATOR": "Penerjemah Replugged",
-    "REPLUGGED_BADGES_BOOSTER": "Replugged Server Booster",
+    "REPLUGGED_BADGES_BOOSTER": "Booster Server Replugged",
     "REPLUGGED_COMMAND_PREFIX": "Awalan Perintah",
     "REPLUGGED_CUTIE_DONATE": "Donasi",
     "REPLUGGED_CUTIE_SUBTITLE": "Dan dapatkan hadiah manis",
@@ -169,5 +169,18 @@
     "REPLUGGED_PLUGINS_PATH": "Buka Folder",
     "REPLUGGED_QUICKCSS_ENABLED": "",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": ""
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "",
+    "REPLUGGED_COMMAND_ENABLE_DESC": "Aktifkan plugin/tema",
+    "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} Terpasang",
+    "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Unduh {type}",
+    "REPLUGGED_CANCEL": "Batal",
+    "REPLUGGED_CONFIRM": "Ya",
+    "REPLUGGED_OK": "OK",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Mengirim informasi debug perangkat, discord, dan replugged ke obrolan",
+    "REPLUGGED_COMMAND_DISABLE_DESC": "Matikan sebuah plugin/tema",
+    "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id} mati!",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Plugin dan Tema yang Terpasang",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
+    "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id} diaktifkan!"
 }

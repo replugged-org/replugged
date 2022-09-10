@@ -1,4 +1,4 @@
-const { React } = require('powercord/webpack');
+const { React, i18n: { Messages } } = require('powercord/webpack');
 const { Clickable } = require('powercord/components');
 const { cloneRepo, matchRepoURL } = require('../../util');
 
@@ -28,7 +28,13 @@ module.exports = class Button extends React.Component {
             cloneRepo(url, powercord, this.props.type);
           }}
         >
-          {installed ? `${this.props.type === 'plugin' ? 'Plugin' : 'Theme'} Installed` : `Download ${this.props.type === 'plugin' ? 'Plugin' : 'Theme'}`}
+          {installed
+            ? Messages.REPLUGGED_BUTTON_INSTALLER_INSTALLED.format({
+              type: this.props.type === 'plugin' ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME
+            })
+            : Messages.REPLUGGED_BUTTON_INSTALLER_DOWNLOAD.format({
+              type: this.props.type === 'plugin' ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME
+            })}
         </Clickable>
       </div>
     );

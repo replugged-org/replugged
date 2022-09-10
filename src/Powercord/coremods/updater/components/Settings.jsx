@@ -348,22 +348,22 @@ module.exports = class UpdaterSettings extends React.PureComponent {
       type={FormNotice.Types.PRIMARY}
       body={<div className={[ 'debug-info', this.state.copied && 'copied' ].filter(Boolean).join(' ')}>
         <code>
-          <b>System / Discord </b>
+          <b>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_SYSTEM_DISCORD} </b>
           <div className='row'>
-            <div className='column'>Locale:&#10;{currentLocale}</div>
-            <div className='column'>OS:&#10;{window.platform.os.family}{window.platform.os.architecture === 64 ? ' 64-bit' : ''}</div>
-            <div className='column'>Architecture:&#10;{superProperties.os_arch}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_LOCALE}&#10;{currentLocale}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_OS}&#10;{window.platform.os.family} {window.platform.os.architecture === 64 ? Messages.REPLUGGED_UPDATES_OPTS_DEBUG_OS_64BIT : ''}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_ARCH}&#10;{superProperties.os_arch}</div>
             {process.platform === 'linux' && (
-              <div className='column'>Distro:&#10;{superProperties.distro || 'n/a'}</div>
+              <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_DISTRO}&#10;{superProperties.distro || 'n/a'}</div>
             )}
-            <div className='column'>Release Channel:&#10;{superProperties.release_channel}</div>
-            <div className='column'>App Version:&#10;{superProperties.client_version}</div>
-            <div className='column'>Build Number:&#10;{superProperties.client_build_number}</div>
-            <div className='column'>Build ID:&#10;{window.GLOBAL_ENV.SENTRY_TAGS.buildId.slice(0, 7)}</div>
-            <div className='column'>Experiments:&#10;{experimentOverrides} / {availableExperiments}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_RELEASE_CHANNEL}&#10;{superProperties.release_channel}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_APP_VERSION}&#10;{superProperties.client_version}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_NUMBER}&#10;{superProperties.client_build_number}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_ID}&#10;{window.GLOBAL_ENV.SENTRY_TAGS.buildId.slice(0, 7)}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_EXPERIMENTS}&#10;{experimentOverrides} / {availableExperiments}</div>
           </div>
 
-          <b>Process Versions </b>
+          <b>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_PROCESS_VERSIONS} </b>
           <div className='row'>
             <div className='column'>React:&#10;{React.version}</div>
             {[ 'electron', 'chrome', 'node' ].map(proc =>
@@ -373,27 +373,27 @@ module.exports = class UpdaterSettings extends React.PureComponent {
 
           <b>Replugged </b>
           <div className='row'>
-            <div className='column'>Commands:&#10;{Object.keys(commands).length}</div>
-            <div className='column'>Settings:&#10;{Object.keys(settingsStore.getAllSettings()).length}</div>
-            <div className='column'>Plugins:&#10;{powercord.pluginManager.getPlugins()
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_COMMANDS}&#10;{Object.keys(commands).length}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS}&#10;{Object.keys(settingsStore.getAllSettings()).length}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS}&#10;{powercord.pluginManager.getPlugins()
               .filter(plugin => powercord.pluginManager.isEnabled(plugin)).length} / {powercord.pluginManager.plugins.size}
             </div>
-            <div className='column'>Themes:&#10;{powercord.styleManager.getThemes()
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_THEMES}&#10;{powercord.styleManager.getThemes()
               .filter(theme => powercord.styleManager.isEnabled(theme)).length} / {powercord.styleManager.themes.size}
             </div>
-            <div className='column'>Labs:&#10;{enabledLabs.length} / {powercord.api.labs.experiments.length}
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_LABS}&#10;{enabledLabs.length} / {powercord.api.labs.experiments.length}
             </div>
-            <div className='column'>{`Settings Sync:\n${powercord.settings.get('settingsSync', false)}`}</div>
-            <div className='column'>Cached Files:&#10;{cachedFiles}</div>
-            <div className='column'>{`Account:\n${!!powercord.account}`}</div>
-            <div className='column'>APIs:&#10;{apis.length}</div>
-            <div className='column'>Connections:&#10;{connections.length}</div>
+            <div className='column'>{`${Messages.REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC}\n${powercord.settings.get('settingsSync', false)}`}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_CACHED_FILES}&#10;{cachedFiles}</div>
+            <div className='column'>{`${Messages.REPLUGGED_UPDATES_OPTS_DEBUG_ACCOUNT}\n${!!powercord.account}`}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_APIS}&#10;{apis.length}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_CONNECTIONS}&#10;{connections.length}</div>
           </div>
 
           <b>Git </b>
           <div className='row'>
-            <div className='column'>Upstream:&#10;{powercord.gitInfos.upstream.replace(REPO_URL, 'Official')}</div>
-            <div className='column'>Revision:&#10;
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM}&#10;{powercord.gitInfos.upstream.replace(REPO_URL, 'Official')}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_REVISION}&#10;
               <a
                 href={`https://github.com/${powercord.gitInfos.upstream}/commit/${powercord.gitInfos.revision}`}
                 target='_blank'
@@ -401,32 +401,32 @@ module.exports = class UpdaterSettings extends React.PureComponent {
                 [{powercord.gitInfos.revision.substring(0, 7)}]
               </a>
             </div>
-            <div className='column'>Branch:&#10;{powercord.gitInfos.branch}</div>
-            <div className='column'>{`Latest:\n${!this.props.getSetting('updates', []).find(update => update.id === 'powercord')}`}</div>
+            <div className='column'>{Messages.REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH}&#10;{powercord.gitInfos.branch}</div>
+            <div className='column'>{`${Messages.REPLUGGED_UPDATES_OPTS_DEBUG_LATEST}\n${!this.props.getSetting('updates', []).find(update => update.id === 'powercord')}`}</div>
           </div>
 
           <b>Listings </b>
           <div className='row'>
-            {createPathReveal('Replugged Path', powercord.basePath)}
-            {createPathReveal('Discord Path', discordPath)}
+            {createPathReveal(Messages.REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH, powercord.basePath)}
+            {createPathReveal(Messages.REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH, discordPath)}
             <div className='full-column'>Experiments:&#10;{experimentOverrides > 0 ? Object.keys(getExperimentOverrides()).join(', ') : 'n/a'}</div>
             <div className='full-column'>Labs:&#10;
               {enabledLabs.length ? enabledLabs.map(e => e.name).join(', ') : 'n/a'}
             </div>
             <div className='full-column'>
-              Plugins:&#10;
+              {Messages.REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS}&#10;
               {(plugins.length > 6 ? `${(this.state.pluginsRevealed ? plugins : plugins.slice(0, 6)).join(', ')};` : plugins.join(', ')) || 'n/a'}&nbsp;
               {plugins.length > 6 &&
               <a onClick={() => this.setState({ pluginsRevealed: !this.state.pluginsRevealed })}>
-                {this.state.pluginsRevealed ? 'Show less' : 'Show more'}
+                {this.state.pluginsRevealed ? Messages.REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_LESS : Messages.REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_MORE}
               </a>}
             </div>
             {unauthorizedPlugins.length > 0 && <div className='full-column'>
-              Unauthorized Plugins:&#10;
+              {Messages.REPLUGGED_UPDATES_OPTS_DEBUG_UNAUTHORIZED_PLUGINS}&#10;
               {unauthorizedPlugins.join(', ')}
             </div>}
             {window.bdplugins && <div className='full-column'>
-              BetterDiscord Plugins:&#10;
+              {Messages.REPLUGGED_UPDATES_OPTS_DEBUG_BETTERDISCORD_PLUGINS}&#10;
               {Object.keys(window.bdplugins).join(', ')}
             </div>}
           </div>
@@ -436,7 +436,7 @@ module.exports = class UpdaterSettings extends React.PureComponent {
           color={this.state.copied ? Button.Colors.GREEN : Button.Colors.BRAND}
           onClick={() => this.handleDebugInfoCopy(plugins)}
         >
-          <FontAwesome icon={this.state.copied ? 'clipboard-check' : 'clipboard'}/> {this.state.copied ? 'Copied!' : 'Copy'}
+          <FontAwesome icon={this.state.copied ? 'clipboard-check' : 'clipboard'}/> {this.state.copied ? Messages.REPLUGGED_UPDATES_OPTS_DEBUG_COPIED : Messages.REPLUGGED_UPDATES_OPTS_DEBUG_COPY}
         </Button>
       </div>}
     />;

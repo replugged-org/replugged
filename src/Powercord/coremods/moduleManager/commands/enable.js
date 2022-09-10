@@ -1,26 +1,30 @@
 const { resp } = require('../util');
+const { i18n: { Messages } } = require('powercord/webpack');
 
 module.exports = {
   command: 'enable',
-  description: 'Enable a plugin/theme',
+  description: Messages.REPLUGGED_COMMAND_ENABLE_DESC,
   usage: '{c} [ plugin/theme ID ]',
   executor ([ id ]) {
     const isPlugin = powercord.pluginManager.plugins.has(id);
     const isTheme = powercord.styleManager.themes.has(id);
 
     if (!isPlugin && !isTheme) { // No match
-      return resp(false, `Could not find plugin or theme matching "${id}".`);
+      return resp(false, Messages.REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME.format({ id }));
     } else if (isPlugin && isTheme) { // Duplicate name
-      return resp(false, `"${id}" is in use by both a plugin and theme. You will have to enable it from settings.`);
+      return resp(false, Messages.REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE.format({ id }));
     }
 
     const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;
     if (manager.isEnabled(id)) {
-      return resp(false, `"${id}" is already enabled.`);
+      return resp(false, Messages.REPLUGGED_ERROR_PLUGIN_THEME_ALREADY_ENABLED.format({ id }));
     }
 
     manager.enable(id);
-    return resp(true, `${isPlugin ? 'Plugin' : 'Theme'} "${id}" enabled!`);
+    return resp(true, Messages.REPLUGGED_COMMAND_ENABLE_ENABLED.format({
+      type: isPlugin ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME,
+      id
+    }));
   },
 
   autocomplete (args) {
@@ -41,15 +45,15 @@ module.exports = {
       );
 
     return {
-      header: 'replugged entities list',
+      header: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST,
       commands: [
         ...plugins.map(plugin => ({
           command: plugin.entityID,
-          description: `Plugin - ${plugin.manifest.description}`
+          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ description: plugin.manifest.description })
         })),
         ...themes.map(theme => ({
           command: theme.entityID,
-          description: `Theme - ${theme.manifest.description}`
+          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ description: theme.manifest.description })
         }))
       ]
     };

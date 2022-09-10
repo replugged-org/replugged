@@ -1,21 +1,21 @@
 const Modal = require('../components/ConfirmModal');
-const { React } = require('powercord/webpack');
+const { React, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 
 const { resp } = require('../util');
 
 module.exports = {
   command: 'uninstall',
-  description: 'Uninstall a plugin/theme',
+  description: Messages.REPLUGGED_COMMAND_UNINSTALL_DESC,
   usage: '{c} [ plugin/theme ID ]',
   executor ([ id ]) {
     const isPlugin = powercord.pluginManager.plugins.has(id);
     const isTheme = powercord.styleManager.themes.has(id);
 
     if (!isPlugin && !isTheme) { // No match
-      return resp(false, `Could not find plugin or theme matching "${id}".`);
+      return resp(false, Messages.REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME.format({ id }));
     } else if (isPlugin && isTheme) { // Duplicate name
-      return resp(false, `"${id}" is in use by both a plugin and theme. You will have to uninstall it from settings.`);
+      return resp(false, Messages.REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE.format({ id }));
     }
 
     const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;
@@ -23,18 +23,20 @@ module.exports = {
 
     openModal(() => React.createElement(Modal, {
       red: true,
-      header: `Uninstall ${id}`,
-      desc: `Are you sure you want to uninstall and delete ${id}? This cannot be undone.`,
+      header: Messages.REPLUGGED_COMMAND_UNINSTALL_MODAL_HEADER.format({ id }),
+      desc: Messages.REPLUGGED_COMMAND_UNINSTALL_MODAL_DESC.format({ id }),
       onConfirm: () => {
         manager.uninstall(id);
 
         powercord.api.notices.sendToast(`PDPluginUninstalled-${id}`, {
-          header: `${isPlugin ? 'Plugin' : 'Theme'} Uninstalled`,
-          content: `${id} uninstalled and deleted`,
+          header: Messages.REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER.format({
+            type: isPlugin ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME
+          }),
+          content: Messages.REPLUGGED_COMMAND_UNINSTALL_TOAST_CONTENT.format({ id }),
           type: 'info',
           timeout: 10e3,
           buttons: [ {
-            text: 'Got It',
+            text: Messages.REPLUGGED_BUTTON_GOT_IT,
             color: 'green',
             size: 'medium',
             look: 'outlined'
@@ -62,15 +64,15 @@ module.exports = {
     }
 
     return {
-      header: 'replugged entities list',
+      header: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST,
       commands: [
         ...plugins.map(plugin => ({
           command: plugin.entityID,
-          description: `Plugin - ${plugin.manifest.description}`
+          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ description: plugin.manifest.description })
         })),
         ...themes.map(theme => ({
           command: theme.entityID,
-          description: `Theme - ${theme.manifest.description}`
+          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ description: theme.manifest.description })
         }))
       ]
     };

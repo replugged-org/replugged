@@ -34,11 +34,11 @@ module.exports = class GeneralSettings extends React.Component {
           defaultValue={getSetting('prefix', '.')}
           onChange={p => updateSetting('prefix', !p ? '.' : p.replace(/\s+(?=\S)|(?<=\s)\s+/g, '').toLowerCase())}
           onBlur={({ target }) => target.value = getSetting('prefix', '.')}
-          error={getSetting('prefix', '.') === '/' ? 'Prefix should not be set to `/` as it is already in use by Discord and may disable Replugged autocompletions.' : ''}
+          error={getSetting('prefix', '.') === '/' ? Messages.REPLUGGED_SETTINGS_NO_SLASH_PREFIX : ''}
         >
           {Messages.REPLUGGED_COMMAND_PREFIX}
         </TextInput>
-        <SwitchItem note={'Settings sync is currently not available.'} disabled>
+        <SwitchItem note={Messages.REPLUGGED_SETTINGS_SYNC_UNAVAILABLE} disabled>
           {Messages.REPLUGGED_SETTINGS_SYNC}
         </SwitchItem>
         <SwitchItem
@@ -134,8 +134,8 @@ module.exports = class GeneralSettings extends React.Component {
             {Messages.REPLUGGED_SETTINGS_BACKEND}
           </TextInput>
           <Category
-            name={'Replugged Experiments'}
-            description={'Enable experimental options for Replugged, at your own risk.'}
+            name={Messages.REPLUGGED_SETTINGS_EXP}
+            description={Messages.REPLUGGED_SETTINGS_EXP_DESC}
             opened={getSetting('labsOpened', false)}
             onChange={() => toggleSetting('labsOpened')}
           >

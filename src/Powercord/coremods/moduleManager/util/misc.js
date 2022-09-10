@@ -1,5 +1,8 @@
 const { WEBSITE } = require('powercord/constants');
 
+const fs = require('fs');
+const path = require('path');
+
 const INSTALLER_PATH_REGEX = /^\/install\?url=(.*)/;
 const REPO_URL_REGEX = /https?:\/\/(?:www\.)?github\.com\/([^/\s>]+)\/([^/\s>]+)(?:\/tree\/([^/\s>]+))?\/?(?=\s|$)/;
 
@@ -42,3 +45,29 @@ exports.resp = (success, description) => ({
     description
   }
 });
+
+exports.formatGitURL = (url) => url
+  .replace('.git', '')
+  .replace('git@github.com:', 'https://github.com/')
+  .replace('url = ', '');
+
+exports.getWebURL = (entity, type = null) => {
+  if (typeof entity === 'string') {
+    if (type) {
+      entity = type === 'plugin' ? powercord.pluginManager.get(entity) : powercord.styleManager.get(entity);
+    } else {
+      return null;
+    }
+  }
+  let data = fs.readFileSync(path.resolve(entity.entityPath, '.git', 'config'), 'utf8');
+  data = data.split('\n').map(e => e.trim());
+
+  let url = '';
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].startsWith('url = ')) {
+      url = exports.formatGitURL(data[i]);
+      break;
+    }
+  }
+  return url;
+};

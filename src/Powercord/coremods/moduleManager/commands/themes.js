@@ -1,13 +1,18 @@
+const { i18n: { Messages } } = require('powercord/webpack');
+
 module.exports = {
   command: 'themes',
   aliases: [ 'tlist' ],
-  description: 'Prints out a list of currently installed themes.',
+  description: Messages.REPLUGGED_COMMAND_THEMES_DESC,
   usage: '{c}',
   executor () {
     const themes = powercord.styleManager.getThemes();
     const result = {
       type: 'rich',
-      title: `List of Installed Themes (${themes.length})`,
+      title: Messages.REPLUGGED_COMMAND_LIST_OF_INSTALLED.format({
+        type: Messages.REPLUGGED_THEMES,
+        count: themes.length
+      }),
       description: `\`${themes.join('\n')}\``
     };
 

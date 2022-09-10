@@ -3,7 +3,7 @@ const { loadStyle } = require('../util');
 const { resolve, join } = require('path');
 const { existsSync } = require('fs');
 const { unlink } = require('fs').promises;
-const { React, getModule, getModuleByDisplayName, constants: { Routes } } = require('powercord/webpack');
+const { React, getModule, getModuleByDisplayName, constants: { Routes }, i18n: { Messages } } = require('powercord/webpack');
 const { forceUpdateElement, getOwnerInstance, waitFor, findInReactTree } = require('powercord/util');
 const { inject, uninject } = require('powercord/injector');
 const { GUILD_ID, DISCORD_INVITE } = require('powercord/constants');
@@ -40,9 +40,9 @@ async function _patchToasts () {
 function _welcomeNewUser () {
   powercord.api.notices.sendAnnouncement('pc-first-welcome', {
     color: 'green',
-    message: 'Welcome! Replugged has been successfully injected into your Discord client. Feel free to join our Discord server for announcements, support and more!',
+    message: Messages.REPLUGGED_NOTICES_WELCOME_NEW_USER,
     button: {
-      text: 'Join Server',
+      text: Messages.REPLUGGED_NOTICES_JOIN_SERVER_BUTTON,
       onClick: async () => {
         const store = await getModule([ 'getGuilds' ]);
         if (store.getGuilds()[GUILD_ID]) {

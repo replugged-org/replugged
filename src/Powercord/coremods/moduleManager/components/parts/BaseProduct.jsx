@@ -165,8 +165,8 @@ class BaseProduct extends React.PureComponent {
     } catch (e) {
       console.error(e);
       powercord.api.notices.sendToast('invalid-invite', {
-        header: 'Invalid Invite',
-        content: 'This Discord invite no longer exists, or is invalid. Contact the plugin developer to get a new one.',
+        header: Messages.REPLUGGED_TOAST_INVALID_INVITE_HEADER,
+        content: Messages.REPLUGGED_TOAST_INVALID_INVITE_CONTENT,
         type: 'danger',
         timeout: 10e3
       });
