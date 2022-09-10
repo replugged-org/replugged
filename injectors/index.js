@@ -46,24 +46,19 @@ let platform = process.argv[4]?.toLowerCase();
       platform = 'dev';
     }
   } else {
-    let platformFound = false;
-
     for (const current of VALID_PLATFORMS) {
-      platform = current;
       try {
         const appDir = await platformModule.getAppDir(current);
         const installed = checkInstalled(appDir);
         if (installed) {
           console.log(`${AnsiEscapes.YELLOW}No platform specified, defaulting to "${current}".${AnsiEscapes.RESET}`);
-          platformFound = true;
+          platform = current;
           break;
         }
-      } catch (e) {
-        //
-      }
+      } catch (e) {}
     }
 
-    if (!platformFound) {
+    if (!platform) {
       console.log(`${AnsiEscapes.RED}Could not find any installations of Discord.${AnsiEscapes.RESET}`);
       process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
     }
