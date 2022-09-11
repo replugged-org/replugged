@@ -42,6 +42,7 @@ module.exports = {
         props.options && { ...props.options.reduce((options, option) => {
           option.displayName = option.displayName ?? option.name;
           option.displayDescription = option.displayDescription ?? option.description;
+          option.type = option.type.toUpperCase();
 
           options.push(option);
 
@@ -90,6 +91,7 @@ module.exports = {
         send: false,
         result: `An error occurred while executing the command: ${e.message}.\nCheck the console for more details.`
       };
+      console.error(args, e);
     }
 
     if (!result || !result.result) {
