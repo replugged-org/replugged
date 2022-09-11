@@ -32,6 +32,7 @@ const KnownLinuxPaths = Object.freeze({
   canary: [
     '/usr/share/discord-canary',
     '/usr/lib64/discord-canary',
+    '/usr/bin/discord-canary',
     '/opt/discord-canary',
     '/opt/DiscordCanary',
     `${flatpakDir}.DiscordCanary/current/active/files/discord-canary`,
