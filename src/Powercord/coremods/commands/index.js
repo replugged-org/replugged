@@ -69,6 +69,17 @@ async function patchAutocomplete () {
 
     for (const command of Object.values(powercord.api.commands.$$commands)) {
       const exists = commands.some(c => c.__$$Powercord && c.id === command.id);
+
+      if (command.aliases?.length) {
+        for (const alias of command.aliases) {
+          if (~alias.indexOf(query) && !exists) {
+            commands.unshift(command);
+          }
+        }
+
+        continue;
+      }
+
       if (!~command.name?.indexOf(query) || exists) {
         continue;
       }
