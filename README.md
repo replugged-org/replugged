@@ -1,10 +1,19 @@
 # Replugged
-Maintained fork of [powercord](https://github.com/powercord-org/powercord) - a lightweight @discord client mod focused on simplicity and performance.
+Maintained fork of [powercord](https://github.com/powercord-org/powercord) - a lightweight [@discord](https://github.com/discord) client mod focused on simplicity and performance. https://replugged.dev/
 
-# Installation/Uninstallation
+## Installation/Uninstallation
 See the [installation page of the Replugged Wiki](https://github.com/replugged-org/replugged/wiki/Installation).
 
-# Is this against the ToS?
+### Plugins/Themes
+Join our [official Discord server](https://discord.gg/replugged) and scroll through the channels to find new supported and maintained plugins or themes. 
+[![Replugged Discord Server](https://discordapp.com/api/guilds/1000926524452647132/widget.png?style=banner2)](https://discord.gg/replugged)
+
+If the plugin/theme you want isn't there, check out the old archived [Powercord server](https://discord.gg/powercord) and you might find plugins and themes there that might work. But most of them will probably be outdated. 
+
+#### How to install plugins/themes
+Join our [official Discord server](https://discord.gg/replugged) or go to the GitHub repository of the plugin or theme where they might have installation instructions. Most likely they'll have a link that installs it automatically. The plugin/theme channel in the Discord server also has an install button which you can conviently click!
+
+## Is this against the ToS?
 Long story short... __yes__. Replugged is against the Discord Terms of Service — but, you should keep reading:  
 
 As of right now, __Discord is not going out of their way to detect client mods or ban client mod users__. On top of that, Replugged does not make any manual HTTP requests unlike certain client mods / plugins, so your client's user agent is the same as a legitimate client. Meaning, Discord doesn't detect a client mod like Replugged. They can go out of their way to start detecting it, but they don't.  
