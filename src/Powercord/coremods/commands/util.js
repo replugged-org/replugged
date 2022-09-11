@@ -42,7 +42,10 @@ module.exports = {
         props.options && { ...props.options.reduce((options, option) => {
           option.displayName = option.displayName ?? option.name;
           option.displayDescription = option.displayDescription ?? option.description;
-          option.type = option.type.toUpperCase();
+
+          if (typeof option.type === 'string') {
+            option.type = ApplicationCommandOptionType[option.type.toUpperCase()];
+          }
 
           options.push(option);
 
@@ -134,7 +137,7 @@ module.exports = {
 
   addCommand (command) {
     powercord.api.commands.$$commands ??= {};
-    powercord.api.commands.$$commands[command] = this.parseCommand(command);
+    powercord.api.commands.$$commands[command.command] = this.parseCommand(command);
   },
 
   removeCommand (command) {

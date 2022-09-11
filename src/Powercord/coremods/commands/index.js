@@ -99,7 +99,7 @@ async function patchAutocomplete () {
       res.activeSections.push(section);
     }
 
-    const commands = Object.values(powercord.api.commands.$$commands);
+    const commands = Object.values(powercord.api.commands.$$commands).sort((a, b) => a.name.localeCompare(b.name));
     if (commands.some(c => !res.commands?.find?.(r => c.__$$Powercord && r.id === c.id))) {
       res.commands ??= [];
 
