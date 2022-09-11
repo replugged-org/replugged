@@ -62,9 +62,9 @@ class CommandsAPI extends API {
       throw new Error(`Command “${command.command}” is already registered!`);
     }
 
-    this.emit('commandAdded', this.commands[command.command]);
-
     this.commands[command.command] = command;
+
+    this.emit('commandAdded', this.commands[command.command]);
   }
 
   /**

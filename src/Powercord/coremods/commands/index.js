@@ -155,8 +155,11 @@ module.exports = async () => {
       return commands;
     }, {});
 
-  powercord.api.commands.on('commandAdded', util.addCommand);
-  powercord.api.commands.on('commandRemoved', util.removeCommand);
+  const _boundAddCommand = util.addCommand.bind(util);
+  const _boundRemoveCommand = util.removeCommand.bind(util);
+
+  powercord.api.commands.on('commandAdded', _boundAddCommand);
+  powercord.api.commands.on('commandRemoved', _boundRemoveCommand);
 
   return () => {
     util.unloadDefaultCommands();
@@ -165,7 +168,7 @@ module.exports = async () => {
 
     cleanup();
 
-    powercord.api.commands.off('commandAdded', util.addCommand);
-    powercord.api.commands.off('commandRemoved', util.removeCommand);
+    powercord.api.commands.off('commandAdded', _boundAddCommand);
+    powercord.api.commands.off('commandRemoved', _boundRemoveCommand);
   };
 };
