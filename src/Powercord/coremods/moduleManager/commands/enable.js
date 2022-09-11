@@ -1,4 +1,5 @@
 const { resp } = require('../util');
+const { ApplicationCommandOptionType } = require('powercord/commands');
 const { i18n: { Messages } } = require('powercord/webpack');
 
 module.exports = {
@@ -26,36 +27,49 @@ module.exports = {
       id
     }));
   },
+  options: [
+    {
+      name: 'entity',
+      displayName: 'entity',
+      description: 'the plugin or theme to enable',
+      displayDescription: 'The plugin or theme to enable',
+      type: ApplicationCommandOptionType.STRING,
+      required: true,
+      get choices () {
+        const choices = [];
 
-  autocomplete (args) {
-    if (args.length > 1) {
-      return false;
+        const plugins = Array.from(powercord.pluginManager.plugins.values())
+          .filter(plugin => !powercord.pluginManager.isEnabled(plugin.entityID));
+
+        const themes = Array.from(powercord.styleManager.themes.values())
+          .filter(theme => !powercord.styleManager.isEnabled(theme.entityID));
+
+        plugins.map(plugin => {
+          choices.push({
+            name: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ plugin: plugin.entityID,
+              description: plugin.manifest.description }),
+            displayName: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ plugin: plugin.entityID,
+              description: plugin.manifest.description }),
+            value: plugin.entityID
+          });
+
+          return plugin;
+        });
+
+        themes.map(theme => {
+          choices.push({
+            name:  Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ theme: theme.entityID,
+              description: theme.manifest.description }),
+            displayName:  Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ theme: theme.entityID,
+              description: theme.manifest.description }),
+            value: theme.entityID
+          });
+
+          return theme;
+        });
+
+        return choices.sort((a, b) => a.name.localeCompare(b.name));
+      }
     }
-
-    const plugins = Array.from(powercord.pluginManager.plugins.values())
-      .filter(plugin =>
-        plugin.entityID.toLowerCase().includes(args[0]?.toLowerCase()) &&
-        !powercord.pluginManager.isEnabled(plugin.entityID)
-      );
-
-    const themes = Array.from(powercord.styleManager.themes.values())
-      .filter(theme =>
-        theme.entityID.toLowerCase().includes(args[0]?.toLowerCase()) &&
-        !powercord.styleManager.isEnabled(theme.entityID)
-      );
-
-    return {
-      header: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST,
-      commands: [
-        ...plugins.map(plugin => ({
-          command: plugin.entityID,
-          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ description: plugin.manifest.description })
-        })),
-        ...themes.map(theme => ({
-          command: theme.entityID,
-          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ description: theme.manifest.description })
-        }))
-      ]
-    };
-  }
+  ]
 };

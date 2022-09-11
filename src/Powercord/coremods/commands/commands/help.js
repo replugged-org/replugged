@@ -1,4 +1,3 @@
-
 const { ApplicationCommandOptionType } = require('powercord/commands');
 const { i18n: { Messages } } = require('powercord/webpack');
 

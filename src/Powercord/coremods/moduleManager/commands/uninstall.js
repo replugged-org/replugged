@@ -1,4 +1,5 @@
 const Modal = require('../components/ConfirmModal');
+const { ApplicationCommandOptionType } = require('powercord/commands');
 const { React, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 
@@ -46,35 +47,46 @@ module.exports = {
       onCancel: () => closeModal()
     }));
   },
+  options: [
+    {
+      name: 'entity',
+      displayName: 'entity',
+      description: 'the plugin or theme to uninstall',
+      displayDescription: 'The plugin or theme to uninstall',
+      type: ApplicationCommandOptionType.STRING,
+      required: true,
+      get choices () {
+        const choices = [];
 
-  autocomplete (args) {
-    const plugins = Array.from(powercord.pluginManager.plugins.values())
-      .filter(plugin =>
-        !plugin.entityID.startsWith('pc-') &&
-        plugin.entityID.toLowerCase().includes(args[0]?.toLowerCase())
-      );
+        const plugins = Array.from(powercord.pluginManager.plugins.values());
+        const themes = Array.from(powercord.styleManager.themes.values());
 
-    const themes = Array.from(powercord.styleManager.themes.values())
-      .filter(theme =>
-        theme.entityID.toLowerCase().includes(args[0]?.toLowerCase())
-      );
+        plugins.map(plugin => {
+          choices.push({
+            name: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ plugin: plugin.entityID,
+              description: plugin.manifest.description }),
+            displayName: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ plugin: plugin.entityID,
+              description: plugin.manifest.description }),
+            value: plugin.entityID
+          });
 
-    if (args.length > 1) {
-      return false;
+          return plugin;
+        });
+
+        themes.map(theme => {
+          choices.push({
+            name:  Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ theme: theme.entityID,
+              description: theme.manifest.description }),
+            displayName:  Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ theme: theme.entityID,
+              description: theme.manifest.description }),
+            value: theme.entityID
+          });
+
+          return theme;
+        });
+
+        return choices.sort((a, b) => a.name.localeCompare(b.name));
+      }
     }
-
-    return {
-      header: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST,
-      commands: [
-        ...plugins.map(plugin => ({
-          command: plugin.entityID,
-          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN.format({ description: plugin.manifest.description })
-        })),
-        ...themes.map(theme => ({
-          command: theme.entityID,
-          description: Messages.REPLUGGED_COMMAND_AUTOCOMPLETE_THEME.format({ description: theme.manifest.description })
-        }))
-      ]
-    };
-  }
+  ]
 };

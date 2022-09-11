@@ -1,5 +1,6 @@
 const { cloneRepo, getRepoInfo } = require('../util');
 const Modal = require('../components/ConfirmModal');
+const { ApplicationCommandOptionType } = require('powercord/commands');
 const { React, i18n: { Messages } } = require('powercord/webpack');
 const { open: openModal, close: closeModal } = require('powercord/modal');
 
@@ -69,6 +70,16 @@ module.exports = {
       },
       onCancel: () => closeModal()
     }));
-  }
+  },
+  options: [
+    {
+      name: 'plugin or theme repo url',
+      displayName: 'Plugin or Theme Repo URL',
+      description: 'the url used to install a plugin or theme',
+      displayDescription: 'The url used to install a plugin or theme',
+      type: ApplicationCommandOptionType.STRING,
+      required: true
+    }
+  ]
 };
 
