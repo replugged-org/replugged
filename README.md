@@ -5,7 +5,7 @@ Maintained fork of [powercord](https://github.com/powercord-org/powercord) - a l
 See the [installation page of the Replugged Wiki](https://github.com/replugged-org/replugged/wiki/Installation).
 
 ### Plugins/Themes
-Join our [official Discord server](https://discord.gg/replugged) and scroll through the channels to find new supported and maintained plugins or themes. 
+Plugins and themes can be found in our [official Discord server](https://discord.gg/replugged) in #plugin-links and #theme-links, respectively. 
 [![Replugged Discord Server](https://discordapp.com/api/guilds/1000926524452647132/widget.png?style=banner2)](https://discord.gg/replugged)
 
 If the plugin/theme you want isn't there, check out the old archived [Powercord server](https://discord.gg/powercord) and you might find plugins and themes there that might work. But most of them will probably be outdated. 
