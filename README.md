@@ -8,7 +8,7 @@ See the [installation page of the Replugged Wiki](https://github.com/replugged-o
 Plugins and themes can be found in our [official Discord server](https://discord.gg/replugged) in #plugin-links and #theme-links, respectively. 
 [![Replugged Discord Server](https://discordapp.com/api/guilds/1000926524452647132/widget.png?style=banner2)](https://discord.gg/replugged)
 
-If the plugin/theme you want isn't there, check out the old archived [Powercord server](https://discord.gg/powercord) and you might find plugins and themes there that might work. But most of them will probably be outdated. 
+If the plugin/theme you want isn't there, check out the old archived [Powercord server](https://discord.gg/powercord). Note that bc some of the plugins may be outdated or abandoned. 
 
 #### How to install plugins/themes
 Join our [official Discord server](https://discord.gg/replugged) or go to the GitHub repository of the plugin or theme where they might have installation instructions. Most likely they'll have a link that installs it automatically. The plugin/theme channel in the Discord server also has an install button which you can conviently click!
