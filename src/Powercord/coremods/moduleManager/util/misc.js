@@ -1,4 +1,7 @@
 const { WEBSITE } = require('powercord/constants');
+const Modal = require('../../moduleManager/components/ConfirmModal');
+const { React, i18n: { Messages } } = require('powercord/webpack');
+const { open: openModal, close: closeModal } = require('powercord/modal');
 
 const fs = require('fs');
 const path = require('path');
@@ -71,3 +74,35 @@ exports.getWebURL = (entity, type = null) => {
   }
   return url;
 };
+
+exports.promptUninstall = (id, isPlugin) => new Promise((resolve) => {
+  const manager = isPlugin ? powercord.pluginManager : powercord.styleManager;
+
+  openModal(() => React.createElement(Modal, {
+    red: true,
+    header: Messages.REPLUGGED_COMMAND_UNINSTALL_MODAL_HEADER.format({ id }),
+    desc: Messages.REPLUGGED_COMMAND_UNINSTALL_MODAL_DESC.format({ id }),
+    onConfirm: () => {
+      manager.uninstall(id);
+
+      powercord.api.notices.sendToast(`PDPluginUninstalled-${id}`, {
+        header: Messages.REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER.format({
+          type: isPlugin ? Messages.REPLUGGED_PLUGIN : Messages.REPLUGGED_THEME
+        }),
+        content: Messages.REPLUGGED_COMMAND_UNINSTALL_TOAST_CONTENT.format({ id }),
+        type: 'info',
+        timeout: 10e3,
+        buttons: [ {
+          text: Messages.REPLUGGED_BUTTON_GOT_IT,
+          color: 'green',
+          size: 'medium',
+          look: 'outlined'
+        } ]
+      });
+      resolve(true);
+    },
+    onCancel: () => {
+      closeModal(); resolve(false);
+    }
+  }));
+});
