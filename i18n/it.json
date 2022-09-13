@@ -183,7 +183,7 @@
     "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Questa è una funzione di Replugged. Ti permette di installare plugins o temi direttamente dalla chat.\nBasta cliccare il tasto installa nell'embed.",
     "REPLUGGED_PLUGINS_SETTINGS": "Impostazioni Plugin",
     "REPLUGGED_COMMAND_ENABLE_DESC": "Abilita un plugin/tema",
-    "REPLUGGED_BUTTON_GOT_IT": "Capito",
+    "REPLUGGED_BUTTON_GOT_IT": "Ho capito",
     "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} Installato",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Scarica {type}",
     "REPLUGGED_CANCEL": "Annulla",
