@@ -23,7 +23,7 @@ module.exports.injectMessages = function () {
         }
       }
       return (
-        <PluginEmbed match={match} />
+        <PluginEmbed match={match} props={res.props} />
       );
     }
 
