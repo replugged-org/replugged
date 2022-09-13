@@ -1,6 +1,6 @@
 const getRepoInfo = require('./getInfo');
 const cloneRepo = require('./cloneRepo');
-const { resp, matchRepoURL, isInstallerURL, REPO_URL_REGEX, getWebURL, formatGitURL } = require('./misc');
+const { resp, matchRepoURL, isInstallerURL, REPO_URL_REGEX, getWebURL, formatGitURL, promptUninstall } = require('./misc');
 
 module.exports = {
   getRepoInfo,
@@ -10,5 +10,6 @@ module.exports = {
   isInstallerURL,
   getWebURL,
   formatGitURL,
+  promptUninstall,
   REPO_URL_REGEX
 };

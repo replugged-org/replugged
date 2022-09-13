@@ -5,7 +5,7 @@ const ViewRepo = require('./ViewRepo');
 const CopyLink = require('./CopyLink');
 const PluginEmbedIcon = require('./PluginEmbedIcon');
 
-const { cloneRepo, getRepoInfo } = require('../../moduleManager/util');
+const { cloneRepo, getRepoInfo, promptUninstall } = require('../../moduleManager/util');
 
 let LegacyText = getModuleByDisplayName('LegacyText', false);
 if (!LegacyText) {
@@ -14,7 +14,7 @@ if (!LegacyText) {
 const Anchor = getModuleByDisplayName('Anchor', false);
 
 // Components
-const { default: Button, ButtonSizes } = getModule([ 'ButtonColors' ], false);
+const { default: Button, ButtonSizes, ButtonColors } = getModule([ 'ButtonColors' ], false);
 const Alert = getModuleByDisplayName('Alert', false);
 const ModalApi = getModule([ 'openModal', 'useModalsStore' ], false);
 
@@ -33,18 +33,17 @@ const {
   infoIcon,
   buildInfo,
   buildDetails,
-  disabledButtonOverride,
   subHead
 } = getModule([ 'titleRegion' ], false);
 
-module.exports = function ({ match }) {
+module.exports = function ({ match, props }) {
   const { url } = match;
   const [ data, setData ] = React.useState(null);
 
-  const fetchInfo = () => {
+  const fetchInfo = async () => {
     const repoInfo = getRepoInfo(url);
     if (repoInfo instanceof Promise) {
-      repoInfo.then(setData);
+      await repoInfo.then(setData);
     } else {
       setData(repoInfo);
     }
@@ -52,9 +51,21 @@ module.exports = function ({ match }) {
 
   React.useEffect(fetchInfo, []);
 
+  React.useEffect(async () => {
+    if (!data || !data.isInstalling) {
+      return;
+    }
+    const isInstalled = await cloneRepo(data.url, powercord, data.type);
+    setData({
+      ...data,
+      isInstalling: false,
+      isInstalled
+    });
+  }, [ data?.isInstalling ]);
+
   if (!data) {
     return (
-      <Anchor href={url}>{url}</Anchor>
+      <Anchor href={props.href}>{props.title}</Anchor>
     );
   }
 
@@ -93,15 +104,33 @@ module.exports = function ({ match }) {
         </div>
         <Button
           size={ButtonSizes.MEDIUM}
-          className={`${button} ${data.isInstalled ? disabledButtonOverride : ''}`}
-          disabled={data.isInstalled}
-          onClick={() => {
+          className={`${button} ${data.isInstalled ? ButtonColors.RED : ''}`}
+          disabled={data.isInstalling}
+          onClick={async () => {
+            if (data.isInstalling) {
+              return;
+            }
             if (!data.isInstalled) {
-              cloneRepo(data.url, powercord, data.type).then(fetchInfo);
+              setData({
+                ...data,
+                isInstalling: true
+              });
+            } else {
+              const isConfirmed = await promptUninstall(data.repoName, data.type === 'plugin');
+              if (isConfirmed) {
+                setData({
+                  ...data,
+                  isInstalled: false
+                });
+              }
             }
           }}
         >
-          {data.isInstalled ? Messages[`REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_${data.type.toUpperCase()}`] : Messages[`REPLUGGED_PLUGIN_EMBED_INSTALL_${data.type.toUpperCase()}`]}
+          {data.isInstalled
+            ? Messages[`REPLUGGED_PLUGIN_EMBED_UNINSTALL_${data.type.toUpperCase()}`]
+            : data.isInstalling
+              ? Messages[`REPLUGGED_PLUGIN_EMBED_INSTALLING_${data.type.toUpperCase()}`]
+              : Messages[`REPLUGGED_PLUGIN_EMBED_INSTALL_${data.type.toUpperCase()}`]}
         </Button>
       </div>
     </div>
