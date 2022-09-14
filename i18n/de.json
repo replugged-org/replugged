@@ -250,7 +250,7 @@
     "REPLUGGED_COMMAND_THEMES_DESC": "Druckt eine Liste der aktuell installierten Themes aus.",
     "REPLUGGED_COMMAND_UNINSTALL_MODAL_DESC": "Sind Sie sicher, dass Sie {id} deinstallieren und löschen möchten? Dies kann nicht rückgängig gemacht werden.",
     "REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE": "\"{id}\" wird sowohl von einem Plugin als auch von einem Theme verwendet. Sie müssen sie in den Einstellungen deaktivieren.",
-    "REPLUGGED_MODULE_MANAGER_FOUND_MISSING": "Gefunden {missingCount} fehlt {typt}!",
+    "REPLUGGED_MODULE_MANAGER_FOUND_MISSING": "Gefunden {missingCount} fehlt {type}!",
     "REPLUGGED_MODULE_MANAGER_CONFIRM_INSTALL": "Sind Sie sicher, dass Sie den {type} {name} von {url}{branch} installieren möchten?",
     "REPLUGGED_NOTICES_WELCOME_NEW_USER": "Willkommen! Replugged wurde erfolgreich in deinen Discord-Client integriert. Fühlen dich frei, unserem Discord-Server für Ankündigungen, Support und mehr beizutreten!",
     "REPLUGGED_SETTINGS_EXP": "Replugged Experiments",
@@ -291,5 +291,9 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Installierte Plugins und Themes",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Theme - {description}",
-    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Die URL für das Plugin {id} kann nicht gefunden werden."
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Die URL für das Plugin {id} kann nicht gefunden werden.",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Installiere Theme…",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Deinstalliere Theme",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Installiere Plugin…",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Deinstalliere Plugin"
 }

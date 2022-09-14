@@ -287,5 +287,13 @@
     "REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME_AT_REPO": "Det gick inte att hitta ett plugin eller tema repository at {repoURL}",
     "REPLUGGED_TOAST_NO_MANIFEST": "Denna {type} has no manifest, it may not be a {type}",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Discord Sökväg",
-    "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Komponentstapel:"
+    "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Komponentstapel:",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Avinstallera temat",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Installerar Plugin…",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Installerar Tema…",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Avinstallera Plugin",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_NUMBER": "Byggnummer:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_ID": "Bygg-ID:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_REVISION": "Revision:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_RELEASE_CHANNEL": "Upddateringsgren:"
 }

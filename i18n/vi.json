@@ -291,5 +291,9 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Chủ đề - {description}",
     "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Chia sẻ plugin hoặc chủ đề đã cài đặt",
-    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Không thể tìm đường dẫn cho plugin {id}"
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Không thể tìm đường dẫn cho plugin {id}",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Đang cài đặt Chủ đề…",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Gỡ cài đặt Chủ đề",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Đang cài đặt Plugin…",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Gỡ cài đặt Plugin"
 }
