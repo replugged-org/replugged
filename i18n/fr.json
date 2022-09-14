@@ -291,5 +291,9 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Thème - {description}",
     "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Partager un plugin ou thème installé",
-    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Impossible de trouver un lien pour le plugin {id}"
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Impossible de trouver un lien pour le plugin {id}",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Désinstaller le plugin",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Désinstaller le thème",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Installation du plugin…",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Installation du thème…"
 }

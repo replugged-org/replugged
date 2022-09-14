@@ -291,5 +291,9 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin – {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Motiv – {description}",
     "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Sdílej nainstalovaný plugin nebo motiv",
-    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Nebylo možné najít URL pro plugin {id}"
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Nebylo možné najít URL pro plugin {id}",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Odinstalovat plugin",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Odinstalovat motiv",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Instaluji plugin…",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Instaluji motiv…"
 }

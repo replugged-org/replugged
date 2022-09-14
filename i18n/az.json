@@ -186,5 +186,10 @@
     "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} Quraşdırılıb",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Yüklə {type}",
     "REPLUGGED_CANCEL": "Ləğv et",
-    "REPLUGGED_CONFIRM": "Təsdiq edin"
+    "REPLUGGED_CONFIRM": "Təsdiq edin",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plaqin - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
+    "REPLUGGED_COMMAND_HELP_LIST_TITLE": "Komutların Siyahısı",
+    "REPLUGGED_OK": "Tamam",
+    "REPLUGGED_COMMAND_HELP_COMMAND_NOT_FOUND": "`{commandName}`komutu tapılmadı."
 }
