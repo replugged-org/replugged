@@ -291,5 +291,9 @@
     "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "Ez egy Replugged sajátosság. Megkönnyíti a Pluginok és témák letöltését azzal, hogy rögtön a chatből telepítheted őket.\nCsak kattints a telepítés gombra a beágyazásban.",
     "REPLUGGED_PLUGIN_EMBED_ALREADY_INSTALLED_THEME": "A Téma már telepítve van!",
     "REPLUGGED_PLUGIN_EMBED_INSTALL_PLUGIN": "Plugin telepítése",
-    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Téma telepítése"
+    "REPLUGGED_PLUGIN_EMBED_INSTALL_THEME": "Téma telepítése",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Plugin telepítése…",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Téma telepítése…",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Plugin eltávolítása",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Téma eltávolítása"
 }
