@@ -188,7 +188,7 @@
     "REPLUGGED_ERROR_PLUGIN_THEME_IS_IN_USE": "\"{id}\" hem bir eklenti hem de tema tarafından kullanılıyor. Ayarlardan devre dışı bırakmanız gerekecek.",
     "REPLUGGED_MODULE_MANAGER_NO_MISSING": "Eksik {type} bulunamadı - daha sonra tekrar dene!",
     "REPLUGGED_NOTICES_WELCOME_NEW_USER": "Hoş geldin! Replugged, Discord istemcine başarıyla eklendi. Duyurular, destek ve daha fazlası için Discord sunucumuza katılabilirsin!",
-    "REPLUGGED_QUICKCSS_RESIZE_NOTICE": "Pşşt! İstersen Hızlı CSS editörünü yeniden boyutlandırabilirsin! Düzenleyicinin alt kısmını tut ve istediğin gibi yeniden boyutlandır.",
+    "REPLUGGED_QUICKCSS_RESIZE_NOTICE": "Pşşt! İstersen Quick CSS editörünü yeniden boyutlandırabilirsin! Düzenleyicinin alt kısmını tut ve istediğin gibi yeniden boyutlandır.",
     "REPLUGGED_TOAST_INVALID_INVITE_CONTENT": "Bu Discord daveti artık mevcut değil veya geçersiz. Yeni bir tane almak için eklenti geliştiricisiyle iletişime geçin.",
     "REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_SYSTEM_DISCORD": "Sistem / Discord",
     "REPLUGGED_UPDATES_OPTS_DEBUG_APP_VERSION": "Uygulama Sürümü:",
