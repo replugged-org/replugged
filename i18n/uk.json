@@ -291,5 +291,9 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Тема - {description}",
     "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Поділитися установленим плагіном чи темою",
     "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} використовується і плагіном, і темою. Вам знодобиться уточнити з аргументами --theme або --plugin.",
-    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Не вдалося знайти посилання для плагіну {id}"
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Не вдалося знайти посилання для плагіну {id}",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Встановлення плагіна…",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Bстановлення теми…",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Деінсталювати плагін",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Деінсталювати тему"
 }
