@@ -222,5 +222,10 @@
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "A aparut o eroare în timp ce se executa comanda:",
     "REPLUGGED_ERROR_CHECK_CONSOLE": "Verifică consola pentru mai multe detalii.",
     "REPLUGGED_INSTALLED_PLUGIN_THEME": "{name} instalat",
-    "REPLUGGED_INSTALL_MODAL_HEADER": "Instalează {type}"
+    "REPLUGGED_INSTALL_MODAL_HEADER": "Instalează {type}",
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Nu a putut fi găsit un url pentru plugin-ul {id}",
+    "REPLUGGED_INSTALL_MODAL_DESC": "Ești sigur că vrei să instalezi {type} {name}?",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Plugin-uri și teme instalate",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Temă - {description}"
 }
