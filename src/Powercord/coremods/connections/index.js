@@ -125,9 +125,9 @@ async function lazyPatchProfileModal (id, filter, patch) {
 async function patchUserConnections () {
   // User Profile Modal -> User Info section's list of connections
   lazyPatchProfileModal('Passport',
-    m => m?.ConnectedUserAccounts,
+    m => m?.ConnectedUserAccount,
     Passport => {
-      inject('pc-connections-profile', Passport, 'ConnectedUserAccounts', ([ props ]) => {
+      inject('pc-connections-profile', Passport, 'ConnectedUserAccount', ([ props ]) => {
         for (const { type } of powercord.api.connections.connections) {
           if (props.connectedAccounts.some(a => a.type === type)) {
             continue;
