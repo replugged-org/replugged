@@ -191,5 +191,14 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
     "REPLUGGED_COMMAND_HELP_LIST_TITLE": "Komutların Siyahısı",
     "REPLUGGED_OK": "Tamam",
-    "REPLUGGED_COMMAND_HELP_COMMAND_NOT_FOUND": "`{commandName}`komutu tapılmadı."
+    "REPLUGGED_COMMAND_HELP_COMMAND_NOT_FOUND": "`{commandName}`komutu tapılmadı.",
+    "REPLUGGED_COMMAND_ENABLE_DESC": "Bir Plaqin/Tema'ı açın",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Qurulu Plaqinler və Temalar",
+    "REPLUGGED_COMMAND_HELP_COMMAND_TITLE": "{commandName} üçün kömək",
+    "REPLUGGED_COMMAND_HELP_FIELD_USAGE": "İstifadəsi",
+    "REPLUGGED_COMMAND_INSTALL_DESC": "Bir Plaqin və ya Tema qurun.",
+    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Qurulu {type} ({count}) Siyahısı",
+    "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" deaktiv edildi!",
+    "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" açıldı!",
+    "REPLUGGED_COMMAND_DISABLE_DESC": "Bir plaqin/tema deaktiv edin"
 }
