@@ -16,7 +16,7 @@ module.exports = () => {
     'pc-lmgtfy.json': 'lmgtfy.json',
     'pc-mock.json': 'mock.json',
     'pc-tags.json': 'tags.json',
-    'pc-spotify.json': 'spotify-modal.json',
+    'pc-spotify.json': 'spotify-modal.json'
   };
 
   for (const setting in files) {

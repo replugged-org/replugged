@@ -2,7 +2,7 @@ const { React, getModule, i18n: { Messages } } = require('powercord/webpack');
 const { Button, Spinner } = require('powercord/components');
 const { openURL } = getModule([ 'openURL' ], false);
 // @todo: merge with Product/
-module.exports = ({ id, installing, onUninstall }) =>
+module.exports = ({ installing, onUninstall }) =>
 
   <div className='btn-group-l'>
     {<Button
