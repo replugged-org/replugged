@@ -3,8 +3,8 @@ Maintained fork of [powercord](https://github.com/powercord-org/powercord) - a l
 
 <br><hr>
 
-## Installation/Uninstallation
-See the [installation page of the Replugged website](https://replugged.dev/installation).
+## Installation
+See the [installation page of the Replugged website](https://replugged.dev/installation). 
 
 ### Plugins/Themes
 Plugins and themes can be found in our [official Discord server](https://discord.gg/replugged) in #plugin-links and #theme-links, respectively. 
