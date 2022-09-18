@@ -10,7 +10,7 @@ See the [installation page of the Replugged website](https://replugged.dev/insta
 Plugins and themes can be found in our [official Discord server](https://discord.gg/replugged) in #plugin-links and #theme-links, respectively. 
 [![Replugged Discord Server](https://discordapp.com/api/guilds/1000926524452647132/widget.png?style=banner2)](https://discord.gg/replugged)
 
-If the plugin/theme you want isn't in the Replugged server, check out the old archived [Powercord server](https://discord.gg/powercord). Note that some of the plugins may be outdated or abandoned. 
+If the plugin/theme you want isn't in the Replugged server, check out the old [Powercord server](https://discord.gg/powercord). Note that some of the plugins may be outdated or abandoned. 
 
 #### How to install plugins/themes
 Join our [official Discord server](https://discord.gg/replugged) and read the pinned messages. Or go to the GitHub repository of the plugin or theme you want to install, where they might have installation instructions. Most likely they'll have a link that installs the plugin/theme automatically. The plugin and theme channels in the Discord server also have install buttons which you can conveniently click!
