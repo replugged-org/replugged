@@ -2,7 +2,6 @@ const { existsSync, renameSync, unlinkSync } = require('fs');
 const path = require('path');
 
 module.exports = () => {
-
   const settingsPath = `${__dirname}/../../../settings`;
   const files = {
     'pc-general.json': 'coremods/general.json',
@@ -17,13 +16,13 @@ module.exports = () => {
     'pc-lmgtfy.json': 'lmgtfy.json',
     'pc-mock.json': 'mock.json',
     'pc-tags.json': 'tags.json',
-    'pc-spotify.json': 'spotify-modal.json'
+    'pc-spotify.json': 'spotify-modal.json',
   };
 
   for (const setting in files) {
     const source = path.resolve(`${settingsPath}/${setting}`);
     const target = path.resolve(`${settingsPath}/${files[setting]}`);
-  
+
     if (existsSync(source)) {
       if (!existsSync(target)) {
         renameSync(source, target);
