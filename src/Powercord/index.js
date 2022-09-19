@@ -116,7 +116,7 @@ class Powercord extends Updatable {
   async startup () {
     // APIs
     await this.apiManager.startAPIs();
-    this.settings = powercord.api.settings.buildCategoryObject('coremods/general');
+    this.settings = powercord.api.settings.buildCategoryObject('pc-general');
     this.emit('settingsReady');
 
     // Migrations

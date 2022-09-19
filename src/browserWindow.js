@@ -5,7 +5,7 @@ let settings = {};
 let transparency = false;
 let ewp = false;
 try {
-  settings = require(join(__dirname, '../settings/coremods/general.json'));
+  settings = require(join(__dirname, '../settings/core/general.json'));
   transparency = settings.transparentWindow;
   ewp = settings.experimentalWebPlatform;
 } catch (e) {}

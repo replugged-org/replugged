@@ -13,7 +13,7 @@
     "repair": "npm run unplug && git pull && npm run plug",
     "inject": "node injectors/index.js inject --no-exit-codes",
     "uninject": "node injectors/index.js uninject --no-exit-codes",
-    "remigrate": "rm -rf settings/coremods/migrations.json"
+    "remigrate": "rm -rf settings/core/migrations.json"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",

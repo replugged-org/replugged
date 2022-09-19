@@ -6,7 +6,7 @@ const { React, getModule, i18n: { Messages } } = require('powercord/webpack');
 const { PopoutWindow } = require('powercord/components');
 const { inject, uninject } = require('powercord/injector');
 const { findInReactTree, forceUpdateElement } = require('powercord/util');
-const { SpecialChannels: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES }, WEBSITE } = require('powercord/constants');
+const { CSS_FILE, SpecialChannels: { CSS_SNIPPETS, STORE_PLUGINS, STORE_THEMES }, WEBSITE } = require('powercord/constants');
 const { join } = require('path');
 const commands = require('./commands');
 const deeplinks = require('./deeplinks');
@@ -23,7 +23,7 @@ const { injectContextMenu } = require('powercord/util');
 const Menu = getModule([ 'MenuItem' ], false);
 
 let _quickCSS = '';
-const _quickCSSFile = join(__dirname, '..', '..', '..', '..', 'settings', 'quickcss', 'main.css');
+const _quickCSSFile = CSS_FILE;
 let _quickCSSElement;
 
 async function _installerInjectCtxMenu () {
@@ -194,7 +194,7 @@ async function _loadQuickCSS () {
   _quickCSSElement.id = 'powercord-quickcss';
   document.head.appendChild(_quickCSSElement);
   if (existsSync(_quickCSSFile)) {
-    const settings = powercord.api.settings.buildCategoryObject('coremods/moduleManager');
+    const settings = powercord.api.settings.buildCategoryObject('pc-moduleManager');
     _quickCSS = await readFile(_quickCSSFile, 'utf8');
     powercord.api.moduleManager._quickCSS = _quickCSS;
     if (settings.get('qcss-enabled', true)) {

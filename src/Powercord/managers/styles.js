@@ -43,7 +43,7 @@ module.exports = class StyleManager {
       if (!this.__settings) {
         this.__settings = {};
         try {
-          this.__settings = require(join(SETTINGS_FOLDER, 'coremods', 'general.json'));
+          this.__settings = require(join(SETTINGS_FOLDER, 'core', 'general.json'));
         } catch (e) {}
         return this.__settings.disabledThemes || [];
       }

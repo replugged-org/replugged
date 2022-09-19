@@ -1,13 +1,13 @@
 const { existsSync, renameSync, unlinkSync } = require('fs');
+const { SETTINGS_FOLDER } = require('powercord/constants');
 const path = require('path');
 
 module.exports = () => {
-  const settingsPath = `${__dirname}/../../../settings`;
   const files = {
-    'pc-general.json': 'coremods/general.json',
-    'pc-moduleManager.json': 'coremods/moduleManager.json',
-    'pc-updater.json': 'coremods/updater.json',
-    'rp-migrations.json': 'coremods/migrations.json',
+    'pc-general.json': 'core/general.json',
+    'pc-moduleManager.json': 'core/moduleManager.json',
+    'pc-updater.json': 'core/updater.json',
+    'rp-migrations.json': 'core/migrations.json',
     'pc-clickableEdits.json': 'clickableEdits.json',
     'pc-emojiUtility.json': 'emojiUtility.json',
     'pc-heygirl.json': 'heygirl.json',
@@ -20,8 +20,8 @@ module.exports = () => {
   };
 
   for (const setting in files) {
-    const source = path.resolve(`${settingsPath}/${setting}`);
-    const target = path.resolve(`${settingsPath}/${files[setting]}`);
+    const source = path.resolve(`${SETTINGS_FOLDER}/${setting}`);
+    const target = path.resolve(`${SETTINGS_FOLDER}/${files[setting]}`);
 
     if (existsSync(source)) {
       if (!existsSync(target)) {
