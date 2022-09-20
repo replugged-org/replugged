@@ -168,7 +168,7 @@
     "REPLUGGED_UPDATES_UPSTREAM_OFFICIAL": "Virallinen",
     "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged on ajan tasalla.",
     "REPLUGGED_UPDATE_PASSPHRASE": "Päivitä tunnuslause",
-    "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Tätä tunnuslausetta käytetään sinun datasi salaamiseen ennen kuin se lähetetään Repluggedin palvelimille. On suositeltavaa asettaa yksi, mutta voit jättää tämän tyhjäksi, lähettääksesi datasi salaamattomana.",
+    "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Tätä tunnuslausetta käytetään datasi salaamiseen ennen kuin se lähetetään Repluggedin palvelimille. On suositeltavaa asettaa yksi, mutta voit jättää tämän tyhjäksi, lähettääksesi datasi salaamattomana.",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Jos jo käytät synkronointia muilla laitteilla, aseta sama tunnuslause, jota käytit. **Toisen tunnuslauseen käyttö kirjoittaa vanhan datan päälle, joten ole varovainen**.",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Tarkista manifesti-versio",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged näyttää päivityksiä vain jos manifesti-versio on muuttunut.",
@@ -223,7 +223,7 @@
     "REPLUGGED_COMMAND_HELP_COMMAND_TITLE": "Apua komennolle {commandName}",
     "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" poistettu käytöstä!",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Tulostaa luettelon tällä hetkellä asennetuista plugineista.",
-    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Luettelo asennetuista {type} ({count}",
+    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Luettelo asennetuista {type} ({count})",
     "REPLUGGED_COMMAND_RELOAD_DESC": "Lataa plugin/teema uudelleen",
     "REPLUGGED_INSTALL_MODAL_HEADER": "Asenna {type}",
     "REPLUGGED_MODULE_MANAGER_INSTALL_LABEL": "Asenna {type}",
@@ -291,5 +291,9 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM": "Upstreami:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_LABS": "Laboratoriot:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC": "Asetusten synkronointi:",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_LOCALE": "Lokalisaatio:"
+    "REPLUGGED_UPDATES_OPTS_DEBUG_LOCALE": "Lokalisaatio:",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Asennetaan pluginia…",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Asennetaan teemaa…",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Poista pluginin asennus",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Poista teeman asennus"
 }
