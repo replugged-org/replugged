@@ -153,7 +153,7 @@
     "REPLUGGED_UPDATES_REVISION": "リビジョン:",
     "REPLUGGED_UPDATES_SKIP": "アップデートをスキップ",
     "REPLUGGED_UPDATES_SKIP_MODAL": "本当にこのアップデートをスキップしますか？Repluggedは新しいバージョンがリリースされるのを待ってから、再度アップデートを行います。",
-    "REPLUGGED_UPDATES_SKIP_MODAL_TITLE": "アップデートをスキップ",
+    "REPLUGGED_UPDATES_SKIP_MODAL_TITLE": "アップデートをスキップする",
     "REPLUGGED_UPDATES_TOAST_AVAILABLE_DESC": "今すぐアップデートする場合は「今すぐアップデート」、詳細を確認する場合は「アップデーターを開く」をクリックしてください。",
     "REPLUGGED_UPDATES_TOAST_AVAILABLE_HEADER": "アップデートがあります！",
     "REPLUGGED_UPDATES_TOAST_FAILED": "一部のアップデートのインストールに失敗しました…",
