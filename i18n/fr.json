@@ -159,7 +159,7 @@
     "REPLUGGED_UPDATES_UPSTREAM": "Upstream :",
     "REPLUGGED_UPDATES_UPSTREAM_OFFICIAL": "Officiel",
     "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged est à jour.",
-    "REPLUGGED_UPDATE_PASSPHRASE": "Mettre à jour la phrase secrète",
+    "REPLUGGED_UPDATE_PASSPHRASE": "Mettre à jour le mot de passe",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL1": "Ce mot de passe sera utilisé afin de chiffrer vos données avant de les envoyer sur le serveur de Replugged. Il est recommandé d'en définir une, mais vous pouvez simplement laisser celle-ci vide pour envoyer vos données sans chiffrement.",
     "REPLUGGED_UPDATE_PASSPHRASE_MODAL2": "Si vous utilisez déjà la synchronisation sur d'autre appareils, utilisez le même mot de passe que pour ceux-ci. **Utilisez un mot de passe différent va écraser les anciennes données, donc faites attention**.",
     "REPLUGGED_BADGES_SUPPORT": "Support Replugged",
