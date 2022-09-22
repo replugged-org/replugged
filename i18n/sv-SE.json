@@ -151,7 +151,7 @@
     "REPLUGGED_QUICKCSS_SETTINGS_LINES": "Visa radnummer",
     "REPLUGGED_QUICKCSS_SETTINGS_MATCH_BRACKETS": "Matcha parenteser",
     "REPLUGGED_QUICKCSS_SETTINGS_MATCH_BRACKETS_DESC": "Markerar matchande parenteser när markören är bredvid dem.",
-    "REPLUGGED_QUICKCSS_SETTINGS_TABS": "Använd tab för indrag",
+    "REPLUGGED_QUICKCSS_SETTINGS_TABS": "Använd tabb för indrag",
     "REPLUGGED_QUICKCSS_SETTINGS_WRAP": "Kapa långa linjer",
     "REPLUGGED_SETTINGS_DEBUG_LOGS": "Felsökningsloggar",
     "REPLUGGED_SETTINGS_DEBUG_LOGS_DESC": "Sparar konsolens innehåll till en fil. Användbar för felsökning om Discord kraschar oväntat.",
