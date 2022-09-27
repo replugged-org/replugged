@@ -291,5 +291,9 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Плагин - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Тема - {description}",
     "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "Поделится установленным плагином или темой",
-    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Не удалось найти URL для плагина {id}"
+    "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Не удалось найти URL для плагина {id}",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Установка плагина…",
+    "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Установка темы…",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Удалить плагин",
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Удалить тему"
 }
