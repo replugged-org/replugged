@@ -25,7 +25,7 @@
     "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} ghi đè vào những bản dịch của Discord",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: Đã dịch được {translated,number}%",
     "REPLUGGED_LINKING_ERRORED": "Đã xảy ra lỗi. Hãy kiểm tra Console để biết thêm thông tin và hãy [báo lỗi]({newIssueUrl}) nếu nó tiếp tục xảy ra.",
-    "REPLUGGED_LINKING_TIMED_OUT": "Đã hết thời gian chờ kết nối. Bạn có thể thử lại.",
+    "REPLUGGED_LINKING_TIMED_OUT": "Đã hết thời gian chờ kết nối :(. Bạn có muốn thử lại?",
     "REPLUGGED_LINKING_UNLINKED": "Bạn chưa liên kết tài khoản của mình.",
     "REPLUGGED_LINK_NOW": "Liên kết",
     "REPLUGGED_PASSPHRASE": "Mật khẩu",
