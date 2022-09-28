@@ -1,0 +1,35 @@
+{
+  "name": "replugged",
+  "version": "4.0.0",
+  "description": "A lightweight @discord client mod focused on simplicity and performance",
+  "license": "MIT",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "build": "parcel build"
+  },
+  "repository": "https://github.com/replugged-org/replugged.git",
+  "author": "Replugged",
+  "bugs": {
+    "url": "https://github.com/replugged-org/replugged/issues"
+  },
+  "devDependencies": {
+    "parcel": "^2.7.0"
+  },
+  "targets": {
+    "main": {
+      "context": "electron-main",
+      "source": "src/main/index.js",
+      "includeNodeModules": true
+    },
+    "preload": {
+      "context": "electron-renderer",
+      "source": "src/preload.js",
+      "includeNodeModules": true
+    },
+    "renderer": {
+      "context": "browser",
+      "source": "src/renderer/index.js",
+      "includeNodeModules": true
+    }
+  }
+}
