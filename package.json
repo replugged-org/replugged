@@ -5,7 +5,9 @@
   "license": "MIT",
   "main": "dist/main/index.js",
   "scripts": {
-    "build": "parcel build"
+    "build": "parcel build",
+    "watch": "parcel watch",
+    "check": "tsc --noEmit"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",
@@ -13,22 +15,29 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
-    "parcel": "^2.7.0"
+    "@types/node": "^18.7.23",
+    "electron": "13",
+    "parcel": "^2.7.0",
+    "typescript": "^4.8.4"
   },
   "targets": {
     "main": {
       "context": "electron-main",
-      "source": "src/main/index.js",
-      "includeNodeModules": true
+      "source": "src/main/index.ts",
+      "includeNodeModules": {
+        "electron": false
+      }
     },
     "preload": {
       "context": "electron-renderer",
-      "source": "src/preload.js",
-      "includeNodeModules": true
+      "source": "src/preload.ts",
+      "includeNodeModules": {
+        "electron": false
+      }
     },
     "renderer": {
       "context": "browser",
-      "source": "src/renderer/index.js",
+      "source": "src/renderer/index.ts",
       "includeNodeModules": true
     }
   }

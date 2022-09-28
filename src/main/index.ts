@@ -1,30 +1,42 @@
-const { dirname, join } = require("path");
+import { dirname, join } from "path";
 
-const electron = require("electron");
+import electron from "electron";
+import type { RepluggedWebContents } from "../types";
 
 const electronPath = require.resolve("electron");
-const discordPath = join(dirname(require.main.filename), "..", "app.asar");
+const discordPath = join(dirname(require.main!.filename), "..", "app.asar");
 const discordPackage = require(join(discordPath, "package.json"));
 const discordMain = join(discordPath, discordPackage.main);
-require.main.filename = discordMain;
+require.main!.filename = discordMain;
 
 Object.defineProperty(global, "appSettings", {
   set: (v /*: typeof global.appSettings*/) => {
-      v.set("DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING", true);
-      // @ts-ignore
-      delete global.appSettings;
-      global.appSettings = v;
+    v.set(
+      "DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING",
+      true
+    );
+    // @ts-ignore
+    delete global.appSettings;
+    // @ts-ignore
+    global.appSettings = v;
   },
-  configurable: true
+  configurable: true,
 });
 
 // This class has to be named "BrowserWindow" exactly
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you Ven for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  constructor(opts) {
+  constructor(
+    opts: Electron.BrowserWindowConstructorOptions & {
+      webContents: Electron.WebContents;
+      webPreferences: {
+        nativeWindowOpen: boolean;
+      };
+    }
+  ) {
     console.log(opts);
-    const originalPreload = opts.webPreferences.preload;
+    const originalPreload = opts.webPreferences.preload!;
 
     if (opts.webContents) {
       // General purpose popouts used by Discord
@@ -33,13 +45,13 @@ class BrowserWindow extends electron.BrowserWindow {
       //opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
     } else if (opts.webPreferences && opts.webPreferences.offscreen) {
       // Overlay
-//      originalPreload = opts.webPreferences.preload;
+      //      originalPreload = opts.webPreferences.preload;
       // opts.webPreferences.preload = join(__dirname, './preload.js');
     } else if (opts.webPreferences && opts.webPreferences.preload) {
       //originalPreload = opts.webPreferences.preload;
       if (opts.webPreferences.nativeWindowOpen) {
         // Discord Client
-        opts.webPreferences.preload = join(__dirname, "../preload.js");
+        opts.webPreferences.preload = join(__dirname, "../preload/index.js");
         //opts.webPreferences.contextIsolation = false; // shrug
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
@@ -48,12 +60,13 @@ class BrowserWindow extends electron.BrowserWindow {
     }
 
     super(opts);
-    this.webContents.originalPreload = originalPreload;
+    (this.webContents as RepluggedWebContents).originalPreload =
+      originalPreload;
   }
 }
 
-const electronExports = new Proxy(electron, {
-  get (target, prop) {
+const electronExports: typeof electron = new Proxy(electron, {
+  get(target, prop) {
     switch (prop) {
       case "BrowserWindow":
         return BrowserWindow;
@@ -63,27 +76,32 @@ const electronExports = new Proxy(electron, {
       case "__esModule":
         return true;
       default:
-        return target[prop];
+        return target[prop as keyof typeof electron];
     }
-  }
+  },
 });
 
-delete require.cache[electronPath].exports;
-require.cache[electronPath].exports = electronExports;
+delete require.cache[electronPath]!.exports;
+require.cache[electronPath]!.exports = electronExports;
 
+// @ts-ignore
 electron.app.setAppPath(discordPath);
 electron.app.name = discordPackage.name;
 
 // Copied from old codebase
 electron.app.once("ready", () => {
   // @todo: Whitelist a few domains instead of removing CSP altogether; See #386
-  electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
-    Object.keys(responseHeaders)
-      .filter(k => (/^content-security-policy/i).test(k))
-      .map(k => (delete responseHeaders[k]));
+  electron.session.defaultSession.webRequest.onHeadersReceived(
+    ({ responseHeaders }, done) => {
+      if (!responseHeaders) return done({});
 
-    done({ responseHeaders });
-  });
+      Object.keys(responseHeaders)
+        .filter((k) => /^content-security-policy/i.test(k))
+        .map((k) => delete responseHeaders[k]);
+
+      done({ responseHeaders });
+    }
+  );
 });
 
 require("./ipc");
