@@ -1,13 +1,17 @@
+import { createRequire } from 'module';
 import { dirname, join } from 'path';
 
 import electron from 'electron';
 import type { RepluggedWebContents } from '../types';
 
-const electronPath = require.resolve('electron');
-const discordPath = join(dirname(require.main!.filename), '..', 'app.asar');
+const nodeRequire = createRequire(__dirname);
+
+const electronPath = nodeRequire.resolve('electron');
+const discordPath = join(dirname(nodeRequire.main!.filename), '..', 'app.asar');
 const discordPackage = require(join(discordPath, 'package.json'));
 const discordMain = join(discordPath, discordPackage.main);
-require.main!.filename = discordMain;
+nodeRequire.main!.filename = discordMain;
+
 
 Object.defineProperty(global, 'appSettings', {
   set: (v /* : typeof global.appSettings*/) => {
@@ -65,6 +69,8 @@ class BrowserWindow extends electron.BrowserWindow {
   }
 }
 
+Object.defineProperty(BrowserWindow, "name", { value: "BrowserWindow", configurable: true });
+
 const electronExports: typeof electron = new Proxy(electron, {
   get (target, prop) {
     switch (prop) {
@@ -81,8 +87,8 @@ const electronExports: typeof electron = new Proxy(electron, {
   }
 });
 
-delete require.cache[electronPath]!.exports;
-require.cache[electronPath]!.exports = electronExports;
+delete nodeRequire.cache[electronPath]!.exports;
+nodeRequire.cache[electronPath]!.exports = electronExports;
 
 // @ts-ignore
 electron.app.setAppPath(discordPath);
