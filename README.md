@@ -1,5 +1,7 @@
 # Replugged
-Maintained fork of [powercord](https://github.com/powercord-org/powercord) - a lightweight @discord client mod focused on simplicity and performance.
+Originally based off of [powercord](https://github.com/powercord-org/powercord) - a lightweight @discord client mod focused on simplicity and performance.
+
+rewritten to become modern Replugged
 
 # Installation/Uninstallation
 See the [installation page of the Replugged Wiki](https://github.com/replugged-org/replugged/wiki/Installation).
