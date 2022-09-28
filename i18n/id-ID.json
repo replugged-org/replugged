@@ -182,5 +182,12 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Plugin dan Tema yang Terpasang",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
-    "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id} diaktifkan!"
+    "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id} diaktifkan!",
+    "REPLUGGED_COMMAND_HELP_COMMAND_NOT_FOUND": "Perintah `{commandName}` tidak ditemukan.",
+    "REPLUGGED_COMMAND_HELP_LIST_TITLE": "Daftar perintah",
+    "REPLUGGED_COMMAND_HELP_LIST_FOOTER": "Jalankan {prefix}help <'Nama Perintah'> untuk informasi lebih lanjut mengenai perintah tertentu.",
+    "REPLUGGED_COMMAND_HELP_COMMAND_TITLE": "Bantuan untuk {commandName}",
+    "REPLUGGED_COMMAND_HELP_FIELD_USAGE": "Penggunaan",
+    "REPLUGGED_COMMAND_HELP_COMMAND_FOOTER": "Diwariskan dari \"{commandOrigin}\".",
+    "REPLUGGED_COMMAND_INSTALL_DESC": "Pasang pengaya atau tema."
 }
