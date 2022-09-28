@@ -1,12 +1,12 @@
 export const filters = {
   byProps: () => {},
-  byString: () => {},
+  byString: () => {}
 };
 
-export function getModule(
+export function getModule (
   filter: string[] | ((defaultExport: any) => boolean)
 ) {}
 
-export function getByProps(...props: string[]) {}
+export function getByProps (...props: string[]) {}
 
-export function getByString(pattern: string) {}
+export function getByString (pattern: string) {}

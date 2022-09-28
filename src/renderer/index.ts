@@ -1,2 +1,2 @@
-declare var replugged: {};
+declare let replugged: {};
 window.replugged = {};

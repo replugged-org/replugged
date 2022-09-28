@@ -1,7 +1,7 @@
-export function before() {}
+export function before () {}
 
-export function instead() {}
+export function instead () {}
 
-export function after() {}
+export function after () {}
 
-export function uninject() {}
+export function uninject () {}

@@ -1,18 +1,18 @@
-import { dirname, join } from "path";
+import { dirname, join } from 'path';
 
-import electron from "electron";
-import type { RepluggedWebContents } from "../types";
+import electron from 'electron';
+import type { RepluggedWebContents } from '../types';
 
-const electronPath = require.resolve("electron");
-const discordPath = join(dirname(require.main!.filename), "..", "app.asar");
-const discordPackage = require(join(discordPath, "package.json"));
+const electronPath = require.resolve('electron');
+const discordPath = join(dirname(require.main!.filename), '..', 'app.asar');
+const discordPackage = require(join(discordPath, 'package.json'));
 const discordMain = join(discordPath, discordPackage.main);
 require.main!.filename = discordMain;
 
-Object.defineProperty(global, "appSettings", {
-  set: (v /*: typeof global.appSettings*/) => {
+Object.defineProperty(global, 'appSettings', {
+  set: (v /* : typeof global.appSettings*/) => {
     v.set(
-      "DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING",
+      'DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING',
       true
     );
     // @ts-ignore
@@ -20,14 +20,14 @@ Object.defineProperty(global, "appSettings", {
     // @ts-ignore
     global.appSettings = v;
   },
-  configurable: true,
+  configurable: true
 });
 
 // This class has to be named "BrowserWindow" exactly
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you Ven for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  constructor(
+  constructor (
     opts: Electron.BrowserWindowConstructorOptions & {
       webContents: Electron.WebContents;
       webPreferences: {
@@ -42,20 +42,20 @@ class BrowserWindow extends electron.BrowserWindow {
       // General purpose popouts used by Discord
     } else if (opts.webPreferences && opts.webPreferences.nodeIntegration) {
       // Splash Screen
-      //opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
+      // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
     } else if (opts.webPreferences && opts.webPreferences.offscreen) {
       // Overlay
       //      originalPreload = opts.webPreferences.preload;
       // opts.webPreferences.preload = join(__dirname, './preload.js');
     } else if (opts.webPreferences && opts.webPreferences.preload) {
-      //originalPreload = opts.webPreferences.preload;
+      // originalPreload = opts.webPreferences.preload;
       if (opts.webPreferences.nativeWindowOpen) {
         // Discord Client
-        opts.webPreferences.preload = join(__dirname, "../preload/index.js");
-        //opts.webPreferences.contextIsolation = false; // shrug
+        opts.webPreferences.preload = join(__dirname, '../preload/index.js');
+        // opts.webPreferences.contextIsolation = false; // shrug
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        //opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
+        // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
       }
     }
 
@@ -66,19 +66,19 @@ class BrowserWindow extends electron.BrowserWindow {
 }
 
 const electronExports: typeof electron = new Proxy(electron, {
-  get(target, prop) {
+  get (target, prop) {
     switch (prop) {
-      case "BrowserWindow":
+      case 'BrowserWindow':
         return BrowserWindow;
       // Trick Babel's polyfill thing into not touching Electron's exported object with its logic
-      case "default":
+      case 'default':
         return electronExports;
-      case "__esModule":
+      case '__esModule':
         return true;
       default:
         return target[prop as keyof typeof electron];
     }
-  },
+  }
 });
 
 delete require.cache[electronPath]!.exports;
@@ -89,14 +89,16 @@ electron.app.setAppPath(discordPath);
 electron.app.name = discordPackage.name;
 
 // Copied from old codebase
-electron.app.once("ready", () => {
+electron.app.once('ready', () => {
   // @todo: Whitelist a few domains instead of removing CSP altogether; See #386
   electron.session.defaultSession.webRequest.onHeadersReceived(
     ({ responseHeaders }, done) => {
-      if (!responseHeaders) return done({});
+      if (!responseHeaders) {
+        return done({});
+      }
 
       Object.keys(responseHeaders)
-        .filter((k) => /^content-security-policy/i.test(k))
+        .filter((k) => (/^content-security-policy/i).test(k))
         .map((k) => delete responseHeaders[k]);
 
       done({ responseHeaders });
@@ -104,6 +106,6 @@ electron.app.once("ready", () => {
   );
 });
 
-require("./ipc");
+require('./ipc');
 
-require("module")._load(discordMain);
+require('module')._load(discordMain);
