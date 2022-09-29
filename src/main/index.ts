@@ -1,16 +1,13 @@
-import { createRequire } from 'module';
 import { dirname, join } from 'path';
 
 import electron from 'electron';
 import type { RepluggedWebContents } from '../types';
 
-const nodeRequire = createRequire(__dirname);
-
-const electronPath = nodeRequire.resolve('electron');
-const discordPath = join(dirname(nodeRequire.main!.filename), '..', 'app.asar');
+const electronPath = require.resolve('electron');
+const discordPath = join(dirname(require.main!.filename), '..', 'app.asar');
 const discordPackage = require(join(discordPath, 'package.json'));
 const discordMain = join(discordPath, discordPackage.main);
-nodeRequire.main!.filename = discordMain;
+require.main!.filename = discordMain;
 
 
 Object.defineProperty(global, 'appSettings', {
@@ -55,7 +52,7 @@ class BrowserWindow extends electron.BrowserWindow {
       // originalPreload = opts.webPreferences.preload;
       if (opts.webPreferences.nativeWindowOpen) {
         // Discord Client
-        opts.webPreferences.preload = join(__dirname, '../preload/index.js');
+        opts.webPreferences.preload = join(__dirname, './preload.js');
         // opts.webPreferences.contextIsolation = false; // shrug
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
@@ -87,8 +84,8 @@ const electronExports: typeof electron = new Proxy(electron, {
   }
 });
 
-delete nodeRequire.cache[electronPath]!.exports;
-nodeRequire.cache[electronPath]!.exports = electronExports;
+delete require.cache[electronPath]!.exports;
+require.cache[electronPath]!.exports = electronExports;
 
 // @ts-ignore
 electron.app.setAppPath(discordPath);
