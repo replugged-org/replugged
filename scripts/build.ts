@@ -12,16 +12,8 @@ const common: esbuild.BuildOptions = {
   minify: true,
   sourcemap: true,
   format: 'cjs' as esbuild.Format,
-  watch: watch &&
-    {
-      onRebuild (error) {
-        if (error) {
-          console.error('Build failed :(');
-        } else {
-          console.log('Build succeeded!');
-        }
-      }
-    }
+  logLevel: 'info',
+  watch
 };
 
 Promise.all([
@@ -51,11 +43,4 @@ Promise.all([
     target: `chrome${CHROME_VERSION}`,
     outfile: 'dist/renderer.js'
   })
-]).then(() => {
-  if (watch) {
-    console.log('Watching for changes...');
-  } else {
-    console.log('Done!');
-  }
-});
-
+]);
