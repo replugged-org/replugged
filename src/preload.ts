@@ -58,10 +58,10 @@ const RepluggedNative = {
   },
 
   settings: {
-    get: (key: string) => {},
-    set: (key: string, value: any) => {},
-    has: (key: string) => {},
-    delete: (key: string) => {}
+    get: (key: string) => ipcRenderer.invoke('REPLUGGED_GET_SETTING', key),
+    set: (key: string, value: any) => ipcRenderer.send('REPLUGGED_SET_SETTING', key, value), // invoke or send?
+    has: (key: string) => ipcRenderer.invoke('REPLUGGED_HAS_SETTING', key),
+    delete: (key: string) => ipcRenderer.send('REPLUGGED_DELETE_SETTING', key)
   },
 
   openDevTools: () => {}, // TODO
