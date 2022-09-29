@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer, webFrame } from 'electron';
+import electron from 'electron';
 
 const themesMap = new Map();
 let quickCSSKey: string;
@@ -67,7 +68,8 @@ const RepluggedNative = {
   closeDevTools: () => {}, // TODO
 
   clearCache: () => {}, // maybe?
-  openBrowserWindow: (opts: Electron.BrowserWindowConstructorOptions) => {} // later
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => {} // later
 };
 
 contextBridge.exposeInMainWorld('RepluggedNative', RepluggedNative);

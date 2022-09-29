@@ -128,6 +128,7 @@
 		"callback-return": [ "error" ],
 		"handle-callback-err": [ "error" ],
 		"no-buffer-constructor": [ "error" ],
+    "@typescript-eslint/no-var-requires": [ "off" ],
 		"no-mixed-requires": [ "error" ],
 		"array-bracket-newline": [ "error", "consistent" ],
 		"array-bracket-spacing": [ "error", "always" ],

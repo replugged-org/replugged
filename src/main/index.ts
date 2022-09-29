@@ -20,6 +20,7 @@ Object.defineProperty(global, 'appSettings', {
     // @ts-ignore
     global.appSettings = v;
   },
+  get: () => global.appSettings,
   configurable: true
 });
 
@@ -28,8 +29,8 @@ Object.defineProperty(global, 'appSettings', {
 // Thank you Ven for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
   constructor (
-    opts: Electron.BrowserWindowConstructorOptions & {
-      webContents: Electron.WebContents;
+    opts: electron.BrowserWindowConstructorOptions & {
+      webContents: electron.WebContents;
       webPreferences: {
         nativeWindowOpen: boolean;
       };
@@ -65,7 +66,8 @@ class BrowserWindow extends electron.BrowserWindow {
   }
 }
 
-Object.defineProperty(BrowserWindow, "name", { value: "BrowserWindow", configurable: true });
+Object.defineProperty(BrowserWindow, 'name', { value: 'BrowserWindow',
+  configurable: true });
 
 const electronExports: typeof electron = new Proxy(electron, {
   get (target, prop) {
