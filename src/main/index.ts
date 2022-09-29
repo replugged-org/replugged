@@ -9,7 +9,6 @@ const discordPackage = require(join(discordPath, 'package.json'));
 const discordMain = join(discordPath, discordPackage.main);
 require.main!.filename = discordMain;
 
-
 Object.defineProperty(global, 'appSettings', {
   set: (v /* : typeof global.appSettings*/) => {
     v.set(

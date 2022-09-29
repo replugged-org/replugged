@@ -5,8 +5,11 @@
   "license": "MIT",
   "main": "dist/main/index.js",
   "scripts": {
-    "build": "ts-node scripts/build.ts",
-    "watch": "ts-node scripts/build.ts --watch",
+    "build": "tsx scripts/build.ts",
+    "postinstall": "tsx scripts/build.ts",
+    "watch": "tsx scripts/build.ts --watch",
+    "plug": "tsx scripts/inject/index.ts inject --no-exit-codes",
+    "unplug": "tsx scripts/inject/index.ts uninject --no-exit-codes",
     "check": "tsc --noEmit",
     "lint": "eslint --ext js --ext ts --ext jsx --ext tsx .",
     "format": "npm run lint -- --fix"
@@ -24,7 +27,7 @@
     "esbuild": "^0.15.9",
     "eslint": "^8.24.0",
     "eslint-plugin-react": "^7.31.8",
-    "ts-node": "^10.9.1",
+    "tsx": "^3.9.0",
     "typescript": "^4.8.4"
   }
 }
