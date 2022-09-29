@@ -15,9 +15,9 @@ Object.defineProperty(global, 'appSettings', {
       'DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING',
       true
     );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     delete global.appSettings;
-    // @ts-ignore
     global.appSettings = v;
   },
   get: () => global.appSettings,
