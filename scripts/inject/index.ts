@@ -87,7 +87,7 @@ let platform: DiscordPlatform | undefined;
     if (result) {
       if (!process.argv.includes('--no-welcome-message')) {
         await writeFile(
-          join(__dirname, '../../../src/__injected.txt'),
+          join(__dirname, '../../src/__injected.txt'),
           'hey cutie'
         );
       }
