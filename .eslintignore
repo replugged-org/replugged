@@ -1,3 +1,4 @@
 *.template.js
 plugins/*
 themes/*
+dist/*

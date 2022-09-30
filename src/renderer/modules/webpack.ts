@@ -3,9 +3,7 @@ export const filters = {
   byString: () => {}
 };
 
-export function getModule (
-  filter: string[] | ((defaultExport: any) => boolean)
-) {}
+export function getModule (filter: (module: any) => boolean) {}
 
 export function getByProps (...props: string[]) {}
 

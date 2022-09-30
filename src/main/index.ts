@@ -5,9 +5,7 @@ import type { RepluggedWebContents } from '../types';
 
 const electronPath = require.resolve('electron');
 const discordPath = join(dirname(require.main!.filename), '..', 'app.asar');
-const discordPackage = require(join(discordPath, 'package.json'));
-const discordMain = join(discordPath, discordPackage.main);
-require.main!.filename = discordMain;
+// require.main!.filename = discordMain;
 
 Object.defineProperty(global, 'appSettings', {
   set: (v /* : typeof global.appSettings*/) => {
@@ -37,7 +35,7 @@ class BrowserWindow extends electron.BrowserWindow {
     }
   ) {
     console.log(opts);
-    const originalPreload = opts.webPreferences.preload!;
+    const originalPreload = opts.webPreferences.preload;
 
     if (opts.webContents) {
       // General purpose popouts used by Discord
@@ -90,7 +88,17 @@ require.cache[electronPath]!.exports = electronExports;
 
 // @ts-ignore
 electron.app.setAppPath(discordPath);
-electron.app.name = discordPackage.name;
+// electron.app.name = discordPackage.name;
+
+electron.protocol.registerSchemesAsPrivileged([ {
+  scheme: 'replugged',
+  privileges: {
+    bypassCSP: true,
+    standard: true,
+    secure: true,
+    allowServiceWorkers: true
+  }
+} ]);
 
 // Copied from old codebase
 electron.app.once('ready', () => {
@@ -108,8 +116,22 @@ electron.app.once('ready', () => {
       done({ responseHeaders });
     }
   );
+
+  electron.protocol.registerFileProtocol('replugged', async (request, cb) => {
+    let filePath: string = join(__dirname, '..');
+    const reqUrl = new URL(request.url);
+    switch (reqUrl.hostname) {
+      case 'quickcss':
+        filePath = join(filePath, 'settings/quickcss', reqUrl.pathname);
+        break;
+      case 'theme':
+      case 'plugin':
+        filePath = join(filePath, `${reqUrl.hostname}s`, reqUrl.pathname);
+    }
+    cb({ path: filePath });
+  });
 });
 
 require('./ipc');
 
-require('module')._load(discordMain);
+require('module')._load(discordPath);
