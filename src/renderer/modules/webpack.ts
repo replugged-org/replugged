@@ -59,10 +59,10 @@ export async function loadWebpackModules () {
 
 type Filter = (module: RawModule) => boolean | Exports;
 
-export function getAllModules (filter: Filter): ModuleType[] {
+export function getAllModules (filter?: Filter | undefined): ModuleType[] {
   return window.wpCache
     .map(m => {
-      const isMatch = filter(m);
+      const isMatch = !filter || filter(m);
       if (!isMatch) {
         return;
       }
