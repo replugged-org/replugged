@@ -87,7 +87,7 @@ export function getAllByProps (...props: string[]): ModuleType[] {
         return;
       }
 
-      const result = Object.values(m.exports).find(x => x && props.every(prop => Object.keys(x).includes(prop)));
+      const result = [ m.exports, ...Object.values(m.exports) ].find(x => x && props.every(prop => Object.keys(x).includes(prop)));
       if (!result) {
         return;
       }
