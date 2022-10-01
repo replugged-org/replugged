@@ -1,26 +1,3 @@
-function getAllExportsForModule (module: RawModule): (Record<string, unknown> | null)[] {
-  const { exports } = module;
-  if (!exports || typeof exports !== 'object') {
-    return [];
-  }
-  // Return array with exports and all the objects it exports
-  return [ exports, ...Object.values(exports).filter(x => typeof x === 'object') as Record<string, unknown>[] ];
-}
-
-export const filters = {
-  byProps: (props: string | string[]) => {
-    if (!Array.isArray(props)) {
-      props = [ props ];
-    }
-
-    return (m: RawModule) => {
-      const exports = getAllExportsForModule(m);
-      return exports.find(x => x && (props as string[]).every(prop => Object.keys(x).includes(prop)));
-    };
-  }
-  // byString: () => {}
-};
-
 type Exports = Record<string, unknown> | ((...args: unknown[]) => unknown) | string;
 
 export type RawModule = Record<string, unknown> & {
@@ -84,30 +61,54 @@ export async function loadWebpackModules () {
   ]));
 }
 
-type FilterFunction = (module: RawModule) => boolean | Exports;
-type Filter = string | FilterFunction;
+type Filter = (module: RawModule) => boolean | Exports;
 
 export function getModule (filter: Filter | Filter[], all: true): ModuleType[];
-export function getModule (filter: Filter | Filter[], all: false | undefined): ModuleType | null;
+export function getModule (filter: Filter | Filter[], all?: false | undefined): ModuleType | null;
 export function getModule (filter: Filter | Filter[], all = false): ModuleType | ModuleType[] | null {
   if (!Array.isArray(filter)) {
     filter = [ filter ];
   }
-  const filterFunctionArray = filter.map(f => typeof f === 'string' ? filters.byProps(f) : f);
 
   const matchingModules = window.wpCache
     .map(m => {
-      const result = filterFunctionArray.map(f => f(m)).filter(Boolean);
-      if (!result.length) {
+      const isMatch = (filter as Filter[]).every(f => f(m));
+      if (!isMatch) {
         return;
       }
-      const isAllObjects = result.every(x => typeof x === 'object');
-      if (isAllObjects) {
-        m.props = {};
-        result.forEach(x => Object.assign(m.props, x));
-      } else {
-        m.props = m.exports;
+
+      m.props = m.exports;
+
+      return new Module(m);
+    })
+    .filter(Boolean) as unknown as ModuleType[];
+
+  if (!all) {
+    return matchingModules[0] || null;
+  }
+
+  return matchingModules;
+}
+
+export function getByProps (props: string | string[], all: true): ModuleType[];
+export function getByProps (props: string | string[], all?: false | undefined): ModuleType | null;
+export function getByProps (props: string | string[], all = false): ModuleType | ModuleType[] | null {
+  if (!Array.isArray(props)) {
+    props = [ props ];
+  }
+
+  const matchingModules = window.wpCache
+    .map(m => {
+      if (!m.exports || typeof m.exports !== 'object') {
+        return;
       }
+
+      const result = Object.values(m.exports).find(x => x && (props as string[]).every(prop => Object.keys(x).includes(prop)));
+      if (!result) {
+        return;
+      }
+
+      m.props = result;
 
       return new Module(m);
     })
