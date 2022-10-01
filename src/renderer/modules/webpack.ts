@@ -37,13 +37,30 @@ type ModuleType = typeof Module & Record<string, unknown>;
 let instance: WebpackInstance;
 let ready = false;
 
-export function loadWebpackModules (webpackChunk: typeof window.webpackChunkdiscord_app) {
+function patchPush (webpackChunk: typeof window.webpackChunkdiscord_app) {
+  let original: typeof window.webpackChunkdiscord_app.push;
+
+  function handlePush (chunk: [unknown, Record<number, RawModule>]) {
+    return original.call(webpackChunk, chunk);
+  }
+
+  original = webpackChunk.push;
+  Object.defineProperty(webpackChunk, 'push', {
+    get: () => handlePush,
+    set: (v) => (original = v),
+    configurable: true
+  });
+}
+
+function loadWebpackModules (webpackChunk: typeof window.webpackChunkdiscord_app) {
   instance = webpackChunk.push([
     // eslint-disable-next-line symbol-description
     [ Symbol() ],
     {},
     (r: WebpackInstance) => r
   ]);
+
+  patchPush(webpackChunk);
 
   ready = true;
 }
