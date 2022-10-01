@@ -71,7 +71,7 @@ export function getAllModules (filter: Filter): ModuleType[] {
         return;
       }
 
-      m.props = m.exports;
+      m.props = typeof m.exports === 'object' ? m.exports : {};
 
       return new Module(m);
     })
