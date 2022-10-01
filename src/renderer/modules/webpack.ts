@@ -53,7 +53,7 @@ export async function loadWebpackModules () {
     // eslint-disable-next-line symbol-description
     [ Symbol() ],
     {},
-    (r: ((i: number) => unknown) & { c: Module[] }) => r.c
+    (r: ((i: number) => unknown) & { c: RawModule[] }) => r.c
   ]));
 }
 
