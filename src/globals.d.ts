@@ -10,6 +10,7 @@ declare global {
   };
 
   interface Window {
+    RepluggedNative: import('./preload').RepluggedNativeType;
     replugged: {
       webpack: typeof webpack;
     };

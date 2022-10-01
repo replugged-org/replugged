@@ -76,6 +76,8 @@ const RepluggedNative = {
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };
 
+export type RepluggedNativeType = typeof RepluggedNative;
+
 contextBridge.exposeInMainWorld('RepluggedNative', RepluggedNative);
 
 const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_RENDERER_JS);
