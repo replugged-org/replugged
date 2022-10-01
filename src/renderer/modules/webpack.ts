@@ -1,3 +1,5 @@
+import { WebpackInstance } from 'discord-types/other';
+
 type Exports = Record<string, unknown> | ((...args: unknown[]) => unknown) | string;
 
 export type RawModule = Record<string, unknown> & {
@@ -32,35 +34,43 @@ class Module {
 
 type ModuleType = typeof Module & Record<string, unknown>;
 
-// @todo Probably want to store this elsewhere
-if (!window.wpCache) {
-  window.wpCache = [];
-}
+let instance: WebpackInstance;
+let ready = false;
 
-export async function loadWebpackModules () {
-  while (!window.webpackChunkdiscord_app) {
-    await new Promise(resolve => setTimeout(resolve, 100));
-  }
-
-  // @todo Figure out a better way to know when it's ready
-  await new Promise(resolve => setTimeout(resolve, 5_000));
-
-  if (window.wpCache.length) {
-    return;
-  }
-
-  window.wpCache = Object.values(window.webpackChunkdiscord_app.push([
+export function loadWebpackModules (webpackChunk: typeof window.webpackChunkdiscord_app) {
+  instance = webpackChunk.push([
     // eslint-disable-next-line symbol-description
     [ Symbol() ],
     {},
-    (r: Record<string, unknown>) => r.c
-  ]));
+    (r: WebpackInstance) => r
+  ]);
+
+  ready = true;
+}
+
+// Because using a timer is bad, thanks venny-neko
+// https://github.com/Vendicated/Vencord/blob/ef353f1d66dbf1d14e528830d267aac518ed1beb/src/webpack/patchWebpack.ts
+let webpackChunk: typeof window.webpackChunkdiscord_app | undefined;
+
+Object.defineProperty(window, 'webpackChunkdiscord_app', {
+  get: () => webpackChunk,
+  set: (v) => {
+    if (v?.push !== Array.prototype.push && !ready) {
+      loadWebpackModules(v);
+    }
+    webpackChunk = v;
+  },
+  configurable: true
+});
+
+export function getRawModules () {
+  return Object.values(instance.c) as RawModule[];
 }
 
 type Filter = (module: RawModule) => boolean | Exports;
 
 export function getAllModules (filter?: Filter | undefined): ModuleType[] {
-  return window.wpCache
+  return getRawModules()
     .map(m => {
       const isMatch = !filter || filter(m);
       if (!isMatch) {
@@ -77,7 +87,7 @@ export function getAllModules (filter?: Filter | undefined): ModuleType[] {
 export const getModule = (filter: Filter): ModuleType | null => getAllModules(filter)[0] ?? null;
 
 export function getAllByProps (...props: string[]): ModuleType[] {
-  return window.wpCache
+  return getRawModules()
     .map(m => {
       if (!m.exports || typeof m.exports !== 'object') {
         return;
