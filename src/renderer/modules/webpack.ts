@@ -63,16 +63,10 @@ export async function loadWebpackModules () {
 
 type Filter = (module: RawModule) => boolean | Exports;
 
-export function getModule (filter: Filter | Filter[], all: true): ModuleType[];
-export function getModule (filter: Filter | Filter[], all?: false | undefined): ModuleType | null;
-export function getModule (filter: Filter | Filter[], all = false): ModuleType | ModuleType[] | null {
-  if (!Array.isArray(filter)) {
-    filter = [ filter ];
-  }
-
-  const matchingModules = window.wpCache
+export function getAllModules (filter: Filter): ModuleType[] {
+  return window.wpCache
     .map(m => {
-      const isMatch = (filter as Filter[]).every(f => f(m));
+      const isMatch = filter(m);
       if (!isMatch) {
         return;
       }
@@ -82,28 +76,18 @@ export function getModule (filter: Filter | Filter[], all = false): ModuleType |
       return new Module(m);
     })
     .filter(Boolean) as unknown as ModuleType[];
-
-  if (!all) {
-    return matchingModules[0] || null;
-  }
-
-  return matchingModules;
 }
 
-export function getByProps (props: string | string[], all: true): ModuleType[];
-export function getByProps (props: string | string[], all?: false | undefined): ModuleType | null;
-export function getByProps (props: string | string[], all = false): ModuleType | ModuleType[] | null {
-  if (!Array.isArray(props)) {
-    props = [ props ];
-  }
+export const getModule = (filter: Filter): ModuleType | null => getAllModules(filter)[0] ?? null;
 
-  const matchingModules = window.wpCache
+export function getAllByProps (...props: string[]): ModuleType[] {
+  return window.wpCache
     .map(m => {
       if (!m.exports || typeof m.exports !== 'object') {
         return;
       }
 
-      const result = Object.values(m.exports).find(x => x && (props as string[]).every(prop => Object.keys(x).includes(prop)));
+      const result = Object.values(m.exports).find(x => x && props.every(prop => Object.keys(x).includes(prop)));
       if (!result) {
         return;
       }
@@ -113,10 +97,6 @@ export function getByProps (props: string | string[], all = false): ModuleType |
       return new Module(m);
     })
     .filter(Boolean) as unknown as ModuleType[];
-
-  if (!all) {
-    return matchingModules[0] || null;
-  }
-
-  return matchingModules;
 }
+
+export const getByProps = (...props: string[]): ModuleType | null => getAllByProps(...props)[0] ?? null;
