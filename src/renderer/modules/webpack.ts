@@ -36,6 +36,10 @@ export async function loadWebpackModules () {
     await new Promise(resolve => setTimeout(resolve, 100));
   }
 
+  if (wpCache.length) {
+    return;
+  }
+
   wpCache = Object.values(window.webpackChunkdiscord_app.push([
     // eslint-disable-next-line symbol-description
     [ Symbol() ],
