@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer, webFrame } from 'electron';
 import electron from 'electron';
 
-import * as webpack from './renderer/modules/webpack';
+import { RepluggedIpcChannels } from './types';
 
 const themesMap = new Map();
 let quickCSSKey: string;
@@ -71,32 +71,22 @@ const RepluggedNative = {
 
   clearCache: () => {}, // maybe?
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => { }, // later
+  openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => { } // later
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
-  webpack,
-  getWebpackChunk: () => webFrame?.top?.context?.window?.webpackChunkdiscord_app
 };
-
-Object.defineProperty(global, 'webpackChunkdiscord_app', {
-  get: () => webFrame.top?.context?.window?.webpackChunkdiscord_app
-});
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => webpack.loadWebpackModules());
-} else {
-  webpack.loadWebpackModules();
-}
 
 contextBridge.exposeInMainWorld('RepluggedNative', RepluggedNative);
 
+const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_RENDERER_SCRIPT);
+webFrame.executeJavaScript(renderer);
+
 // Get and execute Discord preload
 // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
-const preload = ipcRenderer.sendSync('REPLUGGED_GET_DISCORD_PRELOAD');
+const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
 if (preload) {
   require(preload);
 }
-// somewhere: load renderer code
 
 // While we could keep the thing below...it's terrible practice to use time delay
 // as a substitute for handling events.

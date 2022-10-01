@@ -1,5 +1,6 @@
 // TODO: Scope global types to each component
 
+import * as webpack from './renderer/modules/webpack';
 import { Module } from './renderer/modules/webpack';
 
 /* eslint-disable no-var */
@@ -9,7 +10,9 @@ declare global {
   };
 
   interface Window {
-    replugged: object;
+    replugged: {
+      webpack: typeof webpack;
+    };
     webpackChunkdiscord_app: any[];
     wpCache: Module[];
   }
