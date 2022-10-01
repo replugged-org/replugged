@@ -74,10 +74,19 @@ const RepluggedNative = {
   openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => { }, // later
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
-  webpack
+  webpack,
+  getWebpackChunk: () => webFrame?.top?.context?.window?.webpackChunkdiscord_app
 };
 
-webpack.loadWebpackModules();
+Object.defineProperty(global, 'webpackChunkdiscord_app', {
+  get: () => webFrame.top?.context?.window?.webpackChunkdiscord_app
+});
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => webpack.loadWebpackModules());
+} else {
+  webpack.loadWebpackModules();
+}
 
 contextBridge.exposeInMainWorld('RepluggedNative', RepluggedNative);
 

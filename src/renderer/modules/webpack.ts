@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 function getAllExportsForModule (module: Module): (Record<string, unknown> | null)[] {
   const { exports } = module;
   if (!exports || typeof exports !== 'object') {
@@ -16,7 +14,7 @@ export const filters = {
     }
 
     return (m: Module) => {
-      const keysInModule  = getAllExportsForModule(m).flatMap(x => x && Object.keys(x)).filter(Boolean);
+      const keysInModule = getAllExportsForModule(m).flatMap(x => x && Object.keys(x)).filter(Boolean);
       return (props as string[]).every(prop => keysInModule.includes(prop));
     };
   }
@@ -38,6 +36,9 @@ export async function loadWebpackModules () {
   while (!window.webpackChunkdiscord_app) {
     await new Promise(resolve => setTimeout(resolve, 100));
   }
+
+  // @todo Figure out a better way to know when it's ready
+  await new Promise(resolve => setTimeout(resolve, 5_000));
 
   if (window.wpCache.length) {
     return;
