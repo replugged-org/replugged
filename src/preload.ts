@@ -1,6 +1,8 @@
 import { contextBridge, ipcRenderer, webFrame } from 'electron';
 import electron from 'electron';
 
+import * as webpack from './renderer/modules/webpack';
+
 const themesMap = new Map();
 let quickCSSKey: string;
 
@@ -69,8 +71,13 @@ const RepluggedNative = {
 
   clearCache: () => {}, // maybe?
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => {} // later
+  openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => { }, // later
+
+  // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
+  webpack
 };
+
+webpack.loadWebpackModules();
 
 contextBridge.exposeInMainWorld('RepluggedNative', RepluggedNative);
 
