@@ -7,6 +7,7 @@ declare global {
 
   interface Window {
     replugged: object;
+    webpackChunkdiscord_app: any[];
   }
 }
 
