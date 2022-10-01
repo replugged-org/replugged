@@ -38,13 +38,12 @@ let instance: WebpackInstance;
 let ready = false;
 
 function patchPush (webpackChunk: typeof window.webpackChunkdiscord_app) {
-  let original: typeof window.webpackChunkdiscord_app.push;
+  let original = webpackChunk.push;
 
   function handlePush (chunk: [unknown, Record<number, RawModule>]) {
     return original.call(webpackChunk, chunk);
   }
 
-  original = webpackChunk.push;
   Object.defineProperty(webpackChunk, 'push', {
     get: () => handlePush,
     set: (v) => (original = v),
