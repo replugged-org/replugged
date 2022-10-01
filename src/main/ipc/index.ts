@@ -12,7 +12,7 @@ ipcMain.on(RepluggedIpcChannels.GET_DISCORD_PRELOAD, (event) => {
   event.returnValue = (event.sender as RepluggedWebContents).originalPreload;
 });
 
-ipcMain.on(RepluggedIpcChannels.GET_RENDERER_SCRIPT, (event) => {
+ipcMain.on(RepluggedIpcChannels.GET_RENDERER_JS, (event) => {
   console.log(event);
   event.returnValue = readFileSync(join(__dirname, './renderer.js'), 'utf8');
 });

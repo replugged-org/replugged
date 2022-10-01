@@ -6,15 +6,16 @@ IPC events:
 */
 
 import { ipcMain } from 'electron';
+import { RepluggedIpcChannels } from '../../types';
 
 ipcMain.handle(
-  'REPLUGGED_GET_THEME_CSS',
+  RepluggedIpcChannels.GET_THEME_CSS,
   async (event, themeName: string) => {}
 );
 
-ipcMain.handle('REPLUGGED_LIST_THEMES', async () => {});
+ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async () => {});
 
 ipcMain.handle(
-  'REPLUGGED_UNINSTALL_THEME',
+  RepluggedIpcChannels.UNINSTALL_THEME,
   async (event, themeName: string) => {}
 );

@@ -1,15 +1,16 @@
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { ipcMain } from 'electron';
+import { RepluggedIpcChannels } from '../../types';
 
 const corePath = join(__dirname, '../../../settings/core');
 
-ipcMain.handle('REPLUGGED_GET_SETTING', (event, key: string) => {});
+ipcMain.handle(RepluggedIpcChannels.GET_SETTING, (event, key: string) => {});
 
-ipcMain.on('REPLUGGED_SET_SETTING', (event, key: string, value: any) => {});
-
-
-ipcMain.handle('REPLUGGED_HAS_SETTING', (event, key: string) => {});
+ipcMain.on(RepluggedIpcChannels.SET_SETTING, (event, key: string, value: any) => {});
 
 
-ipcMain.on('REPLUGGED_DELETE_SETTING', (event, key: string) => {});
+ipcMain.handle(RepluggedIpcChannels.HAS_SETTING, (event, key: string) => {});
+
+
+ipcMain.on(RepluggedIpcChannels.DELETE_SETTING, (event, key: string) => {});

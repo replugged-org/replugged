@@ -11,7 +11,7 @@ const RepluggedNative = {
     enable: async (themeName: string) => {},
     disable: async (themeName: string) => {},
     load: async (themeName: string) => ipcRenderer
-      .invoke('REPLUGGED_GET_THEME_CSS', themeName)
+      .invoke(RepluggedIpcChannels.GET_THEME_CSS, themeName)
       .then((css) => {
         const cssKey = webFrame.insertCSS(css);
         themesMap.set(themeName, cssKey);
@@ -31,28 +31,28 @@ const RepluggedNative = {
       await RepluggedNative.themes.load(themeName);
     },
     reloadAll: async () => {},
-    list: async () => ipcRenderer.invoke('REPLUGGED_LIST_THEMES'),
+    list: async () => ipcRenderer.invoke(RepluggedIpcChannels.LIST_THEMES),
     listEnabled: async () => {},
     listDisabled: async () => {},
     uninstall: async (themeName: string) =>
-      ipcRenderer.invoke('REPLUGGED_UNINSTALL_THEME', themeName) // whether theme was successfully uninstalled
+      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName) // whether theme was successfully uninstalled
 
   },
 
   plugins: {
-    getJS: async (pluginName: string) => ipcRenderer.invoke('REPLUGGED_GET_PLUGIN_JS', pluginName),
-    list: async () => ipcRenderer.invoke('REPLUGGED_LIST_PLUGINS'),
-    uninstall: async (pluginName: string) => ipcRenderer.invoke('REPLUGGED_UNINSTALL_PLUGIN', pluginName)
+    getJS: async (pluginName: string) => ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN_JS, pluginName),
+    list: async () => ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
+    uninstall: async (pluginName: string) => ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName)
   },
 
   quickCSS: {
-    get: async () => ipcRenderer.invoke('REPLUGGED_GET_QUICK_CSS'),
+    get: async () => ipcRenderer.invoke(RepluggedIpcChannels.GET_QUICK_CSS),
     load: async () =>
       RepluggedNative.quickCSS.get().then((css) => {
         quickCSSKey = webFrame.insertCSS(css);
       }),
     unload: () => webFrame.removeInsertedCSS(quickCSSKey),
-    save: (css: string) => ipcRenderer.send('REPLUGGED_SAVE_QUICK_CSS', css),
+    save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css),
     reload: async () => {
       RepluggedNative.quickCSS.unload();
       return RepluggedNative.quickCSS.load();
@@ -60,10 +60,10 @@ const RepluggedNative = {
   },
 
   settings: {
-    get: (key: string) => ipcRenderer.invoke('REPLUGGED_GET_SETTING', key),
-    set: (key: string, value: any) => ipcRenderer.send('REPLUGGED_SET_SETTING', key, value), // invoke or send?
-    has: (key: string) => ipcRenderer.invoke('REPLUGGED_HAS_SETTING', key),
-    delete: (key: string) => ipcRenderer.send('REPLUGGED_DELETE_SETTING', key)
+    get: (key: string) => ipcRenderer.invoke(RepluggedIpcChannels.GET_SETTING, key),
+    set: (key: string, value: any) => ipcRenderer.send(RepluggedIpcChannels.SET_SETTING, key, value), // invoke or send?
+    has: (key: string) => ipcRenderer.invoke(RepluggedIpcChannels.HAS_SETTING, key),
+    delete: (key: string) => ipcRenderer.send(RepluggedIpcChannels.DELETE_SETTING, key)
   },
 
   openDevTools: () => {}, // TODO
@@ -78,7 +78,7 @@ const RepluggedNative = {
 
 contextBridge.exposeInMainWorld('RepluggedNative', RepluggedNative);
 
-const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_RENDERER_SCRIPT);
+const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_RENDERER_JS);
 webFrame.executeJavaScript(renderer);
 
 // Get and execute Discord preload
