@@ -71,7 +71,7 @@ export function getAllModules (filter: Filter): ModuleType[] {
         return;
       }
 
-      m.props = m.exports;
+      m.props = typeof m.exports === 'object' ? m.exports : {};
 
       return new Module(m);
     })
@@ -87,7 +87,7 @@ export function getAllByProps (...props: string[]): ModuleType[] {
         return;
       }
 
-      const result = Object.values(m.exports).find(x => x && props.every(prop => Object.keys(x).includes(prop)));
+      const result = [ m.exports, ...Object.values(m.exports) ].find(x => x && props.every(prop => Object.keys(x).includes(prop)));
       if (!result) {
         return;
       }
