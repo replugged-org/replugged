@@ -19,18 +19,14 @@ class Module {
     this.loaded = module.loaded;
   }
 
-  public findExportForProps (props: string | string[]): Record<string, unknown> | null {
-    if (!Array.isArray(props)) {
-      props = [ props ];
-    }
-
+  public findExportForProps (...props: string[]): Record<string, unknown> | null {
     if (!this.exports || typeof this.exports !== 'object') {
       return null;
     }
 
     const objectExports = Object.values(this.exports).filter(x => typeof x === 'object') as Record<string, unknown>[];
 
-    return objectExports.find(x => (props as string[]).every(prop => Object.keys(x).includes(prop))) ?? null;
+    return objectExports.find(x => props.every(prop => Object.keys(x).includes(prop))) ?? null;
   }
 }
 
