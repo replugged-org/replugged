@@ -19,18 +19,14 @@ class Module {
     this.loaded = module.loaded;
   }
 
-  public findExportForProps (props: string | string[]): Record<string, unknown> | null {
-    if (!Array.isArray(props)) {
-      props = [ props ];
-    }
-
+  public findExportForProps (...props: string[]): Record<string, unknown> | null {
     if (!this.exports || typeof this.exports !== 'object') {
       return null;
     }
 
     const objectExports = Object.values(this.exports).filter(x => typeof x === 'object') as Record<string, unknown>[];
 
-    return objectExports.find(x => (props as string[]).every(prop => Object.keys(x).includes(prop))) ?? null;
+    return objectExports.find(x => props.every(prop => Object.keys(x).includes(prop))) ?? null;
   }
 }
 
@@ -63,10 +59,10 @@ export async function loadWebpackModules () {
 
 type Filter = (module: RawModule) => boolean | Exports;
 
-export function getAllModules (filter: Filter): ModuleType[] {
+export function getAllModules (filter?: Filter | undefined): ModuleType[] {
   return window.wpCache
     .map(m => {
-      const isMatch = filter(m);
+      const isMatch = !filter || filter(m);
       if (!isMatch) {
         return;
       }
