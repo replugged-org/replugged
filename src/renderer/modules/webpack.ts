@@ -29,18 +29,21 @@ export type Module = Record<string, unknown> & {
   exports: Record<string, unknown> | ((...args: unknown[]) => unknown) | string;
 };
 
-let wpCache: Module[] = [];
+// @todo Probably want to store this elsewhere
+if (!window.wpCache) {
+  window.wpCache = [];
+}
 
 export async function loadWebpackModules () {
   while (!window.webpackChunkdiscord_app) {
     await new Promise(resolve => setTimeout(resolve, 100));
   }
 
-  if (wpCache.length) {
+  if (window.wpCache.length) {
     return;
   }
 
-  wpCache = Object.values(window.webpackChunkdiscord_app.push([
+  window.wpCache = Object.values(window.webpackChunkdiscord_app.push([
     // eslint-disable-next-line symbol-description
     [ Symbol() ],
     {},
@@ -59,7 +62,7 @@ export function getModule (filter: Filter | Filter[], all = false): Module | Mod
   }
   const filterFunctionArray = filter.map(f => typeof f === 'string' ? filters.byProps(f) : f);
 
-  const matchingModules = wpCache.filter(m => filterFunctionArray.every(f => f(m)));
+  const matchingModules = window.wpCache.filter(m => filterFunctionArray.every(f => f(m)));
 
   if (!all) {
     return matchingModules[0] || null;
