@@ -3,40 +3,16 @@ import electron from 'electron';
 
 import { RepluggedIpcChannels } from './types';
 
-const themesMap = new Map();
-let quickCSSKey: string;
-
 const RepluggedNative = {
   themes: {
     enable: async (themeName: string) => {},
     disable: async (themeName: string) => {},
-    load: async (themeName: string) => ipcRenderer
-      .invoke(RepluggedIpcChannels.GET_THEME_CSS, themeName)
-      .then((css) => {
-        const cssKey = webFrame.insertCSS(css);
-        themesMap.set(themeName, cssKey);
-      }),
-    loadAll: async () => {},
-    unload: (themeName: string) => {
-      webFrame.removeInsertedCSS(themesMap.get(themeName));
-      themesMap.delete(themeName);
-    },
-    unloadAll: () => {
-      for (const theme of themesMap.keys()) {
-        RepluggedNative.themes.unload(theme);
-      }
-    },
-    reload: async (themeName: string) => {
-      RepluggedNative.themes.unload(themeName);
-      await RepluggedNative.themes.load(themeName);
-    },
-    reloadAll: async () => {},
     list: async () => ipcRenderer.invoke(RepluggedIpcChannels.LIST_THEMES),
-    listEnabled: async () => {},
+    isEnabled: async (themeName: string) => ipcRenderer.invoke(RepluggedIpcChannels.IS_THEME_ENABLED, themeName),
+    listEnabled: async (): Promise<string[]> => {},
     listDisabled: async () => {},
     uninstall: async (themeName: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName) // whether theme was successfully uninstalled
-
   },
 
   plugins: {
@@ -47,16 +23,7 @@ const RepluggedNative = {
 
   quickCSS: {
     get: async () => ipcRenderer.invoke(RepluggedIpcChannels.GET_QUICK_CSS),
-    load: async () =>
-      RepluggedNative.quickCSS.get().then((css) => {
-        quickCSSKey = webFrame.insertCSS(css);
-      }),
-    unload: () => webFrame.removeInsertedCSS(quickCSSKey),
-    save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css),
-    reload: async () => {
-      RepluggedNative.quickCSS.unload();
-      return RepluggedNative.quickCSS.load();
-    }
+    save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css)
   },
 
   settings: {
