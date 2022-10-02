@@ -1,13 +1,12 @@
-import { ModuleExports, RawModule, WebpackChunk, WebpackRequire } from '../../types/discord';
+import { ModuleExports, ModuleExportsWithProps, RawModule, RawModuleWithProps, WebpackChunk, WebpackChunkGlobal, WebpackRequire } from '../../types/discord';
+import { LazyCallback, Filter, LazyListener, RawLazyCallback } from '../../types/webpack';
 
 export let instance: WebpackRequire;
 export let ready = false;
 
-const listeners = new Set<Listener>();
+const listeners = new Set<LazyListener>();
 
-type Filter = (module: RawModule) => boolean | ModuleExports;
-
-function patchPush (webpackChunk: typeof window.webpackChunkdiscord_app) {
+function patchPush (webpackChunk: WebpackChunkGlobal) {
   let original = webpackChunk.push;
 
   function handlePush (chunk: WebpackChunk) {
@@ -36,7 +35,7 @@ function patchPush (webpackChunk: typeof window.webpackChunkdiscord_app) {
   });
 }
 
-function loadWebpackModules (webpackChunk: typeof window.webpackChunkdiscord_app) {
+function loadWebpackModules (webpackChunk: WebpackChunkGlobal) {
   instance = webpackChunk.push([
     [ Symbol('replugged') ],
     {},
@@ -51,7 +50,7 @@ function loadWebpackModules (webpackChunk: typeof window.webpackChunkdiscord_app
 
 // Because using a timer is bad, thanks venny-neko
 // https://github.com/Vendicated/Vencord/blob/ef353f1d66dbf1d14e528830d267aac518ed1beb/src/webpack/patchWebpack.ts
-let webpackChunk: typeof window.webpackChunkdiscord_app | undefined;
+let webpackChunk: WebpackChunkGlobal | undefined;
 
 Object.defineProperty(window, 'webpackChunkdiscord_app', {
   get: () => webpackChunk,
@@ -95,11 +94,6 @@ export function getAllRawModules (filter?: Filter): RawModule[] {
 
 export function getAllModules (filter?: Filter): (ModuleExports | undefined)[] {
   return getAllRawModules(filter).map(getExports);
-}
-
-type ModuleExportsWithProps<P extends string> = Record<P, unknown> & Record<PropertyKey, unknown>;
-export interface RawModuleWithProps<P extends string> extends RawModule {
-  exports: ModuleExportsWithProps<P>;
 }
 
 function getExportsForProps <P extends string> (m: RawModule, props: P[]): ModuleExportsWithProps<P> | undefined {
@@ -146,17 +140,14 @@ export function getAllRawByProps <P extends string> (...props: P[]): RawModuleWi
   return getAllRawModules(byPropsFilter(props)) as RawModuleWithProps<P>[];
 }
 
-type RawCallback = (module: RawModule) => void;
-type Listener = [ Filter, RawCallback ];
-
-export function subscribeRaw (filter: Filter, callback: RawCallback) {
+export function subscribeRaw (filter: Filter, callback: RawLazyCallback) {
   const raw = getRawModule(filter);
   if (raw) {
     // eslint-disable-next-line callback-return
     callback(raw);
   }
 
-  const listener: Listener = [ filter, callback ];
+  const listener: LazyListener = [ filter, callback ];
   listeners.add(listener);
 
   return () => {
@@ -164,9 +155,7 @@ export function subscribeRaw (filter: Filter, callback: RawCallback) {
   };
 }
 
-type Callback = (module: ModuleExports) => void;
-
-export function subscribe (filter: Filter, callback: Callback) {
+export function subscribe (filter: Filter, callback: LazyCallback) {
   return subscribeRaw(filter, (raw) => {
     if (typeof raw !== 'undefined') {
       const exports = getExports(raw);

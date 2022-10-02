@@ -1,9 +1,13 @@
 export type ModuleExports = Record<string, unknown> | ((...args: unknown[]) => unknown) | string | boolean | symbol;
+export type ModuleExportsWithProps<P extends string> = Record<P, unknown> & Record<PropertyKey, unknown>;
 
 export interface RawModule {
   id: number;
   loaded: boolean;
   exports: ModuleExports;
+}
+export interface RawModuleWithProps<P extends string> extends RawModule {
+  exports: ModuleExportsWithProps<P>;
 }
 
 export type WebpackRequireCache = Record<string | number, RawModule>;
