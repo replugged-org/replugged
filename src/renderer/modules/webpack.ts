@@ -57,18 +57,15 @@ function getExports (m: RawModule): RawModule | ModuleExports | unknown {
   return m.exports;
 }
 
-export function getModule (filter?: Filter): ModuleExports | unknown | undefined {
-  if (!filter) {
-    return;
-  }
+export function getRawModule (filter: Filter): RawModule | undefined {
   return Object.values(instance.c).find(filter);
 }
 
-export function getRawModule (filter?: Filter): RawModule | undefined {
-  if (!filter) {
-    return;
+export function getModule (filter: Filter): ModuleExports | unknown | undefined {
+  const raw = getRawModule(filter);
+  if (typeof raw !== 'undefined') {
+    return getExports(raw);
   }
-  return Object.values(instance.c).find(filter);
 }
 
 export function getAllRawModules (filter?: Filter): RawModule[] {

@@ -6,8 +6,8 @@ export default class API extends EventTarget {
         await this.startAPI();
       }
       this.log('API loaded');
-    } catch (e: any) {
-      this.error('An error occurred during initialization!', e);
+    } catch (e) {
+      this.error('An error occurred during initialization!', e as string);
     }
   }
 
