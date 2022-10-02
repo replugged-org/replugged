@@ -85,7 +85,7 @@ export function getAllModules (filter?: Filter): (RawModule | ModuleExports | un
 
 function getExportsForProps (m: RawModule, props: string[]): RawModule | ModuleExports | unknown | undefined {
   if (typeof m.exports === 'object') {
-    return [ m.exports, ...Object.values(m.exports) ].find(o => typeof o === 'object' && o !== null && props.every(p => p in o));
+    return [ m.exports, ...Object.values(m.exports) ].find(o => typeof o === 'object' && o !== null && props.every(p => Object.keys(o).includes(p)));
   }
 }
 

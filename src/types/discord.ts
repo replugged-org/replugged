@@ -22,9 +22,12 @@ export type WebpackChunk = [
   ((r: WebpackRequire) => unknown)?
 ];
 
-export type WebpackChunkGlobal = WebpackChunk[] & {
+// Do NOT put `WebpackChunk[]` first, otherwise TS
+// prioritizes Array.prototype.push over this custom
+// push method and starts producing errors.
+export type WebpackChunkGlobal = {
   push: (chunk: WebpackChunk) => unknown;
-};
+} & WebpackChunk[];
 
 export interface CommandOptions {
   type: number;

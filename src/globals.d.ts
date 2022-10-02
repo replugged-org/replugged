@@ -1,7 +1,7 @@
 // TODO: Scope global types to each component
 
 import { WebpackChunkGlobal } from './types/discord';
-import { replugged } from './renderer';
+import * as replugged from './renderer/replugged';
 import { RepluggedNativeType } from './preload';
 
 /* eslint-disable no-var */
