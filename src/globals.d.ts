@@ -1,8 +1,8 @@
 // TODO: Scope global types to each component
 
-import * as webpack from './renderer/modules/webpack';
-import { notices, commands } from './renderer/apis';
-import { WebpackChunk } from './types/discord';
+import { WebpackChunkGlobal } from './types/discord';
+import { replugged } from './renderer';
+import { RepluggedNativeType } from './preload';
 
 /* eslint-disable no-var */
 declare global {
@@ -11,15 +11,9 @@ declare global {
   };
 
   interface Window {
-    RepluggedNative: import('./preload').RepluggedNativeType;
-    replugged: {
-      webpack: typeof webpack;
-      notices: typeof notices;
-      commands: typeof commands;
-    };
-    webpackChunkdiscord_app: {
-      push: (chunk: WebpackChunk) => unknown;
-    } & WebpackChunk[];
+    RepluggedNative: RepluggedNativeType;
+    replugged: typeof replugged;
+    webpackChunkdiscord_app: WebpackChunkGlobal;
   }
 }
 
