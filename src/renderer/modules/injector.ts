@@ -96,6 +96,11 @@ function replaceMethod (obj: Patchable, funcName: string): ObjectInjections {
 
       return res;
     };
+
+    Object.defineProperties(
+      obj[funcName],
+      Object.getOwnPropertyDescriptors(originalFunc)
+    );
   }
 
   return objInjections;
