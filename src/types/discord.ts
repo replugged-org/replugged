@@ -1,4 +1,4 @@
-export type ModuleExports = Record<string, unknown> | ((...args: unknown[]) => unknown) | string;
+export type ModuleExports = Record<string, unknown> | ((...args: unknown[]) => unknown) | string | boolean | symbol;
 
 export interface RawModule {
   id: number;
@@ -15,7 +15,7 @@ export type WebpackRequire = ((e: number) => ModuleExports) & {
 export type WebpackChunk = [
   (symbol | number)[],
   Record<number, (
-    wpModule: { exports: ModuleExports },
+    wpModule: RawModule,
     wpExports: typeof wpModule.exports,
     wpRequire: WebpackRequire
   ) => void>,
