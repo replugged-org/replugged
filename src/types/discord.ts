@@ -1,7 +1,7 @@
 export type ModuleExports = Record<string, unknown> | ((...args: unknown[]) => unknown) | string;
 
 export interface RawModule {
-  id: string | number;
+  id: number;
   loaded: boolean;
   exports: ModuleExports;
 }
