@@ -25,3 +25,21 @@ export type WebpackChunk = [
 export type WebpackChunkGlobal = WebpackChunk[] & {
   push: (chunk: WebpackChunk) => unknown;
 };
+
+export interface CommandOptions {
+  type: number;
+  name: string;
+  displayName?: string;
+  description: string;
+  displayDescription?: string;
+  required?: boolean;
+  choices?: {
+    name: string;
+    values: string | number;
+  }[];
+  options?: CommandOptions[];
+  channel_types?: number[];
+  min_value?: number;
+  max_value?: number;
+  autocomplete?: boolean;
+}

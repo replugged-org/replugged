@@ -1,4 +1,5 @@
 import electron from 'electron';
+import { CommandOptions } from './discord';
 
 export type RepluggedWebContents = electron.WebContents & {
   originalPreload?: string;
@@ -20,3 +21,37 @@ export enum RepluggedIpcChannels {
   LIST_PLUGINS = 'REPLUGGED_LIST_PLUGINS',
   UNINSTALL_PLUGIN = 'REPLUGGED_UNINSTALL_PLUGIN'
 }
+
+export type RepluggedAnnouncement = {
+  message: string,
+  color?: string,
+  onClose?: () => void,
+  button?: {
+    text: string,
+    onClick: () => void
+  }
+};
+
+export type RepluggedToastButton = {
+  size?: string,
+  look?: string,
+  color?: string,
+  onClick: () => void,
+  text: string
+};
+
+export type RepluggedToast = {
+  header: string,
+  content: string,
+  timeout?: number,
+  className?: string,
+  buttons?: RepluggedToastButton[]
+};
+
+export type RepluggedCommand = {
+  name: string,
+  description: string,
+  usage: string,
+  executor: (args: any) => void,
+  options: CommandOptions
+};
