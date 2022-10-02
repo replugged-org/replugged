@@ -101,7 +101,9 @@ function byPropsInternal (props: string[], all = false): RawModule | ModuleExpor
       }
     }
   }
-  return result;
+  if (all) {
+    return result;
+  }
 }
 
 function byPropsFilter (props: string[]) {
