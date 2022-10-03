@@ -2,6 +2,7 @@ import { contextBridge, ipcRenderer, webFrame } from 'electron';
 import electron from 'electron';
 
 import { RepluggedIpcChannels } from './types';
+import { Settings } from './types/settings';
 
 const RepluggedNative = {
   themes: {
@@ -27,10 +28,13 @@ const RepluggedNative = {
   },
 
   settings: {
-    get: (key: string) => ipcRenderer.invoke(RepluggedIpcChannels.GET_SETTING, key),
-    set: (key: string, value: any) => ipcRenderer.send(RepluggedIpcChannels.SET_SETTING, key, value), // invoke or send?
-    has: (key: string) => ipcRenderer.invoke(RepluggedIpcChannels.HAS_SETTING, key),
-    delete: (key: string) => ipcRenderer.send(RepluggedIpcChannels.DELETE_SETTING, key)
+    get: (namespace: string, key: string) => ipcRenderer.invoke(RepluggedIpcChannels.GET_SETTING, namespace, key),
+    set: (namespace: string, key: string, value: unknown) => ipcRenderer.invoke(RepluggedIpcChannels.SET_SETTING, namespace, key, value), // invoke or send?
+    has: (namespace: string, key: string) => ipcRenderer.invoke(RepluggedIpcChannels.HAS_SETTING, namespace, key),
+    delete: (namespace: string, key: string) => ipcRenderer.invoke(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
+    all: (namespace: string) => ipcRenderer.invoke(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
+    startTransaction: (namespace: string) => ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
+    endTransaction: (namespace: string, settings: Settings | null) => ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings)
   },
 
   openDevTools: () => {}, // TODO
