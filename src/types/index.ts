@@ -57,3 +57,19 @@ export type RepluggedCommand = {
   executor: (args: any) => void,
   options: CommandOptions
 };
+
+export type RepluggedConnection = {
+  type: string,
+  name: string,
+  color: string,
+  __bc: boolean,
+  enabled: boolean,
+  icon: {
+    darkSVG: string,
+    lightSVG: string
+  }
+  fetchAccount: (id: string) => any,
+  getPlatformUserUrl?: (account: string) => string,
+  onDisconnect: () => void,
+  onConnect: () => void
+};
