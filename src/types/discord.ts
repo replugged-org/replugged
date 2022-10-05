@@ -50,3 +50,10 @@ export interface CommandOptions {
   max_value?: number;
   autocomplete?: boolean;
 }
+
+export interface ConnectedAccount {
+  type: string,
+  name: string,
+  id: string,
+  verified: boolean
+}

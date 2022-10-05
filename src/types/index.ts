@@ -1,5 +1,5 @@
 import electron from 'electron';
-import { CommandOptions } from './discord';
+import { CommandOptions, ConnectedAccount } from './discord';
 
 export type RepluggedWebContents = electron.WebContents & {
   originalPreload?: string;
@@ -62,14 +62,14 @@ export type RepluggedConnection = {
   type: string,
   name: string,
   color: string,
-  __bc: boolean,
   enabled: boolean,
   icon: {
     darkSVG: string,
     lightSVG: string
   }
-  fetchAccount: (id: string) => any,
-  getPlatformUserUrl?: (account: string) => string,
+  fetchAccount: (id: string) => Promise<ConnectedAccount>,
+  getPlatformUserUrl?: (account: ConnectedAccount) => string,
   onDisconnect: () => void,
-  onConnect: () => void
+  onConnect: () => void,
+  setVisibility: (visible: boolean) => boolean | void,
 };
