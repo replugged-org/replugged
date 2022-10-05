@@ -12,7 +12,7 @@ const installDeps = () => {
   console.log('Installing dependencies, please wait...');
   execSync('npm install', {
     cwd: rootPath,
-    stdio: [ null, null, null ]
+    stdio: [ null, null, null ],
   });
   console.log('Dependencies successfully installed!');
 };

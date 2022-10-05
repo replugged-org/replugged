@@ -7,7 +7,7 @@ const PATHS = {
   stable: 'Discord',
   ptb: 'DiscordPTB',
   canary: 'DiscordCanary',
-  dev: 'DiscordDevelopment'
+  dev: 'DiscordDevelopment',
 };
 
 export const getAppDir = async (platform: DiscordPlatform) => {

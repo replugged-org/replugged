@@ -1,7 +1,7 @@
 enum InjectionTypes {
   Before,
   Instead,
-  After
+  After,
 }
 
 type Patchable = {
@@ -42,7 +42,7 @@ function replaceMethod (obj: Patchable, funcName: string): ObjectInjections {
     objInjections = {
       obj,
       injections: new Map(),
-      original: new Map()
+      original: new Map(),
     };
     injections.set(obj, objInjections);
   }
@@ -51,7 +51,7 @@ function replaceMethod (obj: Patchable, funcName: string): ObjectInjections {
     objInjections.injections.set(funcName, {
       before: [],
       instead: [],
-      after: []
+      after: [],
     });
   }
 
@@ -99,7 +99,7 @@ function replaceMethod (obj: Patchable, funcName: string): ObjectInjections {
 
     Object.defineProperties(
       obj[funcName],
-      Object.getOwnPropertyDescriptors(originalFunc)
+      Object.getOwnPropertyDescriptors(originalFunc),
     );
   }
 
@@ -126,7 +126,7 @@ export function before (obj: Patchable, funcName: string, cb: BeforeCallback): (
     funcName,
     type: InjectionTypes.Before,
     cb,
-    uninject: uninjectInjection
+    uninject: uninjectInjection,
   });
   return uninjectInjection;
 }
@@ -141,7 +141,7 @@ export function instead (obj: Patchable, funcName: string, cb: InsteadCallback):
     funcName,
     type: InjectionTypes.Instead,
     cb,
-    uninject: uninjectInjection
+    uninject: uninjectInjection,
   });
   return uninjectInjection;
 }
@@ -156,7 +156,7 @@ export function after (obj: Patchable, funcName: string, cb: AfterCallback): () 
     funcName,
     type: InjectionTypes.After,
     cb,
-    uninject: uninjectInjection
+    uninject: uninjectInjection,
   });
   return uninjectInjection;
 }

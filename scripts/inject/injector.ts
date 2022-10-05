@@ -31,7 +31,7 @@ export const inject = async ({ getAppDir }: PlatformModule, platform: DiscordPla
     done`;
     const readlineInterface = readline.createInterface({
       input: process.stdin,
-      output: process.stdout
+      output: process.stdout,
     });
 
     const askExecCmd = () => new Promise(resolve => readlineInterface.question('Would you like to execute the command now? y/N: ', resolve));
@@ -62,15 +62,15 @@ export const inject = async ({ getAppDir }: PlatformModule, platform: DiscordPla
   await Promise.all([
     writeFile(
       join(appDir, 'index.js'),
-      `require(\`${__dirname.replace(RegExp(sep.repeat(2), 'g'), '/')}/../../dist/main.js\`)`
+      `require(\`${__dirname.replace(RegExp(sep.repeat(2), 'g'), '/')}/../../dist/main.js\`)`,
     ),
     writeFile(
       join(appDir, 'package.json'),
       JSON.stringify({
         main: 'index.js',
-        name: 'discord'
-      })
-    )
+        name: 'discord',
+      }),
+    ),
   ]);
 
   return true;

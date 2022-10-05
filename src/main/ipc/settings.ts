@@ -68,7 +68,7 @@ ipcMain.handle(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, (event, namespac
     };
 
     resolve(settings);
-  }))
+  })),
 ));
 
 ipcMain.handle(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, (event, namespace: string, settings: Settings | null) => {

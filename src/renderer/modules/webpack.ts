@@ -31,7 +31,7 @@ function patchPush (webpackChunk: WebpackChunkGlobal) {
   Object.defineProperty(webpackChunk, 'push', {
     get: () => handlePush,
     set: (v) => (original = v),
-    configurable: true
+    configurable: true,
   });
 }
 
@@ -39,7 +39,7 @@ function loadWebpackModules (webpackChunk: WebpackChunkGlobal) {
   instance = webpackChunk.push([
     [ Symbol('replugged') ],
     {},
-    (r: WebpackRequire) => r
+    (r: WebpackRequire) => r,
   ]) as WebpackRequire;
 
   patchPush(webpackChunk);
@@ -60,7 +60,7 @@ Object.defineProperty(window, 'webpackChunkdiscord_app', {
     }
     webpackChunk = v;
   },
-  configurable: true
+  configurable: true,
 });
 
 function getExports (m: RawModule): ModuleExports | undefined {

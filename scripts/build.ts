@@ -13,7 +13,7 @@ const common: esbuild.BuildOptions = {
   sourcemap: true,
   format: 'cjs' as esbuild.Format,
   logLevel: 'info',
-  watch
+  watch,
 };
 
 Promise.all([
@@ -24,7 +24,7 @@ Promise.all([
     platform: 'node',
     target: `node${NODE_VERSION}`,
     outfile: 'dist/main.js',
-    external: [ 'electron' ]
+    external: [ 'electron' ],
   }),
   // Preload
   esbuild.build({
@@ -33,7 +33,7 @@ Promise.all([
     platform: 'node',
     target: [ `node${NODE_VERSION}`, `chrome${CHROME_VERSION}` ],
     outfile: 'dist/preload.js',
-    external: [ 'electron' ]
+    external: [ 'electron' ],
   }),
   // Renderer
   esbuild.build({
@@ -41,6 +41,6 @@ Promise.all([
     entryPoints: [ 'src/renderer/index.ts' ],
     platform: 'browser',
     target: `chrome${CHROME_VERSION}`,
-    outfile: 'dist/renderer.js'
-  })
+    outfile: 'dist/renderer.js',
+  }),
 ]);

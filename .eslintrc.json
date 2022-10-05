@@ -134,7 +134,7 @@
 		"array-bracket-spacing": [ "error", "always" ],
 		"block-spacing": [ "error", "always" ],
 		"@typescript-eslint/brace-style": [ "error", "1tbs" ],
-		"@typescript-eslint/comma-dangle": [ "error" ],
+		"@typescript-eslint/comma-dangle": [ "error", "always-multiline" ],
 		"@typescript-eslint/comma-spacing": [ "error", {
 			"before": false,
 			"after": true

@@ -11,7 +11,7 @@ Object.defineProperty(global, 'appSettings', {
   set: (v /* : typeof global.appSettings*/) => {
     v.set(
       'DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING',
-      true
+      true,
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -19,7 +19,7 @@ Object.defineProperty(global, 'appSettings', {
     global.appSettings = v;
   },
   get: () => global.appSettings,
-  configurable: true
+  configurable: true,
 });
 
 // This class has to be named "BrowserWindow" exactly
@@ -32,7 +32,7 @@ class BrowserWindow extends electron.BrowserWindow {
       webPreferences: {
         nativeWindowOpen: boolean;
       };
-    }
+    },
   ) {
     console.log(opts);
     const originalPreload = opts.webPreferences.preload;
@@ -80,7 +80,7 @@ const electronExports: typeof electron = new Proxy(electron, {
       default:
         return target[prop as keyof typeof electron];
     }
-  }
+  },
 });
 
 delete require.cache[electronPath]!.exports;
@@ -96,8 +96,8 @@ electron.protocol.registerSchemesAsPrivileged([ {
     bypassCSP: true,
     standard: true,
     secure: true,
-    allowServiceWorkers: true
-  }
+    allowServiceWorkers: true,
+  },
 } ]);
 
 // Copied from old codebase
@@ -114,7 +114,7 @@ electron.app.once('ready', () => {
         .map((k) => delete responseHeaders[k]);
 
       done({ responseHeaders });
-    }
+    },
   );
 
   electron.protocol.registerFileProtocol('replugged', async (request, cb) => {

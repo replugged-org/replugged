@@ -25,7 +25,7 @@ module.exports = class ConnectionsAPI extends API {
 
   fetchAccounts (id: string) {
     return Promise.all(
-      this.filter(c => c.enabled).map(c => c.fetchAccount(id))
+      this.filter(c => c.enabled).map(c => c.fetchAccount(id)),
     );
   }
 

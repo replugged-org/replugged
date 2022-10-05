@@ -13,18 +13,18 @@ const RepluggedNative = {
     listEnabled: async (): Promise<string[]> => {},
     listDisabled: async () => {},
     uninstall: async (themeName: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName) // whether theme was successfully uninstalled
+      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName), // whether theme was successfully uninstalled
   },
 
   plugins: {
     getJS: async (pluginName: string) => ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN_JS, pluginName),
     list: async () => ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
-    uninstall: async (pluginName: string) => ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName)
+    uninstall: async (pluginName: string) => ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName),
   },
 
   quickCSS: {
     get: async () => ipcRenderer.invoke(RepluggedIpcChannels.GET_QUICK_CSS),
-    save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css)
+    save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css),
   },
 
   settings: {
@@ -34,7 +34,7 @@ const RepluggedNative = {
     delete: (namespace: string, key: string) => ipcRenderer.invoke(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
     all: (namespace: string) => ipcRenderer.invoke(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
     startTransaction: (namespace: string) => ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
-    endTransaction: (namespace: string, settings: Settings | null) => ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings)
+    endTransaction: (namespace: string, settings: Settings | null) => ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
   },
 
   openDevTools: () => {}, // TODO
@@ -42,7 +42,7 @@ const RepluggedNative = {
 
   clearCache: () => {}, // maybe?
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => { } // later
+  openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => { }, // later
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };

@@ -11,7 +11,7 @@ const ProcessRegex = {
   stable: /discord$/i,
   ptb: /discord-?ptb$/i,
   canary: /discord-?canary$/i,
-  dev: /discord-?development$/i
+  dev: /discord-?development$/i,
 };
 
 const findAppDir = async (platform: DiscordPlatform) => {
@@ -28,14 +28,14 @@ const findAppDir = async (platform: DiscordPlatform) => {
       '/opt/Discord',
       `${flatpakDir}.Discord/current/active/files/discord`,
       `${homeFlatpakDir}.Discord/current/active/files/discord`,
-      `${homedir}/.local/bin/Discord`
+      `${homedir}/.local/bin/Discord`,
     ],
     ptb: [
       '/usr/share/discord-ptb',
       '/usr/lib64/discord-ptb',
       '/opt/discord-ptb',
       '/opt/DiscordPTB',
-      `${homedir}/.local/bin/DiscordPTB`
+      `${homedir}/.local/bin/DiscordPTB`,
     ],
     canary: [
       '/usr/share/discord-canary',
@@ -44,15 +44,15 @@ const findAppDir = async (platform: DiscordPlatform) => {
       '/opt/DiscordCanary',
       `${flatpakDir}.DiscordCanary/current/active/files/discord-canary`,
       `${homeFlatpakDir}.DiscordCanary/current/active/files/discord-canary`,
-      `${homedir}/.local/bin/DiscordCanary` // https://github.com/powercord-org/powercord/pull/370
+      `${homedir}/.local/bin/DiscordCanary`, // https://github.com/powercord-org/powercord/pull/370
     ],
     dev: [
       '/usr/share/discord-development',
       '/usr/lib64/discord-development',
       '/opt/discord-development',
       '/opt/DiscordDevelopment',
-      `${homedir}/.local/bin/DiscordDevelopment`
-    ]
+      `${homedir}/.local/bin/DiscordDevelopment`,
+    ],
   };
 
   const discordProcess = execSync('ps x')
@@ -66,7 +66,7 @@ const findAppDir = async (platform: DiscordPlatform) => {
     if (!discordPath) {
       const readlineInterface = readline.createInterface({
         input: process.stdin,
-        output: process.stdout
+        output: process.stdout,
       });
 
       const askPath = (): Promise<string> => new Promise(resolve => readlineInterface.question('> ', resolve));

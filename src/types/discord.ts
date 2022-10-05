@@ -23,7 +23,7 @@ export type WebpackChunk = [
     wpExports: typeof wpModule.exports,
     wpRequire: WebpackRequire
   ) => void>,
-  ((r: WebpackRequire) => unknown)?
+  ((r: WebpackRequire) => unknown)?,
 ];
 
 // Do NOT put `WebpackChunk[]` first, otherwise TS

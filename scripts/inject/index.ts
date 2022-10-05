@@ -16,17 +16,17 @@ import { existsSync } from 'fs';
 const platformModules = {
   darwin,
   linux,
-  win32
+  win32,
 };
 
 if (!(process.platform in platformModules)) {
   console.log(BasicMessages.PLUG_FAILED, '\n');
   console.log('It seems like your platform is not supported yet.', '\n');
   console.log(
-    'Feel free to open an issue about it, so we can add support for it!'
+    'Feel free to open an issue about it, so we can add support for it!',
   );
   console.log(
-    `Make sure to mention the platform you are on is "${process.platform}" in your issue ticket.`
+    `Make sure to mention the platform you are on is "${process.platform}" in your issue ticket.`,
   );
   console.log('https://github.com/replugged-org/replugged/issues/new/choose');
   process.exit(process.argv.includes('--no-exit-codes') ? 0 : 1);
@@ -88,7 +88,7 @@ let platform: DiscordPlatform | undefined;
       if (!process.argv.includes('--no-welcome-message')) {
         await writeFile(
           join(__dirname, '../../src/__injected.txt'),
-          'hey cutie'
+          'hey cutie',
         );
       }
 
@@ -97,7 +97,7 @@ let platform: DiscordPlatform | undefined;
       console.log(
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run plug <platform>${AnsiEscapes.RESET}
-List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
+List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`,
       );
     }
   } else if (process.argv[2] === 'uninject') {
@@ -114,7 +114,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
       console.log(
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run unplug <platform>${AnsiEscapes.RESET}
-List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`
+List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`,
       );
     }
   } else {
@@ -128,11 +128,11 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
       process.argv[2] === 'inject'
         ? BasicMessages.PLUG_FAILED
         : BasicMessages.UNPLUG_FAILED,
-      '\n'
+      '\n',
     );
     console.log(
       `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself due to missing permissions.${AnsiEscapes.RESET}`,
-      '\n'
+      '\n',
     );
     console.log('Try again with elevated permissions.');
   } else if (e.code === 'ENOENT') {
@@ -140,11 +140,11 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`)
       process.argv[2] === 'inject'
         ? BasicMessages.PLUG_FAILED
         : BasicMessages.UNPLUG_FAILED,
-      '\n'
+      '\n',
     );
     console.log(
       `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself because Discord could not be found.${AnsiEscapes.RESET}`,
-      '\n'
+      '\n',
     );
     console.log(`Make sure that specified platform (${platform}) is installed, or try again with a different platform using: ${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}npm run ${process.argv[2] === 'inject' ? 'plug' : 'unplug'} <platform>${AnsiEscapes.RESET}
 List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(x => `${x}`).join('\n')}${AnsiEscapes.RESET}`);
