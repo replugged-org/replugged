@@ -1,10 +1,26 @@
+import { Theme } from '../../types/addon';
+
 const themeElements = new Map<string, HTMLLinkElement>();
 
-export async function load (themeName: string) {
+const themes = new Map<string, Theme>();
+let disabled: string[] = [];
+
+export async function loadMissing () {
+  for (const theme of await window.RepluggedNative.themes.list()) {
+    themes.set(theme.id, theme.manifest);
+  }
+  disabled = await window.RepluggedNative.themes.listDisabled();
+}
+
+export function load (themeName: string) {
+  if (!themes.has(themeName)) {
+    throw new Error(`Theme not found: ${themeName}`);
+  }
+  const theme = themes.get(themeName) as Theme;
   const e = document.createElement('link');
-  // Make this look through the manifest
-  e.href = `replugged://theme/${themeName}/index.css`;
   e.rel = 'stylesheet';
+  // This will need to change a little bit for the splash screen
+  e.href = `replugged://theme/${themeName}/${theme.main}`;
   themeElements.set(themeName, e);
   document.head.appendChild(e);
 }
@@ -16,9 +32,11 @@ export function unload (themeName: string) {
   }
 }
 
-export async function loadAll () {
-  for (const theme of await window.RepluggedNative.themes.listEnabled()) {
-    console.log(theme);
+export function loadAll () {
+  for (const themeName of themes.keys()) {
+    if (!disabled.includes(themeName)) {
+      load(themeName);
+    }
   }
 }
 
@@ -30,5 +48,5 @@ export function unloadAll () {
 
 export function reload (themeName: string) {
   unload(themeName);
-  reload(themeName);
+  load(themeName);
 }

@@ -17,8 +17,8 @@ export default class API extends EventTarget {
         await this.apiWillUnload();
       }
       this.log('API unloaded');
-    } catch (e: any) {
-      this.error('An error occurred during shutting down! It\'s heavily recommended to reload Discord to ensure there is no conflicts.', e);
+    } catch (e) {
+      this.error('An error occurred during shutting down! It\'s heavily recommended to reload Discord to ensure there is no conflicts.', e as string);
     }
   }
 

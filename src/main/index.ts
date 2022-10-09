@@ -86,8 +86,10 @@ const electronExports: typeof electron = new Proxy(electron, {
 delete require.cache[electronPath]!.exports;
 require.cache[electronPath]!.exports = electronExports;
 
-// @ts-ignore
-electron.app.setAppPath(discordPath);
+
+(electron.app as typeof electron.app & {
+  setAppPath: (path: string) => void
+}).setAppPath(discordPath);
 // electron.app.name = discordPackage.name;
 
 electron.protocol.registerSchemesAsPrivileged([ {
@@ -133,7 +135,7 @@ electron.app.once('ready', () => {
 });
 
 require('./ipc');
-
+/*
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
 electron.app.whenReady().then(() => { // optionify it later with sdk
   installExtension(REACT_DEVELOPER_TOOLS)
@@ -141,4 +143,5 @@ electron.app.whenReady().then(() => { // optionify it later with sdk
     .catch((err: string) => console.log('An error occurred: ', err));
 });
 
+*/
 require('module')._load(discordPath);

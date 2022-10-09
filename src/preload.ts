@@ -1,23 +1,39 @@
 import { contextBridge, ipcRenderer, webFrame } from 'electron';
 import electron from 'electron';
 
-import { RepluggedIpcChannels } from './types';
+import { RepluggedIpcChannels, RepluggedTheme } from './types';
 import { Settings } from './types/settings';
 
 const RepluggedNative = {
   themes: {
-    enable: async (themeName: string) => {},
-    disable: async (themeName: string) => {},
-    list: async () => ipcRenderer.invoke(RepluggedIpcChannels.LIST_THEMES),
-    isEnabled: async (themeName: string) => ipcRenderer.invoke(RepluggedIpcChannels.IS_THEME_ENABLED, themeName),
-    listEnabled: async (): Promise<string[]> => {},
-    listDisabled: async () => {},
+    enable: async (themeName: string) => {
+      const { settings } = RepluggedNative;
+      settings.set('themes', 'disabled', (await settings.get('themes', 'disabled') as string[]).filter(t => t !== themeName));
+    },
+    disable: async (themeName: string) => {
+      const disabled = await RepluggedNative.settings.get('themes', 'disabled') as string[];
+      if (!disabled.includes(themeName)) {
+        disabled.push(themeName);
+        RepluggedNative.settings.set('themes', 'disabled', disabled);
+      }
+    },
+    list: async (): Promise<RepluggedTheme[]> => ipcRenderer.invoke(RepluggedIpcChannels.LIST_THEMES),
+    listEnabled: async (): Promise<string[]> => {
+      const disabled = await RepluggedNative.themes.listDisabled();
+      const enabled: string[] = [];
+      for (const theme of await RepluggedNative.themes.list()) {
+        if (!disabled.includes(theme.id)) {
+          enabled.push(theme.id);
+        }
+      }
+      return enabled;
+    },
+    listDisabled: async (): Promise<string[]> => (await RepluggedNative.settings.get('themes', 'disabled')) ?? [],
     uninstall: async (themeName: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName) // whether theme was successfully uninstalled
   },
 
   plugins: {
-    getJS: async (pluginName: string) => ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN_JS, pluginName),
     list: async () => ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
     uninstall: async (pluginName: string) => ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName)
   },
@@ -37,10 +53,6 @@ const RepluggedNative = {
     endTransaction: (namespace: string, settings: Settings | null) => ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings)
   },
 
-  openDevTools: () => {}, // TODO
-  closeDevTools: () => {}, // TODO
-
-  clearCache: () => {}, // maybe?
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
   openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => { } // later
 

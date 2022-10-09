@@ -24,8 +24,8 @@ function patchPush (webpackChunk: WebpackChunkGlobal) {
           }
         }
       };
-      return original.call(webpackChunk, chunk);
     }
+    return original.call(webpackChunk, chunk);
   }
 
   Object.defineProperty(webpackChunk, 'push', {

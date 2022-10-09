@@ -9,8 +9,3 @@ export function load () {
 export function unload () {
   quickCSSElement?.remove();
 }
-
-export function reload () {
-  unload();
-  load();
-}

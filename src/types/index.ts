@@ -1,5 +1,6 @@
 import electron from 'electron';
 import { CommandOptions, ConnectedAccount } from './discord';
+import { Theme } from './addon';
 
 export type RepluggedWebContents = electron.WebContents & {
   originalPreload?: string;
@@ -19,7 +20,6 @@ export enum RepluggedIpcChannels {
   END_SETTINGS_TRANSACTION = 'REPLUGGED_END_SETTINGS_TRANSACTION',
   LIST_THEMES = 'REPLUGGED_LIST_THEMES',
   UNINSTALL_THEME = 'REPLUGGED_UNINSTALL_THEME',
-  GET_PLUGIN_JS = 'REPLUGGED_GET_PLUGIN_JS',
   LIST_PLUGINS = 'REPLUGGED_LIST_PLUGINS',
   UNINSTALL_PLUGIN = 'REPLUGGED_UNINSTALL_PLUGIN'
 }
@@ -73,3 +73,8 @@ export type RepluggedConnection = {
   onConnect: () => void,
   setVisibility: (visible: boolean) => boolean | void,
 };
+
+export interface RepluggedTheme {
+  id: string,
+  manifest: Theme
+}
