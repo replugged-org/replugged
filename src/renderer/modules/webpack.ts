@@ -98,7 +98,7 @@ export function getAllModules (filter?: Filter): (ModuleExports | undefined)[] {
 
 function getExportsForProps <P extends string> (m: RawModule, props: P[]): ModuleExportsWithProps<P> | undefined {
   if (typeof m.exports === 'object') {
-    return [ m.exports, ...Object.values(m.exports) ].find(o => typeof o === 'object' && o !== null && props.every(p => Object.keys(o).includes(p) || (Object.getPrototypeOf(o) && Object.keys(Object.getPrototypeOf(o)).includes(p)))) as ModuleExportsWithProps<P> | undefined;
+    return [ m.exports, ...Object.values(m.exports) ].find(o => typeof o === 'object' && o !== null && props.every(p => p in o)) as ModuleExportsWithProps<P> | undefined;
   }
 }
 function byPropsInternal <P extends string> (props: P[], all: true): ModuleExportsWithProps<P>[];
