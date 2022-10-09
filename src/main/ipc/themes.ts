@@ -9,27 +9,12 @@ import { readdir, readFile, rm } from 'fs/promises';
 import { join, resolve } from 'path';
 import { ipcMain } from 'electron';
 import { RepluggedIpcChannels, RepluggedTheme } from '../../types';
+import { theme } from '../../types/addon';
 
 const THEMES_DIR = resolve(__dirname, '../themes');
 
-function validateThemeManifest (manifest: Record<string, unknown>) {
-  for (const key of [
-    'name',
-    'description',
-    'version',
-    'author',
-    'license',
-    'main'
-  ]) {
-    if (!(key in manifest)) {
-      return false;
-    }
-  }
-  return true;
-}
-
 async function getTheme (themeName: string): Promise<RepluggedTheme> {
-  const manifest: RepluggedTheme['manifest'] = JSON.parse(await readFile(join(
+  const manifest: unknown = JSON.parse(await readFile(join(
     THEMES_DIR,
     themeName,
     'manifest.json'
@@ -37,14 +22,10 @@ async function getTheme (themeName: string): Promise<RepluggedTheme> {
     encoding: 'utf-8'
   }));
 
-  if (validateThemeManifest(manifest)) {
-    return {
-      id: themeName,
-      manifest
-    };
-  }
-
-  throw new Error(`Invalid manifest for theme '${themeName}'`);
+  return {
+    id: themeName,
+    manifest: theme.parse(manifest)
+  };
 }
 
 ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedTheme[]> => {
