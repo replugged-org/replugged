@@ -54,7 +54,7 @@ export type RepluggedCommand = {
   name: string,
   description: string,
   usage: string,
-  executor: (args: any) => void,
+  executor: (args: unknown) => void,
   options: CommandOptions
 };
 

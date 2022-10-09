@@ -12,10 +12,18 @@ export async function loadMissing () {
   disabled = await window.RepluggedNative.themes.listDisabled();
 }
 
+export function unload (themeName: string) {
+  if (themeElements.has(themeName)) {
+    themeElements.get(themeName)?.remove();
+    themeElements.delete(themeName);
+  }
+}
+
 export function load (themeName: string) {
   if (!themes.has(themeName)) {
     throw new Error(`Theme not found: ${themeName}`);
   }
+  unload(themeName);
   const theme = themes.get(themeName) as Theme;
   const e = document.createElement('link');
   e.rel = 'stylesheet';
@@ -23,13 +31,6 @@ export function load (themeName: string) {
   e.href = `replugged://theme/${themeName}/${theme.main}`;
   themeElements.set(themeName, e);
   document.head.appendChild(e);
-}
-
-export function unload (themeName: string) {
-  if (themeElements.has(themeName)) {
-    themeElements.get(themeName)?.remove();
-    themeElements.delete(themeName);
-  }
 }
 
 export function loadAll () {

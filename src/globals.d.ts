@@ -7,7 +7,7 @@ import { RepluggedNativeType } from './preload';
 /* eslint-disable no-var */
 declare global {
   export var appSettings: {
-    set(setting: string, v: any): void;
+    set(setting: string, v: unknown): void;
   };
 
   interface Window {
