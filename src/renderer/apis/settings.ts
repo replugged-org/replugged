@@ -1,5 +1,5 @@
 import { Settings } from '../../types/settings';
-import API from './api';
+import API from '../entities/api';
 
 class NamespacedSettings<T extends Settings> {
   namespace: string;
@@ -45,8 +45,12 @@ class NamespacedSettings<T extends Settings> {
   }
 }
 
-export default class SettingsAPI extends API {
+class SettingsAPI extends API {
   settings: Record<string, NamespacedSettings<any>> = {};
+
+  constructor () {
+    super('Settings');
+  }
 
   get <T extends Settings> (namespace: string): NamespacedSettings<T> {
     if (!this.settings[namespace]) {
@@ -55,3 +59,5 @@ export default class SettingsAPI extends API {
     return this.settings[namespace];
   }
 }
+
+export default new SettingsAPI();

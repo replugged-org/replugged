@@ -1,8 +1,10 @@
 import { ModuleExports, ModuleExportsWithProps, RawModule, RawModuleWithProps, WebpackChunk, WebpackChunkGlobal, WebpackRequire } from '../../types/discord';
 import { LazyCallback, Filter, LazyListener, RawLazyCallback } from '../../types/webpack';
 
-export let instance: WebpackRequire;
+export let wpRequire: WebpackRequire;
 export let ready = false;
+
+export const sourceStrings: Record<number, string> = {};
 
 const listeners = new Set<LazyListener>();
 
@@ -14,6 +16,7 @@ function patchPush (webpackChunk: WebpackChunkGlobal) {
 
     for (const id in modules) {
       const mod = modules[id];
+      sourceStrings[id] = mod.toString();
       modules[id] = function (module, exports, require) {
         mod(module, exports, require);
 
@@ -36,7 +39,7 @@ function patchPush (webpackChunk: WebpackChunkGlobal) {
 }
 
 function loadWebpackModules (webpackChunk: WebpackChunkGlobal) {
-  instance = webpackChunk.push([
+  wpRequire = webpackChunk.push([
     [ Symbol('replugged') ],
     {},
     (r: WebpackRequire) => r
@@ -48,7 +51,7 @@ function loadWebpackModules (webpackChunk: WebpackChunkGlobal) {
 }
 
 
-// Because using a timer is bad, thanks venny-neko
+// Because using a timer is bad, thanks Ven
 // https://github.com/Vendicated/Vencord/blob/ef353f1d66dbf1d14e528830d267aac518ed1beb/src/webpack/patchWebpack.ts
 let webpackChunk: WebpackChunkGlobal | undefined;
 
@@ -74,7 +77,7 @@ function getExports (m: RawModule): ModuleExports | undefined {
 }
 
 export function getRawModule (filter: Filter): RawModule | undefined {
-  return Object.values(instance.c).find(filter);
+  return Object.values(wpRequire.c).find(filter);
 }
 
 export function getModule (filter: Filter): ModuleExports | undefined {
@@ -85,7 +88,7 @@ export function getModule (filter: Filter): ModuleExports | undefined {
 }
 
 export function getAllRawModules (filter?: Filter): RawModule[] {
-  const unfiltered = Object.values(instance.c);
+  const unfiltered = Object.values(wpRequire.c);
   if (filter) {
     return unfiltered.filter(filter);
   }
@@ -182,4 +185,21 @@ export function waitFor (filter: Filter): Promise<ModuleExports> {
       resolve(exports);
     });
   });
+}
+
+/*
+function sourceMatch(id: number, match: string | RegExp): boolean {
+  const isRegexp = match instanceof RegExp;
+  return isRegexp ? match.test(sourceStrings[id]) : sourceStrings[id].includes(match);
+}
+*/
+
+export function getIdBySource (match: string | RegExp): number {
+  const isRegexp = match instanceof RegExp;
+  for (const id in sourceStrings) {
+    if (isRegexp ? match.test(sourceStrings[id]) : sourceStrings[id].includes(match)) {
+      return Number(id);
+    }
+  }
+  return 1;
 }

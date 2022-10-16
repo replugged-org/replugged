@@ -1,8 +1,12 @@
-import API from './api';
+import API from '../entities/api';
 import { RepluggedConnection } from '../../types';
 
-module.exports = class ConnectionsAPI extends API {
+class ConnectionsAPI extends API {
   connections: RepluggedConnection[] = [];
+
+  constructor () {
+    super('Connections');
+  }
 
   get map () {
     return this.connections.map.bind(this.connections);
@@ -37,4 +41,6 @@ module.exports = class ConnectionsAPI extends API {
 
     return connections[type] || null;
   }
-};
+}
+
+export default new ConnectionsAPI();

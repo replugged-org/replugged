@@ -160,3 +160,38 @@ export function after (obj: Patchable, funcName: string, cb: AfterCallback): () 
   });
   return uninjectInjection;
 }
+
+export class MiniInjector {
+  uninjectors: (() => void)[];
+
+  constructor () {
+    this.uninjectors = [];
+  }
+
+  before (obj: Patchable, funcName: string, cb: BeforeCallback): () => void {
+    const uninjector = before(obj, funcName, cb);
+    this.uninjectors.push(uninjector);
+    return uninjector;
+  }
+
+  instead (obj: Patchable, funcName: string, cb: BeforeCallback): () => void {
+    const uninjector = instead(obj, funcName, cb);
+    this.uninjectors.push(uninjector);
+    return uninjector;
+  }
+
+  after (obj: Patchable, funcName: string, cb: BeforeCallback): () => void {
+    const uninjector = after(obj, funcName, cb);
+    this.uninjectors.push(uninjector);
+    return uninjector;
+  }
+
+  uninjectAll () {
+    for (const uninjector of this.uninjectors) {
+      if (typeof uninjector === 'function') {
+        uninjector();
+      }
+    }
+    this.uninjectors = [];
+  }
+}
