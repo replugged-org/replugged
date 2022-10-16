@@ -135,6 +135,21 @@ export function getRawByProps <P extends string> (...props: P[]): RawModuleWithP
   return getRawModule(byPropsFilter(props)) as RawModuleWithProps<P> | undefined;
 }
 
+export function getRawById (id: number): RawModule | undefined {
+  if (!(id in wpRequire.c)) {
+    wpRequire(id);
+  }
+
+  return wpRequire.c[id];
+}
+
+export function getById (id: number): ModuleExports | undefined {
+  const raw = getRawById(id);
+  if (typeof raw !== 'undefined') {
+    return getExports(raw);
+  }
+}
+
 export function getAllByProps <P extends string> (...props: P[]): ModuleExportsWithProps<P>[] {
   return byPropsInternal(props, true);
 }
@@ -187,19 +202,40 @@ export function waitFor (filter: Filter): Promise<ModuleExports> {
   });
 }
 
-/*
-function sourceMatch(id: number, match: string | RegExp): boolean {
+function getIdBySource (match: string | RegExp): number | undefined {
   const isRegexp = match instanceof RegExp;
-  return isRegexp ? match.test(sourceStrings[id]) : sourceStrings[id].includes(match);
-}
-*/
-
-export function getIdBySource (match: string | RegExp): number {
-  const isRegexp = match instanceof RegExp;
-  for (const id in sourceStrings) {
-    if (isRegexp ? match.test(sourceStrings[id]) : sourceStrings[id].includes(match)) {
-      return Number(id);
-    }
+  const id = Object.entries(sourceStrings)
+    .find(([ , source ]) => isRegexp ? match.test(source) : source.includes(match))?.[0];
+  if (id) {
+    return Number(id);
   }
-  return 1;
+}
+
+function getAllIdBySource (match: string | RegExp): number[] {
+  const isRegexp = match instanceof RegExp;
+  return Object.entries(sourceStrings)
+    .filter(([ , source ]) => isRegexp ? match.test(source) : source.includes(match))
+    .map(([ id ]) => Number(id));
+}
+
+export function getRawBySource (match: string | RegExp): RawModule | undefined {
+  const id = getIdBySource(match);
+  if (typeof id !== 'undefined') {
+    return getRawById(id);
+  }
+}
+
+export function getBySource (match: string | RegExp): ModuleExports | undefined {
+  const raw = getRawBySource(match);
+  if (typeof raw !== 'undefined') {
+    return getExports(raw);
+  }
+}
+
+export function getAllRawBySource (match: string | RegExp): RawModule[] {
+  return getAllIdBySource(match).map(getRawById).filter((m): m is RawModule => typeof m !== 'undefined');
+}
+
+export function getAllBySource (match: string | RegExp): ModuleExports[] {
+  return getAllRawBySource(match).map(getExports).filter((m): m is ModuleExports => typeof m !== 'undefined');
 }
