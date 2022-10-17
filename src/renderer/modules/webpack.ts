@@ -41,8 +41,9 @@ function patchPush (webpackChunk: WebpackChunkGlobal) {
     const modules = chunk[1];
 
     for (const id in modules) {
-      const mod = patchModuleSource(modules[id]);
-      sourceStrings[id] = mod.toString();
+      const originalMod = modules[id];
+      sourceStrings[id] = originalMod.toString();
+      const mod = patchModuleSource(originalMod);
       modules[id] = function (module, exports, require) {
         mod(module, exports, require);
 
