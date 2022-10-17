@@ -1,5 +1,5 @@
-import { ModuleExports, ModuleExportsWithProps, RawModule, RawModuleWithProps, WebpackChunk, WebpackChunkGlobal, WebpackRequire } from '../../types/discord';
-import { LazyCallback, Filter, LazyListener, RawLazyCallback } from '../../types/webpack';
+import { ModuleExports, ModuleExportsWithProps, RawModule, RawModuleWithProps, WebpackChunk, WebpackChunkGlobal, WebpackModule, WebpackRequire } from '../../types/discord';
+import { LazyCallback, Filter, LazyListener, RawLazyCallback, PlaintextPatch, RawPlaintextPatch } from '../../types/webpack';
 
 export let wpRequire: WebpackRequire;
 export let ready = false;
@@ -7,6 +7,32 @@ export let ready = false;
 export const sourceStrings: Record<number, string> = {};
 
 const listeners = new Set<LazyListener>();
+const plaintextPatches: RawPlaintextPatch[] = [];
+
+function patchModuleSource (mod: WebpackModule): WebpackModule {
+  const originalSource = mod.toString();
+
+  const patchedSource = plaintextPatches.reduce((source, patch) => {
+    if (patch.find && !source.includes(patch.find)) {
+      return source;
+    }
+
+    const result = patch.replacements.reduce((source, patch) => patch(source), source);
+
+    if (result === source) {
+      return source;
+    }
+
+    return result;
+  }, originalSource);
+
+  if (patchedSource === originalSource) {
+    return mod;
+  }
+
+  // eslint-disable-next-line no-eval
+  return eval(patchedSource);
+}
 
 function patchPush (webpackChunk: WebpackChunkGlobal) {
   let original = webpackChunk.push;
@@ -15,7 +41,7 @@ function patchPush (webpackChunk: WebpackChunkGlobal) {
     const modules = chunk[1];
 
     for (const id in modules) {
-      const mod = modules[id];
+      const mod = patchModuleSource(modules[id]);
       sourceStrings[id] = mod.toString();
       modules[id] = function (module, exports, require) {
         mod(module, exports, require);
@@ -238,4 +264,14 @@ export function getAllRawBySource (match: string | RegExp): RawModule[] {
 
 export function getAllBySource (match: string | RegExp): ModuleExports[] {
   return getAllRawBySource(match).map(getExports).filter((m): m is ModuleExports => typeof m !== 'undefined');
+}
+
+export function patchPlaintext (patches: PlaintextPatch[]) {
+  plaintextPatches.push(...patches.map(patch => ({ ...patch,
+    replacements: patch.replacements.map(replacement => typeof replacement === 'function'
+      ? replacement
+      // Why? Because https://github.com/microsoft/TypeScript/issues/14107
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      : (source: string) => source.replace(replacement.match, replacement.replace)) })));
 }

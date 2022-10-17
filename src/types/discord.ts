@@ -16,13 +16,15 @@ export type WebpackRequire = ((e: number) => ModuleExports) & {
   c: WebpackRequireCache;
 };
 
+export type WebpackModule = (
+  wpModule: RawModule,
+  wpExports: typeof wpModule.exports,
+  wpRequire: WebpackRequire
+) => void;
+
 export type WebpackChunk = [
   (symbol | number)[],
-  Record<number, (
-    wpModule: RawModule,
-    wpExports: typeof wpModule.exports,
-    wpRequire: WebpackRequire
-  ) => void>,
+  Record<number, WebpackModule>,
   ((r: WebpackRequire) => unknown)?
 ];
 
