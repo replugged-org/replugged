@@ -72,6 +72,7 @@
 			"allowElseIf": true
 		}],
 		"@typescript-eslint/no-empty-function": [ "error" ],
+    "@typescript-eslint/no-non-null-assertion": "off",
 		"no-empty-pattern": [ "error" ],
 		"no-eq-null": [ "error" ],
 		"no-eval": [ "error" ],
