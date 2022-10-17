@@ -1,12 +1,10 @@
+import { ModuleExports } from '../../types/discord';
+
 enum InjectionTypes {
   Before,
   Instead,
   After
 }
-
-type Patchable = {
-  [x: string]: (...args: unknown[]) => unknown;
-};
 
 type BeforeCallback = (args: unknown[]) => unknown[] | undefined;
 type InsteadCallback = (args: unknown[], orig: (...args: unknown[]) => unknown) => unknown | undefined;
@@ -15,7 +13,7 @@ type InjectionCallback = BeforeCallback | InsteadCallback | AfterCallback;
 
 interface Injection {
   id: symbol;
-  obj: Patchable;
+  obj: ModuleExports;
   funcName: string;
   type: InjectionTypes;
   cb: InjectionCallback;
@@ -23,7 +21,7 @@ interface Injection {
 }
 
 interface ObjectInjections {
-  obj: Patchable;
+  obj: ModuleExports;
   injections: Map<string, {
     before: Injection[];
     instead: Injection[];
@@ -32,9 +30,9 @@ interface ObjectInjections {
   original: Map<string, (...args: unknown[]) => unknown>;
 }
 
-const injections = new Map<Patchable, ObjectInjections>();
+const injections = new Map<ModuleExports, ObjectInjections>();
 
-function replaceMethod (obj: Patchable, funcName: string): ObjectInjections {
+function replaceMethod (obj: ModuleExports, funcName: string): ObjectInjections {
   let objInjections: ObjectInjections;
   if (injections.has(obj)) {
     objInjections = injections.get(obj) as ObjectInjections;
@@ -116,7 +114,7 @@ export function uninject (id: symbol): void {
   }
 }
 
-export function before (obj: Patchable, funcName: string, cb: BeforeCallback): () => void {
+export function before (obj: ModuleExports, funcName: string, cb: BeforeCallback): () => void {
   const objInjections = replaceMethod(obj, funcName);
   const id = Symbol('before');
   const uninjectInjection = () => uninject(id);
@@ -131,7 +129,7 @@ export function before (obj: Patchable, funcName: string, cb: BeforeCallback): (
   return uninjectInjection;
 }
 
-export function instead (obj: Patchable, funcName: string, cb: InsteadCallback): () => void {
+export function instead (obj: ModuleExports, funcName: string, cb: InsteadCallback): () => void {
   const objInjections = replaceMethod(obj, funcName);
   const id = Symbol('instead');
   const uninjectInjection = () => uninject(id);
@@ -146,7 +144,7 @@ export function instead (obj: Patchable, funcName: string, cb: InsteadCallback):
   return uninjectInjection;
 }
 
-export function after (obj: Patchable, funcName: string, cb: AfterCallback): () => void {
+export function after (obj: ModuleExports, funcName: string, cb: AfterCallback): () => void {
   const objInjections = replaceMethod(obj, funcName);
   const id = Symbol('after');
   const uninjectInjection = () => uninject(id);
@@ -168,19 +166,19 @@ export class MiniInjector {
     this.uninjectors = [];
   }
 
-  before (obj: Patchable, funcName: string, cb: BeforeCallback): () => void {
+  before (obj: ModuleExports, funcName: string, cb: BeforeCallback): () => void {
     const uninjector = before(obj, funcName, cb);
     this.uninjectors.push(uninjector);
     return uninjector;
   }
 
-  instead (obj: Patchable, funcName: string, cb: BeforeCallback): () => void {
+  instead (obj: ModuleExports, funcName: string, cb: BeforeCallback): () => void {
     const uninjector = instead(obj, funcName, cb);
     this.uninjectors.push(uninjector);
     return uninjector;
   }
 
-  after (obj: Patchable, funcName: string, cb: BeforeCallback): () => void {
+  after (obj: ModuleExports, funcName: string, cb: BeforeCallback): () => void {
     const uninjector = after(obj, funcName, cb);
     this.uninjectors.push(uninjector);
     return uninjector;
