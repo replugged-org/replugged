@@ -1,6 +1,6 @@
 import * as repluggedLogger from '../modules/logger';
 
-export default class EntityBase extends EventTarget {
+export default abstract class EntityBase extends EventTarget {
   name: string;
   static entityType = 'EntityBase';
 
