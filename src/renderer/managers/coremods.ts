@@ -1,8 +1,10 @@
 import SettingsMod from '../coremods/settings';
 import Coremod from '../entities/coremod';
+import ExperimentsMod from "../coremods/experiments";
 
 const coremods: Record<string, Coremod> = {
-  settings: new SettingsMod()
+  settings: new SettingsMod(),
+  experiments: new ExperimentsMod()
 };
 
 export function load (name: string) {
