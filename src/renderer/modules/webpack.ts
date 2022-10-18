@@ -78,7 +78,7 @@ function loadWebpackModules (webpackChunk: WebpackChunkGlobal) {
 }
 
 
-// Because using a timer is bad, thanks Ven
+// Because using a timer is bad, thanks Venny-neko
 // https://github.com/Vendicated/Vencord/blob/ef353f1d66dbf1d14e528830d267aac518ed1beb/src/webpack/patchWebpack.ts
 let webpackChunk: WebpackChunkGlobal | undefined;
 
