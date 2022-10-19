@@ -18,10 +18,10 @@ export default class ExperimentsMod extends Coremod<{
 
     if (enabled) {
       patchPlaintext([ {
-        find: 'Object.defineProperties(this,{isDeveloper',
+        find: /\.displayName="(Developer)?ExperimentStore"/,
         replacements: [ {
-          match: /(?<={isDeveloper:\{[^}]+,get:function\(\)\{return )\w/,
-          replace: 'true'
+          match: "window.GLOBAL_ENV.RELEASE_CHANNEL",
+          replace: '"staging"'
         } ]
       } ]);
     }
