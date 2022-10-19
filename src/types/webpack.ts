@@ -13,7 +13,7 @@ export interface RegexReplacement {
 
 export type PlaintextReplacer = (source: string) => string;
 export interface PlaintextPatch {
-  find?: string;
+  find?: string | RegExp;
   replacements: (PlaintextReplacer | RegexReplacement)[]
 }
 
