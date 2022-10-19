@@ -1,6 +1,7 @@
 import { default as EntityBase } from './base';
 import { MiniInjector } from '../modules/injector';
-import settings, { NamespacedSettings } from "../apis/settings";
+import settings from '../apis/settings';
+import { NamespacedSettings } from '../apis/settings';
 import { Settings } from '../../types/settings';
 import { EntityType } from '../../types/entities';
 

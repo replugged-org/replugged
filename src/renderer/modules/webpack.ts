@@ -5,13 +5,13 @@ export let wpRequire: WebpackRequire;
 
 let signalReady: () => void;
 export let ready = false;
-export let waitForReady = new Promise<void>((resolve) => signalReady = () => {
+export const waitForReady = new Promise<void>((resolve) => signalReady = () => {
   ready = true;
-  resolve()
+  resolve();
 });
 
 export let signalStart: () => void;
-export let waitForStart = new Promise<void>((resolve) => signalStart = resolve);
+export const waitForStart = new Promise<void>((resolve) => signalStart = resolve);
 
 export const sourceStrings: Record<number, string> = {};
 
@@ -96,7 +96,6 @@ Object.defineProperty(window, 'webpackChunkdiscord_app', {
   get: () => webpackChunk,
   set: (v) => {
     if (!ready && v?.push !== Array.prototype.push) {
-
       loadWebpackModules(v);
     }
     webpackChunk = v;

@@ -17,7 +17,7 @@ async function getPlugin (pluginName: string): Promise<RepluggedPlugin> {
     PLUGINS_DIR,
     pluginName,
     'manifest.json'
-    ), {
+  ), {
     encoding: 'utf-8'
   }));
 
@@ -51,4 +51,4 @@ ipcMain.handle(
       force: true
     });
   }
-  );
+);

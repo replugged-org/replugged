@@ -1,23 +1,23 @@
 import toposort from 'toposort';
-import SettingsMod from "../coremods/settings";
-import ExperimentsMod from "../coremods/experiments";
-import Coremod from "../entities/coremod";
+import SettingsMod from '../coremods/settings';
+import ExperimentsMod from '../coremods/experiments';
+import Coremod from '../entities/coremod';
 import Target from '../entities/target';
-import {signalStart, waitForReady} from "../modules/webpack";
-import {log} from "../modules/logger";
+import { signalStart, waitForReady } from '../modules/webpack';
+import { log } from '../modules/logger';
 
-export const dependencies: [string, string][] = []
+export const dependencies: [string, string][] = [];
 export const entities: Record<string, Coremod<any>> = {};
 
 export function add (entity: Coremod<any>) {
   entities[entity.id] = entity;
-  dependencies.push(...entity.dependencies.map(d => [entity.id, d] as [string, string]))
+  dependencies.push(...entity.dependencies.map(d => [ entity.id, d ] as [string, string]));
 }
 
 export async function start () {
   const order = toposort(dependencies).reverse();
 
-  log('Ignition', 'Start', void 0, 'Igniting Replugged...')
+  log('Ignition', 'Start', void 0, 'Igniting Replugged...');
 
   const startTime = performance.now();
   for (const id of order) {
@@ -26,13 +26,13 @@ export async function start () {
   }
   const endTime = performance.now();
 
-  log('Ignition', 'Start', void 0, `Finished igniting Replugged in ${endTime - startTime}ms`)
+  log('Ignition', 'Start', void 0, `Finished igniting Replugged in ${endTime - startTime}ms`);
 }
 
 export async function stop () {
   const order = toposort(dependencies);
 
-  log('Ignition', 'Stop', void 0, 'De-igniting Replugged...')
+  log('Ignition', 'Stop', void 0, 'De-igniting Replugged...');
 
   const startTime = performance.now();
   for (const id of order) {
@@ -41,7 +41,7 @@ export async function stop () {
   }
   const endTime = performance.now();
 
-  log('Ignition', 'Stop', void 0, `Finished de-igniting Replugged in ${endTime - startTime}ms`)
+  log('Ignition', 'Stop', void 0, `Finished de-igniting Replugged in ${endTime - startTime}ms`);
 }
 
 export async function restart () {
@@ -53,18 +53,18 @@ export async function restart () {
 
 class StartTarget extends Target {
   dependencies = [];
-  dependents = []
+  dependents = [];
 
-  constructor() {
+  constructor () {
     super('dev.replugged.lifecycle.Start', 'Start');
   }
 }
 
 class WebpackReadyTarget extends Target {
-  dependencies = ["dev.replugged.lifecycle.Start"];
-  dependents = []
+  dependencies = [ 'dev.replugged.lifecycle.Start' ];
+  dependents = [];
 
-  constructor() {
+  constructor () {
     super('dev.replugged.lifecycle.WebpackReady', 'WebpackReady');
   }
 
@@ -75,10 +75,10 @@ class WebpackReadyTarget extends Target {
 }
 
 class WebpackStartTarget extends Target {
-  dependencies = ["dev.replugged.lifecycle.WebpackReady"];
-  dependents = []
+  dependencies = [ 'dev.replugged.lifecycle.WebpackReady' ];
+  dependents = [];
 
-  constructor() {
+  constructor () {
     super('dev.replugged.lifecycle.WebpackStart', 'WebpackStart');
   }
 
@@ -88,8 +88,8 @@ class WebpackStartTarget extends Target {
   }
 }
 
-add(new StartTarget())
-add(new WebpackReadyTarget())
-add(new WebpackStartTarget())
-add(new SettingsMod())
-add(new ExperimentsMod())
+add(new StartTarget());
+add(new WebpackReadyTarget());
+add(new WebpackStartTarget());
+add(new SettingsMod());
+add(new ExperimentsMod());
