@@ -1,10 +1,10 @@
 import toposort from 'toposort';
-import SettingsMod from "../coremods/settings";
-import ExperimentsMod from "../coremods/experiments";
-import Coremod from "../entities/coremod";
+import SettingsMod from '../coremods/settings';
+import ExperimentsMod from '../coremods/experiments';
+import Coremod from '../entities/coremod';
 import Target from '../entities/target';
-import {signalStart, waitForReady} from "../modules/webpack";
-import {log} from "../modules/logger";
+import { signalStart, waitForReady } from '../modules/webpack';
+import { log } from '../modules/logger';
 
 export const entities: Record<string, Coremod<any>> = {};
 
@@ -13,19 +13,19 @@ export function add (entity: Coremod<any>) {
 }
 
 function buildDepChain () {
-  const deps = Object.entries(entities).map(([id, entity]) => ({
+  const deps = Object.entries(entities).map(([ id, entity ]) => ({
     id,
-    dependencies: [...entity.dependencies, ...entity.optionalDependencies.filter(d => d in entities)],
-    dependents: [...entity.dependents, ...entity.optionalDependents.filter(d => d in entities)]
-  }))
+    dependencies: [ ...entity.dependencies, ...entity.optionalDependencies.filter(d => d in entities) ],
+    dependents: [ ...entity.dependents, ...entity.optionalDependents.filter(d => d in entities) ]
+  }));
 
-  return deps.flatMap((d) => [...d.dependencies.map(id => [d.id, id]), ...d.dependents.map(id => [id, d.id])]) as [string, string][]
+  return deps.flatMap((d) => [ ...d.dependencies.map(id => [ d.id, id ]), ...d.dependents.map(id => [ id, d.id ]) ]) as [string, string][];
 }
 
 export async function start () {
   const order = toposort(buildDepChain()).reverse();
 
-  log('Ignition', 'Start', void 0, 'Igniting Replugged...')
+  log('Ignition', 'Start', void 0, 'Igniting Replugged...');
 
   const startTime = performance.now();
   for (const id of order) {
@@ -34,13 +34,13 @@ export async function start () {
   }
   const endTime = performance.now();
 
-  log('Ignition', 'Start', void 0, `Finished igniting Replugged in ${endTime - startTime}ms`)
+  log('Ignition', 'Start', void 0, `Finished igniting Replugged in ${endTime - startTime}ms`);
 }
 
 export async function stop () {
   const order = toposort(buildDepChain());
 
-  log('Ignition', 'Stop', void 0, 'De-igniting Replugged...')
+  log('Ignition', 'Stop', void 0, 'De-igniting Replugged...');
 
   const startTime = performance.now();
   for (const id of order) {
@@ -49,7 +49,7 @@ export async function stop () {
   }
   const endTime = performance.now();
 
-  log('Ignition', 'Stop', void 0, `Finished de-igniting Replugged in ${endTime - startTime}ms`)
+  log('Ignition', 'Stop', void 0, `Finished de-igniting Replugged in ${endTime - startTime}ms`);
 }
 
 export async function restart () {
@@ -61,24 +61,24 @@ export async function restart () {
 
 class StartTarget extends Target {
   dependencies = [];
-  dependents = []
-  optionalDependencies = []
-  optionalDependents = []
+  dependents = [];
+  optionalDependencies = [];
+  optionalDependents = [];
 
 
-  constructor() {
+  constructor () {
     super('dev.replugged.lifecycle.Start', 'Start');
   }
 }
 
 class WebpackReadyTarget extends Target {
-  dependencies = ["dev.replugged.lifecycle.Start"];
-  dependents = []
-  optionalDependencies = []
-  optionalDependents = []
+  dependencies = [ 'dev.replugged.lifecycle.Start' ];
+  dependents = [];
+  optionalDependencies = [];
+  optionalDependents = [];
 
 
-  constructor() {
+  constructor () {
     super('dev.replugged.lifecycle.WebpackReady', 'WebpackReady');
   }
 
@@ -89,12 +89,12 @@ class WebpackReadyTarget extends Target {
 }
 
 class WebpackStartTarget extends Target {
-  dependencies = ["dev.replugged.lifecycle.WebpackReady"];
-  dependents = []
-  optionalDependencies = []
-  optionalDependents = []
+  dependencies = [ 'dev.replugged.lifecycle.WebpackReady' ];
+  dependents = [];
+  optionalDependencies = [];
+  optionalDependents = [];
 
-  constructor() {
+  constructor () {
     super('dev.replugged.lifecycle.WebpackStart', 'WebpackStart');
   }
 
@@ -104,8 +104,8 @@ class WebpackStartTarget extends Target {
   }
 }
 
-add(new StartTarget())
-add(new WebpackReadyTarget())
-add(new WebpackStartTarget())
-add(new SettingsMod())
-add(new ExperimentsMod())
+add(new StartTarget());
+add(new WebpackReadyTarget());
+add(new WebpackStartTarget());
+add(new SettingsMod());
+add(new ExperimentsMod());

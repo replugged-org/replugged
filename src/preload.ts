@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer, webFrame } from 'electron';
 import electron from 'electron';
 
-import {RepluggedIpcChannels, RepluggedPlugin, RepluggedTheme} from './types';
+import { RepluggedIpcChannels, RepluggedPlugin, RepluggedTheme } from './types';
 import { Settings } from './types/settings';
 
 const RepluggedNative = {

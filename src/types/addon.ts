@@ -44,7 +44,7 @@ export const plugin = common.extend({
   dependents: z.object({
     required: id.array(),
     optional: id.array()
-  }).partial().optional(),
+  }).partial().optional()
 });
 
 export type Plugin = z.infer<typeof plugin>;
