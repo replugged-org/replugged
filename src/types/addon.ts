@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const id = z.string().regex(/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/);
+export const id = z.string().regex(/^(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9]$/);
 
 export type Id = z.infer<typeof id>;
 
@@ -40,7 +40,11 @@ export const plugin = common.extend({
   dependencies: z.object({
     required: id.array(),
     optional: id.array()
-  }).partial().optional()
+  }).partial().optional(),
+  dependents: z.object({
+    required: id.array(),
+    optional: id.array()
+  }).partial().optional(),
 });
 
 export type Plugin = z.infer<typeof plugin>;
