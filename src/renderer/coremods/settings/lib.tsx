@@ -13,7 +13,7 @@ interface Section {
 // signature
 export const settingsTools = {
   rpSections: [] as Section[],
-  addSection: function (
+  addSection (
     name: string,
     label: string,
     color: string | null = null,
@@ -22,31 +22,31 @@ export const settingsTools = {
   ) {
     const data: Section = {
       section: name || `REPLUGGED_${label.toUpperCase()}`,
-      label: label,
-      color: color,
+      label,
+      color,
       element: elem,
-      pos: pos === null ? -4 : pos,
+      pos: pos === null ? -4 : pos
     };
 
     settingsTools.rpSections.push(data);
     return data;
   },
-  addDivider: function (pos: number | null = null) {
+  addDivider (pos: number | null = null) {
     settingsTools.rpSections.push({
-      section: "DIVIDER",
-      pos: pos === null ? -4 : pos,
+      section: 'DIVIDER',
+      pos: pos === null ? -4 : pos
     });
   },
-  addHeader: function (label: string, pos: number | null = null) {
+  addHeader (label: string, pos: number | null = null) {
     settingsTools.rpSections.push({
-      section: "HEADER",
-      label: label,
-      pos: pos === null ? -4 : pos,
+      section: 'HEADER',
+      label,
+      pos: pos === null ? -4 : pos
     });
-  },
+  }
 };
 
-export function insertSections(sections: Section[]) {
+export function insertSections (sections: Section[]) {
   for (const section of settingsTools.rpSections) {
     sections.splice(
       section.pos < 0 ? sections.length + section.pos : section.pos,

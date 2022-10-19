@@ -20,7 +20,7 @@ export default class ExperimentsMod extends Coremod<{
       patchPlaintext([ {
         find: /\.displayName="(Developer)?ExperimentStore"/,
         replacements: [ {
-          match: "window.GLOBAL_ENV.RELEASE_CHANNEL",
+          match: 'window.GLOBAL_ENV.RELEASE_CHANNEL',
           replace: '"staging"'
         } ]
       } ]);

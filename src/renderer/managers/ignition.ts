@@ -103,8 +103,8 @@ class WebpackStartTarget extends Target {
     signalStart();
     // lexisother(TODO): Make this not do what this does, do something better
     // instead.
-    waitFor(byPropsFilter(["__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"]))
-      .then(React => window.React = React)
+    waitFor(byPropsFilter([ '__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED', 'createElement' ]))
+      .then(React => window.React = React);
   }
 }
 
