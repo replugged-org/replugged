@@ -6,16 +6,24 @@ import Target from '../entities/target';
 import {signalStart, waitForReady} from "../modules/webpack";
 import {log} from "../modules/logger";
 
-export const dependencies: [string, string][] = []
 export const entities: Record<string, Coremod<any>> = {};
 
 export function add (entity: Coremod<any>) {
   entities[entity.id] = entity;
-  dependencies.push(...entity.dependencies.map(d => [entity.id, d] as [string, string]))
+}
+
+function buildDepChain () {
+  const deps = Object.entries(entities).map(([id, entity]) => ({
+    id,
+    dependencies: [...entity.dependencies, ...entity.optionalDependencies.filter(d => d in entities)],
+    dependents: [...entity.dependents, ...entity.optionalDependents.filter(d => d in entities)]
+  }))
+
+  return deps.flatMap((d) => [...d.dependencies.map(id => [d.id, id]), ...d.dependents.map(id => [id, d.id])]) as [string, string][]
 }
 
 export async function start () {
-  const order = toposort(dependencies).reverse();
+  const order = toposort(buildDepChain()).reverse();
 
   log('Ignition', 'Start', void 0, 'Igniting Replugged...')
 
@@ -30,7 +38,7 @@ export async function start () {
 }
 
 export async function stop () {
-  const order = toposort(dependencies);
+  const order = toposort(buildDepChain());
 
   log('Ignition', 'Stop', void 0, 'De-igniting Replugged...')
 
@@ -54,6 +62,9 @@ export async function restart () {
 class StartTarget extends Target {
   dependencies = [];
   dependents = []
+  optionalDependencies = []
+  optionalDependents = []
+
 
   constructor() {
     super('dev.replugged.lifecycle.Start', 'Start');
@@ -63,6 +74,9 @@ class StartTarget extends Target {
 class WebpackReadyTarget extends Target {
   dependencies = ["dev.replugged.lifecycle.Start"];
   dependents = []
+  optionalDependencies = []
+  optionalDependents = []
+
 
   constructor() {
     super('dev.replugged.lifecycle.WebpackReady', 'WebpackReady');
@@ -77,6 +91,8 @@ class WebpackReadyTarget extends Target {
 class WebpackStartTarget extends Target {
   dependencies = ["dev.replugged.lifecycle.WebpackReady"];
   dependents = []
+  optionalDependencies = []
+  optionalDependents = []
 
   constructor() {
     super('dev.replugged.lifecycle.WebpackStart', 'WebpackStart');

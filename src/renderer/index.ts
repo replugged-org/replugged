@@ -2,4 +2,7 @@ import * as replugged from './replugged';
 
 window.replugged = replugged;
 
-replugged.ingition.start();
+(async () => {
+  await replugged.plugins.load();
+  await replugged.ingition.start();
+})();

@@ -6,5 +6,4 @@ export { default as settings } from './apis/settings';
 export * as quickCSS from './managers/quick-css';
 export * as themes from './managers/themes';
 export * as ingition from './managers/ignition';
-// export * as coremods from './managers/coremods';
-// export * as plugins from './managers/plugins';
+export * as plugins from './managers/plugins';

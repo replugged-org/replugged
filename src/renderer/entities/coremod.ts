@@ -7,6 +7,8 @@ import { EntityType } from '../../types/entities';
 export default abstract class Coremod<T extends Settings> extends EntityBase {
   abstract dependencies: string[];
   abstract dependents: string[];
+  abstract optionalDependencies: string[];
+  abstract optionalDependents: string[];
 
   protected injector: MiniInjector = new MiniInjector();
   protected settings: NamespacedSettings<T>;

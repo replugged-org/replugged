@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer, webFrame } from 'electron';
 import electron from 'electron';
 
-import { RepluggedIpcChannels, RepluggedTheme } from './types';
+import {RepluggedIpcChannels, RepluggedPlugin, RepluggedTheme} from './types';
 import { Settings } from './types/settings';
 
 const RepluggedNative = {
@@ -34,8 +34,8 @@ const RepluggedNative = {
   },
 
   plugins: {
-    list: async () => ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
-    uninstall: async (pluginName: string) => ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName)
+    list: async (): Promise<RepluggedPlugin[]> => ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
+    uninstall: async (pluginName: string): Promise<RepluggedPlugin> => ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName)
   },
 
   quickCSS: {
