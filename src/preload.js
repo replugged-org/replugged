@@ -15,6 +15,23 @@ console.log('[Replugged] Patching Discord Version');
 const scriptObserver = new MutationObserver(() => {
   const s = document.body.querySelectorAll('script[src]');
   s.forEach(script => script.remove());
+
+  const v = document.head.querySelectorAll('script')
+  v.forEach(script => {
+    if (script.innerHTML.startsWith('window.GLOBAL_ENV')) {
+      sjson = script.innerHTML;
+      sjson.BRAINTREE_KEY = 'production_5st77rrc_49pp2rp4phym7387'
+      sjson.STRIPE_KEY = 'pk_live_CUQtlpQUF0vufWpnpUmQvcdi'
+      sjson.SENTRY_TAGS = {
+        "buildId": "f81912b99394ec70de34c891c4a749c139d5b401",
+        "buildType": "normal"
+      }
+      sjson.ALGOLIA_KEY = 'aca0d7082e4e63af5ba5917d5e96bed0'
+      script.innerHTML = `${JSON.parse(sjson)}`;
+    }
+  })
+
+
 })
 scriptObserver.observe(document, { childList: true, subtree: true});
 
