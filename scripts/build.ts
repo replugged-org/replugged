@@ -9,7 +9,7 @@ const watch = process.argv.includes('--watch');
 const common: esbuild.BuildOptions = {
   absWorkingDir: path.join(__dirname, '..'),
   bundle: true,
-  minify: true,
+  minify: false,
   sourcemap: true,
   format: 'cjs' as esbuild.Format,
   logLevel: 'info',
