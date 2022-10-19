@@ -6,7 +6,7 @@ class NoticesAPI extends API {
   toasts = new Map<string, RepluggedToast>();
 
   constructor () {
-    super('Notices');
+    super('dev.replugged.apis.Notices', 'Notices');
   }
 
   sendAnnouncement (id: string, props: RepluggedAnnouncement): void {

@@ -5,7 +5,7 @@ class ConnectionsAPI extends API {
   connections: RepluggedConnection[] = [];
 
   constructor () {
-    super('Connections');
+    super('dev.replugged.apis.Connections', 'Connections');
   }
 
   get map () {

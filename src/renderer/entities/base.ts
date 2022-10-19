@@ -1,11 +1,14 @@
 import * as repluggedLogger from '../modules/logger';
+import {EntityType} from "../../types/entities";
 
 export default abstract class EntityBase extends EventTarget {
   name: string;
-  static entityType = 'EntityBase';
+  id: string;
+  static entityType = EntityType.BASE;
 
-  constructor (name: string) {
+  constructor (id: string, name: string) {
     super();
+    this.id = id;
     this.name = name;
   }
 

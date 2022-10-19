@@ -5,7 +5,7 @@ class CommandsAPI extends API {
   commands = new Map<string, RepluggedCommand>();
 
   constructor () {
-    super('Commands');
+    super('dev.replugged.apis.Commands', 'Commands');
   }
 
   get find () {

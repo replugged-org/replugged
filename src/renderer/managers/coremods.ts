@@ -2,7 +2,7 @@ import SettingsMod from '../coremods/settings';
 import Coremod from '../entities/coremod';
 import ExperimentsMod from "../coremods/experiments";
 
-const coremods: Record<string, Coremod> = {
+const coremods: Record<string, Coremod<any>> = {
   settings: new SettingsMod(),
   experiments: new ExperimentsMod()
 };

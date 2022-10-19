@@ -1,9 +1,11 @@
 import Coremod from '../../entities/coremod';
-import {patchPlaintext} from "../../modules/webpack";
+import { patchPlaintext } from "../../modules/webpack";
 
-export default class ExperimentsMod extends Coremod {
+export default class ExperimentsMod extends Coremod<{
+  enabled: boolean
+}> {
   constructor () {
-    super('experiments');
+    super('dev.replugged.coremods.Experiments', 'experiments');
   }
 
   start () {

@@ -1,11 +1,11 @@
 import { default as Coremod } from './coremod';
-import { MiniInjector } from '../modules/injector';
+import { Settings } from '../../types/settings';
+import { EntityType } from '../../types/entities';
 
-export default abstract class Plugin extends Coremod {
-  static entityType = 'Plugin';
+export default abstract class Plugin<T extends Settings> extends Coremod<T> {
+  static entityType = EntityType.PLUGIN;
 
-  constructor (name: string) {
-    super(name);
-    this.injector = new MiniInjector();
+  constructor (id: string, name: string) {
+    super(id, name);
   }
 }
