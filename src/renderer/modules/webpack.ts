@@ -160,7 +160,7 @@ function byPropsInternal <P extends string> (props: P[], all = false): (ModuleEx
   }
 }
 
-function byPropsFilter <P extends string> (props: P[]) {
+export function byPropsFilter <P extends string> (props: P[]) {
   return (m: RawModule): m is RawModuleWithProps<P> => Boolean(getExportsForProps(m, props));
 }
 

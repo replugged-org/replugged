@@ -3,7 +3,7 @@ import SettingsMod from '../coremods/settings';
 import ExperimentsMod from '../coremods/experiments';
 import Coremod from '../entities/coremod';
 import Target from '../entities/target';
-import { signalStart, waitForReady } from '../modules/webpack';
+import { byPropsFilter, getByProps, signalStart, waitFor, waitForReady } from '../modules/webpack';
 import { log } from '../modules/logger';
 
 export const entities: Record<string, Coremod<any>> = {};
@@ -101,6 +101,10 @@ class WebpackStartTarget extends Target {
   async start () {
     await super.start();
     signalStart();
+    // lexisother(TODO): Make this not do what this does, do something better
+    // instead.
+    waitFor(byPropsFilter(["__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"]))
+      .then(React => window.React = React)
   }
 }
 
