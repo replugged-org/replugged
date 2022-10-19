@@ -6,7 +6,7 @@ IPC events:
 */
 
 import { readdir, readFile, rm } from 'fs/promises';
-import path, { join, resolve } from 'path';
+import { join, resolve, extname } from 'path';
 import { ipcMain } from 'electron';
 import { RepluggedIpcChannels, RepluggedTheme } from '../../types';
 import { theme } from '../../types/addon';
@@ -33,7 +33,7 @@ ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedThem
 
   const themeDirs = (await readdir(THEMES_DIR, {
     withFileTypes: true
-  })).filter(f => f.isDirectory() || (f.isFile() && path.extname(f.name) === '.asar'));
+  })).filter(f => f.isDirectory() || (f.isFile() && extname(f.name) === '.asar'));
 
   for (const themeDir of themeDirs) {
     try {
