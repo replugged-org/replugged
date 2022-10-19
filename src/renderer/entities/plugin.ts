@@ -3,7 +3,7 @@ import { Settings } from '../../types/settings';
 import { EntityType } from '../../types/entities';
 
 export default abstract class Plugin<T extends Settings> extends Coremod<T> {
-  static entityType = EntityType.PLUGIN;
+  entityType = EntityType.PLUGIN;
 
   constructor (id: string, name: string) {
     super(id, name);

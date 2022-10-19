@@ -2,5 +2,6 @@ export enum EntityType {
   BASE = 'EntityBase',
   API = 'API',
   COREMOD = 'Coremod',
-  PLUGIN = 'Plugin'
+  PLUGIN = 'Plugin',
+  LIFECYCLE = 'Lifecycle',
 }

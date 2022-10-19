@@ -4,7 +4,7 @@ import {EntityType} from "../../types/entities";
 export default abstract class EntityBase extends EventTarget {
   name: string;
   id: string;
-  static entityType = EntityType.BASE;
+  abstract entityType: EntityType;
 
   constructor (id: string, name: string) {
     super();
@@ -13,14 +13,14 @@ export default abstract class EntityBase extends EventTarget {
   }
 
   log (...args: unknown[]) {
-    repluggedLogger.log((this.constructor as typeof EntityBase).entityType, this.name, void 0, ...args);
+    repluggedLogger.log(this.entityType, this.name, void 0, ...args);
   }
 
   warn (...args: unknown[]) {
-    repluggedLogger.warn((this.constructor as typeof EntityBase).entityType, this.name, void 0, ...args);
+    repluggedLogger.warn(this.entityType, this.name, void 0, ...args);
   }
 
   error (...args: unknown[]) {
-    repluggedLogger.error((this.constructor as typeof EntityBase).entityType, this.name, void 0, ...args);
+    repluggedLogger.error(this.entityType, this.name, void 0, ...args);
   }
 }

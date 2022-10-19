@@ -2,7 +2,16 @@ import { ModuleExports, ModuleExportsWithProps, RawModule, RawModuleWithProps, W
 import { LazyCallback, Filter, LazyListener, RawLazyCallback, PlaintextPatch, RawPlaintextPatch } from '../../types/webpack';
 
 export let wpRequire: WebpackRequire;
+
+let signalReady: () => void;
 export let ready = false;
+export let waitForReady = new Promise<void>((resolve) => signalReady = () => {
+  ready = true;
+  resolve()
+});
+
+export let signalStart: () => void;
+export let waitForStart = new Promise<void>((resolve) => signalStart = resolve);
 
 export const sourceStrings: Record<number, string> = {};
 
@@ -37,9 +46,10 @@ function patchModuleSource (mod: WebpackModule): WebpackModule {
 function patchPush (webpackChunk: WebpackChunkGlobal) {
   let original = webpackChunk.push;
 
-  function handlePush (chunk: WebpackChunk) {
-    const modules = chunk[1];
+  async function handlePush (chunk: WebpackChunk) {
+    await waitForStart;
 
+    const modules = chunk[1];
     for (const id in modules) {
       const originalMod = modules[id];
       sourceStrings[id] = originalMod.toString();
@@ -55,6 +65,7 @@ function patchPush (webpackChunk: WebpackChunkGlobal) {
         }
       };
     }
+
     return original.call(webpackChunk, chunk);
   }
 
@@ -73,8 +84,7 @@ function loadWebpackModules (webpackChunk: WebpackChunkGlobal) {
   ]) as WebpackRequire;
 
   patchPush(webpackChunk);
-
-  ready = true;
+  signalReady();
 }
 
 
@@ -85,7 +95,8 @@ let webpackChunk: WebpackChunkGlobal | undefined;
 Object.defineProperty(window, 'webpackChunkdiscord_app', {
   get: () => webpackChunk,
   set: (v) => {
-    if (!ready && v?.push !== Array.prototype.push) {
+    if (v?.push !== Array.prototype.push) {
+
       loadWebpackModules(v);
     }
     webpackChunk = v;

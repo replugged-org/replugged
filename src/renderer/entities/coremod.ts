@@ -5,16 +5,18 @@ import { Settings } from '../../types/settings';
 import { EntityType } from '../../types/entities';
 
 export default abstract class Coremod<T extends Settings> extends EntityBase {
-  injector: MiniInjector;
-  settings: NamespacedSettings<T>;
-  static entityType = EntityType.COREMOD;
+  abstract dependencies: string[];
+  abstract dependents: string[];
+
+  protected injector: MiniInjector = new MiniInjector();
+  protected settings: NamespacedSettings<T>;
+  entityType = EntityType.COREMOD;
 
   constructor (id: string, name: string) {
     super(id, name);
-    this.injector = new MiniInjector();
     this.settings = settings.get<T>(id);
   }
 
-  abstract start (): void;
-  abstract stop (): void;
+  abstract start (): Promise<void>;
+  abstract stop (): Promise<void>;
 }
