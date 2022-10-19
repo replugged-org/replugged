@@ -6,7 +6,6 @@
   "main": "dist/main/index.js",
   "scripts": {
     "build": "tsx scripts/build.ts",
-    "postinstall": "tsx scripts/build.ts",
     "watch": "tsx scripts/build.ts --watch",
     "plug": "tsx scripts/inject/index.ts inject --no-exit-codes",
     "unplug": "tsx scripts/inject/index.ts uninject --no-exit-codes",
