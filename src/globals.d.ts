@@ -11,6 +11,7 @@ declare global {
   };
 
   interface Window {
+    React: any;
     RepluggedNative: RepluggedNativeType;
     replugged: typeof replugged;
     webpackChunkdiscord_app: WebpackChunkGlobal;

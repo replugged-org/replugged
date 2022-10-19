@@ -2,13 +2,6 @@ import electron from 'electron';
 import { CommandOptions, ConnectedAccount } from './discord';
 import { Theme, Plugin } from './addon';
 
-// lexisother(NOTE): :harold:
-declare global {
-  interface Window {
-    React: any;
-  }
-}
-
 export type RepluggedWebContents = electron.WebContents & {
   originalPreload?: string;
 };
