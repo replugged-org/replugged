@@ -95,7 +95,7 @@ let webpackChunk: WebpackChunkGlobal | undefined;
 Object.defineProperty(window, 'webpackChunkdiscord_app', {
   get: () => webpackChunk,
   set: (v) => {
-    if (v?.push !== Array.prototype.push) {
+    if (!ready && v?.push !== Array.prototype.push) {
 
       loadWebpackModules(v);
     }
