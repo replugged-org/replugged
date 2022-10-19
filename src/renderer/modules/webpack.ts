@@ -22,7 +22,7 @@ function patchModuleSource (mod: WebpackModule): WebpackModule {
   const originalSource = mod.toString();
 
   const patchedSource = plaintextPatches.reduce((source, patch) => {
-    if (patch.find && !source.includes(patch.find)) {
+    if (patch.find && !(typeof patch.find === 'string' ? source.includes(patch.find) : patch.find.test(source))) {
       return source;
     }
 

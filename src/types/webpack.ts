@@ -7,7 +7,7 @@ export type LazyCallback = (module: ModuleExports) => void;
 export type LazyListener = [ Filter, RawLazyCallback ];
 
 export interface RegexReplacement {
-  match: RegExp;
+  match: RegExp | string;
   replace: string | ((substring: string, ...args: unknown[]) => string);
 }
 
@@ -18,6 +18,6 @@ export interface PlaintextPatch {
 }
 
 export interface RawPlaintextPatch {
-  find?: string;
+  find?: string | RegExp;
   replacements: PlaintextReplacer[]
 }
