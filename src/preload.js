@@ -10,6 +10,25 @@ require('./ipc/renderer');
 
 console.log('[Replugged] Loading Replugged');
 
+console.log('[Replugged] Patching Discord Version');
+
+const scriptObserver = new MutationObserver(() => {
+  const s = document.body.querySelectorAll('script[src]');
+  s.forEach(script => script.remove());
+})
+scriptObserver.observe(document, { childList: true, subtree: true});
+
+document.addEventListener('DOMContentLoaded', () => {
+  scriptObserver.disconnect();
+  const required = ['9b6a94f153ffba492ce1.js', '7f0abceb6d7835961691.js', 'd206d58f8ae85a3d1e5c.js', '6f597d3d51d44c761a42.js'];
+
+  for (let i = 0; i < required.length; i++) {
+    const script = document.createElement('script');
+    script.src = `https://discord.com/assets/${required[i]}`;
+    document.body.append(script);
+  }
+})
+
 if (global.NEW_BACKEND) {
   Object.defineProperty(window, 'platform', { get: () => require('powercord/webpack').proxiedWindow.platform });
   Object.defineProperty(window, 'GLOBAL_ENV', { get: () => require('powercord/webpack').proxiedWindow.GLOBAL_ENV });
