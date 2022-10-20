@@ -21,7 +21,12 @@ export default class SettingsMod extends Coremod<Record<string, never>> {
 
     // Add our settings elements
     settingsTools.addHeader('Replugged', 35);
-    settingsTools.addSection('rp-general', 'General', null, RPSettings, 36);
+    settingsTools.addSection({
+      name: 'rp-general',
+      label: 'General',
+      elem: RPSettings,
+      pos: 36
+    });
     settingsTools.addDivider(37);
 
     // Insert our sections into the section array

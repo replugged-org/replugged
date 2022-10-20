@@ -1,47 +1,34 @@
-// TODO(lleyton): Move these types to a proper location within the types folder
-interface Section {
-  section: string;
-  label?: string;
-  color?: string | null;
-  element?: Function;
-  pos: number;
-}
+import type {Section, SettingsTools} from "../../../types/coremods/settings";
 
 // TODO(lexisother): Turn this into a utility that plugins can import (very
 // important)
-// TODO(lleyton): Write potentially better types or update the function
+
 // signature
-export const settingsTools = {
+export const settingsTools: SettingsTools = {
   rpSections: [] as Section[],
-  addSection (
-    name: string,
-    label: string,
-    color: string | null = null,
-    elem: Function,
-    pos: number | null = null
-  ) {
+  addSection ({ name, label, color, elem, pos }) {
     const data: Section = {
       section: name || `REPLUGGED_${label.toUpperCase()}`,
       label,
       color,
       element: elem,
-      pos: pos === null ? -4 : pos
+      pos: typeof pos === 'undefined' ? -4 : pos
     };
 
     settingsTools.rpSections.push(data);
     return data;
   },
-  addDivider (pos: number | null = null) {
+  addDivider (pos) {
     settingsTools.rpSections.push({
       section: 'DIVIDER',
-      pos: pos === null ? -4 : pos
+      pos: typeof pos === 'undefined' ? -4 : pos
     });
   },
-  addHeader (label: string, pos: number | null = null) {
+  addHeader (label, pos) {
     settingsTools.rpSections.push({
       section: 'HEADER',
       label,
-      pos: pos === null ? -4 : pos
+      pos: typeof pos === 'undefined' ? -4 : pos
     });
   }
 };
