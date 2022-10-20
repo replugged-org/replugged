@@ -1,5 +1,5 @@
 import { ModuleExports, ModuleExportsWithProps, RawModule, RawModuleWithProps, WebpackChunk, WebpackChunkGlobal, WebpackModule, WebpackRequire } from '../../types/discord';
-import { LazyCallback, Filter, LazyListener, RawLazyCallback, PlaintextPatch, RawPlaintextPatch } from '../../types/webpack';
+import { Filter, LazyCallback, LazyListener, PlaintextPatch, RawLazyCallback, RawPlaintextPatch } from '../../types/webpack';
 
 export let wpRequire: WebpackRequire;
 
@@ -59,7 +59,7 @@ function patchPush (webpackChunk: WebpackChunkGlobal) {
 
         for (const [ filter, callback ] of listeners) {
           if (filter(module)) {
-            // eslint-disable-next-line callback-return
+             
             callback(module);
           }
         }
@@ -132,7 +132,7 @@ export function getAllRawModules (filter?: Filter): RawModule[] {
   return unfiltered;
 }
 
-export function getAllModules (filter?: Filter): (ModuleExports | undefined)[] {
+export function getAllModules (filter?: Filter): Array<ModuleExports | undefined> {
   return getAllRawModules(filter).map(getExports);
 }
 
@@ -141,9 +141,9 @@ function getExportsForProps <P extends string> (m: RawModule, props: P[]): Modul
     return [ m.exports, ...Object.values(m.exports) ].find(o => typeof o === 'object' && o !== null && props.every(p => p in o)) as ModuleExportsWithProps<P> | undefined;
   }
 }
-function byPropsInternal <P extends string> (props: P[], all: true): ModuleExportsWithProps<P>[];
+function byPropsInternal <P extends string> (props: P[], all: true): Array<ModuleExportsWithProps<P>>;
 function byPropsInternal <P extends string> (props: P[], all?: false): ModuleExportsWithProps<P> | undefined;
-function byPropsInternal <P extends string> (props: P[], all = false): (ModuleExportsWithProps<P> | undefined) | ModuleExportsWithProps<P>[] {
+function byPropsInternal <P extends string> (props: P[], all = false): (ModuleExportsWithProps<P> | undefined) | Array<ModuleExportsWithProps<P>> {
   const result = [];
   for (const m of getAllRawModules()) {
     const exp = getExportsForProps(m, props);
@@ -187,18 +187,18 @@ export function getById (id: number): ModuleExports | undefined {
   }
 }
 
-export function getAllByProps <P extends string> (...props: P[]): ModuleExportsWithProps<P>[] {
+export function getAllByProps <P extends string> (...props: P[]): Array<ModuleExportsWithProps<P>> {
   return byPropsInternal(props, true);
 }
 
-export function getAllRawByProps <P extends string> (...props: P[]): RawModuleWithProps<P>[] {
-  return getAllRawModules(byPropsFilter(props)) as RawModuleWithProps<P>[];
+export function getAllRawByProps <P extends string> (...props: P[]): Array<RawModuleWithProps<P>> {
+  return getAllRawModules(byPropsFilter(props)) as Array<RawModuleWithProps<P>>;
 }
 
 export function subscribeRaw (filter: Filter, callback: RawLazyCallback) {
   const raw = getRawModule(filter);
   if (raw) {
-    // eslint-disable-next-line callback-return
+     
     callback(raw);
   }
 
@@ -291,6 +291,6 @@ export function patchPlaintext (patches: PlaintextPatch[]) {
       ? replacement
       // Why? Because https://github.com/microsoft/TypeScript/issues/14107
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error
       : (source: string) => source.replace(replacement.match, replacement.replace)) })));
 }

@@ -35,7 +35,7 @@ const injections = new Map<ModuleExports, ObjectInjections>();
 function replaceMethod (obj: ModuleExports, funcName: string): ObjectInjections {
   let objInjections: ObjectInjections;
   if (injections.has(obj)) {
-    objInjections = injections.get(obj) as ObjectInjections;
+    objInjections = injections.get(obj)!;
   } else {
     objInjections = {
       obj,
@@ -160,7 +160,7 @@ export function after (obj: ModuleExports, funcName: string, cb: AfterCallback):
 }
 
 export class MiniInjector {
-  uninjectors: (() => void)[];
+  uninjectors: Array<() => void>;
 
   constructor () {
     this.uninjectors = [];

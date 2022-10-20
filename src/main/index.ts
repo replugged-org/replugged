@@ -14,7 +14,7 @@ Object.defineProperty(global, 'appSettings', {
       true
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     delete global.appSettings;
     global.appSettings = v;
   },

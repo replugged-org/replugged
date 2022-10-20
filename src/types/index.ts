@@ -1,6 +1,6 @@
 import electron from 'electron';
 import { CommandOptions, ConnectedAccount } from './discord';
-import { Theme, Plugin } from './addon';
+import { Plugin, Theme } from './addon';
 
 export type RepluggedWebContents = electron.WebContents & {
   originalPreload?: string;
@@ -24,7 +24,7 @@ export enum RepluggedIpcChannels {
   UNINSTALL_PLUGIN = 'REPLUGGED_UNINSTALL_PLUGIN'
 }
 
-export type RepluggedAnnouncement = {
+export interface RepluggedAnnouncement {
   message: string,
   color?: string,
   onClose?: () => void,
@@ -32,33 +32,33 @@ export type RepluggedAnnouncement = {
     text: string,
     onClick: () => void
   }
-};
+}
 
-export type RepluggedToastButton = {
+export interface RepluggedToastButton {
   size?: string,
   look?: string,
   color?: string,
   onClick: () => void,
   text: string
-};
+}
 
-export type RepluggedToast = {
+export interface RepluggedToast {
   header: string,
   content: string,
   timeout?: number,
   className?: string,
   buttons?: RepluggedToastButton[]
-};
+}
 
-export type RepluggedCommand = {
+export interface RepluggedCommand {
   name: string,
   description: string,
   usage: string,
   executor: (args: unknown) => void,
   options: CommandOptions
-};
+}
 
-export type RepluggedConnection = {
+export interface RepluggedConnection {
   type: string,
   name: string,
   color: string,
@@ -72,7 +72,7 @@ export type RepluggedConnection = {
   onDisconnect: () => void,
   onConnect: () => void,
   setVisibility: (visible: boolean) => boolean | void,
-};
+}
 
 export interface RepluggedTheme {
   id: string,

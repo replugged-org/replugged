@@ -1,5 +1,4 @@
-import { contextBridge, ipcRenderer, webFrame } from 'electron';
-import electron from 'electron';
+import electron, { contextBridge, ipcRenderer, webFrame } from 'electron';
 
 import { RepluggedIpcChannels, RepluggedPlugin, RepluggedTheme } from './types';
 import { Settings } from './types/settings';
@@ -53,7 +52,7 @@ const RepluggedNative = {
     endTransaction: (namespace: string, settings: Settings | null) => ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings)
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => { } // later
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up

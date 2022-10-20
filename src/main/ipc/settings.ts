@@ -25,7 +25,7 @@ async function transaction <T> (namespace: string, handler: TransactionHandler<T
   const lock = locks[namespace] ?? Promise.resolve();
 
   const result = lock.then(() => handler());
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   locks[namespace] = result.catch(() => {});
   return result;
 }

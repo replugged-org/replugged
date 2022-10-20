@@ -1,0 +1,43 @@
+extends: eslint-config-dmitmel/presets/node
+env:
+  browser: true
+parserOptions:
+  sourceType: module
+
+rules:
+  func-names: off
+
+  node/no-unsupported-features/es-syntax:
+    - error
+    - ignores:
+        - modules
+        - dynamicImport
+  node/no-unsupported-features/es-builtins:
+    - error
+    - ignores:
+        - globalThis
+  node/no-unsupported-features/node-builtins:
+    - error
+    - ignores:
+        - fs.promises
+
+  node/no-unpublished-import: off
+  node/no-unpublished-require: off
+  node/shebang: off
+
+overrides:
+  - files: "**/*.ts"
+    extends: eslint-config-dmitmel/presets/typescript-addon
+    rules:
+      node/no-missing-import: off
+
+  - files: "**/src/**/*.ts"
+    extends: eslint-config-dmitmel/rules/typescript/with-type-checking
+
+  - files: "**/*.d.ts"
+    rules:
+      no-var: off
+
+  - files: "src/**/*.ts"
+    parserOptions:
+      project: tsconfig.json

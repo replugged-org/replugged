@@ -3,7 +3,7 @@
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { execSync } from 'child_process';
-import { BasicMessages, AnsiEscapes } from '../util';
+import { AnsiEscapes, BasicMessages } from '../util';
 
 const rootPath = join(__dirname, '..', '..', '..');
 const nodeModulesPath = join(rootPath, 'node_modules');
