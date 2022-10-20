@@ -14,21 +14,21 @@ export async function get <T extends typeof Plugin> (plugin: RepluggedPlugin): P
     optionalDependencies = plugin.manifest.dependencies?.optional ?? [];
     optionalDependents = plugin.manifest.dependents?.optional ?? [];
 
+    context: PluginContext<any> = {
+      injector: this.injector,
+      settings: this.settings
+    };
+
     constructor () {
       super(plugin.manifest.id, plugin.manifest.name);
     }
 
     async start () {
-      const context: PluginContext<any> = {
-        injector: this.injector,
-        settings: this.settings
-      };
-
-      await renderer.start(context);
+      await renderer.start(this.context);
     }
 
     async stop () {
-      await renderer.stop();
+      await renderer.stop(this.context);
     }
   };
 }
