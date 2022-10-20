@@ -19,7 +19,7 @@ function buildDepChain () {
     dependents: [ ...entity.dependents, ...entity.optionalDependents.filter(d => d in entities) ]
   }));
 
-  return deps.flatMap((d) => [ ...d.dependencies.map(id => [ d.id, id ]), ...d.dependents.map(id => [ id, d.id ]) ]) as [string, string][];
+  return deps.flatMap((d) => [ ...d.dependencies.map(id => [ d.id, id ]), ...d.dependents.map(id => [ id, d.id ]) ]) as Array<[string, string]>;
 }
 
 export async function start () {

@@ -24,7 +24,7 @@ export function load (themeName: string) {
     throw new Error(`Theme not found: ${themeName}`);
   }
   unload(themeName);
-  const theme = themes.get(themeName) as Theme;
+  const theme = themes.get(themeName)!;
   const e = document.createElement('link');
   e.rel = 'stylesheet';
   // This will need to change a little bit for the splash screen

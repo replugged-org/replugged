@@ -5,8 +5,8 @@ IPC events:
 - REPLUGGED_UNINSTALL_THEME: uninstalls a theme by name
 */
 
-import { readdir, readFile, rm } from 'fs/promises';
-import { join, resolve, extname } from 'path';
+import { readFile, readdir, rm } from 'fs/promises';
+import { extname, join, resolve } from 'path';
 import { ipcMain } from 'electron';
 import { RepluggedIpcChannels, RepluggedTheme } from '../../types';
 import { theme } from '../../types/addon';

@@ -1,5 +1,5 @@
 import { existsSync } from 'fs';
-import { mkdir, writeFile, rm } from 'fs/promises';
+import { mkdir, rm, writeFile } from 'fs/promises';
 import { join, sep } from 'path';
 import { AnsiEscapes } from './util';
 import readline from 'readline';

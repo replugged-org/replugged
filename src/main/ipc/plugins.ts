@@ -4,8 +4,8 @@ IPC events:
 - REPLUGGED_UNINSTALL_PLUGIN: returns whether a plugin by the provided name was successfully uninstalled
 */
 
-import { readdir, readFile, rm } from 'fs/promises';
-import { join, resolve, extname } from 'path';
+import { readFile, readdir, rm } from 'fs/promises';
+import { extname, join, resolve } from 'path';
 import { ipcMain } from 'electron';
 import { RepluggedIpcChannels, RepluggedPlugin } from '../../types';
 import { plugin } from '../../types/addon';

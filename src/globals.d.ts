@@ -4,7 +4,7 @@ import { WebpackChunkGlobal } from './types/discord';
 import * as replugged from './renderer/replugged';
 import { RepluggedNativeType } from './preload';
 
-/* eslint-disable no-var */
+ 
 declare global {
   export var appSettings: {
     set(setting: string, v: unknown): void;

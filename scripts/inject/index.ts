@@ -4,7 +4,7 @@ import './checks/env';
 
 import { join } from 'path';
 import { writeFile } from 'fs/promises';
-import { BasicMessages, AnsiEscapes } from './util';
+import { AnsiEscapes, BasicMessages } from './util';
 import { inject, uninject } from './injector';
 
 import * as darwin from './platforms/darwin';

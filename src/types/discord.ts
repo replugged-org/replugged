@@ -23,7 +23,7 @@ export type WebpackModule = (
 ) => void;
 
 export type WebpackChunk = [
-  (symbol | number)[],
+  Array<symbol | number>,
   Record<number, WebpackModule>,
   ((r: WebpackRequire) => unknown)?
 ];
@@ -42,10 +42,10 @@ export interface CommandOptions {
   description: string;
   displayDescription?: string;
   required?: boolean;
-  choices?: {
+  choices?: Array<{
     name: string;
     values: string | number;
-  }[];
+  }>;
   options?: CommandOptions[];
   channel_types?: number[];
   min_value?: number;

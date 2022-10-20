@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { execSync } from 'child_process';
 import readline from 'readline';
 import { DiscordPlatform } from '../types';
-import { AnsiEscapes, PlatformNames, BasicMessages } from '../util';
+import { AnsiEscapes, BasicMessages, PlatformNames } from '../util';
 
 const installDirFile = join(__dirname, '../../../.installdir-');
 
