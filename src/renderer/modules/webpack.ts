@@ -222,6 +222,10 @@ export function subscribe (filter: Filter, callback: LazyCallback) {
 }
 
 export function waitForRaw (filter: Filter): Promise<RawModule> {
+  const existing = getRawModule(filter);
+  if (existing) {
+    return Promise.resolve(existing);
+  }
   return new Promise((resolve) => {
     const unregister = subscribeRaw(filter, (raw) => {
       unregister();
@@ -231,6 +235,10 @@ export function waitForRaw (filter: Filter): Promise<RawModule> {
 }
 
 export function waitFor (filter: Filter): Promise<ModuleExports> {
+  const existing = getModule(filter);
+  if (existing) {
+    return Promise.resolve(existing);
+  }
   return new Promise((resolve) => {
     const unregister = subscribe(filter, (exports) => {
       unregister();
