@@ -4,6 +4,7 @@
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "dist/main/index.js",
+  "types": "src/replugged.d.ts",
   "scripts": {
     "build": "tsx scripts/build.ts",
     "watch": "tsx scripts/build.ts --watch",
