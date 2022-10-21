@@ -1,10 +1,23 @@
-extends: eslint-config-dmitmel/presets/node
+extends:
+  - eslint-config-dmitmel/presets/node
+  - plugin:import/typescript
 env:
   browser: true
 parser: "@typescript-eslint/parser"
 parserOptions:
   sourceType: module
-
+parser: "@typescript-eslint/parser"
+plugins:
+  - "@typescript-eslint"
+  - import
+settings:
+  node:
+    tryExtensions: [".js", ".json", ".node", ".ts", ".d.ts"]
+  import/parsers:
+    "@typescript-eslint/parser": [".ts", ".tsx"]
+  import/resolver:
+    typescript: true
+    node: true
 rules:
   func-names: off
   node/no-missing-import: off
