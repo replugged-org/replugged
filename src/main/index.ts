@@ -108,13 +108,11 @@ electron.app.once("ready", () => {
       return done({});
     }
 
-    Object.keys(responseHeaders)
-      .filter((k) => /^content-security-policy/i.test(k))
-      // Disable because we don't care about the "readability concerns" implied by this rule.
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      .map((k) => delete responseHeaders[k]);
+    const headersWithoutCSP = Object.fromEntries(
+      Object.entries(responseHeaders).filter(([k]) => !/^content-security-policy/i.test(k)),
+    );
 
-    done({ responseHeaders });
+    done({ responseHeaders: headersWithoutCSP });
   });
 
   electron.protocol.registerFileProtocol("replugged", (request, cb) => {
