@@ -4,5 +4,5 @@ window.replugged = replugged;
 
 (async () => {
   await replugged.plugins.load();
-  await replugged.ingition.start();
+  await replugged.ignition.start();
 })();
