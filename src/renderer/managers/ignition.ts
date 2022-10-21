@@ -6,8 +6,10 @@ import Target from "../entities/target";
 import { byPropsFilter, signalStart, waitFor, waitForReady } from "../modules/webpack";
 import { log } from "../modules/logger";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const entities: Record<string, Coremod<any>> = {};
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function add(entity: Coremod<any>): void {
   entities[entity.id] = entity;
 }
@@ -109,7 +111,7 @@ class WebpackStartTarget extends Target {
     // instead.
     await waitFor(
       byPropsFilter(["__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"]),
-    ).then((React) => (window.React = React));
+    ).then((React) => (window.React = React as typeof window.React));
   }
 }
 

@@ -73,6 +73,8 @@ ipcMain.handle(
 );
 
 ipcMain.handle(RepluggedIpcChannels.DELETE_SETTING, (_, namespace: string, key: string) =>
+  // It's user input.
+  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
   writeTransaction(namespace, async (settings) => delete settings[key]),
 );
 
@@ -105,6 +107,7 @@ ipcMain.handle(
   RepluggedIpcChannels.END_SETTINGS_TRANSACTION,
   (_, namespace: string, settings: Settings | null) => {
     ipcTransactions[namespace]?.(settings);
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete ipcTransactions[namespace];
   },
 );

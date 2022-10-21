@@ -27,6 +27,7 @@ if (!(process.platform in platformModules)) {
     `Make sure to mention the platform you are on is "${process.platform}" in your issue ticket.`,
   );
   console.log("https://github.com/replugged-org/replugged/issues/new/choose");
+  // eslint-disable-next-line no-process-exit
   process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
 }
 
@@ -35,7 +36,7 @@ const platformModule = platformModules[process.platform as keyof typeof platform
 const VALID_PLATFORMS = ["stable", "ptb", "canary", "dev"] as const;
 const checkPlatform = (platform: string): platform is DiscordPlatform =>
   VALID_PLATFORMS.includes(platform as DiscordPlatform);
-const checkInstalled = (appDir: string) => existsSync(join(appDir, ".."));
+const checkInstalled = (appDir: string): boolean => existsSync(join(appDir, ".."));
 
 let platform: DiscordPlatform | undefined;
 
@@ -55,6 +56,7 @@ let platform: DiscordPlatform | undefined;
             (x) => `${x}`,
           ).join("\n")}${AnsiEscapes.RESET}`,
         );
+        // eslint-disable-next-line no-process-exit
         process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
       } else {
         platform = platformArg;
@@ -71,13 +73,14 @@ let platform: DiscordPlatform | undefined;
             platform = current;
             break;
           }
-        } catch (e) {}
+        } catch (_e) {}
       }
 
       if (!platform) {
         console.log(
           `${AnsiEscapes.RED}Could not find any installations of Discord.${AnsiEscapes.RESET}`,
         );
+        // eslint-disable-next-line no-process-exit
         process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
       }
     }
@@ -87,7 +90,7 @@ let platform: DiscordPlatform | undefined;
   if (process.argv[2] === "inject") {
     try {
       result = await inject(platformModule, platform);
-    } catch (e) {
+    } catch (_e) {
       // this runs if path generator crashes (app folder doesnt exist)
       console.log(
         `${AnsiEscapes.RED}Platform you specified isn't installed on this device!${
@@ -96,6 +99,7 @@ let platform: DiscordPlatform | undefined;
           (x) => `${x}`,
         ).join("\n")}${AnsiEscapes.RESET}`,
       );
+      // eslint-disable-next-line no-process-exit
       process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
     }
     if (result) {
@@ -118,7 +122,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
   } else if (process.argv[2] === "uninject") {
     try {
       result = await uninject(platformModule, platform);
-    } catch (e) {
+    } catch (_e) {
       // this runs if path generator crashes (app folder doesnt exist)
       console.log(
         `${AnsiEscapes.RED}Platform you specified isn't installed on this device!${
@@ -127,6 +131,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
           (x) => `${x}`,
         ).join("\n")}${AnsiEscapes.RESET}`,
       );
+      // eslint-disable-next-line no-process-exit
       process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
     }
     if (result) {
@@ -144,6 +149,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
     }
   } else {
     console.log(`Unsupported argument "${process.argv[2]}", exiting.`);
+    // eslint-disable-next-line no-process-exit
     process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
   }
 })().catch((e) => {

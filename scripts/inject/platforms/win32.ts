@@ -9,7 +9,7 @@ const PATHS = {
   dev: "DiscordDevelopment",
 };
 
-export const getAppDir = async (platform: DiscordPlatform) => {
+export const getAppDir = async (platform: DiscordPlatform): Promise<string> => {
   const discordPath = join(process.env.LOCALAPPDATA!, PATHS[platform]);
   const discordDirectory = await readdir(discordPath);
 

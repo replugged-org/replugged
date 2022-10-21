@@ -12,7 +12,7 @@ export class NamespacedSettings<T extends Settings> {
     return window.RepluggedNative.settings.get(this.namespace, key);
   }
 
-  public set(key: Extract<keyof T, string>, value: Promise<T[keyof T]>): Promise<any> {
+  public set(key: Extract<keyof T, string>, value: Promise<T[keyof T]>): Promise<unknown> {
     return window.RepluggedNative.settings.set(this.namespace, key, value);
   }
 
@@ -46,6 +46,7 @@ export class NamespacedSettings<T extends Settings> {
 }
 
 export class SettingsAPI extends API {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public settings: Record<string, NamespacedSettings<any>> = {};
 
   public constructor() {

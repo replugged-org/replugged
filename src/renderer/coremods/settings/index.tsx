@@ -1,7 +1,7 @@
-import type React from "react";
+import React from "react";
 import Coremod from "../../entities/coremod";
 import { patchPlaintext } from "../../modules/webpack";
-import { settingsTools, insertSections } from "./lib";
+import { insertSections, settingsTools } from "./lib";
 
 export default class SettingsMod extends Coremod<Record<string, never>> {
   dependencies = ["dev.replugged.lifecycle.WebpackReady"];
@@ -13,6 +13,7 @@ export default class SettingsMod extends Coremod<Record<string, never>> {
     super("dev.replugged.coremods.Settings", "settings");
   }
 
+  // eslint-disable-next-line require-await
   async start() {
     // TODO(lexisother): Build UI
     function RPSettings() {

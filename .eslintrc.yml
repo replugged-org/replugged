@@ -1,11 +1,13 @@
 extends: eslint-config-dmitmel/presets/node
 env:
   browser: true
+parser: "@typescript-eslint/parser"
 parserOptions:
   sourceType: module
 
 rules:
   func-names: off
+  node/no-missing-import: off
 
   node/no-unsupported-features/es-syntax:
     - error

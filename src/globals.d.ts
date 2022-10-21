@@ -10,9 +10,10 @@ declare global {
   };
 
   interface Window {
-    React: any;
+    React: typeof import("react");
     RepluggedNative: RepluggedNativeType;
     replugged: typeof replugged;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     webpackChunkdiscord_app: WebpackChunkGlobal;
   }
 }

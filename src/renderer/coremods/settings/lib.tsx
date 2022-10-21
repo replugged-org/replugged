@@ -1,9 +1,8 @@
-import type { Section, SettingsTools } from "../../../types/coremods/settings";
+import { Section, SettingsTools } from "../../../types/coremods/settings";
 
 // TODO(lexisother): Turn this into a utility that plugins can import (very
 // important)
 
-// signature
 export const settingsTools: SettingsTools = {
   rpSections: [] as Section[],
   addSection({ name, label, color, elem, pos }) {

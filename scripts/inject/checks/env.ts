@@ -6,7 +6,7 @@ import { AnsiEscapes, BasicMessages } from "../util";
 const rootPath = join(__dirname, "..", "..", "..");
 const nodeModulesPath = join(rootPath, "node_modules");
 
-const installDeps = () => {
+const installDeps = (): void => {
   console.log("Installing dependencies, please wait...");
   execSync("npm install", {
     cwd: rootPath,
@@ -29,6 +29,7 @@ if (__dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
   console.log(
     `Try re-opening your command prompt ${AnsiEscapes.BOLD}without${AnsiEscapes.RESET} opening it as administrator.`,
   );
+  // eslint-disable-next-line no-process-exit
   process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
 }
 
@@ -38,6 +39,7 @@ if (!require("fs").promises) {
   console.log("Replugged detected you're running an outdated version of NodeJS.");
   console.log("You must have at least NodeJS 10 installed for Replugged to function.", "\n");
   console.log("You can download the latest version of NodeJS at https://nodejs.org");
+  // eslint-disable-next-line no-process-exit
   process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
 }
 
@@ -54,8 +56,8 @@ if (!existsSync(nodeModulesPath)) {
     }
 
     const depPackage = require(join(depPath, "package.json"));
-    const expectedVerInt = parseInt(dependencies[dependency].replace(/[^\d]/g, ""));
-    const installedVerInt = parseInt(depPackage.version.replace(/[^\d]/g, ""));
+    const expectedVerInt = parseInt(dependencies[dependency].replace(/[^\d]/g, ""), 10);
+    const installedVerInt = parseInt(depPackage.version.replace(/[^\d]/g, ""), 10);
     if (installedVerInt < expectedVerInt) {
       installDeps();
       break;
