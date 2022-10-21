@@ -19,6 +19,6 @@ export default abstract class Coremod<T extends Settings> extends EntityBase {
     this.settings = settings.get<T>(id);
   }
 
-  public abstract start(): Promise<void>;
-  public abstract stop(): Promise<void>;
+  public abstract start(): Promise<void> | void;
+  public abstract stop(): Promise<void> | void;
 }
