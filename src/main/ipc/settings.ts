@@ -59,25 +59,25 @@ async function writeTransaction<T>(
 const ipcTransactions: Record<string, (updated: Settings | null) => void> = {};
 
 ipcMain.handle(RepluggedIpcChannels.GET_SETTING, async (_, namespace: string, key: string) =>
-  readTransaction(namespace, async (settings) => settings[key]),
+  readTransaction(namespace, (settings) => settings[key]),
 );
 
 ipcMain.handle(RepluggedIpcChannels.HAS_SETTING, async (_, namespace: string, key: string) =>
-  readTransaction(namespace, async (settings) => typeof settings[key] !== "undefined"),
+  readTransaction(namespace, (settings) => typeof settings[key] !== "undefined"),
 );
 
 ipcMain.handle(
   RepluggedIpcChannels.SET_SETTING,
   (_, namespace: string, key: string, value: unknown) =>
-    writeTransaction(namespace, async (settings) => (settings[key] = value)),
+    writeTransaction(namespace, (settings) => (settings[key] = value)),
 );
 
 ipcMain.handle(RepluggedIpcChannels.DELETE_SETTING, (_, namespace: string, key: string) =>
-  writeTransaction(namespace, async (settings) => delete settings[key]),
+  writeTransaction(namespace, (settings) => delete settings[key]),
 );
 
 ipcMain.handle(RepluggedIpcChannels.GET_ALL_SETTINGS, async (_, namespace: string) =>
-  readTransaction(namespace, async (settings) => settings),
+  readTransaction(namespace, (settings) => settings),
 );
 
 ipcMain.handle(
@@ -86,7 +86,7 @@ ipcMain.handle(
     new Promise<Settings>((resolve) =>
       writeTransaction(
         namespace,
-        async (settings) =>
+        (settings) =>
           new Promise<void>((transactionResolve) => {
             ipcTransactions[namespace] = (updated: Settings | null) => {
               if (updated !== null) {
