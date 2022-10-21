@@ -1,10 +1,12 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
-import { RepluggedPlugin } from '../../types';
-import Plugin from '../entities/plugin';
-import { PluginContext } from '../../types/entities';
-import { add } from './ignition';
+import { RepluggedPlugin } from "../../types";
+import Plugin from "../entities/plugin";
+import { PluginContext } from "../../types/entities";
+import { add } from "./ignition";
 
-export async function get <T extends typeof Plugin> (plugin: RepluggedPlugin): Promise<new () => Plugin<any>> {
+export async function get<T extends typeof Plugin>(
+  plugin: RepluggedPlugin,
+): Promise<new () => Plugin<any>> {
   const renderer = await import(`replugged://plugin/${plugin.id}/${plugin.manifest.renderer}`);
 
   return class extends Plugin<any> {
@@ -16,29 +18,29 @@ export async function get <T extends typeof Plugin> (plugin: RepluggedPlugin): P
 
     public context: PluginContext<any> = {
       injector: this.injector,
-      settings: this.settings
+      settings: this.settings,
     };
 
-    public constructor () {
+    public constructor() {
       super(plugin.manifest.id, plugin.manifest.name);
     }
 
-    public async start (): Promise<void> {
+    public async start(): Promise<void> {
       await renderer.start(this.context);
     }
 
-    public async stop (): Promise<void> {
+    public async stop(): Promise<void> {
       await renderer.stop(this.context);
     }
   };
 }
 
-export async function all (): Promise<Array<new () => Plugin<any>>> {
+export async function all(): Promise<Array<new () => Plugin<any>>> {
   const plugins = await window.RepluggedNative.plugins.list();
-  return Promise.all(plugins.map(p => get(p)));
+  return Promise.all(plugins.map((p) => get(p)));
 }
 
-export async function load (): Promise<void> {
+export async function load(): Promise<void> {
   const plugins = await all();
-  plugins.forEach(p => add(new p()));
+  plugins.forEach((p) => add(new p()));
 }

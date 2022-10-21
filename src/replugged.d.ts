@@ -1,3 +1,3 @@
-import * as replugged from './renderer/replugged'
+import * as replugged from "./renderer/replugged";
 
-export = replugged
+export = replugged;

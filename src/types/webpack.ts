@@ -1,10 +1,10 @@
-import { ModuleExports, RawModule } from './discord';
+import { ModuleExports, RawModule } from "./discord";
 
 export type Filter = (module: RawModule) => boolean | ModuleExports;
 
 export type RawLazyCallback = (module: RawModule) => void;
 export type LazyCallback = (module: ModuleExports) => void;
-export type LazyListener = [ Filter, RawLazyCallback ];
+export type LazyListener = [Filter, RawLazyCallback];
 
 export interface RegexReplacement {
   match: RegExp | string;
@@ -14,10 +14,10 @@ export interface RegexReplacement {
 export type PlaintextReplacer = (source: string) => string;
 export interface PlaintextPatch {
   find?: string | RegExp;
-  replacements: Array<PlaintextReplacer | RegexReplacement>
+  replacements: Array<PlaintextReplacer | RegexReplacement>;
 }
 
 export interface RawPlaintextPatch {
   find?: string | RegExp;
-  replacements: PlaintextReplacer[]
+  replacements: PlaintextReplacer[];
 }

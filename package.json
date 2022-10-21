@@ -35,6 +35,7 @@
     "eslint-config-dmitmel": "dmitmel/eslint-config-dmitmel",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.31.8",
+    "prettier": "^2.7.1",
     "tsx": "^3.9.0",
     "typescript": "^4.8.4",
     "zod": "^3.19.1"

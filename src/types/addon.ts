@@ -1,13 +1,17 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-export const id = z.string().regex(/^(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9]$/);
+export const id = z
+  .string()
+  .regex(
+    /^(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9]$/,
+  );
 
 export type Id = z.infer<typeof id>;
 
 export const author = z.object({
   name: z.string(),
   discord_id: z.string(),
-  github: z.string()
+  github: z.string(),
 });
 
 export type Author = z.infer<typeof author>;
@@ -17,34 +21,40 @@ export const common = z.object({
   id,
   name: z.string(),
   description: z.string(),
-  author: z.union([ author, author.array().nonempty() ]),
+  author: z.union([author, author.array().nonempty()]),
   version: z.string(),
-  license: z.string()
+  license: z.string(),
 });
 
 export type Common = z.infer<typeof common>;
 
 export const theme = common.extend({
-  type: z.literal('theme'),
+  type: z.literal("theme"),
   main: z.string(),
-  splash: z.string()
+  splash: z.string(),
 });
 
 export type Theme = z.infer<typeof theme>;
 
 export const plugin = common.extend({
-  type: z.literal('plugin'),
+  type: z.literal("plugin"),
   main: z.string().optional(),
   preload: z.string().optional(),
   renderer: z.string().optional(),
-  dependencies: z.object({
-    required: id.array(),
-    optional: id.array()
-  }).partial().optional(),
-  dependents: z.object({
-    required: id.array(),
-    optional: id.array()
-  }).partial().optional()
+  dependencies: z
+    .object({
+      required: id.array(),
+      optional: id.array(),
+    })
+    .partial()
+    .optional(),
+  dependents: z
+    .object({
+      required: id.array(),
+      optional: id.array(),
+    })
+    .partial()
+    .optional(),
 });
 
 export type Plugin = z.infer<typeof plugin>;

@@ -1,22 +1,19 @@
-
-import { readdir } from 'fs/promises';
-import { join } from 'path';
-import { DiscordPlatform } from '../types';
+import { readdir } from "fs/promises";
+import { join } from "path";
+import { DiscordPlatform } from "../types";
 
 const PATHS = {
-  stable: 'Discord',
-  ptb: 'DiscordPTB',
-  canary: 'DiscordCanary',
-  dev: 'DiscordDevelopment'
+  stable: "Discord",
+  ptb: "DiscordPTB",
+  canary: "DiscordCanary",
+  dev: "DiscordDevelopment",
 };
 
 export const getAppDir = async (platform: DiscordPlatform) => {
   const discordPath = join(process.env.LOCALAPPDATA!, PATHS[platform]);
   const discordDirectory = await readdir(discordPath);
 
-  const currentBuild = discordDirectory
-    .filter(path => path.startsWith('app-'))
-    .reverse()[0];
+  const currentBuild = discordDirectory.filter((path) => path.startsWith("app-")).reverse()[0];
 
-  return join(discordPath, currentBuild, 'resources', 'app');
+  return join(discordPath, currentBuild, "resources", "app");
 };

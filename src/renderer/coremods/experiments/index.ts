@@ -1,33 +1,37 @@
-import Coremod from '../../entities/coremod';
-import { patchPlaintext } from '../../modules/webpack';
+import Coremod from "../../entities/coremod";
+import { patchPlaintext } from "../../modules/webpack";
 
 export default class ExperimentsMod extends Coremod<{
-  enabled: boolean
+  enabled: boolean;
 }> {
-  public dependencies = [ 'dev.replugged.lifecycle.WebpackReady' ];
-  public dependents = [ 'dev.replugged.lifecycle.WebpackStart' ];
+  public dependencies = ["dev.replugged.lifecycle.WebpackReady"];
+  public dependents = ["dev.replugged.lifecycle.WebpackStart"];
   public optionalDependencies = [];
   public optionalDependents = [];
 
-  public constructor () {
-    super('dev.replugged.coremods.Experiments', 'experiments');
+  public constructor() {
+    super("dev.replugged.coremods.Experiments", "experiments");
   }
 
-  public async start (): Promise<void> {
-    const enabled = await this.settings.get('enabled') ?? false;
+  public async start(): Promise<void> {
+    const enabled = (await this.settings.get("enabled")) ?? false;
 
     if (enabled) {
-      patchPlaintext([ {
-        find: /\.displayName="(Developer)?ExperimentStore"/,
-        replacements: [ {
-          match: 'window.GLOBAL_ENV.RELEASE_CHANNEL',
-          replace: '"staging"'
-        } ]
-      } ]);
+      patchPlaintext([
+        {
+          find: /\.displayName="(Developer)?ExperimentStore"/,
+          replacements: [
+            {
+              match: "window.GLOBAL_ENV.RELEASE_CHANNEL",
+              replace: '"staging"',
+            },
+          ],
+        },
+      ]);
     }
   }
 
-  public async stop (): Promise<void> {
+  public async stop(): Promise<void> {
     // placeholder
   }
 }

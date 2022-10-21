@@ -1,5 +1,11 @@
-export type ModuleExports = Record<string, unknown> | ((...args: unknown[]) => unknown) | string | boolean | symbol;
-export type ModuleExportsWithProps<P extends string> = Record<P, unknown> & Record<PropertyKey, unknown>;
+export type ModuleExports =
+  | Record<string, unknown>
+  | ((...args: unknown[]) => unknown)
+  | string
+  | boolean
+  | symbol;
+export type ModuleExportsWithProps<P extends string> = Record<P, unknown> &
+  Record<PropertyKey, unknown>;
 
 export interface RawModule {
   id: number;
@@ -19,13 +25,13 @@ export type WebpackRequire = ((e: number) => ModuleExports) & {
 export type WebpackModule = (
   wpModule: RawModule,
   wpExports: typeof wpModule.exports,
-  wpRequire: WebpackRequire
+  wpRequire: WebpackRequire,
 ) => void;
 
 export type WebpackChunk = [
   Array<symbol | number>,
   Record<number, WebpackModule>,
-  ((r: WebpackRequire) => unknown)?
+  ((r: WebpackRequire) => unknown)?,
 ];
 
 // Do NOT put `WebpackChunk[]` first, otherwise TS
@@ -54,8 +60,8 @@ export interface CommandOptions {
 }
 
 export interface ConnectedAccount {
-  type: string,
-  name: string,
-  id: string,
-  verified: boolean
+  type: string;
+  name: string;
+  id: string;
+  verified: boolean;
 }

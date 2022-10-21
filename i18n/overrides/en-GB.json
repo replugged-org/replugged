@@ -31,7 +31,7 @@
   "DEVELOPER_APPLICATION_TEST_MODE_AUTHORIZATION_ERROR": "Not authorised to enable test-mode for this application.",
   "DISABLE_INTEGRATION_TWITCH_BODY": "\nDisabling sync will perform the selected expired sub behaviour as if all subs have expired.\n",
   "DISABLE_INTEGRATION_YOUTUBE_BODY": "\nDisabling sync will perform the selected expired membership behaviour as if all members have expired.\n",
-  "EMOJI_CATEGORY_FAVORITES": "Favourites", 
+  "EMOJI_CATEGORY_FAVORITES": "Favourites",
   "EMOJI_IS_FAVORITE_ARIA_LABEL": "!!{names}!! is in favourites",
   "ENABLE_COMMUNITY_MODAL_VERIFICATION_LEVEL_HELP": "To minimise spam, members of the server must have a verified email before they can send messages. This does not apply to members with roles.",
   "FOLLOW_SUCCESS_MODAL_HEADER_07": "What a nice addition to your server. Lookin' real cosy in here.",

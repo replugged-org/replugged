@@ -1,4 +1,4 @@
-import * as replugged from './replugged';
+import * as replugged from "./replugged";
 
 window.replugged = replugged;
 

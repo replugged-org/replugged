@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
 export interface Section {
   section: string;
@@ -9,14 +9,14 @@ export interface Section {
 }
 
 export interface SettingsTools {
-  rpSections: Section[],
+  rpSections: Section[];
   addSection: (options: {
-    name: string,
-    label: string,
-    color?: string,
-    elem: FC,
-    pos?: number,
-  }) => Section,
-  addDivider: (pos?: number) => void,
-  addHeader: (label: string, pos?: number) => void,
+    name: string;
+    label: string;
+    color?: string;
+    elem: FC;
+    pos?: number;
+  }) => Section;
+  addDivider: (pos?: number) => void;
+  addHeader: (label: string, pos?: number) => void;
 }

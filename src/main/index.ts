@@ -1,38 +1,35 @@
-import { dirname, join } from 'path';
+import { dirname, join } from "path";
 
-import electron from 'electron';
-import type { RepluggedWebContents } from '../types';
+import electron from "electron";
+import type { RepluggedWebContents } from "../types";
 
-const electronPath = require.resolve('electron');
-const discordPath = join(dirname(require.main!.filename), '..', 'app.asar');
+const electronPath = require.resolve("electron");
+const discordPath = join(dirname(require.main!.filename), "..", "app.asar");
 // require.main!.filename = discordMain;
 
-Object.defineProperty(global, 'appSettings', {
+Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
-    v.set(
-      'DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING',
-      true
-    );
+    v.set("DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING", true);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     delete global.appSettings;
     global.appSettings = v;
   },
   get: () => global.appSettings,
-  configurable: true
+  configurable: true,
 });
 
 // This class has to be named "BrowserWindow" exactly
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you Ven for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  public constructor (
+  public constructor(
     opts: electron.BrowserWindowConstructorOptions & {
       webContents: electron.WebContents;
       webPreferences: {
         nativeWindowOpen: boolean;
       };
-    }
+    },
   ) {
     console.log(opts);
     const originalPreload = opts.webPreferences.preload;
@@ -50,7 +47,7 @@ class BrowserWindow extends electron.BrowserWindow {
       // originalPreload = opts.webPreferences.preload;
       if (opts.webPreferences.nativeWindowOpen) {
         // Discord Client
-        opts.webPreferences.preload = join(__dirname, './preload.js');
+        opts.webPreferences.preload = join(__dirname, "./preload.js");
         // opts.webPreferences.contextIsolation = false; // shrug
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
@@ -59,82 +56,81 @@ class BrowserWindow extends electron.BrowserWindow {
     }
 
     super(opts);
-    (this.webContents as RepluggedWebContents).originalPreload =
-      originalPreload;
+    (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
   }
 }
 
-Object.defineProperty(BrowserWindow, 'name', { value: 'BrowserWindow',
-  configurable: true });
+Object.defineProperty(BrowserWindow, "name", { value: "BrowserWindow", configurable: true });
 
 const electronExports: typeof electron = new Proxy(electron, {
-  get (target, prop) {
+  get(target, prop) {
     switch (prop) {
-      case 'BrowserWindow':
+      case "BrowserWindow":
         return BrowserWindow;
       // Trick Babel's polyfill thing into not touching Electron's exported object with its logic
-      case 'default':
+      case "default":
         return electronExports;
-      case '__esModule':
+      case "__esModule":
         return true;
       default:
         return target[prop as keyof typeof electron];
     }
-  }
+  },
 });
 
 delete require.cache[electronPath]!.exports;
 require.cache[electronPath]!.exports = electronExports;
 
-
-(electron.app as typeof electron.app & {
-  setAppPath: (path: string) => void
-}).setAppPath(discordPath);
+(
+  electron.app as typeof electron.app & {
+    setAppPath: (path: string) => void;
+  }
+).setAppPath(discordPath);
 // electron.app.name = discordPackage.name;
 
-electron.protocol.registerSchemesAsPrivileged([ {
-  scheme: 'replugged',
-  privileges: {
-    bypassCSP: true,
-    standard: true,
-    secure: true,
-    allowServiceWorkers: true
-  }
-} ]);
+electron.protocol.registerSchemesAsPrivileged([
+  {
+    scheme: "replugged",
+    privileges: {
+      bypassCSP: true,
+      standard: true,
+      secure: true,
+      allowServiceWorkers: true,
+    },
+  },
+]);
 
 // Copied from old codebase
-electron.app.once('ready', () => {
+electron.app.once("ready", () => {
   // @todo: Whitelist a few domains instead of removing CSP altogether; See #386
-  electron.session.defaultSession.webRequest.onHeadersReceived(
-    ({ responseHeaders }, done) => {
-      if (!responseHeaders) {
-        return done({});
-      }
-
-      Object.keys(responseHeaders)
-        .filter((k) => (/^content-security-policy/i).test(k))
-        .map((k) => delete responseHeaders[k]);
-
-      done({ responseHeaders });
+  electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
+    if (!responseHeaders) {
+      return done({});
     }
-  );
 
-  electron.protocol.registerFileProtocol('replugged', async (request, cb) => {
-    let filePath: string = join(__dirname, '..');
+    Object.keys(responseHeaders)
+      .filter((k) => /^content-security-policy/i.test(k))
+      .map((k) => delete responseHeaders[k]);
+
+    done({ responseHeaders });
+  });
+
+  electron.protocol.registerFileProtocol("replugged", async (request, cb) => {
+    let filePath: string = join(__dirname, "..");
     const reqUrl = new URL(request.url);
     switch (reqUrl.hostname) {
-      case 'quickcss':
-        filePath = join(filePath, 'settings/quickcss', reqUrl.pathname);
+      case "quickcss":
+        filePath = join(filePath, "settings/quickcss", reqUrl.pathname);
         break;
-      case 'theme':
-      case 'plugin':
+      case "theme":
+      case "plugin":
         filePath = join(filePath, `${reqUrl.hostname}s`, reqUrl.pathname);
     }
     cb({ path: filePath });
   });
 });
 
-require('./ipc');
+require("./ipc");
 /*
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
 electron.app.whenReady().then(() => { // optionify it later with sdk
@@ -144,4 +140,4 @@ electron.app.whenReady().then(() => { // optionify it later with sdk
 });
 
 */
-require('module')._load(discordPath);
+require("module")._load(discordPath);

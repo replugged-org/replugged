@@ -4,35 +4,35 @@ IPC events:
 - REPLUGGED_UNINSTALL_PLUGIN: returns whether a plugin by the provided name was successfully uninstalled
 */
 
-import { readFile, readdir, rm } from 'fs/promises';
-import { extname, join, resolve } from 'path';
-import { ipcMain } from 'electron';
-import { RepluggedIpcChannels, RepluggedPlugin } from '../../types';
-import { plugin } from '../../types/addon';
+import { readFile, readdir, rm } from "fs/promises";
+import { extname, join, resolve } from "path";
+import { ipcMain } from "electron";
+import { RepluggedIpcChannels, RepluggedPlugin } from "../../types";
+import { plugin } from "../../types/addon";
 
-const PLUGINS_DIR = resolve(__dirname, '../plugins');
+const PLUGINS_DIR = resolve(__dirname, "../plugins");
 
-async function getPlugin (pluginName: string): Promise<RepluggedPlugin> {
-  const manifest: unknown = JSON.parse(await readFile(join(
-    PLUGINS_DIR,
-    pluginName,
-    'manifest.json'
-  ), {
-    encoding: 'utf-8'
-  }));
+async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
+  const manifest: unknown = JSON.parse(
+    await readFile(join(PLUGINS_DIR, pluginName, "manifest.json"), {
+      encoding: "utf-8",
+    }),
+  );
 
   return {
     id: pluginName,
-    manifest: plugin.parse(manifest)
+    manifest: plugin.parse(manifest),
   };
 }
 
 ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlugin[]> => {
   const plugins = [];
 
-  const pluginDirs = (await readdir(PLUGINS_DIR, {
-    withFileTypes: true
-  })).filter(f => f.isDirectory() || (f.isFile() && extname(f.name) === '.asar'));
+  const pluginDirs = (
+    await readdir(PLUGINS_DIR, {
+      withFileTypes: true,
+    })
+  ).filter((f) => f.isDirectory() || (f.isFile() && extname(f.name) === ".asar"));
 
   for (const pluginDir of pluginDirs) {
     try {
@@ -43,12 +43,9 @@ ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlu
   return plugins;
 });
 
-ipcMain.handle(
-  RepluggedIpcChannels.UNINSTALL_PLUGIN,
-  async (_, pluginName: string) => {
-    await rm(join(PLUGINS_DIR, pluginName), {
-      recursive: true,
-      force: true
-    });
-  }
-);
+ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: string) => {
+  await rm(join(PLUGINS_DIR, pluginName), {
+    recursive: true,
+    force: true,
+  });
+});
