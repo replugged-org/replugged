@@ -8,37 +8,37 @@ export async function get <T extends typeof Plugin> (plugin: RepluggedPlugin): P
   const renderer = await import(`replugged://plugin/${plugin.id}/${plugin.manifest.renderer}`);
 
   return class extends Plugin<any> {
-    dependencies = plugin.manifest.dependencies?.required ?? [];
-    dependents = plugin.manifest.dependents?.required ?? [];
+    public dependencies = plugin.manifest.dependencies?.required ?? [];
+    public dependents = plugin.manifest.dependents?.required ?? [];
 
-    optionalDependencies = plugin.manifest.dependencies?.optional ?? [];
-    optionalDependents = plugin.manifest.dependents?.optional ?? [];
+    public optionalDependencies = plugin.manifest.dependencies?.optional ?? [];
+    public optionalDependents = plugin.manifest.dependents?.optional ?? [];
 
-    context: PluginContext<any> = {
+    public context: PluginContext<any> = {
       injector: this.injector,
       settings: this.settings
     };
 
-    constructor () {
+    public constructor () {
       super(plugin.manifest.id, plugin.manifest.name);
     }
 
-    async start () {
+    public async start (): Promise<void> {
       await renderer.start(this.context);
     }
 
-    async stop () {
+    public async stop (): Promise<void> {
       await renderer.stop(this.context);
     }
   };
 }
 
-export async function all () {
+export async function all (): Promise<Array<new () => Plugin<any>>> {
   const plugins = await window.RepluggedNative.plugins.list();
-  return await Promise.all(plugins.map(p => get(p)));
+  return Promise.all(plugins.map(p => get(p)));
 }
 
-export async function load () {
+export async function load (): Promise<void> {
   const plugins = await all();
   plugins.forEach(p => add(new p()));
 }

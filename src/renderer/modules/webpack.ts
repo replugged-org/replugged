@@ -43,10 +43,10 @@ function patchModuleSource (mod: WebpackModule): WebpackModule {
   return eval(patchedSource);
 }
 
-function patchPush (webpackChunk: WebpackChunkGlobal) {
+function patchPush (webpackChunk: WebpackChunkGlobal): void {
   let original = webpackChunk.push;
 
-  async function handlePush (chunk: WebpackChunk) {
+  async function handlePush (chunk: WebpackChunk): Promise<unknown> {
     await waitForStart;
 
     const modules = chunk[1];
@@ -76,7 +76,7 @@ function patchPush (webpackChunk: WebpackChunkGlobal) {
   });
 }
 
-function loadWebpackModules (webpackChunk: WebpackChunkGlobal) {
+function loadWebpackModules (webpackChunk: WebpackChunkGlobal): void {
   wpRequire = webpackChunk.push([
     [ Symbol('replugged') ],
     {},
@@ -195,7 +195,7 @@ export function getAllRawByProps <P extends string> (...props: P[]): Array<RawMo
   return getAllRawModules(byPropsFilter(props)) as Array<RawModuleWithProps<P>>;
 }
 
-export function subscribeRaw (filter: Filter, callback: RawLazyCallback) {
+export function subscribeRaw (filter: Filter, callback: RawLazyCallback): () => void {
   const raw = getRawModule(filter);
   if (raw) {
      
@@ -210,7 +210,7 @@ export function subscribeRaw (filter: Filter, callback: RawLazyCallback) {
   };
 }
 
-export function subscribe (filter: Filter, callback: LazyCallback) {
+export function subscribe (filter: Filter, callback: LazyCallback): () => void {
   return subscribeRaw(filter, (raw) => {
     if (typeof raw !== 'undefined') {
       const exports = getExports(raw);
@@ -285,7 +285,7 @@ export function getAllBySource (match: string | RegExp): ModuleExports[] {
   return getAllRawBySource(match).map(getExports).filter((m): m is ModuleExports => typeof m !== 'undefined');
 }
 
-export function patchPlaintext (patches: PlaintextPatch[]) {
+export function patchPlaintext (patches: PlaintextPatch[]): void {
   plaintextPatches.push(...patches.map(patch => ({ ...patch,
     replacements: patch.replacements.map(replacement => typeof replacement === 'function'
       ? replacement

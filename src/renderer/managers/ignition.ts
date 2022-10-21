@@ -3,16 +3,16 @@ import SettingsMod from '../coremods/settings';
 import ExperimentsMod from '../coremods/experiments';
 import Coremod from '../entities/coremod';
 import Target from '../entities/target';
-import { byPropsFilter, getByProps, signalStart, waitFor, waitForReady } from '../modules/webpack';
+import { byPropsFilter, signalStart, waitFor, waitForReady } from '../modules/webpack';
 import { log } from '../modules/logger';
 
 export const entities: Record<string, Coremod<any>> = {};
 
-export function add (entity: Coremod<any>) {
+export function add (entity: Coremod<any>): void {
   entities[entity.id] = entity;
 }
 
-function buildDepChain () {
+function buildDepChain (): Array<[string, string]> {
   const deps = Object.entries(entities).map(([ id, entity ]) => ({
     id,
     dependencies: [ ...entity.dependencies, ...entity.optionalDependencies.filter(d => d in entities) ],
@@ -22,7 +22,7 @@ function buildDepChain () {
   return deps.flatMap((d) => [ ...d.dependencies.map(id => [ d.id, id ]), ...d.dependents.map(id => [ id, d.id ]) ]) as Array<[string, string]>;
 }
 
-export async function start () {
+export async function start (): Promise<void> {
   const order = toposort(buildDepChain()).reverse();
 
   log('Ignition', 'Start', void 0, 'Igniting Replugged...');
@@ -37,7 +37,7 @@ export async function start () {
   log('Ignition', 'Start', void 0, `Finished igniting Replugged in ${endTime - startTime}ms`);
 }
 
-export async function stop () {
+export async function stop (): Promise<void> {
   const order = toposort(buildDepChain());
 
   log('Ignition', 'Stop', void 0, 'De-igniting Replugged...');
@@ -52,7 +52,7 @@ export async function stop () {
   log('Ignition', 'Stop', void 0, `Finished de-igniting Replugged in ${endTime - startTime}ms`);
 }
 
-export async function restart () {
+export async function restart (): Promise<void> {
   await stop();
   await start();
 }
@@ -60,51 +60,50 @@ export async function restart () {
 // Lifecycle targets
 
 class StartTarget extends Target {
-  dependencies = [];
-  dependents = [];
-  optionalDependencies = [];
-  optionalDependents = [];
+  public dependencies = [];
+  public dependents = [];
+  public optionalDependencies = [];
+  public optionalDependents = [];
 
-
-  constructor () {
+  public constructor () {
     super('dev.replugged.lifecycle.Start', 'Start');
   }
 }
 
 class WebpackReadyTarget extends Target {
-  dependencies = [ 'dev.replugged.lifecycle.Start' ];
-  dependents = [];
-  optionalDependencies = [];
-  optionalDependents = [];
+  public dependencies = [ 'dev.replugged.lifecycle.Start' ];
+  public dependents = [];
+  public optionalDependencies = [];
+  public optionalDependents = [];
 
 
-  constructor () {
+  public constructor () {
     super('dev.replugged.lifecycle.WebpackReady', 'WebpackReady');
   }
 
-  async start () {
+  public async start (): Promise<void> {
     await super.start();
     await waitForReady;
   }
 }
 
 class WebpackStartTarget extends Target {
-  dependencies = [ 'dev.replugged.lifecycle.WebpackReady' ];
-  dependents = [];
-  optionalDependencies = [];
-  optionalDependents = [];
+  public dependencies = [ 'dev.replugged.lifecycle.WebpackReady' ];
+  public dependents = [];
+  public optionalDependencies = [];
+  public optionalDependents = [];
 
-  constructor () {
+  public constructor () {
     super('dev.replugged.lifecycle.WebpackStart', 'WebpackStart');
   }
 
-  async start () {
+  public async start (): Promise<void> {
     await super.start();
     signalStart();
     // lexisother(TODO): Make this not do what this does, do something better
     // instead.
-    waitFor(byPropsFilter([ '__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED', 'createElement' ]))
-      .then(React => window.React = React);
+    await waitFor(byPropsFilter([ '__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED', 'createElement' ]))
+          .then(React => window.React = React);
   }
 }
 

@@ -1,41 +1,41 @@
 const blurple = '#5865F2';
 
-const repluggedPrefix = (type: string, name: string) => `%c[Replugged:${type}:${name}]`;
+const repluggedPrefix = (type: string, name: string): string => `%c[Replugged:${type}:${name}]`;
 
-const logColor = (color: string) => `color: ${typeof color === 'string' ? color : blurple}`;
+const logColor = (color: string): string => `color: ${typeof color === 'string' ? color : blurple}`;
 
-export function log (type: string, name: string, color: string = blurple, ...data: unknown[]) {
+export function log (type: string, name: string, color: string = blurple, ...data: unknown[]): void {
   console.log(repluggedPrefix(type, name), logColor(color), ...data);
 }
 
-export function warn (type: string, name: string, color: string = blurple, ...data: unknown[]) {
+export function warn (type: string, name: string, color: string = blurple, ...data: unknown[]): void {
   console.warn(repluggedPrefix(type, name), logColor(color), ...data);
 }
 
-export function error (type: string, name: string, color: string = blurple, ...data: unknown[]) {
+export function error (type: string, name: string, color: string = blurple, ...data: unknown[]): void {
   console.error(repluggedPrefix(type, name), logColor(color), ...data);
 }
 
 export class Logger {
-  type: string;
-  name: string;
-  color: string;
+  public type: string;
+  public name: string;
+  public color: string;
 
-  constructor (type: string, name: string, color: string = blurple) {
+  public constructor (type: string, name: string, color: string = blurple) {
     this.type = type;
     this.name = name;
     this.color = color;
   }
 
-  log (...data: unknown[]) {
+  public log (...data: unknown[]): void {
     log(this.type, this.name, this.color, ...data);
   }
 
-  warn (...data: unknown[]) {
+  public warn (...data: unknown[]): void {
     warn(this.type, this.name, this.color, ...data);
   }
 
-  error (...data: unknown[]) {
+  public error (...data: unknown[]): void {
     error(this.type, this.name, this.color, ...data);
   }
 }

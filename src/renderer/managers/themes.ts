@@ -5,21 +5,21 @@ const themeElements = new Map<string, HTMLLinkElement>();
 const themes = new Map<string, Theme>();
 let disabled: string[] = [];
 
-export async function loadMissing () {
+export async function loadMissing (): Promise<void> {
   for (const theme of await window.RepluggedNative.themes.list()) {
     themes.set(theme.id, theme.manifest);
   }
   disabled = await window.RepluggedNative.themes.listDisabled();
 }
 
-export function unload (themeName: string) {
+export function unload (themeName: string): void {
   if (themeElements.has(themeName)) {
     themeElements.get(themeName)?.remove();
     themeElements.delete(themeName);
   }
 }
 
-export function load (themeName: string) {
+export function load (themeName: string): void {
   if (!themes.has(themeName)) {
     throw new Error(`Theme not found: ${themeName}`);
   }
@@ -33,7 +33,7 @@ export function load (themeName: string) {
   document.head.appendChild(e);
 }
 
-export function loadAll () {
+export function loadAll (): void {
   for (const themeName of themes.keys()) {
     if (!disabled.includes(themeName)) {
       load(themeName);
@@ -41,13 +41,13 @@ export function loadAll () {
   }
 }
 
-export function unloadAll () {
+export function unloadAll (): void {
   for (const themeName of themeElements.keys()) {
     unload(themeName);
   }
 }
 
-export function reload (themeName: string) {
+export function reload (themeName: string): void {
   unload(themeName);
   load(themeName);
 }

@@ -2,25 +2,25 @@ import * as repluggedLogger from '../modules/logger';
 import { EntityType } from '../../types/entities';
 
 export default abstract class EntityBase extends EventTarget {
-  name: string;
-  id: string;
-  abstract entityType: EntityType;
+  public name: string;
+  public id: string;
+  public abstract entityType: EntityType;
 
-  constructor (id: string, name: string) {
+  public constructor (id: string, name: string) {
     super();
     this.id = id;
     this.name = name;
   }
 
-  log (...args: unknown[]) {
+  public log (...args: unknown[]): void {
     repluggedLogger.log(this.entityType, this.name, void 0, ...args);
   }
 
-  warn (...args: unknown[]) {
+  public warn (...args: unknown[]): void {
     repluggedLogger.warn(this.entityType, this.name, void 0, ...args);
   }
 
-  error (...args: unknown[]) {
+  public error (...args: unknown[]): void {
     repluggedLogger.error(this.entityType, this.name, void 0, ...args);
   }
 }

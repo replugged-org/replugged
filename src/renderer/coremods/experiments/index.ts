@@ -4,16 +4,16 @@ import { patchPlaintext } from '../../modules/webpack';
 export default class ExperimentsMod extends Coremod<{
   enabled: boolean
 }> {
-  dependencies = [ 'dev.replugged.lifecycle.WebpackReady' ];
-  dependents = [ 'dev.replugged.lifecycle.WebpackStart' ];
-  optionalDependencies = [];
-  optionalDependents = [];
+  public dependencies = [ 'dev.replugged.lifecycle.WebpackReady' ];
+  public dependents = [ 'dev.replugged.lifecycle.WebpackStart' ];
+  public optionalDependencies = [];
+  public optionalDependents = [];
 
-  constructor () {
+  public constructor () {
     super('dev.replugged.coremods.Experiments', 'experiments');
   }
 
-  async start () {
+  public async start (): Promise<void> {
     const enabled = await this.settings.get('enabled') ?? false;
 
     if (enabled) {
@@ -27,7 +27,7 @@ export default class ExperimentsMod extends Coremod<{
     }
   }
 
-  async stop () {
+  public async stop (): Promise<void> {
     // placeholder
   }
 }

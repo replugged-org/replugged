@@ -26,7 +26,7 @@ Object.defineProperty(global, 'appSettings', {
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you Ven for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  constructor (
+  public constructor (
     opts: electron.BrowserWindowConstructorOptions & {
       webContents: electron.WebContents;
       webPreferences: {
