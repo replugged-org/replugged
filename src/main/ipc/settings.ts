@@ -83,6 +83,7 @@ ipcMain.handle(RepluggedIpcChannels.DELETE_SETTING, (_, namespace: string, key: 
 
 ipcMain.handle(RepluggedIpcChannels.GET_ALL_SETTINGS, async (_, namespace: string) =>
   readTransaction(namespace, (settings) => Object.fromEntries(settings.entries())),
+
 );
 
 ipcMain.handle(
@@ -91,7 +92,7 @@ ipcMain.handle(
     new Promise<Settings>((resolve) =>
       writeTransaction(
         namespace,
-        async (settings) =>
+        (settings) =>
           new Promise<void>((transactionResolve) => {
             ipcTransactions.set(namespace, (updated: Settings | null) => {
               if (updated !== null) {
