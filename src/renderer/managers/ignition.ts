@@ -6,11 +6,12 @@ import Target from "../entities/target";
 import { byPropsFilter, signalStart, waitFor, waitForReady } from "../modules/webpack";
 import { log } from "../modules/logger";
 import NoDevtoolsWarningMod from "../coremods/noDevtoolsWarning";
+import { Settings } from "../../types/settings";
 
-export const entities: Record<string, Coremod<any>> = {};
+export const entities: Record<string, Coremod> = {};
 
-export function add(entity: Coremod<any>): void {
-  entities[entity.id] = entity;
+export function add<T extends Settings>(entity: Coremod<T>): void {
+  entities[entity.id] = entity as unknown as Coremod;
 }
 
 function buildDepChain(): Array<[string, string]> {
@@ -88,7 +89,7 @@ class WebpackReadyTarget extends Target {
   }
 
   public async start(): Promise<void> {
-    await super.start();
+    super.start();
     await waitForReady;
   }
 }
@@ -104,13 +105,13 @@ class WebpackStartTarget extends Target {
   }
 
   public async start(): Promise<void> {
-    await super.start();
+    super.start();
     signalStart();
     // lexisother(TODO): Make this not do what this does, do something better
     // instead.
     await waitFor(
       byPropsFilter(["__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"]),
-    ).then((React) => (window.React = React));
+    ).then((React) => (window.React = React as typeof window.React));
   }
 }
 

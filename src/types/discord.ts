@@ -1,5 +1,7 @@
+export type ObjectExports = Record<string, unknown>;
+
 export type ModuleExports =
-  | Record<string, unknown>
+  | ObjectExports
   | ((...args: unknown[]) => unknown)
   | string
   | boolean
@@ -12,6 +14,7 @@ export interface RawModule {
   loaded: boolean;
   exports: ModuleExports;
 }
+
 export interface RawModuleWithProps<P extends string> extends RawModule {
   exports: ModuleExportsWithProps<P>;
 }
@@ -53,9 +56,11 @@ export interface CommandOptions {
     values: string | number;
   }>;
   options?: CommandOptions[];
+  /* eslint-disable @typescript-eslint/naming-convention */
   channel_types?: number[];
   min_value?: number;
   max_value?: number;
+  /* eslint-enable @typescript-eslint/naming-convention */
   autocomplete?: boolean;
 }
 

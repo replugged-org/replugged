@@ -21,7 +21,7 @@ Object.defineProperty(global, "appSettings", {
 
 // This class has to be named "BrowserWindow" exactly
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
-// Thank you Ven for pointing this out!
+// Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
   public constructor(
     opts: electron.BrowserWindowConstructorOptions & {
@@ -36,14 +36,14 @@ class BrowserWindow extends electron.BrowserWindow {
 
     if (opts.webContents) {
       // General purpose popouts used by Discord
-    } else if (opts.webPreferences && opts.webPreferences.nodeIntegration) {
+    } else if (opts.webPreferences?.nodeIntegration) {
       // Splash Screen
       // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-    } else if (opts.webPreferences && opts.webPreferences.offscreen) {
+    } else if (opts.webPreferences?.offscreen) {
       // Overlay
       //      originalPreload = opts.webPreferences.preload;
       // opts.webPreferences.preload = join(__dirname, './preload.js');
-    } else if (opts.webPreferences && opts.webPreferences.preload) {
+    } else if (opts.webPreferences?.preload) {
       // originalPreload = opts.webPreferences.preload;
       if (opts.webPreferences.nativeWindowOpen) {
         // Discord Client
@@ -108,14 +108,14 @@ electron.app.once("ready", () => {
       return done({});
     }
 
-    Object.keys(responseHeaders)
-      .filter((k) => /^content-security-policy/i.test(k))
-      .map((k) => delete responseHeaders[k]);
+    const headersWithoutCSP = Object.fromEntries(
+      Object.entries(responseHeaders).filter(([k]) => !/^content-security-policy/i.test(k)),
+    );
 
-    done({ responseHeaders });
+    done({ responseHeaders: headersWithoutCSP });
   });
 
-  electron.protocol.registerFileProtocol("replugged", async (request, cb) => {
+  electron.protocol.registerFileProtocol("replugged", (request, cb) => {
     let filePath: string = join(__dirname, "..");
     const reqUrl = new URL(request.url);
     switch (reqUrl.hostname) {
@@ -130,6 +130,7 @@ electron.app.once("ready", () => {
   });
 });
 
+// This module is required this way at runtime.
 require("./ipc");
 /*
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');

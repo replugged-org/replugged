@@ -1,14 +1,14 @@
 import { EntityType } from "../../types/entities";
 import Coremod from "./coremod";
 
-export default abstract class Target extends Coremod<Record<string, never>> {
+export default abstract class Target extends Coremod {
   public entityType = EntityType.LIFECYCLE;
 
-  public async start(): Promise<void> {
+  public start(): void {
     this.log("Start target hit");
   }
 
-  public async stop(): Promise<void> {
+  public stop(): void {
     this.log("Stop target hit");
   }
 }

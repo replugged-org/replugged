@@ -6,7 +6,7 @@ import { AnsiEscapes, BasicMessages } from "../util";
 const rootPath = join(__dirname, "..", "..", "..");
 const nodeModulesPath = join(rootPath, "node_modules");
 
-const installDeps = () => {
+const installDeps = (): void => {
   console.log("Installing dependencies, please wait...");
   execSync("npm install", {
     cwd: rootPath,
@@ -54,8 +54,8 @@ if (!existsSync(nodeModulesPath)) {
     }
 
     const depPackage = require(join(depPath, "package.json"));
-    const expectedVerInt = parseInt(dependencies[dependency].replace(/[^\d]/g, ""));
-    const installedVerInt = parseInt(depPackage.version.replace(/[^\d]/g, ""));
+    const expectedVerInt = parseInt(dependencies[dependency].replace(/[^\d]/g, ""), 10);
+    const installedVerInt = parseInt(depPackage.version.replace(/[^\d]/g, ""), 10);
     if (installedVerInt < expectedVerInt) {
       installDeps();
       break;
