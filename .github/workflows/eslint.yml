@@ -20,10 +20,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
+
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: latest
 
       - name: Install Node.js dependencies
-        run: npm i
+        run: pnpm install
 
       - name: Run linters
-        run: npm run lint
+        run: pnpm run lint
