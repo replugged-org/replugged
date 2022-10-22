@@ -5,6 +5,7 @@ import Coremod from "../entities/coremod";
 import Target from "../entities/target";
 import { byPropsFilter, signalStart, waitFor, waitForReady } from "../modules/webpack";
 import { log } from "../modules/logger";
+import NoDevtoolsWarningMod from "../coremods/noDevtoolsWarning";
 import { Settings } from "../../types/settings";
 
 export const entities: Record<string, Coremod> = {};
@@ -119,3 +120,4 @@ add(new WebpackReadyTarget());
 add(new WebpackStartTarget());
 add(new SettingsMod());
 add(new ExperimentsMod());
+add(new NoDevtoolsWarningMod());
