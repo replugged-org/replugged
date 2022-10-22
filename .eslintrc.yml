@@ -1,6 +1,5 @@
 extends:
   - eslint-config-dmitmel/presets/node
-  - plugin:import/typescript
 env:
   browser: true
 parser: "@typescript-eslint/parser"
@@ -8,17 +7,10 @@ parserOptions:
   sourceType: module
 plugins:
   - "@typescript-eslint"
-  - import
 settings:
   node:
     tryExtensions: [".js", ".json", ".node", ".ts", ".d.ts", ".tsx"]
     allowModules: ["react"]
-  import/parsers:
-    "@typescript-eslint/parser": [".ts", ".tsx"]
-  import/resolver:
-    typescript:
-      alwaysTryTypes: true
-    node: true
 rules:
   func-names: off
   node/no-unsupported-features/es-syntax:
