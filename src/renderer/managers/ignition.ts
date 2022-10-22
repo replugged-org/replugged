@@ -89,7 +89,7 @@ class WebpackReadyTarget extends Target {
   }
 
   public async start(): Promise<void> {
-    await super.start();
+    super.start();
     await waitForReady;
   }
 }
@@ -105,7 +105,7 @@ class WebpackStartTarget extends Target {
   }
 
   public async start(): Promise<void> {
-    await super.start();
+    super.start();
     signalStart();
     // lexisother(TODO): Make this not do what this does, do something better
     // instead.
