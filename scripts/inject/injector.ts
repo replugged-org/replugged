@@ -44,11 +44,11 @@ export const inject = async (
       output: process.stdout,
     });
 
-    const askExecCmd = (): Promise<unknown> =>
+    const askExecCmd = (): Promise<string> =>
       new Promise((resolve) =>
         readlineInterface.question("Would you like to execute the command now? y/N: ", resolve),
       );
-    const askViewScript = (): Promise<unknown> =>
+    const askViewScript = (): Promise<string> =>
       new Promise((resolve) =>
         readlineInterface.question(
           "To update Replugged and its plugins, you need to pull in changes with git manually. A script is available for this however. View it? Y/n: ",
