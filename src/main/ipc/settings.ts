@@ -83,7 +83,6 @@ ipcMain.handle(RepluggedIpcChannels.DELETE_SETTING, (_, namespace: string, key: 
 
 ipcMain.handle(RepluggedIpcChannels.GET_ALL_SETTINGS, async (_, namespace: string) =>
   readTransaction(namespace, (settings) => Object.fromEntries(settings.entries())),
-
 );
 
 ipcMain.handle(
