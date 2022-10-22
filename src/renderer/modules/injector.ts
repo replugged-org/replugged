@@ -213,7 +213,6 @@ export class MiniInjector {
     return uninjector;
   }
 
-  // TODO(lleyton): Determine if this is public or private
   public uninjectAll(): void {
     for (const uninjector of this.uninjectors) {
       if (typeof uninjector === "function") {
