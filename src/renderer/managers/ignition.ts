@@ -19,14 +19,14 @@ function buildDepChain(): Array<[string, string]> {
     id,
     dependencies: [
       ...entity.dependencies,
-      ...entity.optionalDependencies.filter((d) => d in entities),
+      ...entity.optionalDependencies.filter((d: string) => d in entities),
     ],
-    dependents: [...entity.dependents, ...entity.optionalDependents.filter((d) => d in entities)],
+    dependents: [...entity.dependents, ...entity.optionalDependents.filter((d: string) => d in entities)],
   }));
 
-  return deps.flatMap((d) => [
-    ...d.dependencies.map((id) => [d.id, id]),
-    ...d.dependents.map((id) => [id, d.id]),
+  return deps.flatMap((d: { dependencies: string[]; id: string; dependents: string[]; }) => [
+    ...d.dependencies.map((id: string) => [d.id, id]),
+    ...d.dependents.map((id: string) => [id, d.id]),
   ]) as Array<[string, string]>;
 }
 
