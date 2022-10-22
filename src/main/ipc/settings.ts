@@ -2,23 +2,28 @@ import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
 import { ipcMain } from "electron";
 import { RepluggedIpcChannels } from "../../types";
-import { Settings, SettingsTransactionHandler, TransactionHandler } from "../../types/settings";
+import {
+  Settings,
+  SettingsMap,
+  SettingsTransactionHandler,
+  TransactionHandler,
+} from "../../types/settings";
 
 const settingsPath = join(__dirname, "../settings");
 
-async function readSettings(namespace: string): Promise<Record<string, unknown>> {
+async function readSettings(namespace: string): Promise<Map<string, unknown>> {
   try {
     const data = await readFile(join(settingsPath, `${namespace}.json`), "utf8");
-    return JSON.parse(data);
+    return new Map(Object.entries(JSON.parse(data)));
   } catch {
-    return {};
+    return new Map();
   }
 }
 
-function writeSettings(namespace: string, settings: Settings): Promise<void> {
+function writeSettings(namespace: string, settings: SettingsMap): Promise<void> {
   return writeFile(
     join(settingsPath, `${namespace}.json`),
-    JSON.stringify(settings, null, 2),
+    JSON.stringify(Object.fromEntries(settings.entries()), null, 2),
     "utf8",
   );
 }
@@ -56,30 +61,28 @@ async function writeTransaction<T>(
   });
 }
 
-const ipcTransactions: Record<string, (updated: Settings | null) => void> = {};
+const ipcTransactions: Map<string, (updated: Settings | null) => void> = new Map();
 
 ipcMain.handle(RepluggedIpcChannels.GET_SETTING, async (_, namespace: string, key: string) =>
-  readTransaction(namespace, async (settings) => settings[key]),
+  readTransaction(namespace, (settings) => settings.get(key)),
 );
 
 ipcMain.handle(RepluggedIpcChannels.HAS_SETTING, async (_, namespace: string, key: string) =>
-  readTransaction(namespace, async (settings) => typeof settings[key] !== "undefined"),
+  readTransaction(namespace, (settings) => settings.has(key)),
 );
 
 ipcMain.handle(
   RepluggedIpcChannels.SET_SETTING,
   (_, namespace: string, key: string, value: unknown) =>
-    writeTransaction(namespace, async (settings) => (settings[key] = value)),
+    writeTransaction(namespace, (settings) => settings.set(key, value)),
 );
 
 ipcMain.handle(RepluggedIpcChannels.DELETE_SETTING, (_, namespace: string, key: string) =>
-  // It's user input.
-  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-  writeTransaction(namespace, async (settings) => delete settings[key]),
+  writeTransaction(namespace, (settings) => settings.delete(key)),
 );
 
 ipcMain.handle(RepluggedIpcChannels.GET_ALL_SETTINGS, async (_, namespace: string) =>
-  readTransaction(namespace, async (settings) => settings),
+  readTransaction(namespace, (settings) => Object.fromEntries(settings.entries())),
 );
 
 ipcMain.handle(
@@ -90,14 +93,14 @@ ipcMain.handle(
         namespace,
         async (settings) =>
           new Promise<void>((transactionResolve) => {
-            ipcTransactions[namespace] = (updated: Settings | null) => {
+            ipcTransactions.set(namespace, (updated: Settings | null) => {
               if (updated !== null) {
-                Object.assign(settings, updated);
+                Object.entries(updated).forEach(([key, value]) => settings.set(key, value));
               }
               transactionResolve();
-            };
+            });
 
-            resolve(settings);
+            resolve(Object.fromEntries(settings.entries()));
           }),
       ),
     ),
@@ -106,8 +109,7 @@ ipcMain.handle(
 ipcMain.handle(
   RepluggedIpcChannels.END_SETTINGS_TRANSACTION,
   (_, namespace: string, settings: Settings | null) => {
-    ipcTransactions[namespace]?.(settings);
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    delete ipcTransactions[namespace];
+    ipcTransactions.get(namespace)?.(settings);
+    ipcTransactions.delete(namespace);
   },
 );
