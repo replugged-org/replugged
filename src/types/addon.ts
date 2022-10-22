@@ -10,8 +10,7 @@ export type Id = z.infer<typeof id>;
 
 export const author = z.object({
   name: z.string(),
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  discord_id: z.string(),
+  discordID: z.string(),
   github: z.string(),
 });
 
