@@ -35,7 +35,7 @@ const platformModule = platformModules[process.platform as keyof typeof platform
 const VALID_PLATFORMS = ["stable", "ptb", "canary", "dev"] as const;
 const checkPlatform = (platform: string): platform is DiscordPlatform =>
   VALID_PLATFORMS.includes(platform as DiscordPlatform);
-const checkInstalled = (appDir: string) => existsSync(join(appDir, ".."));
+const checkInstalled = (appDir: string): boolean => existsSync(join(appDir, ".."));
 
 let platform: DiscordPlatform | undefined;
 
@@ -71,7 +71,7 @@ let platform: DiscordPlatform | undefined;
             platform = current;
             break;
           }
-        } catch (e) {}
+        } catch {}
       }
 
       if (!platform) {
@@ -87,7 +87,7 @@ let platform: DiscordPlatform | undefined;
   if (process.argv[2] === "inject") {
     try {
       result = await inject(platformModule, platform);
-    } catch (e) {
+    } catch {
       // this runs if path generator crashes (app folder doesnt exist)
       console.log(
         `${AnsiEscapes.RED}Platform you specified isn't installed on this device!${
@@ -118,7 +118,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
   } else if (process.argv[2] === "uninject") {
     try {
       result = await uninject(platformModule, platform);
-    } catch (e) {
+    } catch {
       // this runs if path generator crashes (app folder doesnt exist)
       console.log(
         `${AnsiEscapes.RED}Platform you specified isn't installed on this device!${

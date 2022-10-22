@@ -1,5 +1,6 @@
 import API from "../entities/api";
 import { RepluggedConnection } from "../../types";
+import { ConnectedAccount } from "../../types/discord";
 
 class ConnectionsAPI extends API {
   public connections: RepluggedConnection[] = [];
@@ -36,7 +37,7 @@ class ConnectionsAPI extends API {
     this.connections = this.connections.filter((c) => c.type !== type);
   }
 
-  public fetchAccounts(id: string): Promise<any> {
+  public fetchAccounts(id: string): Promise<ConnectedAccount[]> {
     return Promise.all(this.filter((c) => c.enabled).map((c) => c.fetchAccount(id)));
   }
 }

@@ -6,7 +6,7 @@ const argv = [
   ...process.argv.slice(1),
 ];
 
-const tryToElevate = (command: string) => {
+const tryToElevate = (command: string): void => {
   const { error } = spawnSync(command, argv, { stdio: "inherit" });
   if (!error) {
     process.exit(0);

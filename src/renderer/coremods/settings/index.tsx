@@ -1,9 +1,8 @@
-import type React from "react";
 import Coremod from "../../entities/coremod";
 import { patchPlaintext } from "../../modules/webpack";
-import { settingsTools, insertSections } from "./lib";
+import { insertSections, settingsTools } from "./lib";
 
-export default class SettingsMod extends Coremod<Record<string, never>> {
+export default class SettingsMod extends Coremod {
   dependencies = ["dev.replugged.lifecycle.WebpackReady"];
   dependents = ["dev.replugged.lifecycle.WebpackStart"];
   optionalDependencies = [];
@@ -13,7 +12,7 @@ export default class SettingsMod extends Coremod<Record<string, never>> {
     super("dev.replugged.coremods.Settings", "settings");
   }
 
-  async start() {
+  start() {
     // TODO(lexisother): Build UI
     function RPSettings() {
       return <div>wake up wake up wake up</div>;

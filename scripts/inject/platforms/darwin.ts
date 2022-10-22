@@ -7,4 +7,4 @@ const PATHS = {
   dev: "/Applications/Discord Development.app/Contents/Resources/app",
 };
 
-export const getAppDir = async (platform: DiscordPlatform) => PATHS[platform];
+export const getAppDir = (platform: DiscordPlatform): string => PATHS[platform];

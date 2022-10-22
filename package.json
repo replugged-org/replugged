@@ -6,7 +6,7 @@
   "main": "dist/main/index.js",
   "types": "src/replugged.d.ts",
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=14.0.0"
   },
   "scripts": {
     "build": "tsx scripts/build.ts",

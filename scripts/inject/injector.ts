@@ -6,7 +6,10 @@ import readline from "readline";
 import { exec } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types";
 
-export const inject = async ({ getAppDir }: PlatformModule, platform: DiscordPlatform) => {
+export const inject = async (
+  { getAppDir }: PlatformModule,
+  platform: DiscordPlatform,
+): Promise<boolean> => {
   const appDir = await getAppDir(platform);
   if (existsSync(appDir)) {
     /*
@@ -41,11 +44,11 @@ export const inject = async ({ getAppDir }: PlatformModule, platform: DiscordPla
       output: process.stdout,
     });
 
-    const askExecCmd = () =>
+    const askExecCmd = (): Promise<string> =>
       new Promise((resolve) =>
         readlineInterface.question("Would you like to execute the command now? y/N: ", resolve),
       );
-    const askViewScript = () =>
+    const askViewScript = (): Promise<string> =>
       new Promise((resolve) =>
         readlineInterface.question(
           "To update Replugged and its plugins, you need to pull in changes with git manually. A script is available for this however. View it? Y/n: ",
@@ -99,7 +102,10 @@ export const inject = async ({ getAppDir }: PlatformModule, platform: DiscordPla
   return true;
 };
 
-export const uninject = async ({ getAppDir }: PlatformModule, platform: DiscordPlatform) => {
+export const uninject = async (
+  { getAppDir }: PlatformModule,
+  platform: DiscordPlatform,
+): Promise<boolean> => {
   const appDir = await getAppDir(platform);
 
   if (!existsSync(appDir)) {

@@ -7,7 +7,7 @@ const RepluggedNative = {
   themes: {
     enable: async (themeName: string) => {
       const { settings } = RepluggedNative;
-      settings.set(
+      await settings.set(
         "themes",
         "disabled",
         ((await settings.get("themes", "disabled")) as string[]).filter((t) => t !== themeName),
@@ -17,7 +17,7 @@ const RepluggedNative = {
       const disabled = (await RepluggedNative.settings.get("themes", "disabled")) as string[];
       if (!disabled.includes(themeName)) {
         disabled.push(themeName);
-        RepluggedNative.settings.set("themes", "disabled", disabled);
+        await RepluggedNative.settings.set("themes", "disabled", disabled);
       }
     },
     list: async (): Promise<RepluggedTheme[]> =>
@@ -78,7 +78,8 @@ export type RepluggedNativeType = typeof RepluggedNative;
 contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 
 const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_RENDERER_JS);
-webFrame.executeJavaScript(renderer);
+// webFrame.executeJavaScript returns a Promise, but we don't have any use for it
+void webFrame.executeJavaScript(renderer);
 
 // Get and execute Discord preload
 // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly

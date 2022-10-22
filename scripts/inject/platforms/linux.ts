@@ -14,7 +14,7 @@ const ProcessRegex = {
   dev: /discord-?development$/i,
 };
 
-const findAppDir = async (platform: DiscordPlatform) => {
+const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
   // This is to ensure the homedir we get is the actual user's homedir instead of root's homedir
   const homedir = execSync('grep $(logname) /etc/passwd | cut -d ":" -f6').toString().trim();
   const flatpakDir = "/var/lib/flatpak/app/com.discordapp";
@@ -95,7 +95,7 @@ const findAppDir = async (platform: DiscordPlatform) => {
   return join("/", ...discordPath, "resources", "app");
 };
 
-export const getAppDir = async (platform: DiscordPlatform) => {
+export const getAppDir = async (platform: DiscordPlatform): Promise<string> => {
   const installDirPath = installDirFile + platform;
   if (existsSync(installDirPath)) {
     return readFileSync(installDirPath, "utf8");

@@ -4,18 +4,17 @@ import Plugin from "../entities/plugin";
 import { PluginContext } from "../../types/entities";
 import { add } from "./ignition";
 
-export async function get<T extends typeof Plugin>(
-  plugin: RepluggedPlugin,
-): Promise<new () => Plugin<any>> {
+export async function get(plugin: RepluggedPlugin): Promise<new () => Plugin> {
   const renderer = await import(`replugged://plugin/${plugin.id}/${plugin.manifest.renderer}`);
 
-  return class extends Plugin<any> {
+  return class extends Plugin {
     public dependencies = plugin.manifest.dependencies?.required ?? [];
     public dependents = plugin.manifest.dependents?.required ?? [];
 
     public optionalDependencies = plugin.manifest.dependencies?.optional ?? [];
     public optionalDependents = plugin.manifest.dependents?.optional ?? [];
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public context: PluginContext<any> = {
       injector: this.injector,
       settings: this.settings,
@@ -35,12 +34,12 @@ export async function get<T extends typeof Plugin>(
   };
 }
 
-export async function all(): Promise<Array<new () => Plugin<any>>> {
+export async function all(): Promise<Array<new () => Plugin>> {
   const plugins = await window.RepluggedNative.plugins.list();
   return Promise.all(plugins.map((p) => get(p)));
 }
 
 export async function load(): Promise<void> {
   const plugins = await all();
-  plugins.forEach((p) => add(new p()));
+  plugins.forEach((P) => add(new P()));
 }
