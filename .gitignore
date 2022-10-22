@@ -2,12 +2,9 @@
 /.cache
 /.logs
 node_modules
-yarn.lock
-pnpm-lock.yaml
 result
 dist/
 .parcel-cache
-package-lock.json
 
 
 plugins/*
