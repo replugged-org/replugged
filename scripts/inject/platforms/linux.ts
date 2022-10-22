@@ -83,7 +83,6 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
         console.log("");
         console.log(BasicMessages.PLUG_FAILED);
         console.log("The path you provided is invalid.");
-        // eslint-disable-next-line no-process-exit
         process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
       }
     }
