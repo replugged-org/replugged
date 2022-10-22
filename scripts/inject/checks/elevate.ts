@@ -9,11 +9,9 @@ const argv = [
 const tryToElevate = (command: string): void => {
   const { error } = spawnSync(command, argv, { stdio: "inherit" });
   if (!error) {
-    // eslint-disable-next-line no-process-exit
     process.exit(0);
   } else if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
     console.error(error);
-    // eslint-disable-next-line no-process-exit
     process.exit(argv.includes("--no-exit-codes") ? 0 : 1);
   }
 };
@@ -26,6 +24,5 @@ if (process.platform === "linux" && process.getuid!() !== 0) {
   console.warn("Neither doas nor sudo were found. Falling back to su.");
   console.log("Please enter your root password");
   spawnSync("su", ["-c", argv.join(" ")], { stdio: "inherit" });
-  // eslint-disable-next-line no-process-exit
   process.exit(0);
 }

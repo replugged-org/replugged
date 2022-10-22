@@ -37,6 +37,7 @@ overrides:
       no-return-assign: off
       no-void: off
       consistent-return: off
+      no-process-exit: off
 
   - files: "**/src/**/*.ts"
     extends: eslint-config-dmitmel/rules/typescript/with-type-checking
