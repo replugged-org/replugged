@@ -23,6 +23,7 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
+    "@fal-works/esbuild-plugin-global-externals": "^2.1.2",
     "@types/node": "^18.8.0",
     "@types/react": "^18.0.21",
     "@types/toposort": "^2.0.3",

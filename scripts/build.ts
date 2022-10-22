@@ -1,4 +1,5 @@
 import esbuild from "esbuild";
+import { globalExternals } from "@fal-works/esbuild-plugin-global-externals";
 import path from "path";
 
 const NODE_VERSION = "14";
@@ -42,5 +43,10 @@ Promise.all([
     platform: "browser",
     target: `chrome${CHROME_VERSION}`,
     outfile: "dist/renderer.js",
+    plugins: [
+      globalExternals({
+        react: "react",
+      }),
+    ],
   }),
 ]);
