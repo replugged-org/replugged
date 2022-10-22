@@ -27,7 +27,6 @@ if (!(process.platform in platformModules)) {
     `Make sure to mention the platform you are on is "${process.platform}" in your issue ticket.`,
   );
   console.log("https://github.com/replugged-org/replugged/issues/new/choose");
-  // eslint-disable-next-line no-process-exit
   process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
 }
 
@@ -56,7 +55,6 @@ let platform: DiscordPlatform | undefined;
             (x) => `${x}`,
           ).join("\n")}${AnsiEscapes.RESET}`,
         );
-        // eslint-disable-next-line no-process-exit
         process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
       } else {
         platform = platformArg;
@@ -80,7 +78,6 @@ let platform: DiscordPlatform | undefined;
         console.log(
           `${AnsiEscapes.RED}Could not find any installations of Discord.${AnsiEscapes.RESET}`,
         );
-        // eslint-disable-next-line no-process-exit
         process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
       }
     }
@@ -99,7 +96,6 @@ let platform: DiscordPlatform | undefined;
           (x) => `${x}`,
         ).join("\n")}${AnsiEscapes.RESET}`,
       );
-      // eslint-disable-next-line no-process-exit
       process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
     }
     if (result) {
@@ -131,7 +127,6 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
           (x) => `${x}`,
         ).join("\n")}${AnsiEscapes.RESET}`,
       );
-      // eslint-disable-next-line no-process-exit
       process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
     }
     if (result) {
@@ -149,7 +144,6 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
     }
   } else {
     console.log(`Unsupported argument "${process.argv[2]}", exiting.`);
-    // eslint-disable-next-line no-process-exit
     process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
   }
 })().catch((e) => {
