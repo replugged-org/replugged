@@ -79,8 +79,7 @@ contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 
 const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_RENDERER_JS);
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-webFrame.executeJavaScript(renderer);
+void webFrame.executeJavaScript(renderer);
 
 // Get and execute Discord preload
 // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
