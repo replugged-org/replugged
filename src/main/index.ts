@@ -131,7 +131,6 @@ electron.app.once("ready", () => {
 });
 
 // This module is required this way at runtime.
- 
 require("./ipc");
 /*
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
