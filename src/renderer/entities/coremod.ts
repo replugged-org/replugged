@@ -5,7 +5,9 @@ import { Settings } from "../../types/settings";
 import { EntityType } from "../../types/entities";
 import { Awaitable } from "../../types/util";
 
-export default abstract class Coremod<T extends Settings> extends EntityBase {
+export default abstract class Coremod<
+  T extends Settings = Record<string, never>,
+> extends EntityBase {
   public abstract dependencies: string[];
   public abstract dependents: string[];
   public abstract optionalDependencies: string[];

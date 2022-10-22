@@ -4,14 +4,10 @@ import Plugin from "../entities/plugin";
 import { PluginContext } from "../../types/entities";
 import { add } from "./ignition";
 
-export async function get(
-  plugin: RepluggedPlugin,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<new () => Plugin<any>> {
+export async function get(plugin: RepluggedPlugin): Promise<new () => Plugin> {
   const renderer = await import(`replugged://plugin/${plugin.id}/${plugin.manifest.renderer}`);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return class extends Plugin<any> {
+  return class extends Plugin {
     public dependencies = plugin.manifest.dependencies?.required ?? [];
     public dependents = plugin.manifest.dependents?.required ?? [];
 
@@ -38,8 +34,7 @@ export async function get(
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function all(): Promise<Array<new () => Plugin<any>>> {
+export async function all(): Promise<Array<new () => Plugin>> {
   const plugins = await window.RepluggedNative.plugins.list();
   return Promise.all(plugins.map((p) => get(p)));
 }

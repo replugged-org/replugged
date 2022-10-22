@@ -1,7 +1,7 @@
 import { EntityType } from "../../types/entities";
 import Coremod from "./coremod";
 
-export default abstract class Target extends Coremod<Record<string, never>> {
+export default abstract class Target extends Coremod {
   public entityType = EntityType.LIFECYCLE;
 
   public start(): void {

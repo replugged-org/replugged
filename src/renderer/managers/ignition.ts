@@ -5,13 +5,12 @@ import Coremod from "../entities/coremod";
 import Target from "../entities/target";
 import { byPropsFilter, signalStart, waitFor, waitForReady } from "../modules/webpack";
 import { log } from "../modules/logger";
+import { Settings } from "../../types/settings";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const entities: Record<string, Coremod<any>> = {};
+export const entities: Record<string, Coremod> = {};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function add(entity: Coremod<any>): void {
-  entities[entity.id] = entity;
+export function add<T extends Settings>(entity: Coremod<T>): void {
+  entities[entity.id] = entity as unknown as Coremod;
 }
 
 function buildDepChain(): Array<[string, string]> {
