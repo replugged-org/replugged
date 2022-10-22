@@ -5,6 +5,8 @@ node_modules
 result
 dist/
 .parcel-cache
+yarn.lock
+package-lock.json
 
 
 plugins/*
