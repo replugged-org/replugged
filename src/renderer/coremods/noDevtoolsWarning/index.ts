@@ -4,8 +4,8 @@ import { patchPlaintext } from "../../modules/webpack";
 export default class NoDevtoolsWarningMod extends Coremod<{
   enabled: boolean;
 }> {
-  public dependencies = [];
-  public dependents = [];
+  public dependencies = ["dev.replugged.lifecycle.WebpackReady"];
+  public dependents = ["dev.replugged.lifecycle.WebpackStart"];
   public optionalDependencies = [];
   public optionalDependents = [];
 
@@ -27,7 +27,7 @@ export default class NoDevtoolsWarningMod extends Coremod<{
     ]);
   }
 
-  public async stop(): Promise<void> {
+  public stop(): void {
     // nop
   }
 }
