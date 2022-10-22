@@ -1,4 +1,3 @@
-import React from "react";
 import Coremod from "../../entities/coremod";
 import { patchPlaintext } from "../../modules/webpack";
 import { insertSections, settingsTools } from "./lib";
