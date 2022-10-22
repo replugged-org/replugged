@@ -6,22 +6,21 @@ env:
 parser: "@typescript-eslint/parser"
 parserOptions:
   sourceType: module
-parser: "@typescript-eslint/parser"
 plugins:
   - "@typescript-eslint"
   - import
 settings:
   node:
-    tryExtensions: [".js", ".json", ".node", ".ts", ".d.ts"]
+    tryExtensions: [".js", ".json", ".node", ".ts", ".d.ts", ".tsx"]
+    allowModules: ["react"]
   import/parsers:
     "@typescript-eslint/parser": [".ts", ".tsx"]
   import/resolver:
-    typescript: true
+    typescript:
+      alwaysTryTypes: true
     node: true
 rules:
   func-names: off
-  node/no-missing-import: off
-
   node/no-unsupported-features/es-syntax:
     - error
     - ignores:
@@ -39,6 +38,7 @@ rules:
   node/no-unpublished-import: off
   node/no-unpublished-require: off
   node/shebang: off
+  no-process-exit: off
 
 overrides:
   - files: "**/*.ts"
@@ -50,7 +50,6 @@ overrides:
       no-return-assign: off
       no-void: off
       consistent-return: off
-      no-process-exit: off
 
   - files: "**/src/**/*.ts"
     extends: eslint-config-dmitmel/rules/typescript/with-type-checking
