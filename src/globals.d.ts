@@ -11,7 +11,7 @@ declare global {
   };
 
   interface Window {
-    React: React;
+    React: typeof React;
     RepluggedNative: RepluggedNativeType;
     replugged: typeof replugged;
     // eslint-disable-next-line @typescript-eslint/naming-convention
