@@ -1,4 +1,5 @@
-import { ModuleExports } from "../../types/discord";
+import { ObjectExports } from "../../types/discord";
+import { AnyFunction, ObjectKey } from "../../types/util";
 
 enum InjectionTypes {
   Before,
@@ -7,16 +8,13 @@ enum InjectionTypes {
 }
 
 type BeforeCallback = (args: unknown[]) => unknown[] | undefined;
-type InsteadCallback = (
-  args: unknown[],
-  orig: (...args: unknown[]) => unknown,
-) => unknown | undefined;
+type InsteadCallback = (args: unknown[], orig: AnyFunction) => unknown | undefined;
 type AfterCallback = (args: unknown[], res: unknown) => unknown | undefined;
 type InjectionCallback = BeforeCallback | InsteadCallback | AfterCallback;
 
 interface Injection {
   id: symbol;
-  obj: ModuleExports;
+  obj: ObjectExports;
   funcName: string;
   type: InjectionTypes;
   cb: InjectionCallback;
@@ -24,7 +22,7 @@ interface Injection {
 }
 
 interface ObjectInjections {
-  obj: ModuleExports;
+  obj: ObjectExports;
   injections: Map<
     string,
     {
@@ -33,12 +31,15 @@ interface ObjectInjections {
       after: Injection[];
     }
   >;
-  original: Map<string, (...args: unknown[]) => unknown>;
+  original: Map<string, AnyFunction>;
 }
 
-const injections = new Map<ModuleExports, ObjectInjections>();
+const injections = new Map<ObjectExports, ObjectInjections>();
 
-function replaceMethod(obj: ModuleExports, funcName: string): ObjectInjections {
+function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+  obj: T,
+  funcName: U,
+): ObjectInjections {
   let objInjections: ObjectInjections;
   if (injections.has(obj)) {
     objInjections = injections.get(obj)!;
@@ -60,13 +61,11 @@ function replaceMethod(obj: ModuleExports, funcName: string): ObjectInjections {
   }
 
   if (!objInjections.original.has(funcName)) {
-    // @ts-expect-error String indexing doesn't work on a Record. IDFK.
     objInjections.original.set(funcName, obj[funcName]);
 
-    // @ts-expect-error String indexing doesn't work on a Record. IDFK.
     const originalFunc = obj[funcName];
 
-    // @ts-expect-error String indexing doesn't work on a Record. IDFK.
+    // @ts-expect-error https://github.com/microsoft/TypeScript/issues/48992
     obj[funcName] = function (...args: unknown[]): unknown {
       const injectionsForProp = objInjections.injections.get(funcName) as {
         before: Injection[];
@@ -104,7 +103,6 @@ function replaceMethod(obj: ModuleExports, funcName: string): ObjectInjections {
       return res;
     };
 
-    // @ts-expect-error String indexing doesn't work on a Record. IDFK.
     Object.defineProperties(obj[funcName], Object.getOwnPropertyDescriptors(originalFunc));
   }
 
@@ -121,7 +119,11 @@ export function uninject(id: symbol): void {
   }
 }
 
-export function before(obj: ModuleExports, funcName: string, cb: BeforeCallback): () => void {
+export function before<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+  obj: T,
+  funcName: U,
+  cb: BeforeCallback,
+): () => void {
   const objInjections = replaceMethod(obj, funcName);
   const id = Symbol("before");
   const uninjectInjection = (): void => uninject(id);
@@ -136,7 +138,11 @@ export function before(obj: ModuleExports, funcName: string, cb: BeforeCallback)
   return uninjectInjection;
 }
 
-export function instead(obj: ModuleExports, funcName: string, cb: InsteadCallback): () => void {
+export function instead<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+  obj: T,
+  funcName: U,
+  cb: InsteadCallback,
+): () => void {
   const objInjections = replaceMethod(obj, funcName);
   const id = Symbol("instead");
   const uninjectInjection = (): void => uninject(id);
@@ -151,7 +157,11 @@ export function instead(obj: ModuleExports, funcName: string, cb: InsteadCallbac
   return uninjectInjection;
 }
 
-export function after(obj: ModuleExports, funcName: string, cb: AfterCallback): () => void {
+export function after<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+  obj: T,
+  funcName: U,
+  cb: AfterCallback,
+): () => void {
   const objInjections = replaceMethod(obj, funcName);
   const id = Symbol("after");
   const uninjectInjection = (): void => uninject(id);
@@ -169,23 +179,35 @@ export function after(obj: ModuleExports, funcName: string, cb: AfterCallback): 
 export class MiniInjector {
   private uninjectors: Array<() => void>;
 
-  private constructor() {
+  public constructor() {
     this.uninjectors = [];
   }
 
-  public before(obj: ModuleExports, funcName: string, cb: BeforeCallback): () => void {
+  public before<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+    obj: T,
+    funcName: U,
+    cb: BeforeCallback,
+  ): () => void {
     const uninjector = before(obj, funcName, cb);
     this.uninjectors.push(uninjector);
     return uninjector;
   }
 
-  public instead(obj: ModuleExports, funcName: string, cb: BeforeCallback): () => void {
+  public instead<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+    obj: T,
+    funcName: U,
+    cb: BeforeCallback,
+  ): () => void {
     const uninjector = instead(obj, funcName, cb);
     this.uninjectors.push(uninjector);
     return uninjector;
   }
 
-  public after(obj: ModuleExports, funcName: string, cb: BeforeCallback): () => void {
+  public after<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+    obj: T,
+    funcName: U,
+    cb: BeforeCallback,
+  ): () => void {
     const uninjector = after(obj, funcName, cb);
     this.uninjectors.push(uninjector);
     return uninjector;

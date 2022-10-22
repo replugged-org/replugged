@@ -1,5 +1,7 @@
+export type ObjectExports = Record<string, unknown>;
+
 export type ModuleExports =
-  | Record<string, unknown>
+  | ObjectExports
   | ((...args: unknown[]) => unknown)
   | string
   | boolean
