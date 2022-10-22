@@ -12,7 +12,7 @@ export class NamespacedSettings<T extends Settings> {
     return window.RepluggedNative.settings.get(this.namespace, key);
   }
 
-  public set(key: Extract<keyof T, string>, value: Promise<T[keyof T]>): Promise<unknown> {
+  public set(key: Extract<keyof T, string>, value: Promise<T[keyof T]>): Promise<void> {
     return window.RepluggedNative.settings.set(this.namespace, key, value);
   }
 
@@ -20,7 +20,7 @@ export class NamespacedSettings<T extends Settings> {
     return window.RepluggedNative.settings.has(this.namespace, key);
   }
 
-  public delete(key: Extract<keyof T, string>): Promise<void> {
+  public delete(key: Extract<keyof T, string>): Promise<boolean> {
     return window.RepluggedNative.settings.delete(this.namespace, key);
   }
 

@@ -74,7 +74,7 @@ ipcMain.handle(RepluggedIpcChannels.HAS_SETTING, async (_, namespace: string, ke
 ipcMain.handle(
   RepluggedIpcChannels.SET_SETTING,
   (_, namespace: string, key: string, value: unknown) =>
-    writeTransaction(namespace, (settings) => settings.set(key, value)),
+    void writeTransaction(namespace, (settings) => settings.set(key, value)),
 );
 
 ipcMain.handle(RepluggedIpcChannels.DELETE_SETTING, (_, namespace: string, key: string) =>
