@@ -69,7 +69,7 @@ export default {
 			],
 		}) as typeof React;
 	},
-	get electron(): Electron.App {
+	get app(): Electron.App {
 		return window.DiscordNative.app as Electron.App;
 	},
 };
