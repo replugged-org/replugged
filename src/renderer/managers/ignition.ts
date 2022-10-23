@@ -21,10 +21,13 @@ function buildDepChain(): Array<[string, string]> {
       ...entity.dependencies,
       ...entity.optionalDependencies.filter((d: string) => d in entities),
     ],
-    dependents: [...entity.dependents, ...entity.optionalDependents.filter((d: string) => d in entities)],
+    dependents: [
+      ...entity.dependents,
+      ...entity.optionalDependents.filter((d: string) => d in entities),
+    ],
   }));
 
-  return deps.flatMap((d: { dependencies: string[]; id: string; dependents: string[]; }) => [
+  return deps.flatMap((d: { dependencies: string[]; id: string; dependents: string[] }) => [
     ...d.dependencies.map((id: string) => [d.id, id]),
     ...d.dependents.map((id: string) => [id, d.id]),
   ]) as Array<[string, string]>;
