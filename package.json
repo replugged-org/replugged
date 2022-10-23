@@ -14,8 +14,12 @@
     "plug": "tsx scripts/inject/index.ts inject --no-exit-codes",
     "unplug": "tsx scripts/inject/index.ts uninject --no-exit-codes",
     "check": "tsc --noEmit",
-    "lint": "eslint --ext js --ext ts --ext jsx --ext tsx .",
-    "format": "npm run lint -- --fix"
+    "prettier:check": "prettier ./src ./scripts --check",
+    "eslint:check": "eslint ./src ./scripts",
+    "prettier:fix": "prettier ./src ./scripts --write",
+    "eslint:fix": "eslint ./src ./scripts --fix",
+    "lint": "pnpm run prettier:check && pnpm run eslint:check",
+    "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",
