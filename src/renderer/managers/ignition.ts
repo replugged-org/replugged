@@ -3,7 +3,7 @@ import SettingsMod from "../coremods/settings";
 import ExperimentsMod from "../coremods/experiments";
 import Coremod from "../entities/coremod";
 import Target from "../entities/target";
-import { byPropsFilter, signalStart, waitFor, waitForReady } from "../modules/webpack";
+import { signalStart, waitForReady } from "../modules/webpack";
 import { log } from "../modules/logger";
 import NoDevtoolsWarningMod from "../coremods/noDevtoolsWarning";
 import { Settings } from "../../types/settings";
@@ -104,14 +104,9 @@ class WebpackStartTarget extends Target {
     super("dev.replugged.lifecycle.WebpackStart", "WebpackStart");
   }
 
-  public async start(): Promise<void> {
+  public start(): void {
     super.start();
     signalStart();
-    // lexisother(TODO): Make this not do what this does, do something better
-    // instead.
-    await waitFor(
-      byPropsFilter(["__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"]),
-    ).then((React) => (window.React = React as typeof window.React));
   }
 }
 

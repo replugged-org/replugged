@@ -42,6 +42,7 @@ overrides:
       no-return-assign: off
       no-void: off
       consistent-return: off
+      direct-eval: off
 
   - files: "**/src/**/*.ts"
     extends: eslint-config-dmitmel/rules/typescript/with-type-checking

@@ -7,7 +7,7 @@ import {
   WebpackChunkGlobal,
   WebpackModule,
   WebpackRequire,
-} from "../../types/discord";
+} from "../../../types/discord";
 import {
   Filter,
   LazyCallback,
@@ -15,7 +15,9 @@ import {
   PlaintextPatch,
   RawLazyCallback,
   RawPlaintextPatch,
-} from "../../types/webpack";
+} from "../../../types/webpack";
+
+export { default as common } from './common';
 
 export let wpRequire: WebpackRequire;
 
