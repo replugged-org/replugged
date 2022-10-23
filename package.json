@@ -16,10 +16,10 @@
     "check": "tsc --noEmit",
     "prettier:check": "prettier ./src ./scripts --check",
     "eslint:check": "eslint ./src ./scripts",
-    "prettier:fix": "npm run prettier:check -- --write",
-    "eslint:fix": "npm run eslint:check -- --fix",
-    "lint": "npm run prettier:check && npm run eslint:check",
-    "lint:fix": "npm run prettier:fix && npm run eslint:fix"
+    "prettier:fix": "pnpm run prettier:check -- --write",
+    "eslint:fix": "pnpm run eslint:check -- --fix",
+    "lint": "pnpm run prettier:check && pnpm run eslint:check",
+    "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",
