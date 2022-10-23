@@ -1,55 +1,56 @@
+root: true
 extends:
-  - eslint-config-dmitmel/presets/node
+    - eslint-config-dmitmel/presets/node
 env:
-  browser: true
-parser: "@typescript-eslint/parser"
+    browser: true
+parser: '@typescript-eslint/parser'
 parserOptions:
-  sourceType: module
+    sourceType: module
 plugins:
-  - "@typescript-eslint"
+    - '@typescript-eslint'
 settings:
-  node:
-    tryExtensions: [".js", ".json", ".node", ".ts", ".d.ts", ".tsx"]
-    allowModules: ["react"]
+    node:
+        tryExtensions: ['.js', '.json', '.node', '.ts', '.d.ts', '.tsx']
+        allowModules: ['react']
 rules:
-  func-names: off
-  node/no-unsupported-features/es-syntax:
-    - error
-    - ignores:
-        - modules
-        - dynamicImport
-  node/no-unsupported-features/es-builtins:
-    - error
-    - ignores:
-        - globalThis
-  node/no-unsupported-features/node-builtins:
-    - error
-    - ignores:
-        - fs.promises
+    func-names: off
+    node/no-unsupported-features/es-syntax:
+        - error
+        - ignores:
+              - modules
+              - dynamicImport
+    node/no-unsupported-features/es-builtins:
+        - error
+        - ignores:
+              - globalThis
+    node/no-unsupported-features/node-builtins:
+        - error
+        - ignores:
+              - fs.promises
 
-  node/no-unpublished-import: off
-  node/no-unpublished-require: off
-  node/shebang: off
-  no-process-exit: off
+    node/no-unpublished-import: off
+    node/no-unpublished-require: off
+    node/shebang: off
+    no-process-exit: off
 
 overrides:
-  - files: "**/*.ts"
-    extends: eslint-config-dmitmel/presets/typescript-addon
-    rules:
-      node/no-missing-import: off
-      eqeqeq: off
-      \@typescript-eslint/no-dynamic-delete: off
-      no-return-assign: off
-      no-void: off
-      consistent-return: off
+    - files: '**/*.ts'
+      extends: eslint-config-dmitmel/presets/typescript-addon
+      rules:
+          node/no-missing-import: off
+          eqeqeq: off
+          \@typescript-eslint/no-dynamic-delete: off
+          no-return-assign: off
+          no-void: off
+          consistent-return: off
 
-  - files: "**/src/**/*.ts"
-    extends: eslint-config-dmitmel/rules/typescript/with-type-checking
+    - files: '**/src/**/*.ts'
+      extends: eslint-config-dmitmel/rules/typescript/with-type-checking
 
-  - files: "**/*.d.ts"
-    rules:
-      no-var: off
+    - files: '**/*.d.ts'
+      rules:
+          no-var: off
 
-  - files: "src/**/*.ts"
-    parserOptions:
-      project: tsconfig.json
+    - files: 'src/**/*.ts'
+      parserOptions:
+          project: tsconfig.json
