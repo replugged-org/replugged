@@ -16,8 +16,8 @@
     "check": "tsc --noEmit",
     "prettier:check": "prettier ./src ./scripts --check",
     "eslint:check": "eslint ./src ./scripts",
-    "prettier:fix": "pnpm run prettier:check -- --write",
-    "eslint:fix": "pnpm run eslint:check -- --fix",
+    "prettier:fix": "prettier ./src ./scripts --write",
+    "eslint:fix": "eslint ./src ./scripts --fix",
     "lint": "pnpm run prettier:check && pnpm run eslint:check",
     "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix"
   },
