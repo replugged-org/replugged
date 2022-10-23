@@ -1,5 +1,5 @@
 import Coremod from "../../entities/coremod";
-import { /*common,*/ patchPlaintext } from "../../modules/webpack";
+import { patchPlaintext } from "../../modules/webpack";
 import { insertSections, settingsTools } from "./lib";
 
 export default class SettingsMod extends Coremod {
@@ -13,7 +13,6 @@ export default class SettingsMod extends Coremod {
   }
 
   start() {
-    //return;
     // TODO(lexisother): Build UI
     function RPSettings() {
       const { React } = window.replugged.webpack.common;
