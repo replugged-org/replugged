@@ -14,8 +14,6 @@ const common: esbuild.BuildOptions = {
   format: "cjs" as esbuild.Format,
   logLevel: "info",
   watch,
-  // Work around https://github.com/evanw/esbuild/issues/2460
-  tsconfig: "tsconfig.esbuild.json",
 };
 
 Promise.all([

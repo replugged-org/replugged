@@ -1,3 +1,4 @@
+export * as common from "./modules/common";
 export * as injector from "./modules/injector";
 export * as webpack from "./modules/webpack";
 export { default as notices } from "./apis/notices";

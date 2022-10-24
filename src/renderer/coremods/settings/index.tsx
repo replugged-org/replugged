@@ -9,6 +9,8 @@ export default class SettingsMod extends Coremod {
   optionalDependencies = [];
   optionalDependents = [];
 
+  public insertSections = insertSections;
+
   constructor() {
     super("dev.replugged.coremods.Settings", "settings");
   }
@@ -37,7 +39,7 @@ export default class SettingsMod extends Coremod {
           {
             match: /return\[\{section((.|\n)+)\}\]/,
             replace: (_, sections) =>
-              `return (${insertSections.toString()})([{section${sections}}])`,
+              `return replugged.ignition.entities['${this.id}'].insertSections([{section${sections}}])`,
           },
         ],
       },
