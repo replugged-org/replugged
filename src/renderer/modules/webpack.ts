@@ -134,6 +134,7 @@ function getExports(m: RawModule): ModuleExports | undefined {
 }
 
 export function getRawModule(filter: Filter): RawModule | undefined {
+  if (typeof wpRequire?.c === "undefined") return;
   return Object.values(wpRequire.c).find(filter);
 }
 

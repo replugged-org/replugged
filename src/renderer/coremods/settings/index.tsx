@@ -1,4 +1,3 @@
-import React from "react";
 import Coremod from "../../entities/coremod";
 import { patchPlaintext } from "../../modules/webpack";
 import { insertSections, settingsTools } from "./lib";
@@ -8,6 +7,8 @@ export default class SettingsMod extends Coremod {
   dependents = ["dev.replugged.lifecycle.WebpackStart"];
   optionalDependencies = [];
   optionalDependents = [];
+
+  public insertSections = insertSections;
 
   constructor() {
     super("dev.replugged.coremods.Settings", "settings");
@@ -37,7 +38,7 @@ export default class SettingsMod extends Coremod {
           {
             match: /return\[\{section((.|\n)+)\}\]/,
             replace: (_, sections) =>
-              `return (${insertSections.toString()})([{section${sections}}])`,
+              `return replugged.ignition.entities['${this.id}'].insertSections([{section${sections}}])`,
           },
         ],
       },

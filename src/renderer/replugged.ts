@@ -1,3 +1,7 @@
+// We can't use export * as React from "./react" because it's not compatiable with export = X
+import React from "./common/react";
+export { React };
+
 export * as injector from "./modules/injector";
 export * as webpack from "./modules/webpack";
 export { default as notices } from "./apis/notices";
