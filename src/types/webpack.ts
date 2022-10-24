@@ -14,10 +14,12 @@ export interface RegexReplacement {
 export type PlaintextReplacer = (source: string) => string;
 export interface PlaintextPatch {
   find?: string | RegExp;
+  check?: (source: string) => boolean;
   replacements: Array<PlaintextReplacer | RegexReplacement>;
 }
 
 export interface RawPlaintextPatch {
   find?: string | RegExp;
+  check?: (source: string) => boolean;
   replacements: PlaintextReplacer[];
 }

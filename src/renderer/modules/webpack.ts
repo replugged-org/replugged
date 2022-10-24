@@ -48,6 +48,10 @@ function patchModuleSource(mod: WebpackModule): WebpackModule {
       return source;
     }
 
+    if (patch.check && !patch.check(source)) {
+      return source;
+    }
+
     const result = patch.replacements.reduce((source, patch) => patch(source), source);
 
     if (result === source) {
