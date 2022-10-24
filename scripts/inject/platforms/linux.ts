@@ -14,6 +14,18 @@ const ProcessRegex = {
   dev: /discord-?development$/i,
 };
 
+const platformMappings: {[key in DiscordPlatform]: string} = {
+  stable: "discord",
+  dev: "discord-development",
+  ptb: "discord-ptb",
+  canary: "discord-canary"
+}
+
+const patchDiscordBin = (platform: DiscordPlatform) => console.log(`${AnsiEscapes.YELLOW}You are using discord with system electron.
+To finish plugging, copy /usr/bin/${platformMappings[platform]} to /usr/local/bin/${platformMappings[platform]} \
+and edit that new file to replace /app.asar with /app.
+To finish unplugging, remove /usr/local/bin/${platformMappings[platform]}.${AnsiEscapes.RESET}`, "\n")
+
 const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
   // This is to ensure the homedir we get is the actual user's homedir instead of root's homedir
   const homedir = execSync('grep $(logname) /etc/passwd | cut -d ":" -f6').toString().trim();
@@ -23,6 +35,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
   const KnownLinuxPaths = {
     stable: [
       "/usr/share/discord",
+      "/usr/lib/discord",
       "/usr/lib64/discord",
       "/opt/discord",
       "/opt/Discord",
@@ -39,6 +52,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
     ],
     canary: [
       "/usr/share/discord-canary",
+      "/usr/lib/discord-canary",
       "/usr/lib64/discord-canary",
       "/opt/discord-canary",
       "/opt/DiscordCanary",
@@ -87,12 +101,20 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
       }
     }
 
-    return join(discordPath, "resources", "app");
+    if (existsSync(join("/", discordPath, "app.asar"))) {
+      patchDiscordBin(platform)
+      return join(discordPath,"app")
+    }
+    else return join(discordPath, "resources", "app");
   }
 
   const discordPath = discordProcess[4].split("/");
   discordPath.splice(discordPath.length - 1, 1);
-  return join("/", ...discordPath, "resources", "app");
+  if (existsSync(join("/", ...discordPath, "app.asar"))) {
+    patchDiscordBin(platform)
+    return join("/", ...discordPath, "app")
+  }
+  else return join("/", ...discordPath, "resources", "app");
 };
 
 export const getAppDir = async (platform: DiscordPlatform): Promise<string> => {
