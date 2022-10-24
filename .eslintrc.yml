@@ -8,10 +8,6 @@ parserOptions:
   sourceType: module
 plugins:
   - "@typescript-eslint"
-settings:
-  node:
-    tryExtensions: [".js", ".json", ".node", ".ts", ".d.ts", ".tsx"]
-    allowModules: ["react"]
 rules:
   func-names: off
   node/no-unsupported-features/es-syntax:
@@ -28,6 +24,8 @@ rules:
     - ignores:
         - fs.promises
 
+  node/no-missing-require: off
+  node/no-missing-import: off
   node/no-unpublished-import: off
   node/no-unpublished-require: off
   node/shebang: off

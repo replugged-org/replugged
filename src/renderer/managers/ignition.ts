@@ -7,7 +7,7 @@ import { signalStart, waitForReady } from "../modules/webpack";
 import { log } from "../modules/logger";
 import NoDevtoolsWarningMod from "../coremods/noDevtoolsWarning";
 import { Settings } from "../../types/settings";
-import { reactReady } from "../modules/common/react";
+import { reactReady } from "../common/react";
 
 export const entities: Record<string, Coremod> = {};
 
