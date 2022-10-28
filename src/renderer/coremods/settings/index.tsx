@@ -3,11 +3,6 @@ import { patchPlaintext } from "../../modules/webpack";
 import { insertSections, settingsTools } from "./lib";
 
 export default class SettingsMod extends Coremod {
-  dependencies = ["dev.replugged.lifecycle.WebpackReady"];
-  dependents = ["dev.replugged.lifecycle.WebpackStart"];
-  optionalDependencies = [];
-  optionalDependents = [];
-
   public insertSections = insertSections;
 
   constructor() {
@@ -29,8 +24,13 @@ export default class SettingsMod extends Coremod {
       pos: 36,
     });
     settingsTools.addDivider(37);
+  }
 
-    // Insert our sections into the section array
+  async stop() {
+    // placeholder
+  }
+
+  public runPlaintextPatches(): void {
     patchPlaintext([
       {
         find: ".Messages.USER_SETTINGS_MY_ACCOUNT",
@@ -38,14 +38,10 @@ export default class SettingsMod extends Coremod {
           {
             match: /return\[\{section((.|\n)+)\}\]/,
             replace: (_, sections) =>
-              `return replugged.ignition.entities['${this.id}'].insertSections([{section${sections}}])`,
+              `return replugged.coremods.coremods.settings.insertSections([{section${sections}}])`,
           },
         ],
       },
     ]);
-  }
-
-  async stop() {
-    // placeholder
   }
 }

@@ -8,11 +8,6 @@ import { Awaitable } from "../../types/util";
 export default abstract class Coremod<
   T extends Settings = Record<string, never>,
 > extends EntityBase {
-  public abstract dependencies: string[];
-  public abstract dependents: string[];
-  public abstract optionalDependencies: string[];
-  public abstract optionalDependents: string[];
-
   protected injector: MiniInjector = new MiniInjector();
   protected settings: NamespacedSettings<T>;
   public entityType = EntityType.COREMOD;
@@ -24,4 +19,5 @@ export default abstract class Coremod<
 
   public abstract start(): Awaitable<void>;
   public abstract stop(): Awaitable<void>;
+  public abstract runPlaintextPatches(): void;
 }

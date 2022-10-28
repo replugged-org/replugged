@@ -4,16 +4,19 @@ import { patchPlaintext } from "../../modules/webpack";
 export default class NoDevtoolsWarningMod extends Coremod<{
   enabled: boolean;
 }> {
-  public dependencies = ["dev.replugged.lifecycle.WebpackReady"];
-  public dependents = ["dev.replugged.lifecycle.WebpackStart"];
-  public optionalDependencies = [];
-  public optionalDependents = [];
-
   public constructor() {
     super("dev.replugged.coremods.NoDevtoolsWarningMod", "nodevtoolswarning");
   }
 
   public start(): void {
+    // nothing
+  }
+
+  public stop(): void {
+    // nop
+  }
+
+  public runPlaintextPatches(): void {
     patchPlaintext([
       {
         find: "setDevtoolsCallbacks",
@@ -25,9 +28,5 @@ export default class NoDevtoolsWarningMod extends Coremod<{
         ],
       },
     ]);
-  }
-
-  public stop(): void {
-    // nop
   }
 }

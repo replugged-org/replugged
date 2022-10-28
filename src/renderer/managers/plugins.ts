@@ -1,45 +1,84 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
 import { RepluggedPlugin } from "../../types";
-import Plugin from "../entities/plugin";
-import { PluginContext } from "../../types/entities";
-import { add } from "./ignition";
+import { Awaitable } from "../../types/util";
+import { MiniInjector } from "../modules/injector";
+import { Logger, error } from "../modules/logger";
 
-export async function get(plugin: RepluggedPlugin): Promise<new () => Plugin> {
+type PluginWrapper = RepluggedPlugin & RepluggedPlugin["manifest"] & {
+  context: {
+    injector: MiniInjector,
+    logger: Logger
+  },
+  start: () => Awaitable<void>,
+  stop: () => Awaitable<void>,
+  patchPlaintext: () => void
+}
+
+export const plugins = new Map<string, PluginWrapper>();
+export const pluginExports = new Map<string, unknown>();
+
+export async function load(plugin: RepluggedPlugin): Promise<void> {
   const renderer = await import(`replugged://plugin/${plugin.id}/${plugin.manifest.renderer}`);
-
-  return class extends Plugin {
-    public dependencies = plugin.manifest.dependencies?.required ?? [];
-    public dependents = plugin.manifest.dependents?.required ?? [];
-
-    public optionalDependencies = plugin.manifest.dependencies?.optional ?? [];
-    public optionalDependents = plugin.manifest.dependents?.optional ?? [];
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public context: PluginContext<any> = {
-      injector: this.injector,
-      settings: this.settings,
-    };
-
-    public constructor() {
-      super(plugin.manifest.id, plugin.manifest.name);
-    }
-
-    public async start(): Promise<void> {
-      await renderer.start(this.context);
-    }
-
-    public async stop(): Promise<void> {
-      await renderer.stop(this.context);
-    }
-  };
+  const pluginLogger = new Logger("Plugin", plugin.manifest.name);
+  const localExports = {};
+  pluginExports.set(plugin.manifest.id, localExports);
+  const pluginWrapper: PluginWrapper = Object.freeze({
+    ...plugin,
+    ...plugin.manifest,
+    context: {
+      injector: new MiniInjector(),
+      logger: pluginLogger,
+      exports: localExports
+      // need `settings`
+    },
+    start: (): Awaitable<void> => renderer.start(pluginWrapper.context),
+    stop: (): Awaitable<void> => renderer.stop(pluginWrapper.context),
+    patchPlaintext: () => renderer.patchPlaintext(pluginWrapper.context)
+  });
+  plugins.set(plugin.manifest.id, pluginWrapper);
 }
 
-export async function all(): Promise<Array<new () => Plugin>> {
-  const plugins = await window.RepluggedNative.plugins.list();
-  return Promise.all(plugins.map((p) => get(p)));
+export async function loadAll(): Promise<void> {
+  await Promise.allSettled((await window.RepluggedNative.plugins.list()).map(p => load(p)));
 }
 
-export async function load(): Promise<void> {
-  const plugins = await all();
-  plugins.forEach((P) => add(new P()));
+export async function start(id: string): Promise<void> {
+  const plugin = plugins.get(id);
+  try {
+    await plugin?.start?.();
+  } catch (e: unknown) {
+    error("Plugin", plugin?.name ?? id, void 0, e);
+  }
+}
+
+export async function startAll(): Promise<void> {
+  for (const id of plugins.keys()) {
+    await start(id);
+  }
+}
+
+export async function stop(id: string): Promise<void> {
+  const plugin = plugins.get(id);
+  try {
+    await plugin?.stop?.();
+  } catch (e: unknown) {
+    error("Plugin", plugin?.name ?? id, void 0, e);
+  }
+}
+
+export async function stopAll(): Promise<void> {
+  for (const id of plugins.keys()) {
+    await stop(id);
+  }
+}
+
+export function runPlaintextPatches(): void {
+  
+}
+
+export async function reload(id: string): Promise<void> {
+  const plugin = plugins.get(id);
+  await plugin?.stop?.();
+  plugins.delete(id);
+
 }

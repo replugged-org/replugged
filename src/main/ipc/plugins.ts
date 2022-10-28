@@ -37,7 +37,9 @@ ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlu
   for (const pluginDir of pluginDirs) {
     try {
       plugins.push(await getPlugin(pluginDir.name));
-    } catch {}
+    } catch {
+      console.error(`Invalid plugin: ${pluginDir.name}`);
+    }
   }
 
   return plugins;

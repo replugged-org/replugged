@@ -1,6 +1,5 @@
 /*
 IPC events:
-- REPLUGGED_GET_THEME_CSS: returns compiled CSS for a theme by name
 - REPLUGGED_LIST_THEMES: returns an array of all valid themes available
 - REPLUGGED_UNINSTALL_THEME: uninstalls a theme by name
 */
