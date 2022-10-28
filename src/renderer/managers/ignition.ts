@@ -17,7 +17,12 @@ export async function start(): Promise<void> {
   themes.loadAll();
   quickCSS.load();
 
-  log("Ignition", "Start", void 0, `Finished igniting Replugged in ${performance.now() - startTime}ms`);
+  log(
+    "Ignition",
+    "Start",
+    void 0,
+    `Finished igniting Replugged in ${performance.now() - startTime}ms`,
+  );
 }
 
 export async function stop(): Promise<void> {
@@ -29,7 +34,12 @@ export async function stop(): Promise<void> {
   themes.unloadAll();
   quickCSS.unload();
 
-  log("Ignition", "Stop", void 0, `Finished de-igniting Replugged in ${performance.now() - startTime}ms`);
+  log(
+    "Ignition",
+    "Stop",
+    void 0,
+    `Finished de-igniting Replugged in ${performance.now() - startTime}ms`,
+  );
 }
 
 export async function restart(): Promise<void> {

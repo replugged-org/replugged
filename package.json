@@ -43,8 +43,5 @@
     "tsx": "^3.9.0",
     "typescript": "^4.8.4",
     "zod": "^3.19.1"
-  },
-  "dependencies": {
-    "toposort": "^2.0.2"
   }
 }

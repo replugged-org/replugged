@@ -14,13 +14,9 @@ specifiers:
   eslint-plugin-node: ^11.1.0
   eslint-plugin-react: ^7.31.8
   prettier: ^2.7.1
-  toposort: ^2.0.2
   tsx: ^3.9.0
   typescript: ^4.8.4
   zod: ^3.19.1
-
-dependencies:
-  toposort: 2.0.2
 
 devDependencies:
   '@types/node': 18.11.3
@@ -2178,10 +2174,6 @@ packages:
     dependencies:
       is-number: 7.0.0
     dev: true
-
-  /toposort/2.0.2:
-    resolution: {integrity: sha512-0a5EOkAUp8D4moMi2W8ZF8jcga7BgZd91O/yabJCFY8az+XSzeGyTKs0Aoo897iV1Nj6guFq8orWDS96z91oGg==}
-    dev: false
 
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}

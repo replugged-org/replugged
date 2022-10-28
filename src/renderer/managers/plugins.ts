@@ -4,15 +4,16 @@ import { Awaitable } from "../../types/util";
 import { MiniInjector } from "../modules/injector";
 import { Logger, error } from "../modules/logger";
 
-type PluginWrapper = RepluggedPlugin & RepluggedPlugin["manifest"] & {
-  context: {
-    injector: MiniInjector,
-    logger: Logger
-  },
-  start: () => Awaitable<void>,
-  stop: () => Awaitable<void>,
-  patchPlaintext: () => void
-}
+type PluginWrapper = RepluggedPlugin &
+  RepluggedPlugin["manifest"] & {
+    context: {
+      injector: MiniInjector;
+      logger: Logger;
+    };
+    start: () => Awaitable<void>;
+    stop: () => Awaitable<void>;
+    patchPlaintext: () => void;
+  };
 
 export const plugins = new Map<string, PluginWrapper>();
 export const pluginExports = new Map<string, unknown>();
@@ -28,18 +29,18 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
     context: {
       injector: new MiniInjector(),
       logger: pluginLogger,
-      exports: localExports
+      exports: localExports,
       // need `settings`
     },
     start: (): Awaitable<void> => renderer.start(pluginWrapper.context),
     stop: (): Awaitable<void> => renderer.stop(pluginWrapper.context),
-    patchPlaintext: () => renderer.patchPlaintext(pluginWrapper.context)
+    patchPlaintext: () => renderer.patchPlaintext(pluginWrapper.context),
   });
   plugins.set(plugin.manifest.id, pluginWrapper);
 }
 
 export async function loadAll(): Promise<void> {
-  await Promise.allSettled((await window.RepluggedNative.plugins.list()).map(p => load(p)));
+  await Promise.allSettled((await window.RepluggedNative.plugins.list()).map((p) => load(p)));
 }
 
 export async function start(id: string): Promise<void> {
@@ -72,13 +73,10 @@ export async function stopAll(): Promise<void> {
   }
 }
 
-export function runPlaintextPatches(): void {
-  
-}
+export function runPlaintextPatches(): void {}
 
 export async function reload(id: string): Promise<void> {
   const plugin = plugins.get(id);
   await plugin?.stop?.();
   plugins.delete(id);
-
 }
