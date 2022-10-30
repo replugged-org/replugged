@@ -1,5 +1,4 @@
-import { existsSync } from "fs";
-import { mkdir, rm, writeFile } from "fs/promises";
+import { mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import { join, sep } from "path";
 import { AnsiEscapes } from "./util";
 import readline from "readline";
@@ -11,7 +10,7 @@ export const inject = async (
   platform: DiscordPlatform,
 ): Promise<boolean> => {
   const appDir = await getAppDir(platform);
-  if (existsSync(appDir)) {
+  if ((await stat(appDir)).isDirectory()) {
     /*
      * @todo: verify if there is nothing in discord_desktop_core as well
      * @todo: prompt to automatically uninject and continue
@@ -84,6 +83,7 @@ export const inject = async (
     readlineInterface.close();
   }
 
+  await rename(appDir, join(appDir, "..", "app.orig.asar"));
   await mkdir(appDir);
   await Promise.all([
     writeFile(
@@ -108,7 +108,7 @@ export const uninject = async (
 ): Promise<boolean> => {
   const appDir = await getAppDir(platform);
 
-  if (!existsSync(appDir)) {
+  if (!(await stat(appDir)).isDirectory()) {
     console.log(
       `${AnsiEscapes.BOLD}${AnsiEscapes.RED}There is nothing to unplug. You are already running Discord without mods.${AnsiEscapes.RESET}`,
     );
@@ -116,5 +116,6 @@ export const uninject = async (
   }
 
   await rm(appDir, { recursive: true, force: true });
+  await rename(join(appDir, "..", "app.orig.asar"), appDir);
   return true;
 };
