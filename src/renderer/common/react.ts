@@ -1,5 +1,5 @@
 import { AnyFunction } from "../../types/util";
-import { byProps, get, wait } from "../modules/webpack";
+import { byProps, getModule, waitForModule } from "../modules/webpack";
 
 // @ts-expect-error - webpack exports are loaded async
 let React: typeof import("react") & {
@@ -7,11 +7,11 @@ let React: typeof import("react") & {
   jsx: AnyFunction;
   jsxs: AnyFunction;
 } = {
-  reactReady: wait(
+  reactReady: waitForModule(
     byProps(["__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"]),
   ).then((react) => {
     Object.assign(React, react as typeof import("react"));
-    React.jsx = (get(byProps(["jsx"])) as { jsx: AnyFunction }).jsx;
+    React.jsx = (getModule(byProps(["jsx"])) as { jsx: AnyFunction }).jsx;
     React.jsxs = React.jsx;
   }),
 };
