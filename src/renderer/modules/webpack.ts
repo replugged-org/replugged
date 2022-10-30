@@ -17,6 +17,8 @@ import {
   RawPlaintextPatch,
 } from "../../types/webpack";
 
+// Handlers
+
 export let wpRequire: WebpackRequire;
 
 let signalReady: () => void;
@@ -127,6 +129,8 @@ Object.defineProperty(window, "webpackChunkdiscord_app", {
   configurable: true,
 });
 
+// Helpers
+
 function getExports(m: RawModule): ModuleExports | undefined {
   if (typeof m.exports === "object") {
     const exportKeys = Object.keys(m.exports);
@@ -137,107 +141,104 @@ function getExports(m: RawModule): ModuleExports | undefined {
   return m.exports;
 }
 
-export function getRawModule(filter: Filter): RawModule | undefined {
-  if (typeof wpRequire?.c === "undefined") return;
-  return Object.values(wpRequire.c).find(filter);
-}
-
-export function getModule(filter: Filter): ModuleExports | undefined {
-  const raw = getRawModule(filter);
-  if (typeof raw !== "undefined") {
-    return getExports(raw);
-  }
-}
-
-export function getAllRawModules(filter?: Filter): RawModule[] {
-  const unfiltered = Object.values(wpRequire.c);
-  if (filter) {
-    return unfiltered.filter(filter);
-  }
-  return unfiltered;
-}
-
-export function getAllModules(filter?: Filter): Array<ModuleExports | undefined> {
-  return getAllRawModules(filter).map(getExports);
-}
-
 function getExportsForProps<P extends string>(
   m: RawModule,
   props: P[],
 ): ModuleExportsWithProps<P> | undefined {
-  if (typeof m.exports === "object") {
-    return [m.exports, ...Object.values(m.exports)].find(
-      (o) => typeof o === "object" && o !== null && props.every((p) => p in o),
-    ) as ModuleExportsWithProps<P> | undefined;
-  }
-}
-function byPropsInternal<P extends string>(props: P[], all: true): Array<ModuleExportsWithProps<P>>;
-function byPropsInternal<P extends string>(
-  props: P[],
-  all?: false,
-): ModuleExportsWithProps<P> | undefined;
-function byPropsInternal<P extends string>(
-  props: P[],
-  all = false,
-): (ModuleExportsWithProps<P> | undefined) | Array<ModuleExportsWithProps<P>> {
-  const result = [];
-  for (const m of getAllRawModules()) {
-    const exp = getExportsForProps(m, props);
-    if (exp) {
-      if (all) {
-        result.push(exp);
-      } else {
-        return exp;
-      }
-    }
-  }
-  if (all) {
-    return result;
-  }
+  if (typeof m.exports !== "object") return;
+
+  return [m.exports, ...Object.values(m.exports)].find(
+    (o) => typeof o === "object" && o !== null && props.every((p) => p in o),
+  ) as ModuleExportsWithProps<P> | undefined;
 }
 
-export function byPropsFilter<P extends string>(props: P[]) {
-  return (m: RawModule): m is RawModuleWithProps<P> => Boolean(getExportsForProps(m, props));
-}
+export function getById(id: number, raw?: false): ModuleExports | undefined;
+export function getById(id: number, raw?: true): RawModule | undefined;
 
-export function getByProps<P extends string>(...props: P[]): ModuleExportsWithProps<P> | undefined {
-  return byPropsInternal(props, false);
-}
-
-export function getRawByProps<P extends string>(...props: P[]): RawModuleWithProps<P> | undefined {
-  return getRawModule(byPropsFilter(props)) as RawModuleWithProps<P> | undefined;
-}
-
-export function getRawById(id: number): RawModule | undefined {
+export function getById(id: number, raw = false): RawModule | ModuleExports | undefined {
   if (!(id in wpRequire.c)) {
     wpRequire(id);
   }
 
-  return wpRequire.c[id];
-}
+  const rawModule: RawModule | undefined = wpRequire.c[id];
 
-export function getById(id: number): ModuleExports | undefined {
-  const raw = getRawById(id);
-  if (typeof raw !== "undefined") {
-    return getExports(raw);
-  }
-}
-
-export function getAllByProps<P extends string>(...props: P[]): Array<ModuleExportsWithProps<P>> {
-  return byPropsInternal(props, true);
-}
-
-export function getAllRawByProps<P extends string>(...props: P[]): Array<RawModuleWithProps<P>> {
-  return getAllRawModules(byPropsFilter(props)) as Array<RawModuleWithProps<P>>;
-}
-
-export function subscribeRaw(filter: Filter, callback: RawLazyCallback): () => void {
-  const raw = getRawModule(filter);
   if (raw) {
-    callback(raw);
+    return rawModule;
   }
 
-  const listener: LazyListener = [filter, callback];
+  return typeof rawModule !== "undefined" ? getExports(rawModule) : void 0;
+}
+
+// Searcher
+
+export function get(filter: Filter, all?: false, raw?: false): ModuleExports | undefined;
+export function get(filter: Filter, all?: true, raw?: false): ModuleExports[];
+export function get(filter: Filter, all?: true, raw?: true): RawModule[];
+export function get(filter: Filter, all?: false, raw?: true): RawModule | undefined;
+
+export function get(
+  filter: Filter,
+  all = false,
+  raw = false,
+): ModuleExports[] | RawModule[] | ModuleExports | RawModule | undefined {
+  if (typeof wpRequire?.c === "undefined") return all ? [] : void 0;
+
+  const modules = all
+    ? Object.values(wpRequire.c).filter(filter)
+    : Object.values(wpRequire.c).find(filter);
+
+  if (raw) {
+    return modules;
+  }
+
+  if (modules instanceof Array) {
+    return modules.map(getExports).filter((m): m is ModuleExports => typeof m !== "undefined");
+  } else if (modules) {
+    return getExports(modules);
+  }
+}
+
+// Filters
+
+export function byProps<P extends string>(props: P[]) {
+  return (m: RawModule): m is RawModuleWithProps<P> =>
+    typeof getExportsForProps(m, props) !== "undefined";
+}
+
+export function bySource(match: string | RegExp) {
+  return (m: RawModule) => {
+    const source = sourceStrings[m.id];
+    if (!source) return false;
+
+    return typeof match === "string" ? source.includes(match) : match.test(source);
+  };
+}
+
+// Async
+
+export function on(filter: Filter, callback: LazyCallback, raw?: false): void;
+export function on(filter: Filter, callback: RawLazyCallback, raw?: true): () => void;
+
+export function on(
+  filter: Filter,
+  callback: LazyCallback | RawLazyCallback,
+  raw = false,
+): () => void {
+  const wrappedCallback = raw
+    ? (callback as RawLazyCallback)
+    : (m: RawModule) => {
+        const exports = getExports(m);
+        if (typeof exports !== "undefined") {
+          return (callback as LazyCallback)(exports);
+        }
+      };
+
+  const rawModule = get(filter, false, true);
+  if (rawModule) {
+    wrappedCallback(rawModule);
+  }
+
+  const listener: LazyListener = [filter, wrappedCallback];
   listeners.add(listener);
 
   return () => {
@@ -245,85 +246,29 @@ export function subscribeRaw(filter: Filter, callback: RawLazyCallback): () => v
   };
 }
 
-export function subscribe(filter: Filter, callback: LazyCallback): () => void {
-  return subscribeRaw(filter, (raw) => {
-    if (typeof raw !== "undefined") {
-      const exports = getExports(raw);
-      if (typeof exports !== "undefined") {
-        return callback(exports);
-      }
-    }
-  });
-}
-
-export function waitForRaw(filter: Filter): Promise<RawModule> {
-  const existing = getRawModule(filter);
+export function wait(filter: Filter, raw?: false): Promise<ModuleExports>;
+export function wait(filter: Filter, raw?: true): Promise<RawModule>;
+export function wait(filter: Filter, raw = false): Promise<RawModule | ModuleExports> {
+  // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
+  const existing = get(filter, false, raw);
   if (existing) {
     return Promise.resolve(existing);
   }
+
   return new Promise((resolve) => {
-    const unregister = subscribeRaw(filter, (raw) => {
-      unregister();
-      resolve(raw);
-    });
+    // @ts-expect-error Same as before, I'm begging for partial type inference, Microsoft :((
+    const unregister = on(
+      filter,
+      (mod) => {
+        unregister();
+        resolve(mod);
+      },
+      raw,
+    );
   });
 }
 
-export function waitFor(filter: Filter): Promise<ModuleExports> {
-  const existing = getModule(filter);
-  if (existing) {
-    return Promise.resolve(existing);
-  }
-  return new Promise((resolve) => {
-    const unregister = subscribe(filter, (exports) => {
-      unregister();
-      resolve(exports);
-    });
-  });
-}
-
-function getIdBySource(match: string | RegExp): number | undefined {
-  const isRegexp = match instanceof RegExp;
-  const id = Object.entries(sourceStrings).find(([, source]) =>
-    isRegexp ? match.test(source) : source.includes(match),
-  )?.[0];
-  if (id) {
-    return Number(id);
-  }
-}
-
-function getAllIdBySource(match: string | RegExp): number[] {
-  const isRegexp = match instanceof RegExp;
-  return Object.entries(sourceStrings)
-    .filter(([, source]) => (isRegexp ? match.test(source) : source.includes(match)))
-    .map(([id]) => Number(id));
-}
-
-export function getRawBySource(match: string | RegExp): RawModule | undefined {
-  const id = getIdBySource(match);
-  if (typeof id !== "undefined") {
-    return getRawById(id);
-  }
-}
-
-export function getBySource(match: string | RegExp): ModuleExports | undefined {
-  const raw = getRawBySource(match);
-  if (typeof raw !== "undefined") {
-    return getExports(raw);
-  }
-}
-
-export function getAllRawBySource(match: string | RegExp): RawModule[] {
-  return getAllIdBySource(match)
-    .map(getRawById)
-    .filter((m): m is RawModule => typeof m !== "undefined");
-}
-
-export function getAllBySource(match: string | RegExp): ModuleExports[] {
-  return getAllRawBySource(match)
-    .map(getExports)
-    .filter((m): m is ModuleExports => typeof m !== "undefined");
-}
+// Plaintext
 
 export function patchPlaintext(patches: PlaintextPatch[]): void {
   plaintextPatches.push(
