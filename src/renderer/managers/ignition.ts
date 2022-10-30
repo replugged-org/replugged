@@ -11,11 +11,14 @@ export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");
   const startTime = performance.now();
 
-  await coremods.startAll();
-  await plugins.startAll();
-  await themes.loadMissing();
-  themes.loadAll();
   quickCSS.load();
+  await Promise.all([
+    coremods.startAll(),
+    plugins.startAll(),
+    themes.loadMissing().then(() => {
+      themes.loadAll();
+    }),
+  ]);
 
   log(
     "Ignition",
@@ -29,10 +32,7 @@ export async function stop(): Promise<void> {
   log("Ignition", "Stop", void 0, "De-igniting Replugged...");
   const startTime = performance.now();
 
-  await coremods.stopAll();
-  await plugins.stopAll();
-  themes.unloadAll();
-  quickCSS.unload();
+  await Promise.all([coremods.stopAll(), plugins.stopAll(), themes.unloadAll(), quickCSS.unload()]);
 
   log(
     "Ignition",

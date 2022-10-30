@@ -12,15 +12,15 @@ import { theme } from "../../types/addon";
 
 const THEMES_DIR = resolve(__dirname, "../themes");
 
-async function getTheme(themeName: string): Promise<RepluggedTheme> {
+async function getTheme(path: string): Promise<RepluggedTheme> {
   const manifest: unknown = JSON.parse(
-    await readFile(join(THEMES_DIR, themeName, "manifest.json"), {
+    await readFile(join(THEMES_DIR, path, "manifest.json"), {
       encoding: "utf-8",
     }),
   );
 
   return {
-    id: themeName,
+    path,
     manifest: theme.parse(manifest),
   };
 }
@@ -37,7 +37,9 @@ ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedThem
   for (const themeDir of themeDirs) {
     try {
       themes.push(await getTheme(themeDir.name));
-    } catch {}
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return themes;

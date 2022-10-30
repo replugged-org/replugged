@@ -19,7 +19,7 @@ export const plugins = new Map<string, PluginWrapper>();
 export const pluginExports = new Map<string, unknown>();
 
 export async function load(plugin: RepluggedPlugin): Promise<void> {
-  const renderer = await import(`replugged://plugin/${plugin.id}/${plugin.manifest.renderer}`);
+  const renderer = await import(`replugged://plugin/${plugin.path}/${plugin.manifest.renderer}`);
   const pluginLogger = new Logger("Plugin", plugin.manifest.name);
   const localExports = {};
   pluginExports.set(plugin.manifest.id, localExports);
@@ -53,9 +53,7 @@ export async function start(id: string): Promise<void> {
 }
 
 export async function startAll(): Promise<void> {
-  for (const id of plugins.keys()) {
-    await start(id);
-  }
+  await Promise.all([...plugins.keys()].map((id) => start(id)));
 }
 
 export async function stop(id: string): Promise<void> {
@@ -68,9 +66,7 @@ export async function stop(id: string): Promise<void> {
 }
 
 export async function stopAll(): Promise<void> {
-  for (const id of plugins.keys()) {
-    await stop(id);
-  }
+  await Promise.all([...plugins.keys()].map((id) => stop(id)));
 }
 
 export function runPlaintextPatches(): void {}

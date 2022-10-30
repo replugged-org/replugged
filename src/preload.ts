@@ -26,8 +26,8 @@ const RepluggedNative = {
       const disabled = await RepluggedNative.themes.listDisabled();
       const enabled: string[] = [];
       for (const theme of await RepluggedNative.themes.list()) {
-        if (!disabled.includes(theme.id)) {
-          enabled.push(theme.id);
+        if (!disabled.includes(theme.path)) {
+          enabled.push(theme.path);
         }
       }
       return enabled;

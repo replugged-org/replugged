@@ -20,7 +20,7 @@ async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
   );
 
   return {
-    id: pluginName,
+    path: pluginName,
     manifest: plugin.parse(manifest),
   };
 }

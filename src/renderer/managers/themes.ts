@@ -7,7 +7,7 @@ let disabled: string[] = [];
 
 export async function loadMissing(): Promise<void> {
   for (const theme of await window.RepluggedNative.themes.list()) {
-    themes.set(theme.id, theme.manifest);
+    themes.set(theme.path, theme.manifest);
   }
   disabled = await window.RepluggedNative.themes.listDisabled();
 }

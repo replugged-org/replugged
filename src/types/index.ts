@@ -76,11 +76,11 @@ export interface RepluggedConnection {
 }
 
 export interface RepluggedTheme {
-  id: string;
+  path: string;
   manifest: Theme;
 }
 
 export interface RepluggedPlugin {
-  id: string;
+  path: string;
   manifest: Plugin;
 }
