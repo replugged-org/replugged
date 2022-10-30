@@ -171,12 +171,12 @@ export function getById(id: number, raw = false): RawModule | ModuleExports | un
 
 // Searcher
 
-export function get(filter: Filter, all?: false, raw?: false): ModuleExports | undefined;
-export function get(filter: Filter, all?: true, raw?: false): ModuleExports[];
-export function get(filter: Filter, all?: true, raw?: true): RawModule[];
-export function get(filter: Filter, all?: false, raw?: true): RawModule | undefined;
+export function getModule(filter: Filter, all?: false, raw?: false): ModuleExports | undefined;
+export function getModule(filter: Filter, all?: true, raw?: false): ModuleExports[];
+export function getModule(filter: Filter, all?: true, raw?: true): RawModule[];
+export function getModule(filter: Filter, all?: false, raw?: true): RawModule | undefined;
 
-export function get(
+export function getModule(
   filter: Filter,
   all = false,
   raw = false,
@@ -216,10 +216,10 @@ export function bySource(match: string | RegExp) {
 
 // Async
 
-export function on(filter: Filter, callback: LazyCallback, raw?: false): void;
-export function on(filter: Filter, callback: RawLazyCallback, raw?: true): () => void;
+function onModule(filter: Filter, callback: LazyCallback, raw?: false): void;
+function onModule(filter: Filter, callback: RawLazyCallback, raw?: true): () => void;
 
-export function on(
+function onModule(
   filter: Filter,
   callback: LazyCallback | RawLazyCallback,
   raw = false,
@@ -233,7 +233,7 @@ export function on(
         }
       };
 
-  const rawModule = get(filter, false, true);
+  const rawModule = getModule(filter, false, true);
   if (rawModule) {
     wrappedCallback(rawModule);
   }
@@ -246,18 +246,19 @@ export function on(
   };
 }
 
-export function wait(filter: Filter, raw?: false): Promise<ModuleExports>;
-export function wait(filter: Filter, raw?: true): Promise<RawModule>;
-export function wait(filter: Filter, raw = false): Promise<RawModule | ModuleExports> {
+export function waitForModule(filter: Filter, raw?: false): Promise<ModuleExports>;
+export function waitForModule(filter: Filter, raw?: true): Promise<RawModule>;
+
+export function waitForModule(filter: Filter, raw = false): Promise<RawModule | ModuleExports> {
   // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-  const existing = get(filter, false, raw);
+  const existing = getModule(filter, false, raw);
   if (existing) {
     return Promise.resolve(existing);
   }
 
   return new Promise((resolve) => {
     // @ts-expect-error Same as before, I'm begging for partial type inference, Microsoft :((
-    const unregister = on(
+    const unregister = onModule(
       filter,
       (mod) => {
         unregister();
