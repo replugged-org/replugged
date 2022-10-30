@@ -15,5 +15,5 @@ export const getAppDir = async (platform: DiscordPlatform): Promise<string> => {
 
   const currentBuild = discordDirectory.filter((path) => path.startsWith("app-")).reverse()[0];
 
-  return join(discordPath, currentBuild, "resources", "app");
+  return join(discordPath, currentBuild, "resources", "app.asar");
 };

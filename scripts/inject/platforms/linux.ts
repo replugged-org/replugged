@@ -87,12 +87,12 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
       }
     }
 
-    return join(discordPath, "resources", "app");
+    return join(discordPath, "resources", "app.asar");
   }
 
   const discordPath = discordProcess[4].split("/");
   discordPath.splice(discordPath.length - 1, 1);
-  return join("/", ...discordPath, "resources", "app");
+  return join("/", ...discordPath, "resources", "app.asar");
 };
 
 export const getAppDir = async (platform: DiscordPlatform): Promise<string> => {
