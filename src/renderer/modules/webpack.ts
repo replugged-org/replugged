@@ -171,23 +171,36 @@ export function getById(id: number, raw = false): RawModule | ModuleExports | un
 
 // Searcher
 
-export function getModule(filter: Filter, all?: false, raw?: false): ModuleExports | undefined;
-export function getModule(filter: Filter, all?: true, raw?: false): ModuleExports[];
-export function getModule(filter: Filter, all?: true, raw?: true): RawModule[];
-export function getModule(filter: Filter, all?: false, raw?: true): RawModule | undefined;
+export function getModule(
+  filter: Filter,
+  options?: { all?: false; raw?: false },
+): ModuleExports | undefined;
+export function getModule(filter: Filter, options?: { all?: true; raw?: false }): ModuleExports[];
+export function getModule(
+  filter: Filter,
+  options?: { all?: false; raw?: true },
+): RawModule | undefined;
+export function getModule(filter: Filter, options?: { all?: true; raw?: true }): RawModule[];
 
 export function getModule(
   filter: Filter,
-  all = false,
-  raw = false,
+  options:
+    | {
+        all?: boolean;
+        raw?: boolean;
+      }
+    | undefined = {
+    all: false,
+    raw: false,
+  },
 ): ModuleExports[] | RawModule[] | ModuleExports | RawModule | undefined {
-  if (typeof wpRequire?.c === "undefined") return all ? [] : void 0;
+  if (typeof wpRequire?.c === "undefined") return options.all ? [] : void 0;
 
-  const modules = all
+  const modules = options.all
     ? Object.values(wpRequire.c).filter(filter)
     : Object.values(wpRequire.c).find(filter);
 
-  if (raw) {
+  if (options.raw) {
     return modules;
   }
 
@@ -233,7 +246,7 @@ function onModule(
         }
       };
 
-  const rawModule = getModule(filter, false, true);
+  const rawModule = getModule(filter, { raw: true });
   if (rawModule) {
     wrappedCallback(rawModule);
   }
