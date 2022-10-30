@@ -4,7 +4,7 @@ import electron from "electron";
 import type { RepluggedWebContents } from "../types";
 
 const electronPath = require.resolve("electron");
-const discordPath = join(dirname(require.main!.filename), "..", "app.asar");
+const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 // require.main!.filename = discordMain;
 
 Object.defineProperty(global, "appSettings", {
@@ -31,7 +31,6 @@ class BrowserWindow extends electron.BrowserWindow {
       };
     },
   ) {
-    console.log(opts);
     const originalPreload = opts.webPreferences.preload;
 
     if (opts.webContents) {
