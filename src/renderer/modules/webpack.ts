@@ -267,22 +267,19 @@ function onModule(
 
 export async function waitForModule(
   filter: Filter,
-  raw?: false,
-  options?: WaitForOptions,
+  options?: WaitForOptions & { raw?: false },
 ): Promise<ModuleExports>;
 export async function waitForModule(
   filter: Filter,
-  raw?: true,
-  options?: WaitForOptions,
+  options?: WaitForOptions & { raw?: true },
 ): Promise<RawModule>;
 
 export async function waitForModule(
   filter: Filter,
-  raw = false,
   options: WaitForOptions = {},
 ): Promise<RawModule | ModuleExports> {
   // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-  const existing = getModule(filter, { all: false, raw });
+  const existing = getModule(filter, { all: false, raw: options.raw });
   if (existing) {
     return Promise.resolve(existing);
   }
@@ -295,7 +292,7 @@ export async function waitForModule(
         unregister();
         resolve(mod);
       },
-      raw,
+      options.raw,
     );
   });
 
