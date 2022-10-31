@@ -216,12 +216,12 @@ export function getModule(
 // Filters
 
 export const filters = {
-  props<P extends string>(props: P[]) {
+  byProps<P extends string>(props: P[]) {
     return (m: RawModule): m is RawModuleWithProps<P> =>
       typeof getExportsForProps(m.exports, props) !== "undefined";
   },
 
-  source(match: string | RegExp) {
+  bySource(match: string | RegExp) {
     return (m: RawModule) => {
       const source = sourceStrings[m.id];
       if (!source) return false;
