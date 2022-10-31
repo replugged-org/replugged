@@ -1,6 +1,8 @@
+import { AnyFunction } from "src/types/util";
 import {
   ModuleExports,
   ModuleExportsWithProps,
+  ObjectExports,
   RawModule,
   RawModuleWithProps,
   WebpackChunk,
@@ -142,7 +144,7 @@ function getExports(m: RawModule): ModuleExports | undefined {
   return m.exports;
 }
 
-function getExportsForProps<P extends string>(
+export function getExportsForProps<P extends string>(
   m: ModuleExports,
   props: P[],
 ): ModuleExportsWithProps<P> | undefined {
@@ -381,4 +383,19 @@ export function getByProps<P extends string>(
   }
 
   return getExportsForProps(result as ModuleExportsWithProps<P>, props);
+}
+
+// Specalized, inner-module searchers
+
+export function getFunctionBySource(
+  match: string | RegExp,
+  module: ObjectExports,
+): AnyFunction | undefined {
+  return Object.values(module).find((v) => {
+    if (typeof v !== "function") {
+      return false;
+    }
+
+    return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+  }) as AnyFunction | undefined;
 }
