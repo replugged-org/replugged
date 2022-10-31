@@ -10,6 +10,7 @@ import {
 } from "../../types/discord";
 import {
   Filter,
+  GetModuleOptions,
   LazyCallback,
   LazyListener,
   PlaintextPatch,
@@ -142,13 +143,16 @@ function getExports(m: RawModule): ModuleExports | undefined {
 }
 
 function getExportsForProps<P extends string>(
-  m: RawModule,
+  m: ModuleExports,
   props: P[],
 ): ModuleExportsWithProps<P> | undefined {
-  if (typeof m.exports !== "object") return;
+  if (typeof m !== "object") return;
 
-  return [m.exports, ...Object.values(m.exports)].find(
-    (o) => typeof o === "object" && o !== null && props.every((p) => p in o),
+  return [m, ...Object.values(m)].find(
+    (o) =>
+      (typeof o === "object" || typeof o === "function") &&
+      o !== null &&
+      props.every((p) => p in o),
   ) as ModuleExportsWithProps<P> | undefined;
 }
 
@@ -171,6 +175,7 @@ export function getById(id: number, raw = false): RawModule | ModuleExports | un
 
 // Searcher
 
+// I'd prefer to use conditional types instead of overloading here, but I had some weird issues with it
 export function getModule(
   filter: Filter,
   options?: { all?: false; raw?: false },
@@ -184,12 +189,7 @@ export function getModule(filter: Filter, options?: { all?: true; raw?: true }):
 
 export function getModule(
   filter: Filter,
-  options:
-    | {
-        all?: boolean;
-        raw?: boolean;
-      }
-    | undefined = {
+  options: GetModuleOptions | undefined = {
     all: false,
     raw: false,
   },
@@ -215,7 +215,7 @@ export function getModule(
 
 export function byProps<P extends string>(props: P[]) {
   return (m: RawModule): m is RawModuleWithProps<P> =>
-    typeof getExportsForProps(m, props) !== "undefined";
+    typeof getExportsForProps(m.exports, props) !== "undefined";
 }
 
 export function bySource(match: string | RegExp) {
@@ -298,4 +298,87 @@ export function patchPlaintext(patches: PlaintextPatch[]): void {
       ),
     })),
   );
+}
+
+// Helpers for the lazy
+
+export function getBySource(
+  match: string | RegExp,
+  options?: { all?: false; raw?: false },
+): ModuleExports | undefined;
+export function getBySource(
+  match: string | RegExp,
+  options?: { all?: true; raw?: false },
+): ModuleExports[];
+export function getBySource(
+  match: string | RegExp,
+  options?: { all?: false; raw?: true },
+): RawModule | undefined;
+export function getBySource(
+  match: string | RegExp,
+  options?: { all?: true; raw?: true },
+): RawModule[];
+
+export function getBySource(
+  match: string | RegExp,
+  options: GetModuleOptions | undefined = {
+    all: false,
+    raw: false,
+  },
+): ModuleExports[] | RawModule[] | ModuleExports | RawModule | undefined {
+  // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
+  return getModule(bySource(match), options);
+}
+
+export function getByProps<P extends string>(
+  props: P[],
+  options: { all?: false; raw?: false },
+): ModuleExportsWithProps<P> | undefined;
+export function getByProps<P extends string>(
+  props: P[],
+  options: { all?: true; raw?: false },
+): Array<ModuleExportsWithProps<P>>;
+export function getByProps<P extends string>(
+  props: P[],
+  options: { all?: false; raw?: true },
+): RawModule | undefined;
+export function getByProps<P extends string>(
+  props: P[],
+  options: { all?: true; raw?: true },
+): RawModule[];
+export function getByProps<P extends string>(...props: P[]): ModuleExportsWithProps<P> | undefined;
+
+export function getByProps<P extends string>(
+  ...args: [P[], GetModuleOptions] | P[]
+):
+  | Array<ModuleExportsWithProps<P>>
+  | RawModule[]
+  | ModuleExportsWithProps<P>
+  | RawModule
+  | undefined {
+  const props = (typeof args[0] === "string" ? args : args[0]) as string[];
+  const raw = typeof args[0] === "string" ? false : (args[1] as GetModuleOptions)?.raw;
+
+  const result = (
+    typeof args[args.length - 1] === "object"
+      ? // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
+        getModule(byProps(props), args[args.length - 1] as GetModuleOptions)
+      : getModule(byProps(props))
+  ) as
+    | Array<ModuleExportsWithProps<P>>
+    | ModuleExportsWithProps<P>
+    | RawModule
+    | RawModule[]
+    | undefined;
+
+  if (raw || typeof result === "undefined") {
+    return result;
+  }
+
+  if (result instanceof Array) {
+    // @ts-expect-error TypeScript isn't going to infer types based on the raw variable, so this is fine
+    return result.map(getExportsForProps, props);
+  }
+
+  return getExportsForProps(result as ModuleExportsWithProps<P>, props);
 }
