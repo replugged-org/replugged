@@ -30,5 +30,6 @@ export interface GetModuleOptions {
 }
 
 export interface WaitForOptions {
+  raw?: boolean;
   timeout?: number;
 }
