@@ -18,6 +18,7 @@ import {
   PlaintextPatch,
   RawLazyCallback,
   RawPlaintextPatch,
+  WaitForOptions,
 } from "../../types/webpack";
 
 // Handlers
@@ -264,17 +265,29 @@ function onModule(
   };
 }
 
-export function waitForModule(filter: Filter, raw?: false): Promise<ModuleExports>;
-export function waitForModule(filter: Filter, raw?: true): Promise<RawModule>;
+export async function waitForModule(
+  filter: Filter,
+  raw?: false,
+  options?: WaitForOptions,
+): Promise<ModuleExports>;
+export async function waitForModule(
+  filter: Filter,
+  raw?: true,
+  options?: WaitForOptions,
+): Promise<RawModule>;
 
-export function waitForModule(filter: Filter, raw = false): Promise<RawModule | ModuleExports> {
+export async function waitForModule(
+  filter: Filter,
+  raw = false,
+  options: WaitForOptions = {},
+): Promise<RawModule | ModuleExports> {
   // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-  const existing = getModule(filter, false, raw);
+  const existing = getModule(filter, { all: false, raw });
   if (existing) {
     return Promise.resolve(existing);
   }
 
-  return new Promise((resolve) => {
+  const promise: Promise<RawModule | ModuleExports> = new Promise((resolve) => {
     // @ts-expect-error Same as before, I'm begging for partial type inference, Microsoft :((
     const unregister = onModule(
       filter,
@@ -284,6 +297,20 @@ export function waitForModule(filter: Filter, raw = false): Promise<RawModule | 
       },
       raw,
     );
+  });
+
+  if (!options.timeout) return promise;
+
+  let timeout: NodeJS.Timeout;
+
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timeout = setTimeout(() => {
+      reject(new Error(`waitForModule timed out after ${options.timeout}ms`));
+    }, options.timeout);
+  });
+
+  return await Promise.race([promise, timeoutPromise]).finally(() => {
+    clearTimeout(timeout);
   });
 }
 
