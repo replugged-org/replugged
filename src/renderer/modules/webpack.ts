@@ -178,6 +178,7 @@ export function getById(id: number, raw = false): RawModule | ModuleExports | un
 // Searcher
 
 // I'd prefer to use conditional types instead of overloading here, but I had some weird issues with it
+// See https://github.com/microsoft/TypeScript/issues/33014
 export function getModule(
   filter: Filter,
   options?: { all?: false; raw?: false },
