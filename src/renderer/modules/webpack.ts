@@ -206,7 +206,7 @@ export function getModule(
     return modules;
   }
 
-  if (modules instanceof Array) {
+  if (Array.isArray(modules)) {
     return modules.map(getExports).filter((m): m is ModuleExports => typeof m !== "undefined");
   } else if (modules) {
     return getExports(modules);
@@ -215,19 +215,21 @@ export function getModule(
 
 // Filters
 
-export function byProps<P extends string>(props: P[]) {
-  return (m: RawModule): m is RawModuleWithProps<P> =>
-    typeof getExportsForProps(m.exports, props) !== "undefined";
-}
+export const filters = {
+  props<P extends string>(props: P[]) {
+    return (m: RawModule): m is RawModuleWithProps<P> =>
+      typeof getExportsForProps(m.exports, props) !== "undefined";
+  },
 
-export function bySource(match: string | RegExp) {
-  return (m: RawModule) => {
-    const source = sourceStrings[m.id];
-    if (!source) return false;
+  source(match: string | RegExp) {
+    return (m: RawModule) => {
+      const source = sourceStrings[m.id];
+      if (!source) return false;
 
-    return typeof match === "string" ? source.includes(match) : match.test(source);
-  };
-}
+      return typeof match === "string" ? source.includes(match) : match.test(source);
+    };
+  },
+};
 
 // Async
 
@@ -364,8 +366,8 @@ export function getByProps<P extends string>(
   const result = (
     typeof args[args.length - 1] === "object"
       ? // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-        getModule(byProps(props), args[args.length - 1] as GetModuleOptions)
-      : getModule(byProps(props))
+        getModule(filters.props(props), args[args.length - 1] as GetModuleOptions)
+      : getModule(filters.props(props))
   ) as
     | Array<ModuleExportsWithProps<P>>
     | ModuleExportsWithProps<P>
