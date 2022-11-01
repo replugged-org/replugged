@@ -218,7 +218,7 @@ export function getModule(
 // Filters
 
 export const filters = {
-  byProps<P extends string>(props: P[]) {
+  byProps<P extends string>(...props: P[]) {
     return (m: RawModule): m is RawModuleWithProps<P> =>
       typeof getExportsForProps(m.exports, props) !== "undefined";
   },
@@ -391,8 +391,8 @@ export function getByProps<P extends string>(
   const result = (
     typeof args[args.length - 1] === "object"
       ? // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-        getModule(filters.byProps(props), args[args.length - 1] as GetModuleOptions)
-      : getModule(filters.byProps(props))
+        getModule(filters.byProps(...props), args[args.length - 1] as GetModuleOptions)
+      : getModule(filters.byProps(...props))
   ) as
     | Array<ModuleExportsWithProps<P>>
     | ModuleExportsWithProps<P>
