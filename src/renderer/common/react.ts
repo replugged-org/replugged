@@ -8,10 +8,10 @@ let React: typeof import("react") & {
   jsxs: AnyFunction;
 } = {
   reactReady: waitForModule(
-    filters.byProps(["__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"]),
+    filters.byProps("__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"),
   ).then((react) => {
     Object.assign(React, react as typeof import("react"));
-    React.jsx = (getModule(filters.byProps(["jsx"])) as { jsx: AnyFunction }).jsx;
+    React.jsx = (getModule(filters.byProps("jsx")) as { jsx: AnyFunction }).jsx;
     React.jsxs = React.jsx;
   }),
 };
