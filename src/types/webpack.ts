@@ -23,3 +23,13 @@ export interface RawPlaintextPatch {
   check?: (source: string) => boolean;
   replacements: PlaintextReplacer[];
 }
+
+export interface GetModuleOptions {
+  all?: boolean;
+  raw?: boolean;
+}
+
+export interface WaitForOptions {
+  raw?: boolean;
+  timeout?: number;
+}
