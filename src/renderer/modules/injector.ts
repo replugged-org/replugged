@@ -7,45 +7,41 @@ enum InjectionTypes {
   After,
 }
 
-type BeforeCallback = (args: unknown[]) => unknown[] | undefined;
-type InsteadCallback = (args: unknown[], orig: AnyFunction) => unknown | undefined;
-type AfterCallback = (args: unknown[], res: unknown) => unknown | undefined;
-type InjectionCallback = BeforeCallback | InsteadCallback | AfterCallback;
-
-interface Injection {
-  id: symbol;
-  obj: ObjectExports;
-  funcName: string;
-  type: InjectionTypes;
-  cb: InjectionCallback;
-  uninject: () => void;
-}
+type BeforeCallback = (args: unknown[], self: ObjectExports) => unknown[] | undefined;
+type InsteadCallback = (
+  args: unknown[],
+  orig: AnyFunction,
+  self: ObjectExports,
+) => unknown | undefined;
+type AfterCallback = (args: unknown[], res: unknown, self: ObjectExports) => unknown | undefined;
 
 interface ObjectInjections {
-  obj: ObjectExports;
   injections: Map<
     string,
     {
-      before: Injection[];
-      instead: Injection[];
-      after: Injection[];
+      before: Set<BeforeCallback>;
+      instead: Set<InsteadCallback>;
+      after: Set<AfterCallback>;
     }
   >;
   original: Map<string, AnyFunction>;
 }
 
-const injections = new Map<ObjectExports, ObjectInjections>();
+const injections = new WeakMap<ObjectExports, ObjectInjections>();
 
 function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
   obj: T,
   funcName: U,
-): ObjectInjections {
+): void {
+  if (typeof obj[funcName] !== "function") {
+    throw new Error(`Value of '${funcName}' in object is not a function`);
+  }
+
   let objInjections: ObjectInjections;
   if (injections.has(obj)) {
     objInjections = injections.get(obj)!;
   } else {
     objInjections = {
-      obj,
       injections: new Map(),
       original: new Map(),
     };
@@ -54,9 +50,9 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
 
   if (!objInjections.injections.has(funcName)) {
     objInjections.injections.set(funcName, {
-      before: [],
-      instead: [],
-      after: [],
+      before: new Set(),
+      instead: new Set(),
+      after: new Set(),
     });
   }
 
@@ -67,14 +63,10 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
 
     // @ts-expect-error https://github.com/microsoft/TypeScript/issues/48992
     obj[funcName] = function (...args: unknown[]): unknown {
-      const injectionsForProp = objInjections.injections.get(funcName) as {
-        before: Injection[];
-        instead: Injection[];
-        after: Injection[];
-      };
+      const injectionsForProp = objInjections.injections.get(funcName)!;
 
       for (const b of injectionsForProp.before) {
-        const newArgs = (b.cb as BeforeCallback)(args);
+        const newArgs = b(args, this);
         if (Array.isArray(newArgs)) {
           args = newArgs;
         }
@@ -82,11 +74,11 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
 
       let res: unknown;
 
-      if (injectionsForProp.instead.length === 0) {
-        res = originalFunc.apply(obj, args);
+      if (injectionsForProp.instead.size === 0) {
+        res = originalFunc.apply(this, args);
       } else {
         for (const i of injectionsForProp.instead) {
-          const newResult = (i.cb as InsteadCallback)(args, originalFunc);
+          const newResult = i(args, originalFunc, this);
           if (newResult !== void 0) {
             res = newResult;
           }
@@ -94,7 +86,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
       }
 
       for (const a of injectionsForProp.after) {
-        const newResult = (a.cb as AfterCallback)(args, res);
+        const newResult = a(args, res, this);
         if (newResult !== void 0) {
           res = newResult;
         }
@@ -105,18 +97,32 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
 
     Object.defineProperties(obj[funcName], Object.getOwnPropertyDescriptors(originalFunc));
   }
-
-  return objInjections;
 }
 
-export function uninject(id: symbol): void {
-  for (const objInjections of injections.values()) {
-    for (const propInjections of objInjections.injections.values()) {
-      propInjections.before = propInjections.before.filter((b) => b.id !== id);
-      propInjections.instead = propInjections.instead.filter((b) => b.id !== id);
-      propInjections.after = propInjections.after.filter((b) => b.id !== id);
-    }
+function inject<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+  obj: T,
+  funcName: U,
+  cb: BeforeCallback | InsteadCallback | AfterCallback,
+  type: InjectionTypes,
+): () => void {
+  replaceMethod(obj, funcName);
+  const methodInjections = injections.get(obj)!.injections.get(funcName)!;
+  let set: Set<BeforeCallback | InsteadCallback | AfterCallback>;
+  switch (type) {
+    case InjectionTypes.Before:
+      set = methodInjections.before;
+      break;
+    case InjectionTypes.Instead:
+      set = methodInjections.instead;
+      break;
+    case InjectionTypes.After:
+      set = methodInjections.after;
+      break;
+    default:
+      throw new Error(`Invalid injection type: ${type}`);
   }
+  set.add(cb);
+  return () => void set.delete(cb);
 }
 
 export function before<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
@@ -124,18 +130,7 @@ export function before<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
   funcName: U,
   cb: BeforeCallback,
 ): () => void {
-  const objInjections = replaceMethod(obj, funcName);
-  const id = Symbol("before");
-  const uninjectInjection = (): void => uninject(id);
-  objInjections.injections.get(funcName)?.before.push({
-    id,
-    obj,
-    funcName,
-    type: InjectionTypes.Before,
-    cb,
-    uninject: uninjectInjection,
-  });
-  return uninjectInjection;
+  return inject(obj, funcName, cb, InjectionTypes.Before);
 }
 
 export function instead<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
@@ -143,18 +138,7 @@ export function instead<T extends Record<U, AnyFunction>, U extends ObjectKey<T,
   funcName: U,
   cb: InsteadCallback,
 ): () => void {
-  const objInjections = replaceMethod(obj, funcName);
-  const id = Symbol("instead");
-  const uninjectInjection = (): void => uninject(id);
-  objInjections.injections.get(funcName)?.instead.push({
-    id,
-    obj,
-    funcName,
-    type: InjectionTypes.Instead,
-    cb,
-    uninject: uninjectInjection,
-  });
-  return uninjectInjection;
+  return inject(obj, funcName, cb, InjectionTypes.Instead);
 }
 
 export function after<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
@@ -162,25 +146,14 @@ export function after<T extends Record<U, AnyFunction>, U extends ObjectKey<T, A
   funcName: U,
   cb: AfterCallback,
 ): () => void {
-  const objInjections = replaceMethod(obj, funcName);
-  const id = Symbol("after");
-  const uninjectInjection = (): void => uninject(id);
-  objInjections.injections.get(funcName)?.after.push({
-    id,
-    obj,
-    funcName,
-    type: InjectionTypes.After,
-    cb,
-    uninject: uninjectInjection,
-  });
-  return uninjectInjection;
+  return inject(obj, funcName, cb, InjectionTypes.After);
 }
 
 export class MiniInjector {
-  private uninjectors: Array<() => void>;
+  private uninjectors: Set<() => void>;
 
   public constructor() {
-    this.uninjectors = [];
+    this.uninjectors = new Set();
   }
 
   public before<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
@@ -189,27 +162,27 @@ export class MiniInjector {
     cb: BeforeCallback,
   ): () => void {
     const uninjector = before(obj, funcName, cb);
-    this.uninjectors.push(uninjector);
+    this.uninjectors.add(uninjector);
     return uninjector;
   }
 
   public instead<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
     obj: T,
     funcName: U,
-    cb: BeforeCallback,
+    cb: InsteadCallback,
   ): () => void {
     const uninjector = instead(obj, funcName, cb);
-    this.uninjectors.push(uninjector);
+    this.uninjectors.add(uninjector);
     return uninjector;
   }
 
   public after<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
     obj: T,
     funcName: U,
-    cb: BeforeCallback,
+    cb: AfterCallback,
   ): () => void {
     const uninjector = after(obj, funcName, cb);
-    this.uninjectors.push(uninjector);
+    this.uninjectors.add(uninjector);
     return uninjector;
   }
 
@@ -217,8 +190,8 @@ export class MiniInjector {
     for (const uninjector of this.uninjectors) {
       if (typeof uninjector === "function") {
         uninjector();
+        this.uninjectors.delete(uninjector);
       }
     }
-    this.uninjectors = [];
   }
 }
