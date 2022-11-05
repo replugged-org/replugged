@@ -7,9 +7,9 @@ enum InjectionTypes {
   After,
 }
 
-type BeforeCallback = (args: unknown[]) => unknown[] | undefined;
-type InsteadCallback = (args: unknown[], orig: AnyFunction) => unknown | undefined;
-type AfterCallback = (args: unknown[], res: unknown) => unknown | undefined;
+type BeforeCallback = (args: unknown[], self: unknown) => unknown[] | undefined;
+type InsteadCallback = (args: unknown[], orig: AnyFunction, self: unknown) => unknown | undefined;
+type AfterCallback = (args: unknown[], res: unknown, self: unknown) => unknown | undefined;
 
 interface ObjectInjections {
   injections: Map<
@@ -62,7 +62,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
       const injectionsForProp = objInjections.injections.get(funcName)!;
 
       for (const b of injectionsForProp.before) {
-        const newArgs = b(args);
+        const newArgs = b(args, this);
         if (Array.isArray(newArgs)) {
           args = newArgs;
         }
@@ -74,7 +74,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
         res = originalFunc.apply(this, args);
       } else {
         for (const i of injectionsForProp.instead) {
-          const newResult = i(args, originalFunc);
+          const newResult = i(args, originalFunc, this);
           if (newResult !== void 0) {
             res = newResult;
           }
@@ -82,7 +82,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
       }
 
       for (const a of injectionsForProp.after) {
-        const newResult = a(args, res);
+        const newResult = a(args, res, this);
         if (newResult !== void 0) {
           res = newResult;
         }
