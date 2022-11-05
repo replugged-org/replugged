@@ -7,9 +7,13 @@ enum InjectionTypes {
   After,
 }
 
-type BeforeCallback = (args: unknown[], self: unknown) => unknown[] | undefined;
-type InsteadCallback = (args: unknown[], orig: AnyFunction, self: unknown) => unknown | undefined;
-type AfterCallback = (args: unknown[], res: unknown, self: unknown) => unknown | undefined;
+type BeforeCallback = (args: unknown[], self: ObjectExports) => unknown[] | undefined;
+type InsteadCallback = (
+  args: unknown[],
+  orig: AnyFunction,
+  self: ObjectExports,
+) => unknown | undefined;
+type AfterCallback = (args: unknown[], res: unknown, self: ObjectExports) => unknown | undefined;
 
 interface ObjectInjections {
   injections: Map<
