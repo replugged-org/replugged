@@ -32,7 +32,8 @@ export async function stop(): Promise<void> {
   log("Ignition", "Stop", void 0, "De-igniting Replugged...");
   const startTime = performance.now();
 
-  await Promise.all([coremods.stopAll(), plugins.stopAll(), themes.unloadAll(), quickCSS.unload()]);
+  quickCSS.unload();
+  await Promise.all([coremods.stopAll(), plugins.stopAll(), themes.unloadAll()]);
 
   log(
     "Ignition",
@@ -47,13 +48,15 @@ export async function restart(): Promise<void> {
   await start();
 }
 
-// Before anything loads
-// await waitForReady
+/*
+Load order:
+1. Register all plaintext patches
+2. await waitForReady from webpack
+3. signalStart()
+4. await reactReady
+5. Start coremods, plugins, and themes
+*/
 
-// signalStart()
-
-// await reactReady
-// This function acts as a gate that allows webpack startup to proceed.
 export async function ignite(): Promise<void> {
   // This is the function that will be called when loading the window.
   coremods.runPlaintextPatches();
