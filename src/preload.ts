@@ -87,7 +87,3 @@ const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
 if (preload) {
   require(preload);
 }
-
-// While we could keep the thing below...it's terrible practice to use time delay
-// as a substitute for handling events.
-// setTimeout(() => DiscordNative.window.setDevtoolsCallbacks(null, null), 5e3);
