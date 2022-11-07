@@ -2,7 +2,5 @@ import * as replugged from "./replugged";
 
 window.replugged = replugged;
 
-(async () => {
-  await replugged.plugins.load();
-  await replugged.ignition.start();
-})();
+await replugged.plugins.load();
+await replugged.ignition.start();

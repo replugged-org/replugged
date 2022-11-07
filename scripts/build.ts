@@ -42,5 +42,6 @@ Promise.all([
     platform: "browser",
     target: `chrome${CHROME_VERSION}`,
     outfile: "dist/renderer.js",
+    format: "esm",
   }),
 ]);
