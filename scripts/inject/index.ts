@@ -46,7 +46,7 @@ let platform: DiscordPlatform | undefined;
 
 (async () => {
   {
-    const platformArg = processArgs[4]?.toLowerCase();
+    const platformArg = processArgs[3]?.toLowerCase();
 
     if (platformArg) {
       const exists = checkPlatform(platformArg);
