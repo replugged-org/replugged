@@ -19,4 +19,5 @@ let React: typeof import("react") & {
 // ESBuild doesn't do binding for named exports (when not already defined.) Luckily this is a good hack.
 const exports = Object.setPrototypeOf({}, React) as typeof React;
 
+// @ts-expect-error - this is fine for now
 export = exports;
