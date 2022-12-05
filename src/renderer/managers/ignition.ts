@@ -1,6 +1,5 @@
 import { signalStart, waitForReady } from "../modules/webpack";
 import { log } from "../modules/logger";
-import { reactReady } from "../common/react";
 
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
@@ -63,6 +62,6 @@ export async function ignite(): Promise<void> {
   plugins.runPlaintextPatches();
   await waitForReady;
   signalStart();
-  await reactReady;
+  await import("../common/react");
   await start();
 }

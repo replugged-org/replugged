@@ -118,7 +118,7 @@ function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
   signalReady();
 }
 
-// Because using a timer is bad, thanks Venny-neko
+// Because using a timer is bad, thanks Ven
 // https://github.com/Vendicated/Vencord/blob/ef353f1d66dbf1d14e528830d267aac518ed1beb/src/webpack/patchWebpack.ts
 let webpackChunk: WebpackChunkGlobal | undefined;
 

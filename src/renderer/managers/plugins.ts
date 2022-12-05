@@ -4,16 +4,16 @@ import { Awaitable } from "../../types/util";
 import { MiniInjector } from "../modules/injector";
 import { Logger, error } from "../modules/logger";
 
-type PluginWrapper = RepluggedPlugin &
-  RepluggedPlugin["manifest"] & {
-    context: {
-      injector: MiniInjector;
-      logger: Logger;
-    };
-    start: () => Awaitable<void>;
-    stop: () => Awaitable<void>;
-    patchPlaintext: () => void;
+type PluginWrapper = RepluggedPlugin & {
+  context: {
+    injector: MiniInjector;
+    logger: Logger;
+    exports: Record<string, unknown>;
   };
+  start: () => Awaitable<void>;
+  stop: () => Awaitable<void>;
+  patchPlaintext: () => void;
+};
 
 export const plugins = new Map<string, PluginWrapper>();
 export const pluginExports = new Map<string, unknown>();
@@ -21,11 +21,10 @@ export const pluginExports = new Map<string, unknown>();
 export async function load(plugin: RepluggedPlugin): Promise<void> {
   const renderer = await import(`replugged://plugin/${plugin.path}/${plugin.manifest.renderer}`);
   const pluginLogger = new Logger("Plugin", plugin.manifest.name);
-  const localExports = {};
+  const localExports: Record<string, unknown> = {};
   pluginExports.set(plugin.manifest.id, localExports);
   const pluginWrapper: PluginWrapper = Object.freeze({
     ...plugin,
-    ...plugin.manifest,
     context: {
       injector: new MiniInjector(),
       logger: pluginLogger,
@@ -48,7 +47,7 @@ export async function start(id: string): Promise<void> {
   try {
     await plugin?.start?.();
   } catch (e: unknown) {
-    error("Plugin", plugin?.name ?? id, void 0, e);
+    error("Plugin", plugin?.manifest.name ?? id, void 0, e);
   }
 }
 
@@ -61,7 +60,7 @@ export async function stop(id: string): Promise<void> {
   try {
     await plugin?.stop?.();
   } catch (e: unknown) {
-    error("Plugin", plugin?.name ?? id, void 0, e);
+    error("Plugin", plugin?.manifest.name ?? id, void 0, e);
   }
 }
 
