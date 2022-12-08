@@ -15,16 +15,17 @@ export default class SettingsMod extends Coremod {
       return <div>wake up wake up wake up</div>;
     }
 
+    let index = 15;
+
     // Add our settings elements
-    settingsTools.addDivider(35);
-    settingsTools.addHeader("Replugged", 36);
+    settingsTools.addDivider(index++);
+    settingsTools.addHeader("Replugged", index++);
     settingsTools.addSection({
       name: "rp-general",
       label: "General",
       elem: RPSettings,
-      pos: 37,
+      pos: index++,
     });
-    settingsTools.addDivider(38);
   }
 
   async stop() {
