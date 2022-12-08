@@ -355,8 +355,7 @@ export function getBySource(
     raw: false,
   },
 ): ModuleExports[] | RawModule[] | ModuleExports | RawModule | undefined {
-  // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-  return getModule(bySource(match), options);
+  return getModule(filters.bySource(match), options as Required<GetModuleOptions>);
 }
 
 export function getByProps<P extends string>(
