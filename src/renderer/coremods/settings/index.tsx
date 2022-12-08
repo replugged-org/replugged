@@ -16,14 +16,15 @@ export default class SettingsMod extends Coremod {
     }
 
     // Add our settings elements
-    settingsTools.addHeader("Replugged", 35);
+    settingsTools.addDivider(35);
+    settingsTools.addHeader("Replugged", 36);
     settingsTools.addSection({
       name: "rp-general",
       label: "General",
       elem: RPSettings,
-      pos: 36,
+      pos: 37,
     });
-    settingsTools.addDivider(37);
+    settingsTools.addDivider(38);
   }
 
   async stop() {
@@ -33,12 +34,12 @@ export default class SettingsMod extends Coremod {
   public runPlaintextPatches(): void {
     patchPlaintext([
       {
-        find: ".Messages.USER_SETTINGS_MY_ACCOUNT",
+        find: "getPredicateSections",
         replacements: [
           {
-            match: /return\[\{section((.|\n)+)\}\]/,
-            replace: (_, sections) =>
-              `return replugged.coremods.coremods.settings.insertSections([{section${sections}}])`,
+            match: /this\.props\.sections\.filter\((.+)\)\};/,
+            replace:
+              "replugged.coremods.coremods.settings.insertSections(this.props.sections.filter($1))};",
           },
         ],
       },
