@@ -1,5 +1,5 @@
 import { ObjectExports } from "../../types/discord";
-import { AnyFunction, ObjectKey } from "../../types/util";
+import { AnyFunction } from "../../types/util";
 
 enum InjectionTypes {
   Before,

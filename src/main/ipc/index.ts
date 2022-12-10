@@ -1,6 +1,4 @@
 import { ipcMain } from "electron";
-import { join } from "path";
-import { readFileSync } from "fs";
 import "./plugins";
 import "./themes";
 import "./quick-css";
