@@ -29,7 +29,7 @@ interface ObjectInjections {
 
 const injections = new WeakMap<ObjectExports, ObjectInjections>();
 
-function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
 ): void {
@@ -99,7 +99,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
   }
 }
 
-function inject<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: BeforeCallback | InsteadCallback | AfterCallback,
@@ -125,7 +125,7 @@ function inject<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunc
   return () => void set.delete(cb);
 }
 
-export function before<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+export function before<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: BeforeCallback,
@@ -133,7 +133,7 @@ export function before<T extends Record<U, AnyFunction>, U extends ObjectKey<T, 
   return inject(obj, funcName, cb, InjectionTypes.Before);
 }
 
-export function instead<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+export function instead<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: InsteadCallback,
@@ -141,7 +141,7 @@ export function instead<T extends Record<U, AnyFunction>, U extends ObjectKey<T,
   return inject(obj, funcName, cb, InjectionTypes.Instead);
 }
 
-export function after<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+export function after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: AfterCallback,
@@ -156,7 +156,7 @@ export class MiniInjector {
     this.uninjectors = new Set();
   }
 
-  public before<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+  public before<T extends Record<U, AnyFunction>, U extends keyof T & string>(
     obj: T,
     funcName: U,
     cb: BeforeCallback,
@@ -166,7 +166,7 @@ export class MiniInjector {
     return uninjector;
   }
 
-  public instead<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+  public instead<T extends Record<U, AnyFunction>, U extends keyof T & string>(
     obj: T,
     funcName: U,
     cb: InsteadCallback,
@@ -176,7 +176,7 @@ export class MiniInjector {
     return uninjector;
   }
 
-  public after<T extends Record<U, AnyFunction>, U extends ObjectKey<T, AnyFunction>>(
+  public after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
     obj: T,
     funcName: U,
     cb: AfterCallback,
