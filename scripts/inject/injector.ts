@@ -83,7 +83,15 @@ export const inject = async (
     readlineInterface.close();
   }
 
-  await rename(appDir, join(appDir, "..", "app.orig.asar"));
+  try {
+    await rename(appDir, join(appDir, "..", "app.orig.asar"));
+  } catch {
+    console.log(
+      `${AnsiEscapes.RED}Failed to rename app.asar while plugging. If Discord is open, make sure it is closed.${AnsiEscapes.RESET}`,
+    );
+    process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+  }
+
   await mkdir(appDir);
   await Promise.all([
     writeFile(

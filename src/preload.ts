@@ -79,9 +79,8 @@ export type RepluggedNativeType = typeof RepluggedNative;
 
 contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 
-const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_RENDERER_JS);
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
-void webFrame.executeJavaScript(renderer);
+void webFrame.executeJavaScript('void import("replugged://renderer");');
 
 // Get and execute Discord preload
 // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly

@@ -118,6 +118,9 @@ electron.app.once("ready", () => {
     let filePath: string = join(__dirname, "..");
     const reqUrl = new URL(request.url);
     switch (reqUrl.hostname) {
+      case "renderer":
+        filePath = join(__dirname, "./renderer.js");
+        break;
       case "quickcss":
         filePath = join(filePath, "settings/quickcss", reqUrl.pathname);
         break;
