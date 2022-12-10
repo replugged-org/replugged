@@ -39,6 +39,8 @@ const RepluggedNative = {
   },
 
   plugins: {
+    get: async (pluginName: string): Promise<RepluggedPlugin | null> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginName),
     list: async (): Promise<RepluggedPlugin[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
     uninstall: async (pluginName: string): Promise<RepluggedPlugin> =>
