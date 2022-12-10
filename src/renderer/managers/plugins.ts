@@ -1,11 +1,11 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
 import { RepluggedPlugin } from "../../types";
-import { MiniInjector } from "../modules/injector";
+import { Injector } from "../modules/injector";
 import { Logger, error, log } from "../modules/logger";
 
 type PluginWrapper = RepluggedPlugin & {
   context: {
-    injector: MiniInjector;
+    injector: Injector;
     logger: Logger;
     exports: Record<string, unknown>;
   };
@@ -27,7 +27,7 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
   const pluginWrapper: PluginWrapper = Object.freeze({
     ...plugin,
     context: {
-      injector: new MiniInjector(),
+      injector: new Injector(),
       logger: pluginLogger,
       exports: localExports,
       // need `settings`
