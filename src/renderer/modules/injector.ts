@@ -125,7 +125,7 @@ function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   return () => void set.delete(cb);
 }
 
-export function before<T extends Record<U, AnyFunction>, U extends keyof T & string>(
+function before<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: BeforeCallback,
@@ -133,7 +133,7 @@ export function before<T extends Record<U, AnyFunction>, U extends keyof T & str
   return inject(obj, funcName, cb, InjectionTypes.Before);
 }
 
-export function instead<T extends Record<U, AnyFunction>, U extends keyof T & string>(
+function instead<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: InsteadCallback,
@@ -141,7 +141,7 @@ export function instead<T extends Record<U, AnyFunction>, U extends keyof T & st
   return inject(obj, funcName, cb, InjectionTypes.Instead);
 }
 
-export function after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
+function after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: AfterCallback,
