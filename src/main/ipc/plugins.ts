@@ -30,6 +30,17 @@ async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
   };
 }
 
+ipcMain.handle(
+  RepluggedIpcChannels.GET_PLUGIN,
+  async (_, pluginName: string): Promise<RepluggedPlugin | null> => {
+    try {
+      return await getPlugin(pluginName);
+    } catch {
+      return null;
+    }
+  },
+);
+
 ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlugin[]> => {
   const plugins = [];
 
