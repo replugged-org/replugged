@@ -10,8 +10,8 @@ type PluginWrapper = RepluggedPlugin & {
     logger: Logger;
     exports: Record<string, unknown>;
   };
-  start: () => Awaitable<void>;
-  stop: () => Awaitable<void>;
+  start: () => Awaitable<void> | undefined;
+  stop: () => Awaitable<void> | undefined;
   patchPlaintext: () => void;
 };
 
@@ -31,8 +31,8 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
       exports: localExports,
       // need `settings`
     },
-    start: (): Awaitable<void> => renderer.start(pluginWrapper.context),
-    stop: (): Awaitable<void> => renderer.stop(pluginWrapper.context),
+    start: (): Awaitable<void> => renderer.start?.(pluginWrapper.context),
+    stop: (): Awaitable<void> => renderer.stop?.(pluginWrapper.context),
     patchPlaintext: () => renderer.patchPlaintext(pluginWrapper.context),
   });
   plugins.set(plugin.manifest.id, pluginWrapper);
@@ -45,7 +45,7 @@ export async function loadAll(): Promise<void> {
 export async function start(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
-    await plugin?.start?.();
+    await plugin?.start();
   } catch (e: unknown) {
     error("Plugin", plugin?.manifest.name ?? id, void 0, e);
   }
@@ -58,7 +58,7 @@ export async function startAll(): Promise<void> {
 export async function stop(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
-    await plugin?.stop?.();
+    await plugin?.stop();
   } catch (e: unknown) {
     error("Plugin", plugin?.manifest.name ?? id, void 0, e);
   }
@@ -86,7 +86,7 @@ export async function reload(id: string): Promise<void> {
   }
   await plugin?.stop?.();
   plugins.delete(id);
-  const newPlugin = await get(plugin.path);
+  const newPlugin = await get(id);
   if (newPlugin) {
     await load(newPlugin);
     await start(newPlugin.manifest.id);
