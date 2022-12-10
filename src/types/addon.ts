@@ -29,7 +29,7 @@ export const common = z.object({
 export type Common = z.infer<typeof common>;
 
 export const theme = common.extend({
-  type: z.literal("theme"),
+  type: z.literal("replugged-theme"),
   main: z.string(),
   splash: z.string(),
 });
@@ -37,7 +37,7 @@ export const theme = common.extend({
 export type Theme = z.infer<typeof theme>;
 
 export const plugin = common.extend({
-  type: z.literal("plugin"),
+  type: z.literal("replugged-plugin"),
   main: z.string().optional(),
   preload: z.string().optional(),
   renderer: z.string().optional(),
