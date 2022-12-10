@@ -1,8 +1,7 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
 import { RepluggedPlugin } from "../../types";
-import { Awaitable } from "../../types/util";
 import { MiniInjector } from "../modules/injector";
-import { Logger, error } from "../modules/logger";
+import { Logger, error, log } from "../modules/logger";
 
 type PluginWrapper = RepluggedPlugin & {
   context: {
@@ -10,8 +9,8 @@ type PluginWrapper = RepluggedPlugin & {
     logger: Logger;
     exports: Record<string, unknown>;
   };
-  start: () => Awaitable<void> | undefined;
-  stop: () => Awaitable<void> | undefined;
+  start: () => Promise<void>;
+  stop: () => Promise<void>;
   patchPlaintext: () => void;
 };
 
@@ -33,8 +32,14 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
       exports: localExports,
       // need `settings`
     },
-    start: (): Awaitable<void> => renderer.start?.(pluginWrapper.context),
-    stop: (): Awaitable<void> => renderer.stop?.(pluginWrapper.context),
+    start: async (): Promise<void> => {
+      await renderer.start?.(pluginWrapper.context);
+      log("Plugin", plugin.manifest.name, void 0, "Plugin started");
+    },
+    stop: async (): Promise<void> => {
+      await renderer.stop?.(pluginWrapper.context);
+      log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
+    },
     patchPlaintext: () => renderer.patchPlaintext(pluginWrapper.context),
   });
   plugins.set(plugin.manifest.id, pluginWrapper);
