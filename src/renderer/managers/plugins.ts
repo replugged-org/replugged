@@ -19,7 +19,9 @@ export const plugins = new Map<string, PluginWrapper>();
 export const pluginExports = new Map<string, unknown>();
 
 export async function load(plugin: RepluggedPlugin): Promise<void> {
-  const renderer = await import(`replugged://plugin/${plugin.path}/${plugin.manifest.renderer}`);
+  const renderer = await import(
+    `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
+  );
   const pluginLogger = new Logger("Plugin", plugin.manifest.name);
   const localExports: Record<string, unknown> = {};
   pluginExports.set(plugin.manifest.id, localExports);
