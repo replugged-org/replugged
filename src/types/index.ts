@@ -20,6 +20,7 @@ export enum RepluggedIpcChannels {
   LIST_THEMES = "REPLUGGED_LIST_THEMES",
   UNINSTALL_THEME = "REPLUGGED_UNINSTALL_THEME",
   LIST_PLUGINS = "REPLUGGED_LIST_PLUGINS",
+  GET_PLUGIN = "REPLUGGED_GET_PLUGIN",
   UNINSTALL_PLUGIN = "REPLUGGED_UNINSTALL_PLUGIN",
 }
 
@@ -74,11 +75,11 @@ export interface RepluggedConnection {
 }
 
 export interface RepluggedTheme {
-  id: string;
+  path: string;
   manifest: Theme;
 }
 
 export interface RepluggedPlugin {
-  id: string;
+  path: string;
   manifest: Plugin;
 }

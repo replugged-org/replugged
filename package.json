@@ -34,7 +34,7 @@
     "@typescript-eslint/parser": "^5.38.1",
     "electron": "^21.2.0",
     "electron-devtools-installer": "^3.2.0",
-    "esbuild": "^0.15.9",
+    "esbuild": "^0.16.1",
     "eslint": "^8.24.0",
     "eslint-config-dmitmel": "dmitmel/eslint-config-dmitmel",
     "eslint-plugin-node": "^11.1.0",
@@ -45,6 +45,6 @@
     "zod": "^3.19.1"
   },
   "dependencies": {
-    "toposort": "^2.0.2"
+    "react": "^18.2.0"
   }
 }

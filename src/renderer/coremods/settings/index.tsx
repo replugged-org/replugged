@@ -3,11 +3,6 @@ import { patchPlaintext } from "../../modules/webpack";
 import { insertSections, settingsTools } from "./lib";
 
 export default class SettingsMod extends Coremod {
-  dependencies = ["dev.replugged.lifecycle.WebpackReady"];
-  dependents = ["dev.replugged.lifecycle.WebpackStart"];
-  optionalDependencies = [];
-  optionalDependents = [];
-
   public insertSections = insertSections;
 
   constructor() {
@@ -20,32 +15,35 @@ export default class SettingsMod extends Coremod {
       return <div>wake up wake up wake up</div>;
     }
 
+    let index = 15;
+
     // Add our settings elements
-    settingsTools.addHeader("Replugged", 35);
+    settingsTools.addDivider(index++);
+    settingsTools.addHeader("Replugged", index++);
     settingsTools.addSection({
       name: "rp-general",
       label: "General",
       elem: RPSettings,
-      pos: 36,
+      pos: index++,
     });
-    settingsTools.addDivider(37);
-
-    // Insert our sections into the section array
-    patchPlaintext([
-      {
-        find: ".Messages.USER_SETTINGS_MY_ACCOUNT",
-        replacements: [
-          {
-            match: /return\[\{section((.|\n)+)\}\]/,
-            replace: (_, sections) =>
-              `return replugged.ignition.entities['${this.id}'].insertSections([{section${sections}}])`,
-          },
-        ],
-      },
-    ]);
   }
 
   async stop() {
     // placeholder
+  }
+
+  public runPlaintextPatches(): void {
+    patchPlaintext([
+      {
+        find: "getPredicateSections",
+        replacements: [
+          {
+            match: /this\.props\.sections\.filter\((.+)\)\};/,
+            replace:
+              "replugged.coremods.coremods.settings.insertSections(this.props.sections.filter($1))};",
+          },
+        ],
+      },
+    ]);
   }
 }

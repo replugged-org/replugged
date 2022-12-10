@@ -1,67 +1,45 @@
-import toposort from "toposort";
-import SettingsMod from "../coremods/settings";
-import ExperimentsMod from "../coremods/experiments";
-import Coremod from "../entities/coremod";
-import Target from "../entities/target";
 import { signalStart, waitForReady } from "../modules/webpack";
 import { log } from "../modules/logger";
-import NoDevtoolsWarningMod from "../coremods/noDevtoolsWarning";
-import { Settings } from "../../types/settings";
-import { reactReady } from "../common/react";
 
-export const entities: Record<string, Coremod> = {};
-
-export function add<T extends Settings>(entity: Coremod<T>): void {
-  entities[entity.id] = entity as unknown as Coremod;
-}
-
-function buildDepChain(): Array<[string, string]> {
-  const deps = Object.entries(entities).map(([id, entity]) => ({
-    id,
-    dependencies: [
-      ...entity.dependencies,
-      ...entity.optionalDependencies.filter((d: string) => d in entities),
-    ],
-    dependents: [
-      ...entity.dependents,
-      ...entity.optionalDependents.filter((d: string) => d in entities),
-    ],
-  }));
-
-  return deps.flatMap((d: { dependencies: string[]; id: string; dependents: string[] }) => [
-    ...d.dependencies.map((id: string) => [d.id, id]),
-    ...d.dependents.map((id: string) => [id, d.id]),
-  ]) as Array<[string, string]>;
-}
+import * as coremods from "./coremods";
+import * as plugins from "./plugins";
+import * as themes from "./themes";
+import * as quickCSS from "./quick-css";
 
 export async function start(): Promise<void> {
-  const order = toposort(buildDepChain()).reverse();
-
   log("Ignition", "Start", void 0, "Igniting Replugged...");
-
   const startTime = performance.now();
-  for (const id of order) {
-    const entity = entities[id];
-    await entity.start();
-  }
-  const endTime = performance.now();
 
-  log("Ignition", "Start", void 0, `Finished igniting Replugged in ${endTime - startTime}ms`);
+  quickCSS.load();
+  await Promise.all([
+    coremods.startAll(),
+    plugins.startAll(),
+    themes.loadMissing().then(() => {
+      themes.loadAll();
+    }),
+  ]);
+
+  log(
+    "Ignition",
+    "Start",
+    void 0,
+    `Finished igniting Replugged in ${performance.now() - startTime}ms`,
+  );
 }
 
 export async function stop(): Promise<void> {
-  const order = toposort(buildDepChain());
-
   log("Ignition", "Stop", void 0, "De-igniting Replugged...");
-
   const startTime = performance.now();
-  for (const id of order) {
-    const entity = entities[id];
-    await entity.stop();
-  }
-  const endTime = performance.now();
 
-  log("Ignition", "Stop", void 0, `Finished de-igniting Replugged in ${endTime - startTime}ms`);
+  quickCSS.unload();
+  await Promise.all([coremods.stopAll(), plugins.stopAll(), themes.unloadAll()]);
+
+  log(
+    "Ignition",
+    "Stop",
+    void 0,
+    `Finished de-igniting Replugged in ${performance.now() - startTime}ms`,
+  );
 }
 
 export async function restart(): Promise<void> {
@@ -69,71 +47,21 @@ export async function restart(): Promise<void> {
   await start();
 }
 
-// Lifecycle targets
+/*
+Load order:
+1. Register all plaintext patches
+2. await waitForReady from webpack
+3. signalStart()
+4. await reactReady
+5. Start coremods, plugins, and themes
+*/
 
-class StartTarget extends Target {
-  public dependencies = [];
-  public dependents = [];
-  public optionalDependencies = [];
-  public optionalDependents = [];
-
-  public constructor() {
-    super("dev.replugged.lifecycle.Start", "Start");
-  }
+export async function ignite(): Promise<void> {
+  // This is the function that will be called when loading the window.
+  coremods.runPlaintextPatches();
+  plugins.runPlaintextPatches();
+  await waitForReady;
+  signalStart();
+  await import("../common/react");
+  await start();
 }
-
-class WebpackReadyTarget extends Target {
-  public dependencies = ["dev.replugged.lifecycle.Start"];
-  public dependents = [];
-  public optionalDependencies = [];
-  public optionalDependents = [];
-
-  public constructor() {
-    super("dev.replugged.lifecycle.WebpackReady", "WebpackReady");
-  }
-
-  public async start(): Promise<void> {
-    super.start();
-    await waitForReady;
-  }
-}
-
-class WebpackStartTarget extends Target {
-  public dependencies = ["dev.replugged.lifecycle.WebpackReady"];
-  public dependents = [];
-  public optionalDependencies = [];
-  public optionalDependents = [];
-
-  public constructor() {
-    super("dev.replugged.lifecycle.WebpackStart", "WebpackStart");
-  }
-
-  public start(): void {
-    super.start();
-    signalStart();
-  }
-}
-
-class Userland extends Target {
-  public dependencies = ["dev.replugged.lifecycle.WebpackStart"];
-  public dependents = [];
-  public optionalDependencies = [];
-  public optionalDependents = [];
-
-  public constructor() {
-    super("dev.replugged.lifecycle.Userland", "Userland");
-  }
-
-  public async start(): Promise<void> {
-    super.start();
-    await reactReady;
-  }
-}
-
-add(new StartTarget());
-add(new WebpackReadyTarget());
-add(new WebpackStartTarget());
-add(new SettingsMod());
-add(new ExperimentsMod());
-add(new NoDevtoolsWarningMod());
-add(new Userland());

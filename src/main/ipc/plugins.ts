@@ -4,13 +4,18 @@ IPC events:
 - REPLUGGED_UNINSTALL_PLUGIN: returns whether a plugin by the provided name was successfully uninstalled
 */
 
-import { readFile, readdir, rm } from "fs/promises";
+import { readFile, readdir, readlink, rm, stat } from "fs/promises";
 import { extname, join, resolve } from "path";
 import { ipcMain } from "electron";
 import { RepluggedIpcChannels, RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
+import { Dirent, Stats } from "fs";
 
 const PLUGINS_DIR = resolve(__dirname, "../plugins");
+
+export const isFleAPlugin = (f: Dirent | Stats, name: string): boolean => {
+  return f.isDirectory() || (f.isFile() && extname(name) === ".asar");
+};
 
 async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
   const manifest: unknown = JSON.parse(
@@ -20,24 +25,51 @@ async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
   );
 
   return {
-    id: pluginName,
+    path: pluginName,
     manifest: plugin.parse(manifest),
   };
 }
+
+ipcMain.handle(
+  RepluggedIpcChannels.GET_PLUGIN,
+  async (_, pluginName: string): Promise<RepluggedPlugin | null> => {
+    try {
+      return await getPlugin(pluginName);
+    } catch {
+      return null;
+    }
+  },
+);
 
 ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlugin[]> => {
   const plugins = [];
 
   const pluginDirs = (
-    await readdir(PLUGINS_DIR, {
-      withFileTypes: true,
-    })
-  ).filter((f) => f.isDirectory() || (f.isFile() && extname(f.name) === ".asar"));
+    await Promise.all(
+      (
+        await readdir(PLUGINS_DIR, {
+          withFileTypes: true,
+        })
+      ).map(async (f) => {
+        if (isFleAPlugin(f, f.name)) return f;
+        if (f.isSymbolicLink()) {
+          const actualPath = await readlink(join(PLUGINS_DIR, f.name));
+          const actualFile = await stat(actualPath);
+          if (isFleAPlugin(actualFile, actualPath)) return f;
+        }
+
+        return null;
+      }),
+    )
+  ).filter(Boolean) as Dirent[];
 
   for (const pluginDir of pluginDirs) {
     try {
       plugins.push(await getPlugin(pluginDir.name));
-    } catch {}
+    } catch (e) {
+      console.error(`Invalid plugin: ${pluginDir.name}`);
+      console.error(e);
+    }
   }
 
   return plugins;

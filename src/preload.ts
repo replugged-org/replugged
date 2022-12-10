@@ -26,8 +26,8 @@ const RepluggedNative = {
       const disabled = await RepluggedNative.themes.listDisabled();
       const enabled: string[] = [];
       for (const theme of await RepluggedNative.themes.list()) {
-        if (!disabled.includes(theme.id)) {
-          enabled.push(theme.id);
+        if (!disabled.includes(theme.path)) {
+          enabled.push(theme.path);
         }
       }
       return enabled;
@@ -39,6 +39,8 @@ const RepluggedNative = {
   },
 
   plugins: {
+    get: async (pluginName: string): Promise<RepluggedPlugin | null> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginName),
     list: async (): Promise<RepluggedPlugin[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
     uninstall: async (pluginName: string): Promise<RepluggedPlugin> =>

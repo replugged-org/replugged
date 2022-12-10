@@ -118,7 +118,7 @@ function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
   signalReady();
 }
 
-// Because using a timer is bad, thanks Venny-neko
+// Because using a timer is bad, thanks Ven
 // https://github.com/Vendicated/Vencord/blob/ef353f1d66dbf1d14e528830d267aac518ed1beb/src/webpack/patchWebpack.ts
 let webpackChunk: WebpackChunkGlobal | undefined;
 
@@ -278,8 +278,11 @@ export async function waitForModule(
   filter: Filter,
   options: WaitForOptions = {},
 ): Promise<RawModule | ModuleExports> {
-  // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-  const existing = getModule(filter, { all: false, raw: options.raw });
+  const existing = getModule(
+    filter,
+    // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
+    { all: false, raw: options.raw },
+  );
   if (existing) {
     return Promise.resolve(existing);
   }
@@ -320,9 +323,7 @@ export function patchPlaintext(patches: PlaintextPatch[]): void {
       replacements: patch.replacements.map((replacement) =>
         typeof replacement === "function"
           ? replacement
-          : // Why? Because https://github.com/microsoft/TypeScript/issues/14107
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
+          : // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
             (source: string) => source.replace(replacement.match, replacement.replace),
       ),
     })),
@@ -355,8 +356,11 @@ export function getBySource(
     raw: false,
   },
 ): ModuleExports[] | RawModule[] | ModuleExports | RawModule | undefined {
-  // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-  return getModule(bySource(match), options);
+  return getModule(
+    filters.bySource(match),
+    // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
+    options,
+  );
 }
 
 export function getByProps<P extends string>(
@@ -390,8 +394,11 @@ export function getByProps<P extends string>(
 
   const result = (
     typeof args[args.length - 1] === "object"
-      ? // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-        getModule(filters.byProps(...props), args[args.length - 1] as GetModuleOptions)
+      ? getModule(
+          filters.byProps(...props),
+          // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
+          args[args.length - 1] as GetModuleOptions,
+        )
       : getModule(filters.byProps(...props))
   ) as
     | Array<ModuleExportsWithProps<P>>
