@@ -1,14 +1,16 @@
 # Replugged
 
-Maintained fork of [powercord](https://github.com/powercord-org/powercord) - a lightweight @discord
-client mod focused on simplicity and performance.
+> **WARNING**:  
+> This branch of Replugged is still in development. It is not complete and will likely cause issues.
+> **No support will be provided.**
 
-# Installation/Uninstallation
+## Installation/Uninstallation
 
-See the
-[installation page of the Replugged Wiki](https://github.com/replugged-org/replugged/wiki/Installation).
+Soon(tm)
 
-# Is this against the ToS?
+## FAQ
+
+### Is this against the ToS?
 
 Long story short... **yes**. Replugged is against the Discord Terms of Service — but, you should
 keep reading:
