@@ -70,8 +70,27 @@ export async function stopAll(): Promise<void> {
 
 export function runPlaintextPatches(): void {}
 
+export async function get(pluginName: string): Promise<RepluggedPlugin | null> {
+  return await list().then((x) => x.find((p) => p.manifest.id === pluginName) || null);
+}
+
+export async function list(): Promise<RepluggedPlugin[]> {
+  return await window.RepluggedNative.plugins.list();
+}
+
 export async function reload(id: string): Promise<void> {
   const plugin = plugins.get(id);
+  if (!plugin) {
+    error("Plugin", id, void 0, "Plugin does not exist or is not loaded");
+    return;
+  }
   await plugin?.stop?.();
   plugins.delete(id);
+  const newPlugin = await get(plugin.path);
+  if (newPlugin) {
+    await load(newPlugin);
+    await start(newPlugin.manifest.id);
+  } else {
+    error("Plugin", id, void 0, "Plugin unloaded but no longer exists");
+  }
 }
