@@ -149,7 +149,7 @@ function after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   return inject(obj, funcName, cb, InjectionTypes.After);
 }
 
-export class MiniInjector {
+export class Injector {
   private uninjectors: Set<() => void>;
 
   public constructor() {
