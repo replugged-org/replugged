@@ -1,7 +1,8 @@
 # Replugged
 
-> **WARNING**:  
-> This branch of Replugged is still in development. It is not complete and will likely cause issues.
+> **Warning**  
+> This branch of Replugged is still in development. It is not complete and will likely cause
+> issues.  
 > **No support will be provided.**
 
 ## Installation/Uninstallation
