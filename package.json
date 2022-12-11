@@ -1,6 +1,6 @@
 {
   "name": "replugged",
-  "version": "4.0.0-beta0.6",
+  "version": "4.0.0-beta0.7",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "dist/main/index.js",
@@ -21,7 +21,7 @@
     "lint": "pnpm run prettier:check && pnpm run eslint:check && pnpm run check",
     "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix",
     "publish": "np",
-    "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noemit false --outDir dist src/**/*.ts* -p tsconfig.json",
+    "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noemit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src",
     "postpublish": "rm -rf dist; npm run build"
   },
   "repository": "https://github.com/replugged-org/replugged.git",

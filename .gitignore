@@ -18,5 +18,3 @@ config.json
 .DS_Store
 
 .installdir-*
-
-/types
