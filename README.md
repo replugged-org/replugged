@@ -19,7 +19,7 @@
 - pnpm: `npm i -g pnpm`
 - Discord app
 
-### Installation
+### Install
 
 1. Clone the repository: `git clone https://github.com/replugged-org/replugged`
 2. Install dependencies: `pnpm i`
@@ -29,7 +29,11 @@
 
 You can verify it's installed by going into Discord settings and looking for the "Replugged" tab.
 
-### Installing plugins and themes
+### Uninstall
+
+`pnpm run unplug [stable|ptb|canary|development]`
+
+## Installing plugins and themes
 
 Plugins and themes are stored in the following folders:
 
