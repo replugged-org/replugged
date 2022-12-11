@@ -7,7 +7,41 @@
 
 ## Installation/Uninstallation
 
-Soon(tm)
+> **Note**  
+> In the future, there will be a GUI installer for general users. For now, you will have to use the
+> command line. If you're not sure how to use the command line, you should wait for the public
+> release.
+
+### Prerequisites
+
+- Git
+- NodeJS
+- pnpm: `npm i -g pnpm`
+- Discord app
+
+### Installation
+
+1. Clone the repository: `git clone https://github.com/replugged-org/replugged`
+2. Install dependencies: `pnpm i`
+3. Build Replugged: `pnpm build`
+4. Plug into Discord: `pnpm run plug [stable|ptb|canary|development]`
+5. Fully quit Discord and restart it
+
+You can verify it's installed by going into Discord settings and looking for the "Replugged" tab.
+
+### Installing plugins and themes
+
+Plugins and themes are stored in the following folders:
+
+- Windows: `%APPDATA/replugged`
+- macOS: `~/Library/Application Support/Replugged`
+- Other: `$XDG_CONFIG_HOME/replugged` or `~/.config/replugged`
+
+These folders are automatically created the first time you run Replugged.
+
+Using our [plugin template](https://github.com/replugged-org/plugin-template), running the build
+command will automatically install the plugin into the correct folder. In the future, Replugged will
+have a plugin/theme manager to make the process easier.
 
 ## FAQ
 
