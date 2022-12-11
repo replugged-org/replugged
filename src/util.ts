@@ -21,7 +21,7 @@ if (!existsSync(CONFIG_PATH)) {
   mkdirSync(CONFIG_PATH);
 }
 
-const CONFIG_FOLDER_NAMES = ["plugins", "themes", "settings"] as const;
+const CONFIG_FOLDER_NAMES = ["plugins", "themes", "settings", "quickcss"] as const;
 
 export const CONFIG_PATHS = Object.fromEntries(
   CONFIG_FOLDER_NAMES.map((name) => {

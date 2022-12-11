@@ -2,9 +2,9 @@ import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
 import { ipcMain } from "electron";
 import { RepluggedIpcChannels } from "../../types";
-import { CONFIG_PATH } from "src/util";
+import { CONFIG_PATHS } from "src/util";
 
-const CSS_PATH = join(CONFIG_PATH, "quickcss.css");
+const CSS_PATH = join(CONFIG_PATHS.quickcss, "main.css");
 
 ipcMain.handle(RepluggedIpcChannels.GET_QUICK_CSS, () => readFile(CSS_PATH, { encoding: "utf-8" }));
 ipcMain.on(RepluggedIpcChannels.SAVE_QUICK_CSS, (_, css: string) =>
