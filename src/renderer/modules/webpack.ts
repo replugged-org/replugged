@@ -72,7 +72,7 @@ function patchModuleSource(mod: WebpackModule): WebpackModule {
   }
 
   // eslint-disable-next-line no-eval
-  return eval(patchedSource);
+  return (0, eval)(patchedSource);
 }
 
 function patchPush(webpackChunk: WebpackChunkGlobal): void {
