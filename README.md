@@ -37,7 +37,7 @@ You can verify it's installed by going into Discord settings and looking for the
 
 Plugins and themes are stored in the following folders in `/plugins` and `/themes` respectively:
 
-- Windows: `%APPDATA/replugged`
+- Windows: `%APPDATA%/replugged`
 - macOS: `~/Library/Application Support/replugged`
 - Other: `$XDG_CONFIG_HOME/replugged` or `~/.config/replugged`
 
