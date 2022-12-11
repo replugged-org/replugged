@@ -18,7 +18,6 @@ export default class SettingsMod extends Coremod {
         name: "rp-general",
         label: "General",
         elem: General,
-        pos: 0,
       }),
     ]);
   }
