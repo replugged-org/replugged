@@ -1,6 +1,7 @@
 import Coremod from "../../entities/coremod";
 import { patchPlaintext } from "../../modules/webpack";
-import { insertSections, settingsTools } from "./lib";
+import { Divider, Header, insertSections, Section, settingsTools } from "./lib";
+import { General } from "./pages";
 
 export default class SettingsMod extends Coremod {
   public insertSections = insertSections;
@@ -10,22 +11,16 @@ export default class SettingsMod extends Coremod {
   }
 
   start() {
-    // TODO(lexisother): Build UI
-    function RPSettings() {
-      return <div>wake up wake up wake up</div>;
-    }
-
-    let index = 15;
-
-    // Add our settings elements
-    settingsTools.addDivider(index++);
-    settingsTools.addHeader("Replugged", index++);
-    settingsTools.addSection({
-      name: "rp-general",
-      label: "General",
-      elem: RPSettings,
-      pos: index++,
-    });
+    settingsTools.addAfter("Billing", [
+      Divider(),
+      Header("Replugged"),
+      Section({
+        name: "rp-general",
+        label: "General",
+        elem: General,
+        pos: 0,
+      }),
+    ]);
   }
 
   async stop() {
@@ -39,8 +34,8 @@ export default class SettingsMod extends Coremod {
         replacements: [
           {
             match: /this\.props\.sections\.filter\((.+)\)\};/,
-            replace:
-              "replugged.coremods.coremods.settings.insertSections(this.props.sections.filter($1))};",
+            replace: (_, sections) =>
+              `replugged.coremods.coremods.settings.insertSections(this.props.sections.filter(${sections}))};`,
           },
         ],
       },

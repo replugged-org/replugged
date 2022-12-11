@@ -10,6 +10,7 @@ export interface Section {
 
 export interface SettingsTools {
   rpSections: Section[];
+  rpSectionsAfter: Record<string, Section[]>;
   addSection: (options: {
     name: string;
     label: string;
@@ -17,6 +18,5 @@ export interface SettingsTools {
     elem: FC;
     pos?: number;
   }) => Section;
-  addDivider: (pos?: number) => void;
-  addHeader: (label: string, pos?: number) => void;
+  addAfter: (sectionName: string, sections: Section | Section[]) => Section[];
 }
