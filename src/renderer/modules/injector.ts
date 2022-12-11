@@ -1,5 +1,5 @@
 import { ObjectExports } from "../../types/discord";
-import { AnyFunction, ObjectKey } from "../../types/util";
+import { AnyFunction } from "../../types/util";
 
 enum InjectionTypes {
   Before,
@@ -7,12 +7,34 @@ enum InjectionTypes {
   After,
 }
 
+/**
+ * Code to run before the original function
+ * @param args Arguments passed to the original function
+ * @param self The module the injected function is on
+ * @returns New arguments to pass to the original function, or undefined to leave them unchanged
+ */
 type BeforeCallback = (args: unknown[], self: ObjectExports) => unknown[] | undefined;
+
+/**
+ * Code to run instead of the original function
+ * @param args Arguments passed to the original function
+ * @param orig The original function
+ * @param self The module the injected function is on
+ * @returns New result to return
+ */
 type InsteadCallback = (
   args: unknown[],
   orig: AnyFunction,
   self: ObjectExports,
 ) => unknown | undefined;
+
+/**
+ * Code to run after the original function
+ * @param args Arguments passed to the original function
+ * @param res Result of the original function
+ * @param self The module the injected function is on
+ * @returns New result to return, or undefined to leave it unchanged
+ */
 type AfterCallback = (args: unknown[], res: unknown, self: ObjectExports) => unknown | undefined;
 
 interface ObjectInjections {
@@ -125,7 +147,7 @@ function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   return () => void set.delete(cb);
 }
 
-export function before<T extends Record<U, AnyFunction>, U extends keyof T & string>(
+function before<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: BeforeCallback,
@@ -133,7 +155,7 @@ export function before<T extends Record<U, AnyFunction>, U extends keyof T & str
   return inject(obj, funcName, cb, InjectionTypes.Before);
 }
 
-export function instead<T extends Record<U, AnyFunction>, U extends keyof T & string>(
+function instead<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: InsteadCallback,
@@ -141,7 +163,7 @@ export function instead<T extends Record<U, AnyFunction>, U extends keyof T & st
   return inject(obj, funcName, cb, InjectionTypes.Instead);
 }
 
-export function after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
+function after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
   cb: AfterCallback,
@@ -149,13 +171,20 @@ export function after<T extends Record<U, AnyFunction>, U extends keyof T & stri
   return inject(obj, funcName, cb, InjectionTypes.After);
 }
 
-export class MiniInjector {
+export class Injector {
   private uninjectors: Set<() => void>;
 
   public constructor() {
     this.uninjectors = new Set();
   }
 
+  /**
+   * Run code before a native module
+   * @param obj Module to inject to
+   * @param funcName Function name on that module to inject
+   * @param cb Code to run
+   * @returns Uninject function
+   */
   public before<T extends Record<U, AnyFunction>, U extends keyof T & string>(
     obj: T,
     funcName: U,
@@ -166,6 +195,13 @@ export class MiniInjector {
     return uninjector;
   }
 
+  /**
+   * Run code instead of a native module
+   * @param obj Module to inject to
+   * @param funcName Function name on that module to inject
+   * @param cb Code to run
+   * @returns Uninject function
+   */
   public instead<T extends Record<U, AnyFunction>, U extends keyof T & string>(
     obj: T,
     funcName: U,
@@ -176,6 +212,13 @@ export class MiniInjector {
     return uninjector;
   }
 
+  /**
+   * Run code after a native module
+   * @param obj Module to inject to
+   * @param funcName Function name on that module to inject
+   * @param cb Code to run
+   * @returns Uninject function
+   */
   public after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
     obj: T,
     funcName: U,
@@ -186,6 +229,9 @@ export class MiniInjector {
     return uninjector;
   }
 
+  /**
+   * Remove all injections made by this injector
+   */
   public uninjectAll(): void {
     for (const uninjector of this.uninjectors) {
       if (typeof uninjector === "function") {
