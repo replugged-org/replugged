@@ -21,7 +21,7 @@
 
 ### Install
 
-1. Clone the repository: `git clone https://github.com/replugged-org/replugged`
+1. Clone the repository: `git clone https://github.com/replugged-org/replugged` and `cd replugged`
 2. Install dependencies: `pnpm i`
 3. Build Replugged: `pnpm build`
 4. Plug into Discord: `pnpm run plug [stable|ptb|canary|development]`
@@ -35,10 +35,10 @@ You can verify it's installed by going into Discord settings and looking for the
 
 ## Installing plugins and themes
 
-Plugins and themes are stored in the following folders:
+Plugins and themes are stored in the following folders in `/plugins` and `/themes` respectively:
 
 - Windows: `%APPDATA/replugged`
-- macOS: `~/Library/Application Support/Replugged`
+- macOS: `~/Library/Application Support/replugged`
 - Other: `$XDG_CONFIG_HOME/replugged` or `~/.config/replugged`
 
 These folders are automatically created the first time you run Replugged.
