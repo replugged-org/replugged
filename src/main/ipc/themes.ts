@@ -5,12 +5,13 @@ IPC events:
 */
 
 import { readFile, readdir, rm } from "fs/promises";
-import { extname, join, resolve } from "path";
+import { extname, join } from "path";
 import { ipcMain } from "electron";
 import { RepluggedIpcChannels, RepluggedTheme } from "../../types";
 import { theme } from "../../types/addon";
+import { CONFIG_PATHS } from "src/util";
 
-const THEMES_DIR = resolve(__dirname, "../themes");
+const THEMES_DIR = CONFIG_PATHS.themes;
 
 async function getTheme(path: string): Promise<RepluggedTheme> {
   const manifest: unknown = JSON.parse(

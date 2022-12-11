@@ -2,6 +2,7 @@ import { dirname, join } from "path";
 
 import electron from "electron";
 import type { RepluggedWebContents } from "../types";
+import { CONFIG_PATH, CONFIG_PATHS } from "src/util";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
@@ -115,7 +116,7 @@ electron.app.once("ready", () => {
   });
 
   electron.protocol.registerFileProtocol("replugged", (request, cb) => {
-    let filePath: string = join(__dirname, "..");
+    let filePath: string = CONFIG_PATH;
     const reqUrl = new URL(request.url);
     switch (reqUrl.hostname) {
       case "renderer":
@@ -125,8 +126,11 @@ electron.app.once("ready", () => {
         filePath = join(filePath, "settings/quickcss", reqUrl.pathname);
         break;
       case "theme":
+        filePath = join(CONFIG_PATHS.themes, reqUrl.pathname);
+        break;
       case "plugin":
-        filePath = join(filePath, `${reqUrl.hostname}s`, reqUrl.pathname);
+        filePath = join(CONFIG_PATHS.plugins, reqUrl.pathname);
+        break;
     }
     cb({ path: filePath });
   });
