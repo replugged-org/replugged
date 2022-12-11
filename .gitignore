@@ -8,25 +8,7 @@ dist/
 yarn.lock
 package-lock.json
 
-
-plugins/*
-!plugins/.gitkeep
-
 src/Powercord/coremods/react-devtools/ext
-themes/*
-!themes/.gitkeep
-
-settings/*.json
-
-settings/quickcss/*
-!settings/quickcss/.gitkeep
-
-settings/themes/*
-!settings/themes/.gitkeep
-
-settings/plugins/*.json
-
-settings/core/*.json
 
 config.json
 *injected.txt

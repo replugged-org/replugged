@@ -8,12 +8,13 @@ import {
   SettingsTransactionHandler,
   TransactionHandler,
 } from "../../types/settings";
+import { CONFIG_PATHS } from "src/util";
 
-const settingsPath = join(__dirname, "../settings");
+const SETTINGS_DIR = CONFIG_PATHS.settings;
 
 async function readSettings(namespace: string): Promise<Map<string, unknown>> {
   try {
-    const data = await readFile(join(settingsPath, `${namespace}.json`), "utf8");
+    const data = await readFile(join(SETTINGS_DIR, `${namespace}.json`), "utf8");
     return new Map(Object.entries(JSON.parse(data)));
   } catch {
     return new Map();
@@ -22,7 +23,7 @@ async function readSettings(namespace: string): Promise<Map<string, unknown>> {
 
 function writeSettings(namespace: string, settings: SettingsMap): Promise<void> {
   return writeFile(
-    join(settingsPath, `${namespace}.json`),
+    join(SETTINGS_DIR, `${namespace}.json`),
     JSON.stringify(Object.fromEntries(settings.entries()), null, 2),
     "utf8",
   );

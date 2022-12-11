@@ -5,13 +5,14 @@ IPC events:
 */
 
 import { readFile, readdir, readlink, rm, stat } from "fs/promises";
-import { extname, join, resolve } from "path";
+import { extname, join } from "path";
 import { ipcMain } from "electron";
 import { RepluggedIpcChannels, RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
 import { Dirent, Stats } from "fs";
+import { CONFIG_PATHS } from "src/util";
 
-const PLUGINS_DIR = resolve(__dirname, "../plugins");
+const PLUGINS_DIR = CONFIG_PATHS.plugins;
 
 export const isFleAPlugin = (f: Dirent | Stats, name: string): boolean => {
   return f.isDirectory() || (f.isFile() && extname(name) === ".asar");
