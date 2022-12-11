@@ -5,7 +5,7 @@
 > issues.  
 > **No support will be provided.**
 
-## Installation/Uninstallation
+## Installation
 
 > **Note**  
 > In the future, there will be a GUI installer for general users. For now, you will have to use the
