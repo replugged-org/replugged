@@ -23,6 +23,12 @@ export const common = z.object({
   description: z.string(),
   author: z.union([author, author.array().nonempty()]),
   version: z.string(),
+  updater: z
+    .object({
+      type: z.literal("github"),
+      id: z.string(),
+    })
+    .optional(),
   license: z.string(),
 });
 
