@@ -175,6 +175,31 @@ function after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   return inject(obj, funcName, cb, InjectionTypes.After);
 }
 
+/**
+ * Inject code into Discord's webpack modules.
+ *
+ * @example
+ * ```
+ * import { Injector, webpack } from "replugged";
+ * const inject = new Injector();
+ *
+ * async function start() {
+ *   const typingMod = (await webpack.waitForModule(
+ *     webpack.filters.byProps('startTyping')
+ *   )) as {
+ *     startTyping: AnyFunction;
+ *   };
+ *
+ *   inject.after(typingMod, 'startTyping', ([channel]) => {
+ *     console.log(`Typing in channel ID ${channel}`);
+ *   });
+ * }
+ *
+ * function stop() {
+ *   inject.uninjectAll();
+ * }
+ * ```
+ */
 export class Injector {
   private uninjectors: Set<() => void>;
 
