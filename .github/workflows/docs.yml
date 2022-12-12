@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-linters:
-    name: Run linters
+    name: Deploy docs
     runs-on: ubuntu-latest
 
     steps:
