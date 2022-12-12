@@ -19,10 +19,10 @@ const platformModules = {
   win32,
 };
 
-const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1
-const noWelcomeMessage = process.argv.includes("--no-welcome-message")
-const processArgs = process.argv.filter(v => !v.startsWith('-'))
-const cmd = processArgs[2]
+const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1;
+const noWelcomeMessage = process.argv.includes("--no-welcome-message");
+const processArgs = process.argv.filter((v) => !v.startsWith("-"));
+const cmd = processArgs[2];
 
 if (!(process.platform in platformModules)) {
   console.log(BasicMessages.PLUG_FAILED, "\n");
@@ -153,20 +153,14 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
   }
 })().catch((e) => {
   if (e.code === "EACCES") {
-    console.log(
-      cmd === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED,
-      "\n",
-    );
+    console.log(cmd === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED, "\n");
     console.log(
       `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself due to missing permissions.${AnsiEscapes.RESET}`,
       "\n",
     );
     console.log("Try again with elevated permissions.");
   } else if (e.code === "ENOENT") {
-    console.log(
-      cmd === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED,
-      "\n",
-    );
+    console.log(cmd === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED, "\n");
     console.log(
       `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself because Discord could not be found.${AnsiEscapes.RESET}`,
       "\n",
