@@ -1,0 +1,36 @@
+name: Docs
+
+on:
+  push:
+    branches:
+      - docs # todo once tested - switch to main
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: latest
+
+      - name: Install Node.js dependencies
+        run: pnpm install
+
+      - name: Build docs
+        run: pnpm run docs
+
+      - name: Deploy docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
