@@ -6,7 +6,7 @@ on:
       - docs # todo once tested - switch to main
 
 jobs:
-  run-linters:
+  build:
     name: Deploy docs
     runs-on: ubuntu-latest
 
@@ -29,8 +29,24 @@ jobs:
       - name: Build docs
         run: pnpm run docs
 
-      - name: Deploy docs
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload docs
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          path: docs
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
