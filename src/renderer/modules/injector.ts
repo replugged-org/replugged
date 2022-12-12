@@ -13,7 +13,7 @@ enum InjectionTypes {
  * @param self The module the injected function is on
  * @returns New arguments to pass to the original function, or undefined to leave them unchanged
  */
-type BeforeCallback = (args: unknown[], self: ObjectExports) => unknown[] | undefined;
+export type BeforeCallback = (args: unknown[], self: ObjectExports) => unknown[] | undefined;
 
 /**
  * Code to run instead of the original function
@@ -22,7 +22,7 @@ type BeforeCallback = (args: unknown[], self: ObjectExports) => unknown[] | unde
  * @param self The module the injected function is on
  * @returns New result to return
  */
-type InsteadCallback = (
+export type InsteadCallback = (
   args: unknown[],
   orig: AnyFunction,
   self: ObjectExports,
@@ -35,7 +35,11 @@ type InsteadCallback = (
  * @param self The module the injected function is on
  * @returns New result to return, or undefined to leave it unchanged
  */
-type AfterCallback = (args: unknown[], res: unknown, self: ObjectExports) => unknown | undefined;
+export type AfterCallback = (
+  args: unknown[],
+  res: unknown,
+  self: ObjectExports,
+) => unknown | undefined;
 
 interface ObjectInjections {
   injections: Map<
@@ -171,6 +175,31 @@ function after<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   return inject(obj, funcName, cb, InjectionTypes.After);
 }
 
+/**
+ * Inject code into Discord's webpack modules.
+ *
+ * @example
+ * ```
+ * import { Injector, webpack } from "replugged";
+ * const inject = new Injector();
+ *
+ * async function start() {
+ *   const typingMod = (await webpack.waitForModule(
+ *     webpack.filters.byProps('startTyping')
+ *   )) as {
+ *     startTyping: AnyFunction;
+ *   };
+ *
+ *   inject.after(typingMod, 'startTyping', ([channel]) => {
+ *     console.log(`Typing in channel ID ${channel}`);
+ *   });
+ * }
+ *
+ * function stop() {
+ *   inject.uninjectAll();
+ * }
+ * ```
+ */
 export class Injector {
   private uninjectors: Set<() => void>;
 

@@ -14,9 +14,22 @@ type PluginWrapper = RepluggedPlugin & {
   patchPlaintext: () => void;
 };
 
+/**
+ * @hidden
+ */
 export const plugins = new Map<string, PluginWrapper>();
+/**
+ * @hidden
+ */
 export const pluginExports = new Map<string, unknown>();
 
+/**
+ * Load a plugin
+ * @param plugin Plugin class. You can get this from {@link get} or {@link list}
+ *
+ * @remarks
+ * You may need to reload Discord after adding a new plugin before it's available.
+ */
 export async function load(plugin: RepluggedPlugin): Promise<void> {
   const renderer = await import(
     `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
@@ -45,10 +58,23 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
   plugins.set(plugin.manifest.id, pluginWrapper);
 }
 
+/**
+ * Load all plugins
+ *
+ * @remarks
+ * You may need to reload Discord after adding a new plugin before it's available.
+ */
 export async function loadAll(): Promise<void> {
   await Promise.allSettled((await window.RepluggedNative.plugins.list()).map((p) => load(p)));
 }
 
+/**
+ * Start a plugin
+ * @param id Plugin ID (RDNN)
+ *
+ * @remarks
+ * Plugin must be loaded first with {@link load} or {@link loadAll}
+ */
 export async function start(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
@@ -58,10 +84,20 @@ export async function start(id: string): Promise<void> {
   }
 }
 
+/**
+ * Start all plugins
+ *
+ * @remarks
+ * Plugins must be loaded first with {@link load} or {@link loadAll}
+ */
 export async function startAll(): Promise<void> {
   await Promise.all([...plugins.keys()].map((id) => start(id)));
 }
 
+/**
+ * Stop a plugin
+ * @param id Plugin ID (RDNN)
+ */
 export async function stop(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
@@ -71,20 +107,46 @@ export async function stop(id: string): Promise<void> {
   }
 }
 
+/**
+ * Stop all plugins
+ */
 export async function stopAll(): Promise<void> {
   await Promise.all([...plugins.keys()].map((id) => stop(id)));
 }
 
+/**
+ * @hidden
+ * Not implemented yet
+ */
 export function runPlaintextPatches(): void {}
 
+/**
+ * Get a plugin
+ *
+ * @remarks
+ * This may include plugins that are not available until Discord is reloaded.
+ */
 export async function get(pluginName: string): Promise<RepluggedPlugin | null> {
   return await list().then((x) => x.find((p) => p.manifest.id === pluginName) || null);
 }
 
+/**
+ * List all plugins
+ *
+ * @remarks
+ * This may include plugins that are not available until Discord is reloaded.
+ */
 export async function list(): Promise<RepluggedPlugin[]> {
   return await window.RepluggedNative.plugins.list();
 }
 
+/**
+ * Reload a plugin to apply changes
+ * @param id Plugin ID (RDNN)
+ *
+ * @remarks
+ * Some plugins may require Discord to be reloaded to apply changes.
+ */
 export async function reload(id: string): Promise<void> {
   const plugin = plugins.get(id);
   if (!plugin) {

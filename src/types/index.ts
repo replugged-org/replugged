@@ -83,3 +83,10 @@ export interface RepluggedPlugin {
   path: string;
   manifest: Plugin;
 }
+
+export * from "./addon";
+export * from "./discord";
+export * from "./entities";
+export * from "./settings";
+export * from "./util";
+export * from "./webpack";

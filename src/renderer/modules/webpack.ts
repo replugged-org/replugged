@@ -23,10 +23,24 @@ import {
 
 // Handlers
 
+/**
+ * @internal
+ * @hidden
+ */
 export let wpRequire: WebpackRequire;
 
 let signalReady: () => void;
+
+/**
+ * @internal
+ * @hidden
+ */
 export let ready = false;
+
+/**
+ * @internal
+ * @hidden
+ */
 export const waitForReady = new Promise<void>(
   (resolve) =>
     (signalReady = () => {
@@ -35,9 +49,22 @@ export const waitForReady = new Promise<void>(
     }),
 );
 
+/**
+ * @internal
+ * @hidden
+ */
 export let signalStart: () => void;
+
+/**
+ * @internal
+ * @hidden
+ */
 export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
 
+/**
+ * @internal
+ * @hidden
+ */
 export const sourceStrings: Record<number, string> = {};
 
 const listeners = new Set<LazyListener>();
@@ -145,6 +172,12 @@ function getExports(m: RawModule): ModuleExports | undefined {
   return m.exports;
 }
 
+/**
+ * Find an object in a module that has all the given properties. You will usually not need this function.
+ * @param m Module to search
+ * @param props Array of prop names
+ * @returns Object that contains all the given properties (and any others), or undefined if not found
+ */
 export function getExportsForProps<P extends string>(
   m: ModuleExports,
   props: P[],
@@ -162,6 +195,15 @@ export function getExportsForProps<P extends string>(
 export function getById(id: number, raw?: false): ModuleExports | undefined;
 export function getById(id: number, raw?: true): RawModule | undefined;
 
+/**
+ * Get a function by its ID
+ *
+ * @param id Module ID
+ * @param raw Return the raw module instead of the exports
+ *
+ * @remarks
+ * IDs are not stable between Discord updates. This function is mainly useful for debugging. You should not use this function in production unless the ID is dynamically determined.
+ */
 export function getById(id: number, raw = false): RawModule | ModuleExports | undefined {
   if (!(id in wpRequire.c)) {
     wpRequire(id);
@@ -191,6 +233,15 @@ export function getModule(
 ): RawModule | undefined;
 export function getModule(filter: Filter, options?: { all?: true; raw?: true }): RawModule[];
 
+/**
+ * Find a module that matches the given filter
+ * @param filter Filter function
+ * @param options Options
+ * @param options.all Return all matching modules instead of just the first
+ * @param options.raw Return the raw module instead of the exports
+ *
+ * @see {@link filters}
+ */
 export function getModule(
   filter: Filter,
   options: GetModuleOptions | undefined = {
@@ -217,21 +268,35 @@ export function getModule(
 
 // Filters
 
-export const filters = {
-  byProps<P extends string>(...props: P[]) {
+/**
+ * Filter functions to use with {@link getModule}
+ */
+export namespace filters {
+  /**
+   * Get a module that has all the given properties on one of its exports
+   * @param props List of property names
+   */
+  export const byProps = <P extends string>(...props: P[]) => {
     return (m: RawModule): m is RawModuleWithProps<P> =>
       typeof getExportsForProps(m.exports, props) !== "undefined";
-  },
+  };
 
-  bySource(match: string | RegExp) {
+  /**
+   * Get a module whose source code matches the given string or RegExp
+   * @param match String or RegExp to match in the module's source code
+   *
+   * @remarks
+   * This function matches on the minified code, so make sure to keep that in mind when writing your strings/RegExp.
+   */
+  export const bySource = (match: string | RegExp) => {
     return (m: RawModule) => {
       const source = sourceStrings[m.id];
       if (!source) return false;
 
       return typeof match === "string" ? source.includes(match) : match.test(source);
     };
-  },
-};
+  };
+}
 
 // Async
 
@@ -274,6 +339,18 @@ export async function waitForModule(
   options?: WaitForOptions & { raw?: true },
 ): Promise<RawModule>;
 
+/**
+ * Wait for a module that matches the given filter
+ * @param filter Filter function
+ * @param options Options
+ * @param options.raw Return the raw module instead of the exports
+ * @param options.timeout Timeout in milliseconds
+ *
+ * @see {@link filters}
+ *
+ * @remarks
+ * Some modules may not be available immediately when Discord starts and will take up to a few seconds. This is useful to ensure that the module is available before using it.
+ */
 export async function waitForModule(
   filter: Filter,
   options: WaitForOptions = {},
@@ -316,6 +393,10 @@ export async function waitForModule(
 
 // Plaintext
 
+/**
+ * @internal
+ * @hidden
+ */
 export function patchPlaintext(patches: PlaintextPatch[]): void {
   plaintextPatches.push(
     ...patches.map((patch) => ({
@@ -349,6 +430,12 @@ export function getBySource(
   options?: { all?: true; raw?: true },
 ): RawModule[];
 
+/**
+ * Equivalent to `getModule(filters.bySource(match), options)`
+ *
+ * @see {@link filters}
+ * @see {@link getModule}
+ */
 export function getBySource(
   match: string | RegExp,
   options: GetModuleOptions | undefined = {
@@ -381,6 +468,12 @@ export function getByProps<P extends string>(
 ): RawModule[];
 export function getByProps<P extends string>(...props: P[]): ModuleExportsWithProps<P> | undefined;
 
+/**
+ * Equivalent to `getModule(filters.byProps(...props), options)`
+ *
+ * @see {@link filters}
+ * @see {@link getModule}
+ */
 export function getByProps<P extends string>(
   ...args: [P[], GetModuleOptions] | P[]
 ):
@@ -421,6 +514,12 @@ export function getByProps<P extends string>(
 
 // Specalized, inner-module searchers
 
+/**
+ * Search for a function within a module by its source code.
+ *
+ * @param match The string or regex to match against the function's source code.
+ * @param module The module to search.
+ */
 export function getFunctionBySource(
   match: string | RegExp,
   module: ObjectExports,
