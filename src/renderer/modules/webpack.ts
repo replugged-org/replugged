@@ -217,21 +217,21 @@ export function getModule(
 
 // Filters
 
-export const filters = {
-  byProps<P extends string>(...props: P[]) {
+export namespace filters {
+  export const byProps = <P extends string>(...props: P[]) => {
     return (m: RawModule): m is RawModuleWithProps<P> =>
       typeof getExportsForProps(m.exports, props) !== "undefined";
-  },
+  };
 
-  bySource(match: string | RegExp) {
+  export const bySource = (match: string | RegExp) => {
     return (m: RawModule) => {
       const source = sourceStrings[m.id];
       if (!source) return false;
 
       return typeof match === "string" ? source.includes(match) : match.test(source);
     };
-  },
-};
+  };
+}
 
 // Async
 
