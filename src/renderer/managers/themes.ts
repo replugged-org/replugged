@@ -5,6 +5,12 @@ const themeElements = new Map<string, HTMLLinkElement>();
 const themes = new Map<string, Theme>();
 let disabled: string[] = [];
 
+/**
+ * Load metadata for all themes that are added to the themes folder but not yet loaded, such as newly added themes.
+ *
+ * @remarks
+ * This does not apply the themes, only loads their metadata. You can call {@link load} or {@link loadAll} to apply a theme.
+ */
 export async function loadMissing(): Promise<void> {
   for (const theme of await window.RepluggedNative.themes.list()) {
     themes.set(theme.path, theme.manifest);
@@ -12,6 +18,10 @@ export async function loadMissing(): Promise<void> {
   disabled = await window.RepluggedNative.themes.listDisabled();
 }
 
+/**
+ * Unload a theme, removing its stylesheet from the DOM
+ * @param themeName Theme ID (RDNN)
+ */
 export function unload(themeName: string): void {
   if (themeElements.has(themeName)) {
     themeElements.get(themeName)?.remove();
@@ -19,6 +29,10 @@ export function unload(themeName: string): void {
   }
 }
 
+/**
+ * Load a theme, adding its stylesheet to the DOM
+ * @param themeName Theme ID (RDNN)
+ */
 export function load(themeName: string): void {
   if (!themes.has(themeName)) {
     throw new Error(`Theme not found: ${themeName}`);
@@ -33,6 +47,9 @@ export function load(themeName: string): void {
   document.head.appendChild(e);
 }
 
+/**
+ * Load all themes, adding their stylesheets to the DOM. Disabled themes are not loaded.
+ */
 export function loadAll(): void {
   for (const themeName of themes.keys()) {
     if (!disabled.includes(themeName)) {
@@ -41,12 +58,18 @@ export function loadAll(): void {
   }
 }
 
+/**
+ * Unload all themes, removing their stylesheets from the DOM
+ */
 export function unloadAll(): void {
   for (const themeName of themeElements.keys()) {
     unload(themeName);
   }
 }
 
+/**
+ * Reload a theme to apply changes
+ */
 export function reload(themeName: string): void {
   unload(themeName);
   load(themeName);
