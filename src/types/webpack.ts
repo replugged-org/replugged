@@ -25,11 +25,15 @@ export interface RawPlaintextPatch {
 }
 
 export interface GetModuleOptions {
+  /** Return all matches instead of just the first */
   all?: boolean;
+  /** Return the raw module instead of the exports */
   raw?: boolean;
 }
 
 export interface WaitForOptions {
+  /** Return the raw module instead of the exports */
   raw?: boolean;
+  /** If nothing is found after this delay (ms), stop and throw an error. */
   timeout?: number;
 }
