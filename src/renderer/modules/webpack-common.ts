@@ -1,6 +1,6 @@
 import { Filter, ModuleExports, webpack } from "@replugged";
 const { filters, waitForModule } = webpack;
-import { Messages } from "src/types/webpack-common";
+import { Messages, Typing } from "src/types/webpack-common";
 
 async function wrapFilter<T extends ModuleExports>(filter: Filter): Promise<T | null> {
   return (await waitForModule(filter, {
@@ -11,3 +11,5 @@ async function wrapFilter<T extends ModuleExports>(filter: Filter): Promise<T | 
 export const messages = wrapFilter<Messages>(
   filters.byProps("sendMessage", "editMessage", "deleteMessage"),
 );
+
+export const typing = wrapFilter<Typing>(filters.byProps("startTyping", "stopTyping"));

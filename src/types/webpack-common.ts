@@ -139,3 +139,8 @@ export type Messages = ModuleExports & {
   ) => void;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 };
+
+export type Typing = ModuleExports & {
+  startTyping: (channelId: string) => void;
+  stopTyping: (channelId: string) => void;
+};
