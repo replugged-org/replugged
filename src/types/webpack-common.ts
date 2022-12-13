@@ -156,3 +156,27 @@ export type Spotify = ModuleExports & {
 export type SpotifySocket = ModuleExports & {
   // todo: populate
 };
+
+export type ContextMenu = ModuleExports & {
+  // todo: populate
+};
+
+export type Modal = ModuleExports & {
+  // todo: populate
+};
+
+export type Flux = ModuleExports & {
+  // todo: populate
+};
+
+export type FluxDispatcher = ModuleExports & {
+  // todo: populate
+};
+
+export type Router = ModuleExports & {
+  // todo: populate
+};
+
+export type HighlightJS = ModuleExports & {
+  // todo: populate
+};

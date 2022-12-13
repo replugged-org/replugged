@@ -1,6 +1,18 @@
 import { Filter, ModuleExports } from "@replugged";
 import { filters, getExportsForProps, waitForModule } from "./webpack";
-import { Channels, Messages, Spotify, SpotifySocket, Typing } from "src/types/webpack-common";
+import {
+  Channels,
+  ContextMenu,
+  Flux,
+  FluxDispatcher,
+  HighlightJS,
+  Messages,
+  Modal,
+  Router,
+  Spotify,
+  SpotifySocket,
+  Typing,
+} from "src/types/webpack-common";
 import type React from "react";
 import { error } from "./logger";
 
@@ -69,6 +81,30 @@ const react = wrapFilter<typeof React>(
   filters.byProps("__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"),
 );
 
+// todo: fix
+const contextMenu = wrapFilter<ContextMenu>(
+  "contextMenu",
+  filters.byProps("openContextMenu", "closeContextMenu"),
+);
+
+// todo: fix
+const modal = wrapFilter<Modal>(
+  "modal",
+  filters.byProps("openModal", "openModalLazy", "closeAllModals"),
+);
+
+const flux = wrapFilter<Flux>("flux", filters.byProps("Store", "connectStores"));
+
+const fluxDispatcher = wrapFilter<FluxDispatcher>(
+  "fluxDispatcher",
+  filters.byProps("_currentDispatchActionType", "_processingWaitQueue"),
+);
+
+// todo: fix
+const router = wrapFilter<Router>("router", filters.byProps("BrowserRouter", "Router"));
+
+const hljs = wrapFilter<HighlightJS>("hljs", filters.byProps("initHighlighting", "highlight"));
+
 export interface CommonModules {
   messages: Messages;
   typing: Typing;
@@ -77,6 +113,12 @@ export interface CommonModules {
   spotify: Spotify;
   spotifySocket: SpotifySocket;
   react: typeof React;
+  contextMenu: ContextMenu;
+  modal: Modal;
+  flux: Flux;
+  fluxDispatcher: FluxDispatcher;
+  router: Router;
+  hljs: HighlightJS;
 }
 
 export default async (): Promise<CommonModules> => ({
@@ -87,4 +129,10 @@ export default async (): Promise<CommonModules> => ({
   spotify: await spotify,
   spotifySocket: await spotifySocket,
   react: await react,
+  contextMenu: await contextMenu,
+  modal: await modal,
+  flux: await flux,
+  fluxDispatcher: await fluxDispatcher,
+  router: await router,
+  hljs: await hljs,
 });
