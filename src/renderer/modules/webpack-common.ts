@@ -8,7 +8,6 @@ async function wrapFilter<T extends ModuleExports>(filter: Filter): Promise<T | 
   }).catch(() => null)) as T | null;
 }
 
-// todo: figure out how to await this without blocking the modules from loading
 export const messages = wrapFilter<Messages>(
   filters.byProps("sendMessage", "editMessage", "deleteMessage"),
 );
