@@ -532,3 +532,5 @@ export function getFunctionBySource(
     return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
   }) as AnyFunction | undefined;
 }
+
+export * as common from "./webpack-common";
