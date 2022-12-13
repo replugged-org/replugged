@@ -144,3 +144,15 @@ export type Typing = ModuleExports & {
   startTyping: (channelId: string) => void;
   stopTyping: (channelId: string) => void;
 };
+
+export type Channels = ModuleExports & {
+  // todo: populate
+};
+
+export type Spotify = ModuleExports & {
+  // todo: populate
+};
+
+export type SpotifySocket = ModuleExports & {
+  // todo: populate
+};

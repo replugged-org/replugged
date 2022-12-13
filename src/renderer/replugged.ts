@@ -1,12 +1,16 @@
 import * as webpackModule from "./modules/webpack";
-import * as webpackCommon from "./modules/webpack-common";
+import webpackCommon, { CommonModules } from "./modules/webpack-common";
 
 export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
 export const webpack = {
   ...webpackModule,
-  common: webpackCommon,
+  common: null as unknown as CommonModules,
 };
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+webpackCommon().then((modules) => {
+  webpack.common = modules;
+});
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";
 export { default as settings } from "./apis/settings";
