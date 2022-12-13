@@ -1,7 +1,12 @@
+import * as webpackModule from "./modules/webpack";
+import * as webpackCommon from "./modules/webpack-common";
+
 export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
-export * as webpack from "./modules/webpack";
-export * as webpackCommon from "./modules/webpack-common";
+export const webpack = {
+  ...webpackModule,
+  common: webpackCommon,
+};
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";
 export { default as settings } from "./apis/settings";
