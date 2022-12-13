@@ -1,5 +1,5 @@
-import { Filter, ModuleExports } from "@replugged";
-import { filters, waitForModule } from "./webpack";
+import { Filter, ModuleExports, webpack } from "@replugged";
+const { filters, waitForModule } = webpack;
 import { Messages } from "src/types/webpack-common";
 
 async function wrapFilter<T extends ModuleExports>(filter: Filter): Promise<T | null> {
