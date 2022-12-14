@@ -18,7 +18,7 @@ import { error } from "./logger";
 
 async function wrapFilter<T extends ModuleExports>(name: string, filter: Filter): Promise<T> {
   return (await waitForModule(filter, {
-    timeout: 2_000,
+    timeout: 5_000,
   }).catch(() => {
     error("Replugged", "CommonModules", void 0, `Could not find module ${name}`);
     return null;
