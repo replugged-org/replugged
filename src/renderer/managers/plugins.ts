@@ -11,7 +11,7 @@ type PluginWrapper = RepluggedPlugin & {
   };
   start: () => Promise<void>;
   stop: () => Promise<void>;
-  patchPlaintext: () => void;
+  runPlaintextPatches: () => void;
 };
 
 /**
@@ -53,7 +53,10 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
       await renderer.stop?.(pluginWrapper.context);
       log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
     },
-    patchPlaintext: () => renderer.patchPlaintext(pluginWrapper.context),
+    runPlaintextPatches: () => {
+      console.log(renderer.runPlaintextPatches);
+      renderer.runPlaintextPatches?.(pluginWrapper.context);
+    },
   });
   plugins.set(plugin.manifest.id, pluginWrapper);
 }
@@ -118,7 +121,9 @@ export async function stopAll(): Promise<void> {
  * @hidden
  * Not implemented yet
  */
-export function runPlaintextPatches(): void {}
+export function runPlaintextPatches(): void {
+  [...plugins.values()].forEach((p) => p.runPlaintextPatches());
+}
 
 /**
  * Get a plugin
