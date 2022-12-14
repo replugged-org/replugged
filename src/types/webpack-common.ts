@@ -146,25 +146,6 @@ export type Typing = ModuleExports & {
 };
 
 export type Channels = ModuleExports & {
-  addChangeListener: (callback: () => void) => void; // tbd
-  addConditionalChangeListener: (callback: () => void) => void; // tbd
-  addReactChangeListener: (callback: () => void) => void; // tbd
-  removeChangeListener: (callback: () => void) => void; // tbd
-  removeConditionalChangeListener: (callback: () => void) => void; // tbd
-  _changeCallbacks: {
-    add: (callback: () => void) => void; // tbd
-    addConditional: (callback: () => void) => void; // tbd
-    listeners: Set<() => void>;
-    remove: (callback: () => void) => void; // tbd
-    has: (callback: () => void) => boolean;
-    hasAny: () => boolean;
-    invokeAll: () => void; // tbd
-  };
-  _dispatchToken: string;
-  _dispatcher: Record<string, unknown>; // untyped
-  _isInitialized: boolean;
-  _mustEmitChanges: (unknownParam: unknown) => unknown; // tbd
-  _reactChangeCallbacks: Record<string, unknown>; // untyped
   getChannelId: (unknownParam?: string) => string | undefined;
   getCurrentlySelectedChannelId: (unknownParam?: string) => string | undefined; // tbd
   getLastChannelFollowingDestination: () => unknown; // tbd
@@ -172,15 +153,6 @@ export type Channels = ModuleExports & {
   getLastSelectedChannels: (unknownParam: unknown) => unknown; // tbd
   getMostRecentSelectedTextChannelId: (unknownParam: unknown) => string | undefined; // tbd
   getVoiceChannelId: (unknownParam?: string) => string | undefined; // tbd
-  initialize: () => unknown; // tbd
-  __getLocalVars: () => Record<string, unknown>; // untyped
-  emitChange: () => void;
-  getDispatchToken: () => string;
-  getName: () => string;
-  initializeIfNeeded: () => unknown; // tbd
-  mustEmitChanges: (unknownParam: unknown) => unknown; // tbd
-  syncWith: (unknownParam: unknown, unknownParam2: unknown, unknownParam3: unknown) => unknown; // tbd
-  waitFor: (unknownParam: unknown) => unknown; // tbd
 };
 
 export type Guilds = ModuleExports & {

@@ -67,11 +67,9 @@ const channels = wrapFilter(
 ).then((mod) => {
   if (!mod) return;
 
-  return getExportsForProps(mod, [
-    "getChannelId",
-    "getLastSelectedChannelId",
-    "getVoiceChannelId",
-  ]) as Channels;
+  return Object.getPrototypeOf(
+    getExportsForProps(mod, ["getChannelId", "getLastSelectedChannelId", "getVoiceChannelId"]),
+  ) as Channels;
 });
 
 const guilds = (async () => {
