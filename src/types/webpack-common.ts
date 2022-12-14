@@ -127,8 +127,8 @@ export type Messages = ModuleExports & {
   trackJump(
     channelId: string,
     messageId: string,
-    context: unknown /* tbd */,
-    unknownParam: unknown /* tbd */,
+    context: unknown, // tbd
+    unknownParam: unknown, // tbd
   ): void;
   truncateMessages: (channelId: string, truncateBottom: number, truncateTop: number) => void;
   updateEditMessage: (channelId: string, textValue: string, richValue: string) => void;
@@ -146,7 +146,38 @@ export type Typing = ModuleExports & {
 };
 
 export type Channels = ModuleExports & {
-  // todo: populate
+  addChangeListener: (callback: () => void) => void; // tbd
+  addConditionalChangeListener: (callback: () => void) => void; // tbd
+  addReactChangeListener: (callback: () => void) => void; // tbd
+  removeChangeListener: (callback: () => void) => void; // tbd
+  removeConditionalChangeListener: (callback: () => void) => void; // tbd
+  _changeCallbacks: {
+    add: (callback: () => void) => void; // tbd
+    addConditional: (callback: () => void) => void; // tbd
+    listeners: Set<() => void>;
+    remove: (callback: () => void) => void; // tbd
+    has: (callback: () => void) => boolean;
+    hasAny: () => boolean;
+    invokeAll: () => void; // tbd
+  };
+  _dispatchToken: string;
+  _dispatcher: Record<string, unknown>; // untyped
+  _isInitialized: boolean;
+  _mustEmitChanges: (unknownParam: unknown) => unknown; // tbd
+  _reactChangeCallbacks: Record<string, unknown>; // untyped
+  getChannelId: (unknownParam?: string) => string | undefined;
+  getCurrentlySelectedChannelId: (unknownParam?: string) => string | undefined;
+  getLastChannelFollowingDestination: () => unknown; // tbd
+  getVoiceChannelId: (unknownParam?: string) => string | undefined;
+  initialize: () => unknown; // tbd
+  __getLocalVars: () => Record<string, unknown>; // untyped
+  emitChange: () => void;
+  getDispatchToken: () => string;
+  getName: () => string;
+  initializeIfNeeded: () => unknown; // tbd
+  mustEmitChanges: (unknownParam: unknown) => unknown; // tbd
+  syncWith: (unknownParam: unknown, unknownParam2: unknown, unknownParam3: unknown) => unknown; // tbd
+  waitFor: (unknownParam: unknown) => unknown; // tbd
 };
 
 export type Spotify = ModuleExports & {
