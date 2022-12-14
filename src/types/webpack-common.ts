@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { ModuleExports } from "./discord";
-import { Message } from "discord-types/general";
+import { Guild, Message } from "discord-types/general";
 
 export interface MessageReference {
   guild_id?: string;
@@ -181,6 +181,17 @@ export type Channels = ModuleExports & {
   mustEmitChanges: (unknownParam: unknown) => unknown; // tbd
   syncWith: (unknownParam: unknown, unknownParam2: unknown, unknownParam3: unknown) => unknown; // tbd
   waitFor: (unknownParam: unknown) => unknown; // tbd
+};
+
+export type Guilds = ModuleExports & {
+  getGuild: (guildId: string) => Guild | undefined;
+  getGuildCount: () => number;
+  getGuildId: () => string | undefined;
+  getGuilds: () => Record<string, Guild>;
+  getLastSelectedGuildId: () => string | undefined;
+  getLastSelectedTimeout: () => unknown; // tbd
+  getState: () => unknown; // tbd
+  getTabsV2SelectedGuildId: () => string | undefined;
 };
 
 export type Spotify = ModuleExports & {

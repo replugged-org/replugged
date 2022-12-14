@@ -1,10 +1,11 @@
-import { Filter, ModuleExports } from "@replugged";
+import { Filter, ModuleExports, ObjectExports } from "@replugged";
 import { filters, getExportsForProps, waitForModule } from "./webpack";
 import {
   Channels,
   ContextMenu,
   Flux,
   FluxDispatcher,
+  Guilds,
   HighlightJS,
   Messages,
   Modal,
@@ -73,6 +74,25 @@ const channels = wrapFilter(
   ]) as Channels;
 });
 
+const guilds = (async () => {
+  const mods = (
+    await Promise.all([
+      wrapFilter("guilds1", filters.byProps("getGuild", "getGuilds")).then((mod) =>
+        Object.getPrototypeOf(mod),
+      ),
+      wrapFilter("guilds2", filters.byProps("getGuildId", "getLastSelectedGuildId")).then((mod) => {
+        if (!mod) return null;
+
+        return Object.getPrototypeOf(
+          getExportsForProps(mod, ["getGuildId", "getLastSelectedGuildId"]),
+        );
+      }),
+    ])
+  ).filter((x) => x && typeof x === "object") as ObjectExports[];
+
+  return mods.reduce((acc, mod) => ({ ...acc, ...mod }), {}) as Guilds;
+})();
+
 const spotify = wrapFilter<Spotify>("spotify", filters.byProps("play", "pause", "inBrowser"));
 
 const spotifySocket = wrapFilter<SpotifySocket>(
@@ -114,6 +134,7 @@ export interface CommonModules {
   typing: Typing;
   constants: NonNullable<Awaited<typeof constants>>;
   channels: Channels;
+  guilds: Guilds;
   spotify: Spotify;
   spotifySocket: SpotifySocket;
   react: typeof React;
@@ -130,6 +151,7 @@ export default async (): Promise<CommonModules> => ({
   typing: await typing,
   constants: (await constants)!,
   channels: (await channels)!,
+  guilds: await guilds,
   spotify: await spotify,
   spotifySocket: await spotifySocket,
   react: await react,
