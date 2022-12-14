@@ -119,7 +119,7 @@ export async function stopAll(): Promise<void> {
 
 /**
  * @hidden
- * Not implemented yet
+ * @internal
  */
 export function runPlaintextPatches(): void {
   [...plugins.values()].forEach((p) => p.runPlaintextPatches());
