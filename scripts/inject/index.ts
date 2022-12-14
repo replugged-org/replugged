@@ -19,6 +19,11 @@ const platformModules = {
   win32,
 };
 
+const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1;
+const noWelcomeMessage = process.argv.includes("--no-welcome-message");
+const processArgs = process.argv.filter((v) => !v.startsWith("-"));
+const cmd = processArgs[2];
+
 if (!(process.platform in platformModules)) {
   console.log(BasicMessages.PLUG_FAILED, "\n");
   console.log("It seems like your platform is not supported yet.", "\n");
@@ -27,7 +32,7 @@ if (!(process.platform in platformModules)) {
     `Make sure to mention the platform you are on is "${process.platform}" in your issue ticket.`,
   );
   console.log("https://github.com/replugged-org/replugged/issues/new/choose");
-  process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+  process.exit(exitCode);
 }
 
 const platformModule = platformModules[process.platform as keyof typeof platformModules];
@@ -41,7 +46,7 @@ let platform: DiscordPlatform | undefined;
 
 (async () => {
   {
-    const platformArg = process.argv[4]?.toLowerCase();
+    const platformArg = processArgs[3]?.toLowerCase();
 
     if (platformArg) {
       const exists = checkPlatform(platformArg);
@@ -55,7 +60,7 @@ let platform: DiscordPlatform | undefined;
             (x) => `${x}`,
           ).join("\n")}${AnsiEscapes.RESET}`,
         );
-        process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+        process.exit(exitCode);
       } else {
         platform = platformArg;
       }
@@ -78,13 +83,13 @@ let platform: DiscordPlatform | undefined;
         console.log(
           `${AnsiEscapes.RED}Could not find any installations of Discord.${AnsiEscapes.RESET}`,
         );
-        process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+        process.exit(exitCode);
       }
     }
   }
   let result;
 
-  if (process.argv[2] === "inject") {
+  if (cmd === "inject") {
     try {
       result = await inject(platformModule, platform);
     } catch {
@@ -96,10 +101,10 @@ let platform: DiscordPlatform | undefined;
           (x) => `${x}`,
         ).join("\n")}${AnsiEscapes.RESET}`,
       );
-      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+      process.exit(exitCode);
     }
     if (result) {
-      if (!process.argv.includes("--no-welcome-message")) {
+      if (!noWelcomeMessage) {
         await writeFile(join(__dirname, "../../src/__injected.txt"), "hey cutie");
       }
 
@@ -115,7 +120,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
         }`,
       );
     }
-  } else if (process.argv[2] === "uninject") {
+  } else if (cmd === "uninject") {
     try {
       result = await uninject(platformModule, platform);
     } catch {
@@ -127,7 +132,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
           (x) => `${x}`,
         ).join("\n")}${AnsiEscapes.RESET}`,
       );
-      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+      process.exit(exitCode);
     }
     if (result) {
       // @todo: prompt to (re)start automatically
@@ -143,32 +148,26 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
       );
     }
   } else {
-    console.log(`Unsupported argument "${process.argv[2]}", exiting.`);
-    process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+    console.log(`Unsupported argument "${cmd}", exiting.`);
+    process.exit(exitCode);
   }
 })().catch((e) => {
   if (e.code === "EACCES") {
-    console.log(
-      process.argv[2] === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED,
-      "\n",
-    );
+    console.log(cmd === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED, "\n");
     console.log(
       `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself due to missing permissions.${AnsiEscapes.RESET}`,
       "\n",
     );
     console.log("Try again with elevated permissions.");
   } else if (e.code === "ENOENT") {
-    console.log(
-      process.argv[2] === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED,
-      "\n",
-    );
+    console.log(cmd === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED, "\n");
     console.log(
       `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself because Discord could not be found.${AnsiEscapes.RESET}`,
       "\n",
     );
     console.log(`Make sure that specified platform (${platform}) is installed, or try again with a different platform using: ${
       AnsiEscapes.BOLD
-    }${AnsiEscapes.GREEN}npm run ${process.argv[2] === "inject" ? "plug" : "unplug"} <platform>${
+    }${AnsiEscapes.GREEN}npm run ${cmd === "inject" ? "plug" : "unplug"} <platform>${
       AnsiEscapes.RESET
     }
 List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}`).join("\n")}${
