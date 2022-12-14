@@ -60,13 +60,17 @@ const constants = wrapFilter<ModuleExports>("constants", filters.bySource("BASE_
   },
 );
 
-const channels = wrapFilter<Channels>(
+const channels = wrapFilter(
   "channels",
   filters.byProps("getChannelId", "getLastSelectedChannelId", "getVoiceChannelId"),
 ).then((mod) => {
   if (!mod) return;
 
-  return getExportsForProps(mod, ["getChannelId", "getLastSelectedChannelId", "getVoiceChannelId"]);
+  return getExportsForProps(mod, [
+    "getChannelId",
+    "getLastSelectedChannelId",
+    "getVoiceChannelId",
+  ]) as Channels;
 });
 
 const spotify = wrapFilter<Spotify>("spotify", filters.byProps("play", "pause", "inBrowser"));
