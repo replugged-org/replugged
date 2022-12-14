@@ -20,7 +20,7 @@
     "eslint:fix": "eslint ./src ./scripts --fix",
     "lint": "pnpm run prettier:check && pnpm run eslint:check && pnpm run check",
     "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix",
-    "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noemit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src; cp src/*.d.ts dist",
+    "prepublishOnly": "rm -rf dist; tsc --declaration --noemit false -p tsconfig.json --outDir dist",
     "postpublish": "rm -rf dist; npm run build",
     "docs": "typedoc src/renderer/replugged.ts"
   },
