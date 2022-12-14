@@ -104,16 +104,16 @@ const react = wrapFilter<typeof React>(
 );
 
 // todo: fix
-const contextMenu = wrapFilter<ContextMenu>(
-  "contextMenu",
-  filters.byProps("openContextMenu", "closeContextMenu"),
-);
+// const contextMenu = wrapFilter<ContextMenu>(
+//   "contextMenu",
+//   filters.byProps("openContextMenu", "closeContextMenu"),
+// );
 
 // todo: fix
-const modal = wrapFilter<Modal>(
-  "modal",
-  filters.byProps("openModal", "openModalLazy", "closeAllModals"),
-);
+// const modal = wrapFilter<Modal>(
+//   "modal",
+//   filters.byProps("openModal", "openModalLazy", "closeAllModals"),
+// );
 
 const flux = wrapFilter<Flux>("flux", filters.byProps("Store", "connectStores"));
 
@@ -123,7 +123,7 @@ const fluxDispatcher = wrapFilter<FluxDispatcher>(
 );
 
 // todo: fix
-const router = wrapFilter<Router>("router", filters.byProps("BrowserRouter", "Router"));
+// const router = wrapFilter<Router>("router", filters.byProps("BrowserRouter", "Router"));
 
 const hljs = wrapFilter<HighlightJS>("hljs", filters.byProps("initHighlighting", "highlight"));
 
@@ -136,11 +136,11 @@ export interface CommonModules {
   spotify: Spotify;
   spotifySocket: SpotifySocket;
   react: typeof React;
-  contextMenu: ContextMenu;
-  modal: Modal;
+  // contextMenu: ContextMenu;
+  // modal: Modal;
   flux: Flux;
   fluxDispatcher: FluxDispatcher;
-  router: Router;
+  // router: Router;
   hljs: HighlightJS;
 }
 
@@ -153,10 +153,10 @@ export default async (): Promise<CommonModules> => ({
   spotify: await spotify,
   spotifySocket: await spotifySocket,
   react: await react,
-  contextMenu: await contextMenu,
-  modal: await modal,
+  // contextMenu: await contextMenu,
+  // modal: await modal,
   flux: await flux,
   fluxDispatcher: await fluxDispatcher,
-  router: await router,
+  // router: await router,
   hljs: await hljs,
 });
