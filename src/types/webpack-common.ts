@@ -166,9 +166,12 @@ export type Channels = ModuleExports & {
   _mustEmitChanges: (unknownParam: unknown) => unknown; // tbd
   _reactChangeCallbacks: Record<string, unknown>; // untyped
   getChannelId: (unknownParam?: string) => string | undefined;
-  getCurrentlySelectedChannelId: (unknownParam?: string) => string | undefined;
+  getCurrentlySelectedChannelId: (unknownParam?: string) => string | undefined; // tbd
   getLastChannelFollowingDestination: () => unknown; // tbd
-  getVoiceChannelId: (unknownParam?: string) => string | undefined;
+  getLastSelectedChannelId: (unknownParam: unknown) => string | undefined; // tbd
+  getLastSelectedChannels: (unknownParam: unknown) => unknown; // tbd
+  getMostRecentSelectedTextChannelId: (unknownParam: unknown) => string | undefined; // tbd
+  getVoiceChannelId: (unknownParam?: string) => string | undefined; // tbd
   initialize: () => unknown; // tbd
   __getLocalVars: () => Record<string, unknown>; // untyped
   emitChange: () => void;
