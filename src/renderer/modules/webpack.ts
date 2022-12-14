@@ -404,11 +404,8 @@ export function patchPlaintext(patches: PlaintextPatch[]): void {
       replacements: patch.replacements.map((replacement) =>
         typeof replacement === "function"
           ? replacement
-          : (source: string) => {
-              if (source.match(replacement.match)) console.log(source.match(replacement.match));
-              // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
-              return source.replace(replacement.match, replacement.replace);
-            },
+          : // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
+            (source: string) => source.replace(replacement.match, replacement.replace),
       ),
     })),
   );
