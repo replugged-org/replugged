@@ -138,7 +138,7 @@ electron.app.once("ready", () => {
 
 // This module is required this way at runtime.
 require("./ipc");
-/*
+
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
 electron.app.whenReady().then(() => { // optionify it later with sdk
   installExtension(REACT_DEVELOPER_TOOLS)
@@ -146,5 +146,5 @@ electron.app.whenReady().then(() => { // optionify it later with sdk
     .catch((err: string) => console.log('An error occurred: ', err));
 });
 
-*/
+
 require("module")._load(discordPath);
