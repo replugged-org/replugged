@@ -53,10 +53,7 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
       await renderer.stop?.(pluginWrapper.context);
       log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
     },
-    runPlaintextPatches: () => {
-      console.log(renderer.runPlaintextPatches);
-      renderer.runPlaintextPatches?.(pluginWrapper.context);
-    },
+    runPlaintextPatches: () => renderer.runPlaintextPatches?.(pluginWrapper.context),
   });
   plugins.set(plugin.manifest.id, pluginWrapper);
 }
