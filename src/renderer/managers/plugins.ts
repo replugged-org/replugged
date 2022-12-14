@@ -23,6 +23,8 @@ export const plugins = new Map<string, PluginWrapper>();
  */
 export const pluginExports = new Map<string, unknown>();
 
+const styleElements = new Map<string, HTMLLinkElement>();
+
 /**
  * Load a plugin
  * @param plugin Plugin class. You can get this from {@link get} or {@link list}
@@ -47,10 +49,26 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
     },
     start: async (): Promise<void> => {
       await renderer.start?.(pluginWrapper.context);
+
+      const e = document.createElement("link");
+      e.rel = "stylesheet";
+      e.href = `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(
+        /\.js$/,
+        ".css",
+      )}`;
+      styleElements.set(plugin.path, e);
+      document.head.appendChild(e);
+
       log("Plugin", plugin.manifest.name, void 0, "Plugin started");
     },
     stop: async (): Promise<void> => {
       await renderer.stop?.(pluginWrapper.context);
+
+      if (styleElements.has(plugin.path)) {
+        styleElements.get(plugin.path)?.remove();
+        styleElements.delete(plugin.path);
+      }
+
       log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
     },
     runPlaintextPatches: () => renderer.runPlaintextPatches?.(pluginWrapper.context),
