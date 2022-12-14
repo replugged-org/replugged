@@ -506,7 +506,7 @@ export function getByProps<P extends string>(
 
   if (result instanceof Array) {
     // @ts-expect-error TypeScript isn't going to infer types based on the raw variable, so this is fine
-    return result.map(getExportsForProps, props);
+    return result.map((m) => getExportsForProps(m, props));
   }
 
   return getExportsForProps(result as ModuleExportsWithProps<P>, props);
