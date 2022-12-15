@@ -287,6 +287,7 @@ export const filters = {
    *
    * @remarks
    * This function matches on the minified code, so make sure to keep that in mind when writing your strings/RegExp.
+   * Randomized variable names (usually 1-2 letters) are not stable between Discord updates. Make sure to use wildcards to make sure your RegExp matches if the variable name were to.
    */
   bySource: (match: string | RegExp) => {
     return (m: RawModule) => {
@@ -442,8 +443,8 @@ export function getBySource(
 
 /**
  * Equivalent to `getModule(filters.bySource(match), options)`
- *
- * @see {@link filters}
+ * *
+ * @see {@link filters.bySource}
  * @see {@link getModule}
  */
 export function getBySource(
@@ -485,7 +486,7 @@ export function getByProps<P extends string>(
 /**
  * Equivalent to `getModule(filters.byProps(...props), options)`
  *
- * @see {@link filters}
+ * @see {@link filters.byProps}
  * @see {@link getModule}
  */
 export function getByProps<P extends string>(
