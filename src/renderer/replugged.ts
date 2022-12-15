@@ -4,13 +4,29 @@ import webpackCommon, { CommonModules } from "./modules/webpack-common";
 export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
 export namespace webpack {
-  export let common = null as unknown as CommonModules;
+  export let common: CommonModules = null as unknown as CommonModules;
 
   export namespace filters {
     export const { byProps, bySource } = webpackModule.filters;
   }
 
   export const {
+    /**
+     * @internal
+     * @hidden
+     */
+    waitForReady,
+    /**
+     * @internal
+     * @hidden
+     */
+    waitForStart,
+    /**
+     * @internal
+     * @hidden
+     */
+    signalStart,
+
     getById,
     getByProps,
     getBySource,
@@ -19,9 +35,6 @@ export namespace webpack {
     getFunctionBySource,
     patchPlaintext,
     waitForModule,
-    waitForReady,
-    signalStart,
-    waitForStart,
   } = webpackModule;
 }
 
