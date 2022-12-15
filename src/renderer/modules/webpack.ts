@@ -23,19 +23,10 @@ import {
 
 // Handlers
 
-/**
- * @internal
- * @hidden
- */
-export let wpRequire: WebpackRequire;
+let wpRequire: WebpackRequire;
 
 let signalReady: () => void;
-
-/**
- * @internal
- * @hidden
- */
-export let ready = false;
+let ready = false;
 
 /**
  * @internal
@@ -55,17 +46,9 @@ export const waitForReady = new Promise<void>(
  */
 export let signalStart: () => void;
 
-/**
- * @internal
- * @hidden
- */
 export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
 
-/**
- * @internal
- * @hidden
- */
-export const sourceStrings: Record<number, string> = {};
+const sourceStrings: Record<number, string> = {};
 
 const listeners = new Set<LazyListener>();
 const plaintextPatches: RawPlaintextPatch[] = [];
