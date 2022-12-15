@@ -197,3 +197,5 @@ export type Router = ModuleExports & {
 export type HighlightJS = ModuleExports & {
   // todo: populate
 };
+
+export type { CommonModules } from "../renderer/modules/webpack-common";
