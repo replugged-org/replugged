@@ -4,6 +4,9 @@ import webpackCommon, { CommonModules } from "./modules/webpack-common";
 export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
 export namespace webpack {
+  /**
+   * @see {@link CommonModules}
+   */
   export let common: CommonModules = null as unknown as CommonModules;
 
   export namespace filters {
