@@ -1,4 +1,5 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
+import { loadStyleSheet } from "../util";
 import { RepluggedPlugin } from "../../types";
 import { Injector } from "../modules/injector";
 import { Logger, error, log } from "../modules/logger";
@@ -22,6 +23,8 @@ export const plugins = new Map<string, PluginWrapper>();
  * @hidden
  */
 export const pluginExports = new Map<string, unknown>();
+
+const styleElements = new Map<string, HTMLLinkElement>();
 
 /**
  * Load a plugin
@@ -47,10 +50,22 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
     },
     start: async (): Promise<void> => {
       await renderer.start?.(pluginWrapper.context);
+
+      const el = loadStyleSheet(
+        `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
+      );
+      styleElements.set(plugin.path, el);
+
       log("Plugin", plugin.manifest.name, void 0, "Plugin started");
     },
     stop: async (): Promise<void> => {
       await renderer.stop?.(pluginWrapper.context);
+
+      if (styleElements.has(plugin.path)) {
+        styleElements.get(plugin.path)?.remove();
+        styleElements.delete(plugin.path);
+      }
+
       log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
     },
     runPlaintextPatches: () => renderer.runPlaintextPatches?.(pluginWrapper.context),

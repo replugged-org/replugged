@@ -1,3 +1,4 @@
+import { loadStyleSheet } from "../util";
 import { Theme } from "../../types/addon";
 
 const themeElements = new Map<string, HTMLLinkElement>();
@@ -38,13 +39,10 @@ export function load(themeName: string): void {
     throw new Error(`Theme not found: ${themeName}`);
   }
   unload(themeName);
+
   const theme = themes.get(themeName)!;
-  const e = document.createElement("link");
-  e.rel = "stylesheet";
-  // This will need to change a little bit for the splash screen
-  e.href = `replugged://theme/${themeName}/${theme.main}`;
-  themeElements.set(themeName, e);
-  document.head.appendChild(e);
+  const el = loadStyleSheet(`replugged://theme/${themeName}/${theme.main}`);
+  themeElements.set(themeName, el);
 }
 
 /**

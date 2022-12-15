@@ -1,11 +1,12 @@
-const quickCSSElement = document.createElement("link");
-quickCSSElement.rel = "stylesheet";
-quickCSSElement.href = "replugged://quickcss/main.css";
+import { loadStyleSheet } from "../util";
+
+let el: HTMLLinkElement | undefined;
 
 export function load(): void {
-  document.head.appendChild(quickCSSElement);
+  el = loadStyleSheet("replugged://quickcss/main.css");
 }
 
 export function unload(): void {
-  quickCSSElement.remove();
+  el?.remove();
+  el = void 0;
 }
