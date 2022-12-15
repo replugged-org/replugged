@@ -6,8 +6,11 @@ export { Injector } from "./modules/injector";
 export namespace webpack {
   export let common = null as unknown as CommonModules;
 
+  export namespace filters {
+    export const { byProps, bySource } = webpackModule.filters;
+  }
+
   export const {
-    filters,
     getById,
     getByProps,
     getBySource,
@@ -21,6 +24,7 @@ export namespace webpack {
     waitForStart,
   } = webpackModule;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 webpackCommon().then((modules) => {
   webpack.common = modules;
