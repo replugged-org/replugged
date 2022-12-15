@@ -46,6 +46,10 @@ export const waitForReady = new Promise<void>(
  */
 export let signalStart: () => void;
 
+/**
+ * @internal
+ * @hidden
+ */
 export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
 
 const sourceStrings: Record<number, string> = {};
@@ -175,7 +179,9 @@ export function getExportsForProps<P extends string>(
   ) as ModuleExportsWithProps<P> | undefined;
 }
 
+/** @hidden */
 export function getById(id: number, raw?: false): ModuleExports | undefined;
+/** @hidden */
 export function getById(id: number, raw?: true): RawModule | undefined;
 
 /**
@@ -187,6 +193,8 @@ export function getById(id: number, raw?: true): RawModule | undefined;
  * @remarks
  * IDs are not stable between Discord updates. This function is mainly useful for debugging. You should not use this function in production unless the ID is dynamically determined.
  */
+export function getById(id: number, raw?: boolean): ModuleExports | RawModule | undefined;
+
 export function getById(id: number, raw = false): RawModule | ModuleExports | undefined {
   if (!(id in wpRequire.c)) {
     wpRequire(id);
@@ -205,15 +213,19 @@ export function getById(id: number, raw = false): RawModule | ModuleExports | un
 
 // I'd prefer to use conditional types instead of overloading here, but I had some weird issues with it
 // See https://github.com/microsoft/TypeScript/issues/33014
+/** @hidden */
 export function getModule(
   filter: Filter,
   options?: { all?: false; raw?: false },
 ): ModuleExports | undefined;
+/** @hidden */
 export function getModule(filter: Filter, options?: { all?: true; raw?: false }): ModuleExports[];
+/** @hidden */
 export function getModule(
   filter: Filter,
   options?: { all?: false; raw?: true },
 ): RawModule | undefined;
+/** @hidden */
 export function getModule(filter: Filter, options?: { all?: true; raw?: true }): RawModule[];
 
 /**
@@ -225,6 +237,11 @@ export function getModule(filter: Filter, options?: { all?: true; raw?: true }):
  *
  * @see {@link filters}
  */
+export function getModule(
+  filter: Filter,
+  options?: { all?: boolean; raw?: boolean },
+): ModuleExports[] | RawModule[] | ModuleExports | RawModule | undefined;
+
 export function getModule(
   filter: Filter,
   options: GetModuleOptions | undefined = {
@@ -254,15 +271,15 @@ export function getModule(
 /**
  * Filter functions to use with {@link getModule}
  */
-export namespace filters {
+export const filters = {
   /**
    * Get a module that has all the given properties on one of its exports
    * @param props List of property names
    */
-  export const byProps = <P extends string>(...props: P[]) => {
+  byProps: <P extends string>(...props: P[]) => {
     return (m: RawModule): m is RawModuleWithProps<P> =>
       typeof getExportsForProps(m.exports, props) !== "undefined";
-  };
+  },
 
   /**
    * Get a module whose source code matches the given string or RegExp
@@ -271,20 +288,28 @@ export namespace filters {
    * @remarks
    * This function matches on the minified code, so make sure to keep that in mind when writing your strings/RegExp.
    */
-  export const bySource = (match: string | RegExp) => {
+  bySource: (match: string | RegExp) => {
     return (m: RawModule) => {
       const source = sourceStrings[m.id];
       if (!source) return false;
 
       return typeof match === "string" ? source.includes(match) : match.test(source);
     };
-  };
-}
+  },
+};
 
 // Async
 
+/** @hidden */
 function onModule(filter: Filter, callback: LazyCallback, raw?: false): void;
+/** @hidden */
 function onModule(filter: Filter, callback: RawLazyCallback, raw?: true): () => void;
+
+function onModule(
+  filter: Filter,
+  callback: LazyCallback | RawLazyCallback,
+  raw: boolean,
+): () => void;
 
 function onModule(
   filter: Filter,
@@ -338,11 +363,9 @@ export async function waitForModule(
   filter: Filter,
   options: WaitForOptions = {},
 ): Promise<RawModule | ModuleExports> {
-  const existing = getModule(
-    filter,
-    // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-    { all: false, raw: options.raw },
-  );
+  const existing = getModule(filter, { all: false, raw: options.raw }) as
+    | (typeof options["raw"] extends true ? RawModule : ModuleExports)
+    | undefined;
   if (existing) {
     return Promise.resolve(existing);
   }
@@ -396,18 +419,22 @@ export function patchPlaintext(patches: PlaintextPatch[]): void {
 
 // Helpers for the lazy
 
+/** @hidden */
 export function getBySource(
   match: string | RegExp,
   options?: { all?: false; raw?: false },
 ): ModuleExports | undefined;
+/** @hidden */
 export function getBySource(
   match: string | RegExp,
   options?: { all?: true; raw?: false },
 ): ModuleExports[];
+/** @hidden */
 export function getBySource(
   match: string | RegExp,
   options?: { all?: false; raw?: true },
 ): RawModule | undefined;
+/** @hidden */
 export function getBySource(
   match: string | RegExp,
   options?: { all?: true; raw?: true },
@@ -421,35 +448,39 @@ export function getBySource(
  */
 export function getBySource(
   match: string | RegExp,
+  options?: { all?: boolean; raw?: boolean },
+): ModuleExports[] | RawModule[] | ModuleExports | RawModule | undefined;
+
+export function getBySource(
+  match: string | RegExp,
   options: GetModuleOptions | undefined = {
     all: false,
     raw: false,
   },
 ): ModuleExports[] | RawModule[] | ModuleExports | RawModule | undefined {
-  return getModule(
-    filters.bySource(match),
-    // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-    options,
-  );
+  return getModule(filters.bySource(match), options);
 }
 
+/** @hidden */
 export function getByProps<P extends string>(
   props: P[],
   options: { all?: false; raw?: false },
 ): ModuleExportsWithProps<P> | undefined;
+/** @hidden */
 export function getByProps<P extends string>(
   props: P[],
   options: { all?: true; raw?: false },
 ): Array<ModuleExportsWithProps<P>>;
+/** @hidden */
 export function getByProps<P extends string>(
   props: P[],
   options: { all?: false; raw?: true },
 ): RawModule | undefined;
+/** @hidden */
 export function getByProps<P extends string>(
   props: P[],
   options: { all?: true; raw?: true },
 ): RawModule[];
-export function getByProps<P extends string>(...props: P[]): ModuleExportsWithProps<P> | undefined;
 
 /**
  * Equivalent to `getModule(filters.byProps(...props), options)`
@@ -457,6 +488,24 @@ export function getByProps<P extends string>(...props: P[]): ModuleExportsWithPr
  * @see {@link filters}
  * @see {@link getModule}
  */
+export function getByProps<P extends string>(
+  props: P[],
+  options?: { all?: boolean; raw?: boolean },
+):
+  | ModuleExportsWithProps<P>
+  | Array<ModuleExportsWithProps<P>>
+  | RawModule
+  | RawModule[]
+  | undefined;
+
+/**
+ * Equivalent to `getModule(filters.byProps(...props))`
+ *
+ * @see {@link filters}
+ * @see {@link getModule}
+ */
+export function getByProps<P extends string>(...props: P[]): ModuleExportsWithProps<P> | undefined;
+
 export function getByProps<P extends string>(
   ...args: [P[], GetModuleOptions] | P[]
 ):
@@ -470,11 +519,7 @@ export function getByProps<P extends string>(
 
   const result = (
     typeof args[args.length - 1] === "object"
-      ? getModule(
-          filters.byProps(...props),
-          // @ts-expect-error https://github.com/microsoft/TypeScript/issues/26242
-          args[args.length - 1] as GetModuleOptions,
-        )
+      ? getModule(filters.byProps(...props), args[args.length - 1] as GetModuleOptions)
       : getModule(filters.byProps(...props))
   ) as
     | Array<ModuleExportsWithProps<P>>
