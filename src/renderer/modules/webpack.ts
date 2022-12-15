@@ -500,7 +500,7 @@ export function getByProps<P extends string>(
   | undefined;
 
 /**
- * Equivalent to `getModule(filters.byProps(...props))`
+ * Equivalent to `getModule(filters.byProps(...props), {all: false, raw: false})`
  *
  * @see {@link filters}
  * @see {@link getModule}
