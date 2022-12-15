@@ -3,10 +3,24 @@ import webpackCommon, { CommonModules } from "./modules/webpack-common";
 
 export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
-export const webpack = {
-  ...webpackModule,
-  common: null as unknown as CommonModules,
-};
+export namespace webpack {
+  export let common = null as unknown as CommonModules;
+
+  export const {
+    filters,
+    getById,
+    getByProps,
+    getBySource,
+    getModule,
+    getExportsForProps,
+    getFunctionBySource,
+    patchPlaintext,
+    waitForModule,
+    waitForReady,
+    signalStart,
+    waitForStart,
+  } = webpackModule;
+}
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 webpackCommon().then((modules) => {
   webpack.common = modules;
