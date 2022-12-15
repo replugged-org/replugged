@@ -339,10 +339,12 @@ function onModule(
   };
 }
 
+/** @hidden */
 export async function waitForModule(
   filter: Filter,
   options?: WaitForOptions & { raw?: false },
 ): Promise<ModuleExports>;
+/** @hidden */
 export async function waitForModule(
   filter: Filter,
   options?: WaitForOptions & { raw?: true },
@@ -360,6 +362,11 @@ export async function waitForModule(
  * @remarks
  * Some modules may not be available immediately when Discord starts and will take up to a few seconds. This is useful to ensure that the module is available before using it.
  */
+export async function waitForModule(
+  filter: Filter,
+  options: WaitForOptions,
+): Promise<RawModule | ModuleExports>;
+
 export async function waitForModule(
   filter: Filter,
   options: WaitForOptions = {},
