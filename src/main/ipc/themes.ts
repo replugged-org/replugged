@@ -14,7 +14,7 @@ import { Dirent, Stats } from "fs";
 
 const THEMES_DIR = CONFIG_PATHS.themes;
 
-export const isFleATheme = (f: Dirent | Stats, name: string): boolean => {
+export const isFileATheme = (f: Dirent | Stats, name: string): boolean => {
   return f.isDirectory() || (f.isFile() && extname(name) === ".asar");
 };
 
@@ -53,11 +53,11 @@ ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedThem
         })
       ).map(async (f) => {
         console.log(f);
-        if (isFleATheme(f, f.name)) return f;
+        if (isFileATheme(f, f.name)) return f;
         if (f.isSymbolicLink()) {
           const actualPath = await readlink(join(THEMES_DIR, f.name));
           const actualFile = await stat(actualPath);
-          if (isFleATheme(actualFile, actualPath)) return f;
+          if (isFileATheme(actualFile, actualPath)) return f;
         }
 
         return null;
