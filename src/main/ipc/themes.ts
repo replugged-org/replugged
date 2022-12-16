@@ -45,7 +45,6 @@ ipcMain.handle(
 ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedTheme[]> => {
   const themes = [];
 
-  console.log(THEMES_DIR);
   const themeDirs = (
     await Promise.all(
       (
