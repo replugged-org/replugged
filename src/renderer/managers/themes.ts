@@ -1,5 +1,6 @@
 import { loadStyleSheet } from "../util";
 import { Theme } from "../../types/addon";
+import { RepluggedTheme } from "@replugged";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
@@ -63,6 +64,26 @@ export function unloadAll(): void {
   for (const themeName of themeElements.keys()) {
     unload(themeName);
   }
+}
+
+/**
+ * Get a theme
+ *
+ * @remarks
+ * This may include themes that are not available until Discord is reloaded.
+ */
+export async function get(path: string): Promise<RepluggedTheme | null> {
+  return await list().then((x) => x.find((p) => p.manifest.id === path) || null);
+}
+
+/**
+ * List all themes
+ *
+ * @remarks
+ * This may include themes that are not available until Discord is reloaded.
+ */
+export async function list(): Promise<RepluggedTheme[]> {
+  return await window.RepluggedNative.themes.list();
 }
 
 /**
