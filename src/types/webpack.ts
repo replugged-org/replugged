@@ -2,9 +2,9 @@ import { ModuleExports, RawModule } from "./discord";
 
 export type Filter = (module: RawModule) => boolean | ModuleExports;
 
-export type RawLazyCallback = (module: RawModule) => void;
-export type LazyCallback = (module: ModuleExports) => void;
-export type LazyListener = [Filter, RawLazyCallback];
+export type RawLazyCallback<T extends RawModule = RawModule> = (module: T) => void;
+export type LazyCallback<T extends ModuleExports = ModuleExports> = (module: T) => void;
+export type LazyListener<T extends RawModule = RawModule> = [Filter, RawLazyCallback<T>];
 
 export interface RegexReplacement {
   match: RegExp | string;
