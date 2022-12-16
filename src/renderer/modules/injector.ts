@@ -27,7 +27,7 @@ export type BeforeCallback<A extends unknown[] = unknown[]> = (
  */
 export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
   args: A,
-  orig: (...args: A[]) => R,
+  orig: (...args: A) => R,
   self: ObjectExports,
 ) => R;
 
