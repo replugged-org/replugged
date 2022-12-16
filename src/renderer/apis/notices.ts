@@ -1,17 +1,15 @@
-import API from "../entities/api";
 import { RepluggedAnnouncement, RepluggedToast } from "../../types";
+import { Logger } from "../modules/logger";
 
-class NoticesAPI extends API {
+const noticesLogger = Logger.api("Notices");
+
+class NoticesAPI extends EventTarget {
   public announcements = new Map<string, RepluggedAnnouncement>();
   public toasts = new Map<string, RepluggedToast>();
 
-  public constructor() {
-    super("dev.replugged.apis.Notices", "Notices");
-  }
-
   public sendAnnouncement(id: string, props: RepluggedAnnouncement): void {
     if (this.announcements.has(id)) {
-      this.error(`ID: ${id} is already in use by another announcement.`);
+      noticesLogger.error(`ID: ${id} is already in use by another announcement.`);
       return;
     }
 
@@ -28,7 +26,7 @@ class NoticesAPI extends API {
 
   public sendToast(id: string, props: RepluggedToast): void {
     if (this.toasts.has(id)) {
-      this.error(`ID: ${id} is already in use by another toast.`);
+      noticesLogger.error(`ID: ${id} is already in use by another toast.`);
       return;
     }
 

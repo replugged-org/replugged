@@ -1,5 +1,4 @@
 import { Settings } from "../../types/settings";
-import API from "../entities/api";
 
 export class NamespacedSettings<T extends Settings> {
   public namespace: string;
@@ -12,7 +11,7 @@ export class NamespacedSettings<T extends Settings> {
     return window.RepluggedNative.settings.get(this.namespace, key);
   }
 
-  public set(key: Extract<keyof T, string>, value: Promise<T[keyof T]>): Promise<void> {
+  public set(key: Extract<keyof T, string>, value: T[keyof T]): Promise<void> {
     return window.RepluggedNative.settings.set(this.namespace, key, value);
   }
 
@@ -45,13 +44,9 @@ export class NamespacedSettings<T extends Settings> {
   }
 }
 
-export class SettingsAPI extends API {
+class SettingsAPI extends EventTarget {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public settings: Record<string, NamespacedSettings<any>> = {};
-
-  public constructor() {
-    super("dev.replugged.apis.Settings", "Settings");
-  }
 
   public get<T extends Settings>(namespace: string): NamespacedSettings<T> {
     if (!this.settings[namespace]) {

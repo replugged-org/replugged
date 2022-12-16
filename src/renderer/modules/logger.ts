@@ -48,4 +48,16 @@ export class Logger {
   public error(...data: unknown[]): void {
     error(this.type, this.name, this.color, ...data);
   }
+
+  public static api(name: string, color?: string): Logger {
+    return new Logger("API", name, color);
+  }
+
+  public static coremod(name: string, color?: string): Logger {
+    return new Logger("Coremod", name, color);
+  }
+
+  public static plugin(name: string, color?: string): Logger {
+    return new Logger("Plugin", name, color);
+  }
 }
