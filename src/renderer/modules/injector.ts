@@ -27,7 +27,7 @@ export type BeforeCallback<A extends unknown[] = unknown[]> = (
  */
 export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
   args: A,
-  orig: AnyFunction,
+  orig: (...args: A[]) => R,
   self: ObjectExports,
 ) => R;
 
@@ -169,7 +169,8 @@ function instead<
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
 >(obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
-  return inject(obj, funcName, cb as InsteadCallback, InjectionTypes.Instead);
+  // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
+  return inject(obj, funcName, cb, InjectionTypes.Instead);
 }
 
 function after<
@@ -178,7 +179,8 @@ function after<
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
 >(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
-  return inject(obj, funcName, cb as AfterCallback, InjectionTypes.After);
+  // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
+  return inject(obj, funcName, cb, InjectionTypes.After);
 }
 
 /**
@@ -190,11 +192,11 @@ function after<
  * const inject = new Injector();
  *
  * async function start() {
- *   const typingMod = (await webpack.waitForModule(
+ *   const typingMod = (await webpack.waitForModule<{
+ *     startTyping: (channelId: string) => void;
+ *   }>(
  *     webpack.filters.byProps('startTyping')
- *   )) as {
- *     startTyping: AnyFunction;
- *   };
+ *   ));
  *
  *   inject.after(typingMod, 'startTyping', ([channel]) => {
  *     console.log(`Typing in channel ID ${channel}`);
