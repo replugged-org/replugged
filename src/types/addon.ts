@@ -37,7 +37,7 @@ export type Common = z.infer<typeof common>;
 export const theme = common.extend({
   type: z.literal("replugged-theme"),
   main: z.string(),
-  splash: z.string(),
+  splash: z.string().optional(),
 });
 
 export type Theme = z.infer<typeof theme>;
