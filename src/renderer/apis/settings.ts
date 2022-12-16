@@ -7,11 +7,14 @@ export class NamespacedSettings<T extends Settings> {
     this.namespace = namespace;
   }
 
-  public get(key: Extract<keyof T, string>): Promise<T[keyof T]> | undefined {
-    return window.RepluggedNative.settings.get(this.namespace, key);
+  public async get<K extends Extract<keyof T, string>>(
+    key: K,
+    fallback?: T[K],
+  ): Promise<T[K] | undefined> {
+    return (await window.RepluggedNative.settings.get(this.namespace, key)) ?? fallback;
   }
 
-  public set(key: Extract<keyof T, string>, value: T[keyof T]): Promise<void> {
+  public set<K extends Extract<keyof T, string>>(key: K, value: T[K]): Promise<void> {
     return window.RepluggedNative.settings.set(this.namespace, key, value);
   }
 
