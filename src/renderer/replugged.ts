@@ -1,5 +1,6 @@
 import * as webpackModule from "./modules/webpack";
 import webpackCommon, { CommonModules } from "./modules/webpack-common";
+import components_, { Components } from './modules/components';
 
 export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
@@ -61,6 +62,9 @@ export namespace webpack {
 webpackCommon().then((modules) => {
   webpack.common = modules;
 });
+components_().then((modules) => {
+  components = modules;
+})
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";
 export { default as settings } from "./apis/settings";
