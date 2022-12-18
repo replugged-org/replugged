@@ -1,6 +1,8 @@
-import { ModuleExports } from './discord';
+import { ModuleExports } from "./discord";
 
-export type ReactComponent<P> = React.ComponentType<React.PropsWithChildren<P & Record<string, unknown>>>
+export type ReactComponent<P> = React.ComponentType<
+  React.PropsWithChildren<P & Record<string, unknown>>
+>;
 
 export type SwitchItem = ReactComponent<{
   note?: string;
@@ -39,7 +41,7 @@ export type ModalClasses = ModuleExports & {
   Align: Record<string, string>;
   Justify: Record<string, string>;
   Wrap: Record<string, string>;
-}
+};
 
 export interface ModalRootProps {
   transitionState?: ModalTransitionState;
@@ -60,18 +62,18 @@ export interface ModalComponents {
 
 export interface Menu {
   ContextMenu: ReactComponent<{
-    navId: string,
-    onClose?: () => void,
-    className?: string,
-    style?: React.CSSProperties,
-    hideScroller?: boolean,
-    onSelect?: () => void,
+    navId: string;
+    onClose?: () => void;
+    className?: string;
+    style?: React.CSSProperties;
+    hideScroller?: boolean;
+    onSelect?: () => void;
   }>;
-  
+
   MenuSeparator: React.ComponentType;
-  
+
   MenuGroup: ReactComponent<unknown>;
-  
+
   MenuItem: ReactComponent<{
     id: string;
     label: string;
@@ -80,10 +82,10 @@ export interface Menu {
     childRowHeight?: number;
     listClassName?: string;
   }>;
-  
-  MenuCheckboxItem: ReactComponent<{id: string}>;
-  
-  MenuRadioItem: ReactComponent<{id: string}>;
-  
-  MenuControlItem: ReactComponent<{id: string}>;
+
+  MenuCheckboxItem: ReactComponent<{ id: string }>;
+
+  MenuRadioItem: ReactComponent<{ id: string }>;
+
+  MenuControlItem: ReactComponent<{ id: string }>;
 }
