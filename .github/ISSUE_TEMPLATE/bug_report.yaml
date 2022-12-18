@@ -1,0 +1,57 @@
+name: Bug Report
+description: Create a report to help us improve
+labels:
+  - bug
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      description: Steps to reproduce the bug.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened?
+    validations:
+      required: true
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional information
+      description: |
+        Add any other context about the problem here.
+        Screenshots, logs, or other files are also accepted.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Please confirm the following
+      options:
+        - label: I checked if Discord and Replugged are up to date
+          required: true
+        - label: I made sure this is not related to an external plugin or a theme
+          required: true
+        - label:
+            "[I searched the issues](https://github.com/replugged-org/replugged/issues) to make sure
+            this bug has not been reported before."
+          required: true
