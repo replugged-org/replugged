@@ -1,5 +1,13 @@
 import { ModuleExports } from './discord';
 
+export type ReactComponent<P> = React.ComponentType<React.PropsWithChildren<P & Record<string, unknown>>>
+
+export type SwitchItem = ReactComponent<{
+  note?: string;
+  value: boolean;
+  onChange: () => void;
+}>;
+
 enum ModalTransitionState {
   ENTERING,
   ENTERED,
@@ -26,20 +34,14 @@ export interface ModalOptions {
   onCloseCallback?: () => void;
 }
 
-export type ModalClass = Record<string, string>;
-
 export type ModalClasses = ModuleExports & {
-  Direction: ModalClass;
-  Align: ModalClass;
-  Justify: ModalClass;
-  Wrap: ModalClass;
+  Direction: Record<string, string>;
+  Align: Record<string, string>;
+  Justify: Record<string, string>;
+  Wrap: Record<string, string>;
 }
 
-export interface ModalCompProps {
-  children: React.ReactNode;
-}
-
-export interface ModalRootProps extends ModalCompProps {
+export interface ModalRootProps {
   transitionState?: ModalTransitionState;
   size?: ModalSize;
   role?: "alertdialog" | "dialog";
@@ -49,9 +51,9 @@ export interface ModalRootProps extends ModalCompProps {
 
 // todo: make props type for each component
 export interface ModalComponents {
-  ModalRoot: (props: ModalRootProps) => React.ComponentType;
-  ModalHeader: (props: ModalCompProps) => React.ComponentType;
-  ModalContent: (props: ModalCompProps) => React.ComponentType;
-  ModalFooter: (props: ModalCompProps) => React.ComponentType;
-  ModalCloseButton: (props: ModalCompProps) => React.ComponentType;
+  ModalRoot: ReactComponent<ModalRootProps>;
+  ModalHeader: ReactComponent<unknown>;
+  ModalContent: ReactComponent<unknown>;
+  ModalFooter: ReactComponent<unknown>;
+  ModalCloseButton: ReactComponent<unknown>;
 }
