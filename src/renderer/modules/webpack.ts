@@ -24,7 +24,11 @@ import {
 
 // Handlers
 
-let wpRequire: WebpackRequire;
+/**
+ * @internal
+ * @hidden
+ */
+export let wpRequire: WebpackRequire;
 
 let signalReady: () => void;
 let ready = false;

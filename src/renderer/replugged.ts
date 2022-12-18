@@ -36,6 +36,11 @@ export namespace webpack {
      * @internal
      * @hidden
      */
+    wpRequire,
+    /**
+     * @internal
+     * @hidden
+     */
     waitForReady,
     /**
      * @internal
