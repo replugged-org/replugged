@@ -24,6 +24,38 @@ import {
 
 // Handlers
 
+type Filters = typeof filters;
+type GetById = typeof getById;
+type GetByProps = typeof getByProps;
+type GetBySource = typeof getBySource;
+type GetModule = typeof getModule;
+type GetExportsForProps = typeof getExportsForProps;
+type GetFunctionBySource = typeof getFunctionBySource;
+type PatchPlaintext = typeof patchPlaintext;
+type WaitForModule = typeof waitForModule;
+
+export namespace webpack {
+  /**
+   * @see {@link CommonModules}
+   */
+  export let common: CommonModules = null as unknown as CommonModules;
+
+  export let filters: Filters;
+
+  export let wpRequire: WebpackRequire;
+  export let waitForReady: Promise<void>;
+  export let waitForStart: Promise<void>;
+  export let signalStart: () => void;
+  export let getById: GetById;
+  export let getByProps: GetByProps;
+  export let getBySource: GetBySource;
+  export let getModule: GetModule;
+  export let getExportsForProps: GetExportsForProps;
+  export let getFunctionBySource: GetFunctionBySource;
+  export let patchPlaintext: PatchPlaintext;
+  export let waitForModule: WaitForModule;
+}
+
 /**
  * @internal
  * @hidden
@@ -55,7 +87,10 @@ export let signalStart: () => void;
  * @internal
  * @hidden
  */
-export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
+export const waitForStart = new Promise<void>((resolve) => {
+  signalStart = resolve;
+  webpack.signalStart = signalStart;
+});
 
 const sourceStrings: Record<number, string> = {};
 
@@ -132,6 +167,7 @@ function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
     {},
     (r: WebpackRequire) => r,
   ]) as WebpackRequire;
+  webpack.wpRequire = wpRequire;
 
   wpRequire.d = (module: ModuleExports, exports: Record<string, () => unknown>) => {
     for (const prop in exports) {
@@ -747,3 +783,15 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
     }
   }) as T | undefined;
 }
+
+webpack.filters = filters;
+webpack.waitForReady = waitForReady;
+webpack.waitForStart = waitForStart;
+webpack.getById = getById;
+webpack.getByProps = getByProps;
+webpack.getBySource = getBySource;
+webpack.getModule = getModule;
+webpack.getExportsForProps = getExportsForProps;
+webpack.getFunctionBySource = getFunctionBySource;
+webpack.patchPlaintext = patchPlaintext;
+webpack.waitForModule = waitForModule;
