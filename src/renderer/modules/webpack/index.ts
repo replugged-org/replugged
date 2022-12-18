@@ -729,14 +729,17 @@ export function getByProps<
  * @param module The module to search.
  */
 export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
-  match: string | RegExp,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  match: string | RegExp | ((func: Function) => boolean),
   module: ObjectExports,
 ): T | undefined {
   return Object.values(module).find((v) => {
-    if (typeof v !== "function") {
-      return false;
-    }
+    if (typeof v !== "function") return false;
 
-    return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+    if (typeof match === "function") {
+      return match(v);
+    } else {
+      return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+    }
   }) as T | undefined;
 }
