@@ -193,8 +193,13 @@ export type Flux = ModuleExports & {
   // todo: populate
 };
 
+type FluxCallback = (event?: { [ index: string ]: unknown }) => void;
+
 export type FluxDispatcher = ModuleExports & {
-  // todo: populate
+  _subscriptions: { [ index: string ]: Set<FluxCallback>};
+  dispatch: (event: { type: string, [ index: string ]: unknown }) => void;
+  subscribe: (eventKey: string, callback: FluxCallback) => void;
+  unsubscribe: (eventKey: string, callback: FluxCallback) => void;
 };
 
 export type Router = ModuleExports & {
