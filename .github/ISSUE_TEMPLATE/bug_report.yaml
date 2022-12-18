@@ -51,3 +51,7 @@ body:
           required: true
         - label: I made sure this is not related to an external plugin or a theme
           required: true
+        - label:
+            "[I searched the issues](https://github.com/replugged-org/replugged/issues) to make sure
+            this bug has not been reported before."
+          required: true
