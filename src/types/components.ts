@@ -57,3 +57,33 @@ export interface ModalComponents {
   ModalFooter: ReactComponent<unknown>;
   ModalCloseButton: ReactComponent<unknown>;
 }
+
+export interface Menu {
+  ContextMenu: ReactComponent<{
+    navId: string,
+    onClose?: () => void,
+    className?: string,
+    style?: React.CSSProperties,
+    hideScroller?: boolean,
+    onSelect?: () => void,
+  }>;
+  
+  MenuSeparator: React.ComponentType;
+  
+  MenuGroup: ReactComponent<unknown>;
+  
+  MenuItem: ReactComponent<{
+    id: string;
+    label: string;
+    render?: React.ComponentType;
+    onChildrenScroll?: () => void;
+    childRowHeight?: number;
+    listClassName?: string;
+  }>;
+  
+  MenuCheckboxItem: ReactComponent<{id: string}>;
+  
+  MenuRadioItem: ReactComponent<{id: string}>;
+  
+  MenuControlItem: ReactComponent<{id: string}>;
+}

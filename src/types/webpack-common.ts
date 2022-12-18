@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { ModuleExports } from "./discord";
-import { ModalOptions, ModalProps, ModalSize } from "./components";
+import { ModalOptions, ModalProps, ModalSize, ContextMenu } from "./components";
 import { Guild, Message } from "discord-types/general";
 
 export interface MessageReference {
@@ -176,7 +176,18 @@ export type SpotifySocket = ModuleExports & {
 };
 
 export type ContextMenu = ModuleExports & {
-  // todo: populate
+  close: () => void;
+  open: (
+    event: React.UIEvent,
+    render?: ContextMenu,
+    options?: { enableSpellsheck?: boolean },
+    renderLazy?: Promise<ContextMenu>
+  ) => void;
+  openLazy: (
+    event: React.UIEvent,
+    renderLazy?: Promise<ContextMenu>,
+    options?: { enableSpellsheck?: boolean },
+  ) => void;
 };
 
 export type Modal = ModuleExports & {
