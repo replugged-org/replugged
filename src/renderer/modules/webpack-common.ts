@@ -1,5 +1,11 @@
 import { Filter, ModuleExports, ObjectExports } from "@replugged";
-import { filters, getExportsForProps, waitForModule, getFunctionBySource, getBySource } from './webpack';
+import {
+  filters,
+  getBySource,
+  getExportsForProps,
+  getFunctionBySource,
+  waitForModule,
+} from "./webpack";
 import {
   Channels,
   ContextMenu,
@@ -14,7 +20,7 @@ import {
   SpotifySocket,
   Typing,
 } from "src/types/webpack-common";
-import { ModalSize, ModalClasses } from "src/types/components";
+import { ModalClasses, ModalSize } from "src/types/components";
 import type React from "react";
 import { error } from "./logger";
 
@@ -40,24 +46,15 @@ const constants = wrapFilter<ModuleExports>("constants", filters.bySource("BASE_
 
     return {
       raw: mod,
-      Permissions: getExportsForProps(mod, ["ADMINISTRATOR", "MANAGE_GUILD"]) as Record<
-        string,
-        bigint
-      >,
-      Scopes: getExportsForProps(mod, ["BOT", "GUILDS"]) as Record<string, string>,
-      RPCErrors: getExportsForProps(mod, ["RATELIMITED", "TOKEN_REVOKED"]) as Record<
-        string | number,
-        string | number
-      >,
-      RPCCommands: getExportsForProps(mod, ["AUTHENTICATE", "AUTHORIZE"]) as Record<string, string>,
-      RPCEvents: getExportsForProps(mod, ["GUILD_CREATE", "ERROR"]) as Record<string, string>,
-      Colors: getExportsForProps(mod, ["GREY1", "GREY2"]) as Record<string, string>,
-      Status: getExportsForProps(mod, ["ONLINE", "IDLE"]) as Record<string, string>,
-      CSSVariables: getExportsForProps(mod, ["TEXT_NORMAL", "BACKGROUND_PRIMARY"]) as Record<
-        string,
-        string
-      >,
-      Paths: getExportsForProps(mod, ["INDEX", "DOWNLOADS"]) as Record<string, string>,
+      Permissions: getExportsForProps(mod, ["ADMINISTRATOR", "MANAGE_GUILD"])!,
+      Scopes: getExportsForProps(mod, ["BOT", "GUILDS"])!,
+      RPCErrors: getExportsForProps(mod, ["RATELIMITED", "TOKEN_REVOKED"])!,
+      RPCCommands: getExportsForProps(mod, ["AUTHENTICATE", "AUTHORIZE"])!,
+      RPCEvents: getExportsForProps(mod, ["GUILD_CREATE", "ERROR"])!,
+      Colors: getExportsForProps(mod, ["GREY1", "GREY2"])!,
+      Status: getExportsForProps(mod, ["ONLINE", "IDLE"])!,
+      CSSVariables: getExportsForProps(mod, ["TEXT_NORMAL", "BACKGROUND_PRIMARY"])!,
+      Paths: getExportsForProps(mod, ["INDEX", "DOWNLOADS"])!,
     };
   },
 );
@@ -104,15 +101,17 @@ const react = wrapFilter<typeof React>(
   filters.byProps("__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"),
 );
 
-const contextMenu = wrapFilter("contextMenu", filters.bySource('type:"CONTEXT_MENU_OPEN"')).then((mod) => {
-  if (!mod) return null;
+const contextMenu = wrapFilter("contextMenu", filters.bySource('type:"CONTEXT_MENU_OPEN"')).then(
+  (mod) => {
+    if (!mod) return null;
 
-  return {
-    open: getFunctionBySource("stopPropagation", mod as ObjectExports),
-    openLazy: getFunctionBySource(f => f.toString().length < 50, mod as ObjectExports),
-    close: getFunctionBySource("CONTEXT_MENU_CLOSE", mod as ObjectExports)
-  }
-}) as Promise<ContextMenu>;
+    return {
+      open: getFunctionBySource("stopPropagation", mod as ObjectExports),
+      openLazy: getFunctionBySource((f) => f.toString().length < 50, mod as ObjectExports),
+      close: getFunctionBySource("CONTEXT_MENU_CLOSE", mod as ObjectExports),
+    };
+  },
+) as Promise<ContextMenu>;
 
 const modal = wrapFilter("modal", filters.bySource("onCloseRequest:null!=")).then((mod) => {
   if (!mod) return null;

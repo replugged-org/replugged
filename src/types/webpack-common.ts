@@ -181,7 +181,7 @@ export type ContextMenu = ModuleExports & {
     event: React.UIEvent,
     render?: Menu["ContextMenu"],
     options?: { enableSpellsheck?: boolean },
-    renderLazy?: Promise<Menu["ContextMenu"]>
+    renderLazy?: Promise<Menu["ContextMenu"]>,
   ) => void;
   openLazy: (
     event: React.UIEvent,
@@ -194,7 +194,7 @@ export type Modal = ModuleExports & {
   openModal: (
     render: (props: ModalProps) => React.ReactNode,
     options?: ModalOptions,
-    contextKey?: string
+    contextKey?: string,
   ) => string;
   closeModal: (modalKey: string, contextKey?: string) => void;
   ModalSize: ModalSize;
@@ -204,11 +204,11 @@ export type Flux = ModuleExports & {
   // todo: populate
 };
 
-type FluxCallback = (event?: { [ index: string ]: unknown }) => void;
+type FluxCallback = (event?: { [index: string]: unknown }) => void;
 
 export type FluxDispatcher = ModuleExports & {
-  _subscriptions: { [ index: string ]: Set<FluxCallback>};
-  dispatch: (event: { type: string, [ index: string ]: unknown }) => void;
+  _subscriptions: { [index: string]: Set<FluxCallback> };
+  dispatch: (event: { type: string; [index: string]: unknown }) => void;
   subscribe: (eventKey: string, callback: FluxCallback) => void;
   unsubscribe: (eventKey: string, callback: FluxCallback) => void;
 };
