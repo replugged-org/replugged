@@ -1,9 +1,9 @@
-import { filters, waitForModule, getFunctionBySource } from './webpack';
-import { ModalComponents } from '../../types/components';
-import { ModuleExports, Filter, ObjectExports } from '@replugged';
+import { filters, getFunctionBySource, waitForModule } from './webpack';
+import { ModalComponents, ReactComponent, SwitchItem } from '../../types/components';
+import { Filter, ModuleExports, ObjectExports } from '@replugged';
 import { error } from "./logger";
 
-async function wrapFilter<T extends ModuleExports | React.ComponentType>(name: string, filter: Filter, timeout: number = 5000): Promise<T> {
+async function wrapFilter<T extends ModuleExports | ReactComponent<any>>(name: string, filter: Filter, timeout: number = 5000): Promise<T> {
   return (await waitForModule(filter, {
     timeout
   }).catch(() => {
@@ -13,7 +13,7 @@ async function wrapFilter<T extends ModuleExports | React.ComponentType>(name: s
   })) as T;
 }
 
-const SwitchItem = wrapFilter<React.ComponentType>(
+const switchItem = wrapFilter<SwitchItem>(
   "SwitchItem",
   filters.bySource(/=.\.helpdeskArticleId,.=.\.children/),
   10000
@@ -32,11 +32,11 @@ const modal = wrapFilter("modal", filters.bySource("().closeWithCircleBackground
 }) as Promise<ModalComponents>;
 
 export interface Components {
-  SwitchItem: React.ComponentType,
+  SwitchItem: SwitchItem,
   modal: ModalComponents,
 }
 
 export default async (): Promise<Components> => ({
-  SwitchItem: await SwitchItem,
+  SwitchItem: await switchItem,
   modal: await modal,
 })
