@@ -1,5 +1,5 @@
-import { filters, getFunctionBySource, waitForModule } from './webpack';
-import { ModalComponents, ReactComponent, SwitchItem } from '../../types/components';
+import { filters, getFunctionBySource, getModule, waitForModule } from './webpack';
+import { ModalComponents, ReactComponent, SwitchItem, Menu } from '../../types/components';
 import { Filter, ModuleExports, ObjectExports } from '@replugged';
 import { error } from "./logger";
 
@@ -31,12 +31,25 @@ const modal = wrapFilter("modal", filters.bySource("().closeWithCircleBackground
   }
 }) as Promise<ModalComponents>;
 
+const menu = wrapFilter("menu", filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪")).then((mod) => {
+  if (!mod) return null;
+
+  const names = getModule(filters.bySource("menuitemcheckbox"), { raw: true })
+
+  // todo: Finish Populating Menu Components
+  return {
+    ContextMenu: getFunctionBySource("getContainerProps", mod as ObjectExports),
+  }
+}) as Promise<Menu>;
+
 export interface Components {
   SwitchItem: SwitchItem,
   modal: ModalComponents,
+  menu: Menu,
 }
 
 export default async (): Promise<Components> => ({
   SwitchItem: await switchItem,
   modal: await modal,
+  menu: await menu,
 })

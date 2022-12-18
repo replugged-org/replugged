@@ -104,15 +104,20 @@ const react = wrapFilter<typeof React>(
   filters.byProps("__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED", "createElement"),
 );
 
-// todo: fix
-// const contextMenu = wrapFilter<ContextMenu>(
-//   "contextMenu",
-//   filters.byProps("openContextMenu", "closeContextMenu"),
-// );
+const contextMenu = wrapFilter("contextMenu", filters.bySource('type:"CONTEXT_MENU_OPEN"')).then((mod) => {
+  if (!mod) return null;
+
+  return {
+    open: getFunctionBySource("stopPropagation", mod as ObjectExports),
+    openLazy: getFunctionBySource(f => f.toString().length < 50, mod as ObjectExports),
+    close: getFunctionBySource("CONTEXT_MENU_CLOSE", mod as ObjectExports)
+  }
+}) as Promise<ContextMenu>;
 
 const modal = wrapFilter("modal", filters.bySource("onCloseRequest:null!=")).then((mod) => {
   if (!mod) return null;
 
+  // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
   const classes = getBySource("().justifyStart") as ModalClasses;
 
   return {
@@ -147,7 +152,7 @@ export interface CommonModules {
   spotify: Spotify;
   spotifySocket: SpotifySocket;
   react: typeof React;
-  // contextMenu: ContextMenu;
+  contextMenu: ContextMenu;
   modal: Modal;
   flux: Flux;
   fluxDispatcher: FluxDispatcher;
@@ -164,7 +169,7 @@ export default async (): Promise<CommonModules> => ({
   spotify: await spotify,
   spotifySocket: await spotifySocket,
   react: await react,
-  // contextMenu: await contextMenu,
+  contextMenu: await contextMenu,
   modal: await modal,
   flux: await flux,
   fluxDispatcher: await fluxDispatcher,
