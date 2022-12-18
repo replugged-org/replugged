@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { ModuleExports } from "./discord";
-import { ModalOptions, ModalProps, ModalSize, ContextMenu } from "./components";
+import { Menu, ModalOptions, ModalProps, ModalSize } from "./components";
 import { Guild, Message } from "discord-types/general";
 
 export interface MessageReference {
@@ -179,13 +179,13 @@ export type ContextMenu = ModuleExports & {
   close: () => void;
   open: (
     event: React.UIEvent,
-    render?: ContextMenu,
+    render?: Menu["ContextMenu"],
     options?: { enableSpellsheck?: boolean },
-    renderLazy?: Promise<ContextMenu>
+    renderLazy?: Promise<Menu["ContextMenu"]>
   ) => void;
   openLazy: (
     event: React.UIEvent,
-    renderLazy?: Promise<ContextMenu>,
+    renderLazy?: Promise<Menu["ContextMenu"]>,
     options?: { enableSpellsheck?: boolean },
   ) => void;
 };
