@@ -114,3 +114,7 @@ ipcMain.handle(
     ipcTransactions.delete(namespace);
   },
 );
+
+ipcMain.handle(RepluggedIpcChannels.SETTINGS_PATH, () => {
+  return SETTINGS_DIR;
+});

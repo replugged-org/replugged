@@ -36,6 +36,7 @@ const RepluggedNative = {
       (await RepluggedNative.settings.get("themes", "disabled")) ?? [],
     uninstall: async (themeName: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName), // whether theme was successfully uninstalled
+    path: () => ipcRenderer.invoke(RepluggedIpcChannels.THEME_PATH),
   },
 
   plugins: {
@@ -45,11 +46,13 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
     uninstall: async (pluginName: string): Promise<RepluggedPlugin> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName),
+    path: () => ipcRenderer.invoke(RepluggedIpcChannels.PLUGIN_PATH),
   },
 
   quickCSS: {
     get: async () => ipcRenderer.invoke(RepluggedIpcChannels.GET_QUICK_CSS),
     save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css),
+    path: () => ipcRenderer.invoke(RepluggedIpcChannels.QUICKCSS_PATH),
   },
 
   settings: {
@@ -67,6 +70,7 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
     endTransaction: (namespace: string, settings: Settings | null) =>
       ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
+    path: () => ipcRenderer.invoke(RepluggedIpcChannels.SETTINGS_PATH),
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

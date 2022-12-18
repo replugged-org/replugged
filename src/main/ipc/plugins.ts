@@ -82,3 +82,7 @@ ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: stri
     force: true,
   });
 });
+
+ipcMain.handle(RepluggedIpcChannels.PLUGIN_PATH, () => {
+  return PLUGINS_DIR;
+});
