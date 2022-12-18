@@ -21,7 +21,7 @@ import {
   RawPlaintextPatch,
   WaitForOptions,
 } from "../../types/webpack";
-import webpackCommon, { CommonModules } from "./webpack-common";
+import { CommonModules } from "./webpack-common";
 
 // Handlers
 
