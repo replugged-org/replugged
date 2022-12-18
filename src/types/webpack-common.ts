@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { ModuleExports } from "./discord";
+import { ModalOptions, ModalProps, ModalSize } from "./components";
 import { Guild, Message } from "discord-types/general";
 
 export interface MessageReference {
@@ -179,7 +180,13 @@ export type ContextMenu = ModuleExports & {
 };
 
 export type Modal = ModuleExports & {
-  // todo: populate
+  openModal: (
+    render: (props: ModalProps) => React.ReactNode,
+    options?: ModalOptions,
+    contextKey?: string
+  ) => string;
+  closeModal: (modalKey: string, contextKey?: string) => void;
+  ModalSize: ModalSize;
 };
 
 export type Flux = ModuleExports & {
@@ -197,5 +204,3 @@ export type Router = ModuleExports & {
 export type HighlightJS = ModuleExports & {
   // todo: populate
 };
-
-export type { CommonModules } from "../renderer/modules/webpack-common";

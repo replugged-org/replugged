@@ -1,5 +1,5 @@
 import { Filter, ModuleExports, ObjectExports } from "@replugged";
-import { filters, getExportsForProps, waitForModule } from "./webpack";
+import { filters, getExportsForProps, waitForModule, getFunctionBySource, getBySource } from './webpack';
 import {
   Channels,
   ContextMenu,
@@ -14,6 +14,7 @@ import {
   SpotifySocket,
   Typing,
 } from "src/types/webpack-common";
+import { ModalSize, ModalClasses } from "src/types/components";
 import type React from "react";
 import { error } from "./logger";
 
@@ -109,11 +110,21 @@ const react = wrapFilter<typeof React>(
 //   filters.byProps("openContextMenu", "closeContextMenu"),
 // );
 
-// todo: fix
-// const modal = wrapFilter<Modal>(
-//   "modal",
-//   filters.byProps("openModal", "openModalLazy", "closeAllModals"),
-// );
+const modal = wrapFilter("modal", filters.bySource("onCloseRequest:null!=")).then((mod) => {
+  if (!mod) return null;
+
+  const classes = getBySource("().justifyStart") as ModalClasses;
+
+  return {
+    openModal: getFunctionBySource("onCloseRequest:null!=", mod as ObjectExports),
+    closeModal: getFunctionBySource("onCloseCallback&&", mod as ObjectExports),
+    ModalSize,
+    Direction: classes?.Direction,
+    Align: classes?.Align,
+    Justify: classes?.Justify,
+    Wrap: classes?.Wrap,
+  };
+}) as Promise<Modal>;
 
 const flux = wrapFilter<Flux>("flux", filters.byProps("Store", "connectStores"));
 
@@ -137,7 +148,7 @@ export interface CommonModules {
   spotifySocket: SpotifySocket;
   react: typeof React;
   // contextMenu: ContextMenu;
-  // modal: Modal;
+  modal: Modal;
   flux: Flux;
   fluxDispatcher: FluxDispatcher;
   // router: Router;
@@ -154,7 +165,7 @@ export default async (): Promise<CommonModules> => ({
   spotifySocket: await spotifySocket,
   react: await react,
   // contextMenu: await contextMenu,
-  // modal: await modal,
+  modal: await modal,
   flux: await flux,
   fluxDispatcher: await fluxDispatcher,
   // router: await router,
