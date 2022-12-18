@@ -23,7 +23,7 @@ export type WebpackRequireCache = Record<string | number, RawModule>;
 
 export type WebpackRequire = ((e: number) => ModuleExports) & {
   c: WebpackRequireCache;
-  d: Function;
+  d: (module: ModuleExports, exports: Record<string, () => unknown>) => void;
 };
 
 export type WebpackModule = (
