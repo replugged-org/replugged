@@ -1,4 +1,4 @@
-import { ModuleExports } from "@replugged";
+import { ModuleExports } from "../../../../types";
 import { filters, getExportsForProps, waitForModule } from "..";
 
 export type Channels = ModuleExports & {

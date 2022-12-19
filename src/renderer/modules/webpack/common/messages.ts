@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { filters, waitForModule } from "..";
 
-import { ModuleExports } from "@replugged";
+import { ModuleExports } from "../../../../types";
 import { Message } from "discord-types/general";
 
 export interface MessageReference {

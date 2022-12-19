@@ -33,4 +33,3 @@ export * as ignition from "./managers/ignition";
  * @internal Mostly for internal use, or within the console.
  */
 export * as plugins from "./managers/plugins";
-export * from "../types";

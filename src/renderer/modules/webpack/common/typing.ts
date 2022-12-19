@@ -1,4 +1,4 @@
-import { ModuleExports } from "@replugged";
+import { ModuleExports } from "../../../../types";
 import { filters, waitForModule } from "..";
 
 export type Typing = ModuleExports & {

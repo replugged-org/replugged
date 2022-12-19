@@ -1,5 +1,5 @@
 import { filters, getExportsForProps, waitForModule } from "..";
-import { ModuleExports } from "@replugged";
+import { ModuleExports } from "../../../../types";
 import { Guild } from "discord-types/general";
 
 export type Guilds = ModuleExports & {
