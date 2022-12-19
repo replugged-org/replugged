@@ -129,6 +129,19 @@ function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
     (r: WebpackRequire) => r,
   ]) as WebpackRequire;
 
+  wpRequire.d = (module: ModuleExports, exports: Record<string, () => unknown>) => {
+    for (const prop in exports) {
+      if (Object.hasOwnProperty.call(exports, prop) && !Object.hasOwnProperty.call(module, prop)) {
+        Object.defineProperty(module, prop, {
+          enumerable: true,
+          configurable: true,
+          get: () => exports[prop](),
+          set: (value) => (exports[prop] = () => value),
+        });
+      }
+    }
+  };
+
   patchPush(webpackChunk);
   signalReady();
 }

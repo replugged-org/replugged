@@ -34,43 +34,47 @@ const styleElements = new Map<string, HTMLLinkElement>();
  * You may need to reload Discord after adding a new plugin before it's available.
  */
 export async function load(plugin: RepluggedPlugin): Promise<void> {
-  const renderer = await import(
-    `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
-  );
-  const pluginLogger = new Logger("Plugin", plugin.manifest.name);
-  const localExports: Record<string, unknown> = {};
-  pluginExports.set(plugin.manifest.id, localExports);
-  const pluginWrapper: PluginWrapper = Object.freeze({
-    ...plugin,
-    context: {
-      injector: new Injector(),
-      logger: pluginLogger,
-      exports: localExports,
-      // need `settings`
-    },
-    start: async (): Promise<void> => {
-      await renderer.start?.(pluginWrapper.context);
+  try {
+    const renderer = await import(
+      `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
+    );
+    const pluginLogger = new Logger("Plugin", plugin.manifest.name);
+    const localExports: Record<string, unknown> = {};
+    pluginExports.set(plugin.manifest.id, localExports);
+    const pluginWrapper: PluginWrapper = Object.freeze({
+      ...plugin,
+      context: {
+        injector: new Injector(),
+        logger: pluginLogger,
+        exports: localExports,
+        // need `settings`
+      },
+      start: async (): Promise<void> => {
+        await renderer.start?.(pluginWrapper.context);
 
-      const el = loadStyleSheet(
-        `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
-      );
-      styleElements.set(plugin.path, el);
+        const el = loadStyleSheet(
+          `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
+        );
+        styleElements.set(plugin.path, el);
 
-      log("Plugin", plugin.manifest.name, void 0, "Plugin started");
-    },
-    stop: async (): Promise<void> => {
-      await renderer.stop?.(pluginWrapper.context);
+        log("Plugin", plugin.manifest.name, void 0, "Plugin started");
+      },
+      stop: async (): Promise<void> => {
+        await renderer.stop?.(pluginWrapper.context);
 
-      if (styleElements.has(plugin.path)) {
-        styleElements.get(plugin.path)?.remove();
-        styleElements.delete(plugin.path);
-      }
+        if (styleElements.has(plugin.path)) {
+          styleElements.get(plugin.path)?.remove();
+          styleElements.delete(plugin.path);
+        }
 
-      log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
-    },
-    runPlaintextPatches: () => renderer.runPlaintextPatches?.(pluginWrapper.context),
-  });
-  plugins.set(plugin.manifest.id, pluginWrapper);
+        log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
+      },
+      runPlaintextPatches: () => renderer.runPlaintextPatches?.(pluginWrapper.context),
+    });
+    plugins.set(plugin.manifest.id, pluginWrapper);
+  } catch (e: unknown) {
+    error("Plugin", plugin.manifest.id, void 0, "Plugin failed to load\n", e);
+  }
 }
 
 /**
