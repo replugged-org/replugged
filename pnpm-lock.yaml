@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/highlightjs': ^9.12.2
   '@types/node': ^18.8.0
   '@types/react': ^18.0.21
   '@types/toposort': ^2.0.3
@@ -22,6 +23,7 @@ specifiers:
   zod: ^3.19.1
 
 devDependencies:
+  '@types/highlightjs': 9.12.2
   '@types/node': 18.11.3
   '@types/react': 18.0.21
   '@types/toposort': 2.0.3
@@ -436,6 +438,10 @@ packages:
       '@types/keyv': 3.1.4
       '@types/node': 18.11.3
       '@types/responselike': 1.0.0
+    dev: true
+
+  /@types/highlightjs/9.12.2:
+    resolution: {integrity: sha512-oW2pEKwshxwBW1nVUizWQg/tnhboRtKrUKnF2hd6l4BZ0shr5ZjQ4ra/82+NEH6uWeM8JjrMGCux5enQXOQbTA==}
     dev: true
 
   /@types/http-cache-semantics/4.0.1:

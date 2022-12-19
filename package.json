@@ -30,6 +30,7 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
+    "@types/highlightjs": "^9.12.2",
     "@types/node": "^18.8.0",
     "@types/react": "^18.0.21",
     "@types/toposort": "^2.0.3",
