@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { AnyFunction } from "src/types/util";
+import { AnyFunction } from "../../../types/util";
 import {
   ModuleExports,
   ModuleExportsWithProps,
