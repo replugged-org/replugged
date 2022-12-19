@@ -5,8 +5,7 @@ export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
 
 export * as webpack from "./modules/webpack";
-export let common: typeof import("./modules/webpack/common");
-void import("./modules/webpack/common").then((mod) => (common = mod));
+export * as common from "./modules/webpack/common";
 
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";

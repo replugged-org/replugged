@@ -1,61 +1,63 @@
-//import { ModuleExports } from "@replugged";
-//import { error } from "../../logger";
-/*
-async function wrapImport<T extends ModuleExports>(name: string): Promise<T> {
-  return (Promise.race([
-    import(`./${name}`)! as Promise<T>,
-    new Promise<void>((reject) => setTimeout(() => {
-        reject();
-      }, 5_000))
-  ]) as Promise<T>)
-    .catch(() => error("Replugged", "CommonModules", void 0, `Could not find module ${name}`));
+import { ModuleExports } from "../../../../types";
+import { error } from "../../logger";
+/**/
+function importTimeout<T extends ModuleExports>(
+  name: string,
+  moduleImport: Promise<T>,
+  cb: (mod: T) => void,
+): void {
+  const timeout = setTimeout(
+    () => error("Replugged", "CommonModules", void 0, `Could not find module "${name}"`),
+    5_000,
+  );
+  void moduleImport.then((mod) => {
+    clearTimeout(timeout);
+    cb(mod);
+  });
 }
-*
 
 export let channels: typeof import("./channels").default;
-//wrapImport("channels").then(mod => channels = mod.default);
+importTimeout("channels", import("./channels"), (mod) => (channels = mod.default));
 
 export let constants: typeof import("./constants");
-//wrapImport("constants").then(mod => constants = mod);
+importTimeout("constants", import("./constants"), (mod) => (constants = mod));
 
 // export let contextMenu: typeof import("./contextMenu");
-export let flux: typeof import("./flux").default;
-export let fluxDispatcher: typeof import("./fluxDispatcher").default;
-export let guilds: typeof import("./guilds").default;
-export let hljs: typeof import("./hljs").default;
-export let messages: typeof import("./messages").default;
-// export let modal: typeof import("./modal").default;
-export let react: typeof import("./react").default;
-// export let router: typeof import("./router").default;
-export let spotify: typeof import("./spotify").default;
-export let spotifySocket: typeof import("./spotifySocket").default;
-export let typing: typeof import("./typing").default;
-/*
-contextMenu
-flux
-fluxDispatcher
-guilds
-hljs
-messages
-modal
-react
-router
-spotify
-spotifySocket
-typing
-*/
+// importTimeout("contextMenu", import("./contextMenu"), (mod) => (contextMenu = mod.default));
 
-export { default as channels } from "./channels";
-export * as constants from "./constants";
-// export { default as contextMenu } from "./contextMenu";
-export { default as flux } from "./flux";
-export { default as fluxDispatcher } from "./fluxDispatcher";
-export { default as guilds } from "./guilds";
-export { default as hljs } from "./hljs";
-export { default as messages } from "./messages";
-// export { default as modal } from "./modal";
-export { default as React } from "./react";
-// export { default as router } from "./router";
-export { default as spotify } from "./spotify";
-export { default as spotifySocket } from "./spotifySocket";
-export { default as typing } from "./typing";
+export let flux: typeof import("./flux").default;
+importTimeout("flux", import("./flux"), (mod) => (flux = mod.default));
+
+export let fluxDispatcher: typeof import("./fluxDispatcher").default;
+importTimeout(
+  "fluxDispatcher",
+  import("./fluxDispatcher"),
+  (mod) => (fluxDispatcher = mod.default),
+);
+
+export let guilds: typeof import("./guilds").default;
+importTimeout("guilds", import("./guilds"), (mod) => (guilds = mod.default));
+
+export let hljs: typeof import("./hljs").default;
+importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
+
+export let messages: typeof import("./messages").default;
+importTimeout("messages", import("./messages"), (mod) => (messages = mod.default));
+
+// export let modal: typeof import("./modal").default;
+// importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
+
+export let React: typeof import("./react").default;
+importTimeout("React", import("./react"), (mod) => (React = mod.default));
+
+// export let router: typeof import("./router").default;
+// importTimeout("router", import("./router"), (mod) => (router = mod.default));
+
+export let spotify: typeof import("./spotify").default;
+importTimeout("spotify", import("./spotify"), (mod) => (spotify = mod.default));
+
+export let spotifySocket: typeof import("./spotifySocket").default;
+importTimeout("spotifySocket", import("./spotifySocket"), (mod) => (spotifySocket = mod.default));
+
+export let typing: typeof import("./typing").default;
+importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
