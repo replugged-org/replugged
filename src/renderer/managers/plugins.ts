@@ -36,10 +36,12 @@ export function load(plugin: RepluggedPlugin): void {
     const pluginWrapper: PluginWrapper = Object.freeze({
       ...plugin,
       start: async (): Promise<void> => {
-        renderer = await import(
-          `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
-        );
-        await renderer.start?.();
+        if (plugin.manifest.renderer) {
+          renderer = await import(
+            `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
+          );
+          await renderer.start?.();
+        }
 
         const el = loadStyleSheet(
           `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
