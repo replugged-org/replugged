@@ -1,6 +1,6 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
 import { loadStyleSheet } from "../util";
-import { RepluggedPlugin } from "../../types";
+import { PluginExports, RepluggedPlugin } from "../../types";
 import { Injector } from "../modules/injector";
 import { Logger, error, log } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack";
@@ -34,11 +34,9 @@ const styleElements = new Map<string, HTMLLinkElement>();
  * @remarks
  * You may need to reload Discord after adding a new plugin before it's available.
  */
-export async function load(plugin: RepluggedPlugin): Promise<void> {
+export function load(plugin: RepluggedPlugin): void {
   try {
-    const renderer = await import(
-      `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
-    );
+    let renderer: PluginExports;
     const pluginLogger = new Logger("Plugin", plugin.manifest.name);
     const localExports: Record<string, unknown> = {};
     pluginExports.set(plugin.manifest.id, localExports);
@@ -51,6 +49,9 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
         // need `settings`
       },
       start: async (): Promise<void> => {
+        renderer = await import(
+          `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
+        );
         await renderer.start?.(pluginWrapper.context);
 
         const el = loadStyleSheet(
@@ -61,7 +62,7 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
         log("Plugin", plugin.manifest.name, void 0, "Plugin started");
       },
       stop: async (): Promise<void> => {
-        await renderer.stop?.(pluginWrapper.context);
+        await renderer?.stop?.(pluginWrapper.context);
 
         if (styleElements.has(plugin.path)) {
           styleElements.get(plugin.path)?.remove();
@@ -191,7 +192,7 @@ export async function reload(id: string): Promise<void> {
   plugins.delete(id);
   const newPlugin = await get(id);
   if (newPlugin) {
-    await load(newPlugin);
+    load(newPlugin);
     await start(newPlugin.manifest.id);
   } else {
     error("Plugin", id, void 0, "Plugin unloaded but no longer exists");
