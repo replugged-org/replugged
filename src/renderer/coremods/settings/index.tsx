@@ -1,6 +1,6 @@
 import Coremod from "../../entities/coremod";
 import { patchPlaintext } from "../../modules/webpack";
-import { Divider, Header, insertSections, Section, settingsTools } from "./lib";
+import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General } from "./pages";
 
 export default class SettingsMod extends Coremod {
@@ -12,6 +12,7 @@ export default class SettingsMod extends Coremod {
 
   start() {
     settingsTools.addAfter("Billing", [
+      /* eslint-disable */
       Divider(),
       Header("Replugged"),
       Section({
@@ -19,6 +20,7 @@ export default class SettingsMod extends Coremod {
         label: "General",
         elem: General,
       }),
+      /* eslint-enable */
     ]);
   }
 

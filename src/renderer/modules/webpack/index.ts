@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { AnyFunction } from "src/types/util";
+import { AnyFunction } from "../../../types/util";
 import {
   ModuleExports,
   ModuleExportsWithProps,
@@ -10,7 +10,7 @@ import {
   WebpackChunkGlobal,
   WebpackModule,
   WebpackRequire,
-} from "../../types/discord";
+} from "../../../types/discord";
 import {
   Filter,
   GetModuleOptions,
@@ -20,7 +20,7 @@ import {
   RawLazyCallback,
   RawPlaintextPatch,
   WaitForOptions,
-} from "../../types/webpack";
+} from "../../../types/webpack";
 
 // Handlers
 
@@ -360,15 +360,15 @@ export function getModule<T extends RawModule = RawModule>(
 /**
  * Filter functions to use with {@link getModule}
  */
-export const filters = {
+export namespace filters {
   /**
    * Get a module that has all the given properties on one of its exports
    * @param props List of property names
    */
-  byProps: <P extends string = string>(...props: P[]) => {
+  export const byProps = <P extends string = string>(...props: P[]) => {
     return (m: RawModule): m is RawModuleWithProps<P> =>
       typeof getExportsForProps(m.exports, props) !== "undefined";
-  },
+  };
 
   /**
    * Get a module whose source code matches the given string or RegExp
@@ -378,15 +378,15 @@ export const filters = {
    * This function matches on the minified code, so make sure to keep that in mind when writing your strings/RegExp.
    * Randomized variable names (usually 1-2 letters) are not stable between Discord updates. Make sure to use wildcards to make sure your RegExp matches if the variable name were to.
    */
-  bySource: (match: string | RegExp) => {
+  export const bySource = (match: string | RegExp) => {
     return (m: RawModule) => {
       const source = sourceStrings[m.id];
       if (!source) return false;
 
       return typeof match === "string" ? source.includes(match) : match.test(source);
     };
-  },
-};
+  };
+}
 
 // Async
 

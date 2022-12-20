@@ -7,7 +7,5 @@ import * as replugged from "./replugged";
 // @ts-ignore
 window.replugged = replugged;
 
-(async () => {
-  await replugged.plugins.loadAll();
-  await replugged.ignition.ignite();
-})();
+await replugged.plugins.loadAll();
+await replugged.ignition.ignite();

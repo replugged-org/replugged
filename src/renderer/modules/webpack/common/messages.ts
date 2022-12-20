@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { filters, waitForModule } from "..";
 
-import { ModuleExports } from "./discord";
-import { Guild, Message } from "discord-types/general";
+import { ModuleExports } from "../../../../types";
+import { Message } from "discord-types/general";
 
 export interface MessageReference {
   guild_id?: string;
@@ -140,62 +141,8 @@ export type Messages = ModuleExports & {
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 };
 
-export type Typing = ModuleExports & {
-  startTyping: (channelId: string) => void;
-  stopTyping: (channelId: string) => void;
-};
+const messages: Messages = await waitForModule(
+  filters.byProps("sendMessage", "editMessage", "deleteMessage"),
+);
 
-export type Channels = ModuleExports & {
-  getChannelId: (unknownParam?: string) => string | undefined;
-  getCurrentlySelectedChannelId: (unknownParam?: string) => string | undefined; // tbd
-  getLastChannelFollowingDestination: () => unknown; // tbd
-  getLastSelectedChannelId: (unknownParam: unknown) => string | undefined; // tbd
-  getLastSelectedChannels: (unknownParam: unknown) => unknown; // tbd
-  getMostRecentSelectedTextChannelId: (unknownParam: unknown) => string | undefined; // tbd
-  getVoiceChannelId: (unknownParam?: string) => string | undefined; // tbd
-};
-
-export type Guilds = ModuleExports & {
-  getGuild: (guildId: string) => Guild | undefined;
-  getGuildCount: () => number;
-  getGuildId: () => string | undefined;
-  getGuilds: () => Record<string, Guild>;
-  getLastSelectedGuildId: () => string | undefined;
-  getLastSelectedTimeout: () => unknown; // tbd
-  getState: () => unknown; // tbd
-  getTabsV2SelectedGuildId: () => string | undefined;
-};
-
-export type Spotify = ModuleExports & {
-  // todo: populate
-};
-
-export type SpotifySocket = ModuleExports & {
-  // todo: populate
-};
-
-export type ContextMenu = ModuleExports & {
-  // todo: populate
-};
-
-export type Modal = ModuleExports & {
-  // todo: populate
-};
-
-export type Flux = ModuleExports & {
-  // todo: populate
-};
-
-export type FluxDispatcher = ModuleExports & {
-  // todo: populate
-};
-
-export type Router = ModuleExports & {
-  // todo: populate
-};
-
-export type HighlightJS = ModuleExports & {
-  // todo: populate
-};
-
-export type { CommonModules } from "../renderer/modules/webpack-common";
+export default messages;

@@ -1,4 +1,5 @@
 import { Section as SectionType, SettingsTools } from "../../../types/coremods/settings";
+import type React from "react";
 
 // todo: Create version of this for plugins that's limited to the plugin section and alphabetized
 
@@ -39,6 +40,7 @@ export const settingsTools: SettingsTools = {
   rpSections: [],
   rpSectionsAfter: {},
   addSection(opts) {
+    // eslint-disable-next-line
     const data = Section(opts);
 
     settingsTools.rpSections.push(data);
