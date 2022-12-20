@@ -35,3 +35,5 @@ export * as ignition from "./managers/ignition";
 export * as plugins from "./managers/plugins";
 
 export * as util from "./util";
+
+export * as types from "../types";
