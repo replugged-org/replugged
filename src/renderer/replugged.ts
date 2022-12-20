@@ -87,3 +87,4 @@ export * as ignition from "./managers/ignition";
  */
 export * as plugins from "./managers/plugins";
 export * from "../types";
+export * as elementUtils from "./modules/elementUtils";
