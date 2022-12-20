@@ -3,6 +3,7 @@ import { loadStyleSheet } from "../util";
 import { RepluggedPlugin } from "../../types";
 import { Injector } from "../modules/injector";
 import { Logger, error, log } from "../modules/logger";
+import { patchPlaintext } from "../modules/webpack";
 
 type PluginWrapper = RepluggedPlugin & {
   context: {
@@ -12,7 +13,7 @@ type PluginWrapper = RepluggedPlugin & {
   };
   start: () => Promise<void>;
   stop: () => Promise<void>;
-  runPlaintextPatches: () => void;
+  runPlaintextPatches: () => Promise<void>;
 };
 
 /**
@@ -69,7 +70,19 @@ export async function load(plugin: RepluggedPlugin): Promise<void> {
 
         log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
       },
-      runPlaintextPatches: () => renderer.runPlaintextPatches?.(pluginWrapper.context),
+      runPlaintextPatches: async () => {
+        if (typeof plugin.manifest.plaintextPatches === "string") {
+          patchPlaintext(
+            (
+              await import(
+                `replugged://plugin/${plugin.path}/${
+                  plugin.manifest.plaintextPatches
+                }?t=${Date.now()}`
+              )
+            ).default,
+          );
+        }
+      },
     });
     plugins.set(plugin.manifest.id, pluginWrapper);
   } catch (e: unknown) {
@@ -110,7 +123,7 @@ export async function start(id: string): Promise<void> {
  * Plugins must be loaded first with {@link load} or {@link loadAll}
  */
 export async function startAll(): Promise<void> {
-  await Promise.all([...plugins.keys()].map((id) => start(id)));
+  await Promise.allSettled([...plugins.keys()].map((id) => start(id)));
 }
 
 /**
@@ -130,15 +143,15 @@ export async function stop(id: string): Promise<void> {
  * Stop all plugins
  */
 export async function stopAll(): Promise<void> {
-  await Promise.all([...plugins.keys()].map((id) => stop(id)));
+  await Promise.allSettled([...plugins.keys()].map((id) => stop(id)));
 }
 
 /**
  * @hidden
  * @internal
  */
-export function runPlaintextPatches(): void {
-  [...plugins.values()].forEach((p) => p.runPlaintextPatches());
+export async function runPlaintextPatches(): Promise<void> {
+  await Promise.allSettled([...plugins.values()].map((p) => p.runPlaintextPatches()));
 }
 
 /**

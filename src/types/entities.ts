@@ -19,5 +19,4 @@ export interface PluginContext<T extends Settings> {
 export interface PluginExports<T extends Settings> {
   start?: (ctx: PluginContext<T>) => Awaitable<void>;
   stop?: (ctx: PluginContext<T>) => Awaitable<void>;
-  patchPlaintext?: (ctx: PluginContext<T>) => Awaitable<void>;
 }
