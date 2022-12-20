@@ -59,7 +59,7 @@ Load order:
 export async function ignite(): Promise<void> {
   // This is the function that will be called when loading the window.
   coremods.runPlaintextPatches();
-  plugins.runPlaintextPatches();
+  await plugins.runPlaintextPatches();
   await waitForReady;
   signalStart();
   await import("../modules/webpack/common");

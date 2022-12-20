@@ -1,19 +1,26 @@
 import { ModuleExports } from "../../../../types";
 import { error } from "../../logger";
-/**/
+
+const modulePromises: Array<Promise<void>> = [];
+
 function importTimeout<T extends ModuleExports>(
   name: string,
   moduleImport: Promise<T>,
   cb: (mod: T) => void,
 ): void {
-  const timeout = setTimeout(
-    () => error("Replugged", "CommonModules", void 0, `Could not find module "${name}"`),
-    5_000,
+  modulePromises.push(
+    new Promise<void>((res, rej) => {
+      const timeout = setTimeout(() => {
+        error("Replugged", "CommonModules", void 0, `Could not find module "${name}"`);
+        rej(new Error(`Module not found: "${name}`));
+      }, 5_000);
+      void moduleImport.then((mod) => {
+        clearTimeout(timeout);
+        cb(mod);
+        res();
+      });
+    }),
   );
-  void moduleImport.then((mod) => {
-    clearTimeout(timeout);
-    cb(mod);
-  });
 }
 
 export let channels: typeof import("./channels").default;
@@ -61,3 +68,5 @@ importTimeout("spotifySocket", import("./spotifySocket"), (mod) => (spotifySocke
 
 export let typing: typeof import("./typing").default;
 importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
+
+await Promise.allSettled(modulePromises);

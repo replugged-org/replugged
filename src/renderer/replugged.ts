@@ -1,6 +1,3 @@
-//import * as webpackModule from "./modules/webpack";
-//import webpackCommon, { CommonModules } from "./modules/webpack/common";
-
 export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
 
@@ -8,7 +5,8 @@ export * as logger from "./modules/logger";
 export { Logger } from "./modules/logger";
 
 export * as webpack from "./modules/webpack";
-export * as common from "./modules/webpack/common";
+export let common: typeof import("./modules/webpack/common");
+void import("./modules/webpack/common").then((c) => (common = c));
 
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";
