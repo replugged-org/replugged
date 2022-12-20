@@ -82,3 +82,7 @@ ipcMain.handle(RepluggedIpcChannels.UNINSTALL_THEME, async (_, themeName: string
     force: true,
   });
 });
+
+ipcMain.handle(RepluggedIpcChannels.THEME_PATH, () => {
+  return THEMES_DIR;
+});

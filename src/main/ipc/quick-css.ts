@@ -10,3 +10,6 @@ ipcMain.handle(RepluggedIpcChannels.GET_QUICK_CSS, () => readFile(CSS_PATH, { en
 ipcMain.on(RepluggedIpcChannels.SAVE_QUICK_CSS, (_, css: string) =>
   writeFile(CSS_PATH, css, { encoding: "utf-8" }),
 );
+ipcMain.handle(RepluggedIpcChannels.QUICKCSS_PATH, () => {
+  return CSS_PATH;
+});
