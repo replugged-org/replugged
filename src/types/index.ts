@@ -85,7 +85,6 @@ export interface RepluggedPlugin {
   manifest: Plugin;
 }
 
-export * from "./addon";
 export * from "./discord";
 export * from "./entities";
 export * from "./settings";
