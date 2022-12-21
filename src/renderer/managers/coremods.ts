@@ -1,22 +1,31 @@
-import Experiments from "../coremods/experiments";
-import NoDevtoolsWarning from "../coremods/noDevtoolsWarning";
-import Settings from "../coremods/settings";
+import { Awaitable } from "src/types";
+import { patchPlaintext } from "../modules/webpack";
 
-export const coremods = {
-  experiments: new Experiments(),
-  devtools: new NoDevtoolsWarning(),
-  settings: new Settings(),
-};
+import { default as experimentsPlaintext } from "../coremods/experiments/plaintextPatches";
+import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
 
-export async function start(name: string): Promise<void> {
-  await coremods[name as keyof typeof coremods]?.start?.();
+interface Coremod {
+  start?: () => Awaitable<void>;
+  stop?: () => Awaitable<void>;
+  [x: string]: unknown; // Allow coremods to export anything else they want
 }
 
-export async function stop(name: string): Promise<void> {
-  await coremods[name as keyof typeof coremods]?.stop?.();
+export namespace coremods {
+  export let noDevtoolsWarning: Coremod;
+  export let settings: Coremod;
+}
+
+export async function start(name: keyof typeof coremods): Promise<void> {
+  await coremods[name]?.start?.();
+}
+
+export async function stop(name: keyof typeof coremods): Promise<void> {
+  await coremods[name]?.stop?.();
 }
 
 export async function startAll(): Promise<void> {
+  coremods.noDevtoolsWarning = await import("../coremods/noDevtoolsWarning");
+  coremods.settings = await import("../coremods/settings");
   await Promise.allSettled(Object.values(coremods).map((c) => c.start?.()));
 }
 
@@ -25,7 +34,5 @@ export async function stopAll(): Promise<void> {
 }
 
 export function runPlaintextPatches(): void {
-  for (const name in coremods) {
-    coremods[name as keyof typeof coremods].runPlaintextPatches?.();
-  }
+  [experimentsPlaintext, settingsPlaintext].forEach(patchPlaintext);
 }
