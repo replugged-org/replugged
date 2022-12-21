@@ -90,3 +90,14 @@ export * from "./entities";
 export * from "./settings";
 export * from "./util";
 export * from "./webpack";
+
+declare global {
+  const DiscordNative: {
+    window: {
+      setDevtoolsCallbacks: (
+        onOpened?: (() => void) | null,
+        onClosed?: (() => void) | null,
+      ) => void;
+    };
+  };
+}
