@@ -13,5 +13,5 @@ Plaintext patch version of this coremod:
 */
 
 export function start(): void {
-  DiscordNative.window.setDevtoolsCallbacks(null, null);
+  DiscordNative.window.setDevtoolsCallbacks();
 }
