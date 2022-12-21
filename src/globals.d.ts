@@ -17,6 +17,12 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     webpackChunkdiscord_app: WebpackChunkGlobal;
   }
+
+  export const DiscordNative: {
+    window: {
+      setDevtoolsCallbacks(onOpened?: (() => void) | null, onClosed?: (() => void) | null): void;
+    };
+  };
 }
 
 export {};
