@@ -13,7 +13,7 @@ function importTimeout<T extends ModuleExports>(
       const timeout = setTimeout(() => {
         error("Replugged", "CommonModules", void 0, `Could not find module "${name}"`);
         rej(new Error(`Module not found: "${name}`));
-      }, 8_000);
+      }, 5_000);
       void moduleImport.then((mod) => {
         clearTimeout(timeout);
         cb(mod);
