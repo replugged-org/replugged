@@ -33,13 +33,9 @@ type GetExportsForProps = typeof getExportsForProps;
 type GetFunctionBySource = typeof getFunctionBySource;
 type PatchPlaintext = typeof patchPlaintext;
 type WaitForModule = typeof waitForModule;
+type SourceStrings = typeof sourceStrings;
 
 export namespace webpack {
-  /**
-   * @see {@link CommonModules}
-   */
-  export let common: CommonModules = null as unknown as CommonModules;
-
   export let filters: Filters;
 
   export let wpRequire: WebpackRequire;
@@ -54,6 +50,7 @@ export namespace webpack {
   export let getFunctionBySource: GetFunctionBySource;
   export let patchPlaintext: PatchPlaintext;
   export let waitForModule: WaitForModule;
+  export let sourceStrings: SourceStrings;
 }
 
 /**
@@ -92,7 +89,7 @@ export const waitForStart = new Promise<void>((resolve) => {
   webpack.signalStart = signalStart;
 });
 
-const sourceStrings: Record<number, string> = {};
+export const sourceStrings: Record<number, string> = {};
 
 const listeners = new Set<LazyListener>();
 const plaintextPatches: RawPlaintextPatch[] = [];
@@ -795,3 +792,4 @@ webpack.getExportsForProps = getExportsForProps;
 webpack.getFunctionBySource = getFunctionBySource;
 webpack.patchPlaintext = patchPlaintext;
 webpack.waitForModule = waitForModule;
+webpack.sourceStrings = sourceStrings
