@@ -1,3 +1,5 @@
+import { UnknownFunction } from "./util";
+
 export type ObjectExports = Record<string, unknown>;
 
 export type ModuleExports =
@@ -21,9 +23,12 @@ export interface RawModuleWithProps<P extends string> extends RawModule {
 
 export type WebpackRequireCache = Record<string | number, RawModule>;
 
+export type WebpackRequireModule = Record<string | number, UnknownFunction>;
+
 export type WebpackRequire = ((e: number) => ModuleExports) & {
   c: WebpackRequireCache;
   d: (module: ModuleExports, exports: Record<string, () => unknown>) => void;
+  m: WebpackChunk;
 };
 
 export type WebpackModule = (
