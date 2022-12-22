@@ -1,10 +1,17 @@
-import { ModuleExports, ReactComponent } from "../../../types";
+import { React } from "../webpack/common";
+import { ReactComponent } from "../../../types";
 import { filters, waitForModule } from "../webpack";
 
-export type SwitchItem = ModuleExports & ReactComponent<{
+export type SwitchItem = ReactComponent<{
   note?: string;
   value: boolean;
   onChange: () => void;
+  disabled?: boolean;
+  style?: React.CSSProperties;
+  className?: string;
+  tooltipNode?: string;
 }>;
 
-export const SwitchItem = await waitForModule<SwitchItem>(filters.bySource(/=.\.helpdeskArticleId,.=.\.children/));
+const SwitchItem: SwitchItem = await waitForModule(filters.bySource(").dividerDefault")) as SwitchItem;
+
+export default SwitchItem;
