@@ -95,8 +95,6 @@ export async function start(): Promise<void> {
         })();
       }, []);
 
-      console.log(badges);
-
       if (!badges) {
         return res;
       }
