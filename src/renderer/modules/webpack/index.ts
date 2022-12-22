@@ -740,3 +740,25 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
     return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
   }) as T | undefined;
 }
+
+/**
+ * Search for a function within a module by its source code. Returns the key of the function.
+ *
+ * @param match The string or regex to match against the function's source code.
+ * @param module The module to search.
+ *
+ * @remarks
+ * Useful for getting the prop name to inject into.
+ */
+export function getFunctionKeyBySource<P extends string = string>(
+  match: string | RegExp,
+  module: ObjectExports,
+): P | undefined {
+  return Object.entries(module).find(([_, v]) => {
+    if (typeof v !== "function") {
+      return false;
+    }
+
+    return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+  })?.[0] as P | undefined;
+}
