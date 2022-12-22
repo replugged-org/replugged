@@ -56,7 +56,7 @@ export type Modal = ModuleExports & {
   openModal: (
     render: (props: ModalProps) => React.ReactNode,
     options?: ModalOptions,
-    contextKey?: string
+    contextKey?: string,
   ) => string;
   closeModal: (modalKey: string, contextKey?: string) => void;
   ModalSize: ModalSize;
@@ -66,7 +66,7 @@ export type Modal = ModuleExports & {
   Wrap: string;
 };
 
-const mod = await waitForModule(filters.bySource("onCloseRequest:null!="))
+const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
 
 const classes = getBySource("().justifyStart")! as ModalClasses;
 

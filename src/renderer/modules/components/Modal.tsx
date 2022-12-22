@@ -1,7 +1,7 @@
 import { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
-const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"))
+const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"));
 
 const modal = {
   ModalRoot: getFunctionBySource("().root", mod as ObjectExports),

@@ -15,6 +15,8 @@ export type SwitchItem = ReactComponent<{
 /**
  * A toggleable SwitchItem
  */
-const SwitchItem: SwitchItem = await waitForModule(filters.bySource(").dividerDefault"), { timeout: 10000 }) as SwitchItem;
+const SwitchItem: SwitchItem = (await waitForModule(filters.bySource(").dividerDefault"), {
+  timeout: 10000,
+})) as SwitchItem;
 
 export default SwitchItem;
