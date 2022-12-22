@@ -13,6 +13,7 @@ interface Coremod {
 export namespace coremods {
   export let noDevtoolsWarning: Coremod;
   export let settings: Coremod;
+  export let badges: Coremod;
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
@@ -26,6 +27,7 @@ export async function stop(name: keyof typeof coremods): Promise<void> {
 export async function startAll(): Promise<void> {
   coremods.noDevtoolsWarning = await import("../coremods/noDevtoolsWarning");
   coremods.settings = await import("../coremods/settings");
+  coremods.badges = await import("../coremods/badges");
   await Promise.allSettled(Object.values(coremods).map((c) => c.start?.()));
 }
 

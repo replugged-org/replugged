@@ -5,11 +5,13 @@ import * as coremods from "./coremods";
 import * as plugins from "./plugins";
 import * as themes from "./themes";
 import * as quickCSS from "./quick-css";
+import { loadStyleSheet } from "../util";
 
 export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");
   const startTime = performance.now();
 
+  loadStyleSheet("replugged://renderer.css");
   quickCSS.load();
   await Promise.all([
     coremods.startAll(),
