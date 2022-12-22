@@ -12,6 +12,9 @@ export type SwitchItem = ReactComponent<{
   tooltipNode?: string;
 }>;
 
-const SwitchItem: SwitchItem = await waitForModule(filters.bySource(").dividerDefault")) as SwitchItem;
+/**
+ * A toggleable SwitchItem
+ */
+const SwitchItem: SwitchItem = await waitForModule(filters.bySource(").dividerDefault"), { timeout: 10000 }) as SwitchItem;
 
 export default SwitchItem;

@@ -13,7 +13,7 @@ function importTimeout<T extends ModuleExports>(
       const timeout = setTimeout(() => {
         error("Replugged", "Components", void 0, `Could not find module "${name}"`);
         rej(new Error(`Module not found: "${name}`));
-      }, 5_000);
+      }, 10_000);
       void moduleImport.then((mod) => {
         clearTimeout(timeout);
         cb(mod);
@@ -31,5 +31,18 @@ importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.d
 
 export let Modal: typeof import("./Modal").default;
 importTimeout("Modal", import("./Modal"), (mod) => (Modal = mod.default));
+
+export let Divider: typeof import("./Divider").default;
+importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
+
+export let FormText: typeof import("./FormText").default;
+importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.default));
+
+export let FormItem: typeof import("./FormItem").default;
+importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
+
+export let Category: typeof import("./Category").default;
+importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
+
 
 await Promise.allSettled(modulePromises);
