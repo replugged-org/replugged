@@ -750,9 +750,9 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
  * @remarks
  * Useful for getting the prop name to inject into.
  */
-export function getFunctionKeyBySource<P extends string = string>(
+export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
   match: string | RegExp,
-  module: ObjectExports,
+  module: T,
 ): P | undefined {
   return Object.entries(module).find(([_, v]) => {
     if (typeof v !== "function") {
