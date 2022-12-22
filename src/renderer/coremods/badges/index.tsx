@@ -135,7 +135,7 @@ export async function start(): Promise<void> {
         res.props.children.push(<Badge.Translator color={badges.custom?.color} />);
       }
 
-      if (res.props.children.length > 0) {
+      if (res.props.children.length > 0 && !res.props.className.includes(containerWithContent)) {
         res.props.className += ` ${containerWithContent}`;
       }
 
