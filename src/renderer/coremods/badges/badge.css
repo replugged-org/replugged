@@ -1,0 +1,8 @@
+.replugged-badge {
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+.replugged-badge:before {
+  display: none !important;
+}
