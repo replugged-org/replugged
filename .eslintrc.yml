@@ -30,6 +30,11 @@ rules:
   node/no-unpublished-require: off
   node/shebang: off
   no-process-exit: off
+  no-undef: off
+  no-unused-vars: off
+  "@typescript-eslint/no-unused-vars":
+    - error
+    - argsIgnorePattern: "^_"
 
 overrides:
   - files: "**/*.ts"
