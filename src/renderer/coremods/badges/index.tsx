@@ -67,6 +67,7 @@ export async function start(): Promise<void> {
           if (!cache.has(id) || cache.get(id)!.lastFetch < Date.now() - REFRESH_INTERVAL) {
             cache.set(
               id,
+              // TODO: new backend
               await fetch(`https://replugged.dev/api/v1/users/${id}`)
                 .then(async (res) => {
                   const body = (await res.json()) as Record<string, unknown> & {
