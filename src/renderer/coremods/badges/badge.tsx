@@ -1,4 +1,10 @@
-import { filters, getByProps, getFunctionBySource, waitForModule } from "../../modules/webpack";
+import {
+  filters,
+  getByProps,
+  getBySource,
+  getFunctionBySource,
+  waitForModule,
+} from "../../modules/webpack";
 import React from "../../modules/webpack/common/react";
 import "./badge.css";
 import Badges from "./badges";
@@ -7,8 +13,17 @@ type Tooltip = React.FC<{
   text?: string;
   position?: "top" | "bottom" | "left" | "right";
   spacing?: number;
-  children: (props: React.HTMLAttributes<HTMLSpanElement>) => JSX.Element;
+  children: (props: React.HTMLAttributes<HTMLSpanElement>) => React.ReactElement;
 }>;
+
+type Clickable = React.FC<
+  Record<string, unknown> & {
+    "aria-label"?: string;
+    className?: string;
+    children: React.ReactElement | React.ReactElement[];
+    onClick?: () => void;
+  }
+>;
 
 interface BadgeProps {
   color?: string;
@@ -17,15 +32,32 @@ interface BadgeProps {
   className?: string;
   children: React.ReactElement;
   gap?: boolean;
+  onClick?: () => void;
 }
 
 export const getBadgeComponent = async (): Promise<(args: BadgeProps) => React.ReactElement> => {
   const tooltipMod = await waitForModule<Record<string, Tooltip>>(
     filters.bySource(/shouldShowTooltip:!1/),
   );
+
+  // todo: common component
   const Tooltip = tooltipMod && getFunctionBySource<Tooltip>(/shouldShowTooltip:!1/, tooltipMod);
   if (!Tooltip) {
     throw new Error("Failed to find Tooltip component");
+  }
+
+  // todo: common component
+  const Clickable = getBySource("renderNonInteractive") as Clickable | undefined;
+  if (!Clickable) {
+    throw new Error("Failed to find Clickable component");
+  }
+
+  const clickableClass = getByProps<
+    "clickable" | "profileBadge",
+    Record<"clickable" | "profileBadge", string>
+  >("clickable", "profileBadge");
+  if (!clickableClass) {
+    throw new Error("Failed to find clickable class");
   }
 
   const badgeClassMod = getByProps<
@@ -39,20 +71,24 @@ export const getBadgeComponent = async (): Promise<(args: BadgeProps) => React.R
   }
   const { profileBadge22 } = badgeClassMod;
 
-  return ({ color, tooltip, tooltipPosition, className, children, gap }: BadgeProps) => {
-    // todo: clickable
+  return ({ color, tooltip, tooltipPosition, className, children, gap, onClick }: BadgeProps) => {
     return (
-      <Tooltip text={tooltip} position={tooltipPosition || "top"} spacing={gap === false ? 0 : 12}>
-        {(props) => (
-          <span {...props}>
-            <div
-              className={`${profileBadge22} replugged-badge ${className || ""}`}
-              style={{ color: `#${color || "7289da"}` }}>
-              {children}
-            </div>
-          </span>
-        )}
-      </Tooltip>
+      <Clickable className={clickableClass.clickable} onClick={onClick || (() => undefined)}>
+        <Tooltip
+          text={tooltip}
+          position={tooltipPosition || "top"}
+          spacing={gap === false ? 0 : 12}>
+          {(props) => (
+            <span {...props}>
+              <div
+                className={`${profileBadge22} replugged-badge ${className || ""}`}
+                style={{ color: `#${color || "7289da"}` }}>
+                {children}
+              </div>
+            </span>
+          )}
+        </Tooltip>
+      </Clickable>
     );
   };
 };
@@ -79,6 +115,14 @@ export const getBadges = async (): Promise<
 > => {
   const Base = await getBadgeComponent();
 
+  // todo: move to common modules
+  const openExternal = getBySource('.target="_blank";') as (url: string) => Promise<void>;
+  if (!openExternal) {
+    throw new Error("Failed to find openExternal function");
+  }
+
+  // todo: make gotoOrJoinServer, implement here
+
   // todo: i18n
   const Custom = React.memo(({ url, name }: BadgeArgs) => (
     <Base children={<img src={url} style={{ width: "100%", height: "100%" }} />} tooltip={name} />
@@ -90,10 +134,22 @@ export const getBadges = async (): Promise<
     <Base children={<Badges.BugHunter />} tooltip={"Bug Hunter"} color={color} />
   ));
   const Contributor = React.memo(({ color }: BadgeArgs) => (
-    <Base children={<Badges.Contributor />} tooltip={"Contributor"} color={color} />
+    <Base
+      children={<Badges.Contributor />}
+      tooltip={"Contributor"}
+      color={color}
+      // todo: website var
+      onClick={() => openExternal("https://replugged.dev/contributors")}
+    />
   ));
   const Developer = React.memo(({ color }: BadgeArgs) => (
-    <Base children={<Badges.Developer />} tooltip={"Developer"} color={color} />
+    <Base
+      children={<Badges.Developer />}
+      tooltip={"Developer"}
+      color={color}
+      // todo: website var
+      onClick={() => openExternal("https://replugged.dev/contributors")}
+    />
   ));
   const EarlyUser = React.memo(({ color }: BadgeArgs) => (
     <Base children={<Badges.EarlyUser />} tooltip={"Early User"} color={color} />
