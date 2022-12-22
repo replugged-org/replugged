@@ -86,13 +86,10 @@ try {
   window.addEventListener("beforeunload", () =>
     ipcRenderer.send(RepluggedIpcChannels.REGISTER_RELOAD),
   );
+  // Get and execute Discord preload
+  // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
+  const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
+  if (preload) require(preload);
 } catch (err) {
-  console.error("Failed to register unload event", err);
-}
-
-// Get and execute Discord preload
-// If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
-const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
-if (preload) {
-  require(preload);
+  console.error("Error loading original preload", err);
 }
