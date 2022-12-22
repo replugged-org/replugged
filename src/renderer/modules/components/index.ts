@@ -26,8 +26,8 @@ function importTimeout<T extends ModuleExports>(
 export let ContextMenu: typeof import("./ContextMenu").default;
 importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mod.default));
 
-export let SwitchItem: typeof import("./SwitchItem");
-importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod));
+export let SwitchItem: typeof import("./SwitchItem").default;
+importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.default));
 
 export let Modal: typeof import("./Modal").default;
 importTimeout("Modal", import("./Modal"), (mod) => (Modal = mod.default));

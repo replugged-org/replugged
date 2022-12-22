@@ -1,3 +1,4 @@
+import { React } from '../webpack/common';
 import { ObjectExports, ReactComponent } from '../../../types';
 import { filters, getFunctionBySource, waitForModule } from '../webpack/index';
 
