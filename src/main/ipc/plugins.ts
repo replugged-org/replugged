@@ -14,7 +14,7 @@ import { CONFIG_PATHS } from "src/util";
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
 
-export const isFleAPlugin = (f: Dirent | Stats, name: string): boolean => {
+export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
   return f.isDirectory() || (f.isFile() && extname(name) === ".asar");
 };
 
@@ -52,11 +52,11 @@ ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlu
           withFileTypes: true,
         })
       ).map(async (f) => {
-        if (isFleAPlugin(f, f.name)) return f;
+        if (isFileAPlugin(f, f.name)) return f;
         if (f.isSymbolicLink()) {
           const actualPath = await readlink(join(PLUGINS_DIR, f.name));
           const actualFile = await stat(actualPath);
-          if (isFleAPlugin(actualFile, actualPath)) return f;
+          if (isFileAPlugin(actualFile, actualPath)) return f;
         }
 
         return null;
