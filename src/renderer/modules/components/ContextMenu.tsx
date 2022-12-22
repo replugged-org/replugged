@@ -1,6 +1,6 @@
-import { React } from '../webpack/common';
-import { ObjectExports, ReactComponent } from '../../../types';
-import { filters, getFunctionBySource, waitForModule } from '../webpack/index';
+import { React } from "../webpack/common";
+import { ObjectExports, ReactComponent } from "../../../types";
+import { filters, getFunctionBySource, waitForModule } from "../webpack/index";
 
 export interface MenuType {
   ContextMenu: ReactComponent<{
@@ -32,7 +32,7 @@ export interface MenuType {
   MenuControlItem: ReactComponent<{ id: string }>;
 }
 
-const mod = await waitForModule(filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"))
+const mod = await waitForModule(filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"));
 
 // const modId = getModule(filters.bySource("menuitemcheckbox"), { raw: true })?.id;
 // const source = sourceStrings[modId!];

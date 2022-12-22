@@ -7,7 +7,7 @@ export type ContextMenu = ModuleExports & {
     event: React.UIEvent,
     render?: ContextMenu,
     options?: { enableSpellsheck?: boolean },
-    renderLazy?: Promise<ContextMenu>
+    renderLazy?: Promise<ContextMenu>,
   ) => void;
   openLazy: (
     event: React.UIEvent,
@@ -16,7 +16,7 @@ export type ContextMenu = ModuleExports & {
   ) => void;
 };
 
-const mod = await waitForModule(filters.bySource('type:"CONTEXT_MENU_OPEN"'))
+const mod = await waitForModule(filters.bySource('type:"CONTEXT_MENU_OPEN"'));
 
 const contextMenu = {
   open: getFunctionBySource("stopPropagation", mod as ObjectExports),

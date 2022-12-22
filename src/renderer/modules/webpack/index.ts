@@ -792,4 +792,4 @@ webpack.getExportsForProps = getExportsForProps;
 webpack.getFunctionBySource = getFunctionBySource;
 webpack.patchPlaintext = patchPlaintext;
 webpack.waitForModule = waitForModule;
-webpack.sourceStrings = sourceStrings
+webpack.sourceStrings = sourceStrings;
