@@ -16,7 +16,7 @@ enum InjectionTypes {
 export type BeforeCallback<A extends unknown[] = unknown[]> = (
   args: A,
   self: ObjectExports,
-) => A | undefined;
+) => A | undefined | void;
 
 /**
  * Code to run instead of the original function
@@ -29,7 +29,7 @@ export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
   args: A,
   orig: (...args: A) => R,
   self: ObjectExports,
-) => R;
+) => R | void;
 
 /**
  * Code to run after the original function
@@ -42,7 +42,7 @@ export type AfterCallback<A extends unknown[] = unknown[], R = unknown> = (
   args: A,
   res: R,
   self: ObjectExports,
-) => R | undefined;
+) => R | undefined | void;
 
 interface ObjectInjections {
   injections: Map<
