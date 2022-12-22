@@ -1,4 +1,4 @@
-import { filters, waitForModule } from "../../modules/webpack";
+import { filters, getByProps, waitForModule } from "../../modules/webpack";
 import { Injector } from "../../modules/injector";
 import React from "../../modules/webpack/common/react";
 import { User } from "discord-types/general";
@@ -12,6 +12,7 @@ interface BadgeArgs {
 
 type BadgeMod = (args: BadgeArgs) => React.ReactElement<{
   children: React.ReactElement[];
+  className: string;
 }>;
 
 interface APIBadges {
@@ -49,6 +50,8 @@ export async function start(): Promise<void> {
   }
 
   const Badge = await getBadges();
+
+  const { containerWithContent } = getByProps("containerWithContent") as Record<string, string>;
 
   injector.after(
     mod,
@@ -130,6 +133,10 @@ export async function start(): Promise<void> {
       }
       if (badges.translator) {
         res.props.children.push(<Badge.Translator color={badges.custom?.color} />);
+      }
+
+      if (res.props.children.length > 0) {
+        res.props.className += ` ${containerWithContent}`;
       }
 
       return res;
