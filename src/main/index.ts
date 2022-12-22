@@ -122,6 +122,9 @@ electron.app.once("ready", () => {
       case "renderer":
         filePath = join(__dirname, "./renderer.js");
         break;
+      case "renderer.css":
+        filePath = join(__dirname, "./renderer.css");
+        break;
       case "quickcss":
         filePath = join(CONFIG_PATHS.quickcss, reqUrl.pathname);
         break;
