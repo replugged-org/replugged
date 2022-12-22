@@ -129,22 +129,6 @@ electron.app.once("ready", (_) => {
     }
     return callback({ cancel: false });
   });
-
-  session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders, url }, done) => {
-    const hasaccesscontrolallowcredentials = Object.keys(responseHeaders).find((e) =>
-      /access-control-allow-credentials/i.test(e),
-    );
-    for (const header in responseHeaders)
-      if (
-        /^content-security-policy/i.test(header) ||
-        /^x-frame-options/i.test(header) ||
-        (!hasaccesscontrolallowcredentials && /^access-control-allow-origin/i.test(header))
-      )
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete responseHeaders[header];
-    if (!hasaccesscontrolallowcredentials) responseHeaders["Access-Control-Allow-Origin"] = ["*"];
-    done({ responseHeaders });
-  });
 });
 
 // Copied from old codebase
