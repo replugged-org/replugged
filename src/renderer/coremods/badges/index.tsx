@@ -35,6 +35,7 @@ type BadgeCache = {
   lastFetch: number;
 };
 
+// todo: guilds
 const cache = new Map<string, BadgeCache>();
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
