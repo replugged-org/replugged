@@ -16,6 +16,7 @@ type BadgeMod = (args: BadgeArgs) => React.ReactElement<{
 }>;
 
 interface APIBadges {
+  [key: string]: boolean | { name: string; icon?: string; color?: string } | undefined;
   developer?: boolean;
   staff?: boolean;
   support?: boolean;
@@ -104,37 +105,32 @@ export async function start(): Promise<void> {
       if (!badges) {
         return res;
       }
-
+      
+      const badgeTypes = [
+        { type: 'booster', component: Badge.Booster },
+        { type: 'hunter', component: Badge.BugHunter },
+        { type: 'contributor', component: Badge.Contributor },
+        { type: 'developer', component: Badge.Developer },
+        { type: 'early', component: Badge.EarlyUser },
+        { type: 'staff', component: Badge.Staff },
+        { type: 'support', component: Badge.Support },
+        { type: 'translator', component: Badge.Translator },
+      ];
+      
+      badgeTypes.forEach(({ type, component }) => {
+        if (badges[type]) {
+          res.props.children.push(
+            React.createElement(component, { color: badges.custom?.color }),
+          );
+        }
+      });
+      
       if (badges.custom && badges.custom.name && badges.custom.icon) {
         res.props.children.push(
           <Badge.Custom url={badges.custom.icon} name={badges.custom.name} />,
         );
       }
-      if (badges.booster) {
-        res.props.children.push(<Badge.Booster color={badges.custom?.color} />);
-      }
-      if (badges.hunter) {
-        res.props.children.push(<Badge.BugHunter color={badges.custom?.color} />);
-      }
-      if (badges.contributor) {
-        res.props.children.push(<Badge.Contributor color={badges.custom?.color} />);
-      }
-      if (badges.developer) {
-        res.props.children.push(<Badge.Developer color={badges.custom?.color} />);
-      }
-      if (badges.early) {
-        res.props.children.push(<Badge.EarlyUser color={badges.custom?.color} />);
-      }
-      if (badges.staff) {
-        res.props.children.push(<Badge.Staff color={badges.custom?.color} />);
-      }
-      if (badges.support) {
-        res.props.children.push(<Badge.Support color={badges.custom?.color} />);
-      }
-      if (badges.translator) {
-        res.props.children.push(<Badge.Translator color={badges.custom?.color} />);
-      }
-
+      
       if (res.props.children.length > 0) {
         if (!res.props.className.includes(containerWithContent)) {
           res.props.className += ` ${containerWithContent}`;
@@ -144,7 +140,7 @@ export async function start(): Promise<void> {
         }
       }
 
-      return res;
+        return res;
     },
   );
 }
