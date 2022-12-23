@@ -3,6 +3,7 @@ import { patchPlaintext } from "../modules/webpack";
 
 import { default as experimentsPlaintext } from "../coremods/experiments/plaintextPatches";
 import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
+import { default as notrackPlaintext } from "../coremods/notrack/plaintextPatches";
 
 interface Coremod {
   start?: () => Awaitable<void>;
@@ -14,6 +15,7 @@ export namespace coremods {
   export let noDevtoolsWarning: Coremod;
   export let settings: Coremod;
   export let badges: Coremod;
+  export let notrack: Coremod;
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
@@ -36,5 +38,5 @@ export async function stopAll(): Promise<void> {
 }
 
 export function runPlaintextPatches(): void {
-  [experimentsPlaintext, settingsPlaintext].forEach(patchPlaintext);
+  [experimentsPlaintext, settingsPlaintext, notrackPlaintext].forEach(patchPlaintext);
 }
