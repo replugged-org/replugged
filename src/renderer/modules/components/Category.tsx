@@ -17,15 +17,6 @@ type CategoryProps = {
 
 /**
  * A category. It's, by default, is automatically handled by the component. `open` and `onChange` both must be specified to override.
- *
- * @param props The props given to a Category
- * @param props.title The title the category will show.
- * @param props.children The components that the category reveals when opened.
- * @param props.note The description the category will have.
- * @param props.disabled If disabled, all events that occur to it will be disabled.
- * @param props.open The default state of the category, or if props.onChange is specified, the state of the category determined by the developer.
- * @param props.onChange The function that the developer can use to change the state of the Category. props.open must be specified for this to be called.
- * @returns The Category Component.
  */
 const Category = (props: React.PropsWithChildren<CategoryProps>) => {
   const [open, setOpen] = React.useState(props.open || false);
