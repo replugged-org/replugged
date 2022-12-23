@@ -24,37 +24,7 @@ import {
 
 // Handlers
 
-type GetById = typeof getById;
-type GetByProps = typeof getByProps;
-type GetBySource = typeof getBySource;
-type GetModule = typeof getModule;
-type GetExportsForProps = typeof getExportsForProps;
-type GetFunctionBySource = typeof getFunctionBySource;
-type PatchPlaintext = typeof patchPlaintext;
-type WaitForModule = typeof waitForModule;
-type SourceStrings = typeof sourceStrings;
-
-export namespace webpack {
-  export let wpRequire: WebpackRequire;
-  export let waitForReady: Promise<void>;
-  export let waitForStart: Promise<void>;
-  export let signalStart: () => void;
-  export let getById: GetById;
-  export let getByProps: GetByProps;
-  export let getBySource: GetBySource;
-  export let getModule: GetModule;
-  export let getExportsForProps: GetExportsForProps;
-  export let getFunctionBySource: GetFunctionBySource;
-  export let patchPlaintext: PatchPlaintext;
-  export let waitForModule: WaitForModule;
-  export let sourceStrings: SourceStrings;
-}
-
-/**
- * @internal
- * @hidden
- */
-export let wpRequire: WebpackRequire;
+let wpRequire: WebpackRequire;
 
 let signalReady: () => void;
 let ready = false;
@@ -81,12 +51,9 @@ export let signalStart: () => void;
  * @internal
  * @hidden
  */
-export const waitForStart = new Promise<void>((resolve) => {
-  signalStart = resolve;
-  webpack.signalStart = signalStart;
-});
+export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
 
-export const sourceStrings: Record<number, string> = {};
+const sourceStrings: Record<number, string> = {};
 
 const listeners = new Set<LazyListener>();
 const plaintextPatches: RawPlaintextPatch[] = [];
@@ -161,7 +128,6 @@ function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
     {},
     (r: WebpackRequire) => r,
   ]) as WebpackRequire;
-  webpack.wpRequire = wpRequire;
 
   wpRequire.d = (module: ModuleExports, exports: Record<string, () => unknown>) => {
     for (const prop in exports) {
@@ -777,15 +743,3 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
     }
   }) as T | undefined;
 }
-
-webpack.waitForReady = waitForReady;
-webpack.waitForStart = waitForStart;
-webpack.getById = getById;
-webpack.getByProps = getByProps;
-webpack.getBySource = getBySource;
-webpack.getModule = getModule;
-webpack.getExportsForProps = getExportsForProps;
-webpack.getFunctionBySource = getFunctionBySource;
-webpack.patchPlaintext = patchPlaintext;
-webpack.waitForModule = waitForModule;
-webpack.sourceStrings = sourceStrings;
