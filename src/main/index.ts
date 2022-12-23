@@ -1,7 +1,7 @@
 import { dirname, join } from "path";
 
-import electron, { ipcMain, session } from "electron";
-import { RepluggedIpcChannels, RepluggedWebContents } from "../types";
+import electron from "electron";
+import type { RepluggedWebContents } from "../types";
 import { CONFIG_PATHS } from "src/util";
 
 const electronPath = require.resolve("electron");

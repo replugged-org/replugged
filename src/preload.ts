@@ -10,16 +10,11 @@ const RepluggedNative = {
       await settings.set(
         "themes",
         "disabled",
-        ((await settings.get("themes", "disabled")) as string[]).filter(
-          (t) => t !== themeName
-        )
+        ((await settings.get("themes", "disabled")) as string[]).filter((t) => t !== themeName),
       );
     },
     disable: async (themeName: string) => {
-      const disabled = (await RepluggedNative.settings.get(
-        "themes",
-        "disabled"
-      )) as string[];
+      const disabled = (await RepluggedNative.settings.get("themes", "disabled")) as string[];
       if (!disabled.includes(themeName)) {
         disabled.push(themeName);
         await RepluggedNative.settings.set("themes", "disabled", disabled);
@@ -54,20 +49,14 @@ const RepluggedNative = {
 
   quickCSS: {
     get: async () => ipcRenderer.invoke(RepluggedIpcChannels.GET_QUICK_CSS),
-    save: (css: string) =>
-      ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css),
+    save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css),
   },
 
   settings: {
     get: (namespace: string, key: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_SETTING, namespace, key),
     set: (namespace: string, key: string, value: unknown) =>
-      ipcRenderer.invoke(
-        RepluggedIpcChannels.SET_SETTING,
-        namespace,
-        key,
-        value
-      ), // invoke or send?
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_SETTING, namespace, key, value), // invoke or send?
     has: (namespace: string, key: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.HAS_SETTING, namespace, key),
     delete: (namespace: string, key: string) =>
@@ -75,16 +64,9 @@ const RepluggedNative = {
     all: (namespace: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
     startTransaction: (namespace: string) =>
-      ipcRenderer.invoke(
-        RepluggedIpcChannels.START_SETTINGS_TRANSACTION,
-        namespace
-      ),
+      ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
     endTransaction: (namespace: string, settings: Settings | null) =>
-      ipcRenderer.invoke(
-        RepluggedIpcChannels.END_SETTINGS_TRANSACTION,
-        namespace,
-        settings
-      ),
+      ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -106,9 +88,7 @@ try {
   });
   // Get and execute Discord preload
   // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
-  const preload = ipcRenderer.sendSync(
-    RepluggedIpcChannels.GET_DISCORD_PRELOAD
-  );
+  const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
   if (preload) require(preload);
 } catch (err) {
   console.error("Error loading original preload", err);
