@@ -45,7 +45,6 @@ const Category = (props: React.PropsWithChildren<CategoryProps>) => {
                 height: 28,
                 marginRight: 15,
                 transition: "transform 0.3s",
-                // eslint-disable-next-line no-undefined
                 transform: open ? "rotate(90deg)" : undefined,
               }}>
               <path

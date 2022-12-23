@@ -24,7 +24,6 @@ import {
 
 // Handlers
 
-type Filters = typeof filters;
 type GetById = typeof getById;
 type GetByProps = typeof getByProps;
 type GetBySource = typeof getBySource;
@@ -36,8 +35,6 @@ type WaitForModule = typeof waitForModule;
 type SourceStrings = typeof sourceStrings;
 
 export namespace webpack {
-  export let filters: Filters;
-
   export let wpRequire: WebpackRequire;
   export let waitForReady: Promise<void>;
   export let waitForStart: Promise<void>;
@@ -781,7 +778,6 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
   }) as T | undefined;
 }
 
-webpack.filters = filters;
 webpack.waitForReady = waitForReady;
 webpack.waitForStart = waitForStart;
 webpack.getById = getById;
