@@ -3,7 +3,6 @@ import { dirname, join } from "path";
 import electron, { ipcMain, session } from "electron";
 import { RepluggedIpcChannels, RepluggedWebContents } from "../types";
 import { CONFIG_PATHS } from "src/util";
-import nodeFetch from "node-fetch";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
@@ -100,36 +99,6 @@ electron.protocol.registerSchemesAsPrivileged([
     },
   },
 ]);
-
-electron.app.once("ready", (_) => {
-  let sentryBlocked = false;
-
-  ipcMain.on(RepluggedIpcChannels.REGISTER_RELOAD, () => {
-    console.log("sentryblock reset");
-    sentryBlocked = false;
-  });
-
-  session.defaultSession.webRequest.onBeforeRequest(async (details, callback) => {
-    if (!sentryBlocked) {
-      const testUrl: string = details.url;
-      if (testUrl.search(/\/\/(?:\w+\.){0,}discord.com\/assets\//) !== -1) {
-        try {
-          let res = await nodeFetch(testUrl, {});
-          const body = await res.text();
-
-          if (body.includes('dsn:"https://fa97a90475514c03a42f80cd36d147c4@sentry.io')) {
-            console.log("Sentry Blocked");
-            sentryBlocked = true;
-            return callback({ cancel: true });
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    }
-    return callback({ cancel: false });
-  });
-});
 
 // Copied from old codebase
 electron.app.once("ready", () => {
