@@ -131,12 +131,12 @@ export const getBadges = async (): Promise<
     <Base children={<Badges.Booster />} tooltip={"Replugged Booster"} color={color} />
   ));
   const BugHunter = React.memo(({ color }: BadgeArgs) => (
-    <Base children={<Badges.BugHunter />} tooltip={"Bug Hunter"} color={color} />
+    <Base children={<Badges.BugHunter />} tooltip={"Replugged Bug Hunter"} color={color} />
   ));
   const Contributor = React.memo(({ color }: BadgeArgs) => (
     <Base
       children={<Badges.Contributor />}
-      tooltip={"Contributor"}
+      tooltip={"Replugged Contributor"}
       color={color}
       // todo: website var
       onClick={() => openExternal("https://replugged.dev/contributors")}
@@ -145,23 +145,23 @@ export const getBadges = async (): Promise<
   const Developer = React.memo(({ color }: BadgeArgs) => (
     <Base
       children={<Badges.Developer />}
-      tooltip={"Developer"}
+      tooltip={"Replugged Developer"}
       color={color}
       // todo: website var
       onClick={() => openExternal("https://replugged.dev/contributors")}
     />
   ));
   const EarlyUser = React.memo(({ color }: BadgeArgs) => (
-    <Base children={<Badges.EarlyUser />} tooltip={"Early User"} color={color} />
+    <Base children={<Badges.EarlyUser />} tooltip={"Replugged Early User"} color={color} />
   ));
   const Staff = React.memo(({ color }: BadgeArgs) => (
-    <Base children={<Badges.Staff />} tooltip={"Staff"} color={color} />
+    <Base children={<Badges.Staff />} tooltip={"Replugged Staff"} color={color} />
   ));
   const Support = React.memo(({ color }: BadgeArgs) => (
-    <Base children={<Badges.Support />} tooltip={"Support"} color={color} />
+    <Base children={<Badges.Support />} tooltip={"Replugged Support"} color={color} />
   ));
   const Translator = React.memo(({ color }: BadgeArgs) => (
-    <Base children={<Badges.Translator />} tooltip={"Translator"} color={color} />
+    <Base children={<Badges.Translator />} tooltip={"Replugged Translator"} color={color} />
   ));
 
   return {
