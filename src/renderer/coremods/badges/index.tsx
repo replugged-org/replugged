@@ -16,7 +16,6 @@ type BadgeMod = (args: BadgeArgs) => React.ReactElement<{
 }>;
 
 interface APIBadges {
-  [key: string]: boolean | { name: string; icon?: string; color?: string } | undefined;
   developer?: boolean;
   staff?: boolean;
   support?: boolean;
@@ -117,11 +116,14 @@ export async function start(): Promise<void> {
         { type: 'translator', component: Badge.Translator },
       ];
       
-      badgeTypes.forEach(({ type, component }) => {
-        if (badges[type]) {
-          res.props.children.push(
-            React.createElement(component, { color: badges.custom?.color }),
-          );
+      Object.entries(badges).forEach(([type, value]) => {
+        if (value) {
+          const component = badgeTypes.find((badge) => badge.type === type)?.component;
+          if (component) {
+            res.props.children.push(
+              React.createElement(component, { color: badges.custom?.color }),
+            );
+          }
         }
       });
       
