@@ -1,6 +1,15 @@
 import electron, { contextBridge, ipcRenderer, webFrame } from "electron";
 
-import { RepluggedIpcChannels, RepluggedPlugin, RepluggedTheme } from "./types";
+import {
+  RepluggedIpcChannels,
+  RepluggedPlugin,
+  RepluggedTheme,
+  UpdateCheckResultFailure,
+  UpdateCheckResultSuccess,
+  UpdateInstallResultFailure,
+  UpdateInstallResultSuccess,
+  UpdaterType,
+} from "./types";
 import { Settings } from "./types/settings";
 
 const RepluggedNative = {
@@ -45,6 +54,22 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
     uninstall: async (pluginName: string): Promise<RepluggedPlugin> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName),
+  },
+
+  updater: {
+    getHash: async (type: UpdaterType, path: string): Promise<string> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_HASH, type, path),
+    check: async (
+      type: string,
+      repo: string,
+    ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.CHECK_UPDATE, type, repo),
+    install: async (
+      type: UpdaterType,
+      path: string,
+      url: string,
+    ): Promise<UpdateInstallResultSuccess | UpdateInstallResultFailure> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_UPDATE, type, path, url),
   },
 
   quickCSS: {

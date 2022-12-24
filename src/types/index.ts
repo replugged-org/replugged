@@ -24,6 +24,9 @@ export enum RepluggedIpcChannels {
   GET_PLUGIN = "REPLUGGED_GET_PLUGIN",
   UNINSTALL_PLUGIN = "REPLUGGED_UNINSTALL_PLUGIN",
   REGISTER_RELOAD = "REPLUGGED_REGISTER_RELOAD",
+  CHECK_UPDATE = "REPLUGGED_CHECK_UPDATE",
+  INSTALL_UPDATE = "REPLUGGED_INSTALL_UPDATE",
+  GET_HASH = "REPLUGGED_GET_HASH",
 }
 
 export interface RepluggedAnnouncement {
@@ -91,3 +94,4 @@ export * from "./entities";
 export * from "./settings";
 export * from "./util";
 export * from "./webpack";
+export * from "./updater";

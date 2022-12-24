@@ -53,5 +53,9 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@octokit/rest": "^19.0.5",
+    "node-fetch": "^3.3.0"
+  }
 }

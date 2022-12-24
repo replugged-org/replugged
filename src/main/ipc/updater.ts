@@ -1,0 +1,163 @@
+import { ipcMain } from "electron";
+import {
+  RepluggedIpcChannels,
+  UpdateCheckResultFailure,
+  UpdateCheckResultSuccess,
+  UpdateInstallResultFailure,
+  UpdateInstallResultSuccess,
+  UpdaterType,
+} from "../../types";
+import { Octokit } from "@octokit/rest";
+import { CONFIG_PATHS } from "../../util";
+import { readdir, writeFile } from "fs/promises";
+import fetch from "node-fetch";
+import { join } from "path";
+import { Hash, createHash } from "crypto";
+
+const octokit = new Octokit();
+
+async function getHashRecursive(path: string, hash: Hash): Promise<void> {
+  console.log(path);
+  const files = await readdir(path, { withFileTypes: true });
+  console.log(files);
+
+  for (const file of files) {
+    if (file.isDirectory()) {
+      await getHashRecursive(path, hash);
+    } else {
+      hash.update(file.name);
+    }
+  }
+}
+
+async function getFolderHash(path: string): Promise<string> {
+  const hash = createHash("sha256");
+  await getHashRecursive(path, hash);
+  return hash.digest("hex");
+}
+
+async function github(
+  identifier: string,
+): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> {
+  const [owner, repo] = identifier.split("/");
+  if (!owner || !repo) {
+    return {
+      success: false,
+      error: "Invalid repo identifier",
+    };
+  }
+
+  let res;
+
+  try {
+    res = await octokit.rest.repos.getLatestRelease({
+      owner,
+      repo,
+    });
+  } catch (err) {
+    return {
+      success: false,
+      // @ts-expect-error err tbd
+      error: err,
+    };
+  }
+
+  const asset = res.data.assets.find((asset) => asset.name.endsWith(".asar"));
+  if (!asset) {
+    return {
+      success: false,
+      error: "No asar asset found",
+    };
+  }
+
+  return {
+    success: true,
+    id: asset.id.toString(),
+    url: asset.browser_download_url,
+  };
+}
+
+const handlers: Record<
+  string,
+  (identifier: string) => Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure>
+> = {
+  github,
+};
+
+ipcMain.handle(
+  RepluggedIpcChannels.CHECK_UPDATE,
+  async (
+    _,
+    type: string,
+    identifier: string,
+  ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> => {
+    if (!(type in handlers)) {
+      return {
+        success: false,
+        error: "Unknown updater type",
+      };
+    }
+
+    return handlers[type](identifier);
+  },
+);
+
+const getBaseName = (type: UpdaterType): string => {
+  switch (type) {
+    case "replugged-plugin":
+      return CONFIG_PATHS.plugins;
+    case "replugged-theme":
+      return CONFIG_PATHS.themes;
+  }
+};
+
+ipcMain.handle(
+  RepluggedIpcChannels.INSTALL_UPDATE,
+  async (
+    _,
+    type: UpdaterType,
+    path: string,
+    url: string,
+  ): Promise<UpdateInstallResultSuccess | UpdateInstallResultFailure> => {
+    let res;
+    try {
+      res = await fetch(url);
+    } catch (err) {
+      return {
+        success: false,
+        error: `Failed to fetch update: ${err}`,
+      };
+    }
+    let file;
+    try {
+      file = await res.arrayBuffer();
+    } catch (err) {
+      return {
+        success: false,
+        error: `Failed to read update: ${err}`,
+      };
+    }
+
+    const buf = Buffer.from(file);
+
+    try {
+      await writeFile(join(getBaseName(type), path), buf);
+    } catch (err) {
+      return {
+        success: false,
+        error: `Failed to write file: ${err}`,
+      };
+    }
+
+    return {
+      success: true,
+    };
+  },
+);
+
+ipcMain.handle(
+  RepluggedIpcChannels.GET_HASH,
+  async (_, type: UpdaterType, path: string): Promise<string> => {
+    return await getFolderHash(join(getBaseName(type), path));
+  },
+);
