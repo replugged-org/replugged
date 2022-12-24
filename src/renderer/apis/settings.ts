@@ -1,9 +1,18 @@
 import { Settings } from "../../types/settings";
 
+type SettingsUpdate<T extends Settings, K extends Extract<keyof T, string>> =
+  | {
+      type: "set";
+      value: T[K];
+    }
+  | {
+      type: "delete";
+    };
+
 export class SettingsManager<T extends Settings> {
   #settings: T | undefined;
   #saveTimeout: ReturnType<typeof setTimeout> | undefined;
-  #queuedUpdates: Map<Extract<keyof T, string>, T[Extract<keyof T, string>]>;
+  #queuedUpdates: Map<Extract<keyof T, string>, SettingsUpdate<T, Extract<keyof T, string>>>;
   public namespace: string;
 
   public constructor(namespace: string) {
@@ -23,7 +32,7 @@ export class SettingsManager<T extends Settings> {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
     this.#settings[key] = value;
-    this.#queueUpdate(key, value);
+    this.#queueUpdate(key, { type: "set", value });
   }
 
   public has(key: Extract<keyof T, string>): boolean {
@@ -37,6 +46,7 @@ export class SettingsManager<T extends Settings> {
     if (typeof this.#settings === "undefined") {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
+    this.#queueUpdate(key, { type: "delete" });
     return Reflect.deleteProperty(this.#settings, key);
   }
 
@@ -48,15 +58,19 @@ export class SettingsManager<T extends Settings> {
     return { ...this.#settings } as T;
   }
 
-  #queueUpdate<K extends Extract<keyof T, string>>(key: K, value: T[K]): void {
+  #queueUpdate<K extends Extract<keyof T, string>>(key: K, update: SettingsUpdate<T, K>): void {
     if (typeof this.#saveTimeout === "number") {
       clearTimeout(this.#saveTimeout);
     }
-    this.#queuedUpdates.set(key, value);
+    this.#queuedUpdates.set(key, update);
     this.#saveTimeout = setTimeout(() => {
-      this.#queuedUpdates.forEach((v, k) =>
-        window.RepluggedNative.settings.set(this.namespace, k, v),
-      );
+      this.#queuedUpdates.forEach((u, k) => {
+        if (u.type === "delete") {
+          void window.RepluggedNative.settings.delete(this.namespace, k);
+        } else {
+          void window.RepluggedNative.settings.set(this.namespace, k, u.value);
+        }
+      });
       this.#queuedUpdates.clear();
       this.#saveTimeout = void 0;
     }); // Add a delay of 1 or 2 seconds?
