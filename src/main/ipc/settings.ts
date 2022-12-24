@@ -2,12 +2,7 @@ import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
 import { ipcMain } from "electron";
 import { RepluggedIpcChannels } from "../../types";
-import {
-  Settings,
-  SettingsMap,
-  SettingsTransactionHandler,
-  TransactionHandler,
-} from "../../types/settings";
+import { SettingsMap, SettingsTransactionHandler, TransactionHandler } from "../../types/settings";
 import { CONFIG_PATHS } from "src/util";
 
 const SETTINGS_DIR = CONFIG_PATHS.settings;
@@ -62,8 +57,6 @@ async function writeTransaction<T>(
   });
 }
 
-const ipcTransactions: Map<string, (updated: Settings | null) => void> = new Map();
-
 ipcMain.handle(RepluggedIpcChannels.GET_SETTING, async (_, namespace: string, key: string) =>
   readTransaction(namespace, (settings) => settings.get(key)),
 );
@@ -84,33 +77,4 @@ ipcMain.handle(RepluggedIpcChannels.DELETE_SETTING, (_, namespace: string, key: 
 
 ipcMain.handle(RepluggedIpcChannels.GET_ALL_SETTINGS, async (_, namespace: string) =>
   readTransaction(namespace, (settings) => Object.fromEntries(settings.entries())),
-);
-
-ipcMain.handle(
-  RepluggedIpcChannels.START_SETTINGS_TRANSACTION,
-  (_, namespace: string) =>
-    new Promise<Settings>((resolve) =>
-      writeTransaction(
-        namespace,
-        (settings) =>
-          new Promise<void>((transactionResolve) => {
-            ipcTransactions.set(namespace, (updated: Settings | null) => {
-              if (updated !== null) {
-                Object.entries(updated).forEach(([key, value]) => settings.set(key, value));
-              }
-              transactionResolve();
-            });
-
-            resolve(Object.fromEntries(settings.entries()));
-          }),
-      ),
-    ),
-);
-
-ipcMain.handle(
-  RepluggedIpcChannels.END_SETTINGS_TRANSACTION,
-  (_, namespace: string, settings: Settings | null) => {
-    ipcTransactions.get(namespace)?.(settings);
-    ipcTransactions.delete(namespace);
-  },
 );
