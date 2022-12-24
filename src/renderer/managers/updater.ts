@@ -162,7 +162,10 @@ export async function installUpdate(id: string, verbose = true): Promise<void> {
   log("Replugged", "Updater", void 0, `Entity ${id} updated successfully`);
 }
 
-export async function checkAllUpdates(waitSinceLastUpdate?: number): Promise<void> {
+export async function checkAllUpdates(
+  waitSinceLastUpdate?: number | undefined,
+  verbose = false,
+): Promise<void> {
   if (waitSinceLastUpdate === undefined) {
     waitSinceLastUpdate = ((await settings.get("updater").get("waitSinceLastUpdate")) ||
       1000 * 60 * 60 * 15) as number;
@@ -174,22 +177,22 @@ export async function checkAllUpdates(waitSinceLastUpdate?: number): Promise<voi
   log("Replugged", "Updater", void 0, "Checking for updates");
 
   await Promise.all([
-    plugins.map((plugin) => checkUpdate(plugin.manifest.id, waitSinceLastUpdate, false)),
-    themes.map((theme) => checkUpdate(theme.manifest.id, waitSinceLastUpdate, false)),
+    plugins.map((plugin) => checkUpdate(plugin.manifest.id, waitSinceLastUpdate, verbose)),
+    themes.map((theme) => checkUpdate(theme.manifest.id, waitSinceLastUpdate, verbose)),
   ]);
 
   log("Replugged", "Updater", void 0, "All updates checked");
 }
 
-export async function installAllUpdates(): Promise<void> {
+export async function installAllUpdates(verbose = false): Promise<void> {
   const plugins = await listPlugins();
   const themes = await listThemes();
 
   log("Replugged", "Updater", void 0, "Installing updates");
 
   await Promise.all([
-    plugins.map((plugin) => installUpdate(plugin.manifest.id, false)),
-    themes.map((theme) => installUpdate(theme.manifest.id, false)),
+    plugins.map((plugin) => installUpdate(plugin.manifest.id, verbose)),
+    themes.map((theme) => installUpdate(theme.manifest.id, verbose)),
   ]);
 
   log("Replugged", "Updater", void 0, "All updates installed");
