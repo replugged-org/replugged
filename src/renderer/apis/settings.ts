@@ -139,10 +139,10 @@ const managers = new Map<string, unknown>();
  *
  * Here's an example of how to use this in a plugin:
  *
- * ```js
+ * ```ts
  * import { settings } from 'replugged';
  *
- * const cfg = await settings.init('dev.replugged.Example');
+ * const cfg = await settings.init<{ hello: string }>('dev.replugged.Example');
  *
  * export function start() {
  *   cfg.set('hello', 'world');
