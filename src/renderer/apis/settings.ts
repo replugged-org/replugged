@@ -59,7 +59,7 @@ export class SettingsManager<T extends Settings> {
   }
 
   #queueUpdate<K extends Extract<keyof T, string>>(key: K, update: SettingsUpdate<T, K>): void {
-    if (typeof this.#saveTimeout === "number") {
+    if (typeof this.#saveTimeout !== "undefined") {
       clearTimeout(this.#saveTimeout);
     }
     this.#queuedUpdates.set(key, update);
