@@ -108,10 +108,11 @@ export async function checkUpdate(
     } else {
       if (verbose) log("Replugged", "Updater", void 0, `Entity ${id} is up to date`);
       await setUpdateSettings(id, {
-        ...setUpdateSettings,
         available: false,
         lastChecked: Date.now(),
         hash: newHash,
+        url: res.url,
+        id: res.id,
       });
       return;
     }
