@@ -9,7 +9,7 @@ import {
 } from "../../types";
 import { Octokit } from "@octokit/rest";
 import { CONFIG_PATHS } from "../../util";
-import { readdir, writeFile } from "fs/promises";
+import { readFile, readdir, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
 import { Hash, createHash } from "crypto";
@@ -23,7 +23,8 @@ async function getHashRecursive(path: string, hash: Hash): Promise<void> {
     if (file.isDirectory()) {
       await getHashRecursive(path, hash);
     } else {
-      hash.update(file.name);
+      const buf = await readFile(join(path, file.name));
+      hash.update(Buffer.from(buf));
     }
   }
 }

@@ -87,14 +87,12 @@ export async function checkUpdate(
     return;
   }
 
-  const newHash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
-
   if (!updateSettings.id) {
     warn("Replugged", "Updater", void 0, `Entity ${id} has not been checked before, skipping`);
     await setUpdateSettings(id, {
       available: false,
       lastChecked: Date.now(),
-      hash: newHash,
+      hash,
       url: res.url,
       id: res.id,
     });
@@ -110,7 +108,7 @@ export async function checkUpdate(
       await setUpdateSettings(id, {
         available: false,
         lastChecked: Date.now(),
-        hash: newHash,
+        hash,
         url: res.url,
         id: res.id,
       });
@@ -124,7 +122,7 @@ export async function checkUpdate(
     id: res.id,
     url: res.url,
     lastChecked: Date.now(),
-    hash: newHash,
+    hash,
   });
 }
 
@@ -179,10 +177,13 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     return;
   }
 
+  const newHash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
+
   // update settings
   await setUpdateSettings(id, {
     ...updateSettings,
     available: false,
+    hash: newHash,
   });
 
   log("Replugged", "Updater", void 0, `Entity ${id} updated successfully`);
