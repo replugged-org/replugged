@@ -16,12 +16,9 @@ interface EntitySettings {
   _updater: UpdateSettings;
 }
 
-interface UpdaterSettings {
-  [key: string]: unknown;
+const updaterSettings = await init<{
   waitSinceLastUpdate: number;
-}
-
-const updaterSettings = await init<UpdaterSettings>("dev.replugged.Updater");
+}>("dev.replugged.Updater");
 
 export async function getUpdateSettings(id: string): Promise<UpdateSettings> {
   const setting = (await init<EntitySettings>(id)).get("_updater");
