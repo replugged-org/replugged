@@ -1,13 +1,8 @@
-import API from "../entities/api";
 import { RepluggedConnection } from "../../types";
 import { ConnectedAccount } from "../../types/discord";
 
-class ConnectionsAPI extends API {
+class ConnectionsAPI extends EventTarget {
   public connections: RepluggedConnection[] = [];
-
-  public constructor() {
-    super("dev.replugged.apis.Connections", "Connections");
-  }
 
   public get map(): typeof Array.prototype.map {
     return this.connections.map.bind(this.connections);

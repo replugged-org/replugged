@@ -10,7 +10,6 @@ import {
   UpdateInstallResultSuccess,
   UpdaterType,
 } from "./types";
-import { Settings } from "./types/settings";
 
 const RepluggedNative = {
   themes: {
@@ -90,7 +89,7 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
     startTransaction: (namespace: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
-    endTransaction: (namespace: string, settings: Settings | null) =>
+    endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
       ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
   },
 
