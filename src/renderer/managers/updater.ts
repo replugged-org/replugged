@@ -89,6 +89,18 @@ export async function checkUpdate(
 
   const newHash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
 
+  if (!updateSettings.id) {
+    warn("Replugged", "Updater", void 0, `Entity ${id} has not been checked before, skipping`);
+    await setUpdateSettings(id, {
+      available: false,
+      lastChecked: Date.now(),
+      hash: newHash,
+      url: res.url,
+      id: res.id,
+    });
+    return;
+  }
+
   if (res.id === updateSettings.id) {
     const hash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
     if (hash !== updateSettings.hash) {
