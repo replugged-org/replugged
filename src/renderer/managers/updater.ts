@@ -11,17 +11,14 @@ interface UpdateSettings {
   hash?: string;
 }
 
-interface EntitySettings {
-  [key: string]: unknown;
-  _updater: UpdateSettings;
-}
-
 const updaterSettings = await init<{
   waitSinceLastUpdate: number;
 }>("dev.replugged.Updater");
 
-export async function getUpdateSettings(id: string): Promise<UpdateSettings> {
-  const setting = (await init<EntitySettings>(id)).get("_updater");
+const updaterState = await init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
+
+export function getUpdateSettings(id: string): UpdateSettings {
+  const setting = updaterState.get(id);
   if (!setting) return {};
   if (typeof setting !== "object") return {};
   if ("available" in setting && typeof (setting as { available: unknown }).available !== "boolean")
@@ -34,10 +31,6 @@ export async function getUpdateSettings(id: string): Promise<UpdateSettings> {
   )
     return {};
   return setting;
-}
-
-export async function setUpdateSettings(id: string, newSettings: UpdateSettings): Promise<void> {
-  (await init<EntitySettings>(id)).set("_updater", newSettings);
 }
 
 /**
@@ -59,7 +52,7 @@ export async function checkUpdate(
     return;
   }
 
-  const updateSettings = await getUpdateSettings(id);
+  const updateSettings = getUpdateSettings(id);
 
   const hash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
 
@@ -89,7 +82,7 @@ export async function checkUpdate(
 
   if (!updateSettings.id) {
     warn("Replugged", "Updater", void 0, `Entity ${id} has not been checked before, skipping`);
-    await setUpdateSettings(id, {
+    updaterState.set(id, {
       available: false,
       lastChecked: Date.now(),
       hash,
@@ -105,7 +98,7 @@ export async function checkUpdate(
       warn("Replugged", "Updater", void 0, `Entity ${id}'s hash has changed, forcing update`);
     } else {
       if (verbose) log("Replugged", "Updater", void 0, `Entity ${id} is up to date`);
-      await setUpdateSettings(id, {
+      updaterState.set(id, {
         available: false,
         lastChecked: Date.now(),
         hash,
@@ -117,7 +110,7 @@ export async function checkUpdate(
   }
 
   log("Replugged", "Updater", void 0, `Entity ${id} has an update available`);
-  await setUpdateSettings(id, {
+  updaterState.set(id, {
     available: true,
     id: res.id,
     url: res.url,
@@ -138,7 +131,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     return;
   }
 
-  const updateSettings = await getUpdateSettings(id);
+  const updateSettings = getUpdateSettings(id);
 
   if (!force && !updateSettings.available) {
     if (verbose) log("Replugged", "Updater", void 0, `Entity ${id} has no update available`);
@@ -180,7 +173,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
   const newHash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
 
   // update settings
-  await setUpdateSettings(id, {
+  updaterState.set(id, {
     ...updateSettings,
     available: false,
     hash: newHash,
