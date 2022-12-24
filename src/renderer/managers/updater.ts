@@ -127,7 +127,7 @@ export async function checkUpdate(
   });
 }
 
-export async function installUpdate(id: string, verbose = true): Promise<void> {
+export async function installUpdate(id: string, force = false, verbose = true): Promise<void> {
   const entity = (await getPlugin(id)) || (await getTheme(id));
   if (!entity) {
     error("Replugged", "Updater", void 0, `Entity ${id} not found`);
@@ -141,7 +141,7 @@ export async function installUpdate(id: string, verbose = true): Promise<void> {
 
   const updateSettings = await getUpdateSettings(id);
 
-  if (!updateSettings.available) {
+  if (!force && !updateSettings.available) {
     if (verbose) log("Replugged", "Updater", void 0, `Entity ${id} has no update available`);
     return;
   }
@@ -208,15 +208,15 @@ export async function checkAllUpdates(
   log("Replugged", "Updater", void 0, "All updates checked");
 }
 
-export async function installAllUpdates(verbose = false): Promise<void> {
+export async function installAllUpdates(force = false, verbose = false): Promise<void> {
   const plugins = await listPlugins();
   const themes = await listThemes();
 
   log("Replugged", "Updater", void 0, "Installing updates");
 
   await Promise.all([
-    plugins.map((plugin) => installUpdate(plugin.manifest.id, verbose)),
-    themes.map((theme) => installUpdate(theme.manifest.id, verbose)),
+    plugins.map((plugin) => installUpdate(plugin.manifest.id, force, verbose)),
+    themes.map((theme) => installUpdate(theme.manifest.id, force, verbose)),
   ]);
 
   log("Replugged", "Updater", void 0, "All updates installed");
