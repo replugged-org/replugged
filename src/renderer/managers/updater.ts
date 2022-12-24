@@ -1,4 +1,4 @@
-import settings from "../apis/settings";
+import { init } from "../apis/settings";
 import { get as getPlugin, list as listPlugins, reload as reloadPlugin } from "./plugins";
 import { get as getTheme, list as listThemes, reload as reloadTheme } from "./themes";
 import { error, log, warn } from "../modules/logger";
@@ -11,8 +11,20 @@ interface UpdateSettings {
   hash?: string;
 }
 
+interface EntitySettings {
+  [key: string]: unknown;
+  _updater: UpdateSettings;
+}
+
+interface UpdaterSettings {
+  [key: string]: unknown;
+  waitSinceLastUpdate: number;
+}
+
+const updaterSettings = await init<UpdaterSettings>("dev.replugged.Updater");
+
 export async function getUpdateSettings(id: string): Promise<UpdateSettings> {
-  const setting = await settings.get(id).get("_updater");
+  const setting = (await init<EntitySettings>(id)).get("_updater");
   if (!setting) return {};
   if (typeof setting !== "object") return {};
   if ("available" in setting && typeof (setting as { available: unknown }).available !== "boolean")
@@ -28,8 +40,7 @@ export async function getUpdateSettings(id: string): Promise<UpdateSettings> {
 }
 
 export async function setUpdateSettings(id: string, newSettings: UpdateSettings): Promise<void> {
-  // @ts-expect-error issue with typedefs
-  await settings.get(id).set("_updater", newSettings);
+  (await init<EntitySettings>(id)).set("_updater", newSettings);
 }
 
 /**
@@ -172,8 +183,7 @@ export async function checkAllUpdates(
   verbose = false,
 ): Promise<void> {
   if (waitSinceLastUpdate === undefined) {
-    waitSinceLastUpdate = ((await settings.get("updater").get("waitSinceLastUpdate")) ||
-      1000 * 60 * 60 * 15) as number;
+    waitSinceLastUpdate = updaterSettings.get("waitSinceLastUpdate") || 1000 * 60 * 60 * 15;
   }
 
   const plugins = await listPlugins();
