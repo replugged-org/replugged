@@ -80,7 +80,7 @@ export class SettingsManager<T extends Settings> {
 // I hope there's some way to force TypeScript to accept this, but for now unknown will do
 const managers = new Map<string, unknown>();
 
-export async function manager<T extends Settings>(namespace: string): Promise<SettingsManager<T>> {
+export async function init<T extends Settings>(namespace: string): Promise<SettingsManager<T>> {
   if (managers.has(namespace)) {
     return managers.get(namespace)! as SettingsManager<T>;
   }
