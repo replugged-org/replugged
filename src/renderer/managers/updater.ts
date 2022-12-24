@@ -15,10 +15,15 @@ export async function getUpdateSettings(id: string): Promise<UpdateSettings> {
   const setting = await settings.get(id).get("_updater");
   if (!setting) return {};
   if (typeof setting !== "object") return {};
-  if ("available" in setting && typeof setting.available !== "boolean") return {};
-  if ("id" in setting && typeof setting.id !== "string") return {};
-  if ("url" in setting && typeof setting.url !== "string") return {};
-  if ("lastChecked" in setting && typeof setting.lastChecked !== "number") return {};
+  if ("available" in setting && typeof (setting as { available: unknown }).available !== "boolean")
+    return {};
+  if ("id" in setting && typeof (setting as { id: unknown }).id !== "string") return {};
+  if ("url" in setting && typeof (setting as { url: unknown }).url !== "string") return {};
+  if (
+    "lastChecked" in setting &&
+    typeof (setting as { lastChecked: unknown }).lastChecked !== "number"
+  )
+    return {};
   return setting;
 }
 
