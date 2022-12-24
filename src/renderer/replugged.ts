@@ -10,7 +10,7 @@ void import("./modules/webpack/common").then((c) => (common = c));
 
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";
-export { default as settings } from "./apis/settings";
+export * as settings from "./apis/settings";
 /**
  * @internal
  * @hidden

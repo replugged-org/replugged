@@ -1,62 +1,77 @@
 import { Settings } from "../../types/settings";
 
-export class NamespacedSettings<T extends Settings> {
+export class SettingsManager<T extends Settings> {
+  #settings: T | undefined;
+  #saveTimeout: ReturnType<typeof setTimeout> | undefined;
+  #queuedUpdates: Map<Extract<keyof T, string>, T[Extract<keyof T, string>]>;
   public namespace: string;
 
   public constructor(namespace: string) {
     this.namespace = namespace;
+    this.#queuedUpdates = new Map();
   }
 
-  public async get<K extends Extract<keyof T, string>>(
-    key: K,
-    fallback?: T[K],
-  ): Promise<T[K] | undefined> {
-    return (await window.RepluggedNative.settings.get(this.namespace, key)) ?? fallback;
-  }
-
-  public set<K extends Extract<keyof T, string>>(key: K, value: T[K]): Promise<void> {
-    return window.RepluggedNative.settings.set(this.namespace, key, value);
-  }
-
-  public has(key: Extract<keyof T, string>): Promise<boolean> {
-    return window.RepluggedNative.settings.has(this.namespace, key);
-  }
-
-  public delete(key: Extract<keyof T, string>): Promise<boolean> {
-    return window.RepluggedNative.settings.delete(this.namespace, key);
-  }
-
-  public all(): Promise<T> {
-    return window.RepluggedNative.settings.all(this.namespace);
-  }
-
-  public async transaction<U>(handler: (settings: T) => Promise<U>): Promise<U> {
-    const settings = await window.RepluggedNative.settings.startTransaction(this.namespace);
-
-    let res: U;
-
-    try {
-      res = await handler(settings);
-    } catch (e) {
-      await window.RepluggedNative.settings.endTransaction(this.namespace, null);
-      throw e;
+  public get<K extends Extract<keyof T, string>>(key: K, fallback?: T[K]): T[K] | undefined {
+    if (typeof this.#settings === "undefined") {
+      throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
+    return this.#settings[key] ?? fallback;
+  }
 
-    await window.RepluggedNative.settings.endTransaction(this.namespace, settings);
-    return res;
+  public set<K extends Extract<keyof T, string>>(key: K, value: T[K]): void {
+    if (typeof this.#settings === "undefined") {
+      throw new Error(`Settings not loaded for namespace ${this.namespace}`);
+    }
+    this.#settings[key] = value;
+    this.#queueUpdate(key, value);
+  }
+
+  public has(key: Extract<keyof T, string>): boolean {
+    if (typeof this.#settings === "undefined") {
+      throw new Error(`Settings not loaded for namespace ${this.namespace}`);
+    }
+    return key in this.#settings;
+  }
+
+  public delete(key: Extract<keyof T, string>): boolean {
+    if (typeof this.#settings === "undefined") {
+      throw new Error(`Settings not loaded for namespace ${this.namespace}`);
+    }
+    return Reflect.deleteProperty(this.#settings, key);
+  }
+
+  public async load(): Promise<void> {
+    this.#settings = await window.RepluggedNative.settings.all(this.namespace);
+  }
+
+  public all(): T {
+    return { ...this.#settings } as T;
+  }
+
+  #queueUpdate<K extends Extract<keyof T, string>>(key: K, value: T[K]): void {
+    if (typeof this.#saveTimeout === "number") {
+      clearTimeout(this.#saveTimeout);
+    }
+    this.#queuedUpdates.set(key, value);
+    this.#saveTimeout = setTimeout(() => {
+      this.#queuedUpdates.forEach((v, k) =>
+        window.RepluggedNative.settings.set(this.namespace, k, v),
+      );
+      this.#queuedUpdates.clear();
+      this.#saveTimeout = void 0;
+    }); // Add a delay of 1 or 2 seconds?
   }
 }
 
-class SettingsAPI extends EventTarget {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public settings: Record<string, NamespacedSettings<any>> = {};
+// I hope there's some way to force TypeScript to accept this, but for now unknown will do
+const managers = new Map<string, unknown>();
 
-  public get<T extends Settings>(namespace: string): NamespacedSettings<T> {
-    if (!this.settings[namespace]) {
-      this.settings[namespace] = new NamespacedSettings<T>(namespace);
-    }
-    return this.settings[namespace];
+export async function manager<T extends Settings>(namespace: string): Promise<SettingsManager<T>> {
+  if (managers.has(namespace)) {
+    return managers.get(namespace)! as SettingsManager<T>;
   }
+  const manager = new SettingsManager<T>(namespace);
+  managers.set(namespace, manager);
+  await manager.load();
+  return manager;
 }
-
-export default new SettingsAPI();
