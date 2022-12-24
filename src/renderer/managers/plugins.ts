@@ -172,14 +172,14 @@ export async function list(): Promise<RepluggedPlugin[]> {
  * Some plugins may require Discord to be reloaded to apply changes.
  */
 export async function reload(id: string): Promise<void> {
-  const plugin = plugins.get(id);
+  const plugin = plugins.get(id) || Array.from(plugins.values()).find((x) => x.path === id);
   if (!plugin) {
     error("Plugin", id, void 0, "Plugin does not exist or is not loaded");
     return;
   }
   await plugin?.stop?.();
-  plugins.delete(id);
-  const newPlugin = await get(id);
+  plugins.delete(plugin.manifest.id);
+  const newPlugin = await get(plugin.manifest.id);
   if (newPlugin) {
     load(newPlugin);
     await start(newPlugin.manifest.id);

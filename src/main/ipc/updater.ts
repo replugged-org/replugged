@@ -17,9 +17,7 @@ import { Hash, createHash } from "crypto";
 const octokit = new Octokit();
 
 async function getHashRecursive(path: string, hash: Hash): Promise<void> {
-  console.log(path);
   const files = await readdir(path, { withFileTypes: true });
-  console.log(files);
 
   for (const file of files) {
     if (file.isDirectory()) {
