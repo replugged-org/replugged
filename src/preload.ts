@@ -1,7 +1,6 @@
 import electron, { contextBridge, ipcRenderer, webFrame } from "electron";
 
 import { RepluggedIpcChannels, RepluggedPlugin, RepluggedTheme } from "./types";
-import { Settings } from "./types/settings";
 
 const RepluggedNative = {
   themes: {
@@ -65,7 +64,7 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
     startTransaction: (namespace: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
-    endTransaction: (namespace: string, settings: Settings | null) =>
+    endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
       ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
   },
 
@@ -82,9 +81,14 @@ contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
 void webFrame.executeJavaScript('void import("replugged://renderer");');
 
-// Get and execute Discord preload
-// If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
-const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
-if (preload) {
-  require(preload);
+try {
+  window.addEventListener("beforeunload", () => {
+    ipcRenderer.send(RepluggedIpcChannels.REGISTER_RELOAD);
+  });
+  // Get and execute Discord preload
+  // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
+  const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
+  if (preload) require(preload);
+} catch (err) {
+  console.error("Error loading original preload", err);
 }
