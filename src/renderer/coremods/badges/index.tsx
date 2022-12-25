@@ -104,18 +104,18 @@ export async function start(): Promise<void> {
       if (!badges) {
         return res;
       }
-      
+
       const badgeTypes = [
-        { type: 'booster', component: Badge.Booster },
-        { type: 'hunter', component: Badge.BugHunter },
-        { type: 'contributor', component: Badge.Contributor },
-        { type: 'developer', component: Badge.Developer },
-        { type: 'early', component: Badge.EarlyUser },
-        { type: 'staff', component: Badge.Staff },
-        { type: 'support', component: Badge.Support },
-        { type: 'translator', component: Badge.Translator },
+        { type: "booster", component: Badge.Booster },
+        { type: "hunter", component: Badge.BugHunter },
+        { type: "contributor", component: Badge.Contributor },
+        { type: "developer", component: Badge.Developer },
+        { type: "early", component: Badge.EarlyUser },
+        { type: "staff", component: Badge.Staff },
+        { type: "support", component: Badge.Support },
+        { type: "translator", component: Badge.Translator },
       ];
-      
+
       Object.entries(badges).forEach(([type, value]) => {
         if (value) {
           const component = badgeTypes.find((badge) => badge.type === type)?.component;
@@ -126,13 +126,13 @@ export async function start(): Promise<void> {
           }
         }
       });
-      
+
       if (badges.custom && badges.custom.name && badges.custom.icon) {
         res.props.children.push(
           <Badge.Custom url={badges.custom.icon} name={badges.custom.name} />,
         );
       }
-      
+
       if (res.props.children.length > 0) {
         if (!res.props.className.includes(containerWithContent)) {
           res.props.className += ` ${containerWithContent}`;
@@ -142,7 +142,7 @@ export async function start(): Promise<void> {
         }
       }
 
-        return res;
+      return res;
     },
   );
 }
