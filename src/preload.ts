@@ -1,6 +1,7 @@
 import electron, { contextBridge, ipcRenderer, webFrame } from "electron";
 
 import { RepluggedIpcChannels, RepluggedPlugin, RepluggedTheme } from "./types";
+import { CONFIG_PATHS } from "./util";
 
 const RepluggedNative = {
   themes: {
@@ -35,6 +36,7 @@ const RepluggedNative = {
       (await RepluggedNative.settings.get("themes", "disabled")) ?? [],
     uninstall: async (themeName: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName), // whether theme was successfully uninstalled
+    path: CONFIG_PATHS.themes,
   },
 
   plugins: {
@@ -44,11 +46,13 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
     uninstall: async (pluginName: string): Promise<RepluggedPlugin> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName),
+    path: CONFIG_PATHS.plugins,
   },
 
   quickCSS: {
     get: async () => ipcRenderer.invoke(RepluggedIpcChannels.GET_QUICK_CSS),
     save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css),
+    path: CONFIG_PATHS.quickcss,
   },
 
   settings: {
@@ -66,6 +70,7 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
     endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
       ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
+    path: CONFIG_PATHS.settings,
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
