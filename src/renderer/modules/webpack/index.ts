@@ -720,7 +720,7 @@ export function getByProps<
   return getExportsForProps<P, T & ModuleExportsWithProps<P>>(result as T & ModuleExports, props);
 }
 
-// Specalized, inner-module searchers
+// Specialized, inner-module searchers
 
 /**
  * Search for a function within a module by its source code.
