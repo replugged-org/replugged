@@ -13,7 +13,7 @@ void import("./modules/components").then((c) => (components = c));
 
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";
-export { default as settings } from "./apis/settings";
+export * as settings from "./apis/settings";
 /**
  * @internal
  * @hidden

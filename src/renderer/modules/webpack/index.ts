@@ -720,7 +720,7 @@ export function getByProps<
   return getExportsForProps<P, T & ModuleExportsWithProps<P>>(result as T & ModuleExports, props);
 }
 
-// Specalized, inner-module searchers
+// Specialized, inner-module searchers
 
 /**
  * Search for a function within a module by its source code.
@@ -742,4 +742,26 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
       return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
     }
   }) as T | undefined;
+}
+
+/**
+ * Search for a function within a module by its source code. Returns the key of the function.
+ *
+ * @param match The string or regex to match against the function's source code.
+ * @param module The module to search.
+ *
+ * @remarks
+ * Useful for getting the prop name to inject into.
+ */
+export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
+  match: string | RegExp,
+  module: T,
+): P | undefined {
+  return Object.entries(module).find(([_, v]) => {
+    if (typeof v !== "function") {
+      return false;
+    }
+
+    return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+  })?.[0] as P | undefined;
 }
