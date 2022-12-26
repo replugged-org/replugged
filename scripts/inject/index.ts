@@ -93,7 +93,7 @@ let platform: DiscordPlatform | undefined;
     try {
       result = await inject(platformModule, platform);
     } catch {
-      // this runs if path generator crashes (app folder doesnt exist)
+      // this runs if path generator crashes (app folder doesn't exist)
       console.log(
         `${AnsiEscapes.RED}Platform you specified isn't installed on this device!${
           AnsiEscapes.RESET
@@ -124,7 +124,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
     try {
       result = await uninject(platformModule, platform);
     } catch {
-      // this runs if path generator crashes (app folder doesnt exist)
+      // this runs if path generator crashes (app folder doesn't exist)
       console.log(
         `${AnsiEscapes.RED}Platform you specified isn't installed on this device!${
           AnsiEscapes.RESET

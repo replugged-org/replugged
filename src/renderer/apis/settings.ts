@@ -154,7 +154,7 @@ const managers = new Map<string, unknown>();
  * @param namespace Namespace to manage. A namespace is an ID (for example, the ID of a plugin) that uniquely identifies it.
  * All settings are grouped into namespaces.
  * Settings for a namespace are stored in `settings/NAMESPACE.json` within the [Replugged data folder](https://docs.replugged.dev/#installing-plugins-and-themes).
- * @returns Manager for the namepspace.
+ * @returns Manager for the namespace.
  */
 export async function init<T extends Record<string, unknown>>(
   namespace: string,

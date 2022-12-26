@@ -10,6 +10,7 @@ const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar")
 
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
+    // cspell:ignore youre
     v.set("DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING", true);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
@@ -35,7 +36,7 @@ class BrowserWindow extends electron.BrowserWindow {
     const originalPreload = opts.webPreferences.preload;
 
     if (opts.webContents) {
-      // General purpose popouts used by Discord
+      // General purpose pop-outs used by Discord
     } else if (opts.webPreferences?.nodeIntegration) {
       // Splash Screen
       // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
@@ -143,7 +144,7 @@ electron.app.once("ready", () => {
 require("./ipc");
 /*
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
-electron.app.whenReady().then(() => { // optionify it later with sdk
+electron.app.whenReady().then(() => { // option-ify it later with sdk
   installExtension(REACT_DEVELOPER_TOOLS)
     .then((name: string) => console.log(`Added Extension:  ${name}`))
     .catch((err: string) => console.log('An error occurred: ', err));
