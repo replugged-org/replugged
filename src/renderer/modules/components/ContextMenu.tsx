@@ -1,8 +1,9 @@
 import { React } from "../webpack/common";
 import { ObjectExports, ReactComponent } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack/index";
+import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack/index";
+import { AnyFunction } from '../../../types/util';
 
-export interface MenuType {
+export type MenuType = Record<string, unknown> & {
   ContextMenu: ReactComponent<{
     navId: string;
     onClose?: () => void;
@@ -32,15 +33,26 @@ export interface MenuType {
   MenuControlItem: ReactComponent<{ id: string }>;
 }
 
-const mod = await waitForModule(filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"));
+const componentMap: Record<string, string> = {
+  separator: "MenuSeparator",
+  checkbox: "MenuCheckboxItem",
+  radio: "MenuRadioItem",
+  control: "MenuControlItem",
+  groupstart: "MenuGroup",
+  customitem: "MenuItem"
+};
 
-// const modId = getModule(filters.bySource("menuitemcheckbox"), { raw: true })?.id;
-// const source = sourceStrings[modId!];
+const menuMod = await waitForModule(filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"));
 
-// todo: Finish Populating Menu Components
+const rawMod = (await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true }));
+const source = sourceStrings[rawMod?.id!].matchAll(/if\(\w+\.type===\w+\.(\w+)\).+?type:"(.+?)"/g);
+
 const Menu = {
-  ContextMenu: getFunctionBySource("getContainerProps", mod as ObjectExports),
-  // MenuSeparator: getFunctionBySource((m) => m.name === "MenuSeparator", mod as ObjectExports),
+  ContextMenu: getFunctionBySource("getContainerProps", menuMod as ObjectExports),
 } as MenuType;
+
+for (const [, identifier, type] of source) {
+  Menu[componentMap[type]] = (rawMod.exports as Record<string, AnyFunction | undefined>)[identifier];
+}
 
 export default Menu;
