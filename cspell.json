@@ -1,0 +1,48 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    // replugged terminology
+    "replugged",
+    "coremod",
+    "coremods",
+    "quickcss",
+    "uninject",
+    "uninjector",
+    "uninjectors",
+    "notrack",
+
+    // Discord terminology
+    "discordapp",
+    "Chunkdiscord",
+    "crosspost",
+    "ratelimited",
+    "blurple",
+
+    // Paths
+    "LOCALAPPDATA",
+    "APPDATA",
+    "installdir",
+
+    // Technologies & Commands
+    "asar",
+    "flatpak",
+    "flatpaks",
+    "shopt",
+    "globstar",
+    "logname",
+    "doas",
+    "esbuild",
+    "outfile",
+    "RDNN",
+    "HighlightJS",
+    "postpublish",
+
+    // Other
+    "Arrayable"
+  ],
+  "ignoreWords": [],
+  "import": []
+}
