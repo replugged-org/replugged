@@ -29,7 +29,7 @@ export type ModalClasses = ModuleExports & {
   Align: ModalClass;
   Justify: ModalClass;
   Wrap: ModalClass;
-}
+};
 export interface ModalCompProps {
   children: React.ReactNode;
 }

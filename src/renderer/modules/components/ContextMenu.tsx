@@ -1,7 +1,7 @@
 import { React } from "../webpack/common";
 import { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack/index";
-import { AnyFunction } from '../../../types/util';
+import { AnyFunction } from "../../../types/util";
 
 export type MenuType = Record<string, unknown> & {
   ContextMenu: ReactComponent<{
@@ -31,7 +31,7 @@ export type MenuType = Record<string, unknown> & {
   MenuRadioItem: ReactComponent<{ id: string }>;
 
   MenuControlItem: ReactComponent<{ id: string }>;
-}
+};
 
 const componentMap: Record<string, string> = {
   separator: "MenuSeparator",
@@ -39,12 +39,12 @@ const componentMap: Record<string, string> = {
   radio: "MenuRadioItem",
   control: "MenuControlItem",
   groupstart: "MenuGroup",
-  customitem: "MenuItem"
+  customitem: "MenuItem",
 };
 
 const menuMod = await waitForModule(filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"));
 
-const rawMod = (await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true }));
+const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
 const source = sourceStrings[rawMod?.id!].matchAll(/if\(\w+\.type===\w+\.(\w+)\).+?type:"(.+?)"/g);
 
 const Menu = {
@@ -52,7 +52,9 @@ const Menu = {
 } as MenuType;
 
 for (const [, identifier, type] of source) {
-  Menu[componentMap[type]] = (rawMod.exports as Record<string, AnyFunction | undefined>)[identifier];
+  Menu[componentMap[type]] = (rawMod.exports as Record<string, AnyFunction | undefined>)[
+    identifier
+  ];
 }
 
 export default Menu;
