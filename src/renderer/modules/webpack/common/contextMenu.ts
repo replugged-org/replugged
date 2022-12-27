@@ -6,13 +6,13 @@ export type ContextMenu = ModuleExports & {
   open: (
     event: React.UIEvent,
     render?: ContextMenu,
-    options?: { enableSpellsheck?: boolean },
+    options?: { enableSpellCheck?: boolean },
     renderLazy?: Promise<ContextMenu>,
   ) => void;
   openLazy: (
     event: React.UIEvent,
     renderLazy?: Promise<ContextMenu>,
-    options?: { enableSpellsheck?: boolean },
+    options?: { enableSpellCheck?: boolean },
   ) => void;
 };
 
