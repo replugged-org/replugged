@@ -41,6 +41,9 @@ importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.default
 export let FormItem: typeof import("./FormItem").default;
 importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
 
+export let Button: typeof import("./Button").default;
+importTimeout("Button", import("./Button"), (mod) => (Button = mod.default));
+
 export let Category: typeof import("./Category").default;
 importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
 
