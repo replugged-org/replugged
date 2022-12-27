@@ -38,6 +38,9 @@ importTimeout("Modal", import("./Modal"), (mod) => (Modal = mod.default));
 export let Divider: typeof import("./Divider").default;
 importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
 
+export let Tooltip: typeof import("./Tooltip").default;
+importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
+
 export let FormText: typeof import("./FormText").default;
 importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.default));
 
