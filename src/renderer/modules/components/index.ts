@@ -23,6 +23,9 @@ function importTimeout<T extends ModuleExports>(
   );
 }
 
+export let Flex: typeof import("./Flex").default;
+importTimeout("Flex", import("./Flex"), (mod) => (Flex = mod.default));
+
 export let ContextMenu: typeof import("./ContextMenu").default;
 importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mod.default));
 
