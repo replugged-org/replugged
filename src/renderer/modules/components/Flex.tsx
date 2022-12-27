@@ -1,5 +1,5 @@
-import { ReactComponent } from '../../../types';
-import { filters, waitForModule } from '../webpack';
+import { ReactComponent } from "../../../types";
+import { filters, waitForModule } from "../webpack";
 
 type Flex = ReactComponent<{
   direction?: string;
@@ -16,6 +16,6 @@ type Flex = ReactComponent<{
   Wrap: Record<string, string>;
 };
 
-const mod = await waitForModule(filters.bySource("HORIZONTAL_REVERSE:"))
+const mod = await waitForModule(filters.bySource("HORIZONTAL_REVERSE:"));
 
 export default mod as Flex;

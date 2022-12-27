@@ -2,10 +2,10 @@ import { filters, waitForModule } from "../webpack";
 import { Divider, Flex, FormItem, FormText } from ".";
 import React from "../webpack/common/react";
 
-const classes = (await waitForModule(
-  filters.byProps("labelRow"),
-  { timeout: 10000 },
-)) as Record<string, string>;
+const classes = (await waitForModule(filters.byProps("labelRow"), { timeout: 10000 })) as Record<
+  string,
+  string
+>;
 
 type CategoryProps = {
   title: string;
@@ -29,14 +29,14 @@ const Category = (props: React.PropsWithChildren<CategoryProps>) => {
   };
 
   return (
-    <div className={`${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`}>
+    <div
+      className={`${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`}>
       <FormItem>
         <div
           style={{ cursor: "pointer", alignItems: "center", display: "flex" }}
           onClick={() => {
             handleClick();
-          }}
-        >
+          }}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -56,9 +56,7 @@ const Category = (props: React.PropsWithChildren<CategoryProps>) => {
             <div className={classes.labelRow}>
               <label className={classes.title}>{props.title}</label>
             </div>
-            <FormText.DESCRIPTION className={classes.note}>
-              {props.note}
-            </FormText.DESCRIPTION>
+            <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
           </div>
         </div>
         {open ? (
@@ -68,8 +66,7 @@ const Category = (props: React.PropsWithChildren<CategoryProps>) => {
               marginLeft: 12,
               borderLeft: "1px var(--background-modifier-accent) solid",
               paddingLeft: 33,
-            }}
-          >
+            }}>
             {props.children}
           </div>
         ) : (
