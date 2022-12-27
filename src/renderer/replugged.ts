@@ -8,6 +8,9 @@ export * as webpack from "./modules/webpack";
 export let common: typeof import("./modules/webpack/common");
 void import("./modules/webpack/common").then((c) => (common = c));
 
+export let components: typeof import("./modules/components");
+void import("./modules/components").then((c) => (components = c));
+
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";
 export * as settings from "./apis/settings";
