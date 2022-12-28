@@ -52,32 +52,32 @@ export interface ModalComponents {
   ModalCloseButton: ReactComponent<unknown>;
 }
 
-export type Modal = ModuleExports & {
+export interface Modal {
   openModal: (
     render: (props: ModalProps) => React.ReactNode,
     options?: ModalOptions,
     contextKey?: string,
   ) => string;
   closeModal: (modalKey: string, contextKey?: string) => void;
-  ModalSize: ModalSize;
-  Direction: string;
-  Align: string;
-  Justify: string;
-  Wrap: string;
-};
+  ModalSize: typeof ModalSize;
+  Direction: Record<string, string>;
+  Align: Record<string, string>;
+  Justify: Record<string, string>;
+  Wrap: Record<string, string>;
+}
 
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
 
 const classes = getBySource("().justifyStart")! as ModalClasses;
 
 const modal = {
-  openModal: getFunctionBySource("onCloseRequest:null!=", mod as ObjectExports),
-  closeModal: getFunctionBySource("onCloseCallback&&", mod as ObjectExports),
+  openModal: getFunctionBySource<Modal["openModal"]>("onCloseRequest:null!=", mod as ObjectExports),
+  closeModal: getFunctionBySource<Modal["closeModal"]>("onCloseCallback&&", mod as ObjectExports),
   ModalSize,
   Direction: classes?.Direction,
   Align: classes?.Align,
   Justify: classes?.Justify,
   Wrap: classes?.Wrap,
-} as unknown as Modal;
+};
 
-export default modal;
+export default modal as Modal;

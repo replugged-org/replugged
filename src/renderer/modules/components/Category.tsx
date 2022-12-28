@@ -16,7 +16,7 @@ type CategoryProps = {
 };
 
 /**
- * A category. It's, by default, is automatically handled by the component. `open` and `onChange` both must be specified to override.
+ * A category. It's opened state, by default, is automatically handled by the component. `open` and `onChange` both must be specified to override.
  */
 const Category = (props: React.PropsWithChildren<CategoryProps>) => {
   const [open, setOpen] = React.useState(props.open || false);
