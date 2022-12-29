@@ -69,7 +69,7 @@ export async function checkUpdate(
     manifest: { updater },
   } = entity;
   if (!updater) {
-    error("Replugged", "Updater", void 0, `Entity ${id} has no updater info`);
+    warn("Replugged", "Updater", void 0, `Entity ${id} has no updater info`);
     return;
   }
 
