@@ -155,6 +155,15 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     return;
   }
 
+  const newHash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
+
+  // update settings
+  updaterState.set(id, {
+    ...updateSettings,
+    available: false,
+    hash: newHash,
+  });
+
   // start new
   try {
     switch (entity.manifest.type) {
@@ -169,15 +178,6 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     error("Replugged", "Updater", void 0, `Update install failed: ${err}`);
     return;
   }
-
-  const newHash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
-
-  // update settings
-  updaterState.set(id, {
-    ...updateSettings,
-    available: false,
-    hash: newHash,
-  });
 
   log("Replugged", "Updater", void 0, `Entity ${id} updated successfully`);
 }
