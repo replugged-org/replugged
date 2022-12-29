@@ -12,26 +12,31 @@ import { CONFIG_PATHS } from "../../util";
 import { readFile, readdir, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
-import { Hash, createHash } from "crypto";
+import { createHash } from "crypto";
 
 const octokit = new Octokit();
 
-async function getHashRecursive(path: string, hash: Hash): Promise<void> {
+async function getHashRecursive(path: string): Promise<Buffer[]> {
   const files = await readdir(path, { withFileTypes: true });
 
-  for (const file of files) {
-    if (file.isDirectory()) {
-      await getHashRecursive(path, hash);
-    } else {
-      const buf = await readFile(join(path, file.name));
-      hash.update(Buffer.from(buf));
-    }
-  }
+  const hashes = await Promise.all(
+    files.map(async (file) => {
+      if (file.isDirectory()) {
+        return await getHashRecursive(path);
+      } else {
+        const buf = await readFile(join(path, file.name));
+        return buf;
+      }
+    }),
+  );
+
+  return hashes.flat();
 }
 
 async function getFolderHash(path: string): Promise<string> {
+  const files = await getHashRecursive(path);
   const hash = createHash("sha256");
-  await getHashRecursive(path, hash);
+  files.forEach((file) => hash.update(Buffer.from(file)));
   return hash.digest("hex");
 }
 
