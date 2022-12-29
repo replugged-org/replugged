@@ -125,6 +125,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
     };
 
     Object.defineProperties(obj[funcName], Object.getOwnPropertyDescriptors(originalFunc));
+    obj[funcName].toString = originalFunc.toString.bind(originalFunc);
   }
 }
 
