@@ -196,8 +196,8 @@ export async function checkAllUpdates(
   log("Replugged", "Updater", void 0, "Checking for updates");
 
   await Promise.all([
-    plugins.map((plugin) => checkUpdate(plugin.manifest.id, waitSinceLastUpdate, verbose)),
-    themes.map((theme) => checkUpdate(theme.manifest.id, waitSinceLastUpdate, verbose)),
+    ...plugins.map((plugin) => checkUpdate(plugin.manifest.id, waitSinceLastUpdate, verbose)),
+    ...themes.map((theme) => checkUpdate(theme.manifest.id, waitSinceLastUpdate, verbose)),
   ]);
 
   log("Replugged", "Updater", void 0, "All updates checked");
