@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@types/highlightjs': ^9.12.2
+  '@types/lodash': ^4.14.191
   '@types/node': ^18.8.0
   '@types/react': ^18.0.21
   '@types/toposort': ^2.0.3
@@ -25,6 +26,7 @@ specifiers:
 
 devDependencies:
   '@types/highlightjs': 9.12.2
+  '@types/lodash': 4.14.191
   '@types/node': 18.11.3
   '@types/react': 18.0.21
   '@types/toposort': 2.0.3
@@ -709,6 +711,10 @@ packages:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
       '@types/node': 18.11.3
+    dev: true
+
+  /@types/lodash/4.14.191:
+    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
     dev: true
 
   /@types/minimist/1.2.2:
