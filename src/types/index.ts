@@ -1,6 +1,6 @@
 import electron from "electron";
 import { CommandOptions, ConnectedAccount } from "./discord";
-import { Plugin, Theme } from "./addon";
+import { PluginManifest, ThemeManifest } from "./addon";
 
 export type RepluggedWebContents = electron.WebContents & {
   originalPreload?: string;
@@ -78,12 +78,12 @@ export interface RepluggedConnection {
 
 export interface RepluggedTheme {
   path: string;
-  manifest: Theme;
+  manifest: ThemeManifest;
 }
 
 export interface RepluggedPlugin {
   path: string;
-  manifest: Plugin;
+  manifest: PluginManifest;
 }
 
 export * from "./discord";
