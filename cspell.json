@@ -4,44 +4,36 @@
   "dictionaryDefinitions": [],
   "dictionaries": [],
   "words": [
-    // replugged terminology
-    "replugged",
+    "APPDATA",
+    "Arrayable",
+    "asar",
+    "blurple",
+    "Chunkdiscord",
     "coremod",
     "coremods",
-    "quickcss",
-    "uninject",
-    "uninjector",
-    "uninjectors",
-    "notrack",
-
-    // Discord terminology
-    "discordapp",
-    "Chunkdiscord",
     "crosspost",
-    "ratelimited",
-    "blurple",
-
-    // Paths
-    "LOCALAPPDATA",
-    "APPDATA",
-    "installdir",
-
-    // Technologies & Commands
-    "asar",
-    "flatpak",
-    "flatpaks",
-    "shopt",
-    "globstar",
-    "logname",
+    "discordapp",
     "doas",
     "esbuild",
-    "outfile",
-    "RDNN",
+    "flatpak",
+    "flatpaks",
+    "globstar",
     "HighlightJS",
+    "installdir",
+    "LOCALAPPDATA",
+    "logname",
+    "notrack",
+    "outfile",
     "postpublish",
-
-    // Other
-    "Arrayable"
+    "Promisable",
+    "quickcss",
+    "ratelimited",
+    "RDNN",
+    "replugged",
+    "shopt",
+    "uninject",
+    "uninjector",
+    "uninjectors"
   ],
   "ignoreWords": [],
   "import": []

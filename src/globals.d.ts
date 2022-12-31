@@ -3,7 +3,6 @@
 import { WebpackChunkGlobal } from "./types/discord";
 import * as replugged from "./renderer/replugged";
 import { RepluggedNativeType } from "./preload";
-import type React from "react";
 
 declare global {
   export var appSettings: {
@@ -11,7 +10,6 @@ declare global {
   };
 
   interface Window {
-    React: typeof React;
     RepluggedNative: RepluggedNativeType;
     replugged: typeof replugged;
     // eslint-disable-next-line @typescript-eslint/naming-convention

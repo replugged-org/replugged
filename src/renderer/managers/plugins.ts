@@ -17,7 +17,7 @@ export const plugins = new Map<string, PluginWrapper>();
 /**
  * @hidden
  */
-export const pluginExports = new Map<string, unknown>();
+export const pluginExports = new Map<string, PluginExports>();
 
 const styleElements = new Map<string, HTMLLinkElement>();
 
