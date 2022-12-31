@@ -4,18 +4,14 @@ import type { PluginExports, RepluggedPlugin } from "../../types";
 import { error, log } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack";
 
-type PluginWrapper = RepluggedPlugin & {
-  renderer: PluginExports;
-};
+interface PluginWrapper extends RepluggedPlugin {
+  exports: PluginExports;
+}
 
 /**
  * @hidden
  */
 export const plugins = new Map<string, PluginWrapper>();
-/**
- * @hidden
- */
-export const pluginExports = new Map<string, PluginExports>();
 
 const styleElements = new Map<string, HTMLLinkElement>();
 
@@ -28,13 +24,10 @@ const styleElements = new Map<string, HTMLLinkElement>();
  */
 export function load(plugin: RepluggedPlugin): void {
   try {
-    const localExports: Record<string, unknown> = {};
-    pluginExports.set(plugin.manifest.id, localExports);
-    const pluginWrapper: PluginWrapper = {
+    plugins.set(plugin.manifest.id, {
       ...plugin,
-      renderer: {},
-    };
-    plugins.set(plugin.manifest.id, pluginWrapper);
+      exports: {},
+    });
   } catch (e: unknown) {
     error("Plugin", plugin.manifest.id, void 0, "Plugin failed to load\n", e);
   }
@@ -65,10 +58,10 @@ export async function start(id: string): Promise<void> {
     }
 
     if (plugin.manifest.renderer) {
-      plugin.renderer = await import(
+      plugin.exports = await import(
         `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
       );
-      await plugin.renderer.start?.();
+      await plugin.exports.start?.();
     }
 
     const el = loadStyleSheet(
@@ -103,7 +96,7 @@ export async function stop(id: string): Promise<void> {
       throw new Error("Plugin does not exist or is not loaded");
     }
 
-    await plugin.renderer?.stop?.();
+    await plugin.exports?.stop?.();
 
     if (styleElements.has(plugin.path)) {
       styleElements.get(plugin.path)?.remove();
