@@ -5,9 +5,7 @@ import { error, log } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack";
 
 type PluginWrapper = RepluggedPlugin & {
-  start: () => Promise<void>;
-  stop: () => Promise<void>;
-  runPlaintextPatches: () => Promise<void>;
+  renderer: PluginExports;
 };
 
 /**
@@ -30,50 +28,12 @@ const styleElements = new Map<string, HTMLLinkElement>();
  */
 export function load(plugin: RepluggedPlugin): void {
   try {
-    let renderer: PluginExports;
     const localExports: Record<string, unknown> = {};
     pluginExports.set(plugin.manifest.id, localExports);
-    const pluginWrapper: PluginWrapper = Object.freeze({
+    const pluginWrapper: PluginWrapper = {
       ...plugin,
-      start: async (): Promise<void> => {
-        if (plugin.manifest.renderer) {
-          renderer = await import(
-            `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
-          );
-          await renderer.start?.();
-        }
-
-        const el = loadStyleSheet(
-          `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
-        );
-        styleElements.set(plugin.path, el);
-
-        log("Plugin", plugin.manifest.name, void 0, "Plugin started");
-      },
-      stop: async (): Promise<void> => {
-        await renderer?.stop?.();
-
-        if (styleElements.has(plugin.path)) {
-          styleElements.get(plugin.path)?.remove();
-          styleElements.delete(plugin.path);
-        }
-
-        log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
-      },
-      runPlaintextPatches: async () => {
-        if (typeof plugin.manifest.plaintextPatches === "string") {
-          patchPlaintext(
-            (
-              await import(
-                `replugged://plugin/${plugin.path}/${
-                  plugin.manifest.plaintextPatches
-                }?t=${Date.now()}`
-              )
-            ).default,
-          );
-        }
-      },
-    });
+      renderer: {},
+    };
     plugins.set(plugin.manifest.id, pluginWrapper);
   } catch (e: unknown) {
     error("Plugin", plugin.manifest.id, void 0, "Plugin failed to load\n", e);
@@ -100,7 +60,23 @@ export async function loadAll(): Promise<void> {
 export async function start(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
-    await plugin?.start();
+    if (!plugin) {
+      throw new Error("Plugin does not exist or is not loaded");
+    }
+
+    if (plugin.manifest.renderer) {
+      plugin.renderer = await import(
+        `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
+      );
+      await plugin.renderer.start?.();
+    }
+
+    const el = loadStyleSheet(
+      `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
+    );
+    styleElements.set(plugin.path, el);
+
+    log("Plugin", plugin.manifest.name, void 0, "Plugin started");
   } catch (e: unknown) {
     error("Plugin", plugin?.manifest.name ?? id, void 0, e);
   }
@@ -123,7 +99,18 @@ export async function startAll(): Promise<void> {
 export async function stop(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
-    await plugin?.stop();
+    if (!plugin) {
+      throw new Error("Plugin does not exist or is not loaded");
+    }
+
+    await plugin.renderer?.stop?.();
+
+    if (styleElements.has(plugin.path)) {
+      styleElements.get(plugin.path)?.remove();
+      styleElements.delete(plugin.path);
+    }
+
+    log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
   } catch (e: unknown) {
     error("Plugin", plugin?.manifest.name ?? id, void 0, e);
   }
@@ -141,7 +128,21 @@ export async function stopAll(): Promise<void> {
  * @internal
  */
 export async function runPlaintextPatches(): Promise<void> {
-  await Promise.allSettled([...plugins.values()].map((p) => p.runPlaintextPatches()));
+  await Promise.allSettled(
+    [...plugins.values()].map(async (plugin) => {
+      if (typeof plugin.manifest.plaintextPatches === "string") {
+        patchPlaintext(
+          (
+            await import(
+              `replugged://plugin/${plugin.path}/${
+                plugin.manifest.plaintextPatches
+              }?t=${Date.now()}`
+            )
+          ).default,
+        );
+      }
+    }),
+  );
 }
 
 /**
@@ -177,7 +178,7 @@ export async function reload(id: string): Promise<void> {
     error("Plugin", id, void 0, "Plugin does not exist or is not loaded");
     return;
   }
-  await plugin?.stop?.();
+  await stop(id);
   plugins.delete(id);
   const newPlugin = await get(id);
   if (newPlugin) {
