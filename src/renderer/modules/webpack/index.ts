@@ -1,25 +1,23 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { AnyFunction } from "../../../types/util";
 import type {
-  ModuleExports,
-  ModuleExportsWithProps,
-  ObjectExports,
-  RawModule,
-  RawModuleWithProps,
-  WebpackChunk,
-  WebpackChunkGlobal,
-  WebpackModule,
-  WebpackRequire,
-} from "../../../types/discord";
-import type {
   Filter,
   GetModuleOptions,
   LazyCallback,
   LazyListener,
+  ModuleExports,
+  ModuleExportsWithProps,
+  ObjectExports,
   PlaintextPatch,
   RawLazyCallback,
+  RawModule,
+  RawModuleWithProps,
   RawPlaintextPatch,
   WaitForOptions,
+  WebpackChunk,
+  WebpackChunkGlobal,
+  WebpackModule,
+  WebpackRequire,
 } from "../../../types/webpack";
 
 // Handlers
@@ -123,11 +121,7 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
 }
 
 function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
-  wpRequire = webpackChunk.push([
-    [Symbol("replugged")],
-    {},
-    (r: WebpackRequire) => r,
-  ]) as WebpackRequire;
+  wpRequire = webpackChunk.push([[Symbol("replugged")], {}, (r: WebpackRequire) => r]);
 
   wpRequire.d = (module: ModuleExports, exports: Record<string, () => unknown>) => {
     for (const prop in exports) {

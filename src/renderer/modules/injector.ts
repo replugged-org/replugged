@@ -1,4 +1,4 @@
-import type { ObjectExports } from "../../types/discord";
+import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
 
 enum InjectionTypes {
