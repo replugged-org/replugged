@@ -73,7 +73,7 @@ export function unloadAll(): void {
  * This may include themes that are not available until Discord is reloaded.
  */
 export async function get(path: string): Promise<RepluggedTheme | undefined> {
-  return await list().then((x) => x.find((p) => p.manifest.id === path) || undefined);
+  return await list().then((x) => x.find((p) => p.manifest.id === path));
 }
 
 /**

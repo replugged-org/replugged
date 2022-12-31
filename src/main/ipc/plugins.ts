@@ -33,12 +33,10 @@ async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
 
 ipcMain.handle(
   RepluggedIpcChannels.GET_PLUGIN,
-  async (_, pluginName: string): Promise<RepluggedPlugin | null> => {
+  async (_, pluginName: string): Promise<RepluggedPlugin | undefined> => {
     try {
       return await getPlugin(pluginName);
-    } catch {
-      return null;
-    }
+    } catch {}
   },
 );
 
@@ -58,8 +56,6 @@ ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlu
           const actualFile = await stat(actualPath);
           if (isFileAPlugin(actualFile, actualPath)) return f;
         }
-
-        return null;
       }),
     )
   ).filter(Boolean) as Dirent[];

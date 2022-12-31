@@ -18,7 +18,7 @@ class ConnectionsAPI extends EventTarget {
       connections[element.type] = element;
     }
 
-    return connections[type] || null;
+    return connections[type];
   }
 
   public registerConnection(connection: RepluggedConnection): void {

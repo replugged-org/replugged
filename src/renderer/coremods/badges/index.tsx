@@ -66,7 +66,7 @@ export async function start(): Promise<void> {
     ) => {
       if (!res?.props?.children) return res;
 
-      const [badges, setBadges] = React.useState<APIBadges | null>(null);
+      const [badges, setBadges] = React.useState<APIBadges | undefined>();
 
       React.useEffect(() => {
         (async () => {
@@ -97,7 +97,7 @@ export async function start(): Promise<void> {
             );
           }
 
-          setBadges(cache.get(id)?.badges || null);
+          setBadges(cache.get(id)?.badges);
         })();
       }, []);
 

@@ -151,8 +151,8 @@ export async function runPlaintextPatches(): Promise<void> {
  * @remarks
  * This may include plugins that are not available until Discord is reloaded.
  */
-export async function get(pluginName: string): Promise<RepluggedPlugin | null> {
-  return await list().then((x) => x.find((p) => p.manifest.id === pluginName) || null);
+export async function get(pluginName: string): Promise<RepluggedPlugin | undefined> {
+  return await list().then((x) => x.find((p) => p.manifest.id === pluginName));
 }
 
 /**
