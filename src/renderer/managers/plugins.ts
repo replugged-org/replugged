@@ -16,6 +16,21 @@ export const plugins = new Map<string, PluginWrapper>();
 const styleElements = new Map<string, HTMLLinkElement>();
 
 /**
+ * Get the exports of a plugin.
+ * @param id Plugin ID
+ * @returns Exports of the plugin.
+ *
+ * @remarks
+ * This is primarily intended to shorten plaintext patches that need to access exported
+ * functions or variables from their respective plugins.
+ * Instead of writing `replugged.plugins.plugins.get("id.here").exports`,
+ * developers can write `replugged.plugins.getExports("id.here")`.
+ */
+export function getExports(id: string): PluginExports {
+  return plugins.get(id)!.exports;
+}
+
+/**
  * Load a plugin
  * @param plugin Plugin class. You can get this from {@link get} or {@link list}
  *
