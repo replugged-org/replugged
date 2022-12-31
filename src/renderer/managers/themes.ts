@@ -1,6 +1,6 @@
 import { loadStyleSheet } from "../util";
-import { ThemeManifest } from "../../types/addon";
-import { RepluggedTheme } from "../../types";
+import type { ThemeManifest } from "../../types/addon";
+import type { RepluggedTheme } from "../../types";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 

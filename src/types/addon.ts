@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Awaitable } from "./util";
 
 export const id = z
   .string()
@@ -65,3 +66,9 @@ export const plugin = common.extend({
 });
 
 export type PluginManifest = z.infer<typeof plugin>;
+
+export interface PluginExports {
+  start?: () => Awaitable<void>;
+  stop?: () => Awaitable<void>;
+  [x: string]: unknown;
+}

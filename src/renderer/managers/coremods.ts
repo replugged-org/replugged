@@ -1,4 +1,4 @@
-import { Awaitable } from "src/types";
+import type { Awaitable } from "src/types";
 import { patchPlaintext } from "../modules/webpack";
 
 import { default as experimentsPlaintext } from "../coremods/experiments/plaintextPatches";

@@ -1,4 +1,4 @@
-import { UnknownFunction } from "./util";
+import type { UnknownFunction } from "./util";
 
 export type ObjectExports = Record<string, unknown>;
 

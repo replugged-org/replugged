@@ -1,4 +1,4 @@
-import { ModuleExports, RawModule } from "./discord";
+import type { ModuleExports, RawModule } from "./discord";
 
 export type Filter = (module: RawModule) => boolean | ModuleExports;
 

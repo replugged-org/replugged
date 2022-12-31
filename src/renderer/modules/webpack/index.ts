@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { AnyFunction } from "../../../types/util";
-import {
+import type { AnyFunction } from "../../../types/util";
+import type {
   ModuleExports,
   ModuleExportsWithProps,
   ObjectExports,
@@ -11,7 +11,7 @@ import {
   WebpackModule,
   WebpackRequire,
 } from "../../../types/discord";
-import {
+import type {
   Filter,
   GetModuleOptions,
   LazyCallback,
