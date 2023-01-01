@@ -1,8 +1,8 @@
 // TODO: Scope global types to each component
 
-import { WebpackChunkGlobal } from "./types/discord";
+import type { WebpackChunkGlobal } from "./types/discord";
 import * as replugged from "./renderer/replugged";
-import { RepluggedNativeType } from "./preload";
+import type { RepluggedNativeType } from "./preload";
 
 declare global {
   export var appSettings: {

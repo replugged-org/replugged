@@ -1,5 +1,4 @@
-import { React } from "../webpack/common";
-import { ReactComponent } from "../../../types";
+import type { ReactComponent } from "../../../types";
 import { filters, waitForModule } from "../webpack";
 
 export type SwitchItem = ReactComponent<{

@@ -45,7 +45,7 @@ export type WebpackChunk<T extends ((r: WebpackRequire) => unknown) | undefined 
 export type WebpackChunkGlobal = {
   push<T extends ((r: WebpackRequire) => unknown) | undefined = undefined>(
     chunk: WebpackChunk<T>,
-  ): T extends undefined ? undefined : ReturnType<NonNullable<typeof chunk[2]>>;
+  ): T extends undefined ? undefined : ReturnType<NonNullable<T>>;
 } & WebpackChunk[];
 
 export type Filter = (module: RawModule) => boolean | ModuleExports;

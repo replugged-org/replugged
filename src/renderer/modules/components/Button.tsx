@@ -1,6 +1,6 @@
 import { filters, waitForModule } from "../webpack/index";
-import { ReactComponent } from "../../../types/util";
-import React from "react";
+import type { ReactComponent } from "../../../types/util";
+import type React from "react";
 import { Divider, Flex, FormItem, FormText, Tooltip } from ".";
 
 type Button = ReactComponent<{

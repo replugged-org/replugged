@@ -1,4 +1,4 @@
-import { ReactComponent } from "../../../types";
+import type { ReactComponent } from "../../../types";
 import { filters, waitForModule } from "../webpack";
 
 type Flex = ReactComponent<{

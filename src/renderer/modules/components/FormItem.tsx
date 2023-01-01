@@ -1,4 +1,4 @@
-import { ObjectExports, ReactComponent } from "../../../types";
+import type { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 const mod = (await waitForModule(filters.bySource("=/^((?:rgb|hsl)a?)\\s*\\(([^)]*)\\)/i;"), {
