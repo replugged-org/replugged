@@ -33,19 +33,19 @@ export type WebpackModule = (
   wpRequire: WebpackRequire,
 ) => void;
 
-export type WebpackChunk<T extends ((r: WebpackRequire) => unknown) | undefined = undefined> = [
-  Array<symbol | number>,
-  Record<number, WebpackModule>,
-  T?,
+export type WebpackChunk = [Array<symbol | number>, Record<number, WebpackModule>];
+
+export type WebpackChunkWithCallback<T extends (r: WebpackRequire) => unknown> = [
+  ...WebpackChunk,
+  T,
 ];
 
 // Do NOT put `WebpackChunk[]` first, otherwise TS
 // prioritizes Array.prototype.push over this custom
 // push method and starts producing errors.
 export type WebpackChunkGlobal = {
-  push<T extends ((r: WebpackRequire) => unknown) | undefined = undefined>(
-    chunk: WebpackChunk<T>,
-  ): T extends undefined ? undefined : ReturnType<NonNullable<T>>;
+  push(chunk: WebpackChunk): void;
+  push<T extends (r: WebpackRequire) => unknown>(chunk: WebpackChunkWithCallback<T>): ReturnType<T>;
 } & WebpackChunk[];
 
 export type Filter = (module: RawModule) => boolean | ModuleExports;
