@@ -35,17 +35,12 @@ export type WebpackModule = (
 
 export type WebpackChunk = [Array<symbol | number>, Record<number, WebpackModule>];
 
-export type WebpackChunkWithCallback<T extends (r: WebpackRequire) => unknown> = [
-  ...WebpackChunk,
-  T,
-];
-
 // Do NOT put `WebpackChunk[]` first, otherwise TS
 // prioritizes Array.prototype.push over this custom
 // push method and starts producing errors.
 export type WebpackChunkGlobal = {
   push(chunk: WebpackChunk): void;
-  push<T extends (r: WebpackRequire) => unknown>(chunk: WebpackChunkWithCallback<T>): ReturnType<T>;
+  push<T extends (r: WebpackRequire) => unknown>(chunk: [...WebpackChunk, T]): ReturnType<T>;
 } & WebpackChunk[];
 
 export type Filter = (module: RawModule) => boolean | ModuleExports;
