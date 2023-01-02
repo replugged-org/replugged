@@ -5,7 +5,7 @@ import { error, log } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack";
 
 interface PluginWrapper extends RepluggedPlugin {
-  exports: PluginExports;
+  exports: PluginExports | undefined;
 }
 
 /**
@@ -26,26 +26,15 @@ const styleElements = new Map<string, HTMLLinkElement>();
  * Instead of writing `replugged.plugins.plugins.get("id.here").exports`,
  * developers can write `replugged.plugins.getExports("id.here")`.
  */
-export function getExports(id: string): PluginExports {
+export function getExports(id: string): PluginExports | undefined {
   return plugins.get(id)!.exports;
 }
 
-/**
- * Load a plugin
- * @param plugin Plugin class. You can get this from {@link get} or {@link list}
- *
- * @remarks
- * You may need to reload Discord after adding a new plugin before it's available.
- */
-export function load(plugin: RepluggedPlugin): void {
-  try {
-    plugins.set(plugin.manifest.id, {
-      ...plugin,
-      exports: {},
-    });
-  } catch (e: unknown) {
-    error("Plugin", plugin.manifest.id, void 0, "Plugin failed to load\n", e);
-  }
+function register(plugin: RepluggedPlugin): void {
+  plugins.set(plugin.manifest.id, {
+    ...plugin,
+    exports: undefined,
+  });
 }
 
 /**
@@ -55,7 +44,7 @@ export function load(plugin: RepluggedPlugin): void {
  * You may need to reload Discord after adding a new plugin before it's available.
  */
 export async function loadAll(): Promise<void> {
-  await Promise.allSettled((await window.RepluggedNative.plugins.list()).map((p) => load(p)));
+  await Promise.allSettled((await window.RepluggedNative.plugins.list()).map(register));
 }
 
 /**
@@ -63,7 +52,7 @@ export async function loadAll(): Promise<void> {
  * @param id Plugin ID (RDNN)
  *
  * @remarks
- * Plugin must be loaded first with {@link load} or {@link loadAll}
+ * Plugin must be loaded first with {@link register} or {@link loadAll}
  */
 export async function start(id: string): Promise<void> {
   const plugin = plugins.get(id);
@@ -76,7 +65,7 @@ export async function start(id: string): Promise<void> {
       plugin.exports = await import(
         `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
       );
-      await plugin.exports.start?.();
+      await plugin.exports!.start?.();
     }
 
     const el = loadStyleSheet(
@@ -94,10 +83,10 @@ export async function start(id: string): Promise<void> {
  * Start all plugins
  *
  * @remarks
- * Plugins must be loaded first with {@link load} or {@link loadAll}
+ * Plugins must be loaded first with {@link register} or {@link loadAll}
  */
 export async function startAll(): Promise<void> {
-  await Promise.allSettled([...plugins.keys()].map((id) => start(id)));
+  await Promise.allSettled([...plugins.keys()].map(start));
 }
 
 /**
@@ -128,7 +117,7 @@ export async function stop(id: string): Promise<void> {
  * Stop all plugins
  */
 export async function stopAll(): Promise<void> {
-  await Promise.allSettled([...plugins.keys()].map((id) => stop(id)));
+  await Promise.allSettled([...plugins.keys()].map(stop));
 }
 
 /**
@@ -151,16 +140,6 @@ export async function runPlaintextPatches(): Promise<void> {
       }
     }),
   );
-}
-
-/**
- * Get a plugin
- *
- * @remarks
- * This may include plugins that are not available until Discord is reloaded.
- */
-export async function get(pluginName: string): Promise<RepluggedPlugin | undefined> {
-  return await list().then((x) => x.find((p) => p.manifest.id === pluginName));
 }
 
 /**
@@ -188,9 +167,9 @@ export async function reload(id: string): Promise<void> {
   }
   await stop(id);
   plugins.delete(id);
-  const newPlugin = await get(id);
+  const newPlugin = await window.RepluggedNative.plugins.get(id);
   if (newPlugin) {
-    load(newPlugin);
+    register(newPlugin);
     await start(newPlugin.manifest.id);
   } else {
     error("Plugin", id, void 0, "Plugin unloaded but no longer exists");
