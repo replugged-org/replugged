@@ -18,10 +18,7 @@ export { Logger } from "./modules/logger";
 
 export * as webpack from "./modules/webpack";
 export * as common from "./modules/webpack/common";
-void import("./modules/webpack/common").then((c) => (exports.common = c));
-
 export * as components from "./modules/components";
-void import("./modules/components").then((c) => (exports.components = c));
 
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";

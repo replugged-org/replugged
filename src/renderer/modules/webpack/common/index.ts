@@ -72,4 +72,10 @@ importTimeout("spotifySocket", import("./spotifySocket"), (mod) => (spotifySocke
 export let typing: typeof import("./typing").default;
 importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 
-await Promise.allSettled(modulePromises);
+/**
+ * @internal
+ * @hidden
+ */
+export const ready = new Promise<void>((resolve) =>
+  Promise.allSettled(modulePromises).then(() => resolve()),
+);

@@ -56,4 +56,10 @@ importTimeout("Button", import("./Button"), (mod) => (ButtonItem = mod.ButtonIte
 export let Category: typeof import("./Category").default;
 importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
 
-await Promise.allSettled(modulePromises);
+/**
+ * @internal
+ * @hidden
+ */
+export const ready = new Promise<void>((resolve) =>
+  Promise.allSettled(modulePromises).then(() => resolve()),
+);
