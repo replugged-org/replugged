@@ -134,7 +134,7 @@ export class Logger {
   }
 
   /**
-   *
+   * Convenience method to create a new {@link Logger} for a plugin.
    * @param name Name of the plugin
    * @param color Color of the prefix as hex or a CSS color (default: blurple)
    * @returns {@link Logger} with type "Plugin"
