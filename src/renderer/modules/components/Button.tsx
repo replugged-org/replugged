@@ -18,10 +18,7 @@ type Button = ReactComponent<{
 
 export const Button = (await waitForModule(filters.bySource('"onDropdownClick"'))) as Button;
 
-const classes = (await waitForModule(filters.byProps("labelRow"), { timeout: 10000 })) as Record<
-  string,
-  string
->;
+const classes = (await waitForModule(filters.byProps("labelRow"))) as Record<string, string>;
 
 type ButtonItemProps = {
   onClick: () => void;

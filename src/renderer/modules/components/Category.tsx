@@ -2,10 +2,7 @@ import { filters, waitForModule } from "../webpack";
 import { Divider, Flex, FormItem, FormText } from ".";
 import React from "../webpack/common/react";
 
-const classes = (await waitForModule(filters.byProps("labelRow"), { timeout: 10000 })) as Record<
-  string,
-  string
->;
+const classes = (await waitForModule(filters.byProps("labelRow"))) as Record<string, string>;
 
 type CategoryProps = {
   title: string;
