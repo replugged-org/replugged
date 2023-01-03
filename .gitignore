@@ -8,8 +8,6 @@ dist/
 yarn.lock
 package-lock.json
 
-src/Powercord/coremods/react-devtools/ext
-
 config.json
 *injected.txt
 *.nogit.*

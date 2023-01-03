@@ -48,6 +48,9 @@ importTimeout("guilds", import("./guilds"), (mod) => (guilds = mod.default));
 export let hljs: typeof import("./hljs").default;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
+export let lodash: typeof import("./lodash").default;
+importTimeout("lodash", import("./lodash"), (mod) => (lodash = mod.default));
+
 export let messages: typeof import("./messages").default;
 importTimeout("messages", import("./messages"), (mod) => (messages = mod.default));
 

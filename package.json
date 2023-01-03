@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@types/highlightjs": "^9.12.2",
+    "@types/lodash": "^4.14.191",
     "@types/node": "^18.8.0",
     "@types/react": "^18.0.21",
     "@types/toposort": "^2.0.3",
