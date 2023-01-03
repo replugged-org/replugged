@@ -1,6 +1,8 @@
 const blurple = "#5865F2";
 
-const repluggedPrefix = (type: string, name: string): string => `%c[Replugged:${type}:${name}]`;
+export type LoggerType = "Plugin" | "Coremod" | "API" | "Ignition" | "CommonModules" | "Components";
+
+const repluggedPrefix = (type: LoggerType, name: string): string => `%c[Replugged:${type}:${name}]`;
 
 const logColor = (color: string): string => `color: ${typeof color === "string" ? color : blurple}`;
 
@@ -12,7 +14,7 @@ const logColor = (color: string): string => `color: ${typeof color === "string" 
  * @param data Message(s) to log to the console
  */
 export function log(
-  type: string,
+  type: LoggerType,
   name: string,
   color: string = blurple,
   ...data: Parameters<typeof console.log>
@@ -28,7 +30,7 @@ export function log(
  * @param data Thing(s) to print with the warning, same as the arguments would be for `console.warn`
  */
 export function warn(
-  type: string,
+  type: LoggerType,
   name: string,
   color: string = blurple,
   ...data: Parameters<typeof console.warn>
@@ -44,7 +46,7 @@ export function warn(
  * @param data Thing(s) to print with the error, same as the arguments would be for `console.error`
  */
 export function error(
-  type: string,
+  type: LoggerType,
   name: string,
   color: string = blurple,
   ...data: Parameters<typeof console.error>
@@ -72,7 +74,7 @@ export function error(
  * ```
  */
 export class Logger {
-  public type: string;
+  public type: LoggerType;
   public name: string;
   public color: string;
 
@@ -82,7 +84,7 @@ export class Logger {
    * @param name Name of the context (e.g. Notices, SilentTyping, Badges...)
    * @param color Color of the prefix as hex or a CSS color
    */
-  public constructor(type: string, name: string, color: string = blurple) {
+  public constructor(type: LoggerType, name: string, color: string = blurple) {
     this.type = type;
     this.name = name;
     this.color = color;
@@ -91,7 +93,7 @@ export class Logger {
   /**
    * Logs a message to the console, with an identifying prefix managed by the Logger instance.
    * @param data Item(s) to print as a message
-   * @remarks The arguments
+   * @remarks The arguments for this method are the same as the arguments for `console.log`.
    */
   public log(...data: Parameters<typeof console.log>): void {
     log(this.type, this.name, this.color, ...data);
@@ -100,6 +102,7 @@ export class Logger {
   /**
    * Logs a warning to the console, with an identifying prefix managed by the Logger instance.
    * @param data Item(s) to print as a warning
+   * @remarks The arguments for this method are the same as the arguments for `console.warn`.
    */
   public warn(...data: Parameters<typeof console.warn>): void {
     warn(this.type, this.name, this.color, ...data);
@@ -108,6 +111,7 @@ export class Logger {
   /**
    * Logs an error to the console, with an identifying prefix managed by the Logger instance.
    * @param data Item(s) to print as an error
+   * @remarks The arguments for this method are the same as the arguments for `console.error`.
    */
   public error(...data: Parameters<typeof console.error>): void {
     error(this.type, this.name, this.color, ...data);

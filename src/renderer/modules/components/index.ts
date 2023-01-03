@@ -11,7 +11,7 @@ function importTimeout<T extends ModuleExports>(
   modulePromises.push(
     new Promise<void>((res, rej) => {
       const timeout = setTimeout(() => {
-        error("Replugged", "Components", void 0, `Could not find module "${name}"`);
+        error("Components", name, void 0, `Could not find component "${name}"`);
         rej(new Error(`Module not found: "${name}`));
       }, 10_000);
       void moduleImport.then((mod) => {
