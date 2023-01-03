@@ -114,7 +114,8 @@ export class Logger {
   }
 
   /**
-   * Convenience method to create a new `Logger` for an API.
+   * Convenience method to create a new {@link Logger} for an API.
+   * @internal
    * @param name Name of the API
    * @param color Color of the prefix as hex or a CSS color (default: blurple)
    * @returns {@link Logger} with type "API"
