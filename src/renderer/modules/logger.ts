@@ -127,7 +127,7 @@ export class Logger {
    * Convenience method to create a new `Logger`
    * @param name Name of the coremod
    * @param color Color of the prefix as hex or a CSS color (default: blurple)
-   * @returns `Logger` with type "Coremod"
+   * @returns {@link Logger} with type "Coremod"
    */
   public static coremod(name: string, color?: string): Logger {
     return new Logger("Coremod", name, color);
