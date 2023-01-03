@@ -44,7 +44,7 @@ function register(plugin: RepluggedPlugin): void {
  * You may need to reload Discord after adding a new plugin before it's available.
  */
 export async function loadAll(): Promise<void> {
-  await Promise.allSettled((await window.RepluggedNative.plugins.list()).map(register));
+  (await window.RepluggedNative.plugins.list()).forEach(register);
 }
 
 /**
@@ -127,7 +127,7 @@ export async function stopAll(): Promise<void> {
 export async function runPlaintextPatches(): Promise<void> {
   await Promise.allSettled(
     [...plugins.values()].map(async (plugin) => {
-      if (typeof plugin.manifest.plaintextPatches === "string") {
+      if (plugin.manifest.plaintextPatches) {
         patchPlaintext(
           (
             await import(
@@ -140,16 +140,6 @@ export async function runPlaintextPatches(): Promise<void> {
       }
     }),
   );
-}
-
-/**
- * List all plugins
- *
- * @remarks
- * This may include plugins that are not available until Discord is reloaded.
- */
-export async function list(): Promise<RepluggedPlugin[]> {
-  return await window.RepluggedNative.plugins.list();
 }
 
 /**
