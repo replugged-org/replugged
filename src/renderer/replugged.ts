@@ -1,6 +1,18 @@
 export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
 
+/**
+ * The logger module provides a convenient and consistent way to associate things printed to the console
+ * with their origin. This makes it easier to associate console messages with their origins, which can
+ * simplify filtering items in the console and diagnosing issues.
+ *
+ * Messages printed using this module will be prefixed with a colorful string
+ * in the following format: `[Replugged:Type:Name]`
+ *
+ * - The color of the prefix is blurple by default, but this can be customized.
+ * - The "Type" portion of the prefix indicates the type of the message's origin--e.g. an API, a coremod, or a plugin.
+ * - The "Name" portion of the prefix specifies the origin of the message--the name of the API/coremod/plugin.
+ */
 export * as logger from "./modules/logger";
 export { Logger } from "./modules/logger";
 
