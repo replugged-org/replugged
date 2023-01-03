@@ -117,7 +117,7 @@ export class Logger {
    * Convenience method to create a new `Logger` for an API.
    * @param name Name of the API
    * @param color Color of the prefix as hex or a CSS color (default: blurple)
-   * @returns `Logger` with type "API"
+   * @returns {@link Logger} with type "API"
    */
   public static api(name: string, color?: string): Logger {
     return new Logger("API", name, color);
