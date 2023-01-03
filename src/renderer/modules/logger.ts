@@ -5,18 +5,23 @@ const repluggedPrefix = (type: string, name: string): string => `%c[Replugged:${
 const logColor = (color: string): string => `color: ${typeof color === "string" ? color : blurple}`;
 
 /**
- * Log a message to the console with a colorful prefix.
+ * Log a message to the console with a Replugged prefix.
  * @param type Type of the context of the message (e.g. API, Plugin, Coremod...)
  * @param name Name of the context of the message (e.g. Notices, SilentTyping, Badges...)
  * @param color Color of the prefix as hex or a CSS color
  * @param data Message(s) to log to the console
  */
-export function log(type: string, name: string, color: string = blurple, ...data: unknown[]): void {
+export function log(
+  type: string,
+  name: string,
+  color: string = blurple,
+  ...data: Parameters<typeof console.log>
+): void {
   console.log(repluggedPrefix(type, name), logColor(color), ...data);
 }
 
 /**
- * Log a warning to the console with a colorful prefix.
+ * Log a warning to the console with a Replugged prefix.
  * @param type Type of the context of the warning (e.g. API, Plugin, Coremod...)
  * @param name Name of the context of the warning (e.g. Notices, SilentTyping, Badges...)
  * @param color Color of the prefix as hex or a CSS color
@@ -26,13 +31,13 @@ export function warn(
   type: string,
   name: string,
   color: string = blurple,
-  ...data: unknown[]
+  ...data: Parameters<typeof console.warn>
 ): void {
   console.warn(repluggedPrefix(type, name), logColor(color), ...data);
 }
 
 /**
- * Log an error to the console with a colorful prefix.
+ * Log an error to the console with a Replugged prefix.
  * @param type Type of the context of the error (e.g. API, Plugin, Coremod...)
  * @param name Name of the context of the error (e.g. Notices, SilentTyping, Badges...)
  * @param color Color of the prefix as hex or a CSS color
@@ -42,7 +47,7 @@ export function error(
   type: string,
   name: string,
   color: string = blurple,
-  ...data: unknown[]
+  ...data: Parameters<typeof console.error>
 ): void {
   console.error(repluggedPrefix(type, name), logColor(color), ...data);
 }
@@ -86,8 +91,9 @@ export class Logger {
   /**
    * Logs a message to the console, with an identifying prefix managed by the Logger instance.
    * @param data Item(s) to print as a message
+   * @remarks The arguments
    */
-  public log(...data: unknown[]): void {
+  public log(...data: Parameters<typeof console.log>): void {
     log(this.type, this.name, this.color, ...data);
   }
 
@@ -95,7 +101,7 @@ export class Logger {
    * Logs a warning to the console, with an identifying prefix managed by the Logger instance.
    * @param data Item(s) to print as a warning
    */
-  public warn(...data: unknown[]): void {
+  public warn(...data: Parameters<typeof console.warn>): void {
     warn(this.type, this.name, this.color, ...data);
   }
 
@@ -103,7 +109,7 @@ export class Logger {
    * Logs an error to the console, with an identifying prefix managed by the Logger instance.
    * @param data Item(s) to print as an error
    */
-  public error(...data: unknown[]): void {
+  public error(...data: Parameters<typeof console.error>): void {
     error(this.type, this.name, this.color, ...data);
   }
 
