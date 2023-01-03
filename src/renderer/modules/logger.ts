@@ -137,7 +137,7 @@ export class Logger {
    *
    * @param name Name of the plugin
    * @param color Color of the prefix as hex or a CSS color (default: blurple)
-   * @returns `Logger` with type "Plugin"
+   * @returns {@link Logger} with type "Plugin"
    */
   public static plugin(name: string, color?: string): Logger {
     return new Logger("Plugin", name, color);
