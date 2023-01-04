@@ -1,15 +1,18 @@
 import { init } from "../apis/settings";
-import { get as getPlugin, list as listPlugins, reload as reloadPlugin } from "./plugins";
-import { get as getTheme, list as listThemes, reload as reloadTheme } from "./themes";
-import { error, log, warn } from "../modules/logger";
+import * as pluginManager from "./plugins";
+import * as themeManager from "./themes";
+import { Logger } from "../modules/logger";
 
-interface UpdateSettings {
+const logger = Logger.coremod("updater");
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type UpdateSettings = {
   available?: boolean;
   id?: string;
   url?: string;
   lastChecked?: number;
   hash?: string;
-}
+};
 
 const updaterSettings = await init<{
   waitSinceLastUpdate: number;
@@ -41,14 +44,13 @@ export async function checkUpdate(
   waitSinceLastUpdate = 0,
   verbose = true,
 ): Promise<void> {
-  const entity = (await getPlugin(id)) || (await getTheme(id));
+  const entity = pluginManager.plugins.get(id) || (await themeManager.get(id));
   if (!entity) {
-    error("Replugged", "Updater", void 0, `Entity ${id} not found`);
+    logger.error(`Entity ${id} not found`);
     return;
   }
   if (!entity.path.endsWith(".asar")) {
-    if (verbose)
-      log("Replugged", "Updater", void 0, `Entity ${id} is not an ASAR file, cannot be updated`);
+    if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
     return;
   }
 
@@ -61,7 +63,7 @@ export async function checkUpdate(
     Date.now() - updateSettings.lastChecked < waitSinceLastUpdate &&
     updateSettings.hash === hash
   ) {
-    if (verbose) log("Replugged", "Updater", void 0, `Entity ${id} was checked recently, skipping`);
+    if (verbose) logger.log(`Entity ${id} was checked recently, skipping`);
     return;
   }
 
@@ -69,19 +71,19 @@ export async function checkUpdate(
     manifest: { updater },
   } = entity;
   if (!updater) {
-    warn("Replugged", "Updater", void 0, `Entity ${id} has no updater info`);
+    logger.warn(`Entity ${id} has no updater info`);
     return;
   }
 
   const res = await window.RepluggedNative.updater.check(updater.type, updater.id);
 
   if (!res.success) {
-    error("Replugged", "Updater", void 0, `Update check failed: ${res.error}`);
+    logger.error(`Update check failed: ${res.error}`);
     return;
   }
 
   if (!updateSettings.id) {
-    warn("Replugged", "Updater", void 0, `Entity ${id} has not been checked before, skipping`);
+    logger.warn(`Entity ${id} has not been checked before, skipping`);
     updaterState.set(id, {
       available: false,
       lastChecked: Date.now(),
@@ -95,9 +97,9 @@ export async function checkUpdate(
   if (res.id === updateSettings.id) {
     const hash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
     if (hash !== updateSettings.hash) {
-      warn("Replugged", "Updater", void 0, `Entity ${id}'s hash has changed, forcing update`);
+      logger.warn(`Entity ${id}'s hash has changed, forcing update`);
     } else {
-      if (verbose) log("Replugged", "Updater", void 0, `Entity ${id} is up to date`);
+      if (verbose) logger.log(`Entity ${id} is up to date`);
       updaterState.set(id, {
         available: false,
         lastChecked: Date.now(),
@@ -109,7 +111,7 @@ export async function checkUpdate(
     }
   }
 
-  log("Replugged", "Updater", void 0, `Entity ${id} has an update available`);
+  logger.log(`Entity ${id} has an update available`);
   updaterState.set(id, {
     available: true,
     id: res.id,
@@ -120,26 +122,25 @@ export async function checkUpdate(
 }
 
 export async function installUpdate(id: string, force = false, verbose = true): Promise<void> {
-  const entity = (await getPlugin(id)) || (await getTheme(id));
+  const entity = pluginManager.plugins.get(id) || (await themeManager.get(id));
   if (!entity) {
-    error("Replugged", "Updater", void 0, `Entity ${id} not found`);
+    logger.error(`Entity ${id} not found`);
     return;
   }
   if (!entity.path.endsWith(".asar")) {
-    if (verbose)
-      log("Replugged", "Updater", void 0, `Entity ${id} is not an ASAR file, cannot be updated`);
+    if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
     return;
   }
 
   const updateSettings = getUpdateSettings(id);
 
   if (!force && !updateSettings.available) {
-    if (verbose) log("Replugged", "Updater", void 0, `Entity ${id} has no update available`);
+    if (verbose) logger.log(`Entity ${id} has no update available`);
     return;
   }
 
   if (!updateSettings.url) {
-    error("Replugged", "Updater", void 0, `Entity ${id} has no update URL`);
+    logger.error(`Entity ${id} has no update URL`);
     return;
   }
 
@@ -151,7 +152,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
   );
 
   if (!res.success) {
-    error("Replugged", "Updater", void 0, `Update install failed: ${res.error}`);
+    logger.error(`Update install failed: ${res.error}`);
     return;
   }
 
@@ -168,18 +169,18 @@ export async function installUpdate(id: string, force = false, verbose = true): 
   try {
     switch (entity.manifest.type) {
       case "replugged-plugin":
-        await reloadPlugin(`${id}.asar`);
+        await pluginManager.reload(`${id}.asar`);
         break;
       case "replugged-theme":
-        reloadTheme(`${id}.asar`);
+        themeManager.reload(`${id}.asar`);
         break;
     }
   } catch (err) {
-    error("Replugged", "Updater", void 0, `Update install failed: ${err}`);
+    logger.error(`Update install failed: ${err}`);
     return;
   }
 
-  log("Replugged", "Updater", void 0, `Entity ${id} updated successfully`);
+  logger.log(`Entity ${id} updated successfully`);
 }
 
 export async function checkAllUpdates(
@@ -190,29 +191,29 @@ export async function checkAllUpdates(
     waitSinceLastUpdate = updaterSettings.get("waitSinceLastUpdate") || 1000 * 60 * 60 * 15;
   }
 
-  const plugins = await listPlugins();
-  const themes = await listThemes();
+  const plugins = Array.from(pluginManager.plugins.values());
+  const themes = await themeManager.list();
 
-  log("Replugged", "Updater", void 0, "Checking for updates");
+  logger.log("Checking for updates");
 
   await Promise.all([
     ...plugins.map((plugin) => checkUpdate(plugin.manifest.id, waitSinceLastUpdate, verbose)),
     ...themes.map((theme) => checkUpdate(theme.manifest.id, waitSinceLastUpdate, verbose)),
   ]);
 
-  log("Replugged", "Updater", void 0, "All updates checked");
+  logger.log("All updates checked");
 }
 
 export async function installAllUpdates(force = false, verbose = false): Promise<void> {
-  const plugins = await listPlugins();
-  const themes = await listThemes();
+  const plugins = Array.from(pluginManager.plugins.values());
+  const themes = await themeManager.list();
 
-  log("Replugged", "Updater", void 0, "Installing updates");
+  logger.log("Installing updates");
 
   await Promise.all([
     plugins.map((plugin) => installUpdate(plugin.manifest.id, force, verbose)),
     themes.map((theme) => installUpdate(theme.manifest.id, force, verbose)),
   ]);
 
-  log("Replugged", "Updater", void 0, "All updates installed");
+  logger.log("All updates installed");
 }
