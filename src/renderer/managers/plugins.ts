@@ -28,10 +28,10 @@ const styleElements = new Map<string, HTMLLinkElement>();
  */
 export function getExports(id: string): PluginExports | undefined {
   const plugin = plugins.get(id);
-  if (plugin) {
-    return plugin.exports;
+  if (!plugin) {
+    throw new Error(`Plugin "${id}" does not exist or is not loaded`);
   }
-  throw new Error(`Plugin "${id}" does not exist or is not loaded`);
+  return plugin.exports;
 }
 
 function register(plugin: RepluggedPlugin): void {
