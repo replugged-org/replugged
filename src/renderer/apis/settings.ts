@@ -1,3 +1,5 @@
+import type { Jsonifiable } from "type-fest";
+
 type SettingsUpdate<T> =
   | {
       type: "set";
@@ -18,7 +20,7 @@ type SettingsUpdate<T> =
  * Once the settings data has been copied into the `SettingsManager`, it can be read and written synchronously.
  * The `SettingsManager` automatically queues and dispatches updates to the file system in the background.
  */
-export class SettingsManager<T extends Record<string, unknown>> {
+export class SettingsManager<T extends Record<string, Jsonifiable>> {
   #settings: T | undefined;
   #saveTimeout: ReturnType<typeof setTimeout> | undefined;
   #queuedUpdates: Map<Extract<keyof T, string>, SettingsUpdate<T>>;
@@ -139,10 +141,10 @@ const managers = new Map<string, unknown>();
  *
  * Here's an example of how to use this in a plugin:
  *
- * ```js
+ * ```ts
  * import { settings } from 'replugged';
  *
- * const cfg = await settings.init('dev.replugged.Example');
+ * const cfg = await settings.init<{ hello: string }>('dev.replugged.Example');
  *
  * export function start() {
  *   cfg.set('hello', 'world');
@@ -154,9 +156,9 @@ const managers = new Map<string, unknown>();
  * @param namespace Namespace to manage. A namespace is an ID (for example, the ID of a plugin) that uniquely identifies it.
  * All settings are grouped into namespaces.
  * Settings for a namespace are stored in `settings/NAMESPACE.json` within the [Replugged data folder](https://docs.replugged.dev/#installing-plugins-and-themes).
- * @returns Manager for the namepspace.
+ * @returns Manager for the namespace.
  */
-export async function init<T extends Record<string, unknown>>(
+export async function init<T extends Record<string, Jsonifiable>>(
   namespace: string,
 ): Promise<SettingsManager<T>> {
   if (managers.has(namespace)) {

@@ -11,7 +11,7 @@ function importTimeout<T extends ModuleExports>(
   modulePromises.push(
     new Promise<void>((res, rej) => {
       const timeout = setTimeout(() => {
-        error("Replugged", "CommonModules", void 0, `Could not find module "${name}"`);
+        error("CommonModules", name, void 0, `Could not find module "${name}"`);
         rej(new Error(`Module not found: "${name}`));
       }, 5_000);
       void moduleImport.then((mod) => {
@@ -29,8 +29,8 @@ importTimeout("channels", import("./channels"), (mod) => (channels = mod.default
 export let constants: typeof import("./constants");
 importTimeout("constants", import("./constants"), (mod) => (constants = mod));
 
-// export let contextMenu: typeof import("./contextMenu");
-// importTimeout("contextMenu", import("./contextMenu"), (mod) => (contextMenu = mod.default));
+export let contextMenu: typeof import("./contextMenu").default;
+importTimeout("contextMenu", import("./contextMenu"), (mod) => (contextMenu = mod.default));
 
 export let flux: typeof import("./flux").default;
 importTimeout("flux", import("./flux"), (mod) => (flux = mod.default));
@@ -48,11 +48,14 @@ importTimeout("guilds", import("./guilds"), (mod) => (guilds = mod.default));
 export let hljs: typeof import("./hljs").default;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
+export let lodash: typeof import("./lodash").default;
+importTimeout("lodash", import("./lodash"), (mod) => (lodash = mod.default));
+
 export let messages: typeof import("./messages").default;
 importTimeout("messages", import("./messages"), (mod) => (messages = mod.default));
 
-// export let modal: typeof import("./modal").default;
-// importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
+export let modal: typeof import("./modal").default;
+importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
 
 export let React: typeof import("./react").default;
 importTimeout("React", import("./react"), (mod) => (React = mod.default));

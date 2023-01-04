@@ -1,25 +1,23 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { AnyFunction } from "../../../types/util";
-import {
-  ModuleExports,
-  ModuleExportsWithProps,
-  ObjectExports,
-  RawModule,
-  RawModuleWithProps,
-  WebpackChunk,
-  WebpackChunkGlobal,
-  WebpackModule,
-  WebpackRequire,
-} from "../../../types/discord";
-import {
+import type { AnyFunction } from "../../../types/util";
+import type {
   Filter,
   GetModuleOptions,
   LazyCallback,
   LazyListener,
+  ModuleExports,
+  ModuleExportsWithProps,
+  ObjectExports,
   PlaintextPatch,
   RawLazyCallback,
+  RawModule,
+  RawModuleWithProps,
   RawPlaintextPatch,
   WaitForOptions,
+  WebpackChunk,
+  WebpackChunkGlobal,
+  WebpackModule,
+  WebpackRequire,
 } from "../../../types/webpack";
 
 // Handlers
@@ -53,7 +51,7 @@ export let signalStart: () => void;
  */
 export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
 
-const sourceStrings: Record<number, string> = {};
+export const sourceStrings: Record<number, string> = {};
 
 const listeners = new Set<LazyListener>();
 const plaintextPatches: RawPlaintextPatch[] = [];
@@ -123,11 +121,7 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
 }
 
 function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
-  wpRequire = webpackChunk.push([
-    [Symbol("replugged")],
-    {},
-    (r: WebpackRequire) => r,
-  ]) as WebpackRequire;
+  wpRequire = webpackChunk.push([[Symbol("replugged")], {}, (r: WebpackRequire) => r]);
 
   wpRequire.d = (module: ModuleExports, exports: Record<string, () => unknown>) => {
     for (const prop in exports) {
@@ -720,7 +714,7 @@ export function getByProps<
   return getExportsForProps<P, T & ModuleExportsWithProps<P>>(result as T & ModuleExports, props);
 }
 
-// Specalized, inner-module searchers
+// Specialized, inner-module searchers
 
 /**
  * Search for a function within a module by its source code.
@@ -729,15 +723,18 @@ export function getByProps<
  * @param module The module to search.
  */
 export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
-  match: string | RegExp,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  match: string | RegExp | ((func: Function) => boolean),
   module: ObjectExports,
 ): T | undefined {
   return Object.values(module).find((v) => {
-    if (typeof v !== "function") {
-      return false;
-    }
+    if (typeof v !== "function") return false;
 
-    return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+    if (typeof match === "function") {
+      return match(v);
+    } else {
+      return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+    }
   }) as T | undefined;
 }
 

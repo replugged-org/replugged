@@ -1,5 +1,5 @@
-import { ObjectExports } from "../../types/discord";
-import { AnyFunction } from "../../types/util";
+import type { ObjectExports } from "../../types/webpack";
+import type { AnyFunction } from "../../types/util";
 
 enum InjectionTypes {
   Before,
@@ -125,6 +125,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
     };
 
     Object.defineProperties(obj[funcName], Object.getOwnPropertyDescriptors(originalFunc));
+    obj[funcName].toString = originalFunc.toString.bind(originalFunc);
   }
 }
 

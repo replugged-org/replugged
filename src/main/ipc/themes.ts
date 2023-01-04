@@ -33,12 +33,10 @@ async function getTheme(path: string): Promise<RepluggedTheme> {
 
 ipcMain.handle(
   RepluggedIpcChannels.GET_THEME,
-  async (_, path: string): Promise<RepluggedTheme | null> => {
+  async (_, path: string): Promise<RepluggedTheme | undefined> => {
     try {
       return await getTheme(path);
-    } catch {
-      return null;
-    }
+    } catch {}
   },
 );
 
@@ -58,8 +56,6 @@ ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedThem
           const actualFile = await stat(actualPath);
           if (isFileATheme(actualFile, actualPath)) return f;
         }
-
-        return null;
       }),
     )
   ).filter(Boolean) as Dirent[];

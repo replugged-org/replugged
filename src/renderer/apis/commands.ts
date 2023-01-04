@@ -1,4 +1,4 @@
-import { RepluggedCommand } from "../../types";
+import type { RepluggedCommand } from "../../types";
 import { Logger } from "../modules/logger";
 
 const commandsLogger = Logger.api("Commands");

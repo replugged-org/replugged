@@ -2,6 +2,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "yaml.schemas": {
-    "https://json.schemastore.org/github-issue-config.json": "file:///Users/albert/Programming/Discord/replugged/.github/ISSUE_TEMPLATE/config.yml"
+    "https://json.schemastore.org/github-issue-config.json": ".github/ISSUE_TEMPLATE/config.yml",
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/cspell.yml"
   }
 }

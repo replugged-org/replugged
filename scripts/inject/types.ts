@@ -1,7 +1,7 @@
-import { Awaitable } from "../../src/types/util";
+import type { Promisable } from "type-fest";
 
 export type DiscordPlatform = "stable" | "ptb" | "canary" | "dev";
 
 export interface PlatformModule {
-  getAppDir: (platform: DiscordPlatform) => Awaitable<string>;
+  getAppDir: (platform: DiscordPlatform) => Promisable<string>;
 }

@@ -1,10 +1,10 @@
 import { loadStyleSheet } from "../util";
-import { Theme } from "../../types/addon";
-import { RepluggedTheme } from "../../types";
+import type { ThemeManifest } from "../../types/addon";
+import type { RepluggedTheme } from "../../types";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
-const themes = new Map<string, Theme>();
+const themes = new Map<string, ThemeManifest>();
 let disabled: string[] = [];
 
 /**
@@ -72,8 +72,8 @@ export function unloadAll(): void {
  * @remarks
  * This may include themes that are not available until Discord is reloaded.
  */
-export async function get(path: string): Promise<RepluggedTheme | null> {
-  return await list().then((x) => x.find((p) => p.manifest.id === path) || null);
+export async function get(path: string): Promise<RepluggedTheme | undefined> {
+  return await list().then((x) => x.find((p) => p.manifest.id === path));
 }
 
 /**
