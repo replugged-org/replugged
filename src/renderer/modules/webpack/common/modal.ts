@@ -68,7 +68,7 @@ export interface Modal {
 
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
 
-const classes = getBySource("().justifyStart")! as ModalClasses;
+const classes: ModalClasses = getBySource("().justifyStart")!;
 
 const modal = {
   openModal: getFunctionBySource<Modal["openModal"]>("onCloseRequest:null!=", mod as ObjectExports),
