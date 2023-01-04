@@ -4,12 +4,28 @@ import { filters, getExportsForProps, getFunctionBySource, waitForModule } from 
 const mod = (await waitForModule(filters.bySource("LABEL_SELECTED"))) as ObjectExports;
 const FormTextComp = getFunctionBySource("selectable", mod) as ReactComponent<{ type: string }>;
 const types = getExportsForProps(mod, ["LABEL_SELECTED"]) as Record<
-  "DEFAULT" | "DESCRIPTION" | "ERROR" | "INPUT_PLACEHOLDER" | "LABEL_BOLD" | "LABEL_DESCRIPTOR" | "LABEL_SELECTED" | "SUCCESS" | string,
+  | "DEFAULT"
+  | "DESCRIPTION"
+  | "ERROR"
+  | "INPUT_PLACEHOLDER"
+  | "LABEL_BOLD"
+  | "LABEL_DESCRIPTOR"
+  | "LABEL_SELECTED"
+  | "SUCCESS"
+  | string,
   string
 >;
 
 export type FormTextType = Record<
-  "DEFAULT" | "DESCRIPTION" | "ERROR" | "INPUT_PLACEHOLDER" | "LABEL_BOLD" | "LABEL_DESCRIPTOR" | "LABEL_SELECTED" | "SUCCESS" | string,
+  | "DEFAULT"
+  | "DESCRIPTION"
+  | "ERROR"
+  | "INPUT_PLACEHOLDER"
+  | "LABEL_BOLD"
+  | "LABEL_DESCRIPTOR"
+  | "LABEL_SELECTED"
+  | "SUCCESS"
+  | string,
   ReactComponent<{}>
 >;
 const FormText: FormTextType = {
@@ -20,7 +36,7 @@ const FormText: FormTextType = {
   LABEL_BOLD: () => null,
   LABEL_DESCRIPTOR: () => null,
   LABEL_SELECTED: () => null,
-  SUCCESS: () => null
+  SUCCESS: () => null,
 };
 
 Object.keys(types).forEach((key: string) => {
