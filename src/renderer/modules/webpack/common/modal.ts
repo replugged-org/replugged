@@ -10,13 +10,6 @@ enum ModalTransitionState {
   HIDDEN,
 }
 
-export enum ModalSize {
-  SMALL = "small",
-  MEDIUM = "medium",
-  LARGE = "large",
-  DYNAMIC = "dynamic",
-}
-
 export interface ModalProps {
   transitionState: ModalTransitionState;
   onClose(): Promise<void>;
@@ -37,7 +30,7 @@ export type ModalClasses = ModuleExports & {
 
 export interface ModalRootProps {
   transitionState?: ModalTransitionState;
-  size?: ModalSize;
+  size?: "small" | "medium" | "large" | "dynamic";
   role?: "alertdialog" | "dialog";
   className?: string;
   onAnimationEnd?(): string;
@@ -59,11 +52,11 @@ export interface Modal {
     contextKey?: string,
   ) => string;
   closeModal: (modalKey: string, contextKey?: string) => void;
-  ModalSize: typeof ModalSize;
-  Direction: Record<string, string>;
-  Align: Record<string, string>;
-  Justify: Record<string, string>;
-  Wrap: Record<string, string>;
+  ModalSize: "small" | "medium" | "large" | "dynamic";
+  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
+  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
+  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
+  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
 }
 
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
@@ -73,7 +66,6 @@ const classes: ModalClasses = getBySource("().justifyStart")!;
 const modal = {
   openModal: getFunctionBySource<Modal["openModal"]>("onCloseRequest:null!=", mod as ObjectExports),
   closeModal: getFunctionBySource<Modal["closeModal"]>("onCloseCallback&&", mod as ObjectExports),
-  ModalSize,
   Direction: classes?.Direction,
   Align: classes?.Align,
   Justify: classes?.Justify,

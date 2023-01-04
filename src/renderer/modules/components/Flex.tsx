@@ -10,10 +10,10 @@ export type FlexType = ReactComponent<{
   grow?: number;
   basis?: string;
 }> & {
-  Direction: Record<string, string>;
-  Justify: Record<string, string>;
-  Align: Record<string, string>;
-  Wrap: Record<string, string>;
+  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
+  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
+  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
+  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
 };
 
 const mod = await waitForModule(filters.bySource("HORIZONTAL_REVERSE:"));

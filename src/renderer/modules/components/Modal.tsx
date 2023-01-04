@@ -8,12 +8,6 @@ enum ModalTransitionState {
   EXITED,
   HIDDEN,
 }
-export enum ModalSize {
-  SMALL = "small",
-  MEDIUM = "medium",
-  LARGE = "large",
-  DYNAMIC = "dynamic",
-}
 export interface ModalProps {
   transitionState: ModalTransitionState;
   onClose(): Promise<void>;
@@ -23,19 +17,18 @@ export interface ModalOptions {
   onCloseRequest?: () => void;
   onCloseCallback?: () => void;
 }
-export type ModalClass = Record<string, string>;
 export type ModalClasses = ModuleExports & {
-  Direction: ModalClass;
-  Align: ModalClass;
-  Justify: ModalClass;
-  Wrap: ModalClass;
+  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
+  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
+  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
+  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
 };
 export interface ModalCompProps {
   children: React.ReactNode;
 }
 export interface ModalRootProps extends ModalCompProps {
   transitionState?: ModalTransitionState;
-  size?: ModalSize;
+  size?: "small" | "medium" | "large" | "dynamic";
   role?: "alertdialog" | "dialog";
   className?: string;
   onAnimationEnd?(): string;
