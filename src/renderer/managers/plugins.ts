@@ -27,7 +27,11 @@ const styleElements = new Map<string, HTMLLinkElement>();
  * developers can write `replugged.plugins.getExports("id.here")`.
  */
 export function getExports(id: string): PluginExports | undefined {
-  return plugins.get(id)!.exports;
+  const plugin = plugins.get(id);
+  if (plugin) {
+    return plugin.exports;
+  }
+  throw new Error(`Plugin "${id}" does not exist or is not loaded`);
 }
 
 function register(plugin: RepluggedPlugin): void {
