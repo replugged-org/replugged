@@ -65,6 +65,5 @@ export async function ignite(): Promise<void> {
   await waitForReady;
   signalStart();
   await import("../modules/webpack/common");
-  await import("../modules/components");
   await start();
 }
