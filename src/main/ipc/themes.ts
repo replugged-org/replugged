@@ -6,11 +6,11 @@ IPC events:
 
 import { readFile, readdir, readlink, rm, stat } from "fs/promises";
 import { extname, join } from "path";
-import { ipcMain } from "electron";
-import { RepluggedIpcChannels, RepluggedTheme } from "../../types";
+import { ipcMain, shell } from "electron";
+import { RepluggedIpcChannels, type RepluggedTheme } from "../../types";
 import { theme } from "../../types/addon";
 import { CONFIG_PATHS } from "src/util";
-import { Dirent, Stats } from "fs";
+import type { Dirent, Stats } from "fs";
 
 const THEMES_DIR = CONFIG_PATHS.themes;
 
@@ -78,3 +78,5 @@ ipcMain.handle(RepluggedIpcChannels.UNINSTALL_THEME, async (_, themeName: string
     force: true,
   });
 });
+
+ipcMain.on(RepluggedIpcChannels.OPEN_THEMES_FOLDER, () => shell.openPath(THEMES_DIR));
