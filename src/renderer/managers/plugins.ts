@@ -161,7 +161,7 @@ export async function reload(id: string): Promise<void> {
   }
   await stop(plugin.manifest.id);
   plugins.delete(plugin.manifest.id);
-  const newPlugin = await window.RepluggedNative.plugins.get(plugin.manifest.id);
+  const newPlugin = await window.RepluggedNative.plugins.get(plugin.path);
   if (newPlugin) {
     register(newPlugin);
     await start(newPlugin.manifest.id);
