@@ -1,6 +1,6 @@
 import electron, { contextBridge, ipcRenderer, webFrame } from "electron";
 
-import { RepluggedIpcChannels, RepluggedPlugin, RepluggedTheme } from "./types";
+import { RepluggedIpcChannels, type RepluggedPlugin, type RepluggedTheme } from "./types";
 
 const RepluggedNative = {
   themes: {
@@ -38,7 +38,7 @@ const RepluggedNative = {
   },
 
   plugins: {
-    get: async (pluginName: string): Promise<RepluggedPlugin | null> =>
+    get: async (pluginName: string): Promise<RepluggedPlugin | undefined> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginName),
     list: async (): Promise<RepluggedPlugin[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),

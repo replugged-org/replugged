@@ -1,4 +1,4 @@
-import { RepluggedAnnouncement, RepluggedToast } from "../../types";
+import type { RepluggedAnnouncement, RepluggedToast } from "../../types";
 import { Logger } from "../modules/logger";
 
 const noticesLogger = Logger.api("Notices");

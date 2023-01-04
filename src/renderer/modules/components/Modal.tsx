@@ -1,4 +1,4 @@
-import { ModuleExports, ObjectExports } from "../../../types";
+import type { ModuleExports, ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 enum ModalTransitionState {

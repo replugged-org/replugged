@@ -1,4 +1,4 @@
-import { Awaitable } from "src/types";
+import type { Promisable } from "type-fest";
 import { patchPlaintext } from "../modules/webpack";
 
 import { default as experimentsPlaintext } from "../coremods/experiments/plaintextPatches";
@@ -6,8 +6,8 @@ import { default as settingsPlaintext } from "../coremods/settings/plaintextPatc
 import { default as notrackPlaintext } from "../coremods/notrack/plaintextPatches";
 
 interface Coremod {
-  start?: () => Awaitable<void>;
-  stop?: () => Awaitable<void>;
+  start?: () => Promisable<void>;
+  stop?: () => Promisable<void>;
   [x: string]: unknown; // Allow coremods to export anything else they want
 }
 

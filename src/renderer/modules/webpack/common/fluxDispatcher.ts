@@ -1,4 +1,4 @@
-import { ModuleExports } from "../../../../types/discord";
+import { ModuleExports } from "../../../../types/webpack";
 import { filters, waitForModule } from "..";
 
 type FluxCallback = (event?: { [index: string]: unknown }) => void;

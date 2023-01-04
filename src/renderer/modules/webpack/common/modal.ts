@@ -1,4 +1,4 @@
-import { ModuleExports, ObjectExports } from "../../../../types/discord";
+import { ModuleExports, ObjectExports } from "../../../../types/webpack";
 import { ReactComponent } from "../../../../types/util";
 import { filters, getBySource, getFunctionBySource, waitForModule } from "..";
 

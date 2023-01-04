@@ -20,6 +20,7 @@ specifiers:
   np: ^7.6.2
   prettier: ^2.7.1
   tsx: ^3.9.0
+  type-fest: ^3.5.0
   typedoc: ^0.23.22
   typescript: ^4.8.4
   zod: ^3.19.1
@@ -44,6 +45,7 @@ devDependencies:
   np: 7.6.2
   prettier: 2.7.1
   tsx: 3.9.0
+  type-fest: 3.5.0
   typedoc: 0.23.22_typescript@4.8.4
   typescript: 4.8.4
   zod: 3.19.1
@@ -4638,6 +4640,11 @@ packages:
   /type-fest/0.8.1:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
+    dev: true
+
+  /type-fest/3.5.0:
+    resolution: {integrity: sha512-bI3zRmZC8K0tUz1HjbIOAGQwR2CoPQG68N5IF7gm0LBl8QSNXzkmaWnkWccCUL5uG9mCsp4sBwC8SBrNSISWew==}
+    engines: {node: '>=14.16'}
     dev: true
 
   /typedarray-to-buffer/3.1.5:
