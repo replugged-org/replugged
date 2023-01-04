@@ -1,7 +1,7 @@
 import type { ReactComponent } from "../../../types";
 import { filters, waitForModule } from "../webpack";
 
-export type SwitchItem = ReactComponent<{
+export type SwitchItemType = ReactComponent<{
   note?: string;
   value: boolean;
   onChange: () => void;
@@ -14,8 +14,6 @@ export type SwitchItem = ReactComponent<{
 /**
  * A toggleable SwitchItem
  */
-const SwitchItem: SwitchItem = (await waitForModule(
-  filters.bySource(").dividerDefault"),
-)) as SwitchItem;
+const SwitchItem = (await waitForModule(filters.bySource(").dividerDefault"))) as SwitchItemType;
 
 export default SwitchItem;

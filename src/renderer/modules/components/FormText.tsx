@@ -5,7 +5,8 @@ const mod = (await waitForModule(filters.bySource("LABEL_SELECTED"))) as ObjectE
 const FormTextComp = getFunctionBySource("selectable", mod) as ReactComponent<{ type: string }>;
 const types = getExportsForProps(mod, ["LABEL_SELECTED"]) as Record<string, string>;
 
-const FormText: Record<string, ReactComponent<{}>> = {};
+export type FormTextType = Record<string, ReactComponent<{}>>;
+const FormText: FormTextType = {};
 
 Object.keys(types).forEach((key) => {
   FormText[key] = (props) => (

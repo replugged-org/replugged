@@ -1,7 +1,7 @@
 import { filters, waitForModule } from "../webpack";
 
-const Divider = (await waitForModule(
-  filters.bySource(/\.divider,.\),style:./),
-)) as React.ComponentType<React.HTMLProps<{}>>;
+export type DividerType = React.ComponentType<React.HTMLProps<{}>>;
+
+const Divider = (await waitForModule(filters.bySource(/\.divider,.\),style:./))) as DividerType;
 
 export default Divider;

@@ -42,13 +42,13 @@ export interface ModalRootProps extends ModalCompProps {
 }
 
 // todo: make props type for each component
-export interface ModalComponents {
+export type ModalType = {
   ModalRoot: (props: ModalRootProps) => React.ComponentType;
   ModalHeader: (props: ModalCompProps) => React.ComponentType;
   ModalContent: (props: ModalCompProps) => React.ComponentType;
   ModalFooter: (props: ModalCompProps) => React.ComponentType;
   ModalCloseButton: (props: ModalCompProps) => React.ComponentType;
-}
+};
 
 const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"));
 
@@ -58,6 +58,6 @@ const modal = {
   ModalContent: getFunctionBySource("().content", mod as ObjectExports),
   ModalFooter: getFunctionBySource("().footerSeparator", mod as ObjectExports),
   ModalCloseButton: getFunctionBySource("().closeWithCircleBackground", mod as ObjectExports),
-} as ModalComponents;
+} as ModalType;
 
 export default modal;

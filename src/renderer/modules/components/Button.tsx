@@ -3,7 +3,7 @@ import type { ReactComponent } from "../../../types/util";
 import type React from "react";
 import { Divider, Flex, FormItem, FormText, Tooltip } from ".";
 
-type Button = ReactComponent<{
+export type ButtonType = ReactComponent<{
   onClick: () => void;
   look?: string;
   size?: string;
@@ -16,7 +16,8 @@ type Button = ReactComponent<{
   Looks: Record<string, string>;
 };
 
-export const Button = (await waitForModule(filters.bySource('"onDropdownClick"'))) as Button;
+const Button = (await waitForModule(filters.bySource('"onDropdownClick"'))) as ButtonType;
+export default Button;
 
 const classes = (await waitForModule(filters.byProps("labelRow"))) as Record<string, string>;
 
@@ -30,6 +31,8 @@ type ButtonItemProps = {
   color?: string;
   disabled?: boolean;
 };
+
+export type ButtonItemType = React.FC<ButtonItemProps>;
 
 export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>) => {
   return (

@@ -6,8 +6,9 @@ const mod = (await waitForModule(
 )) as ObjectExports;
 const FormItemComp = getFunctionBySource("FocusRing", mod) as ReactComponent<{}>;
 
+export type FormItemType = ReactComponent<{}>;
 // Fragment because FormItem can only have one child.
-const FormItem: ReactComponent<{}> = (props) => (
+const FormItem: FormItemType = (props) => (
   <FormItemComp {...props}>
     <>{props.children}</>
   </FormItemComp>

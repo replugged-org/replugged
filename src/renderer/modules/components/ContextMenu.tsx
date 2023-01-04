@@ -2,7 +2,7 @@ import type { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack/index";
 import type { AnyFunction } from "../../../types/util";
 
-export type MenuType = Record<string, unknown> & {
+export type ContextMenuType = Record<string, unknown> & {
   ContextMenu: ReactComponent<{
     navId: string;
     onClose?: () => void;
@@ -48,7 +48,7 @@ const source = sourceStrings[rawMod?.id!].matchAll(/if\(\w+\.type===\w+\.(\w+)\)
 
 const Menu = {
   ContextMenu: getFunctionBySource("getContainerProps", menuMod as ObjectExports),
-} as MenuType;
+} as ContextMenuType;
 
 for (const [, identifier, type] of source) {
   Menu[componentMap[type]] = (rawMod.exports as Record<string, AnyFunction | undefined>)[

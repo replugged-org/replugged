@@ -23,37 +23,58 @@ function importTimeout<T extends ModuleExports>(
   );
 }
 
-export let Flex: typeof import("./Flex").default;
+import type { FlexType } from "./Flex";
+export type { FlexType };
+export let Flex: FlexType;
 importTimeout("Flex", import("./Flex"), (mod) => (Flex = mod.default));
 
-export let ContextMenu: typeof import("./ContextMenu").default;
+import type { ContextMenuType } from "./ContextMenu";
+export type { ContextMenuType };
+export let ContextMenu: ContextMenuType;
 importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mod.default));
 
-export let SwitchItem: typeof import("./SwitchItem").default;
+import type { SwitchItemType } from "./SwitchItem";
+export type { SwitchItemType };
+export let SwitchItem: SwitchItemType;
 importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.default));
 
-export let Modal: typeof import("./Modal").default;
+import type { ModalType } from "./Modal";
+export type { ModalType };
+export let Modal: ModalType;
 importTimeout("Modal", import("./Modal"), (mod) => (Modal = mod.default));
 
-export let Divider: typeof import("./Divider").default;
+import type { DividerType } from "./Divider";
+export type { DividerType };
+export let Divider: DividerType;
 importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
 
-export let Tooltip: typeof import("./Tooltip").default;
+import type { TooltipType } from "./Tooltip";
+export type { TooltipType };
+export let Tooltip: TooltipType;
 importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
 
-export let FormText: typeof import("./FormText").default;
+import type { FormTextType } from "./FormText";
+export type { FormTextType };
+export let FormText: FormTextType;
 importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.default));
 
-export let FormItem: typeof import("./FormItem").default;
+import type { FormItemType } from "./FormItem";
+export type { FormItemType };
+export let FormItem: FormItemType;
 importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
 
-export let Button: typeof import("./Button").Button;
-importTimeout("Button", import("./Button"), (mod) => (Button = mod.Button));
+import type { ButtonItemType, ButtonType } from "./Button";
+export type { ButtonType };
+export let Button: ButtonType;
+importTimeout("Button", import("./Button"), (mod) => (Button = mod.default));
 
-export let ButtonItem: typeof import("./Button").ButtonItem;
+export type { ButtonItemType };
+export let ButtonItem: ButtonItemType;
 importTimeout("Button", import("./Button"), (mod) => (ButtonItem = mod.ButtonItem));
 
-export let Category: typeof import("./Category").default;
+import type { CategoryType } from "./Category";
+export type { CategoryType };
+export let Category: CategoryType;
 importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
 
 /**
