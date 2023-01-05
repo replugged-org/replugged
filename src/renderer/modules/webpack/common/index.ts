@@ -64,7 +64,6 @@ export type { HighlightJS };
 export let hljs: typeof HighlightJS;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
-// eslint-disable-next-line node/no-extraneous-import
 import type Lodash from "lodash";
 export type { Lodash };
 /**
