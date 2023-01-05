@@ -89,17 +89,6 @@ import type ReactType from "react";
 export let React: typeof ReactType;
 importTimeout("React", import("./react"), (mod) => (React = mod.default));
 
-// export let router: typeof import("./router").default;
-// importTimeout("router", import("./router"), (mod) => (router = mod.default));
-
-// todo: needs types
-export let spotify: typeof import("./spotify").default;
-importTimeout("spotify", import("./spotify"), (mod) => (spotify = mod.default));
-
-// todo: needs types
-export let spotifySocket: typeof import("./spotifySocket").default;
-importTimeout("spotifySocket", import("./spotifySocket"), (mod) => (spotifySocket = mod.default));
-
 import type { Typing } from "./typing";
 export type { Typing };
 export let typing: Typing;
