@@ -1,4 +1,4 @@
-import type { ModuleExports, ObjectExports } from "../../../types";
+import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 enum ModalTransitionState {
@@ -17,12 +17,6 @@ export interface ModalOptions {
   onCloseRequest?: () => void;
   onCloseCallback?: () => void;
 }
-export type ModalClasses = ModuleExports & {
-  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
-  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
-  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
-  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
-};
 export interface ModalCompProps {
   children: React.ReactNode;
 }

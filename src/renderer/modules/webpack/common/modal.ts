@@ -1,4 +1,4 @@
-import { ModuleExports, ObjectExports } from "../../../../types/webpack";
+import { ObjectExports, RawModule } from "../../../../types/webpack";
 import { ReactComponent } from "../../../../types/util";
 import { filters, getBySource, getFunctionBySource, waitForModule } from "..";
 
@@ -21,12 +21,12 @@ export interface ModalOptions {
   onCloseCallback?: () => void;
 }
 
-export type ModalClasses = ModuleExports & {
-  Direction: Record<string, string>;
-  Align: Record<string, string>;
-  Justify: Record<string, string>;
-  Wrap: Record<string, string>;
-};
+export interface ModalClasses {
+  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
+  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
+  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
+  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
+}
 
 export interface ModalRootProps {
   transitionState?: ModalTransitionState;
@@ -61,7 +61,7 @@ export interface Modal {
 
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
 
-const classes: ModalClasses = getBySource("().justifyStart")!;
+const classes = getBySource<RawModule & ModalClasses>("().justifyStart")!;
 
 const modal = {
   openModal: getFunctionBySource<Modal["openModal"]>("onCloseRequest:null!=", mod as ObjectExports),

@@ -1,8 +1,7 @@
 import { filters, getExportsForProps, waitForModule } from "..";
-import { ModuleExports } from "../../../../types";
 import { Guild } from "discord-types/general";
 
-export type Guilds = ModuleExports & {
+export interface Guilds {
   getGuild: (guildId: string) => Guild | undefined;
   getGuildCount: () => number;
   getGuildId: () => string | undefined;
@@ -11,7 +10,7 @@ export type Guilds = ModuleExports & {
   getLastSelectedTimeout: () => unknown; // tbd
   getState: () => unknown; // tbd
   getTabsV2SelectedGuildId: () => string | undefined;
-};
+}
 
 const guilds: Guilds = {
   ...(await waitForModule(filters.byProps("getGuild", "getGuilds")).then(Object.getPrototypeOf)),
