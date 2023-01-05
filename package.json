@@ -24,7 +24,7 @@
     "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src; cp src/*.d.ts dist",
     "postpublish": "rm -rf dist; npm run build",
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
-    "docs:watch": "pnpm run docs -- --watch"
+    "docs:watch": "pnpm run docs --watch"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",
