@@ -1,4 +1,9 @@
-import electron, { contextBridge, ipcRenderer, webFrame } from "electron";
+import {
+  type BrowserWindowConstructorOptions,
+  contextBridge,
+  ipcRenderer,
+  webFrame,
+} from "electron";
 
 import { RepluggedIpcChannels, type RepluggedPlugin, type RepluggedTheme } from "./types";
 
@@ -35,6 +40,7 @@ const RepluggedNative = {
       (await RepluggedNative.settings.get("themes", "disabled")) ?? [],
     uninstall: async (themeName: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName), // whether theme was successfully uninstalled
+    openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_THEMES_FOLDER),
   },
 
   plugins: {
@@ -44,11 +50,13 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
     uninstall: async (pluginName: string): Promise<RepluggedPlugin> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName),
+    openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER),
   },
 
   quickCSS: {
     get: async () => ipcRenderer.invoke(RepluggedIpcChannels.GET_QUICK_CSS),
     save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css),
+    openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_QUICKCSS_FOLDER),
   },
 
   settings: {
@@ -66,10 +74,11 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
     endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
       ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
+    openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER),
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  openBrowserWindow: (opts: electron.BrowserWindowConstructorOptions) => {}, // later
+  openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };
