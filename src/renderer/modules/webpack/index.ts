@@ -51,7 +51,7 @@ export let signalStart: () => void;
  */
 export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
 
-export const sourceStrings: Record<number, string> = {};
+const sourceStrings: Record<number, string> = {};
 
 const listeners = new Set<LazyListener>();
 const plaintextPatches: RawPlaintextPatch[] = [];
