@@ -17,7 +17,7 @@ export type CategoryType = React.FC<CategoryProps>;
 /**
  * A category. It's opened state, by default, is automatically handled by the component. `open` and `onChange` both must be specified to override.
  */
-const Category: CategoryType = (props: React.PropsWithChildren<CategoryProps>) => {
+export default ((props: React.PropsWithChildren<CategoryProps>) => {
   const [open, setOpen] = React.useState(props.open || false);
 
   const handleClick = () => {
@@ -74,6 +74,4 @@ const Category: CategoryType = (props: React.PropsWithChildren<CategoryProps>) =
       </FormItem>
     </div>
   );
-};
-
-export default Category;
+}) as CategoryType;

@@ -10,12 +10,10 @@ export interface Channels {
   getVoiceChannelId: (unknownParam?: string) => string | undefined; // tbd
 }
 
-const channels: Channels = await waitForModule(
+export default (await waitForModule(
   filters.byProps("getChannelId", "getLastSelectedChannelId", "getVoiceChannelId"),
 ).then((mod) =>
   Object.getPrototypeOf(
     getExportsForProps(mod, ["getChannelId", "getLastSelectedChannelId", "getVoiceChannelId"]),
   ),
-);
-
-export default channels;
+)) as Channels;

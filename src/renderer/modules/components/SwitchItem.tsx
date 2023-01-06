@@ -14,6 +14,4 @@ export type SwitchItemType = ReactComponent<{
 /**
  * A toggleable SwitchItem
  */
-const SwitchItem = (await waitForModule(filters.bySource(").dividerDefault"))) as SwitchItemType;
-
-export default SwitchItem;
+export default (await waitForModule(filters.bySource(").dividerDefault"))) as SwitchItemType;

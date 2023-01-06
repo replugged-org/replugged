@@ -1,6 +1,4 @@
 import { filters, waitForModule } from "..";
 import type ReactDOM from "react-dom";
 
-const reactDom: typeof ReactDOM = await waitForModule(filters.byProps("createPortal", "flushSync"));
-
-export default reactDom;
+export default await waitForModule<typeof ReactDOM>(filters.byProps("createPortal", "flushSync"));

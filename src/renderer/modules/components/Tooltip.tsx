@@ -16,6 +16,5 @@ const tooltipMod = await waitForModule<Record<string, React.FC>>(
   filters.bySource(/shouldShowTooltip:!1/),
 );
 
-const Tooltip = tooltipMod && getFunctionBySource<React.FC>(/shouldShowTooltip:!1/, tooltipMod);
-
-export default Tooltip as TooltipType;
+export default tooltipMod &&
+  (getFunctionBySource<React.FC>(/shouldShowTooltip:!1/, tooltipMod) as TooltipType);

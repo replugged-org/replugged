@@ -63,13 +63,14 @@ const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
 
 const classes = getBySource<RawModule & ModalClasses>("().justifyStart")!;
 
-const modal = {
-  openModal: getFunctionBySource<Modal["openModal"]>("onCloseRequest:null!=", mod as ObjectExports),
-  closeModal: getFunctionBySource<Modal["closeModal"]>("onCloseCallback&&", mod as ObjectExports),
+export default {
+  openModal: getFunctionBySource<Modal["openModal"]>(
+    "onCloseRequest:null!=",
+    mod as ObjectExports,
+  )!,
+  closeModal: getFunctionBySource<Modal["closeModal"]>("onCloseCallback&&", mod as ObjectExports)!,
   Direction: classes?.Direction,
   Align: classes?.Align,
   Justify: classes?.Justify,
   Wrap: classes?.Wrap,
-};
-
-export default modal as Modal;
+} as Modal;

@@ -141,8 +141,6 @@ export interface Messages {
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 }
 
-const messages = await waitForModule<RawModule & Messages>(
+export default await waitForModule<RawModule & Messages>(
   filters.byProps("sendMessage", "editMessage", "deleteMessage"),
 );
-
-export default messages;

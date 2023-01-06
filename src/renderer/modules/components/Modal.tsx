@@ -39,12 +39,10 @@ export type ModalType = {
 
 const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"));
 
-const modal = {
+export default {
   ModalRoot: getFunctionBySource("().root", mod as ObjectExports),
   ModalHeader: getFunctionBySource("().header", mod as ObjectExports),
   ModalContent: getFunctionBySource("().content", mod as ObjectExports),
   ModalFooter: getFunctionBySource("().footerSeparator", mod as ObjectExports),
   ModalCloseButton: getFunctionBySource("().closeWithCircleBackground", mod as ObjectExports),
 } as ModalType;
-
-export default modal;

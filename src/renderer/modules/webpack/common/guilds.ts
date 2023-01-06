@@ -12,11 +12,9 @@ export interface Guilds {
   getTabsV2SelectedGuildId: () => string | undefined;
 }
 
-const guilds: Guilds = {
+export default {
   ...(await waitForModule(filters.byProps("getGuild", "getGuilds")).then(Object.getPrototypeOf)),
   ...(await waitForModule(filters.byProps("getGuildId", "getLastSelectedGuildId")).then((mod) =>
     Object.getPrototypeOf(getExportsForProps(mod, ["getGuildId", "getLastSelectedGuildId"])),
   )),
-};
-
-export default guilds;
+} as Guilds;
