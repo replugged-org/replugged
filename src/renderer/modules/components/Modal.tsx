@@ -1,4 +1,4 @@
-import type { ObjectExports } from "../../../types";
+import type { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 enum ModalTransitionState {
@@ -30,11 +30,11 @@ export interface ModalRootProps extends ModalCompProps {
 
 // todo: make props type for each component
 export type ModalType = {
-  ModalRoot: (props: ModalRootProps) => React.ComponentType;
-  ModalHeader: (props: ModalCompProps) => React.ComponentType;
-  ModalContent: (props: ModalCompProps) => React.ComponentType;
-  ModalFooter: (props: ModalCompProps) => React.ComponentType;
-  ModalCloseButton: (props: ModalCompProps) => React.ComponentType;
+  ModalRoot: ReactComponent<ModalRootProps>;
+  ModalHeader: ReactComponent<ModalCompProps>;
+  ModalContent: ReactComponent<ModalCompProps>;
+  ModalFooter: ReactComponent<ModalCompProps>;
+  ModalCloseButton: ReactComponent<ModalCompProps>;
 };
 
 const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"));

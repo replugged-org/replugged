@@ -16,8 +16,7 @@ export type ButtonType = ReactComponent<{
   Looks: Record<string, string>;
 };
 
-const Button = (await waitForModule(filters.bySource('"onDropdownClick"'))) as ButtonType;
-export default Button;
+export const Button = (await waitForModule(filters.bySource('"onDropdownClick"'))) as ButtonType;
 
 const classes = (await waitForModule(filters.byProps("labelRow"))) as Record<string, string>;
 
@@ -32,7 +31,7 @@ type ButtonItemProps = {
   disabled?: boolean;
 };
 
-export type ButtonItemType = React.FC<ButtonItemProps>;
+export type ButtonItemType = React.FC<React.PropsWithChildren<ButtonItemProps>>;
 
 export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>) => {
   return (
@@ -47,8 +46,8 @@ export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>) => {
             </div>
             <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
           </div>
-          <Tooltip
-            text={props.tooltipText!}
+          {props.tooltipText && <Tooltip
+            text={props.tooltipText}
             position={props.tooltipPosition}
             shouldShow={Boolean(props.tooltipText)}>
             {(props_: React.HTMLAttributes<HTMLButtonElement>) => (
@@ -61,7 +60,7 @@ export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>) => {
                 {props.button}
               </Button>
             )}
-          </Tooltip>
+          </Tooltip>}
         </div>
         <Divider className={classes.dividerDefault} />
       </FormItem>

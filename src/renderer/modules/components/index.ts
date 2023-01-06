@@ -56,7 +56,7 @@ importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
 import type { FormTextType } from "./FormText";
 export type { FormTextType };
 export let FormText: FormTextType;
-importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.default));
+importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.FormText));
 
 import type { FormItemType } from "./FormItem";
 export type { FormItemType };
@@ -66,7 +66,7 @@ importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default
 import type { ButtonItemType, ButtonType } from "./Button";
 export type { ButtonType };
 export let Button: ButtonType;
-importTimeout("Button", import("./Button"), (mod) => (Button = mod.default));
+importTimeout("Button", import("./Button"), (mod) => (Button = mod.Button));
 
 export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;

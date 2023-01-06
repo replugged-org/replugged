@@ -28,7 +28,7 @@ export type FormTextType = Record<
   | string,
   ReactComponent<{}>
 >;
-const FormText: FormTextType = {
+export const FormText: FormTextType = {
   DEFAULT: () => null,
   DESCRIPTION: () => null,
   ERROR: () => null,
@@ -46,5 +46,3 @@ Object.keys(types).forEach((key: string) => {
     </FormTextComp>
   );
 });
-
-export default FormText;
