@@ -3,7 +3,7 @@
 import type { WebpackChunkGlobal } from "./types/discord";
 import * as replugged from "./renderer/replugged";
 import type { RepluggedNativeType } from "./preload";
-// eslint-disable-next-line node/no-extraneous-import
+ 
 import type Lodash from "lodash";
 
 declare global {
