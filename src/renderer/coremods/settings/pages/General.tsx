@@ -1,4 +1,4 @@
-import React from "../../../modules/webpack/common/react";
+import React from "@common/react";
 
 export const General = () => {
   const [hue, setHue] = React.useState(0);
