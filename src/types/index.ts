@@ -1,8 +1,8 @@
-import type electron from "electron";
+import type { WebContents } from "electron";
 import type { CommandOptions, ConnectedAccount } from "./discord";
 import type { PluginManifest, ThemeManifest } from "./addon";
 
-export type RepluggedWebContents = electron.WebContents & {
+export type RepluggedWebContents = WebContents & {
   originalPreload?: string;
 };
 

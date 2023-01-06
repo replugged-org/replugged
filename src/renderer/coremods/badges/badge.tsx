@@ -5,7 +5,7 @@ import {
   getFunctionBySource,
   waitForModule,
 } from "../../modules/webpack";
-import React from "../../modules/webpack/common/react";
+import React from "@common/react";
 import "./badge.css";
 import Badges from "./badges";
 

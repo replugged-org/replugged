@@ -1,6 +1,6 @@
 import { filters, waitForModule } from "../webpack";
 import { Divider, Flex, FormItem, FormText } from ".";
-import React from "../webpack/common/react";
+import React from "@common/react";
 
 const classes = (await waitForModule(filters.byProps("labelRow"))) as Record<string, string>;
 

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { filters, waitForModule } from "..";
 
-import { RawModule } from "../../../../types";
-import { Message } from "discord-types/general";
+import type { RawModule } from "../../../../types";
+import type { Message } from "discord-types/general";
 
 export interface MessageReference {
   guild_id?: string;

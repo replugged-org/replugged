@@ -1,5 +1,5 @@
-import { ObjectExports, RawModule } from "../../../../types/webpack";
-import { ReactComponent } from "../../../../types/util";
+import type { ObjectExports, RawModule } from "../../../../types/webpack";
+import type { ReactComponent } from "../../../../types/util";
 import { filters, getBySource, getFunctionBySource, waitForModule } from "..";
 
 enum ModalTransitionState {

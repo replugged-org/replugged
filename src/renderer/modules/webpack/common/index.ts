@@ -1,4 +1,4 @@
-import { ModuleExports } from "../../../../types";
+import type { ModuleExports } from "../../../../types";
 import { error } from "../../logger";
 
 const modulePromises: Array<Promise<void>> = [];

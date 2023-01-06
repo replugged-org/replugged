@@ -1,5 +1,5 @@
 import { filters, getExportsForProps, waitForModule } from "..";
-import { Guild } from "discord-types/general";
+import type { Guild } from "discord-types/general";
 
 export interface Guilds {
   getGuild: (guildId: string) => Guild | undefined;

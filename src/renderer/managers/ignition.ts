@@ -1,7 +1,7 @@
 import { signalStart, waitForReady } from "../modules/webpack";
 import { log } from "../modules/logger";
 
-import { ready as commonReady } from "../modules/webpack/common";
+import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
