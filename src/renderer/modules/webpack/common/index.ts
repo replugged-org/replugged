@@ -64,12 +64,10 @@ export type { HighlightJS };
 export let hljs: typeof HighlightJS;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
-import type Lodash from "lodash";
-export type { Lodash };
 /**
  * @see {@link https://lodash.com/docs}
  */
-export let lodash: typeof Lodash;
+export let lodash: typeof window._;
 importTimeout("lodash", import("./lodash"), (mod) => (lodash = mod.default));
 
 import type { Messages } from "./messages";
@@ -82,12 +80,17 @@ export type { Modal };
 export let modal: Modal;
 importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
 
-import type ReactType from "react";
 /**
  * @see {@link https://reactjs.org/docs/react-api.html}
  */
-export let React: typeof ReactType;
+export let React: typeof import("react");
 importTimeout("React", import("./react"), (mod) => (React = mod.default));
+
+/**
+ * @see {@link https://reactjs.org/docs/react-dom.html}
+ */
+export let ReactDOM: typeof import("react-dom");
+importTimeout("ReactDOM", import("./react-dom"), (mod) => (ReactDOM = mod.default));
 
 import type { Typing } from "./typing";
 export type { Typing };
