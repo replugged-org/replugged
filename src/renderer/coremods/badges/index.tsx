@@ -105,7 +105,10 @@ export async function start(): Promise<void> {
         return res;
       }
 
-      const badgeTypes = [
+      const badgeTypes: Array<{
+        type: Exclude<keyof APIBadges, "custom">;
+        component: React.MemoExoticComponent<any>;
+      }> = [
         { type: "staff", component: Badge.Staff },
         { type: "support", component: Badge.Support },
         { type: "developer", component: Badge.Developer },
