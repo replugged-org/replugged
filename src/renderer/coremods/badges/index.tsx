@@ -122,14 +122,10 @@ export async function start(): Promise<void> {
         );
       }
 
-      Object.entries(badges).forEach(([type, value]) => {
+      badgeTypes.forEach(({ type, component }) => {
+        const value = badges[type];
         if (value) {
-          const component = badgeTypes.find((badge) => badge.type === type)?.component;
-          if (component) {
-            res.props.children.push(
-              React.createElement(component, { color: badges.custom?.color }),
-            );
-          }
+          res.props.children.push(React.createElement(component, { color: badges.custom?.color }));
         }
       });
 
