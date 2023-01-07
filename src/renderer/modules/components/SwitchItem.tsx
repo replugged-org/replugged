@@ -4,7 +4,7 @@ import { filters, waitForModule } from "../webpack";
 export type SwitchItemType = ReactComponent<{
   note?: string;
   value: boolean;
-  onChange: () => void;
+  onChange: (e: boolean) => void;
   disabled?: boolean;
   style?: React.CSSProperties;
   className?: string;
