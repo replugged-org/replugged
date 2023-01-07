@@ -3,7 +3,7 @@ import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 import { Logger } from "../modules/logger";
 
-const logger = Logger.coremod("updater");
+const logger = Logger.coremod("Updater");
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type UpdateSettings = {
@@ -121,27 +121,27 @@ export async function checkUpdate(
   });
 }
 
-export async function installUpdate(id: string, force = false, verbose = true): Promise<void> {
+export async function installUpdate(id: string, force = false, verbose = true): Promise<boolean> {
   const entity = pluginManager.plugins.get(id) || (await themeManager.get(id));
   if (!entity) {
     logger.error(`Entity ${id} not found`);
-    return;
+    return false;
   }
   if (!entity.path.endsWith(".asar")) {
     if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
-    return;
+    return false;
   }
 
   const updateSettings = getUpdateSettings(id);
 
   if (!force && !updateSettings.available) {
     if (verbose) logger.log(`Entity ${id} has no update available`);
-    return;
+    return false;
   }
 
   if (!updateSettings.url) {
     logger.error(`Entity ${id} has no update URL`);
-    return;
+    return false;
   }
 
   // install new
@@ -153,7 +153,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
 
   if (!res.success) {
     logger.error(`Update install failed: ${res.error}`);
-    return;
+    return false;
   }
 
   const newHash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
@@ -165,22 +165,24 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     hash: newHash,
   });
 
-  // start new
-  try {
-    switch (entity.manifest.type) {
-      case "replugged-plugin":
-        await pluginManager.reload(`${id}.asar`);
-        break;
-      case "replugged-theme":
-        themeManager.reload(`${id}.asar`);
-        break;
-    }
-  } catch (err) {
-    logger.error(`Update install failed: ${err}`);
-    return;
-  }
+  // Temporarily disabled until we can figure out how to properly reload compiled plugins
+  // try {
+  //   switch (entity.manifest.type) {
+  //     case "replugged-plugin":
+  //       await pluginManager.reload(`${id}.asar`);
+  //       break;
+  //     case "replugged-theme":
+  //       themeManager.reload(`${id}.asar`);
+  //       break;
+  //   }
+  // } catch (err) {
+  //   logger.error(`Update install failed: ${err}`);
+  //   return;
+  // }
 
   logger.log(`Entity ${id} updated successfully`);
+
+  return true;
 }
 
 export async function checkAllUpdates(
@@ -208,12 +210,14 @@ export async function installAllUpdates(force = false, verbose = false): Promise
   const plugins = Array.from(pluginManager.plugins.values());
   const themes = await themeManager.list();
 
-  logger.log("Installing updates");
-
-  await Promise.all([
-    plugins.map((plugin) => installUpdate(plugin.manifest.id, force, verbose)),
-    themes.map((theme) => installUpdate(theme.manifest.id, force, verbose)),
+  const successes = await Promise.all([
+    ...plugins.map((plugin) => installUpdate(plugin.manifest.id, force, verbose)),
+    ...themes.map((theme) => installUpdate(theme.manifest.id, force, verbose)),
   ]);
 
-  logger.log("All updates installed");
+  if (successes.some(Boolean)) {
+    logger.warn("Please fully quit and restart Replugged to apply updates");
+  } else {
+    logger.log("No updates installed");
+  }
 }
