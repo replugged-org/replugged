@@ -1,8 +1,12 @@
 import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
-import { ipcMain } from "electron";
+import { ipcMain, shell } from "electron";
 import { RepluggedIpcChannels } from "../../types";
-import { SettingsMap, SettingsTransactionHandler, TransactionHandler } from "../../types/settings";
+import type {
+  SettingsMap,
+  SettingsTransactionHandler,
+  TransactionHandler,
+} from "../../types/settings";
 import { CONFIG_PATHS } from "src/util";
 
 const SETTINGS_DIR = CONFIG_PATHS.settings;
@@ -78,3 +82,5 @@ ipcMain.handle(RepluggedIpcChannels.DELETE_SETTING, (_, namespace: string, key: 
 ipcMain.handle(RepluggedIpcChannels.GET_ALL_SETTINGS, async (_, namespace: string) =>
   readTransaction(namespace, (settings) => Object.fromEntries(settings.entries())),
 );
+
+ipcMain.on(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER, () => shell.openPath(SETTINGS_DIR));

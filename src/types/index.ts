@@ -1,8 +1,8 @@
-import type electron from "electron";
+import type { WebContents } from "electron";
 import type { CommandOptions, ConnectedAccount } from "./discord";
 import type { PluginManifest, ThemeManifest } from "./addon";
 
-export type RepluggedWebContents = electron.WebContents & {
+export type RepluggedWebContents = WebContents & {
   originalPreload?: string;
 };
 
@@ -27,6 +27,10 @@ export enum RepluggedIpcChannels {
   CHECK_UPDATE = "REPLUGGED_CHECK_UPDATE",
   INSTALL_UPDATE = "REPLUGGED_INSTALL_UPDATE",
   GET_HASH = "REPLUGGED_GET_HASH",
+  OPEN_PLUGINS_FOLDER = "REPLUGGED_OPEN_PLUGINS_FOLDER",
+  OPEN_THEMES_FOLDER = "REPLUGGED_OPEN_THEMES_FOLDER",
+  OPEN_SETTINGS_FOLDER = "REPLUGGED_OPEN_SETTINGS_FOLDER",
+  OPEN_QUICKCSS_FOLDER = "REPLUGGED_OPEN_QUICKCSS_FOLDER",
 }
 
 export interface RepluggedAnnouncement {

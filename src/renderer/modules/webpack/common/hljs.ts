@@ -1,8 +1,6 @@
-import type HighlightJS from "highlightjs";
+import HighlightJS from "highlightjs";
 import { filters, waitForModule } from "..";
 
-const hljs: typeof HighlightJS = await waitForModule(
+export default await waitForModule<typeof HighlightJS>(
   filters.byProps("initHighlighting", "highlight"),
 );
-
-export default hljs;

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { filters, waitForModule } from "..";
 
-import { ModuleExports } from "../../../../types";
-import { Message } from "discord-types/general";
+import type { RawModule } from "../../../../types";
+import type { Message } from "discord-types/general";
 
 export interface MessageReference {
   guild_id?: string;
@@ -77,7 +77,7 @@ export interface TrackInviteOptions {
   overrideProperties: unknown; // tbd
 }
 
-export type Messages = ModuleExports & {
+export interface Messages {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => void;
   deleteMessage: (channelId: string, messageId: string) => void;
@@ -139,10 +139,8 @@ export type Messages = ModuleExports & {
     options: OutgoingMessageOptions,
   ) => void;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
-};
+}
 
-const messages: Messages = await waitForModule(
+export default await waitForModule<RawModule & Messages>(
   filters.byProps("sendMessage", "editMessage", "deleteMessage"),
 );
-
-export default messages;
