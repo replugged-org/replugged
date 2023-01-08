@@ -8,7 +8,7 @@ export enum ActivityActionTypes {
   JOIN = 1,
   LISTEN = 3,
   WATCH = 4,
-  JOIN_REQUEST = 5
+  JOIN_REQUEST = 5,
 }
 
 export type Properties = Record<string, unknown>;

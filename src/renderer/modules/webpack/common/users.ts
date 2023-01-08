@@ -36,7 +36,9 @@ export interface Users {
 }
 
 export default {
-  ...(await waitForModule(filters.byProps("getUser", "getCurrentUser")).then(Object.getPrototypeOf)),
+  ...(await waitForModule(filters.byProps("getUser", "getCurrentUser")).then(
+    Object.getPrototypeOf,
+  )),
   ...(await waitForModule(filters.byProps("getTrueMember", "getMember")).then((mod) =>
     Object.getPrototypeOf(getExportsForProps(mod, ["getTrueMember", "getMember"])),
   )),

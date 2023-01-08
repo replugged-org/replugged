@@ -59,7 +59,7 @@ export declare class Store {
   public constructor(dispatcher: Dispatcher, actions: ActionHandlerRecord);
 
   public static destroy(): void;
-  public static getAll(): Store[]
+  public static getAll(): Store[];
   public static initialize(): void;
   public static initialized: Promise<boolean | undefined>;
 
@@ -104,7 +104,7 @@ type Migration = () => void;
 export declare class PersistedStore extends Store {
   public static allPersistKeys: Set<string>;
 
-  public static clearAll(options: ClearOptions) : Promise<void>;
+  public static clearAll(options: ClearOptions): Promise<void>;
   public static clearPersistQueue(options: ClearOptions): void;
   public static destroy(): void;
 
@@ -148,7 +148,7 @@ export interface Flux {
   connectStores<OuterProps, InnerProps>(
     stores: Store[],
     callback: (props: OuterProps) => InnerProps,
-    options?: { forwardRef: boolean }
+    options?: { forwardRef: boolean },
   ): (component: ReactComponent<InnerProps & OuterProps>) => React.ReactElement<OuterProps>;
 
   destroy(): void;
@@ -156,6 +156,4 @@ export interface Flux {
   get initialized(): Promise<boolean | undefined>;
 }
 
-export default await waitForModule<RawModule & Flux>(
-  filters.byProps("Store", "connectStores")
-);
+export default await waitForModule<RawModule & Flux>(filters.byProps("Store", "connectStores"));
