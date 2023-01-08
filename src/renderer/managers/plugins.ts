@@ -154,18 +154,18 @@ export async function runPlaintextPatches(): Promise<void> {
  * Some plugins may require Discord to be reloaded to apply changes.
  */
 export async function reload(id: string): Promise<void> {
-  const plugin = plugins.get(id);
+  const plugin = plugins.get(id) || Array.from(plugins.values()).find((x) => x.path === id);
   if (!plugin) {
     error("Plugin", id, void 0, "Plugin does not exist or is not loaded");
     return;
   }
-  await stop(id);
-  plugins.delete(id);
-  const newPlugin = await window.RepluggedNative.plugins.get(id);
+  await stop(plugin.manifest.id);
+  plugins.delete(plugin.manifest.id);
+  const newPlugin = await window.RepluggedNative.plugins.get(plugin.path);
   if (newPlugin) {
     register(newPlugin);
     await start(newPlugin.manifest.id);
   } else {
-    error("Plugin", id, void 0, "Plugin unloaded but no longer exists");
+    error("Plugin", plugin.manifest.id, void 0, "Plugin unloaded but no longer exists");
   }
 }

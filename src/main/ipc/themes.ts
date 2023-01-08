@@ -50,7 +50,6 @@ ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedThem
           withFileTypes: true,
         })
       ).map(async (f) => {
-        console.log(f);
         if (isFileATheme(f, f.name)) return f;
         if (f.isSymbolicLink()) {
           const actualPath = await readlink(join(THEMES_DIR, f.name));

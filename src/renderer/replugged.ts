@@ -46,6 +46,11 @@ export * as ignition from "./managers/ignition";
  */
 export * as plugins from "./managers/plugins";
 
+/**
+ * @internal
+ */
+export * as updater from "./managers/updater";
+
 export * as util from "./util";
 
 export * as types from "../types";
