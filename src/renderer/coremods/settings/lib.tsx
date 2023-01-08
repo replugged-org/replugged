@@ -52,6 +52,9 @@ export const settingsTools: SettingsTools = {
 
     return sections;
   },
+  removeAfter(sectionName) {
+    delete settingsTools.rpSectionsAfter[sectionName];
+  },
 };
 
 export function insertSections(sections: SectionType[]) {
