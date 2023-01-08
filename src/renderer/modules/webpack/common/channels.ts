@@ -1,13 +1,19 @@
 import { filters, getExportsForProps, waitForModule } from "..";
+import type { Store } from "./flux";
 
-export interface Channels {
-  getChannelId: (unknownParam?: string) => string | undefined;
-  getCurrentlySelectedChannelId: (unknownParam?: string) => string | undefined; // tbd
-  getLastChannelFollowingDestination: () => unknown; // tbd
-  getLastSelectedChannelId: (unknownParam: unknown) => string | undefined; // tbd
-  getLastSelectedChannels: (unknownParam: unknown) => unknown; // tbd
-  getMostRecentSelectedTextChannelId: (unknownParam: unknown) => string | undefined; // tbd
-  getVoiceChannelId: (unknownParam?: string) => string | undefined; // tbd
+export interface LastChannelFollowingDestination {
+  channelId: string;
+  guildId: string;
+}
+
+export interface Channels extends Store {
+  getChannelId: (guildId?: string) => string | undefined;
+  getCurrentlySelectedChannelId: (guildId?: string) => string | undefined;
+  getLastChannelFollowingDestination: () => LastChannelFollowingDestination;
+  getLastSelectedChannelId: (guildId?: string) => string | undefined;
+  getLastSelectedChannels: (guildId?: string) => string | undefined;
+  getMostRecentSelectedTextChannelId: (guildId?: string) => string | undefined;
+  getVoiceChannelId: () => string | undefined;
 }
 
 export default (await waitForModule(

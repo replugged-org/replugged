@@ -97,6 +97,11 @@ export type { Typing };
 export let typing: Typing;
 importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 
+import type { Users } from "./users";
+export type { Users };
+export let users: Users;
+importTimeout("users", import("./users"), (mod) => (users = mod.default));
+
 /**
  * @internal
  * @hidden
