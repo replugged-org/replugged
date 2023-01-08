@@ -8,7 +8,7 @@ export default [
         replace: "$&return;",
       },
       {
-        match: /crossDomainError=function(){/,
+        match: /crossDomainError=function\(\){/,
         replace: "$&return;",
       },
     ],
