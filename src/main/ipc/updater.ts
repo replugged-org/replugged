@@ -42,6 +42,7 @@ async function getFolderHash(path: string): Promise<string> {
 
 async function github(
   identifier: string,
+  id: string,
 ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> {
   const [owner, repo] = identifier.split("/");
   if (!owner || !repo) {
@@ -66,7 +67,8 @@ async function github(
     };
   }
 
-  const asset = res.data.assets.find((asset) => asset.name.endsWith(".asar"));
+  const asset = res.data.assets.find((asset) => asset.name === `${id}.asar`);
+
   if (!asset) {
     return {
       success: false,
@@ -83,7 +85,7 @@ async function github(
 
 const handlers: Record<
   string,
-  (identifier: string) => Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure>
+  (identifier: string, id: string) => Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure>
 > = {
   github,
 };
@@ -94,6 +96,7 @@ ipcMain.handle(
     _,
     type: string,
     identifier: string,
+    id: string,
   ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> => {
     if (!(type in handlers)) {
       return {
@@ -102,7 +105,7 @@ ipcMain.handle(
       };
     }
 
-    return handlers[type](identifier);
+    return handlers[type](identifier, id);
   },
 );
 

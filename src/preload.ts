@@ -68,8 +68,9 @@ const RepluggedNative = {
     check: async (
       type: string,
       repo: string,
+      id: string,
     ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.CHECK_UPDATE, type, repo),
+      ipcRenderer.invoke(RepluggedIpcChannels.CHECK_UPDATE, type, repo, id),
     install: async (
       type: UpdaterType,
       path: string,

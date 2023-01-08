@@ -75,7 +75,7 @@ export async function checkUpdate(
     return;
   }
 
-  const res = await window.RepluggedNative.updater.check(updater.type, updater.id);
+  const res = await window.RepluggedNative.updater.check(updater.type, updater.id, id);
 
   if (!res.success) {
     logger.error(`Update check failed: ${res.error}`);
