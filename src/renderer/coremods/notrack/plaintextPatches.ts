@@ -7,6 +7,10 @@ export default [
         match: /window\.DiscordSentry=function\(\){/,
         replace: "$&return;",
       },
+      {
+        match: /crossDomainError=function(){/,
+        replace: "$&return;",
+      },
     ],
   },
 ] as PlaintextPatch[];
