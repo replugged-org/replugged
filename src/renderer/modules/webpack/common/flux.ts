@@ -17,8 +17,6 @@ type ActionHandlerRecord = {
 };
 
 export declare class Emitter {
-  public constructor();
-
   public static changeSentinel: number;
   public static changedStores: Set<Store>;
   public static isBatchEmitting: boolean;
@@ -31,6 +29,7 @@ export declare class Emitter {
   public destroy(): void;
 
   public emit(): void;
+  public emitReactOnce(): void;
   public emitNonReactOnce(): void;
 
   public getChangeSentinel(): number;
@@ -79,11 +78,11 @@ export declare class Store {
   public syncWith(stores: Store[], func: () => boolean, timeout?: number): void;
   public waitFor(...stores: Store[]): void;
 
-  public addChangeListener(listener: Callback): void;
-  public addConditionalChangeListener(listener: Callback, condition: boolean): void;
-  public addReactChangeListener(listener: Callback): void;
-  public removeChangeListener(listener: Callback): void;
-  public removeReactChangeListener(listener: Callback): void;
+  private addChangeListener(listener: Callback): void;
+  private addConditionalChangeListener(listener: Callback, condition: boolean): void;
+  private addReactChangeListener(listener: Callback): void;
+  private removeChangeListener(listener: Callback): void;
+  private removeReactChangeListener(listener: Callback): void;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   public __getLocalVars(): Record<string, unknown>;
@@ -136,12 +135,12 @@ export declare class PersistedStore extends Store {
   public persist(): void;
 }
 
-export type DeviceSettingsStore = new () => PersistedStore;
-export type OfflineCacheStore = new () => PersistedStore;
+export type DeviceSettingsStore = typeof PersistedStore;
+export type OfflineCacheStore = typeof PersistedStore;
 
 export interface Flux {
   DeviceSettingsStore: DeviceSettingsStore;
-  Emitter: typeof Emitter;
+  Emitter: Emitter;
   OfflineCacheStore: OfflineCacheStore;
   PersistedStore: typeof PersistedStore;
   Store: typeof Store;
