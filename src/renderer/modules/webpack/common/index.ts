@@ -38,8 +38,9 @@ export type { ContextMenu };
 export let contextMenu: ContextMenu;
 importTimeout("contextMenu", import("./contextMenu"), (mod) => (contextMenu = mod.default));
 
-// Todo: needs types;
-export let flux: typeof import("./flux").default;
+import type { Flux } from "./flux";
+export type { Flux };
+export let flux: Flux;
 importTimeout("flux", import("./flux"), (mod) => (flux = mod.default));
 
 import type { FluxDispatcher } from "./fluxDispatcher";
@@ -96,6 +97,11 @@ import type { Typing } from "./typing";
 export type { Typing };
 export let typing: Typing;
 importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
+
+import type { Users } from "./users";
+export type { Users };
+export let users: Users;
+importTimeout("users", import("./users"), (mod) => (users = mod.default));
 
 /**
  * @internal
