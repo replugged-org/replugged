@@ -22,15 +22,9 @@ export interface Guilds extends Store {
 }
 
 const guilds: Guilds = {
-  ...(await waitForModule(filters.byProps("getGuild", "getGuilds")).then(
-    Object.getPrototypeOf
-  )),
-  ...(await waitForModule(
-    filters.byProps("getGuildId", "getLastSelectedGuildId")
-  ).then((mod) =>
-    Object.getPrototypeOf(
-      getExportsForProps(mod, ["getGuildId", "getLastSelectedGuildId"])
-    )
+  ...(await waitForModule(filters.byProps("getGuild", "getGuilds")).then(Object.getPrototypeOf)),
+  ...(await waitForModule(filters.byProps("getGuildId", "getLastSelectedGuildId")).then((mod) =>
+    Object.getPrototypeOf(getExportsForProps(mod, ["getGuildId", "getLastSelectedGuildId"])),
   )),
 };
 
