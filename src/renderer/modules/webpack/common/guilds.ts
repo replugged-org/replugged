@@ -20,9 +20,18 @@ export interface Guilds extends Store {
   isLoaded: () => boolean;
 }
 
-export default {
+const guilds: Guilds = {
   ...(await waitForModule(filters.byProps("getGuild", "getGuilds")).then(Object.getPrototypeOf)),
   ...(await waitForModule(filters.byProps("getGuildId", "getLastSelectedGuildId")).then((mod) =>
     Object.getPrototypeOf(getExportsForProps(mod, ["getGuildId", "getLastSelectedGuildId"])),
   )),
-} as Guilds;
+};
+
+export function getCurrentGuild(): Guild | undefined {
+  return guilds.getGuild(guilds.getGuildId());
+}
+
+export default {
+  ...guilds,
+  getCurrentGuild,
+}

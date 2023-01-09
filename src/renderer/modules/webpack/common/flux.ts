@@ -62,11 +62,11 @@ export declare class Store {
   public static initialize(): void;
   public static initialized: Promise<boolean | undefined>;
 
-  private _isInitialized: boolean;
-  private _dispatchToken: DispatchToken;
-  private _dispatcher: Dispatcher;
-  private _changeCallbacks: Callbacks;
-  private _reactChangeCallbacks: Callbacks;
+  public _isInitialized: boolean;
+  public _dispatchToken: DispatchToken;
+  public _dispatcher: Dispatcher;
+  public _changeCallbacks: Callbacks;
+  public _reactChangeCallbacks: Callbacks;
 
   public initialize(): void;
   public initializeIfNeeded(): void;
@@ -78,11 +78,11 @@ export declare class Store {
   public syncWith(stores: Store[], func: () => boolean, timeout?: number): void;
   public waitFor(...stores: Store[]): void;
 
-  private addChangeListener(listener: Callback): void;
-  private addConditionalChangeListener(listener: Callback, condition: boolean): void;
-  private addReactChangeListener(listener: Callback): void;
-  private removeChangeListener(listener: Callback): void;
-  private removeReactChangeListener(listener: Callback): void;
+  public addChangeListener(listener: Callback): void;
+  public addConditionalChangeListener(listener: Callback, condition: boolean): void;
+  public addReactChangeListener(listener: Callback): void;
+  public removeChangeListener(listener: Callback): void;
+  public removeReactChangeListener(listener: Callback): void;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   public __getLocalVars(): Record<string, unknown>;
@@ -124,8 +124,8 @@ export declare class PersistedStore extends Store {
   public static throttleDelay: number;
   public static userAgnosticPersistKeys: Set<string>;
 
-  private static _writePromises: Map<string, any>;
-  private static _writeResolvers: Map<string, any>;
+  public static _writePromises: Map<string, any>;
+  public static _writeResolvers: Map<string, any>;
 
   public asyncPersist(): Promise<void>;
   public clear(): void;
