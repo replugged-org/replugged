@@ -3,7 +3,7 @@ import { filters, waitForModule } from "../webpack";
 
 export type SwitchItemType = ReactComponent<{
   note?: string;
-  value: boolean;
+  checked: boolean;
   onChange: (e: boolean) => void;
   disabled?: boolean;
   style?: React.CSSProperties;
@@ -14,4 +14,4 @@ export type SwitchItemType = ReactComponent<{
 /**
  * A toggleable SwitchItem
  */
-export default (await waitForModule(filters.bySource(").dividerDefault"))) as SwitchItemType;
+export default (await waitForModule(filters.bySource("xMinYMid meet"))) as SwitchItemType;
