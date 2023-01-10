@@ -3,8 +3,11 @@ import { loadStyleSheet } from "../util";
 import type { PluginExports, RepluggedPlugin } from "../../types";
 import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack";
+import { init } from "../apis/settings";
+import { AddonSettings } from "src/types/addon";
 
 const logger = Logger.api("Plugins");
+const settings = await init<AddonSettings>("plugins");
 
 interface PluginWrapper extends RepluggedPlugin {
   exports: PluginExports | undefined;
@@ -97,7 +100,7 @@ export async function start(id: string): Promise<void> {
  * Plugins must be loaded first with {@link register} or {@link loadAll}
  */
 export async function startAll(): Promise<void> {
-  const disabled = await window.RepluggedNative.plugins.listDisabled();
+  const disabled: string[] = settings.get("disabled", []);
   const list = [...plugins.keys()].filter((x) => !disabled.includes(x));
   await Promise.allSettled(list.map(start));
 }
@@ -187,7 +190,11 @@ export async function enable(id: string): Promise<void> {
   if (!plugins.has(id)) {
     throw new Error(`Plugin "${id}" does not exist.`);
   }
-  await window.RepluggedNative.plugins.enable(id);
+  const disabled = settings.get("disabled", []);
+  settings.set(
+    "disabled",
+    disabled.filter((x) => x !== id),
+  );
   await start(id);
 }
 
@@ -195,7 +202,8 @@ export async function disable(id: string): Promise<void> {
   if (!plugins.has(id)) {
     throw new Error(`Plugin "${id}" does not exist.`);
   }
-  await window.RepluggedNative.plugins.disable(id);
+  const disabled = settings.get("disabled", []);
+  settings.set("disabled", [...disabled, id]);
   await stop(id);
 }
 
@@ -206,4 +214,8 @@ export async function uninstall(id: string): Promise<void> {
   await window.RepluggedNative.plugins.uninstall(id);
   await stop(id);
   plugins.delete(id);
+}
+
+export function getDisabled(): string[] {
+  return settings.get("disabled", []);
 }

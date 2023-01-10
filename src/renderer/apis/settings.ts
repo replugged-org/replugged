@@ -49,10 +49,14 @@ export class SettingsManager<T extends Record<string, Jsonifiable>> {
    * @param fallback Value to return if the key does not already exist.
    * @returns
    */
-  public get<K extends Extract<keyof T, string>>(key: K, fallback?: T[K]): T[K] | undefined {
+  public get<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
+    key: K,
+    fallback?: F,
+  ): F extends null | undefined ? T[K] : NonNullable<T[K]> | F {
     if (typeof this.#settings === "undefined") {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
+    // @ts-expect-error It doesn't understand ig
     return this.#settings[key] ?? fallback;
   }
 

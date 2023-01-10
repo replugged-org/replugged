@@ -1,7 +1,6 @@
 import { api, fluxDispatcher, users } from "@common";
 import React from "@common/react";
 import { Button, Divider, Flex, Input, SwitchItem } from "@components";
-import { webpack } from "@replugged";
 import { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
 import Icons from "../icons";
@@ -77,10 +76,9 @@ function openFolder(type: AddonType) {
 }
 
 async function loadMissing(type: AddonType) {
-  const native = getRepluggedNative(type);
-  const disabled = await native.listDisabled();
   if (type === AddonType.Plugin) {
     const manager = window.replugged.plugins;
+    const disabled = manager.getDisabled();
     const existingPlugins = new Set(manager.plugins.keys());
     await manager.loadAll();
     const newPlugins = Array.from(manager.plugins.keys()).filter(
@@ -90,6 +88,7 @@ async function loadMissing(type: AddonType) {
   }
   if (type === AddonType.Theme) {
     const manager = window.replugged.themes;
+    const disabled = manager.getDisabled();
     const existingThemes = new Set(manager.themes.keys());
     await manager.loadMissing();
     const newThemes = Array.from(manager.themes.keys()).filter(
@@ -223,21 +222,8 @@ function Cards({
   );
 }
 
-function Loading() {
-  const mod = webpack.getBySource("wanderingCubes");
-  if (!mod || typeof mod !== "object") return null;
-  const Spinner = Object.values(mod).find((x) => typeof x === "function") as React.FC<{
-    type: string;
-    animated?: boolean;
-  }> | null;
-  if (!Spinner) return null;
-
-  return <Spinner type="wanderingCubes" animated={true} />;
-}
-
 // todo: proper text elements
 export const Addons = (type: AddonType) => {
-  const [loading, setLoading] = React.useState(true);
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
   const [list, setList] = React.useState<(RepluggedPlugin | RepluggedTheme)[]>([]);
@@ -257,19 +243,9 @@ export const Addons = (type: AddonType) => {
         })
         .sort((a, b) => a.manifest.name.toLowerCase().localeCompare(b.manifest.name.toLowerCase())),
     );
-  }
 
-  React.useEffect(() => {
-    (async () => {
-      const minWait = new Promise((resolve) => setTimeout(resolve, 200));
-      refreshList();
-      const native = getRepluggedNative(type);
-      const disabled = await native.listDisabled();
-      setDisabled(new Set(disabled));
-      await minWait;
-      setLoading(false);
-    })();
-  }, []);
+    setDisabled(new Set(getManager(type).getDisabled()));
+  }
 
   React.useEffect(refreshList, [search]);
 
@@ -295,11 +271,7 @@ export const Addons = (type: AddonType) => {
         </div>
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
-      {loading ? (
-        <Flex justify={Flex.Justify.CENTER} style={{ paddingTop: "40px" }}>
-          <Loading />
-        </Flex>
-      ) : list.length ? (
+      {list.length ? (
         <>
           <div style={{ marginBottom: "20px" }}>
             <Input placeholder={`Search for a ${label(type)}`} onChange={(e) => setSearch(e)} />

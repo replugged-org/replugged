@@ -1,5 +1,7 @@
 import { loadStyleSheet } from "../util";
 import type { RepluggedTheme } from "../../types";
+import { AddonSettings } from "src/types/addon";
+import { init } from "../apis/settings";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
@@ -7,7 +9,8 @@ const themeElements = new Map<string, HTMLLinkElement>();
  * @hidden
  */
 export const themes = new Map<string, RepluggedTheme>();
-let disabled: string[] = [];
+let disabled: string[];
+const settings = await init<AddonSettings>("plugins");
 
 /**
  * Load metadata for all themes that are added to the themes folder but not yet loaded, such as newly added themes.
@@ -19,7 +22,7 @@ export async function loadMissing(): Promise<void> {
   for (const theme of await window.RepluggedNative.themes.list()) {
     themes.set(theme.manifest.id, theme);
   }
-  disabled = await window.RepluggedNative.themes.listDisabled();
+  disabled = settings.get("disabled", []);
 }
 
 /**
@@ -96,19 +99,24 @@ export function reload(id: string): void {
   load(id);
 }
 
-export async function enable(id: string): Promise<void> {
+export function enable(id: string): void {
   if (!themes.has(id)) {
     throw new Error(`Theme "${id}" does not exist.`);
   }
-  await window.RepluggedNative.themes.enable(id);
+  const disabled = settings.get("disabled", []);
+  settings.set(
+    "disabled",
+    disabled.filter((x) => x !== id),
+  );
   load(id);
 }
 
-export async function disable(id: string): Promise<void> {
+export function disable(id: string): void {
   if (!themes.has(id)) {
     throw new Error(`Theme "${id}" does not exist.`);
   }
-  await window.RepluggedNative.themes.disable(id);
+  const disabled = settings.get("disabled", []);
+  settings.set("disabled", [...disabled, id]);
   unload(id);
 }
 
@@ -119,4 +127,8 @@ export async function uninstall(id: string): Promise<void> {
   await window.RepluggedNative.themes.uninstall(id);
   unload(id);
   themes.delete(id);
+}
+
+export function getDisabled(): string[] {
+  return settings.get("disabled", []);
 }

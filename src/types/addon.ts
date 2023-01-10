@@ -72,3 +72,8 @@ export interface PluginExports {
   stop?: () => Promisable<void>;
   [x: string]: unknown;
 }
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type AddonSettings = {
+  disabled?: string[];
+};

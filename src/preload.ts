@@ -18,70 +18,18 @@ import type {
 
 const RepluggedNative = {
   themes: {
-    enable: async (themeID: string) => {
-      const { settings } = RepluggedNative;
-      await settings.set(
-        "themes",
-        "disabled",
-        (((await settings.get("themes", "disabled")) as string[]) || []).filter(
-          (t) => t !== themeID,
-        ),
-      );
-    },
-    disable: async (themeID: string) => {
-      const disabled: string[] = (await RepluggedNative.settings.get("themes", "disabled")) || [];
-      if (!disabled.includes(themeID)) {
-        disabled.push(themeID);
-        await RepluggedNative.settings.set("themes", "disabled", disabled);
-      }
-    },
     list: async (): Promise<RepluggedTheme[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_THEMES),
-    listEnabled: async (): Promise<string[]> => {
-      const disabled = await RepluggedNative.themes.listDisabled();
-      const enabled = (await RepluggedNative.themes.list())
-        .filter((x) => !disabled.includes(x.manifest.id))
-        .map((x) => x.manifest.id);
-      return enabled;
-    },
-    listDisabled: async (): Promise<string[]> =>
-      (await RepluggedNative.settings.get("themes", "disabled")) ?? [],
     uninstall: async (themeName: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName), // whether theme was successfully uninstalled
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_THEMES_FOLDER),
   },
 
   plugins: {
-    enable: async (pluginID: string) => {
-      const { settings } = RepluggedNative;
-      await settings.set(
-        "plugins",
-        "disabled",
-        (((await settings.get("plugins", "disabled")) as string[]) || []).filter(
-          (t) => t !== pluginID,
-        ),
-      );
-    },
-    disable: async (pluginID: string) => {
-      const disabled: string[] = (await RepluggedNative.settings.get("plugins", "disabled")) || [];
-      if (!disabled.includes(pluginID)) {
-        disabled.push(pluginID);
-        await RepluggedNative.settings.set("plugins", "disabled", disabled);
-      }
-    },
     get: async (pluginPath: string): Promise<RepluggedPlugin | undefined> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
     list: async (): Promise<RepluggedPlugin[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
-    listEnabled: async (): Promise<string[]> => {
-      const disabled = await RepluggedNative.plugins.listDisabled();
-      const enabled = (await RepluggedNative.plugins.list())
-        .filter((x) => !disabled.includes(x.manifest.id))
-        .map((x) => x.manifest.id);
-      return enabled;
-    },
-    listDisabled: async (): Promise<string[]> =>
-      (await RepluggedNative.settings.get("plugins", "disabled")) ?? [],
     uninstall: async (pluginPath: string): Promise<RepluggedPlugin> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginPath),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER),
