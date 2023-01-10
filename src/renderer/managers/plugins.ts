@@ -1,8 +1,10 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
 import { loadStyleSheet } from "../util";
 import type { PluginExports, RepluggedPlugin } from "../../types";
-import { error, log } from "../modules/logger";
+import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack";
+
+const logger = Logger.api("Plugins");
 
 interface PluginWrapper extends RepluggedPlugin {
   exports: PluginExports | undefined;
@@ -12,6 +14,7 @@ interface PluginWrapper extends RepluggedPlugin {
  * @hidden
  */
 export const plugins = new Map<string, PluginWrapper>();
+const running = new Set<string>();
 
 const styleElements = new Map<string, HTMLLinkElement>();
 
@@ -64,6 +67,9 @@ export async function start(id: string): Promise<void> {
     if (!plugin) {
       throw new Error("Plugin does not exist or is not loaded");
     }
+    if (running.has(plugin.manifest.id)) {
+      throw new Error("Plugin is already running");
+    }
 
     if (plugin.manifest.renderer) {
       plugin.exports = await import(
@@ -75,11 +81,12 @@ export async function start(id: string): Promise<void> {
     const el = loadStyleSheet(
       `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
     );
-    styleElements.set(plugin.path, el);
+    styleElements.set(plugin.manifest.id, el);
 
-    log("Plugin", plugin.manifest.name, void 0, "Plugin started");
+    running.add(plugin.manifest.id);
+    logger.log(`Plugin started: ${plugin.manifest.name}`);
   } catch (e: unknown) {
-    error("Plugin", plugin?.manifest.name ?? id, void 0, e);
+    logger.error(`Error starting plugin ${plugin?.manifest.name}`, e);
   }
 }
 
@@ -90,7 +97,9 @@ export async function start(id: string): Promise<void> {
  * Plugins must be loaded first with {@link register} or {@link loadAll}
  */
 export async function startAll(): Promise<void> {
-  await Promise.allSettled([...plugins.keys()].map(start));
+  const disabled = await window.RepluggedNative.plugins.listDisabled();
+  const list = [...plugins.keys()].filter((x) => !disabled.includes(x));
+  await Promise.allSettled(list.map(start));
 }
 
 /**
@@ -103,17 +112,21 @@ export async function stop(id: string): Promise<void> {
     if (!plugin) {
       throw new Error("Plugin does not exist or is not loaded");
     }
+    if (!running.has(id)) {
+      throw new Error("Plugin is not running");
+    }
 
     await plugin.exports?.stop?.();
 
-    if (styleElements.has(plugin.path)) {
-      styleElements.get(plugin.path)?.remove();
-      styleElements.delete(plugin.path);
+    if (styleElements.has(plugin.manifest.id)) {
+      styleElements.get(plugin.manifest.id)?.remove();
+      styleElements.delete(plugin.manifest.id);
     }
 
-    log("Plugin", plugin.manifest.name, void 0, "Plugin stopped");
+    running.delete(plugin.manifest.id);
+    logger.log(`Plugin stopped: ${plugin.manifest.name}`);
   } catch (e: unknown) {
-    error("Plugin", plugin?.manifest.name ?? id, void 0, e);
+    logger.error(`Error stopping plugin ${plugin?.manifest.name}`, e);
   }
 }
 
@@ -156,7 +169,7 @@ export async function runPlaintextPatches(): Promise<void> {
 export async function reload(id: string): Promise<void> {
   const plugin = plugins.get(id) || Array.from(plugins.values()).find((x) => x.path === id);
   if (!plugin) {
-    error("Plugin", id, void 0, "Plugin does not exist or is not loaded");
+    logger.error(`Plugin "${id}" does not exist or is not loaded`);
     return;
   }
   await stop(plugin.manifest.id);
@@ -166,6 +179,22 @@ export async function reload(id: string): Promise<void> {
     register(newPlugin);
     await start(newPlugin.manifest.id);
   } else {
-    error("Plugin", plugin.manifest.id, void 0, "Plugin unloaded but no longer exists");
+    logger.error(`Plugin "${plugin.manifest.id}" unloaded but no longer exists`);
   }
+}
+
+export async function enable(id: string): Promise<void> {
+  if (!plugins.has(id)) {
+    throw new Error(`Plugin "${id}" does not exist.`);
+  }
+  await window.RepluggedNative.plugins.enable(id);
+  await start(id);
+}
+
+export async function disable(id: string): Promise<void> {
+  if (!plugins.has(id)) {
+    throw new Error(`Plugin "${id}" does not exist.`);
+  }
+  await window.RepluggedNative.plugins.disable(id);
+  await stop(id);
 }
