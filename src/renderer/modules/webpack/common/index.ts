@@ -103,6 +103,11 @@ export type { Users };
 export let users: Users;
 importTimeout("users", import("./users"), (mod) => (users = mod.default));
 
+import type { API } from "./api";
+export type { API };
+export let api: API;
+importTimeout("api", import("./api"), (mod) => (api = mod.default));
+
 /**
  * @internal
  * @hidden
