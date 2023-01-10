@@ -55,6 +55,29 @@ function openFolder(type: AddonType) {
   getRepluggedNative(type).openFolder();
 }
 
+async function loadMissing(type: AddonType) {
+  const native = getRepluggedNative(type);
+  const disabled = await native.listDisabled();
+  if (type === AddonType.Plugin) {
+    const manager = window.replugged.plugins;
+    const existingPlugins = new Set(manager.plugins.keys());
+    await manager.loadAll();
+    const newPlugins = Array.from(manager.plugins.keys()).filter(
+      (x) => !existingPlugins.has(x) && !disabled.includes(x),
+    );
+    await Promise.all(newPlugins.map((x) => manager.start(x)));
+  }
+  if (type === AddonType.Theme) {
+    const manager = window.replugged.themes;
+    const existingThemes = new Set(manager.themes.keys());
+    await manager.loadMissing();
+    const newThemes = Array.from(manager.themes.keys()).filter(
+      (x) => !existingThemes.has(x) && !disabled.includes(x),
+    );
+    newThemes.map((x) => manager.load(x));
+  }
+}
+
 function label(
   type: AddonType,
   {
@@ -88,14 +111,14 @@ function label(
 // todo: proper text elements
 function Card({
   addon,
-  type,
   disabled,
   toggleDisabled,
+  uninstall,
 }: {
   addon: RepluggedPlugin | RepluggedTheme;
-  type: AddonType;
   disabled: boolean;
   toggleDisabled: () => void;
+  uninstall: () => void;
 }) {
   return (
     <div className="replugged-addon-card">
@@ -125,7 +148,10 @@ function Card({
           )}
         </div>
       ))}
-      <Flex justify={Flex.Justify.END}>
+      <Flex justify={Flex.Justify.END} align={Flex.Align.CENTER}>
+        <a onClick={() => uninstall()} style={{ marginRight: "5px" }}>
+          Uninstall
+        </a>
         <SwitchItem checked={!disabled} onChange={toggleDisabled} />
       </Flex>
     </div>
@@ -136,36 +162,45 @@ function Cards({
   type,
   disabled,
   setDisabled,
+  list,
+  refreshList,
 }: {
   type: AddonType;
   disabled: Set<string>;
   setDisabled: (disabled: Set<string>) => void;
+  list: (RepluggedPlugin | RepluggedTheme)[];
+  refreshList: () => void;
 }) {
-  const list = [...listAddons(type).values()];
-
   return (
     <div className="replugged-addon-cards">
-      {list.map((addon) => (
-        <Card
-          addon={addon}
-          type={type}
-          key={addon.manifest.id}
-          disabled={disabled.has(addon.manifest.id)}
-          toggleDisabled={() => {
-            const isDisabled = disabled.has(addon.manifest.id);
-            const clonedDisabled = new Set(disabled);
-            const manager = getManager(type);
-            if (isDisabled) {
-              clonedDisabled.delete(addon.manifest.id);
-              manager.enable(addon.manifest.id);
-            } else {
-              clonedDisabled.add(addon.manifest.id);
-              manager.disable(addon.manifest.id);
-            }
-            setDisabled(clonedDisabled);
-          }}
-        />
-      ))}
+      {list
+        .sort((a, b) => a.manifest.name.toLowerCase().localeCompare(b.manifest.name.toLowerCase()))
+        .map((addon) => (
+          <Card
+            addon={addon}
+            key={addon.manifest.id}
+            disabled={disabled.has(addon.manifest.id)}
+            toggleDisabled={() => {
+              const isDisabled = disabled.has(addon.manifest.id);
+              const clonedDisabled = new Set(disabled);
+              const manager = getManager(type);
+              if (isDisabled) {
+                clonedDisabled.delete(addon.manifest.id);
+                manager.enable(addon.manifest.id);
+              } else {
+                clonedDisabled.add(addon.manifest.id);
+                manager.disable(addon.manifest.id);
+              }
+              setDisabled(clonedDisabled);
+            }}
+            uninstall={async () => {
+              // todo: prompt
+              const manager = getManager(type);
+              await manager.uninstall(addon.manifest.id);
+              refreshList();
+            }}
+          />
+        ))}
     </div>
   );
 }
@@ -186,10 +221,16 @@ function Loading() {
 export const Addons = (type: AddonType) => {
   const [loading, setLoading] = React.useState(true);
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
+  const [list, setList] = React.useState<(RepluggedPlugin | RepluggedTheme)[]>([]);
+
+  function refreshList() {
+    setList([...listAddons(type).values()]);
+  }
 
   React.useEffect(() => {
     (async () => {
       const minWait = new Promise((resolve) => setTimeout(resolve, 500));
+      refreshList();
       const native = getRepluggedNative(type);
       const disabled = await native.listDisabled();
       setDisabled(new Set(disabled));
@@ -201,12 +242,23 @@ export const Addons = (type: AddonType) => {
   return (
     <div className="colorStandard-1Xxp1s size14-k_3Hy4">
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
-        <h1 className="h1-34Txb0 title-3hptVQ defaultColor-2cKwKo defaultMarginh1-EURXsm">
+        <h1 className="h1-34Txb0 title-3hptVQ defaultColor-2cKwKo">
           {label(type, { caps: "title", plural: true })}
         </h1>
-        <Button onClick={() => openFolder(type)}>
-          Open {label(type, { caps: "title", plural: true })} Folder
-        </Button>
+        <div style={{ display: "flex" }}>
+          <Button onClick={() => openFolder(type)}>
+            Open {label(type, { caps: "title", plural: true })} Folder
+          </Button>
+          <Button
+            onClick={async () => {
+              await loadMissing(type);
+              refreshList();
+            }}
+            color={Button.Colors.PRIMARY}
+            look={Button.Looks.LINK}>
+            Load Missing {label(type, { caps: "title", plural: true })}
+          </Button>
+        </div>
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
       {loading ? (
@@ -214,7 +266,13 @@ export const Addons = (type: AddonType) => {
           <Loading />
         </Flex>
       ) : (
-        <Cards type={type} disabled={disabled} setDisabled={setDisabled} />
+        <Cards
+          type={type}
+          disabled={disabled}
+          setDisabled={setDisabled}
+          list={list}
+          refreshList={refreshList}
+        />
       )}
     </div>
   );
