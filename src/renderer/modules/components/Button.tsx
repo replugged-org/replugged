@@ -10,10 +10,26 @@ export type ButtonType = ReactComponent<{
   color?: string;
   disabled?: boolean;
 }> & {
-  DropdownSizes: Record<string, string>;
-  Sizes: Record<string, string>;
-  Colors: Record<string, string>;
-  Looks: Record<string, string>;
+  DropdownSizes: Record<"SMALL" | "MEDIUM" | "LARGE", string>;
+  Sizes: Record<
+    "NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "XLARGE" | "MIN" | "MAX" | "ICON",
+    string
+  >;
+  Colors: Record<
+    | "BRAND"
+    | "RED"
+    | "GREEN"
+    | "YELLOW"
+    | "PRIMARY"
+    | "LINK"
+    | "WHITE"
+    | "BLACK"
+    | "TRANSPARENT"
+    | "BRAND_NEW"
+    | "CUSTOM",
+    string
+  >;
+  Looks: Record<"FILLED" | "INVERTED" | "OUTLINED" | "LINK" | "BLANK", string>;
 };
 
 export const Button = (await waitForModule(filters.bySource('"onDropdownClick"'))) as ButtonType;
