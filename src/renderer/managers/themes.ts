@@ -3,7 +3,10 @@ import type { RepluggedTheme } from "../../types";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
-const themes = new Map<string, RepluggedTheme>();
+/**
+ * @hidden
+ */
+export const themes = new Map<string, RepluggedTheme>();
 let disabled: string[] = [];
 
 /**
