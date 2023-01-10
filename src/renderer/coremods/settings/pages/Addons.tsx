@@ -1,6 +1,6 @@
 import { api, fluxDispatcher, users } from "@common";
 import React from "@common/react";
-import { Button, Divider, Flex, SwitchItem } from "@components";
+import { Button, Divider, Flex, Input, SwitchItem } from "@components";
 import { webpack } from "@replugged";
 import { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
@@ -104,7 +104,7 @@ function label(
   {
     caps,
     plural,
-  }: { caps?: "lower" | "title" | "upper" | undefined; plural?: boolean | undefined },
+  }: { caps?: "lower" | "title" | "upper" | undefined; plural?: boolean | undefined } = {},
 ) {
   caps ??= "lower";
   plural ??= false;
@@ -193,34 +193,32 @@ function Cards({
 }) {
   return (
     <div className="replugged-addon-cards">
-      {list
-        .sort((a, b) => a.manifest.name.toLowerCase().localeCompare(b.manifest.name.toLowerCase()))
-        .map((addon) => (
-          <Card
-            addon={addon}
-            key={addon.manifest.id}
-            disabled={disabled.has(addon.manifest.id)}
-            toggleDisabled={() => {
-              const isDisabled = disabled.has(addon.manifest.id);
-              const clonedDisabled = new Set(disabled);
-              const manager = getManager(type);
-              if (isDisabled) {
-                clonedDisabled.delete(addon.manifest.id);
-                manager.enable(addon.manifest.id);
-              } else {
-                clonedDisabled.add(addon.manifest.id);
-                manager.disable(addon.manifest.id);
-              }
-              setDisabled(clonedDisabled);
-            }}
-            uninstall={async () => {
-              // todo: prompt
-              const manager = getManager(type);
-              await manager.uninstall(addon.manifest.id);
-              refreshList();
-            }}
-          />
-        ))}
+      {list.map((addon) => (
+        <Card
+          addon={addon}
+          key={addon.manifest.id}
+          disabled={disabled.has(addon.manifest.id)}
+          toggleDisabled={() => {
+            const isDisabled = disabled.has(addon.manifest.id);
+            const clonedDisabled = new Set(disabled);
+            const manager = getManager(type);
+            if (isDisabled) {
+              clonedDisabled.delete(addon.manifest.id);
+              manager.enable(addon.manifest.id);
+            } else {
+              clonedDisabled.add(addon.manifest.id);
+              manager.disable(addon.manifest.id);
+            }
+            setDisabled(clonedDisabled);
+          }}
+          uninstall={async () => {
+            // todo: prompt
+            const manager = getManager(type);
+            await manager.uninstall(addon.manifest.id);
+            refreshList();
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -241,10 +239,24 @@ function Loading() {
 export const Addons = (type: AddonType) => {
   const [loading, setLoading] = React.useState(true);
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
+  const [search, setSearch] = React.useState("");
   const [list, setList] = React.useState<(RepluggedPlugin | RepluggedTheme)[]>([]);
 
   function refreshList() {
-    setList([...listAddons(type).values()]);
+    setList(
+      [...listAddons(type).values()]
+        .filter((x) => {
+          const props = [
+            x.manifest.name,
+            x.manifest.id,
+            x.manifest.description,
+            ...[x.manifest.author].map(Object.values).flat(),
+          ].map((x) => x.toLowerCase());
+
+          return props.some((x) => x.includes(search.toLowerCase()));
+        })
+        .sort((a, b) => a.manifest.name.toLowerCase().localeCompare(b.manifest.name.toLowerCase())),
+    );
   }
 
   React.useEffect(() => {
@@ -258,6 +270,8 @@ export const Addons = (type: AddonType) => {
       setLoading(false);
     })();
   }, []);
+
+  React.useEffect(refreshList, [search]);
 
   return (
     <div className="colorStandard-1Xxp1s size14-k_3Hy4">
@@ -285,14 +299,23 @@ export const Addons = (type: AddonType) => {
         <Flex justify={Flex.Justify.CENTER} style={{ paddingTop: "40px" }}>
           <Loading />
         </Flex>
+      ) : list.length ? (
+        <>
+          <div style={{ marginBottom: "20px" }}>
+            <Input placeholder={`Search for a ${label(type)}`} onChange={(e) => setSearch(e)} />
+          </div>
+          <Cards
+            type={type}
+            disabled={disabled}
+            setDisabled={setDisabled}
+            list={list}
+            refreshList={refreshList}
+          />
+        </>
       ) : (
-        <Cards
-          type={type}
-          disabled={disabled}
-          setDisabled={setDisabled}
-          list={list}
-          refreshList={refreshList}
-        />
+        <h1 className="h1-34Txb0 title-3hptVQ defaultColor-2cKwKo" style={{ textAlign: "center" }}>
+          No {label(type, { plural: true })} installed.
+        </h1>
       )}
     </div>
   );
