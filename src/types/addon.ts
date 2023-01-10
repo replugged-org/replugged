@@ -11,8 +11,8 @@ export type Id = z.infer<typeof id>;
 
 export const author = z.object({
   name: z.string(),
-  discordID: z.string(),
-  github: z.string(),
+  discordID: z.string().optional(),
+  github: z.string().optional(),
 });
 
 export type Author = z.infer<typeof author>;
