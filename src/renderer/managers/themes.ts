@@ -111,3 +111,12 @@ export async function disable(id: string): Promise<void> {
   await window.RepluggedNative.themes.disable(id);
   unload(id);
 }
+
+export async function uninstall(id: string): Promise<void> {
+  if (!themes.has(id)) {
+    throw new Error(`Theme "${id}" does not exist.`);
+  }
+  await window.RepluggedNative.themes.uninstall(id);
+  unload(id);
+  themes.delete(id);
+}

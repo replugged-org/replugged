@@ -198,3 +198,12 @@ export async function disable(id: string): Promise<void> {
   await window.RepluggedNative.plugins.disable(id);
   await stop(id);
 }
+
+export async function uninstall(id: string): Promise<void> {
+  if (!plugins.has(id)) {
+    throw new Error(`Plugin "${id}" does not exist.`);
+  }
+  await window.RepluggedNative.plugins.uninstall(id);
+  await stop(id);
+  plugins.delete(id);
+}
