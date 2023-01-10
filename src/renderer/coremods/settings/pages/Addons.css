@@ -1,0 +1,12 @@
+.replugged-addon-cards {
+  display: grid;
+  gap: 20px;
+}
+
+.replugged-addon-card {
+  background-color: var(--background-secondary);
+  width: 100%;
+  min-height: 150px;
+  padding: 15px;
+  border-radius: 5px;
+}
