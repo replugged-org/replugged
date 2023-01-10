@@ -10,3 +10,28 @@
   padding: 15px;
   border-radius: 5px;
 }
+
+.replugged-addon-icon {
+  display: contents;
+}
+
+.replugged-addon-icon svg {
+  color: var(--interactive-normal);
+  height: 2ch;
+}
+
+.replugged-addon-icon:hover svg {
+  color: var(--interactive-hover);
+}
+
+.replugged-addon-icon-red svg {
+  color: var(--button-danger-background);
+}
+
+.replugged-addon-icon-red:hover svg {
+  color: var(--button-danger-background-hover);
+}
+
+.replugged-addon-icon-red:active svg {
+  color: var(--button-danger-background-active);
+}

@@ -1,9 +1,10 @@
-import { fluxDispatcher } from "@common";
+import { api, fluxDispatcher, users } from "@common";
 import React from "@common/react";
 import { Button, Divider, Flex, SwitchItem } from "@components";
 import { webpack } from "@replugged";
 import { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
+import Icons from "../icons";
 
 enum AddonType {
   Plugin = "plugin",
@@ -40,7 +41,21 @@ function listAddons(type: AddonType) {
   throw new Error("Invalid addon type");
 }
 
-function openUserProfile(id: string) {
+async function openUserProfile(id: string) {
+  if (!users.getUser(id)) {
+    const {
+      body: { user },
+    } = await api.get({
+      url: `/users/${id}/profile`,
+      query: {
+        // eslint-disable-next-line camelcase
+        with_mutual_friends_count: "false",
+        // eslint-disable-next-line camelcase
+        with_mutual_guilds: "false",
+      },
+    });
+    fluxDispatcher.dispatch({ type: "USER_UPDATE", user });
+  }
   fluxDispatcher.dispatch({
     type: "USER_PROFILE_MODAL_OPEN",
     userId: id,
@@ -130,27 +145,26 @@ function Card({
         Author{getAuthors(addon).length === 1 ? "" : "s"}
       </h3>
       {getAuthors(addon).map((author, i) => (
-        <div key={i}>
+        <Flex key={i} align={Flex.Align.CENTER} style={{ gap: "10px" }}>
           <span>{author.name}</span>
-          {/* todo: icons */}
           {author.discordID && (
-            <a style={{ paddingLeft: "10px" }} onClick={() => openUserProfile(author.discordID!)}>
-              Discord
+            <a onClick={() => openUserProfile(author.discordID!)} className="replugged-addon-icon">
+              <Icons.Discord />
             </a>
           )}
           {author.github && (
             <a
-              style={{ paddingLeft: "10px" }}
               href={`https://github.com/${author.github}`}
-              target="_blank">
-              GitHub
+              target="_blank"
+              className="replugged-addon-icon">
+              <Icons.GitHub />
             </a>
           )}
-        </div>
+        </Flex>
       ))}
-      <Flex justify={Flex.Justify.END} align={Flex.Align.CENTER}>
-        <a onClick={() => uninstall()} style={{ marginRight: "5px" }}>
-          Uninstall
+      <Flex justify={Flex.Justify.END} align={Flex.Align.CENTER} style={{ gap: "10px" }}>
+        <a onClick={() => uninstall()} className="replugged-addon-icon replugged-addon-icon-red">
+          <Icons.Trash />
         </a>
         <SwitchItem checked={!disabled} onChange={toggleDisabled} />
       </Flex>
@@ -229,7 +243,7 @@ export const Addons = (type: AddonType) => {
 
   React.useEffect(() => {
     (async () => {
-      const minWait = new Promise((resolve) => setTimeout(resolve, 500));
+      const minWait = new Promise((resolve) => setTimeout(resolve, 200));
       refreshList();
       const native = getRepluggedNative(type);
       const disabled = await native.listDisabled();
