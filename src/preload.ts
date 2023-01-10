@@ -49,8 +49,8 @@ const RepluggedNative = {
     },
     listDisabled: async (): Promise<string[]> =>
       (await RepluggedNative.settings.get("themes", "disabled")) ?? [],
-    uninstall: async (themeID: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeID), // whether theme was successfully uninstalled
+    uninstall: async (themeName: string) =>
+      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName), // whether theme was successfully uninstalled
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_THEMES_FOLDER),
   },
 
@@ -72,8 +72,8 @@ const RepluggedNative = {
         await RepluggedNative.settings.set("plugins", "disabled", disabled);
       }
     },
-    get: async (pluginID: string): Promise<RepluggedPlugin | undefined> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginID),
+    get: async (pluginPath: string): Promise<RepluggedPlugin | undefined> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
     list: async (): Promise<RepluggedPlugin[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
     listEnabled: async (): Promise<string[]> => {
@@ -88,8 +88,8 @@ const RepluggedNative = {
     },
     listDisabled: async (): Promise<string[]> =>
       (await RepluggedNative.settings.get("plugins", "disabled")) ?? [],
-    uninstall: async (pluginID: string): Promise<RepluggedPlugin> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginID),
+    uninstall: async (pluginPath: string): Promise<RepluggedPlugin> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginPath),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER),
   },
 
