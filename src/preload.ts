@@ -39,12 +39,9 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_THEMES),
     listEnabled: async (): Promise<string[]> => {
       const disabled = await RepluggedNative.themes.listDisabled();
-      const enabled: string[] = [];
-      for (const theme of await RepluggedNative.themes.list()) {
-        if (!disabled.includes(theme.manifest.id)) {
-          enabled.push(theme.manifest.id);
-        }
-      }
+      const enabled = (await RepluggedNative.themes.list())
+        .filter((x) => !disabled.includes(x.manifest.id))
+        .map((x) => x.manifest.id);
       return enabled;
     },
     listDisabled: async (): Promise<string[]> =>
@@ -78,12 +75,9 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
     listEnabled: async (): Promise<string[]> => {
       const disabled = await RepluggedNative.plugins.listDisabled();
-      const enabled: string[] = [];
-      for (const plugin of await RepluggedNative.plugins.list()) {
-        if (!disabled.includes(plugin.manifest.id)) {
-          enabled.push(plugin.manifest.id);
-        }
-      }
+      const enabled = (await RepluggedNative.plugins.list())
+        .filter((x) => !disabled.includes(x.manifest.id))
+        .map((x) => x.manifest.id);
       return enabled;
     },
     listDisabled: async (): Promise<string[]> =>
