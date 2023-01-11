@@ -82,6 +82,11 @@ export type { InputType };
 export let Input: InputType;
 importTimeout("Input", import("./Input"), (mod) => (Input = mod.default));
 
+import type { TextType } from "./Text";
+export type { TextType };
+export let Text: TextType;
+importTimeout("Text", import("./Text"), (mod) => (Text = mod.default));
+
 /**
  * @internal
  * @hidden
