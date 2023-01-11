@@ -319,8 +319,9 @@ export const Addons = (type: AddonType) => {
 
   return (
     <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
+      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
         <Text.H1
+          variant="heading-lg/bold"
           style={{
             // Do not turn "(num)" into a single symbol
             fontVariantLigatures: "none",
