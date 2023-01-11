@@ -61,7 +61,10 @@ class BrowserWindow extends electron.BrowserWindow {
   }
 }
 
-Object.defineProperty(BrowserWindow, "name", { value: "BrowserWindow", configurable: true });
+Object.defineProperty(BrowserWindow, "name", {
+  value: "BrowserWindow",
+  configurable: true,
+});
 
 const electronExports: typeof electron = new Proxy(electron, {
   get(target, prop) {
@@ -93,7 +96,6 @@ electron.protocol.registerSchemesAsPrivileged([
   {
     scheme: "replugged",
     privileges: {
-      bypassCSP: true,
       standard: true,
       secure: true,
       allowServiceWorkers: true,
