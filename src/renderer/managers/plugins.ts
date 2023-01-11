@@ -145,8 +145,10 @@ export async function stopAll(): Promise<void> {
  * @internal
  */
 export async function runPlaintextPatches(): Promise<void> {
+  const disabled: string[] = settings.get("disabled", []);
+  const list = [...plugins.values()].filter((x) => !disabled.includes(x.manifest.id));
   await Promise.allSettled(
-    [...plugins.values()].map(async (plugin) => {
+    list.map(async (plugin) => {
       if (plugin.manifest.plaintextPatches) {
         patchPlaintext(
           (
