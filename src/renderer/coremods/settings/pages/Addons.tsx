@@ -320,14 +320,13 @@ export const Addons = (type: AddonType) => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H1
-          variant="heading-lg/bold"
+        <Text.H2
           style={{
             // Do not turn "(num)" into a single symbol
             fontVariantLigatures: "none",
           }}>
           {label(type, { caps: "title", plural: true })} ({unfilteredCount})
-        </Text.H1>
+        </Text.H2>
         <div style={{ display: "flex" }}>
           <Button onClick={() => openFolder(type)}>
             Open {label(type, { caps: "title", plural: true })} Folder
