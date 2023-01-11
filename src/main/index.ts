@@ -96,7 +96,6 @@ electron.protocol.registerSchemesAsPrivileged([
   {
     scheme: "replugged",
     privileges: {
-      // bypassCSP: true,
       standard: true,
       secure: true,
       allowServiceWorkers: true,
