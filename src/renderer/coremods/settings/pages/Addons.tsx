@@ -334,15 +334,18 @@ export const Addons = (type: AddonType) => {
       <Divider style={{ margin: "20px 0px" }} />
       {unfilteredCount ? (
         <div style={{ marginBottom: "20px" }}>
-          <Input placeholder={`Search for a ${label(type)}`} onChange={(e) => setSearch(e)} />
+          <Input
+            placeholder={`Search for a ${label(type)}`}
+            onChange={(e) => setSearch(e)}
+            autoFocus={true}
+          />
         </div>
       ) : null}
       {search && list.length ? (
         <h2
           className="defaultColor-1EVLSt heading-md-medium-2DVCeJ"
           style={{ marginBottom: "10px" }}>
-          {/* cspell:ignore matche */}
-          {`${list.length} matche${list.length === 1 ? "" : "s"}`}
+          {`${list.length} match${list.length === 1 ? "" : "es"}`}
         </h2>
       ) : null}
       {list.length ? (
