@@ -252,8 +252,13 @@ export const Addons = (type: AddonType) => {
   return (
     <div className="colorStandard-1Xxp1s size14-k_3Hy4">
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
-        <h1 className="h1-34Txb0 title-3hptVQ defaultColor-2cKwKo">
-          {label(type, { caps: "title", plural: true })}
+        <h1
+          className="h1-34Txb0 title-3hptVQ defaultColor-2cKwKo"
+          style={{
+            // Do not turn "(num)" into a single symbol
+            fontVariantLigatures: "none",
+          }}>
+          {label(type, { caps: "title", plural: true })} ({list.length})
         </h1>
         <div style={{ display: "flex" }}>
           <Button onClick={() => openFolder(type)}>
