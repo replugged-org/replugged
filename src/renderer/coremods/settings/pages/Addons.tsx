@@ -193,7 +193,6 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
   );
 }
 
-// todo: proper text elements
 function Card({
   addon,
   disabled,
@@ -281,7 +280,6 @@ function Cards({
   );
 }
 
-// todo: proper text elements
 export const Addons = (type: AddonType) => {
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
