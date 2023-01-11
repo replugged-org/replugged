@@ -108,6 +108,11 @@ export type { API };
 export let api: API;
 importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
+import type { Parser } from "./parser";
+export type { Parser };
+export let parser: Parser;
+importTimeout("parser", import("./parser"), (mod) => (parser = mod.default));
+
 /**
  * @internal
  * @hidden
