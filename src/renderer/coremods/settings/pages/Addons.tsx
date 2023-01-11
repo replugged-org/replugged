@@ -73,12 +73,13 @@ function getAuthors(addon: RepluggedPlugin | RepluggedTheme) {
 
 function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefined {
   const { updater } = addon.manifest;
-  if (!updater) return;
+  if (!updater) return undefined;
   const { type, id } = updater;
   switch (type) {
     case "github":
       return `https://github.com/${id}`;
   }
+  return undefined;
 }
 
 function openFolder(type: AddonType) {
