@@ -235,9 +235,11 @@ function Card({
           <a onClick={() => uninstall()} className="replugged-addon-icon">
             <Icons.Trash />
           </a>
-          <a onClick={() => reload()} className="replugged-addon-icon">
-            <Icons.Reload />
-          </a>
+          {disabled ? null : (
+            <a onClick={() => reload()} className="replugged-addon-icon">
+              <Icons.Reload />
+            </a>
+          )}
           <SwitchItem checked={!disabled} onChange={toggleDisabled} />
         </Flex>
       </Flex>
