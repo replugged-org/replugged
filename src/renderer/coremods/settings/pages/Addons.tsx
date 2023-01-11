@@ -279,7 +279,7 @@ function Cards({
 export const Addons = (type: AddonType) => {
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
-  const [list, setList] = React.useState<(RepluggedPlugin | RepluggedTheme)[]>([]);
+  const [list, setList] = React.useState<(RepluggedPlugin | RepluggedTheme)[] | null>();
   const [unfilteredCount, setUnfilteredCount] = React.useState(0);
 
   function refreshList() {
@@ -341,14 +341,14 @@ export const Addons = (type: AddonType) => {
           />
         </div>
       ) : null}
-      {search && list.length ? (
+      {search && list?.length ? (
         <h2
           className="defaultColor-1EVLSt heading-md-medium-2DVCeJ"
           style={{ marginBottom: "10px" }}>
           {`${list.length} match${list.length === 1 ? "" : "es"}`}
         </h2>
       ) : null}
-      {list.length ? (
+      {list?.length ? (
         <>
           <Cards
             type={type}
@@ -358,13 +358,13 @@ export const Addons = (type: AddonType) => {
             refreshList={refreshList}
           />
         </>
-      ) : (
+      ) : list ? (
         <h1 className="defaultColor-1EVLSt heading-md-bold-qvVVvk" style={{ textAlign: "center" }}>
           {unfilteredCount
             ? `No ${label(type, { plural: true })} matched your search.`
             : `No ${label(type, { plural: true })} installed.`}
         </h1>
-      )}
+      ) : null}
     </div>
   );
 };
