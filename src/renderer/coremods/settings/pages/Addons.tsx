@@ -149,21 +149,21 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
         display: "inline-flex",
       }}>
       <b>{author.name}</b>
-      {author.discordID && (
+      {author.discordID ? (
         <a
           onClick={() => openUserProfile(author.discordID!)}
           className="replugged-addon-icon replugged-addon-icon-author">
           <Icons.Discord />
         </a>
-      )}
-      {author.github && (
+      ) : null}
+      {author.github ? (
         <a
           href={`https://github.com/${author.github}`}
           target="_blank"
           className="replugged-addon-icon replugged-addon-icon-author">
           <Icons.GitHub />
         </a>
-      )}
+      ) : null}
     </Flex>
   ));
 
@@ -216,11 +216,11 @@ function Card({
       </h2>
       <p style={{ margin: "5px 0" }}>{addon.manifest.description}</p>
       <Flex justify={Flex.Justify.END} align={Flex.Align.CENTER} style={{ gap: "10px" }}>
-        {sourceLink && (
+        {sourceLink ? (
           <a href={sourceLink} target="_blank" className="replugged-addon-icon">
             <Icons.Link />
           </a>
-        )}
+        ) : null}
         <a onClick={() => uninstall()} className="replugged-addon-icon">
           <Icons.Trash />
         </a>
@@ -280,10 +280,13 @@ export const Addons = (type: AddonType) => {
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
   const [list, setList] = React.useState<(RepluggedPlugin | RepluggedTheme)[]>([]);
+  const [unfilteredCount, setUnfilteredCount] = React.useState(0);
 
   function refreshList() {
+    const list = [...listAddons(type).values()];
+    setUnfilteredCount(list.length);
     setList(
-      [...listAddons(type).values()]
+      list
         .filter((x) => {
           const props = [
             x.manifest.name,
@@ -311,7 +314,7 @@ export const Addons = (type: AddonType) => {
             // Do not turn "(num)" into a single symbol
             fontVariantLigatures: "none",
           }}>
-          {label(type, { caps: "title", plural: true })} ({list.length})
+          {label(type, { caps: "title", plural: true })} ({unfilteredCount})
         </h1>
         <div style={{ display: "flex" }}>
           <Button onClick={() => openFolder(type)}>
@@ -329,11 +332,21 @@ export const Addons = (type: AddonType) => {
         </div>
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
+      {unfilteredCount ? (
+        <div style={{ marginBottom: "20px" }}>
+          <Input placeholder={`Search for a ${label(type)}`} onChange={(e) => setSearch(e)} />
+        </div>
+      ) : null}
+      {search && list.length ? (
+        <h2
+          className="defaultColor-1EVLSt heading-md-medium-2DVCeJ"
+          style={{ marginBottom: "10px" }}>
+          {/* cspell:ignore matche */}
+          {`${list.length} matche${list.length === 1 ? "" : "s"}`}
+        </h2>
+      ) : null}
       {list.length ? (
         <>
-          <div style={{ marginBottom: "20px" }}>
-            <Input placeholder={`Search for a ${label(type)}`} onChange={(e) => setSearch(e)} />
-          </div>
           <Cards
             type={type}
             disabled={disabled}
@@ -343,8 +356,10 @@ export const Addons = (type: AddonType) => {
           />
         </>
       ) : (
-        <h1 className="h1-34Txb0 title-3hptVQ defaultColor-2cKwKo" style={{ textAlign: "center" }}>
-          No {label(type, { plural: true })} installed.
+        <h1 className="defaultColor-1EVLSt heading-md-bold-qvVVvk" style={{ textAlign: "center" }}>
+          {unfilteredCount
+            ? `No ${label(type, { plural: true })} matched your search.`
+            : `No ${label(type, { plural: true })} installed.`}
         </h1>
       )}
     </div>
