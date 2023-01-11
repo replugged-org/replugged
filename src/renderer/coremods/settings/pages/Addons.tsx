@@ -213,14 +213,15 @@ function Card({
         justify={Flex.Justify.BETWEEN}
         style={{ gap: "15px", marginBottom: "15px" }}>
         <span>
-          <Text variant="heading-sm/normal" tag="h2">
+          <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
             <Text variant="heading-lg/bold" tag="span">
               {addon.manifest.name}
             </Text>{" "}
             <Text variant="heading-lg/normal" tag="span">
               v{addon.manifest.version}
-            </Text>{" "}
-            by <Authors addon={addon} />
+            </Text>
+            <span> by </span>
+            <Authors addon={addon} />
           </Text>
         </span>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
