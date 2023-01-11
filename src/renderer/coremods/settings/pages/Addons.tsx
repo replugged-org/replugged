@@ -42,24 +42,24 @@ function listAddons(type: AddonType) {
 
 async function openUserProfile(id: string) {
   if (!users.getUser(id)) {
-    const { body } = await api
-      .get({
+    try {
+      const { body } = await api.get({
         url: `/users/${id}/profile`,
         query: {
           // eslint-disable-next-line camelcase
-          with_mutual_friends_count: "false",
+          with_mutual_friends_count: "true",
           // eslint-disable-next-line camelcase
-          with_mutual_guilds: "false",
+          with_mutual_guilds: "true",
         },
-      })
-      .catch(
-        async () =>
-          await api.get({
-            url: `/users/${id}`,
-          }),
-      );
-    const user = body.user ?? body;
-    fluxDispatcher.dispatch({ type: "USER_UPDATE", user });
+      });
+      fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body.user });
+      fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
+    } catch (e) {
+      const { body } = await api.get({
+        url: `/users/${id}`,
+      });
+      fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
+    }
   }
   fluxDispatcher.dispatch({
     type: "USER_PROFILE_MODAL_OPEN",
