@@ -1,6 +1,6 @@
 import { api, fluxDispatcher, users } from "@common";
 import React from "@common/react";
-import { Button, Divider, Flex, Input, SwitchItem } from "@components";
+import { Button, Divider, Flex, Input, SwitchItem, Text } from "@components";
 import { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
 import Icons from "../icons";
@@ -209,12 +209,18 @@ function Card({
 
   return (
     <div className="replugged-addon-card">
-      <h2 className="defaultColor-1EVLSt heading-md-normal-3Ytn6I">
-        <span className="heading-lg-bold-3uwrwG">{addon.manifest.name}</span>{" "}
-        <span className="heading-lg-normal-1bqh2L">v{addon.manifest.version}</span> by{" "}
-        <Authors addon={addon} />
-      </h2>
-      <p style={{ margin: "5px 0" }}>{addon.manifest.description}</p>
+      <Text variant="heading-md/normal" tag="h2">
+        <Text variant="heading-lg/bold" tag="span">
+          {addon.manifest.name}
+        </Text>{" "}
+        <Text variant="heading-lg/normal" tag="span">
+          v{addon.manifest.version}
+        </Text>{" "}
+        by <Authors addon={addon} />
+      </Text>
+      <Text.Normal style={{ margin: "5px 0" }} markdown={true} allowMarkdownLinks={true}>
+        {addon.manifest.description}
+      </Text.Normal>
       <Flex justify={Flex.Justify.END} align={Flex.Align.CENTER} style={{ gap: "10px" }}>
         {sourceLink ? (
           <a href={sourceLink} target="_blank" className="replugged-addon-icon">
@@ -306,16 +312,15 @@ export const Addons = (type: AddonType) => {
   React.useEffect(refreshList, [search]);
 
   return (
-    <div className="colorStandard-1Xxp1s size14-k_3Hy4">
+    <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
-        <h1
-          className="h1-34Txb0 title-3hptVQ defaultColor-2cKwKo"
+        <Text.H1
           style={{
             // Do not turn "(num)" into a single symbol
             fontVariantLigatures: "none",
           }}>
           {label(type, { caps: "title", plural: true })} ({unfilteredCount})
-        </h1>
+        </Text.H1>
         <div style={{ display: "flex" }}>
           <Button onClick={() => openFolder(type)}>
             Open {label(type, { caps: "title", plural: true })} Folder
@@ -342,11 +347,9 @@ export const Addons = (type: AddonType) => {
         </div>
       ) : null}
       {search && list?.length ? (
-        <h2
-          className="defaultColor-1EVLSt heading-md-medium-2DVCeJ"
-          style={{ marginBottom: "10px" }}>
+        <Text variant="heading-md/bold" style={{ marginBottom: "10px" }}>
           {`${list.length} match${list.length === 1 ? "" : "es"}`}
-        </h2>
+        </Text>
       ) : null}
       {list?.length ? (
         <>
@@ -359,13 +362,13 @@ export const Addons = (type: AddonType) => {
           />
         </>
       ) : list ? (
-        <h1 className="defaultColor-1EVLSt heading-md-bold-qvVVvk" style={{ textAlign: "center" }}>
+        <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
           {unfilteredCount
             ? `No ${label(type, { plural: true })} matched your search.`
             : `No ${label(type, { plural: true })} installed.`}
-        </h1>
+        </Text>
       ) : null}
-    </div>
+    </>
   );
 };
 
