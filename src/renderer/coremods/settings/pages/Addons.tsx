@@ -71,6 +71,16 @@ function getAuthors(addon: RepluggedPlugin | RepluggedTheme) {
   return [addon.manifest.author].flat();
 }
 
+function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefined {
+  const { updater } = addon.manifest;
+  if (!updater) return;
+  const { type, id } = updater;
+  switch (type) {
+    case "github":
+      return `https://github.com/${id}`;
+  }
+}
+
 function openFolder(type: AddonType) {
   getRepluggedNative(type).openFolder();
 }
@@ -128,6 +138,60 @@ function label(
   return base;
 }
 
+function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
+  const els = getAuthors(addon).map((author, i) => (
+    <Flex
+      key={i}
+      align={Flex.Align.CENTER}
+      style={{
+        gap: "5px",
+        display: "inline-flex",
+      }}>
+      <b>{author.name}</b>
+      {author.discordID && (
+        <a
+          onClick={() => openUserProfile(author.discordID!)}
+          className="replugged-addon-icon replugged-addon-icon-author">
+          <Icons.Discord />
+        </a>
+      )}
+      {author.github && (
+        <a
+          href={`https://github.com/${author.github}`}
+          target="_blank"
+          className="replugged-addon-icon replugged-addon-icon-author">
+          <Icons.GitHub />
+        </a>
+      )}
+    </Flex>
+  ));
+
+  if (els.length === 1) {
+    return els[0];
+  }
+  if (els.length === 2) {
+    return (
+      <span>
+        {els[0]}
+        <span style={{ padding: "0 5px" }}>and</span>
+        {els[1]}
+      </span>
+    );
+  }
+  return (
+    <span>
+      {els.slice(0, -1).map((x, i) => (
+        <React.Fragment key={i}>
+          {x}
+          <span style={{ paddingRight: "5px" }}>,</span>
+        </React.Fragment>
+      ))}
+      <span style={{ paddingRight: "5px" }}>and</span>
+      {els[els.length - 1]}
+    </span>
+  );
+}
+
 // todo: proper text elements
 function Card({
   addon,
@@ -140,35 +204,23 @@ function Card({
   toggleDisabled: () => void;
   uninstall: () => void;
 }) {
+  const sourceLink = getSourceLink(addon);
+
   return (
     <div className="replugged-addon-card">
-      <h2 className="defaultColor-1EVLSt heading-lg-bold-3uwrwG">
-        {addon.manifest.name} v{addon.manifest.version}
+      <h2 className="defaultColor-1EVLSt heading-md-normal-3Ytn6I">
+        <span className="heading-lg-bold-3uwrwG">{addon.manifest.name}</span>{" "}
+        <span className="heading-lg-normal-1bqh2L">v{addon.manifest.version}</span> by{" "}
+        <Authors addon={addon} />
       </h2>
-      <p>{addon.manifest.description}</p>
-      <h3 className="defaultColor-1EVLSt eyebrow-Ejf06y">
-        Author{getAuthors(addon).length === 1 ? "" : "s"}
-      </h3>
-      {getAuthors(addon).map((author, i) => (
-        <Flex key={i} align={Flex.Align.CENTER} style={{ gap: "10px" }}>
-          <span>{author.name}</span>
-          {author.discordID && (
-            <a onClick={() => openUserProfile(author.discordID!)} className="replugged-addon-icon">
-              <Icons.Discord />
-            </a>
-          )}
-          {author.github && (
-            <a
-              href={`https://github.com/${author.github}`}
-              target="_blank"
-              className="replugged-addon-icon">
-              <Icons.GitHub />
-            </a>
-          )}
-        </Flex>
-      ))}
+      <p style={{ margin: "5px 0" }}>{addon.manifest.description}</p>
       <Flex justify={Flex.Justify.END} align={Flex.Align.CENTER} style={{ gap: "10px" }}>
-        <a onClick={() => uninstall()} className="replugged-addon-icon replugged-addon-icon-red">
+        {sourceLink && (
+          <a href={sourceLink} target="_blank" className="replugged-addon-icon">
+            <Icons.Link />
+          </a>
+        )}
+        <a onClick={() => uninstall()} className="replugged-addon-icon">
           <Icons.Trash />
         </a>
         <SwitchItem checked={!disabled} onChange={toggleDisabled} />
@@ -236,7 +288,7 @@ export const Addons = (type: AddonType) => {
             x.manifest.name,
             x.manifest.id,
             x.manifest.description,
-            ...[x.manifest.author].map(Object.values).flat(),
+            ...[x.manifest.author].flat().map(Object.values).flat(),
           ].map((x) => x.toLowerCase());
 
           return props.some((x) => x.includes(search.toLowerCase()));

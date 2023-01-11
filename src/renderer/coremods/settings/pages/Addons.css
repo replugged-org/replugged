@@ -6,7 +6,6 @@
 .replugged-addon-card {
   background-color: var(--background-secondary);
   width: 100%;
-  min-height: 150px;
   padding: 15px;
   border-radius: 5px;
 }
@@ -20,18 +19,10 @@
   height: 2ch;
 }
 
+.replugged-addon-icon-author svg {
+  height: 1.5ch;
+}
+
 .replugged-addon-icon:hover svg {
   color: var(--interactive-hover);
-}
-
-.replugged-addon-icon-red svg {
-  color: var(--button-danger-background);
-}
-
-.replugged-addon-icon-red:hover svg {
-  color: var(--button-danger-background-hover);
-}
-
-.replugged-addon-icon-red:active svg {
-  color: var(--button-danger-background-active);
 }
