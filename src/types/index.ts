@@ -94,7 +94,7 @@ export interface RepluggedPlugin {
 }
 
 export * from "./discord";
-export type { PluginExports } from "./addon";
+export type { PluginExports, PluginManifest, ThemeManifest } from "./addon";
 export * from "./settings";
 export * from "./util";
 export * from "./webpack";
