@@ -1,6 +1,6 @@
 {
   "name": "replugged",
-  "version": "4.0.0-beta0.19",
+  "version": "4.0.0-beta0.20",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "dist/main/index.js",
@@ -23,7 +23,8 @@
     "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix",
     "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src; cp src/*.d.ts dist",
     "postpublish": "rm -rf dist; npm run build",
-    "docs": "typedoc src/renderer/replugged.ts"
+    "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
+    "docs:watch": "pnpm run docs --watch"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",
@@ -32,8 +33,11 @@
   },
   "devDependencies": {
     "@types/highlightjs": "^9.12.2",
+    "@types/lodash": "^4.14.191",
     "@types/node": "^18.8.0",
     "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.10",
+    "@types/react-reconciler": "^0.28.1",
     "@types/toposort": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
@@ -49,11 +53,16 @@
     "np": "^7.6.2",
     "prettier": "^2.7.1",
     "tsx": "^3.9.0",
+    "type-fest": "^3.5.0",
     "typedoc": "^0.23.22",
     "typescript": "^4.8.4",
     "zod": "^3.19.1"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@octokit/rest": "^19.0.5",
+    "node-fetch": "^3.3.0"
+  }
 }

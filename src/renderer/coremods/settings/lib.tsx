@@ -1,4 +1,4 @@
-import { Section as SectionType, SettingsTools } from "../../../types/coremods/settings";
+import type { Section as SectionType, SettingsTools } from "../../../types/coremods/settings";
 import type React from "react";
 
 // todo: Create version of this for plugins that's limited to the plugin section and alphabetized
@@ -51,6 +51,9 @@ export const settingsTools: SettingsTools = {
     settingsTools.rpSectionsAfter[sectionName] = sections;
 
     return sections;
+  },
+  removeAfter(sectionName) {
+    delete settingsTools.rpSectionsAfter[sectionName];
   },
 };
 

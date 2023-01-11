@@ -1,22 +1,25 @@
-import { ModuleExports } from "../../../../types";
 import { filters, getExportsForProps, waitForModule } from "..";
+import type { Store } from "./flux";
 
-export type Channels = ModuleExports & {
-  getChannelId: (unknownParam?: string) => string | undefined;
-  getCurrentlySelectedChannelId: (unknownParam?: string) => string | undefined; // tbd
-  getLastChannelFollowingDestination: () => unknown; // tbd
-  getLastSelectedChannelId: (unknownParam: unknown) => string | undefined; // tbd
-  getLastSelectedChannels: (unknownParam: unknown) => unknown; // tbd
-  getMostRecentSelectedTextChannelId: (unknownParam: unknown) => string | undefined; // tbd
-  getVoiceChannelId: (unknownParam?: string) => string | undefined; // tbd
-};
+export interface LastChannelFollowingDestination {
+  channelId: string;
+  guildId: string;
+}
 
-const channels: Channels = await waitForModule(
+export interface Channels extends Store {
+  getChannelId: (guildId?: string) => string | undefined;
+  getCurrentlySelectedChannelId: (guildId?: string) => string | undefined;
+  getLastChannelFollowingDestination: () => LastChannelFollowingDestination;
+  getLastSelectedChannelId: (guildId?: string) => string | undefined;
+  getLastSelectedChannels: (guildId?: string) => string | undefined;
+  getMostRecentSelectedTextChannelId: (guildId?: string) => string | undefined;
+  getVoiceChannelId: () => string | undefined;
+}
+
+export default (await waitForModule(
   filters.byProps("getChannelId", "getLastSelectedChannelId", "getVoiceChannelId"),
 ).then((mod) =>
   Object.getPrototypeOf(
     getExportsForProps(mod, ["getChannelId", "getLastSelectedChannelId", "getVoiceChannelId"]),
   ),
-);
-
-export default channels;
+)) as Channels;

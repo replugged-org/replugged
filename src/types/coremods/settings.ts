@@ -19,4 +19,5 @@ export interface SettingsTools {
     pos?: number;
   }) => Section;
   addAfter: (sectionName: string, sections: Section | Section[]) => Section[];
+  removeAfter: (sectionName: string) => void;
 }

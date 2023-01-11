@@ -3,7 +3,6 @@ import "./checks/elevate";
 import "./checks/env";
 
 import { join } from "path";
-import { writeFile } from "fs/promises";
 import { AnsiEscapes, BasicMessages } from "./util";
 import { inject, uninject } from "./injector";
 
@@ -20,7 +19,6 @@ const platformModules = {
 };
 
 const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1;
-const noWelcomeMessage = process.argv.includes("--no-welcome-message");
 const processArgs = process.argv.filter((v) => !v.startsWith("-"));
 const cmd = processArgs[2];
 
@@ -104,10 +102,6 @@ let platform: DiscordPlatform | undefined;
       process.exit(exitCode);
     }
     if (result) {
-      if (!noWelcomeMessage) {
-        await writeFile(join(__dirname, "../../src/__injected.txt"), "hey cutie");
-      }
-
       // @todo: prompt to (re)start automatically
       console.log(BasicMessages.PLUG_SUCCESS, "\n");
       console.log(

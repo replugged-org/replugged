@@ -1,4 +1,4 @@
-import React from "../../../modules/webpack/common/react";
+import React from "@common/react";
 
 export default React.memo((props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" {...props}>

@@ -9,7 +9,6 @@ yarn.lock
 package-lock.json
 
 config.json
-*injected.txt
 *.nogit.*
 
 # macOS

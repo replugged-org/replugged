@@ -1,5 +1,5 @@
-import { ModuleExports, ObjectExports } from "../../../../types/discord";
-import { ReactComponent } from "../../../../types/util";
+import type { ObjectExports, RawModule } from "../../../../types/webpack";
+import type { ReactComponent } from "../../../../types/util";
 import { filters, getBySource, getFunctionBySource, waitForModule } from "..";
 
 enum ModalTransitionState {
@@ -8,13 +8,6 @@ enum ModalTransitionState {
   EXITING,
   EXITED,
   HIDDEN,
-}
-
-export enum ModalSize {
-  SMALL = "small",
-  MEDIUM = "medium",
-  LARGE = "large",
-  DYNAMIC = "dynamic",
 }
 
 export interface ModalProps {
@@ -28,16 +21,16 @@ export interface ModalOptions {
   onCloseCallback?: () => void;
 }
 
-export type ModalClasses = ModuleExports & {
-  Direction: Record<string, string>;
-  Align: Record<string, string>;
-  Justify: Record<string, string>;
-  Wrap: Record<string, string>;
-};
+export interface ModalClasses {
+  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
+  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
+  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
+  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
+}
 
 export interface ModalRootProps {
   transitionState?: ModalTransitionState;
-  size?: ModalSize;
+  size?: "small" | "medium" | "large" | "dynamic";
   role?: "alertdialog" | "dialog";
   className?: string;
   onAnimationEnd?(): string;
@@ -52,32 +45,32 @@ export interface ModalComponents {
   ModalCloseButton: ReactComponent<unknown>;
 }
 
-export type Modal = ModuleExports & {
+export interface Modal {
   openModal: (
     render: (props: ModalProps) => React.ReactNode,
     options?: ModalOptions,
     contextKey?: string,
   ) => string;
   closeModal: (modalKey: string, contextKey?: string) => void;
-  ModalSize: ModalSize;
-  Direction: string;
-  Align: string;
-  Justify: string;
-  Wrap: string;
-};
+  ModalSize: "small" | "medium" | "large" | "dynamic";
+  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
+  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
+  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
+  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
+}
 
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
 
-const classes = getBySource("().justifyStart")! as ModalClasses;
+const classes = getBySource<RawModule & ModalClasses>("().justifyStart")!;
 
-const modal = {
-  openModal: getFunctionBySource("onCloseRequest:null!=", mod as ObjectExports),
-  closeModal: getFunctionBySource("onCloseCallback&&", mod as ObjectExports),
-  ModalSize,
+export default {
+  openModal: getFunctionBySource<Modal["openModal"]>(
+    "onCloseRequest:null!=",
+    mod as ObjectExports,
+  )!,
+  closeModal: getFunctionBySource<Modal["closeModal"]>("onCloseCallback&&", mod as ObjectExports)!,
   Direction: classes?.Direction,
   Align: classes?.Align,
   Justify: classes?.Justify,
   Wrap: classes?.Wrap,
-} as unknown as Modal;
-
-export default modal;
+} as Modal;

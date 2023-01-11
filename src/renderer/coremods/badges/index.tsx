@@ -1,7 +1,7 @@
 import { filters, getByProps, waitForModule } from "../../modules/webpack";
 import { Injector } from "../../modules/injector";
-import React from "../../modules/webpack/common/react";
-import { User } from "discord-types/general";
+import React from "@common/react";
+import type { User } from "discord-types/general";
 import { getBadges } from "./badge";
 const injector = new Injector();
 
@@ -66,7 +66,7 @@ export async function start(): Promise<void> {
     ) => {
       if (!res?.props?.children) return res;
 
-      const [badges, setBadges] = React.useState<APIBadges | null>(null);
+      const [badges, setBadges] = React.useState<APIBadges | undefined>();
 
       React.useEffect(() => {
         (async () => {
@@ -97,7 +97,7 @@ export async function start(): Promise<void> {
             );
           }
 
-          setBadges(cache.get(id)?.badges || null);
+          setBadges(cache.get(id)?.badges);
         })();
       }, []);
 
@@ -105,35 +105,32 @@ export async function start(): Promise<void> {
         return res;
       }
 
+      const badgeTypes: Array<{
+        type: Exclude<keyof APIBadges, "custom">;
+        component: React.MemoExoticComponent<any>;
+      }> = [
+        { type: "staff", component: Badge.Staff },
+        { type: "support", component: Badge.Support },
+        { type: "developer", component: Badge.Developer },
+        { type: "contributor", component: Badge.Contributor },
+        { type: "translator", component: Badge.Translator },
+        { type: "hunter", component: Badge.BugHunter },
+        { type: "booster", component: Badge.Booster },
+        { type: "early", component: Badge.EarlyUser },
+      ];
+
       if (badges.custom && badges.custom.name && badges.custom.icon) {
         res.props.children.push(
           <Badge.Custom url={badges.custom.icon} name={badges.custom.name} />,
         );
       }
-      if (badges.booster) {
-        res.props.children.push(<Badge.Booster color={badges.custom?.color} />);
-      }
-      if (badges.hunter) {
-        res.props.children.push(<Badge.BugHunter color={badges.custom?.color} />);
-      }
-      if (badges.contributor) {
-        res.props.children.push(<Badge.Contributor color={badges.custom?.color} />);
-      }
-      if (badges.developer) {
-        res.props.children.push(<Badge.Developer color={badges.custom?.color} />);
-      }
-      if (badges.early) {
-        res.props.children.push(<Badge.EarlyUser color={badges.custom?.color} />);
-      }
-      if (badges.staff) {
-        res.props.children.push(<Badge.Staff color={badges.custom?.color} />);
-      }
-      if (badges.support) {
-        res.props.children.push(<Badge.Support color={badges.custom?.color} />);
-      }
-      if (badges.translator) {
-        res.props.children.push(<Badge.Translator color={badges.custom?.color} />);
-      }
+
+      badgeTypes.forEach(({ type, component }) => {
+        const value = badges[type];
+        if (value) {
+          res.props.children.push(React.createElement(component, { color: badges.custom?.color }));
+        }
+      });
 
       if (res.props.children.length > 0) {
         if (!res.props.className.includes(containerWithContent)) {

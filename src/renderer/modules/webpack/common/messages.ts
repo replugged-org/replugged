@@ -1,8 +1,22 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { filters, waitForModule } from "..";
 
-import { ModuleExports } from "../../../../types";
-import { Message } from "discord-types/general";
+import type { RawModule } from "../../../../types";
+import type { Message, MessageAttachment } from "discord-types/general";
+
+export enum ActivityActionTypes {
+  JOIN = 1,
+  LISTEN = 3,
+  WATCH = 4,
+  JOIN_REQUEST = 5,
+}
+
+export type Properties = Record<string, unknown>;
+
+export interface CaptchaPayload {
+  captcha_key: string;
+  captcha_rqtoken: string;
+}
 
 export interface MessageReference {
   guild_id?: string;
@@ -13,6 +27,14 @@ export interface MessageReference {
 export interface AllowedMentions {
   parse: Array<"users" | "roles" | "everyone">;
   replied_user: boolean;
+}
+
+export interface InviteSuggestion {
+  isAffinitySuggestion: boolean;
+  rowNum: number;
+  numTotal: number;
+  numAffinityConnections: number;
+  isFiltered: boolean;
 }
 
 export interface FetchMessageOptions {
@@ -44,8 +66,8 @@ export interface MessageJumpOptions {
   messageId: string;
   flash?: boolean;
   offset?: number;
-  context?: unknown; // tbd
-  extraProperties?: unknown; // tbd
+  context?: string;
+  extraProperties?: Properties;
   isPreload?: boolean;
   returnMessageId?: string;
   jumpType?: string;
@@ -59,13 +81,13 @@ export interface OutgoingMessage {
 }
 
 export interface OutgoingMessageOptions {
-  activityAction?: unknown; // tbd
+  activityAction?: ActivityActionTypes;
   location?: string;
-  suggestedInvite?: unknown; // tbd
+  suggestedInvite?: InviteSuggestion;
   stickerIds?: string[];
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
-  captchaPayload?: unknown; // tbd
+  captchaPayload?: CaptchaPayload;
 }
 
 export interface TrackInviteOptions {
@@ -73,11 +95,11 @@ export interface TrackInviteOptions {
   channelId: string;
   messageId: string;
   location: string;
-  suggested: unknown; // tbd
-  overrideProperties: unknown; // tbd
+  suggested: InviteSuggestion;
+  overrideProperties: Properties;
 }
 
-export type Messages = ModuleExports & {
+export interface Messages {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => void;
   deleteMessage: (channelId: string, messageId: string) => void;
@@ -94,7 +116,7 @@ export type Messages = ModuleExports & {
   patchMessageAttachments: (
     channelId: string,
     messageId: string,
-    attachments: unknown[] /* tbd */,
+    attachments: MessageAttachment[],
   ) => void;
   receiveMessage: (channelId: string, message: Message) => void;
   revealMessage: (channelId: string, messageId: string) => void;
@@ -106,19 +128,19 @@ export type Messages = ModuleExports & {
     i: {
       messageReference: MessageReference;
       allowedMentions: AllowedMentions;
-      captchaPayload?: unknown; // tbd
+      captchaPayload?: CaptchaPayload;
     },
   ) => void;
   sendInvite: (
     channelId: string,
     inviteCode: string,
     analyticsTriggeredFrom: string,
-    r: unknown /* tbd */,
+    suggestedInvite: InviteSuggestion,
   ) => void;
   sendMessage: (
     channelId: string,
     message: OutgoingMessage,
-    unknownParam?: unknown /* tbd */,
+    promise?: boolean,
     options?: OutgoingMessageOptions,
   ) => void;
   sendStickers: (channelId: string, stickerIds: string[]) => void;
@@ -128,8 +150,8 @@ export type Messages = ModuleExports & {
   trackJump(
     channelId: string,
     messageId: string,
-    context: unknown, // tbd
-    unknownParam: unknown, // tbd
+    context: string,
+    extraProperties: Properties,
   ): void;
   truncateMessages: (channelId: string, truncateBottom: number, truncateTop: number) => void;
   updateEditMessage: (channelId: string, textValue: string, richValue: string) => void;
@@ -139,10 +161,8 @@ export type Messages = ModuleExports & {
     options: OutgoingMessageOptions,
   ) => void;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
-};
+}
 
-const messages: Messages = await waitForModule(
+export default await waitForModule<RawModule & Messages>(
   filters.byProps("sendMessage", "editMessage", "deleteMessage"),
 );
-
-export default messages;

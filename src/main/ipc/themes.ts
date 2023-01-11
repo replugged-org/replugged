@@ -6,11 +6,11 @@ IPC events:
 
 import { readFile, readdir, readlink, rm, stat } from "fs/promises";
 import { extname, join } from "path";
-import { ipcMain } from "electron";
-import { RepluggedIpcChannels, RepluggedTheme } from "../../types";
+import { ipcMain, shell } from "electron";
+import { RepluggedIpcChannels, type RepluggedTheme } from "../../types";
 import { theme } from "../../types/addon";
 import { CONFIG_PATHS } from "src/util";
-import { Dirent, Stats } from "fs";
+import type { Dirent, Stats } from "fs";
 
 const THEMES_DIR = CONFIG_PATHS.themes;
 
@@ -33,12 +33,10 @@ async function getTheme(path: string): Promise<RepluggedTheme> {
 
 ipcMain.handle(
   RepluggedIpcChannels.GET_THEME,
-  async (_, path: string): Promise<RepluggedTheme | null> => {
+  async (_, path: string): Promise<RepluggedTheme | undefined> => {
     try {
       return await getTheme(path);
-    } catch {
-      return null;
-    }
+    } catch {}
   },
 );
 
@@ -52,15 +50,12 @@ ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedThem
           withFileTypes: true,
         })
       ).map(async (f) => {
-        console.log(f);
         if (isFileATheme(f, f.name)) return f;
         if (f.isSymbolicLink()) {
           const actualPath = await readlink(join(THEMES_DIR, f.name));
           const actualFile = await stat(actualPath);
           if (isFileATheme(actualFile, actualPath)) return f;
         }
-
-        return null;
       }),
     )
   ).filter(Boolean) as Dirent[];
@@ -82,3 +77,5 @@ ipcMain.handle(RepluggedIpcChannels.UNINSTALL_THEME, async (_, themeName: string
     force: true,
   });
 });
+
+ipcMain.on(RepluggedIpcChannels.OPEN_THEMES_FOLDER, () => shell.openPath(THEMES_DIR));

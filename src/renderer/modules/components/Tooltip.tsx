@@ -1,11 +1,6 @@
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
-const tooltipMod = await waitForModule<Record<string, React.FC>>(
-  filters.bySource(/shouldShowTooltip:!1/),
-);
-const Tooltip = tooltipMod && getFunctionBySource<React.FC>(/shouldShowTooltip:!1/, tooltipMod);
-
-export default Tooltip as React.FC<{
+export type TooltipType = React.FC<{
   text: string;
   children: React.FC;
   className?: string;
@@ -16,3 +11,10 @@ export default Tooltip as React.FC<{
   delay?: number;
   shouldShow?: boolean;
 }>;
+
+const tooltipMod = await waitForModule<Record<string, React.FC>>(
+  filters.bySource(/shouldShowTooltip:!1/),
+);
+
+export default tooltipMod &&
+  (getFunctionBySource<React.FC>(/shouldShowTooltip:!1/, tooltipMod) as TooltipType);

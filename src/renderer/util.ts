@@ -1,3 +1,5 @@
+import { Fiber } from "react-reconciler";
+
 /**
  * Loads a stylesheet into the document
  * @param path Path to the stylesheet
@@ -6,15 +8,10 @@
 export const loadStyleSheet = (path: string): HTMLLinkElement => {
   const el = document.createElement("link");
   el.rel = "stylesheet";
-  el.href = path;
+  el.href = `${path}?t=${Date.now()}`;
   document.head.appendChild(el);
 
   return el;
-};
-
-export type ReactFiber<T extends Record<string, unknown> = Record<string, unknown>> = T & {
-  stateNode: Element | T;
-  return: ReactFiber<T>;
 };
 
 /**
@@ -38,9 +35,7 @@ export async function waitFor(selector: string): Promise<Element> {
  * @returns React instance
  * @throws If the React instance could not be found
  */
-export function getReactInstance<T extends Record<string, unknown> = Record<string, unknown>>(
-  element: Element,
-): ReactFiber<T> {
+export function getReactInstance(element: Element): Fiber | null {
   const keys = Object.keys(element);
   const reactKey = keys.find((key) => key.startsWith("__reactFiber$"));
   if (!reactKey) {
@@ -56,10 +51,8 @@ export function getReactInstance<T extends Record<string, unknown> = Record<stri
  * @returns React owner instance
  * @throws If the React owner instance could not be found
  */
-export function getOwnerInstance<T extends Record<string, unknown> = Record<string, unknown>>(
-  element: Element,
-): T {
-  let current = getReactInstance<T>(element);
+export function getOwnerInstance(element: Element): React.Component & Record<string, unknown> {
+  let current = getReactInstance(element);
   while (current) {
     const owner = current.stateNode;
     if (owner && !(owner instanceof Element)) {
@@ -68,4 +61,17 @@ export function getOwnerInstance<T extends Record<string, unknown> = Record<stri
     current = current.return;
   }
   throw new Error("Could not find react owner");
+}
+
+/**
+ * Force updates a rendered React component by its DOM selector
+ * @param selector The DOM selector to force update
+ * @param all Whether all elements matching that selector should be force updated
+ */
+export function forceUpdateElement(selector: string, all = false): void {
+  const elements = (
+    all ? [...document.querySelectorAll(selector)] : [document.querySelector(selector)]
+  ).filter(Boolean) as Element[];
+
+  elements.forEach((element) => getOwnerInstance(element)?.forceUpdate());
 }

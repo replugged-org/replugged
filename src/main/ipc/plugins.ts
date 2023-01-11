@@ -6,10 +6,10 @@ IPC events:
 
 import { readFile, readdir, readlink, rm, stat } from "fs/promises";
 import { extname, join } from "path";
-import { ipcMain } from "electron";
-import { RepluggedIpcChannels, RepluggedPlugin } from "../../types";
+import { ipcMain, shell } from "electron";
+import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
-import { Dirent, Stats } from "fs";
+import type { Dirent, Stats } from "fs";
 import { CONFIG_PATHS } from "src/util";
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
@@ -33,12 +33,10 @@ async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
 
 ipcMain.handle(
   RepluggedIpcChannels.GET_PLUGIN,
-  async (_, pluginName: string): Promise<RepluggedPlugin | null> => {
+  async (_, pluginName: string): Promise<RepluggedPlugin | undefined> => {
     try {
       return await getPlugin(pluginName);
-    } catch {
-      return null;
-    }
+    } catch {}
   },
 );
 
@@ -58,8 +56,6 @@ ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlu
           const actualFile = await stat(actualPath);
           if (isFileAPlugin(actualFile, actualPath)) return f;
         }
-
-        return null;
       }),
     )
   ).filter(Boolean) as Dirent[];
@@ -82,3 +78,5 @@ ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: stri
     force: true,
   });
 });
+
+ipcMain.on(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER, () => shell.openPath(PLUGINS_DIR));

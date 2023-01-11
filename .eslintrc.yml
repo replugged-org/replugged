@@ -33,6 +33,7 @@ rules:
   no-undef: off
   no-undefined: off
   no-unused-vars: off
+  new-cap: off
   "@typescript-eslint/no-unused-vars":
     - error
     - argsIgnorePattern: "^_"

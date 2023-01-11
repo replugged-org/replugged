@@ -5,7 +5,6 @@ export { insertSections };
 
 export function start(): void {
   settingsTools.addAfter("Billing", [
-    /* eslint-disable */
     Divider(),
     Header("Replugged"),
     Section({
@@ -13,6 +12,9 @@ export function start(): void {
       label: "General",
       elem: General,
     }),
-    /* eslint-enable */
   ]);
+}
+
+export function stop(): void {
+  settingsTools.removeAfter("Billing");
 }

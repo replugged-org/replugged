@@ -1,8 +1,8 @@
-import electron from "electron";
-import { CommandOptions, ConnectedAccount } from "./discord";
-import { Plugin, Theme } from "./addon";
+import type { WebContents } from "electron";
+import type { CommandOptions, ConnectedAccount } from "./discord";
+import type { PluginManifest, ThemeManifest } from "./addon";
 
-export type RepluggedWebContents = electron.WebContents & {
+export type RepluggedWebContents = WebContents & {
   originalPreload?: string;
 };
 
@@ -24,6 +24,13 @@ export enum RepluggedIpcChannels {
   GET_PLUGIN = "REPLUGGED_GET_PLUGIN",
   UNINSTALL_PLUGIN = "REPLUGGED_UNINSTALL_PLUGIN",
   REGISTER_RELOAD = "REPLUGGED_REGISTER_RELOAD",
+  CHECK_UPDATE = "REPLUGGED_CHECK_UPDATE",
+  INSTALL_UPDATE = "REPLUGGED_INSTALL_UPDATE",
+  GET_HASH = "REPLUGGED_GET_HASH",
+  OPEN_PLUGINS_FOLDER = "REPLUGGED_OPEN_PLUGINS_FOLDER",
+  OPEN_THEMES_FOLDER = "REPLUGGED_OPEN_THEMES_FOLDER",
+  OPEN_SETTINGS_FOLDER = "REPLUGGED_OPEN_SETTINGS_FOLDER",
+  OPEN_QUICKCSS_FOLDER = "REPLUGGED_OPEN_QUICKCSS_FOLDER",
 }
 
 export interface RepluggedAnnouncement {
@@ -78,16 +85,17 @@ export interface RepluggedConnection {
 
 export interface RepluggedTheme {
   path: string;
-  manifest: Theme;
+  manifest: ThemeManifest;
 }
 
 export interface RepluggedPlugin {
   path: string;
-  manifest: Plugin;
+  manifest: PluginManifest;
 }
 
 export * from "./discord";
-export * from "./entities";
+export type { PluginExports } from "./addon";
 export * from "./settings";
 export * from "./util";
 export * from "./webpack";
+export * from "./updater";

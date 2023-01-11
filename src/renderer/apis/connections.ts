@@ -1,5 +1,5 @@
-import { RepluggedConnection } from "../../types";
-import { ConnectedAccount } from "../../types/discord";
+import type { RepluggedConnection } from "../../types";
+import type { ConnectedAccount } from "../../types/discord";
 
 class ConnectionsAPI extends EventTarget {
   public connections: RepluggedConnection[] = [];
@@ -18,7 +18,7 @@ class ConnectionsAPI extends EventTarget {
       connections[element.type] = element;
     }
 
-    return connections[type] || null;
+    return connections[type];
   }
 
   public registerConnection(connection: RepluggedConnection): void {

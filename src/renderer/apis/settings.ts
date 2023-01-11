@@ -1,3 +1,5 @@
+import type { Jsonifiable } from "type-fest";
+
 type SettingsUpdate<T> =
   | {
       type: "set";
@@ -18,7 +20,7 @@ type SettingsUpdate<T> =
  * Once the settings data has been copied into the `SettingsManager`, it can be read and written synchronously.
  * The `SettingsManager` automatically queues and dispatches updates to the file system in the background.
  */
-export class SettingsManager<T extends Record<string, unknown>> {
+export class SettingsManager<T extends Record<string, Jsonifiable>> {
   #settings: T | undefined;
   #saveTimeout: ReturnType<typeof setTimeout> | undefined;
   #queuedUpdates: Map<Extract<keyof T, string>, SettingsUpdate<T>>;
@@ -156,7 +158,7 @@ const managers = new Map<string, unknown>();
  * Settings for a namespace are stored in `settings/NAMESPACE.json` within the [Replugged data folder](https://docs.replugged.dev/#installing-plugins-and-themes).
  * @returns Manager for the namespace.
  */
-export async function init<T extends Record<string, unknown>>(
+export async function init<T extends Record<string, Jsonifiable>>(
   namespace: string,
 ): Promise<SettingsManager<T>> {
   if (managers.has(namespace)) {

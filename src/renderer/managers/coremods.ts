@@ -1,13 +1,14 @@
-import { Awaitable } from "src/types";
+import type { Promisable } from "type-fest";
 import { patchPlaintext } from "../modules/webpack";
 
 import { default as experimentsPlaintext } from "../coremods/experiments/plaintextPatches";
 import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
 import { default as notrackPlaintext } from "../coremods/notrack/plaintextPatches";
+import { default as noDevtoolsWarningPlaintext } from "../coremods/noDevtoolsWarning/plaintextPatches";
 
 interface Coremod {
-  start?: () => Awaitable<void>;
-  stop?: () => Awaitable<void>;
+  start?: () => Promisable<void>;
+  stop?: () => Promisable<void>;
   [x: string]: unknown; // Allow coremods to export anything else they want
 }
 
@@ -40,5 +41,7 @@ export async function stopAll(): Promise<void> {
 }
 
 export function runPlaintextPatches(): void {
-  [experimentsPlaintext, settingsPlaintext, notrackPlaintext].forEach(patchPlaintext);
+  [experimentsPlaintext, settingsPlaintext, notrackPlaintext, noDevtoolsWarningPlaintext].forEach(
+    patchPlaintext,
+  );
 }

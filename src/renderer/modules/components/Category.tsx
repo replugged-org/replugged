@@ -1,11 +1,8 @@
 import { filters, waitForModule } from "../webpack";
 import { Divider, Flex, FormItem, FormText } from ".";
-import React from "../webpack/common/react";
+import React from "@common/react";
 
-const classes = (await waitForModule(filters.byProps("labelRow"), { timeout: 10000 })) as Record<
-  string,
-  string
->;
+const classes = (await waitForModule(filters.byProps("labelRow"))) as Record<string, string>;
 
 type CategoryProps = {
   title: string;
@@ -15,10 +12,12 @@ type CategoryProps = {
   onChange?: () => void;
 };
 
+export type CategoryType = React.FC<CategoryProps>;
+
 /**
- * A category. It's, by default, is automatically handled by the component. `open` and `onChange` both must be specified to override.
+ * A category. It's opened state, by default, is automatically handled by the component. `open` and `onChange` both must be specified to override.
  */
-const Category = (props: React.PropsWithChildren<CategoryProps>) => {
+export default ((props: React.PropsWithChildren<CategoryProps>) => {
   const [open, setOpen] = React.useState(props.open || false);
 
   const handleClick = () => {
@@ -75,6 +74,4 @@ const Category = (props: React.PropsWithChildren<CategoryProps>) => {
       </FormItem>
     </div>
   );
-};
-
-export default Category;
+}) as CategoryType;

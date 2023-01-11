@@ -1,7 +1,7 @@
-import { ReactComponent } from "../../../types";
+import type { ReactComponent } from "../../../types";
 import { filters, waitForModule } from "../webpack";
 
-type Flex = ReactComponent<{
+export type FlexType = ReactComponent<{
   direction?: string;
   justify?: string;
   align?: string;
@@ -10,12 +10,12 @@ type Flex = ReactComponent<{
   grow?: number;
   basis?: string;
 }> & {
-  Direction: Record<string, string>;
-  Justify: Record<string, string>;
-  Align: Record<string, string>;
-  Wrap: Record<string, string>;
+  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
+  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
+  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
+  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
 };
 
 const mod = await waitForModule(filters.bySource("HORIZONTAL_REVERSE:"));
 
-export default mod as Flex;
+export default mod as FlexType;
