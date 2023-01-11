@@ -211,7 +211,7 @@ function Card({
       <Flex
         align={Flex.Align.START}
         justify={Flex.Justify.BETWEEN}
-        style={{ gap: "10px", marginBottom: "15px" }}>
+        style={{ gap: "15px", marginBottom: "15px" }}>
         <span>
           <Text variant="heading-sm/normal" tag="h2">
             <Text variant="heading-lg/bold" tag="span">
