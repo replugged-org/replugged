@@ -208,29 +208,36 @@ function Card({
 
   return (
     <div className="replugged-addon-card">
-      <Text variant="heading-md/normal" tag="h2">
-        <Text variant="heading-lg/bold" tag="span">
-          {addon.manifest.name}
-        </Text>{" "}
-        <Text variant="heading-lg/normal" tag="span">
-          v{addon.manifest.version}
-        </Text>{" "}
-        by <Authors addon={addon} />
-      </Text>
+      <Flex
+        align={Flex.Align.START}
+        justify={Flex.Justify.BETWEEN}
+        style={{ gap: "10px", marginBottom: "15px" }}>
+        <span>
+          <Text variant="heading-sm/normal" tag="h2">
+            <Text variant="heading-lg/bold" tag="span">
+              {addon.manifest.name}
+            </Text>{" "}
+            <Text variant="heading-lg/normal" tag="span">
+              v{addon.manifest.version}
+            </Text>{" "}
+            by <Authors addon={addon} />
+          </Text>
+        </span>
+        <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
+          {sourceLink ? (
+            <a href={sourceLink} target="_blank" className="replugged-addon-icon">
+              <Icons.Link />
+            </a>
+          ) : null}
+          <a onClick={() => uninstall()} className="replugged-addon-icon">
+            <Icons.Trash />
+          </a>
+          <SwitchItem checked={!disabled} onChange={toggleDisabled} />
+        </Flex>
+      </Flex>
       <Text.Normal style={{ margin: "5px 0" }} markdown={true} allowMarkdownLinks={true}>
         {addon.manifest.description}
       </Text.Normal>
-      <Flex justify={Flex.Justify.END} align={Flex.Align.CENTER} style={{ gap: "10px" }}>
-        {sourceLink ? (
-          <a href={sourceLink} target="_blank" className="replugged-addon-icon">
-            <Icons.Link />
-          </a>
-        ) : null}
-        <a onClick={() => uninstall()} className="replugged-addon-icon">
-          <Icons.Trash />
-        </a>
-        <SwitchItem checked={!disabled} onChange={toggleDisabled} />
-      </Flex>
     </div>
   );
 }
