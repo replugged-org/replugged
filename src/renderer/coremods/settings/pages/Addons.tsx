@@ -197,11 +197,13 @@ function Card({
   addon,
   disabled,
   toggleDisabled,
+  reload,
   uninstall,
 }: {
   addon: RepluggedPlugin | RepluggedTheme;
   disabled: boolean;
   toggleDisabled: () => void;
+  reload: () => void;
   uninstall: () => void;
 }) {
   const sourceLink = getSourceLink(addon);
@@ -232,6 +234,9 @@ function Card({
           ) : null}
           <a onClick={() => uninstall()} className="replugged-addon-icon">
             <Icons.Trash />
+          </a>
+          <a onClick={() => reload()} className="replugged-addon-icon">
+            <Icons.Reload />
           </a>
           <SwitchItem checked={!disabled} onChange={toggleDisabled} />
         </Flex>
@@ -281,6 +286,10 @@ function Cards({
             const manager = getManager(type);
             await manager.uninstall(addon.manifest.id);
             refreshList();
+          }}
+          reload={async () => {
+            const manager = getManager(type);
+            await manager.reload(addon.manifest.id);
           }}
         />
       ))}
