@@ -3,9 +3,9 @@ import { filters, waitForModule } from "..";
 
 interface ConfirmProps {
   title?: string;
-  body?: string;
+  body?: string | React.ReactElement;
   confirmColor?: string;
-  confirmText?: string | React.ReactElement;
+  confirmText?: string;
   cancelText?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
