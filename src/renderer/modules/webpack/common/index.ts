@@ -81,6 +81,11 @@ export type { Modal };
 export let modal: Modal;
 importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
 
+import type { Confirm } from "./confirm";
+export type { Confirm };
+export let confirm: Confirm;
+importTimeout("confirm", import("./confirm"), (mod) => (confirm = mod.default));
+
 /**
  * @see {@link https://reactjs.org/docs/react-api.html}
  */
