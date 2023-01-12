@@ -1,9 +1,12 @@
-import { api, fluxDispatcher, modal, users } from "@common";
+import { api, fluxDispatcher, modal, toast, users } from "@common";
 import React from "@common/react";
 import { Button, Divider, Flex, Input, SwitchItem, Text } from "@components";
 import { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
 import Icons from "../icons";
+import { Logger } from "@replugged";
+
+const logger = Logger.coremod("AddonSettings");
 
 enum AddonType {
   Plugin = "plugin",
@@ -55,10 +58,16 @@ async function openUserProfile(id: string) {
       fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body.user });
       fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
     } catch (e) {
-      const { body } = await api.get({
-        url: `/users/${id}`,
-      });
-      fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
+      try {
+        const { body } = await api.get({
+          url: `/users/${id}`,
+        });
+        fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
+      } catch (e) {
+        logger.error(`Failed to fetch user profile for ${id}`, e);
+        toast.toast("Failed to fetch user profile", toast.Kind.FAILURE);
+        return;
+      }
     }
   }
   fluxDispatcher.dispatch({
@@ -270,16 +279,28 @@ function Cards({
           addon={addon}
           key={addon.manifest.id}
           disabled={disabled.has(addon.manifest.id)}
-          toggleDisabled={() => {
+          toggleDisabled={async () => {
             const isDisabled = disabled.has(addon.manifest.id);
             const clonedDisabled = new Set(disabled);
             const manager = getManager(type);
             if (isDisabled) {
-              clonedDisabled.delete(addon.manifest.id);
-              manager.enable(addon.manifest.id);
+              try {
+                await manager.enable(addon.manifest.id);
+                clonedDisabled.delete(addon.manifest.id);
+                toast.toast(`Enabled ${addon.manifest.name}`);
+              } catch (e) {
+                logger.error("Error enabling", addon, e);
+                toast.toast(`Failed to toggle ${label(type)}`, toast.Kind.FAILURE);
+              }
             } else {
-              clonedDisabled.add(addon.manifest.id);
-              manager.disable(addon.manifest.id);
+              try {
+                await manager.disable(addon.manifest.id);
+                clonedDisabled.add(addon.manifest.id);
+                toast.toast(`Disabled ${addon.manifest.name}`);
+              } catch (e) {
+                logger.error("Error disabling", addon, e);
+                toast.toast(`Failed to toggle ${label(type)}`, toast.Kind.FAILURE);
+              }
             }
             setDisabled(clonedDisabled);
           }}
@@ -296,12 +317,24 @@ function Cards({
             if (!confirmation) return;
 
             const manager = getManager(type);
-            await manager.uninstall(addon.manifest.id);
+            try {
+              await manager.uninstall(addon.manifest.id);
+              toast.toast(`Uninstalled ${addon.manifest.name}`);
+            } catch (e) {
+              logger.error("Error uninstalling", addon, e);
+              toast.toast(`Failed to uninstall ${addon.manifest.name}`, toast.Kind.FAILURE);
+            }
             refreshList();
           }}
           reload={async () => {
             const manager = getManager(type);
-            await manager.reload(addon.manifest.id);
+            try {
+              await manager.reload(addon.manifest.id);
+              toast.toast(`Reloaded ${addon.manifest.name}`);
+            } catch (e) {
+              logger.error("Error reloading", addon, e);
+              toast.toast(`Failed to reload ${addon.manifest.name}`, toast.Kind.FAILURE);
+            }
           }}
         />
       ))}
@@ -354,7 +387,17 @@ export const Addons = (type: AddonType) => {
           </Button>
           <Button
             onClick={async () => {
-              await loadMissing(type);
+              try {
+                await loadMissing(type);
+                toast.toast(`Loaded missing ${label(type, { plural: true })}`);
+              } catch (e) {
+                logger.error("Error loading missing", e);
+                toast.toast(
+                  `Failed to load missing ${label(type, { plural: true })}`,
+                  toast.Kind.FAILURE,
+                );
+              }
+
               refreshList();
             }}
             color={Button.Colors.PRIMARY}
