@@ -1,4 +1,7 @@
 import { Fiber } from "react-reconciler";
+import { ModalProps } from "./modules/components/Modal";
+import { Button, FormText, Modal } from "./modules/components";
+import { modal } from "@common";
 
 /**
  * Loads a stylesheet into the document
@@ -74,4 +77,51 @@ export function forceUpdateElement(selector: string, all = false): void {
   ).filter(Boolean) as Element[];
 
   elements.forEach((element) => getOwnerInstance(element)?.forceUpdate());
+}
+
+export type ConfirmModalProps = {
+  onCancel?: () => unknown;
+  onConfirm: () => unknown;
+  title: string;
+  note?: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
+};
+
+export function createConfirmModal(props: ConfirmModalProps): Promise<boolean> {
+  let modalKey: string;
+  
+  return new Promise((resolve, _) => {
+    modalKey = modal.openModal((p: ModalProps) => (
+      <Modal.ModalRoot {...p}>
+        <Modal.ModalHeader>
+          <FormText.DEFAULT style={{fontSize: '30px'}}>{props.title}</FormText.DEFAULT>
+        </Modal.ModalHeader>
+        <Modal.ModalContent>
+          <FormText.DEFAULT>{props.note}</FormText.DEFAULT>
+        </Modal.ModalContent>
+        <Modal.ModalFooter>
+          <Button
+            color={Button.Colors.TRANSPARENT}
+            look={Button.Looks.LINK}
+            onClick={() => {
+              props.onCancel?.();
+              modal.closeModal(modalKey);
+              resolve(false);
+            }}>
+            {props.cancelLabel ?? "Cancel"}
+          </Button>
+          <Button
+            color={Button.Colors.GREEN}
+            onClick={() => {
+              props.onConfirm();
+              modal.closeModal(modalKey);
+              resolve(true);
+            }}>
+            {props.confirmLabel ?? "Confirm"}
+          </Button>
+        </Modal.ModalFooter>
+      </Modal.ModalRoot>
+    ));
+  });
 }
