@@ -45,6 +45,30 @@ export interface ModalComponents {
   ModalCloseButton: ReactComponent<unknown>;
 }
 
+interface AlertProps {
+  title?: string;
+  body?: string | React.ReactElement;
+  confirmColor?: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  onCloseCallback?: () => void;
+  secondaryConfirmText?: string;
+  onConfirmSecondary?: () => void;
+  className?: string;
+}
+
+interface AlertMod {
+  show: (props: AlertProps) => void;
+  close: () => void;
+}
+
+const defaultConfirmProps: Partial<AlertProps> = {
+  title: "Are you sure you want to continue?",
+  cancelText: "Cancel",
+};
+
 export interface Modal {
   openModal: (
     render: (props: ModalProps) => React.ReactNode,
@@ -57,9 +81,12 @@ export interface Modal {
   Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
   Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
   Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
+  alert: (props: AlertProps) => void;
+  confirm: (props: AlertProps) => Promise<boolean | null>;
 }
 
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
+const alertMod = await waitForModule<RawModule & AlertMod>(filters.byProps("show", "close"));
 
 const classes = getBySource<RawModule & ModalClasses>("().justifyStart")!;
 
@@ -73,4 +100,26 @@ export default {
   Align: classes?.Align,
   Justify: classes?.Justify,
   Wrap: classes?.Wrap,
+  alert: alertMod.show,
+  confirm: (props: AlertProps) =>
+    new Promise((resolve) => {
+      let didResolve = false;
+      const onConfirm = (): void => {
+        if (props.onConfirm) props.onConfirm();
+        didResolve = true;
+        resolve(true);
+      };
+      const onCancel = (): void => {
+        if (props.onCancel) props.onCancel();
+        didResolve = true;
+        resolve(false);
+      };
+      const onCloseCallback = (): void => {
+        if (props.onCloseCallback) props.onCloseCallback();
+        setTimeout(() => {
+          if (!didResolve) resolve(null);
+        }, 0);
+      };
+      alertMod.show({ ...defaultConfirmProps, ...props, onConfirm, onCancel, onCloseCallback });
+    }),
 } as Modal;
