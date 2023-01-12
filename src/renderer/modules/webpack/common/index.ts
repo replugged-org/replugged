@@ -81,6 +81,11 @@ export type { Modal };
 export let modal: Modal;
 importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
 
+import type { Toast } from "./toast";
+export type { Toast };
+export let toast: Toast;
+importTimeout("toast", import("./toast"), (mod) => (toast = mod.default));
+
 /**
  * @see {@link https://reactjs.org/docs/react-api.html}
  */
