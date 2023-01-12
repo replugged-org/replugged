@@ -63,14 +63,15 @@ export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>) => {
               )}
             </Tooltip>
           )}
-          {!props.tooltipText &&
+          {!props.tooltipText && (
             <Button
               color={props.success ? Button.Colors.GREEN : props.color || Button.Colors.BRAND}
               disabled={props.disabled}
               onClick={() => props.onClick()}
               style={{ marginLeft: 5, position: "absolute", right: "7%" }}>
               {props.button}
-            </Button>}
+            </Button>
+          )}
         </div>
         <Divider className={classes.dividerDefault} />
       </FormItem>

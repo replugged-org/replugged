@@ -90,12 +90,12 @@ export type ConfirmModalProps = {
 
 export function createConfirmModal(props: ConfirmModalProps): Promise<boolean> {
   let modalKey: string;
-  
+
   return new Promise((resolve, _) => {
     modalKey = modal.openModal((p: ModalProps) => (
       <Modal.ModalRoot {...p}>
         <Modal.ModalHeader>
-          <FormText.DEFAULT style={{fontSize: '30px'}}>{props.title}</FormText.DEFAULT>
+          <FormText.DEFAULT style={{ fontSize: "30px" }}>{props.title}</FormText.DEFAULT>
         </Modal.ModalHeader>
         <Modal.ModalContent>
           <FormText.DEFAULT>{props.note}</FormText.DEFAULT>
