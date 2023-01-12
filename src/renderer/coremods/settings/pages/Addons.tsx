@@ -1,4 +1,4 @@
-import { api, fluxDispatcher, users } from "@common";
+import { api, confirm, fluxDispatcher, users } from "@common";
 import React from "@common/react";
 import { Button, Divider, Flex, Input, SwitchItem, Text } from "@components";
 import { RepluggedPlugin, RepluggedTheme } from "src/types";
@@ -284,7 +284,18 @@ function Cards({
             setDisabled(clonedDisabled);
           }}
           uninstall={async () => {
-            // todo: prompt
+            const confirmation = await confirm.confirm({
+              title: `Uninstall ${addon.manifest.name}`,
+              body: `Are you sure you want to uninstall this ${label(
+                type,
+              )}? This cannot be undone.`,
+              confirmText: "Uninstall",
+              cancelText: "Cancel",
+              confirmColor: Button.Colors.RED,
+            });
+            console.log(confirmation);
+            if (!confirmation) return;
+
             const manager = getManager(type);
             await manager.uninstall(addon.manifest.id);
             refreshList();
