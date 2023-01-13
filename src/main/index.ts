@@ -112,7 +112,9 @@ electron.app.once("ready", () => {
     }
 
     const headersWithoutCSP = Object.fromEntries(
-      Object.entries(responseHeaders).filter(([k]) => !/^content-security-policy/i.test(k)),
+      Object.entries(responseHeaders).filter(
+        ([k]) => !/^content-security-policy/i.test(k) && !/^access-control-allow-origin$/i.test(k),
+      ),
     );
 
     headersWithoutCSP["Access-Control-Allow-Origin"] = ["*"];
