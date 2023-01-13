@@ -115,6 +115,8 @@ electron.app.once("ready", () => {
       Object.entries(responseHeaders).filter(([k]) => !/^content-security-policy/i.test(k)),
     );
 
+    headersWithoutCSP["Access-Control-Allow-Origin"] = ["*"];
+
     done({ responseHeaders: headersWithoutCSP });
   });
 
