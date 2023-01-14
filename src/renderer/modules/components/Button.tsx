@@ -67,16 +67,13 @@ export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>) => {
               text={props.tooltipText}
               position={props.tooltipPosition}
               shouldShow={Boolean(props.tooltipText)}>
-              {(props_: React.HTMLAttributes<HTMLButtonElement>) => (
-                <Button
-                  {...props_}
-                  color={props.success ? Button.Colors.GREEN : props.color || Button.Colors.BRAND}
-                  disabled={props.disabled}
-                  onClick={() => props.onClick()}
-                  style={{ marginLeft: 5, position: "absolute", right: "7%" }}>
-                  {props.button}
-                </Button>
-              )}
+              <Button
+                color={props.success ? Button.Colors.GREEN : props.color || Button.Colors.BRAND}
+                disabled={props.disabled}
+                onClick={() => props.onClick()}
+                style={{ marginLeft: 5, position: "absolute", right: "7%" }}>
+                {props.button}
+              </Button>
             </Tooltip>
           )}
         </div>
