@@ -1,6 +1,6 @@
 import { api, fluxDispatcher, modal, toast, users } from "@common";
 import React from "@common/react";
-import { Button, Divider, Flex, Input, SwitchItem, Text } from "@components";
+import { Button, Divider, Flex, Input, SwitchItem, Text, Tooltip } from "@components";
 import { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
 import Icons from "../icons";
@@ -159,19 +159,22 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
       }}>
       <b>{author.name}</b>
       {author.discordID ? (
-        <a
-          onClick={() => openUserProfile(author.discordID!)}
+        <Tooltip
+          text="Open Discord Profile"
           className="replugged-addon-icon replugged-addon-icon-author">
-          <Icons.Discord />
-        </a>
+          <a onClick={() => openUserProfile(author.discordID!)}>
+            <Icons.Discord />
+          </a>
+        </Tooltip>
       ) : null}
       {author.github ? (
-        <a
-          href={`https://github.com/${author.github}`}
-          target="_blank"
+        <Tooltip
+          text="Open GitHub Profile"
           className="replugged-addon-icon replugged-addon-icon-author">
-          <Icons.GitHub />
-        </a>
+          <a href={`https://github.com/${author.github}`} target="_blank">
+            <Icons.GitHub />
+          </a>
+        </Tooltip>
       ) : null}
     </Flex>
   ));
@@ -203,12 +206,14 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
 }
 
 function Card({
+  type,
   addon,
   disabled,
   toggleDisabled,
   reload,
   uninstall,
 }: {
+  type: AddonType;
   addon: RepluggedPlugin | RepluggedTheme;
   disabled: boolean;
   toggleDisabled: () => void;
@@ -237,17 +242,29 @@ function Card({
         </span>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
           {sourceLink ? (
-            <a href={sourceLink} target="_blank" className="replugged-addon-icon">
-              <Icons.Link />
-            </a>
+            <Tooltip
+              text={`Open ${label(type, { caps: "title" })} Page`}
+              className="replugged-addon-icon">
+              <a href={sourceLink} target="_blank">
+                <Icons.Link />
+              </a>
+            </Tooltip>
           ) : null}
-          <a onClick={() => uninstall()} className="replugged-addon-icon">
-            <Icons.Trash />
-          </a>
-          {disabled ? null : (
-            <a onClick={() => reload()} className="replugged-addon-icon">
-              <Icons.Reload />
+          <Tooltip
+            text={`Delete ${label(type, { caps: "title" })}`}
+            className="replugged-addon-icon">
+            <a onClick={() => uninstall()}>
+              <Icons.Trash />
             </a>
+          </Tooltip>
+          {disabled ? null : (
+            <Tooltip
+              text={`Reload ${label(type, { caps: "title" })}`}
+              className="replugged-addon-icon">
+              <a onClick={() => reload()}>
+                <Icons.Reload />
+              </a>
+            </Tooltip>
           )}
           <SwitchItem checked={!disabled} onChange={toggleDisabled} />
         </Flex>
@@ -276,6 +293,7 @@ function Cards({
     <div className="replugged-addon-cards">
       {list.map((addon) => (
         <Card
+          type={type}
           addon={addon}
           key={addon.manifest.id}
           disabled={disabled.has(addon.manifest.id)}

@@ -10,8 +10,9 @@
   border-radius: 5px;
 }
 
-.replugged-addon-icon {
-  display: contents;
+.replugged-addon-icon,
+.replugged-addon-icon a {
+  display: flex;
 }
 
 .replugged-addon-icon svg {
