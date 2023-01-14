@@ -81,6 +81,11 @@ export type { Modal };
 export let modal: Modal;
 importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
 
+import type { Toast } from "./toast";
+export type { Toast };
+export let toast: Toast;
+importTimeout("toast", import("./toast"), (mod) => (toast = mod.default));
+
 /**
  * @see {@link https://reactjs.org/docs/react-api.html}
  */
@@ -102,6 +107,16 @@ import type { Users } from "./users";
 export type { Users };
 export let users: Users;
 importTimeout("users", import("./users"), (mod) => (users = mod.default));
+
+import type { API } from "./api";
+export type { API };
+export let api: API;
+importTimeout("api", import("./api"), (mod) => (api = mod.default));
+
+import type { Parser } from "./parser";
+export type { Parser };
+export let parser: Parser;
+importTimeout("parser", import("./parser"), (mod) => (parser = mod.default));
 
 /**
  * @internal

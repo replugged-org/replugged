@@ -1,0 +1,29 @@
+.replugged-addon-cards {
+  display: grid;
+  gap: 20px;
+}
+
+.replugged-addon-card {
+  background-color: var(--background-secondary);
+  width: 100%;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.replugged-addon-icon,
+.replugged-addon-icon a {
+  display: flex;
+}
+
+.replugged-addon-icon svg {
+  color: var(--interactive-normal);
+  height: 2ch;
+}
+
+.replugged-addon-icon-author svg {
+  height: 1.5ch;
+}
+
+.replugged-addon-icon:hover svg {
+  color: var(--interactive-hover);
+}

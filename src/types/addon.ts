@@ -11,8 +11,8 @@ export type Id = z.infer<typeof id>;
 
 export const author = z.object({
   name: z.string(),
-  discordID: z.string(),
-  github: z.string(),
+  discordID: z.string().optional(),
+  github: z.string().optional(),
 });
 
 export type Author = z.infer<typeof author>;
@@ -72,3 +72,8 @@ export interface PluginExports {
   stop?: () => Promisable<void>;
   [x: string]: unknown;
 }
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type AddonSettings = {
+  disabled?: string[];
+};

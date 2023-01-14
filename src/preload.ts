@@ -18,47 +18,20 @@ import type {
 
 const RepluggedNative = {
   themes: {
-    enable: async (themeName: string) => {
-      const { settings } = RepluggedNative;
-      await settings.set(
-        "themes",
-        "disabled",
-        ((await settings.get("themes", "disabled")) as string[]).filter((t) => t !== themeName),
-      );
-    },
-    disable: async (themeName: string) => {
-      const disabled = (await RepluggedNative.settings.get("themes", "disabled")) as string[];
-      if (!disabled.includes(themeName)) {
-        disabled.push(themeName);
-        await RepluggedNative.settings.set("themes", "disabled", disabled);
-      }
-    },
     list: async (): Promise<RepluggedTheme[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_THEMES),
-    listEnabled: async (): Promise<string[]> => {
-      const disabled = await RepluggedNative.themes.listDisabled();
-      const enabled: string[] = [];
-      for (const theme of await RepluggedNative.themes.list()) {
-        if (!disabled.includes(theme.path)) {
-          enabled.push(theme.path);
-        }
-      }
-      return enabled;
-    },
-    listDisabled: async (): Promise<string[]> =>
-      (await RepluggedNative.settings.get("themes", "disabled")) ?? [],
     uninstall: async (themeName: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName), // whether theme was successfully uninstalled
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_THEMES_FOLDER),
   },
 
   plugins: {
-    get: async (pluginName: string): Promise<RepluggedPlugin | undefined> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginName),
+    get: async (pluginPath: string): Promise<RepluggedPlugin | undefined> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
     list: async (): Promise<RepluggedPlugin[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
-    uninstall: async (pluginName: string): Promise<RepluggedPlugin> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginName),
+    uninstall: async (pluginPath: string): Promise<RepluggedPlugin> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginPath),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER),
   },
 

@@ -10,10 +10,26 @@ export type ButtonType = ReactComponent<{
   color?: string;
   disabled?: boolean;
 }> & {
-  DropdownSizes: Record<string, string>;
-  Sizes: Record<string, string>;
-  Colors: Record<string, string>;
-  Looks: Record<string, string>;
+  DropdownSizes: Record<"SMALL" | "MEDIUM" | "LARGE", string>;
+  Sizes: Record<
+    "NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "XLARGE" | "MIN" | "MAX" | "ICON",
+    string
+  >;
+  Colors: Record<
+    | "BRAND"
+    | "RED"
+    | "GREEN"
+    | "YELLOW"
+    | "PRIMARY"
+    | "LINK"
+    | "WHITE"
+    | "BLACK"
+    | "TRANSPARENT"
+    | "BRAND_NEW"
+    | "CUSTOM",
+    string
+  >;
+  Looks: Record<"FILLED" | "INVERTED" | "OUTLINED" | "LINK" | "BLANK", string>;
 };
 
 export const Button = (await waitForModule(filters.bySource('"onDropdownClick"'))) as ButtonType;
@@ -51,16 +67,13 @@ export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>) => {
               text={props.tooltipText}
               position={props.tooltipPosition}
               shouldShow={Boolean(props.tooltipText)}>
-              {(props_: React.HTMLAttributes<HTMLButtonElement>) => (
-                <Button
-                  {...props_}
-                  color={props.success ? Button.Colors.GREEN : props.color || Button.Colors.BRAND}
-                  disabled={props.disabled}
-                  onClick={() => props.onClick()}
-                  style={{ marginLeft: 5, position: "absolute", right: "7%" }}>
-                  {props.button}
-                </Button>
-              )}
+              <Button
+                color={props.success ? Button.Colors.GREEN : props.color || Button.Colors.BRAND}
+                disabled={props.disabled}
+                onClick={() => props.onClick()}
+                style={{ marginLeft: 5, position: "absolute", right: "7%" }}>
+                {props.button}
+              </Button>
             </Tooltip>
           )}
         </div>
