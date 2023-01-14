@@ -149,9 +149,9 @@ function label(
 }
 
 function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
-  const els = getAuthors(addon).map((author, i) => (
+  const els = getAuthors(addon).map((author) => (
     <Flex
-      key={i}
+      key={JSON.stringify(author)}
       align={Flex.Align.CENTER}
       style={{
         gap: "5px",
