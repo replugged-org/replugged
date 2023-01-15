@@ -111,13 +111,21 @@ electron.app.once("ready", () => {
       return done({});
     }
 
+    const hasAllowCredentials = Object.keys(responseHeaders).find((e) =>
+      /access-control-allow-credentials/i.test(e),
+    );
+
     const headersWithoutCSP = Object.fromEntries(
       Object.entries(responseHeaders).filter(
-        ([k]) => !/^content-security-policy/i.test(k) && !/^access-control-allow-origin$/i.test(k),
+        ([k]) =>
+          !/^content-security-policy/i.test(k) &&
+          !(/^access-control-allow-origin$/i.test(k) && !hasAllowCredentials),
       ),
     );
 
-    headersWithoutCSP["Access-Control-Allow-Origin"] = ["*"];
+    if (!hasAllowCredentials) {
+      headersWithoutCSP["Access-Control-Allow-Origin"] = ["*"];
+    }
 
     done({ responseHeaders: headersWithoutCSP });
   });
