@@ -49,7 +49,7 @@ export async function start(): Promise<void> {
     throw new Error("Could not find badges function");
   }
 
-  const Badge = await getBadges();
+  const Badge = getBadges();
 
   const { containerWithContent } = getByProps("containerWithContent") as Record<string, string>;
 
