@@ -23,6 +23,11 @@ export * as components from "./modules/components";
 export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";
 export * as settings from "./apis/settings";
+export namespace api {
+  export let messagePopover: EventTarget;
+}
+import { MessagePopoverAPI } from "./apis/message-popover";
+api.messagePopover = new MessagePopoverAPI();
 /**
  * @internal
  * @hidden
