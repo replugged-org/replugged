@@ -9,29 +9,10 @@
 
 > **Note**  
 > In the future, there will be a GUI installer for general users. For now, you will have to use the
-> command line. If you're not sure how to use the command line, you should wait for the public
-> release.
+> command line. **If you're not sure how to use the command line, you should wait for the public
+> release.**
 
-### Prerequisites
-
-- Git
-- NodeJS
-- pnpm: `npm i -g pnpm`
-- Discord app
-
-### Install
-
-1. Clone the repository: `git clone https://github.com/replugged-org/replugged` and `cd replugged`
-2. Install dependencies: `pnpm i`
-3. Build Replugged: `pnpm build`
-4. Plug into Discord: `pnpm run plug [stable|ptb|canary|development]`
-5. Fully quit Discord and restart it
-
-You can verify it's installed by going into Discord settings and looking for the "Replugged" tab.
-
-### Uninstall
-
-`pnpm run unplug [stable|ptb|canary|development]`
+Installation guide: https://replugged.dev/installation
 
 ## Installing plugins and themes
 
