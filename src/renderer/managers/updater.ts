@@ -78,7 +78,7 @@ export async function checkUpdate(
   const res = await window.RepluggedNative.updater.check(updater.type, updater.id, id);
 
   if (!res.success) {
-    logger.error(`Update check failed: ${res.error}`);
+    logger.error(`Update check for entity ${id} failed: ${res.error}`);
     return;
   }
 
