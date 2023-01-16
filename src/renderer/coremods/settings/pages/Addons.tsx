@@ -232,11 +232,11 @@ function Card({
           <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
             <Text variant="heading-lg/bold" tag="span">
               {addon.manifest.name}
-            </Text>{" "}
-            <Text variant="heading-lg/normal" tag="span">
-              v{addon.manifest.version}
             </Text>
-            <span> by </span>
+            <span>
+              {" "}
+              <b>v{addon.manifest.version}</b> by{" "}
+            </span>
             <Authors addon={addon} />
           </Text>
         </span>
