@@ -1,5 +1,6 @@
 import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
+import { GetButtonItem } from '../../types/coremods/message';
 
 enum InjectionTypes {
   Before,
@@ -267,6 +268,22 @@ export class Injector {
     const uninjector = after(obj, funcName, cb);
     this.uninjectors.add(uninjector);
     return uninjector;
+  }
+
+  /**
+   * A few utils to add stuff in frequent modules.
+   */
+  public utils = {
+    /**
+     * A utility function to add a button to any message popover.
+     * @param item The function that creates the button to add
+     * @returns Uninject Function.
+     */
+    addPopoverButton: (item: GetButtonItem) => {
+      const uninjector = window.replugged.api.messagePopover.addButton(item)
+      this.uninjectors.add(uninjector);
+      return uninjector;
+    }
   }
 
   /**

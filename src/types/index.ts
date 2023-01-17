@@ -100,3 +100,5 @@ export * from "./settings";
 export * from "./util";
 export * from "./webpack";
 export * from "./updater";
+export * from "./coremods/message";
+export * from "./coremods/settings";

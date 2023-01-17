@@ -1,18 +1,21 @@
 import { Channel, Message } from "discord-types/general";
 import { Logger } from "../modules/logger";
-import { ButtonItem, getButtonItem } from "../../types/coremods/message";
+import { ButtonItem, GetButtonItem } from "../../types/coremods/message";
 
 const logger = Logger.api("MessagePopover");
 
 export class MessagePopoverAPI extends EventTarget {
-  public buttons = new Map<string, getButtonItem>();
+  public buttons = new Set<GetButtonItem>();
 
-  public addButton(identifier: string, item: getButtonItem): void {
-    this.buttons.set(identifier, item);
-  }
-
-  public removeButton(identifier: string): void {
-    this.buttons.delete(identifier);
+  /**
+   * Adds a button to any MessagePopover
+   * @param item The function that creates the button to add
+   * @returns A callback to remove the button from set.
+   */  
+  public addButton(item: GetButtonItem): () => void {
+    this.buttons.add(item);
+    
+    return () => this.buttons.delete(item)
   }
 
   /**
@@ -26,19 +29,18 @@ export class MessagePopoverAPI extends EventTarget {
   ): React.ComponentType[] {
     const items = [] as React.ComponentType[];
 
-    for (const [identifier, getItem] of this.buttons.entries()) {
+    this.buttons.forEach(getItem => {
       try {
         const item = getItem(msg, channel);
         if (item) {
-          item.key ??= identifier;
           item.message ??= msg;
           item.channel ??= channel;
           items.push(makeButton(item));
         }
       } catch (err) {
-        logger.error(`[${identifier}]`, err);
+        logger.error(err);
       }
-    }
+    });
 
     return items;
   }
