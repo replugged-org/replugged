@@ -1,6 +1,6 @@
 import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
-import { GetButtonItem } from '../../types/coremods/message';
+import { GetButtonItem } from "../../types/coremods/message";
 
 enum InjectionTypes {
   Before,
@@ -280,11 +280,11 @@ export class Injector {
      * @returns Uninject Function.
      */
     addPopoverButton: (item: GetButtonItem) => {
-      const uninjector = window.replugged.api.messagePopover.addButton(item)
+      const uninjector = window.replugged.api.messagePopover.addButton(item);
       this.uninjectors.add(uninjector);
       return uninjector;
-    }
-  }
+    },
+  };
 
   /**
    * Remove all injections made by this injector

@@ -11,18 +11,18 @@ export class MessagePopoverAPI extends EventTarget {
    * Adds a button to any MessagePopover
    * @param item The function that creates the button to add
    * @returns A callback to remove the button from set.
-   */  
+   */
   public addButton(item: GetButtonItem): () => void {
     this.buttons.add(item);
-    
-    return () => this.buttons.delete(item)
+
+    return () => this.buttons.delete(item);
   }
 
   /**
    * Removes a button from MessagePopover
    * @param item The function that creates the button to add
    * @returns
-   */  
+   */
   public removeButton(item: GetButtonItem): void {
     this.buttons.delete(item);
   }
@@ -38,7 +38,7 @@ export class MessagePopoverAPI extends EventTarget {
   ): React.ComponentType[] {
     const items = [] as React.ComponentType[];
 
-    this.buttons.forEach(getItem => {
+    this.buttons.forEach((getItem) => {
       try {
         const item = getItem(msg, channel);
         try {
@@ -48,7 +48,7 @@ export class MessagePopoverAPI extends EventTarget {
             items.push(makeButton(item));
           }
         } catch (err) {
-          logger.error(`Error in making the button [${item?.key}]`, err)
+          logger.error(`Error in making the button [${item?.key}]`, err);
         }
       } catch (err) {
         logger.error("The GetButtonItem button submitted has an error.", err);
