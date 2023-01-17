@@ -149,9 +149,9 @@ function label(
 }
 
 function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
-  const els = getAuthors(addon).map((author, i) => (
+  const els = getAuthors(addon).map((author) => (
     <Flex
-      key={i}
+      key={JSON.stringify(author)}
       align={Flex.Align.CENTER}
       style={{
         gap: "5px",
@@ -295,7 +295,7 @@ function Cards({
         <Card
           type={type}
           addon={addon}
-          key={addon.manifest.id}
+          key={JSON.stringify(addon.manifest)}
           disabled={disabled.has(addon.manifest.id)}
           toggleDisabled={async () => {
             const isDisabled = disabled.has(addon.manifest.id);
@@ -353,6 +353,7 @@ function Cards({
               logger.error("Error reloading", addon, e);
               toast.toast(`Failed to reload ${addon.manifest.name}`, toast.Kind.FAILURE);
             }
+            refreshList();
           }}
         />
       ))}
