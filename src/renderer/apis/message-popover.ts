@@ -19,6 +19,15 @@ export class MessagePopoverAPI extends EventTarget {
   }
 
   /**
+   * Removes a button from MessagePopover
+   * @param item The function that creates the button to add
+   * @returns
+   */  
+  public removeButton(item: GetButtonItem): void {
+    this.buttons.delete(item);
+  }
+
+  /**
    * @internal
    * @hidden
    */
@@ -32,13 +41,17 @@ export class MessagePopoverAPI extends EventTarget {
     this.buttons.forEach(getItem => {
       try {
         const item = getItem(msg, channel);
-        if (item) {
-          item.message ??= msg;
-          item.channel ??= channel;
-          items.push(makeButton(item));
+        try {
+          if (item) {
+            item.message ??= msg;
+            item.channel ??= channel;
+            items.push(makeButton(item));
+          }
+        } catch (err) {
+          logger.error(`Error in making the button [${item?.key}]`, err)
         }
       } catch (err) {
-        logger.error(err);
+        logger.error("The GetButtonItem button submitted has an error.", err);
       }
     });
 
