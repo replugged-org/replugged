@@ -1,12 +1,9 @@
 import { filters, waitForModule } from "../webpack";
 
-interface ClickableProps {
-  "aria-label"?: string;
-  className?: string;
-  children: React.ReactElement | React.ReactElement[];
-  style?: React.CSSProperties;
-  onClick?: () => void;
-}
+type ClickableProps = React.HTMLAttributes<HTMLDivElement> & {
+  tag?: string;
+  tabIndex?: number;
+};
 
 export type ClickableType = React.FC<ClickableProps>;
 
