@@ -113,7 +113,7 @@ let transitionTo: ((route: string) => void | undefined) | undefined;
  * If the user is not in the server, join it. Otherwise, go to the server.
  * @param invite Invite code (eg "replugged")
  */
-export async function gotoOrJoinServer(invite: string): Promise<void> {
+export async function goToOrJoinServer(invite: string): Promise<void> {
   if (!getInvite || !resolveInvite || !transitionTo) {
     getInvite = getByProps<keyof GetInviteMod, GetInviteMod>("getInvite")?.getInvite;
     if (!getInvite) {

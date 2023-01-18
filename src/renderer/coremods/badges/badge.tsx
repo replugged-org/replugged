@@ -3,7 +3,7 @@ import { React } from "@common";
 import "./badge.css";
 import Badges from "./badges";
 import { Clickable, Tooltip } from "@components";
-import { gotoOrJoinServer } from "../../util";
+import { goToOrJoinServer } from "../../util";
 
 type Clickable = React.FC<
   Record<string, unknown> & {
@@ -103,7 +103,7 @@ if (!openExternal) {
 // todo: make global (configurable?) variables for these
 const openContributorsPage = () => openExternal("https://replugged.dev/contributors");
 const openTranslationsPage = () => openExternal("https://i18n.replugged.dev");
-const joinRepluggedServer = () => gotoOrJoinServer("replugged");
+const joinRepluggedServer = () => goToOrJoinServer("replugged");
 
 const Custom = React.memo(({ url, name }: BadgeArgs) => (
   <Base children={<img src={url} style={{ width: "100%", height: "100%" }} />} tooltip={name} />
