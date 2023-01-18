@@ -52,7 +52,7 @@ export const Base = ({
     </div>
   );
   return (
-    <Clickable onClick={onClick || (() => undefined)}>
+    <Clickable onClick={onClick}>
       {tooltip ? (
         <Tooltip
           text={tooltip}
