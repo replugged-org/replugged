@@ -2,7 +2,7 @@ import { getByProps, getBySource } from "../../modules/webpack";
 import { React } from "@common";
 import "./badge.css";
 import Badges from "./badges";
-import { Tooltip } from "@components";
+import { Clickable, Tooltip } from "@components";
 import { gotoOrJoinServer } from "../../util";
 
 type Clickable = React.FC<
@@ -33,26 +33,6 @@ export const Base = ({
   gap,
   onClick,
 }: BadgeProps): React.ReactElement => {
-  // todo: common component
-  const clickableRaw = getBySource("renderNonInteractive");
-  if (!clickableRaw) {
-    throw new Error("Failed to find Clickable component");
-  }
-  const Clickable = Object.values(clickableRaw).find((x) => x.prototype?.renderNonInteractive) as
-    | Clickable
-    | undefined;
-  if (!Clickable) {
-    throw new Error("Failed to find Clickable export");
-  }
-
-  const clickableClass = getByProps<
-    "clickable" | "profileBadge",
-    Record<"clickable" | "profileBadge", string>
-  >("clickable", "profileBadge");
-  if (!clickableClass) {
-    throw new Error("Failed to find clickable class");
-  }
-
   const badgeClassMod = getByProps<
     "profileBadge22",
     {
@@ -72,7 +52,7 @@ export const Base = ({
     </div>
   );
   return (
-    <Clickable className={clickableClass.clickable} onClick={onClick || (() => undefined)}>
+    <Clickable onClick={onClick || (() => undefined)}>
       {tooltip ? (
         <Tooltip
           text={tooltip}

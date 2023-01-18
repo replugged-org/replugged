@@ -72,6 +72,11 @@ export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
 importTimeout("Button", import("./Button"), (mod) => (ButtonItem = mod.ButtonItem));
 
+import type { ClickableType } from "./Clickable";
+export type { ClickableType };
+export let Clickable: ClickableType;
+importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
+
 import type { CategoryType } from "./Category";
 export type { CategoryType };
 export let Category: CategoryType;
