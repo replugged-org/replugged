@@ -34,9 +34,15 @@ export const Base = ({
   onClick,
 }: BadgeProps): React.ReactElement => {
   // todo: common component
-  const Clickable = getBySource("renderNonInteractive") as Clickable | undefined;
-  if (!Clickable) {
+  const clickableRaw = getBySource("renderNonInteractive");
+  if (!clickableRaw) {
     throw new Error("Failed to find Clickable component");
+  }
+  const Clickable = Object.values(clickableRaw).find((x) => x.prototype?.renderNonInteractive) as
+    | Clickable
+    | undefined;
+  if (!Clickable) {
+    throw new Error("Failed to find Clickable export");
   }
 
   const clickableClass = getByProps<
@@ -81,105 +87,114 @@ export const Base = ({
   );
 };
 
-interface BadgeArgs {
+export interface BadgeArgs {
   color?: string;
   url?: string;
   name?: string;
 }
 
-type Badges =
-  | "Custom"
-  | "Booster"
-  | "BugHunter"
-  | "Contributor"
-  | "Developer"
-  | "EarlyUser"
-  | "Staff"
-  | "Support"
-  | "Translator";
-
-export const getBadges = (): Record<
-  Badges,
-  React.MemoExoticComponent<(args: BadgeArgs) => React.ReactElement>
-> => {
-  // todo: move to common modules
-  const openExternal = getBySource('.target="_blank";') as (url: string) => Promise<void>;
-  if (!openExternal) {
-    throw new Error("Failed to find openExternal function");
-  }
-
-  // todo: make global (configurable?) variables for these
-  const openContributorsPage = () => openExternal("https://replugged.dev/contributors");
-  const openTranslationsPage = () => openExternal("https://i18n.replugged.dev");
-  const joinRepluggedServer = () => gotoOrJoinServer("replugged");
-
-  const Custom = React.memo(({ url, name }: BadgeArgs) => (
-    <Base children={<img src={url} style={{ width: "100%", height: "100%" }} />} tooltip={name} />
-  ));
-  const Booster = React.memo(({ color }: BadgeArgs) => (
-    <Base
-      children={<Badges.Booster />}
-      tooltip={"Replugged Booster"}
-      color={color}
-      onClick={joinRepluggedServer}
-    />
-  ));
-  const BugHunter = React.memo(({ color }: BadgeArgs) => (
-    <Base children={<Badges.BugHunter />} tooltip={"Replugged Bug Hunter"} color={color} />
-  ));
-  const Contributor = React.memo(({ color }: BadgeArgs) => (
-    <Base
-      children={<Badges.Contributor />}
-      tooltip={"Replugged Contributor"}
-      color={color}
-      onClick={openContributorsPage}
-    />
-  ));
-  const Developer = React.memo(({ color }: BadgeArgs) => (
-    <Base
-      children={<Badges.Developer />}
-      tooltip={"Replugged Developer"}
-      color={color}
-      onClick={openContributorsPage}
-    />
-  ));
-  const EarlyUser = React.memo(({ color }: BadgeArgs) => (
-    <Base children={<Badges.EarlyUser />} tooltip={"Replugged Early User"} color={color} />
-  ));
-  const Staff = React.memo(({ color }: BadgeArgs) => (
-    <Base
-      children={<Badges.Staff />}
-      tooltip={"Replugged Staff"}
-      color={color}
-      onClick={joinRepluggedServer}
-    />
-  ));
-  const Support = React.memo(({ color }: BadgeArgs) => (
-    <Base
-      children={<Badges.Support />}
-      tooltip={"Replugged Support"}
-      color={color}
-      onClick={joinRepluggedServer}
-    />
-  ));
-  const Translator = React.memo(({ color }: BadgeArgs) => (
-    <Base
-      children={<Badges.Translator />}
-      tooltip={"Replugged Translator"}
-      color={color}
-      onClick={openTranslationsPage}
-    />
-  ));
-
-  return {
-    Custom,
-    Booster,
-    BugHunter,
-    Contributor,
-    Developer,
-    EarlyUser,
-    Staff,
-    Support,
-    Translator,
+export interface APIBadges {
+  developer?: boolean;
+  staff?: boolean;
+  support?: boolean;
+  contributor?: boolean;
+  translator?: boolean;
+  hunter?: boolean;
+  early?: boolean;
+  booster?: boolean;
+  custom?: {
+    name: string;
+    icon?: string;
+    color?: string;
   };
-};
+}
+
+export type BadgeComponent = (args: BadgeArgs) => React.ReactElement<{
+  children: React.ReactElement[];
+  className: string;
+}>;
+
+// todo: move to common modules
+const openExternal = getBySource('.target="_blank";') as (url: string) => Promise<void>;
+if (!openExternal) {
+  throw new Error("Failed to find openExternal function");
+}
+
+// todo: make global (configurable?) variables for these
+const openContributorsPage = () => openExternal("https://replugged.dev/contributors");
+const openTranslationsPage = () => openExternal("https://i18n.replugged.dev");
+const joinRepluggedServer = () => gotoOrJoinServer("replugged");
+
+const Custom = React.memo(({ url, name }: BadgeArgs) => (
+  <Base children={<img src={url} style={{ width: "100%", height: "100%" }} />} tooltip={name} />
+));
+const Booster = React.memo(({ color }: BadgeArgs) => (
+  <Base
+    children={<Badges.Booster />}
+    tooltip={"Replugged Booster"}
+    color={color}
+    onClick={joinRepluggedServer}
+  />
+));
+const BugHunter = React.memo(({ color }: BadgeArgs) => (
+  <Base children={<Badges.BugHunter />} tooltip={"Replugged Bug Hunter"} color={color} />
+));
+const Contributor = React.memo(({ color }: BadgeArgs) => (
+  <Base
+    children={<Badges.Contributor />}
+    tooltip={"Replugged Contributor"}
+    color={color}
+    onClick={openContributorsPage}
+  />
+));
+const Developer = React.memo(({ color }: BadgeArgs) => (
+  <Base
+    children={<Badges.Developer />}
+    tooltip={"Replugged Developer"}
+    color={color}
+    onClick={openContributorsPage}
+  />
+));
+const EarlyUser = React.memo(({ color }: BadgeArgs) => (
+  <Base children={<Badges.EarlyUser />} tooltip={"Replugged Early User"} color={color} />
+));
+const Staff = React.memo(({ color }: BadgeArgs) => (
+  <Base
+    children={<Badges.Staff />}
+    tooltip={"Replugged Staff"}
+    color={color}
+    onClick={joinRepluggedServer}
+  />
+));
+const Support = React.memo(({ color }: BadgeArgs) => (
+  <Base
+    children={<Badges.Support />}
+    tooltip={"Replugged Support"}
+    color={color}
+    onClick={joinRepluggedServer}
+  />
+));
+const Translator = React.memo(({ color }: BadgeArgs) => (
+  <Base
+    children={<Badges.Translator />}
+    tooltip={"Replugged Translator"}
+    color={color}
+    onClick={openTranslationsPage}
+  />
+));
+
+const badgeElements: Array<{
+  type: keyof APIBadges;
+  component: React.MemoExoticComponent<BadgeComponent>;
+}> = [
+  { type: "staff", component: Staff },
+  { type: "support", component: Support },
+  { type: "developer", component: Developer },
+  { type: "contributor", component: Contributor },
+  { type: "translator", component: Translator },
+  { type: "hunter", component: BugHunter },
+  { type: "booster", component: Booster },
+  { type: "early", component: EarlyUser },
+];
+
+export { badgeElements, Custom };
