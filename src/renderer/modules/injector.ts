@@ -1,6 +1,7 @@
 import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
 import { GetButtonItem } from "../../types/coremods/message";
+import { MessagePopoverAPI } from "../apis/message-popover";
 
 enum InjectionTypes {
   Before,
@@ -278,9 +279,26 @@ export class Injector {
      * A utility function to add a button to any message popover.
      * @param item The function that creates the button to add
      * @returns Uninject Function.
+     *
+     * @example
+     * ```
+     * injector.utils.addPopoverButton((msg: Message, _: Channel) => {
+     *   return {
+     *     key: "uniquebuttonkey",
+     *     label: "Click the button!",
+     *     icon: <svg></svg>, // Cool icon
+     *     onClick: () => {
+     *       // do stuff here
+     *     },
+     *     onContextMenu: () => {
+     *       // do other stuff here
+     *     },
+     *   };
+     * });
+     * ```
      */
     addPopoverButton: (item: GetButtonItem) => {
-      const uninjector = window.replugged.api.messagePopover.addButton(item);
+      const uninjector = MessagePopoverAPI.addButton(item);
       this.uninjectors.add(uninjector);
       return uninjector;
     },

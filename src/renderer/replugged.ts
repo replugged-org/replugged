@@ -26,7 +26,7 @@ export * as settings from "./apis/settings";
 
 import { MessagePopoverAPI } from "./apis/message-popover";
 export namespace api {
-  export const messagePopover = new MessagePopoverAPI();
+  export const messagePopover = MessagePopoverAPI;
 }
 
 /**
