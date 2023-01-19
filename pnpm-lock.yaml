@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@electron/asar': ^3.2.3
   '@octokit/rest': ^19.0.5
   '@types/highlightjs': ^9.12.2
   '@types/lodash': ^4.14.191
@@ -34,6 +35,7 @@ dependencies:
   node-fetch: 3.3.0
 
 devDependencies:
+  '@electron/asar': 3.2.3
   '@types/highlightjs': 9.12.2
   '@types/lodash': 4.14.191
   '@types/node': 18.11.3
@@ -332,6 +334,19 @@ packages:
   /@cspell/strong-weak-map/6.18.0:
     resolution: {integrity: sha512-sHTUWzc1rL3v38HFKyD4vUdK7NotNsbnHaR6nWXvPgDOF1LxgNf4M4YcX9taiMghln/5GR1MnrjXjm3ZsRwfbg==}
     engines: {node: '>=14.6'}
+    dev: true
+
+  /@electron/asar/3.2.3:
+    resolution: {integrity: sha512-wmOfE6szYyqZhRIiLH+eyZEp+bGcJI0OD/SCvSUrfBE0jvauyGYO2ZhpWxmNCcDojKu5DYrsVqT5BOCZZ01XIg==}
+    engines: {node: '>=10.12.0'}
+    hasBin: true
+    dependencies:
+      chromium-pickle-js: 0.2.0
+      commander: 5.1.0
+      glob: 7.2.3
+      minimatch: 3.1.2
+    optionalDependencies:
+      '@types/glob': 7.2.0
     dev: true
 
   /@electron/get/1.14.1:
@@ -823,6 +838,15 @@ packages:
       '@types/responselike': 1.0.0
     dev: true
 
+  /@types/glob/7.2.0:
+    resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+    requiresBuild: true
+    dependencies:
+      '@types/minimatch': 5.1.2
+      '@types/node': 18.11.3
+    dev: true
+    optional: true
+
   /@types/highlightjs/9.12.2:
     resolution: {integrity: sha512-oW2pEKwshxwBW1nVUizWQg/tnhboRtKrUKnF2hd6l4BZ0shr5ZjQ4ra/82+NEH6uWeM8JjrMGCux5enQXOQbTA==}
     dev: true
@@ -844,6 +868,11 @@ packages:
   /@types/lodash/4.14.191:
     resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
     dev: true
+
+  /@types/minimatch/5.1.2:
+    resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
+    dev: true
+    optional: true
 
   /@types/minimist/1.2.2:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
@@ -1362,6 +1391,10 @@ packages:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
     dev: true
 
+  /chromium-pickle-js/0.2.0:
+    resolution: {integrity: sha512-1R5Fho+jBq0DDydt+/vHWj5KJNJCKdARKOCwZUen84I5BreWoLqRLANH1U87eJy1tiASPtMnGqJJq0ZsLoRPOw==}
+    dev: true
+
   /ci-info/2.0.0:
     resolution: {integrity: sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==}
     dev: true
@@ -1445,6 +1478,11 @@ packages:
 
   /color-name/1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+    dev: true
+
+  /commander/5.1.0:
+    resolution: {integrity: sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==}
+    engines: {node: '>= 6'}
     dev: true
 
   /commander/9.4.1:

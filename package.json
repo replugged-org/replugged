@@ -3,13 +3,14 @@
   "version": "4.0.0-beta0.21",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
-  "main": "dist/main/index.js",
+  "main": "dist/main.js",
   "types": "dist/renderer/replugged.d.ts",
   "engines": {
     "node": ">=14.0.0"
   },
   "scripts": {
     "build": "tsx scripts/build.ts",
+    "bundle": "rm -rf dist; tsx scripts/build.ts --production; tsx scripts/build.ts",
     "watch": "tsx scripts/build.ts --watch",
     "plug": "tsx scripts/inject/index.ts inject --no-exit-codes",
     "unplug": "tsx scripts/inject/index.ts uninject --no-exit-codes",
@@ -32,6 +33,7 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
+    "@electron/asar": "^3.2.3",
     "@types/highlightjs": "^9.12.2",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.8.0",
