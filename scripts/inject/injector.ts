@@ -1,28 +1,72 @@
-import { mkdir, rename, rm, stat, writeFile } from "fs/promises";
+import { copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import { join, sep } from "path";
 import { AnsiEscapes } from "./util";
 import readline from "readline";
 import { exec } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types";
 
+export const isDiscordInstalled = async (appDir: string): Promise<boolean> => {
+  try {
+    await stat(appDir);
+    return true;
+  } catch {
+    console.error(
+      `${AnsiEscapes.RED}The Discord installation you specified isn't installed on this device!${AnsiEscapes.RESET}`,
+    );
+    return false;
+  }
+};
+
+export const isPlugged = async (appDir: string): Promise<boolean> => {
+  try {
+    await stat(join(appDir, "..", "app.orig.asar"));
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 export const inject = async (
   { getAppDir }: PlatformModule,
   platform: DiscordPlatform,
+  dev: boolean,
 ): Promise<boolean> => {
   const appDir = await getAppDir(platform);
-  if ((await stat(appDir)).isDirectory()) {
+  if (!(await isDiscordInstalled(appDir))) return false;
+
+  if (await isPlugged(appDir)) {
     /*
      * @todo: verify if there is nothing in discord_desktop_core as well
      * @todo: prompt to automatically uninject and continue
      */
-    console.log(
+    console.error(
       `${AnsiEscapes.RED}Looks like you already have an injector in place. Try unplugging (\`npm run unplug\`) and try again.${AnsiEscapes.RESET}`,
       "\n",
     );
-    console.log(
+    console.error(
       `${AnsiEscapes.YELLOW}NOTE:${AnsiEscapes.RESET} If you already have BetterDiscord or another client mod injected, Replugged cannot run along with it!`,
+      "\n",
     );
-    console.log("Read our FAQ for more details: https://replugged.dev/faq#bd-and-pc");
+    console.error(
+      `If you already have Replugged installed and want to replace it, use ${AnsiEscapes.GREEN}npm run replug${AnsiEscapes.RESET} to unplug and plug again.`,
+    );
+    return false;
+  }
+
+  const fileToCheck = join(__dirname, "..", "..", dev ? "dist/main.js" : "app.asar");
+  const fileToCheckExists = await stat(fileToCheck)
+    .then(() => true)
+    .catch(() => false);
+  if (!fileToCheckExists) {
+    console.error(
+      `${AnsiEscapes.RED}Looks like you haven't built Replugged yet!${AnsiEscapes.RESET}`,
+    );
+    console.error(
+      `To build for development, run ${AnsiEscapes.GREEN}npm run build${AnsiEscapes.RESET}`,
+    );
+    console.error(
+      `To build for production, run ${AnsiEscapes.GREEN}npm run bundle${AnsiEscapes.RESET}`,
+    );
     return false;
   }
 
@@ -55,15 +99,15 @@ export const inject = async (
         ),
       );
 
-    console.log(
+    console.warn(
       `${AnsiEscapes.YELLOW}NOTE:${AnsiEscapes.RESET} You seem to be using the Flatpak version of Discord.`,
     );
-    console.log(
+    console.warn(
       "Some Replugged features such as auto updates won't work properly with Flatpaks.",
       "\n",
     );
-    console.log("You'll need to allow Discord to access Replugged's installation directory");
-    console.log(
+    console.warn("You'll need to allow Discord to access Replugged's installation directory");
+    console.warn(
       `You can allow access to Replugged's directory with this command: ${AnsiEscapes.YELLOW}${overrideCommand}${AnsiEscapes.RESET}`,
     );
 
@@ -86,26 +130,30 @@ export const inject = async (
   try {
     await rename(appDir, join(appDir, "..", "app.orig.asar"));
   } catch {
-    console.log(
+    console.error(
       `${AnsiEscapes.RED}Failed to rename app.asar while plugging. If Discord is open, make sure it is closed.${AnsiEscapes.RESET}`,
     );
     process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
   }
 
-  await mkdir(appDir);
-  await Promise.all([
-    writeFile(
-      join(appDir, "index.js"),
-      `require(\`${__dirname.replace(RegExp(sep.repeat(2), "g"), "/")}/../../dist/main.js\`)`,
-    ),
-    writeFile(
-      join(appDir, "package.json"),
-      JSON.stringify({
-        main: "index.js",
-        name: "discord",
-      }),
-    ),
-  ]);
+  if (dev) {
+    await mkdir(appDir);
+    await Promise.all([
+      writeFile(
+        join(appDir, "index.js"),
+        `require(\`${__dirname.replace(RegExp(sep.repeat(2), "g"), "/")}/../../dist/main.js\`)`,
+      ),
+      writeFile(
+        join(appDir, "package.json"),
+        JSON.stringify({
+          main: "index.js",
+          name: "discord",
+        }),
+      ),
+    ]);
+  } else {
+    await copyFile(join(__dirname, "..", "..", "app.asar"), appDir);
+  }
 
   return true;
 };
@@ -115,9 +163,10 @@ export const uninject = async (
   platform: DiscordPlatform,
 ): Promise<boolean> => {
   const appDir = await getAppDir(platform);
+  if (!(await isDiscordInstalled(appDir))) return false;
 
-  if (!(await stat(appDir)).isDirectory()) {
-    console.log(
+  if (!(await isPlugged(appDir))) {
+    console.error(
       `${AnsiEscapes.BOLD}${AnsiEscapes.RED}There is nothing to unplug. You are already running Discord without mods.${AnsiEscapes.RESET}`,
     );
     return false;

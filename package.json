@@ -10,10 +10,11 @@
   },
   "scripts": {
     "build": "tsx scripts/build.ts",
-    "bundle": "rm -rf dist; tsx scripts/build.ts --production; tsx scripts/build.ts",
+    "bundle": "rm -rf dist; tsx scripts/build.ts --production",
     "watch": "tsx scripts/build.ts --watch",
     "plug": "tsx scripts/inject/index.ts inject --no-exit-codes",
     "unplug": "tsx scripts/inject/index.ts uninject --no-exit-codes",
+    "replug": "tsx scripts/inject/index.ts reinject",
     "typescript:check": "tsc --noEmit",
     "cspell:check": "cspell lint ./src/**/* ./scripts/**/*",
     "prettier:check": "prettier ./src ./scripts --check",
