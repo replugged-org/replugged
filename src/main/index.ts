@@ -3,6 +3,7 @@ import { dirname, join } from "path";
 import electron from "electron";
 import type { RepluggedWebContents } from "../types";
 import { CONFIG_PATHS } from "src/util";
+import { existsSync } from "fs";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
@@ -139,6 +140,9 @@ electron.app.once("ready", () => {
         break;
       case "renderer.css":
         filePath = join(__dirname, "./renderer.css");
+        if (!existsSync(filePath)) {
+          filePath = "about:blank";
+        }
         break;
       case "quickcss":
         filePath = join(CONFIG_PATHS.quickcss, reqUrl.pathname);
