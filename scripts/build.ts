@@ -1,19 +1,35 @@
 import esbuild from "esbuild";
 import path from "path";
+import asar from "@electron/asar";
+import { copyFileSync } from "fs";
 
 const NODE_VERSION = "14";
 const CHROME_VERSION = "91";
 
 const watch = process.argv.includes("--watch");
+const production = process.argv.includes("--production");
+
+const install: esbuild.Plugin = {
+  name: "install",
+  setup: (build) => {
+    build.onEnd(() => {
+      if (production) {
+        copyFileSync("scripts/package-bundle.json", "dist/package.json");
+        asar.createPackage("dist", "app.asar");
+      }
+    });
+  },
+};
 
 const common: esbuild.BuildOptions = {
   absWorkingDir: path.join(__dirname, ".."),
   bundle: true,
-  minify: false,
-  sourcemap: true,
+  minify: production,
+  sourcemap: !production,
   format: "cjs" as esbuild.Format,
   logLevel: "info",
   watch,
+  plugins: [install],
 };
 
 Promise.all([
