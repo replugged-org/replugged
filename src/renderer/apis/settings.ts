@@ -225,7 +225,7 @@ const managers = new Map<string, unknown>();
  */
 export async function init<T extends Record<string, Jsonifiable>, D extends keyof T = never>(
   namespace: string,
-  defaultSettings?: Partial<Record<D, T[D]>>,
+  defaultSettings?: Partial<T>,
 ): Promise<SettingsManager<T, D>> {
   if (managers.has(namespace)) {
     return managers.get(namespace)! as SettingsManager<T, D>;
