@@ -25,6 +25,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>> {
   #settings: T | undefined;
   #saveTimeout: ReturnType<typeof setTimeout> | undefined;
   #queuedUpdates: Map<Extract<keyof T, string>, SettingsUpdate<T>>;
+  #defaultSettings: Partial<T> | undefined;
 
   /**
    * Namespace for these settings.
@@ -39,8 +40,9 @@ export class SettingsManager<T extends Record<string, Jsonifiable>> {
    * settings from the file system.
    * @param namespace Namespace of settings to manage.
    */
-  public constructor(namespace: string) {
+  public constructor(namespace: string, defaultSettings: Partial<T> | undefined) {
     this.namespace = namespace;
+    this.#defaultSettings = defaultSettings;
     this.#queuedUpdates = new Map();
   }
 
@@ -58,7 +60,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>> {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
     // @ts-expect-error It doesn't understand ig
-    return this.#settings[key] ?? fallback;
+    return this.#settings[key] ?? fallback ?? this.#defaultSettings?.[key];
   }
 
   /**
@@ -201,11 +203,12 @@ const managers = new Map<string, unknown>();
  */
 export async function init<T extends Record<string, Jsonifiable>>(
   namespace: string,
+  defaultSettings?: Partial<T>,
 ): Promise<SettingsManager<T>> {
   if (managers.has(namespace)) {
     return managers.get(namespace)! as SettingsManager<T>;
   }
-  const manager = new SettingsManager<T>(namespace);
+  const manager = new SettingsManager<T>(namespace, defaultSettings);
   managers.set(namespace, manager);
   await manager.load();
   return manager;
