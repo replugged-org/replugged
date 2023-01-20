@@ -81,10 +81,12 @@ export async function start(id: string): Promise<void> {
       await plugin.exports!.start?.();
     }
 
-    const el = loadStyleSheet(
-      `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
-    );
-    styleElements.set(plugin.manifest.id, el);
+    if (plugin.hasCSS) {
+      const el = loadStyleSheet(
+        `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
+      );
+      styleElements.set(plugin.manifest.id, el);
+    }
 
     running.add(plugin.manifest.id);
     logger.log(`Plugin started: ${plugin.manifest.name}`);

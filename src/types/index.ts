@@ -91,6 +91,7 @@ export interface RepluggedTheme {
 export interface RepluggedPlugin {
   path: string;
   manifest: PluginManifest;
+  hasCSS: boolean;
 }
 
 export * from "./discord";
