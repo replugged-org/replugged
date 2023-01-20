@@ -148,27 +148,28 @@ export class SettingsManager<T extends Record<string, Jsonifiable>> {
    * const cfg = settings.init<{ hello: string }>('dev.replugged.Example');
    *
    * export function Settings() {
-   *  const [hello, setHello] = cfg.useSetting('hello', 'world');
-   *
-   *  return <Input value={hello} onChange={setHello} />;
+   *  return <Input {...cfg.useSetting('hello', 'world')} />;
    * }
    * ```
    */
   public useSetting<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
     key: K,
     fallback?: F,
-  ): [F extends null | undefined ? T[K] : NonNullable<T[K]> | F, (value: T[K]) => void] {
+  ): {
+    value: F extends null | undefined ? T[K] : NonNullable<T[K]> | F;
+    onChange: (newValue: T[K]) => void;
+  } {
     const initial = this.get(key, fallback);
     const [value, setValue] = React.useState(initial);
 
-    return [
+    return {
       value,
-      (newValue: T[K]) => {
+      onChange: (newValue: T[K]) => {
         // @ts-expect-error It doesn't understand ig
         setValue(newValue ?? fallback);
         this.set(key, newValue);
       },
-    ];
+    };
   }
 }
 
