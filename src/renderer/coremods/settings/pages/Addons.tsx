@@ -1,10 +1,10 @@
-import { api, fluxDispatcher, modal, toast, users } from "@common";
-import React from "@common/react";
+import { React, api, fluxDispatcher, modal, toast, users } from "@common";
 import { Button, Divider, Flex, Input, SwitchItem, Text, Tooltip } from "@components";
-import { RepluggedPlugin, RepluggedTheme } from "src/types";
+import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
 import Icons from "../icons";
 import { Logger } from "@replugged";
+import { showAddonSettings } from "./AddonSettings";
 
 const logger = Logger.coremod("AddonSettings");
 
@@ -383,7 +383,8 @@ function Cards({
           openSettings={() => {
             const element = getSettingsElement(addon.manifest.id, type);
             if (!element) return;
-            // todo
+
+            showAddonSettings(addon, element);
           }}
         />
       ))}
