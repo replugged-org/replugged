@@ -33,6 +33,17 @@ function getManager(type: AddonType) {
   throw new Error("Invalid addon type");
 }
 
+function getSettingsElement(id: string, type: AddonType) {
+  if (type === AddonType.Plugin) {
+    return window.replugged.plugins.settingsElements.get(id);
+  }
+  if (type === AddonType.Theme) {
+    return undefined;
+  }
+
+  throw new Error("Invalid addon type");
+}
+
 function listAddons(type: AddonType) {
   if (type === AddonType.Plugin) {
     return window.replugged.plugins.plugins;
@@ -209,6 +220,8 @@ function Card({
   type,
   addon,
   disabled,
+  hasSettings,
+  openSettings,
   toggleDisabled,
   reload,
   uninstall,
@@ -216,6 +229,8 @@ function Card({
   type: AddonType;
   addon: RepluggedPlugin | RepluggedTheme;
   disabled: boolean;
+  hasSettings: boolean;
+  openSettings: () => void;
   toggleDisabled: () => void;
   reload: () => void;
   uninstall: () => void;
@@ -247,6 +262,15 @@ function Card({
               className="replugged-addon-icon">
               <a href={sourceLink} target="_blank">
                 <Icons.Link />
+              </a>
+            </Tooltip>
+          ) : null}
+          {hasSettings ? (
+            <Tooltip
+              text={`Open ${label(type, { caps: "title" })} Settings`}
+              className="replugged-addon-icon">
+              <a onClick={() => openSettings()}>
+                <Icons.Settings />
               </a>
             </Tooltip>
           ) : null}
@@ -296,6 +320,7 @@ function Cards({
           type={type}
           addon={addon}
           key={JSON.stringify(addon.manifest)}
+          hasSettings={Boolean(getSettingsElement(addon.manifest.id, type))}
           disabled={disabled.has(addon.manifest.id)}
           toggleDisabled={async () => {
             const isDisabled = disabled.has(addon.manifest.id);
@@ -354,6 +379,11 @@ function Cards({
               toast.toast(`Failed to reload ${addon.manifest.name}`, toast.Kind.FAILURE);
             }
             refreshList();
+          }}
+          openSettings={() => {
+            const element = getSettingsElement(addon.manifest.id, type);
+            if (!element) return;
+            // todo
           }}
         />
       ))}
