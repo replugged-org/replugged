@@ -33,10 +33,14 @@ export type { ContextMenuType };
 export let ContextMenu: ContextMenuType;
 importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mod.default));
 
-import type { SwitchItemType } from "./SwitchItem";
+import type { SwitchItemType, SwitchType } from "./SwitchItem";
+export type { SwitchType };
+export let Switch: SwitchType;
+importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
+
 export type { SwitchItemType };
 export let SwitchItem: SwitchItemType;
-importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.default));
+importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.SwitchItem));
 
 import type { ModalType } from "./Modal";
 export type { ModalType };
