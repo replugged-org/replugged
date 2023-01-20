@@ -17,7 +17,7 @@ export function showAddonSettings(
         </Text>
         <ModalCloseButton onClick={() => modal.closeModal(modalKey)} />
       </ModalHeader>
-      <ModalContent>
+      <ModalContent style={{ marginTop: "20px" }}>
         <Element />
       </ModalContent>
     </ModalRoot>
