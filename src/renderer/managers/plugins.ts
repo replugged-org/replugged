@@ -5,7 +5,6 @@ import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack";
 import { init } from "../apis/settings";
 import { AddonSettings } from "src/types/addon";
-import { React } from "@common";
 
 const logger = Logger.api("Plugins");
 const settings = await init<AddonSettings>("plugins");
