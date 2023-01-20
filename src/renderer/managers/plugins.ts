@@ -22,7 +22,7 @@ const running = new Set<string>();
 /**
  * @hidden
  */
-export const settingsElements = new Map<string, React.ReactElement>();
+export const settingsElements = new Map<string, React.ComponentType>();
 
 const styleElements = new Map<string, HTMLLinkElement>();
 
@@ -87,7 +87,7 @@ export async function start(id: string): Promise<void> {
     }
 
     if (plugin.manifest.settings) {
-      const Settings: React.ReactElement = (
+      const Settings: React.ComponentType = (
         await import(
           `replugged://plugin/${plugin.path}/${plugin.manifest.settings}?t=${Date.now()}}`
         )
