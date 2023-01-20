@@ -1,5 +1,5 @@
 import { React, api, fluxDispatcher, modal, toast, users } from "@common";
-import { Button, Divider, Flex, Input, SwitchItem, Text, Tooltip } from "@components";
+import { Button, Divider, Flex, Input, Switch, Text, Tooltip } from "@components";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
 import Icons from "../icons";
@@ -290,7 +290,7 @@ function Card({
               </a>
             </Tooltip>
           )}
-          <SwitchItem checked={!disabled} onChange={toggleDisabled} />
+          <Switch checked={!disabled} onChange={toggleDisabled} />
         </Flex>
       </Flex>
       <Text.Normal style={{ margin: "5px 0" }} markdown={true} allowMarkdownLinks={true}>
