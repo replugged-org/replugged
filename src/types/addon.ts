@@ -49,6 +49,7 @@ export const plugin = common.extend({
   preload: z.string().optional(),
   renderer: z.string().optional(),
   plaintextPatches: z.string().optional(),
+  settings: z.string().optional(),
   dependencies: z
     .object({
       required: id.array(),
