@@ -1,4 +1,5 @@
 import type { Jsonifiable } from "type-fest";
+import { React } from "@common";
 
 type SettingsUpdate<T> =
   | {
@@ -130,6 +131,42 @@ export class SettingsManager<T extends Record<string, Jsonifiable>> {
       this.#queuedUpdates.clear();
       this.#saveTimeout = void 0;
     }); // Add a delay of 1 or 2 seconds?
+  }
+
+  /**
+   * React hook for managing settings.
+   * @param key Key of the setting to manage.
+   * @param fallback Value to return if the key does not already exist.
+   * @returns A tuple containing the current value of the setting, and a function to set the value. Works like `useState`.
+   * @example
+   * ```tsx
+   * import { settings, components } from 'replugged';
+   * const { Input } = components;
+   *
+   * const cfg = settings.init<{ hello: string }>('dev.replugged.Example');
+   *
+   * export function Settings() {
+   *  const [hello, setHello] = cfg.useSetting('hello', 'world');
+   *
+   *  return <Input value={hello} onChange={setHello} />;
+   * }
+   * ```
+   */
+  public useSetting<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
+    key: K,
+    fallback?: F,
+  ): [F extends null | undefined ? T[K] : NonNullable<T[K]> | F, (value: T[K]) => void] {
+    const initial = this.get(key, fallback);
+    const [value, setValue] = React.useState(initial);
+
+    return [
+      value,
+      (newValue: T[K]) => {
+        // @ts-expect-error It doesn't understand ig
+        setValue(newValue ?? fallback);
+        this.set(key, newValue);
+      },
+    ];
   }
 }
 
