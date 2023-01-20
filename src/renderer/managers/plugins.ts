@@ -19,11 +19,6 @@ interface PluginWrapper extends RepluggedPlugin {
 export const plugins = new Map<string, PluginWrapper>();
 const running = new Set<string>();
 
-/**
- * @hidden
- */
-export const settingsElements = new Map<string, React.ComponentType>();
-
 const styleElements = new Map<string, HTMLLinkElement>();
 
 /**
@@ -86,15 +81,6 @@ export async function start(id: string): Promise<void> {
       await plugin.exports!.start?.();
     }
 
-    if (plugin.manifest.settings) {
-      const Settings: React.ComponentType = (
-        await import(
-          `replugged://plugin/${plugin.path}/${plugin.manifest.settings}?t=${Date.now()}}`
-        )
-      ).default;
-      settingsElements.set(plugin.manifest.id, Settings);
-    }
-
     const el = loadStyleSheet(
       `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
     );
@@ -138,9 +124,6 @@ export async function stop(id: string): Promise<void> {
     if (styleElements.has(plugin.manifest.id)) {
       styleElements.get(plugin.manifest.id)?.remove();
       styleElements.delete(plugin.manifest.id);
-    }
-    if (settingsElements.has(plugin.manifest.id)) {
-      settingsElements.delete(plugin.manifest.id);
     }
 
     running.delete(plugin.manifest.id);

@@ -35,7 +35,7 @@ function getManager(type: AddonType) {
 
 function getSettingsElement(id: string, type: AddonType) {
   if (type === AddonType.Plugin) {
-    return window.replugged.plugins.settingsElements.get(id);
+    return window.replugged.plugins.plugins.get(id)?.exports?.Settings;
   }
   if (type === AddonType.Theme) {
     return undefined;

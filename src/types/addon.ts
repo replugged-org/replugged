@@ -49,7 +49,6 @@ export const plugin = common.extend({
   preload: z.string().optional(),
   renderer: z.string().optional(),
   plaintextPatches: z.string().optional(),
-  settings: z.string().optional(),
   dependencies: z
     .object({
       required: id.array(),
@@ -71,6 +70,7 @@ export type PluginManifest = z.infer<typeof plugin>;
 export interface PluginExports {
   start?: () => Promisable<void>;
   stop?: () => Promisable<void>;
+  Settings?: React.ComponentType;
   [x: string]: unknown;
 }
 
