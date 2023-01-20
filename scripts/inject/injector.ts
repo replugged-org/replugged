@@ -29,7 +29,7 @@ export const isPlugged = async (appDir: string): Promise<boolean> => {
 export const inject = async (
   { getAppDir }: PlatformModule,
   platform: DiscordPlatform,
-  dev: boolean,
+  prod: boolean,
 ): Promise<boolean> => {
   const appDir = await getAppDir(platform);
   if (!(await isDiscordInstalled(appDir))) return false;
@@ -53,7 +53,7 @@ export const inject = async (
     return false;
   }
 
-  const fileToCheck = join(__dirname, "..", "..", dev ? "dist/main.js" : "app.asar");
+  const fileToCheck = join(__dirname, "..", "..", prod ? "app.asar" : "dist/main.js");
   const fileToCheckExists = await stat(fileToCheck)
     .then(() => true)
     .catch(() => false);
@@ -136,7 +136,9 @@ export const inject = async (
     process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
   }
 
-  if (dev) {
+  if (prod) {
+    await copyFile(join(__dirname, "..", "..", "app.asar"), appDir);
+  } else {
     await mkdir(appDir);
     await Promise.all([
       writeFile(
@@ -151,8 +153,6 @@ export const inject = async (
         }),
       ),
     ]);
-  } else {
-    await copyFile(join(__dirname, "..", "..", "app.asar"), appDir);
   }
 
   return true;

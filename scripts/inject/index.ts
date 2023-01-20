@@ -19,7 +19,7 @@ const platformModules = {
 };
 
 const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1;
-const dev = process.argv.includes("--dev");
+const prod = process.argv.includes("--production");
 const processArgs = process.argv.filter((v) => !v.startsWith("-"));
 
 if (!(process.platform in platformModules)) {
@@ -89,7 +89,7 @@ const run = async (cmd = processArgs[2]): Promise<void> => {
 
   if (cmd === "inject") {
     try {
-      result = await inject(platformModule, platform, dev);
+      result = await inject(platformModule, platform, prod);
     } catch (e) {
       console.error(
         `${AnsiEscapes.RED}An error occurred while trying to inject into Discord!${AnsiEscapes.RESET}`,
