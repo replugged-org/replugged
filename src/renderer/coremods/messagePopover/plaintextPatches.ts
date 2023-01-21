@@ -2,6 +2,7 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
+    find: 'navId:"message-actions",',
     replacements: [
       {
         match:

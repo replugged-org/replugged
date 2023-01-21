@@ -16,7 +16,6 @@ const logger = Logger.api("MessagePopover");
  * let removeButton;
  *  let item: types.GetButtonItem = (msg: Message, channel: Channel) => {
  *    return {
- *      key: "uniquebuttonkey",
  *      label: "Click the button!",
  *      icon: <svg></svg>, // Cool icon
  *      onClick: () => {
@@ -40,7 +39,7 @@ const logger = Logger.api("MessagePopover");
  * ```
  */
 export namespace MessagePopoverAPI {
-  export const buttons = new Set<GetButtonItem>();
+  export const buttons = new Map<GetButtonItem, string>();
 
   /**
    * Adds a button to any MessagePopover
@@ -48,7 +47,7 @@ export namespace MessagePopoverAPI {
    * @returns A callback to remove the button from set.
    */
   export function addButton(item: GetButtonItem): () => void {
-    buttons.add(item);
+    buttons.set(item, '');
 
     return () => removeButton(item);
   }
@@ -73,13 +72,18 @@ export namespace MessagePopoverAPI {
   ): React.ComponentType[] {
     const items = [] as React.ComponentType[];
 
-    buttons.forEach((getItem) => {
+    buttons.forEach((key, getItem) => {
       try {
         const item = getItem(msg, channel);
         try {
           if (item) {
             item.message ??= msg;
             item.channel ??= channel;
+            if (key === '') {
+              buttons.set(getItem, key = `${item.key || item.label.replaceAll(' ', '')}-${Math.random().toString(36).substring(2)}`)
+            }
+            item.key = key;
+            console.log(item.key);
             items.push(makeButton(item));
           }
         } catch (err) {
