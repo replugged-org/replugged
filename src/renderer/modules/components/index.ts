@@ -96,6 +96,11 @@ export type { TextType };
 export let Text: TextType;
 importTimeout("Text", import("./Text"), (mod) => (Text = mod.default));
 
+import { type ErrorBoundaryType } from "./ErrorBoundary";
+export type { ErrorBoundaryType };
+export let ErrorBoundary: ErrorBoundaryType;
+importTimeout("ErrorBoundary", import("./ErrorBoundary"), (mod) => (ErrorBoundary = mod.default));
+
 /**
  * @internal
  * @hidden
