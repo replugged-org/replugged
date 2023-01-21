@@ -1,18 +1,21 @@
 import { copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
-import { join, sep } from "path";
+import { join } from "path";
 import { AnsiEscapes } from "./util";
 import readline from "readline";
 import { exec } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types";
+import { CONFIG_PATH } from "../../src/util";
 
-export const isDiscordInstalled = async (appDir: string): Promise<boolean> => {
+export const isDiscordInstalled = async (appDir: string, silent?: boolean): Promise<boolean> => {
   try {
     await stat(appDir);
     return true;
   } catch {
-    console.error(
-      `${AnsiEscapes.RED}The Discord installation you specified isn't installed on this device!${AnsiEscapes.RESET}`,
-    );
+    if (!silent) {
+      console.error(
+        `${AnsiEscapes.RED}The Discord installation you specified isn't installed on this device!${AnsiEscapes.RESET}`,
+      );
+    }
     return false;
   }
 };
@@ -136,24 +139,25 @@ export const inject = async (
     process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
   }
 
+  const entryPoint = prod
+    ? join(CONFIG_PATH, "app.asar")
+    : join(__dirname, "..", "..", "dist/main.js");
+
   if (prod) {
-    await copyFile(join(__dirname, "..", "..", "app.asar"), appDir);
-  } else {
-    await mkdir(appDir);
-    await Promise.all([
-      writeFile(
-        join(appDir, "index.js"),
-        `require(\`${__dirname.replace(RegExp(sep.repeat(2), "g"), "/")}/../../dist/main.js\`)`,
-      ),
-      writeFile(
-        join(appDir, "package.json"),
-        JSON.stringify({
-          main: "index.js",
-          name: "discord",
-        }),
-      ),
-    ]);
+    await copyFile(join(__dirname, "..", "..", "app.asar"), entryPoint);
   }
+
+  await mkdir(appDir);
+  await Promise.all([
+    writeFile(join(appDir, "index.js"), `require("${entryPoint}")`),
+    writeFile(
+      join(appDir, "package.json"),
+      JSON.stringify({
+        main: "index.js",
+        name: "discord",
+      }),
+    ),
+  ]);
 
   return true;
 };
@@ -163,7 +167,11 @@ export const uninject = async (
   platform: DiscordPlatform,
 ): Promise<boolean> => {
   const appDir = await getAppDir(platform);
-  if (!(await isDiscordInstalled(appDir))) return false;
+  if (
+    !(await isDiscordInstalled(appDir, true)) &&
+    !(await isDiscordInstalled(join(appDir, "..", "app.orig.asar")))
+  )
+    return false;
 
   if (!(await isPlugged(appDir))) {
     console.error(
