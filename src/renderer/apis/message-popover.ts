@@ -12,7 +12,7 @@ const logger = Logger.api("MessagePopover");
  * @example
  * ```
  * import { api, types } from "replugged";
- * 
+ *
  * let removeButton;
  *  let item: types.GetButtonItem = (msg: Message, channel: Channel) => {
  *    return {
@@ -27,11 +27,11 @@ const logger = Logger.api("MessagePopover");
  *      },
  *    };
  *  };
- * 
+ *
  * function start() {
  *   removeButton = api.messagePopover.addButton(item);
  * }
- * 
+ *
  * function stop() {
  *   removeButton();
  *   // or you can use

@@ -300,7 +300,7 @@ export class Injector {
      *     };
      *   });
      * }
-     * 
+     *
      * function stop() {
      *   injector.uninjectAll();
      * }
