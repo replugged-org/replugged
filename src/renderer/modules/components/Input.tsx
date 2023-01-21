@@ -22,5 +22,5 @@ export type InputType = React.ComponentType<InputProps> & {
 };
 
 export default (await waitForModule(filters.bySource(".getIsOverFlowing")).then((mod) =>
-  Object.values(mod).find((x) => "defaultProps" in x),
+  Object.values(mod).find((x) => "defaultProps" in x && "maxLength" in x.defaultProps),
 )) as InputType;
