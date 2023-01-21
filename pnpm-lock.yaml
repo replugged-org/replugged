@@ -42,6 +42,7 @@ dependencies:
   codemirror: 6.0.1
   node-fetch: 3.3.0
   prettier: 2.8.3
+  zod: 3.19.1
 
 devDependencies:
   '@types/highlightjs': 9.12.2
@@ -68,7 +69,6 @@ devDependencies:
   type-fest: 3.5.0
   typedoc: 0.23.22_typescript@4.8.4
   typescript: 4.8.4
-  zod: 3.19.1
 
 packages:
 
@@ -5226,7 +5226,7 @@ packages:
 
   /zod/3.19.1:
     resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
-    dev: true
+    dev: false
 
   github.com/dmitmel/eslint-config-dmitmel/690f1b1121d342fcc8ee511ca9f2af7502f53db6_eslint@8.24.0:
     resolution: {tarball: https://codeload.github.com/dmitmel/eslint-config-dmitmel/tar.gz/690f1b1121d342fcc8ee511ca9f2af7502f53db6}
