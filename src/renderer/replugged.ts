@@ -24,10 +24,7 @@ export { default as notices } from "./apis/notices";
 export { default as commands } from "./apis/commands";
 export * as settings from "./apis/settings";
 
-import { MessagePopoverAPI } from "./apis/message-popover";
-export namespace api {
-  export const messagePopover = MessagePopoverAPI;
-}
+export * as api from "./apis";
 
 /**
  * @internal

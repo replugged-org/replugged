@@ -282,19 +282,28 @@ export class Injector {
      *
      * @example
      * ```
-     * injector.utils.addPopoverButton((msg: Message, _: Channel) => {
-     *   return {
-     *     key: "uniquebuttonkey",
-     *     label: "Click the button!",
-     *     icon: <svg></svg>, // Cool icon
-     *     onClick: () => {
-     *       // do stuff here
-     *     },
-     *     onContextMenu: () => {
-     *       // do other stuff here
-     *     },
-     *   };
-     * });
+     * import { Injector, webpack } from "replugged";
+     * const inject = new Injector();
+     *
+     * function start() {
+     *   injector.utils.addPopoverButton((msg: Message, channel: Channel) => {
+     *     return {
+     *       key: "uniquebuttonkey",
+     *       label: "Click the button!",
+     *       icon: <svg></svg>, // Cool icon
+     *       onClick: () => {
+     *         // do stuff here when someone leftclicks the button
+     *       },
+     *       onContextMenu: () => {
+     *         // do other stuff here when someone rightclicks the button
+     *       },
+     *     };
+     *   });
+     * }
+     * 
+     * function stop() {
+     *   injector.uninjectAll();
+     * }
      * ```
      */
     addPopoverButton: (item: GetButtonItem) => {
