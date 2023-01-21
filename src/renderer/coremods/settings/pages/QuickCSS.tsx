@@ -1,5 +1,165 @@
-import { Text } from "@components";
+import { React, toast } from "@common";
+import { EditorView, basicSetup } from "codemirror";
+import { EditorState } from "@codemirror/state";
+import { css } from "@codemirror/lang-css";
+import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
+import { Logger, webpack } from "@replugged";
+import { Button, Divider, Flex, Text } from "@components";
+import { format } from "prettier";
+import parser from "prettier/parser-postcss";
+import "./QuickCSS.css";
+
+const logger = Logger.coremod("QuickCssSettings");
+
+interface UseCodeMirrorOptions {
+  value?: string;
+  onChange?: (code: string) => unknown;
+  container?: HTMLDivElement | null;
+}
+
+type ThemeModule = {
+  theme: "light" | "dark";
+  addChangeListener: (listener: () => unknown) => unknown;
+  removeChangeListener: (listener: () => unknown) => unknown;
+};
+
+function useTheme() {
+  const [theme, setTheme] = React.useState<"light" | "dark">("dark");
+
+  const themeMod = webpack.getByProps<keyof ThemeModule, ThemeModule>(
+    "theme",
+    "addChangeListener",
+    "removeChangeListener",
+  );
+
+  if (!themeMod) return theme;
+
+  const themeChange = () => {
+    setTheme(themeMod.theme);
+  };
+
+  React.useEffect(() => {
+    themeChange();
+    themeMod.addChangeListener(themeChange);
+
+    return () => {
+      themeMod.removeChangeListener(themeChange);
+    };
+  }, []);
+
+  return theme;
+}
+
+function useCodeMirror({ value: initialValueParam, onChange, container }: UseCodeMirrorOptions) {
+  const theme = useTheme();
+
+  const [value, setValue] = React.useState("");
+  const [view, setView] = React.useState<EditorView | undefined>(undefined);
+  const [update, forceUpdate] = React.useReducer((x) => x + 1, 0);
+
+  React.useEffect(() => {
+    if (initialValueParam) {
+      setValue(initialValueParam);
+      forceUpdate();
+    }
+  }, [initialValueParam]);
+
+  React.useEffect(() => {
+    if (!container) return undefined;
+    if (view) view.destroy();
+
+    const newView = new EditorView({
+      state: EditorState.create({
+        doc: value,
+        extensions: [
+          basicSetup,
+          css(),
+          EditorView.updateListener.of((update) => {
+            if (update.docChanged) {
+              setValue(update.state.doc.toString());
+              onChange?.(update.state.doc.toString());
+            }
+          }),
+          theme === "dark" ? githubDark : githubLight,
+        ],
+      }),
+      parent: container,
+    });
+    setView(newView);
+
+    container.setAttribute("data-theme", theme);
+
+    return () => {
+      newView?.destroy();
+      setView(undefined);
+    };
+  }, [container, theme, update]);
+
+  const customSetValue = React.useCallback(
+    (value: string) => {
+      setValue(value);
+      forceUpdate();
+    },
+    [view],
+  );
+
+  return { value, setValue: customSetValue };
+}
 
 export const QuickCSS = () => {
-  return <Text>Hello World</Text>;
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { value, setValue } = useCodeMirror({
+    container: ref.current,
+  });
+  const [ready, setReady] = React.useState(false);
+
+  React.useEffect(() => {
+    window.RepluggedNative.quickCSS.get().then((val) => {
+      setValue(val);
+      setReady(true);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    if (!ready) return;
+    window.RepluggedNative.quickCSS.save(value);
+  }, [value]);
+
+  return (
+    <>
+      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
+        <Text.H2>Quick CSS</Text.H2>
+        <div style={{ display: "flex" }}>
+          <Button
+            onClick={() => {
+              window.replugged.quickCSS.reload();
+              toast.toast("Quick CSS reloaded");
+            }}>
+            Apply Changes
+          </Button>
+          <Button
+            onClick={() => {
+              try {
+                setValue(
+                  format(value, {
+                    parser: "css",
+                    plugins: [parser],
+                  }),
+                );
+                toast.toast("Code formatted");
+              } catch (err) {
+                logger.error(err);
+                toast.toast("Failed to format code", toast.Kind.FAILURE);
+              }
+            }}
+            color={Button.Colors.PRIMARY}
+            look={Button.Looks.LINK}>
+            Format Code
+          </Button>
+        </div>
+      </Flex>
+      <Divider style={{ margin: "20px 0px" }} />
+      <div ref={ref} id="replugged-quickcss-wrapper" />
+    </>
+  );
 };

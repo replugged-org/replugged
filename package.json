@@ -35,6 +35,7 @@
     "@types/highlightjs": "^9.12.2",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.8.0",
+    "@types/prettier": "^2.7.2",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.10",
     "@types/react-reconciler": "^0.28.1",
@@ -62,7 +63,11 @@
     "dist"
   ],
   "dependencies": {
+    "@codemirror/lang-css": "^6.0.1",
+    "@codemirror/state": "^6.2.0",
     "@octokit/rest": "^19.0.5",
+    "@uiw/codemirror-theme-github": "^4.19.7",
+    "codemirror": "^6.0.1",
     "node-fetch": "^3.3.0"
   }
 }

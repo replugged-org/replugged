@@ -1,0 +1,28 @@
+#replugged-quickcss-wrapper .cm-editor {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  border: 1px solid var(--background-tertiary);
+  outline: none !important;
+}
+
+#replugged-quickcss-wrapper .cm-gutters {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+#replugged-quickcss-wrapper .cm-gutterElement {
+  margin: 0px;
+}
+
+#replugged-quickcss-wrapper .cm-content {
+  padding: 0px;
+}
+
+#replugged-quickcss-wrapper .cm-content,
+#replugged-quickcss-wrapper .cm-gutter {
+  min-height: 300px;
+}
+
+#replugged-quickcss-wrapper .cm-scroller {
+  overflow: auto;
+}
