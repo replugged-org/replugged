@@ -1,6 +1,5 @@
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, QuickCSS } from "./pages";
-import { Plugins, Themes } from "./pages/Addons";
+import { General, Plugins, QuickCSS, Themes } from "./pages";
 
 export { insertSections };
 
