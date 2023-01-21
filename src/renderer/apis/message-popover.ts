@@ -81,7 +81,6 @@ export namespace MessagePopoverAPI {
             item.message ??= msg;
             item.channel ??= channel;
             item.key = key;
-            console.log(item.key);
             items.push(makeButton(item));
           }
         } catch (err) {
