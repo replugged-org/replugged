@@ -27,7 +27,7 @@ specifiers:
   eslint-plugin-react: ^7.31.8
   node-fetch: ^3.3.0
   np: ^7.6.2
-  prettier: ^2.7.1
+  prettier: ^2.8.3
   tsx: ^3.9.0
   type-fest: ^3.5.0
   typedoc: ^0.23.22
@@ -41,6 +41,7 @@ dependencies:
   '@uiw/codemirror-theme-github': 4.19.7_@codemirror+state@6.2.0
   codemirror: 6.0.1
   node-fetch: 3.3.0
+  prettier: 2.8.3
 
 devDependencies:
   '@types/highlightjs': 9.12.2
@@ -63,7 +64,6 @@ devDependencies:
   eslint-plugin-node: 11.1.0_eslint@8.24.0
   eslint-plugin-react: 7.31.8_eslint@8.24.0
   np: 7.6.2
-  prettier: 2.7.1
   tsx: 3.9.0
   type-fest: 3.5.0
   typedoc: 0.23.22_typescript@4.8.4
@@ -4262,11 +4262,11 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /prettier/2.7.1:
-    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
+  /prettier/2.8.3:
+    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
-    dev: true
+    dev: false
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
