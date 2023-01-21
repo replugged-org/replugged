@@ -1,4 +1,4 @@
-import { Modal, Text } from "@components";
+import { ErrorBoundary, Modal, Text } from "@components";
 import { modal } from "@common";
 const { ModalRoot, ModalHeader, ModalContent, ModalCloseButton } = Modal;
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
@@ -18,7 +18,9 @@ export function showAddonSettings(
         <ModalCloseButton onClick={() => modal.closeModal(modalKey)} />
       </ModalHeader>
       <ModalContent style={{ marginTop: "20px" }}>
-        <Element />
+        <ErrorBoundary>
+          <Element />
+        </ErrorBoundary>
       </ModalContent>
     </ModalRoot>
   ));
