@@ -47,7 +47,7 @@ export namespace MessagePopoverAPI {
    * @returns A callback to remove the button from set.
    */
   export function addButton(item: GetButtonItem): () => void {
-    buttons.set(item, '');
+    buttons.set(item, "");
 
     return () => removeButton(item);
   }
@@ -79,8 +79,13 @@ export namespace MessagePopoverAPI {
           if (item) {
             item.message ??= msg;
             item.channel ??= channel;
-            if (key === '') {
-              buttons.set(getItem, key = `${item.key || item.label.replaceAll(' ', '')}-${Math.random().toString(36).substring(2)}`)
+            if (key === "") {
+              buttons.set(
+                getItem,
+                (key = `${item.key || item.label.replaceAll(" ", "")}-${Math.random()
+                  .toString(36)
+                  .substring(2)}`),
+              );
             }
             item.key = key;
             console.log(item.key);
