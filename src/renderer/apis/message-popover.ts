@@ -14,21 +14,21 @@ const logger = Logger.api("MessagePopover");
  * import { api, types } from "replugged";
  *
  * let removeButton;
- *  let item: types.GetButtonItem = (msg: Message, channel: Channel) => {
- *    return {
- *      label: "Click the button!",
- *      icon: <svg></svg>, // Cool icon
- *      onClick: () => {
- *        // do stuff here when someone leftclicks the button
- *      },
- *      onContextMenu: () => {
- *        // do other stuff here when someone rightclicks the button
- *      },
- *    };
- *  };
+ * let item: types.GetButtonItem = (msg: Message, channel: Channel) => {
+ *   return {
+ *     label: "Click the button!",
+ *     icon: <svg></svg>, // Cool icon
+ *     onClick: () => {
+ *       // do stuff here when someone leftclicks the button
+ *     },
+ *     onContextMenu: () => {
+ *       // do other stuff here when someone rightclicks the button
+ *     },
+ *   };
+ * };
  *
  * function start() {
- *   removeButton = api.messagePopover.addButton(item);
+ *   removeButton = api.messagePopover.addButton(item, "optionaluniquekeyhere");
  * }
  *
  * function stop() {
@@ -44,10 +44,11 @@ export namespace MessagePopoverAPI {
   /**
    * Adds a button to any MessagePopover
    * @param item The function that creates the button to add
+   * @param key Optional key for button
    * @returns A callback to remove the button from set.
    */
-  export function addButton(item: GetButtonItem): () => void {
-    buttons.set(item, "");
+  export function addButton(item: GetButtonItem, key?: string): () => void {
+    buttons.set(item, `${key || "repluggedbtn"}-${Math.random().toString(36).substring(2)}`);
 
     return () => removeButton(item);
   }
@@ -79,14 +80,6 @@ export namespace MessagePopoverAPI {
           if (item) {
             item.message ??= msg;
             item.channel ??= channel;
-            if (key === "") {
-              buttons.set(
-                getItem,
-                (key = `${item.key || item.label.replaceAll(" ", "")}-${Math.random()
-                  .toString(36)
-                  .substring(2)}`),
-              );
-            }
             item.key = key;
             console.log(item.key);
             items.push(makeButton(item));
