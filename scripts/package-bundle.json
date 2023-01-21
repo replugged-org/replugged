@@ -1,6 +1,0 @@
-{
-  "name": "replugged",
-  "description": "A lightweight @discord client mod focused on simplicity and performance",
-  "main": "main.js",
-  "private": true
-}

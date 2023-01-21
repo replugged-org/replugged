@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import path from "path";
 import asar from "@electron/asar";
-import { copyFileSync } from "fs";
+import { writeFileSync } from "fs";
 
 const NODE_VERSION = "14";
 const CHROME_VERSION = "91";
@@ -14,7 +14,13 @@ const install: esbuild.Plugin = {
   setup: (build) => {
     build.onEnd(() => {
       if (production) {
-        copyFileSync("scripts/package-bundle.json", "dist/package.json");
+        writeFileSync(
+          "dist/package.json",
+          JSON.stringify({
+            main: "main.js",
+            name: "replugged",
+          }),
+        );
         asar.createPackage("dist", "app.asar");
       }
     });
