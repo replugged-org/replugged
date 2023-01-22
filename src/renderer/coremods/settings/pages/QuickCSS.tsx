@@ -3,13 +3,9 @@ import { EditorView, basicSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";
 import { githubDark, githubLight } from "./codemirror-github";
-import { Logger, webpack } from "@replugged";
+import { webpack } from "@replugged";
 import { Button, Divider, Flex, Text } from "@components";
-import { format } from "prettier";
-import parser from "prettier/parser-postcss";
 import "./QuickCSS.css";
-
-const logger = Logger.coremod("QuickCssSettings");
 
 interface UseCodeMirrorOptions {
   value?: string;
@@ -136,25 +132,6 @@ export const QuickCSS = () => {
               toast.toast("Quick CSS reloaded");
             }}>
             Apply Changes
-          </Button>
-          <Button
-            onClick={() => {
-              try {
-                setValue(
-                  format(value, {
-                    parser: "css",
-                    plugins: [parser],
-                  }),
-                );
-                toast.toast("Code formatted");
-              } catch (err) {
-                logger.error(err);
-                toast.toast("Failed to format code", toast.Kind.FAILURE);
-              }
-            }}
-            color={Button.Colors.PRIMARY}
-            look={Button.Looks.LINK}>
-            Format Code
           </Button>
         </div>
       </Flex>
