@@ -1,4 +1,4 @@
-import { React, ready } from "@common";
+import React from "@common/react";
 import { Flex, Text } from "@components";
 import { Logger } from "../logger";
 
@@ -16,8 +16,6 @@ export interface ErrorState {
 }
 
 export type ErrorBoundaryType = React.ComponentClass<ErrorProps, ErrorState>;
-
-await ready;
 
 export default class ErrorBoundary extends React.Component<ErrorProps, ErrorState> {
   constructor(props: ErrorProps) {
