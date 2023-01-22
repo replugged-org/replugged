@@ -1,7 +1,7 @@
 import { React, channels, fluxDispatcher, guilds } from "@common";
-import { Fiber } from "react-reconciler";
-import { Jsonifiable } from "type-fest";
-import { ObjectExports } from "../types";
+import type { Fiber } from "react-reconciler";
+import type { Jsonifiable } from "type-fest";
+import type { ObjectExports } from "../types";
 import { SettingsManager } from "./apis/settings";
 import { getByProps, getBySource, getFunctionBySource } from "./modules/webpack";
 
