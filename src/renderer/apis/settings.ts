@@ -1,5 +1,4 @@
 import type { Jsonifiable } from "type-fest";
-import { React } from "@common";
 
 type SettingsUpdate<T> =
   | {
@@ -156,29 +155,6 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * }
    * ```
    */
-  public useSetting<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
-    key: K,
-    fallback?: F,
-  ): {
-    value: K extends D
-      ? NonNullable<T[K]>
-      : F extends null | undefined
-      ? T[K] | undefined
-      : NonNullable<T[K]> | F;
-    onChange: (newValue: T[K]) => void;
-  } {
-    const initial = this.get(key, fallback);
-    const [value, setValue] = React.useState(initial);
-
-    return {
-      value,
-      onChange: (newValue: T[K]) => {
-        // @ts-expect-error It doesn't understand ig
-        setValue(newValue);
-        this.set(key, newValue);
-      },
-    };
-  }
 }
 
 // I hope there's some way to force TypeScript to accept this, but for now unknown will do
