@@ -3,7 +3,7 @@ import type React from "react";
 
 // todo: Create version of this for plugins that's limited to the plugin section and alphabetized
 
-const getPos = (pos: number | undefined) => pos ?? -4;
+const getPos = (pos: number | undefined): number => pos ?? -4;
 
 export const Section = ({
   name,
@@ -38,9 +38,8 @@ export const Header = (label: string, pos?: number): SectionType => ({
 
 export const settingsTools: SettingsTools = {
   rpSections: [],
-  rpSectionsAfter: {},
+  rpSectionsAfter: new Map(),
   addSection(opts) {
-    // eslint-disable-next-line
     const data = Section(opts);
 
     settingsTools.rpSections.push(data);
@@ -48,24 +47,24 @@ export const settingsTools: SettingsTools = {
   },
   addAfter(sectionName, sections) {
     if (!Array.isArray(sections)) sections = [sections];
-    settingsTools.rpSectionsAfter[sectionName] = sections;
+    settingsTools.rpSectionsAfter.set(sectionName, sections);
 
     return sections;
   },
   removeAfter(sectionName) {
-    delete settingsTools.rpSectionsAfter[sectionName];
+    settingsTools.rpSectionsAfter.delete(sectionName);
   },
 };
 
-export function insertSections(sections: SectionType[]) {
+export function insertSections(sections: SectionType[]): SectionType[] {
   for (const section of settingsTools.rpSections) {
     sections.splice(section.pos < 0 ? sections.length + section.pos : section.pos, 0, section);
   }
 
-  for (const sectionName in settingsTools.rpSectionsAfter) {
+  for (const sectionName of settingsTools.rpSectionsAfter.keys()) {
     const section = sections.findIndex((s) => s.section === sectionName);
     if (section === -1) continue;
-    sections.splice(section + 1, 0, ...settingsTools.rpSectionsAfter[sectionName]);
+    sections.splice(section + 1, 0, ...settingsTools.rpSectionsAfter.get(sectionName)!);
   }
 
   return sections;

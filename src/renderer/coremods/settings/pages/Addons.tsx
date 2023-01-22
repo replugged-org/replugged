@@ -1,6 +1,7 @@
 import { React, api, fluxDispatcher, modal, toast, users } from "@common";
 import { Button, Divider, Flex, Switch, Text, TextInput, Tooltip } from "@components";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
+import type { Author } from "src/types/addon";
 import "./Addons.css";
 import Icons from "../icons";
 import { Logger, plugins, themes } from "@replugged";
@@ -13,7 +14,9 @@ enum AddonType {
   Theme = "theme",
 }
 
-function getRepluggedNative(type: AddonType) {
+function getRepluggedNative(
+  type: AddonType,
+): typeof window.RepluggedNative.plugins | typeof window.RepluggedNative.themes {
   if (type === AddonType.Plugin) {
     return window.RepluggedNative.plugins;
   }
@@ -23,7 +26,7 @@ function getRepluggedNative(type: AddonType) {
   throw new Error("Invalid addon type");
 }
 
-function getManager(type: AddonType) {
+function getManager(type: AddonType): typeof plugins | typeof themes {
   if (type === AddonType.Plugin) {
     return plugins;
   }
@@ -33,7 +36,7 @@ function getManager(type: AddonType) {
   throw new Error("Invalid addon type");
 }
 
-function getSettingsElement(id: string, type: AddonType) {
+function getSettingsElement(id: string, type: AddonType): React.ComponentType | undefined {
   if (type === AddonType.Plugin) {
     return plugins.getExports(id)?.Settings;
   }
@@ -44,7 +47,7 @@ function getSettingsElement(id: string, type: AddonType) {
   throw new Error("Invalid addon type");
 }
 
-function listAddons(type: AddonType) {
+function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string, RepluggedTheme> {
   if (type === AddonType.Plugin) {
     return plugins.plugins;
   }
@@ -54,21 +57,22 @@ function listAddons(type: AddonType) {
   throw new Error("Invalid addon type");
 }
 
-async function openUserProfile(id: string) {
+async function openUserProfile(id: string): Promise<void> {
   if (!users.getUser(id)) {
     try {
       const { body } = await api.get({
         url: `/users/${id}/profile`,
         query: {
-          // eslint-disable-next-line camelcase
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           with_mutual_friends_count: "true",
-          // eslint-disable-next-line camelcase
+
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           with_mutual_guilds: "true",
         },
       });
       fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body.user });
       fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
-    } catch (e) {
+    } catch {
       try {
         const { body } = await api.get({
           url: `/users/${id}`,
@@ -87,7 +91,7 @@ async function openUserProfile(id: string) {
   });
 }
 
-function getAuthors(addon: RepluggedPlugin | RepluggedTheme) {
+function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
   return [addon.manifest.author].flat();
 }
 
@@ -102,11 +106,11 @@ function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefi
   return undefined;
 }
 
-function openFolder(type: AddonType) {
+function openFolder(type: AddonType): void {
   getRepluggedNative(type).openFolder();
 }
 
-async function loadMissing(type: AddonType) {
+async function loadMissing(type: AddonType): Promise<void> {
   if (type === AddonType.Plugin) {
     const manager = plugins;
     const disabled = manager.getDisabled();
@@ -135,11 +139,11 @@ function label(
     caps,
     plural,
   }: { caps?: "lower" | "title" | "upper" | undefined; plural?: boolean | undefined } = {},
-) {
+): string {
   caps ??= "lower";
   plural ??= false;
 
-  let base: string = "";
+  let base = "";
   if (type === AddonType.Plugin) {
     base = "Plugin";
   }
@@ -159,7 +163,7 @@ function label(
   return base;
 }
 
-function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
+function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactElement {
   const els = getAuthors(addon).map((author) => (
     <Flex
       key={JSON.stringify(author)}
@@ -234,7 +238,7 @@ function Card({
   toggleDisabled: () => void;
   reload: () => void;
   uninstall: () => void;
-}) {
+}): React.ReactElement {
   const sourceLink = getSourceLink(addon);
 
   return (
@@ -310,9 +314,9 @@ function Cards({
   type: AddonType;
   disabled: Set<string>;
   setDisabled: (disabled: Set<string>) => void;
-  list: (RepluggedPlugin | RepluggedTheme)[];
+  list: Array<RepluggedPlugin | RepluggedTheme>;
   refreshList: () => void;
-}) {
+}): React.ReactElement {
   return (
     <div className="replugged-addon-cards">
       {list.map((addon) => (
@@ -392,13 +396,13 @@ function Cards({
   );
 }
 
-export const Addons = (type: AddonType) => {
+export const Addons = (type: AddonType): React.ReactElement => {
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
-  const [list, setList] = React.useState<(RepluggedPlugin | RepluggedTheme)[] | null>();
+  const [list, setList] = React.useState<Array<RepluggedPlugin | RepluggedTheme> | null>();
   const [unfilteredCount, setUnfilteredCount] = React.useState(0);
 
-  function refreshList() {
+  function refreshList(): void {
     const list = [...listAddons(type).values()];
     setUnfilteredCount(list.length);
     setList(
@@ -492,5 +496,5 @@ export const Addons = (type: AddonType) => {
   );
 };
 
-export const Plugins = () => Addons(AddonType.Plugin);
-export const Themes = () => Addons(AddonType.Theme);
+export const Plugins = (): React.ReactElement => Addons(AddonType.Plugin);
+export const Themes = (): React.ReactElement => Addons(AddonType.Theme);

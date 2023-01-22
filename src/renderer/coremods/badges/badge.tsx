@@ -101,9 +101,10 @@ if (!openExternal) {
 }
 
 // todo: make global (configurable?) variables for these
-const openContributorsPage = () => openExternal("https://replugged.dev/contributors");
-const openTranslationsPage = () => openExternal("https://i18n.replugged.dev");
-const joinRepluggedServer = () => goToOrJoinServer("replugged");
+const openContributorsPage = (): Promise<void> =>
+  openExternal("https://replugged.dev/contributors");
+const openTranslationsPage = (): Promise<void> => openExternal("https://i18n.replugged.dev");
+const joinRepluggedServer = (): Promise<void> => goToOrJoinServer("replugged");
 
 const Custom = React.memo(({ url, name }: BadgeArgs) => (
   <Base children={<img src={url} style={{ width: "100%", height: "100%" }} />} tooltip={name} />

@@ -2,6 +2,7 @@ import { filters, waitForModule } from "../webpack";
 import type { ReactComponent } from "../../../types/util";
 import type React from "react";
 import { Divider, Flex, FormItem, FormText, Tooltip } from ".";
+import type { ObjectExports } from "../../../types";
 
 export type ButtonType = ReactComponent<{
   onClick: () => void;
@@ -34,9 +35,10 @@ export type ButtonType = ReactComponent<{
 
 export const Button = (await waitForModule(filters.bySource('"onDropdownClick"'))) as ButtonType;
 
-const classes = (await waitForModule(filters.byProps("labelRow"))) as Record<string, string>;
-
-type ButtonItemProps = {
+const classes = await waitForModule<
+  ObjectExports & Record<"labelRow" | "title" | "note" | "dividerDefault", string>
+>(filters.byProps("labelRow", "title", "note", "dividerDefault"));
+interface ButtonItemProps {
   onClick: () => void;
   button: string;
   note?: string;
@@ -45,11 +47,11 @@ type ButtonItemProps = {
   success?: boolean;
   color?: string;
   disabled?: boolean;
-};
+}
 
 export type ButtonItemType = React.FC<React.PropsWithChildren<ButtonItemProps>>;
 
-export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>) => {
+export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>): React.ReactElement => {
   return (
     <div
       className={`${Flex.Direction.VERTICAL} ${Flex.Justify.START} ${Flex.Align.STRETCH} ${Flex.Wrap.NO_WRAP}`}
