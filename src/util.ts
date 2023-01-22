@@ -31,4 +31,4 @@ export const CONFIG_PATHS = Object.fromEntries(
     }
     return [name, path];
   }),
-) as Record<(typeof CONFIG_FOLDER_NAMES)[number], string>;
+) as Record<typeof CONFIG_FOLDER_NAMES[number], string>;
