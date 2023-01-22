@@ -174,7 +174,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
       value,
       onChange: (newValue: T[K]) => {
         // @ts-expect-error It doesn't understand ig
-        setValue(newValue ?? fallback);
+        setValue(newValue);
         this.set(key, newValue);
       },
     };
