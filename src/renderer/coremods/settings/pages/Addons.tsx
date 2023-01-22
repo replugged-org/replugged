@@ -3,7 +3,7 @@ import { Button, Divider, Flex, Input, Switch, Text, Tooltip } from "@components
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
 import Icons from "../icons";
-import { Logger } from "@replugged";
+import { Logger, plugins, themes } from "@replugged";
 import { showAddonSettings } from "./AddonSettings";
 
 const logger = Logger.coremod("AddonSettings");
@@ -25,17 +25,17 @@ function getRepluggedNative(type: AddonType) {
 
 function getManager(type: AddonType) {
   if (type === AddonType.Plugin) {
-    return window.replugged.plugins;
+    return plugins;
   }
   if (type === AddonType.Theme) {
-    return window.replugged.themes;
+    return themes;
   }
   throw new Error("Invalid addon type");
 }
 
 function getSettingsElement(id: string, type: AddonType) {
   if (type === AddonType.Plugin) {
-    return window.replugged.plugins.plugins.get(id)?.exports?.Settings;
+    return plugins.getExports(id)?.Settings;
   }
   if (type === AddonType.Theme) {
     return undefined;
@@ -46,10 +46,10 @@ function getSettingsElement(id: string, type: AddonType) {
 
 function listAddons(type: AddonType) {
   if (type === AddonType.Plugin) {
-    return window.replugged.plugins.plugins;
+    return plugins.plugins;
   }
   if (type === AddonType.Theme) {
-    return window.replugged.themes.themes;
+    return themes.themes;
   }
   throw new Error("Invalid addon type");
 }
@@ -108,7 +108,7 @@ function openFolder(type: AddonType) {
 
 async function loadMissing(type: AddonType) {
   if (type === AddonType.Plugin) {
-    const manager = window.replugged.plugins;
+    const manager = plugins;
     const disabled = manager.getDisabled();
     const existingPlugins = new Set(manager.plugins.keys());
     await manager.loadAll();
@@ -118,7 +118,7 @@ async function loadMissing(type: AddonType) {
     await Promise.all(newPlugins.map((x) => manager.start(x)));
   }
   if (type === AddonType.Theme) {
-    const manager = window.replugged.themes;
+    const manager = themes;
     const disabled = manager.getDisabled();
     const existingThemes = new Set(manager.themes.keys());
     await manager.loadMissing();
