@@ -1,6 +1,6 @@
 import React from "@common/react";
-import { Flex, Text } from "@components";
 import { Logger } from "../logger";
+import "./ErrorBoundary.css";
 
 const logger = new Logger("Components", "ErrorBoundary");
 
@@ -8,7 +8,8 @@ export interface ErrorProps {
   children: React.ReactElement | React.ReactElement[];
   silent?: boolean;
   onError?: (error: unknown, errorInfo: unknown) => void;
-  errorElement?: React.ReactElement | React.ReactElement[];
+  /** Element to show if the error boundary is triggered */
+  fallback?: React.ReactElement | React.ReactElement[];
 }
 
 export interface ErrorState {
@@ -39,14 +40,13 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
 
   render() {
     if (this.state.hasError) {
-      if (this.props.errorElement) return this.props.errorElement;
       return (
-        <Flex direction={Flex.Direction.VERTICAL} align={Flex.Align.CENTER}>
-          <Text.H1 style={{ marginBottom: "10px" }}>
-            Something went wrong rendering this element!
-          </Text.H1>
-          <Text.H3>Check console for details.</Text.H3>
-        </Flex>
+        this.props.fallback || (
+          <div className="replugged-error-boundary">
+            <h1>Something went wrong rendering this element!</h1>
+            <p>Check console for details.</p>
+          </div>
+        )
       );
     }
 
