@@ -86,10 +86,10 @@ export type { CategoryType };
 export let Category: CategoryType;
 importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
 
-import type { InputType } from "./Input";
-export type { InputType };
-export let Input: InputType;
-importTimeout("Input", import("./Input"), (mod) => (Input = mod.default));
+import type { TextInputType } from "./TextInput";
+export type { TextInputType };
+export let TextInput: TextInputType;
+importTimeout("Input", import("./TextInput"), (mod) => (TextInput = mod.default));
 
 import type { TextType } from "./Text";
 export type { TextType };

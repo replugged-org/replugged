@@ -1,5 +1,5 @@
 import { React, api, fluxDispatcher, modal, toast, users } from "@common";
-import { Button, Divider, Flex, Input, Switch, Text, Tooltip } from "@components";
+import { Button, Divider, Flex, Switch, Text, TextInput, Tooltip } from "@components";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
 import Icons from "../icons";
@@ -459,7 +459,7 @@ export const Addons = (type: AddonType) => {
       <Divider style={{ margin: "20px 0px" }} />
       {unfilteredCount ? (
         <div style={{ marginBottom: "20px" }}>
-          <Input
+          <TextInput
             placeholder={`Search for a ${label(type)}`}
             onChange={(e) => setSearch(e)}
             autoFocus={true}
