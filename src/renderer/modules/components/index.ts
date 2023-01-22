@@ -72,10 +72,25 @@ export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
 importTimeout("Button", import("./Button"), (mod) => (ButtonItem = mod.ButtonItem));
 
+import type { ClickableType } from "./Clickable";
+export type { ClickableType };
+export let Clickable: ClickableType;
+importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
+
 import type { CategoryType } from "./Category";
 export type { CategoryType };
 export let Category: CategoryType;
 importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
+
+import type { InputType } from "./Input";
+export type { InputType };
+export let Input: InputType;
+importTimeout("Input", import("./Input"), (mod) => (Input = mod.default));
+
+import type { TextType } from "./Text";
+export type { TextType };
+export let Text: TextType;
+importTimeout("Text", import("./Text"), (mod) => (Text = mod.default));
 
 /**
  * @internal

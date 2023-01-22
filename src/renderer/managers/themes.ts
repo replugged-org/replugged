@@ -1,11 +1,16 @@
 import { loadStyleSheet } from "../util";
-import type { ThemeManifest } from "../../types/addon";
 import type { RepluggedTheme } from "../../types";
+import { AddonSettings } from "src/types/addon";
+import { init } from "../apis/settings";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
-const themes = new Map<string, ThemeManifest>();
-let disabled: string[] = [];
+/**
+ * @hidden
+ */
+export const themes = new Map<string, RepluggedTheme>();
+let disabled: string[];
+const settings = await init<AddonSettings>("plugins");
 
 /**
  * Load metadata for all themes that are added to the themes folder but not yet loaded, such as newly added themes.
@@ -15,44 +20,44 @@ let disabled: string[] = [];
  */
 export async function loadMissing(): Promise<void> {
   for (const theme of await window.RepluggedNative.themes.list()) {
-    themes.set(theme.path, theme.manifest);
+    themes.set(theme.manifest.id, theme);
   }
-  disabled = await window.RepluggedNative.themes.listDisabled();
+  disabled = settings.get("disabled", []);
 }
 
 /**
  * Unload a theme, removing its stylesheet from the DOM
- * @param themeName Theme ID (RDNN)
+ * @param id Theme ID (RDNN)
  */
-export function unload(themeName: string): void {
-  if (themeElements.has(themeName)) {
-    themeElements.get(themeName)?.remove();
-    themeElements.delete(themeName);
+export function unload(id: string): void {
+  if (themeElements.has(id)) {
+    themeElements.get(id)?.remove();
+    themeElements.delete(id);
   }
 }
 
 /**
  * Load a theme, adding its stylesheet to the DOM
- * @param themeName Theme ID (RDNN)
+ * @param id Theme ID (RDNN)
  */
-export function load(themeName: string): void {
-  if (!themes.has(themeName)) {
-    throw new Error(`Theme not found: ${themeName}`);
+export function load(id: string): void {
+  if (!themes.has(id)) {
+    throw new Error(`Theme not found: ${id}`);
   }
-  unload(themeName);
+  unload(id);
 
-  const theme = themes.get(themeName)!;
-  const el = loadStyleSheet(`replugged://theme/${themeName}/${theme.main}`);
-  themeElements.set(themeName, el);
+  const theme = themes.get(id)!;
+  const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+  themeElements.set(id, el);
 }
 
 /**
  * Load all themes, adding their stylesheets to the DOM. Disabled themes are not loaded.
  */
 export function loadAll(): void {
-  for (const themeName of themes.keys()) {
-    if (!disabled.includes(themeName)) {
-      load(themeName);
+  for (const id of themes.keys()) {
+    if (!disabled.includes(id)) {
+      load(id);
     }
   }
 }
@@ -61,8 +66,8 @@ export function loadAll(): void {
  * Unload all themes, removing their stylesheets from the DOM
  */
 export function unloadAll(): void {
-  for (const themeName of themeElements.keys()) {
-    unload(themeName);
+  for (const id of themeElements.keys()) {
+    unload(id);
   }
 }
 
@@ -89,7 +94,41 @@ export async function list(): Promise<RepluggedTheme[]> {
 /**
  * Reload a theme to apply changes
  */
-export function reload(themeName: string): void {
-  unload(themeName);
-  load(themeName);
+export function reload(id: string): void {
+  unload(id);
+  load(id);
+}
+
+export function enable(id: string): void {
+  if (!themes.has(id)) {
+    throw new Error(`Theme "${id}" does not exist.`);
+  }
+  const disabled = settings.get("disabled", []);
+  settings.set(
+    "disabled",
+    disabled.filter((x) => x !== id),
+  );
+  load(id);
+}
+
+export function disable(id: string): void {
+  if (!themes.has(id)) {
+    throw new Error(`Theme "${id}" does not exist.`);
+  }
+  const disabled = settings.get("disabled", []);
+  settings.set("disabled", [...disabled, id]);
+  unload(id);
+}
+
+export async function uninstall(id: string): Promise<void> {
+  if (!themes.has(id)) {
+    throw new Error(`Theme "${id}" does not exist.`);
+  }
+  await window.RepluggedNative.themes.uninstall(id);
+  unload(id);
+  themes.delete(id);
+}
+
+export function getDisabled(): string[] {
+  return settings.get("disabled", []);
 }

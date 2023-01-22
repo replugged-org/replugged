@@ -25,10 +25,22 @@ async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
     }),
   );
 
-  return {
+  const data = {
     path: pluginName,
     manifest: plugin.parse(manifest),
+    hasCSS: false,
   };
+
+  const cssPath = data.manifest.renderer?.replace(/\.js$/, ".css");
+  const hasCSS =
+    cssPath &&
+    (await stat(join(PLUGINS_DIR, pluginName, cssPath))
+      .then(() => true)
+      .catch(() => false));
+
+  if (hasCSS) data.hasCSS = true;
+
+  return data;
 }
 
 ipcMain.handle(

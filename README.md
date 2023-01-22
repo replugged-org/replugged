@@ -9,45 +9,20 @@
 
 > **Note**  
 > In the future, there will be a GUI installer for general users. For now, you will have to use the
-> command line. If you're not sure how to use the command line, you should wait for the public
-> release.
+> command line. **If you're not sure how to use the command line, you should wait for the public
+> release.**
 
-### Prerequisites
-
-- Git
-- NodeJS
-- pnpm: `npm i -g pnpm`
-- Discord app
-
-### Install
-
-1. Clone the repository: `git clone https://github.com/replugged-org/replugged` and `cd replugged`
-2. Install dependencies: `pnpm i`
-3. Build Replugged: `pnpm build`
-4. Plug into Discord: `pnpm run plug [stable|ptb|canary|development]`
-5. Fully quit Discord and restart it
-
-You can verify it's installed by going into Discord settings and looking for the "Replugged" tab.
-
-### Uninstall
-
-`pnpm run unplug [stable|ptb|canary|development]`
+Installation guide: https://replugged.dev/installation
 
 ## Installing plugins and themes
 
-Plugins and themes are stored in the following folders in `/plugins` and `/themes` respectively:
-
-- Windows: `%APPDATA%/replugged`
-- macOS: `~/Library/Application Support/replugged`
-- Other: `$XDG_CONFIG_HOME/replugged` or `~/.config/replugged`
-
-These folders are automatically created the first time you run Replugged.
-
-Using our [plugin template](https://github.com/replugged-org/plugin-template), running the build
-command will automatically install the plugin into the correct folder. In the future, Replugged will
-have a plugin/theme manager to make the process easier.
+See our [wiki page](https://github.com/replugged-org/replugged/wiki/Installing-plugins-and-themes)
 
 ## FAQ
+
+### Does Replugged work?
+
+Replugged is currently in a Developer preview. While it works and is fairly stable, some things still require using the command line or running code in the console. **If you're not familiar with programming or the command line, we recommend waiting until Replugged is released publicly.**
 
 ### Is this against the ToS?
 
@@ -65,3 +40,15 @@ banned on sight. It doesn't make sense for Discord to start banning a substantia
 userbase (client mod users) without any kind of warning. Not to mention it is mandatory for
 Replugged plugins to be fully API-compliant and ethical, implying Replugged users can't be banned
 for indirect ToS violations (e.g. selfbotting).
+
+### Can I use Powercord plugins or themes?
+
+No. Replugged was originally based on Powercord, but it is not anymore. Due to the new plugin/theme format, as well as Discord changes, Powercord plugins and themes will have to be rewritten.
+
+### Can I use plugins and themes from legacy Replugged?
+
+As mentioned above, legacy plugins and themes will need to be rewriten due to Discord changes, as well as changes to our plugin/theme format. 
+
+### Can I use BetterDiscord plugins?
+
+Not right now. Previously, [BDCompat](https://github.com/Juby210/bdCompat) was used to run BetterDiscord plugins. However, this has not been rewritten for the Replugged rewrite. Unless someone creates a version for the Replugged rewrite, BetterDiscord plugins are not supported.

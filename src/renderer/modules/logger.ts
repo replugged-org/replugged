@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const blurple = "#5865F2";
 
 export type LoggerType = "Plugin" | "Coremod" | "API" | "Ignition" | "CommonModules" | "Components";

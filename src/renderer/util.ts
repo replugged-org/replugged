@@ -1,4 +1,7 @@
+import { channels, fluxDispatcher, guilds } from "@common";
 import { Fiber } from "react-reconciler";
+import { ObjectExports } from "../types";
+import { getByProps, getBySource, getFunctionBySource } from "./modules/webpack";
 
 /**
  * Loads a stylesheet into the document
@@ -74,4 +77,88 @@ export function forceUpdateElement(selector: string, all = false): void {
   ).filter(Boolean) as Element[];
 
   elements.forEach((element) => getOwnerInstance(element)?.forceUpdate());
+}
+
+type Invite = Record<string, unknown> & {
+  channel: {
+    name: string;
+    id: string;
+    type: number;
+  };
+  guild: Record<string, unknown> & {
+    id: string;
+  };
+};
+
+interface ResolvedInvite {
+  code: string;
+  invite: Invite;
+}
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type GetInviteMod = {
+  getInvite: (invite: string) => Invite | undefined;
+};
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type ResolveInviteMod = {
+  resolveInvite: (invite: string) => Promise<ResolvedInvite | undefined>;
+};
+
+let getInvite: GetInviteMod["getInvite"] | undefined;
+let resolveInvite: ResolveInviteMod["resolveInvite"] | undefined;
+let transitionTo: ((route: string) => void | undefined) | undefined;
+
+/**
+ * If the user is not in the server, join it. Otherwise, go to the server.
+ * @param invite Invite code (eg "replugged")
+ */
+export async function goToOrJoinServer(invite: string): Promise<void> {
+  if (!getInvite || !resolveInvite || !transitionTo) {
+    getInvite = getByProps<keyof GetInviteMod, GetInviteMod>("getInvite")?.getInvite;
+    if (!getInvite) {
+      throw new Error("Could not find getInvite");
+    }
+
+    resolveInvite = getByProps<keyof ResolveInviteMod, ResolveInviteMod>(
+      "resolveInvite",
+    )?.resolveInvite;
+    if (!resolveInvite) {
+      throw new Error("Could not find resolveInvite");
+    }
+
+    const transitionToMod = getBySource("Transitioning to");
+    if (!transitionToMod) {
+      throw new Error("Could not find transitionTo");
+    }
+
+    transitionTo = getFunctionBySource("Transitioning to", transitionToMod as ObjectExports);
+    if (!transitionTo) {
+      throw new Error("Could not find transitionTo");
+    }
+  }
+
+  const inviteData = getInvite(invite) || (await resolveInvite(invite))?.invite;
+  if (!inviteData) {
+    throw new Error("Could not resolve invite");
+  }
+
+  const {
+    channel: { id: channelId },
+    guild: { id: guildId },
+  } = inviteData;
+
+  if (guilds.getGuild(guildId)) {
+    // Guild already joined
+    const lastChannelId = channels.getChannelId(guildId);
+    transitionTo(`/channels/${guildId}/${lastChannelId || channelId}`);
+    return;
+  }
+
+  fluxDispatcher.dispatch({
+    type: "INVITE_MODAL_OPEN",
+    context: "APP",
+    invite: inviteData,
+    code: invite,
+  });
 }

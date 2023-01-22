@@ -11,8 +11,8 @@ export type Id = z.infer<typeof id>;
 
 export const author = z.object({
   name: z.string(),
-  discordID: z.string(),
-  github: z.string(),
+  discordID: z.string().optional(),
+  github: z.string().optional(),
 });
 
 export type Author = z.infer<typeof author>;
@@ -45,24 +45,8 @@ export type ThemeManifest = z.infer<typeof theme>;
 
 export const plugin = common.extend({
   type: z.literal("replugged-plugin"),
-  main: z.string().optional(),
-  preload: z.string().optional(),
   renderer: z.string().optional(),
   plaintextPatches: z.string().optional(),
-  dependencies: z
-    .object({
-      required: id.array(),
-      optional: id.array(),
-    })
-    .partial()
-    .optional(),
-  dependents: z
-    .object({
-      required: id.array(),
-      optional: id.array(),
-    })
-    .partial()
-    .optional(),
 });
 
 export type PluginManifest = z.infer<typeof plugin>;
@@ -72,3 +56,8 @@ export interface PluginExports {
   stop?: () => Promisable<void>;
   [x: string]: unknown;
 }
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type AddonSettings = {
+  disabled?: string[];
+};
