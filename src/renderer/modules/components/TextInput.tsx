@@ -1,6 +1,6 @@
 import { filters, waitForModule } from "../webpack";
 
-interface InputProps {
+interface TextInputProps {
   autoFocus?: boolean;
   disabled?: boolean;
   minLength?: number;
@@ -17,10 +17,10 @@ interface InputProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-export type InputType = React.ComponentType<InputProps> & {
-  defaultProps: InputProps;
+export type TextInputType = React.ComponentType<TextInputProps> & {
+  defaultProps: TextInputProps;
 };
 
 export default (await waitForModule(filters.bySource(".getIsOverFlowing")).then((mod) =>
-  Object.values(mod).find((x) => "defaultProps" in x),
-)) as InputType;
+  Object.values(mod).find((x) => "defaultProps" in x && "maxLength" in x.defaultProps),
+)) as TextInputType;
