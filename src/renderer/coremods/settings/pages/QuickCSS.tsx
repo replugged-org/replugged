@@ -2,7 +2,7 @@ import { React, toast } from "@common";
 import { EditorView, basicSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";
-import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
+import { githubDark, githubLight } from "./codemirror-github";
 import { Logger, webpack } from "@replugged";
 import { Button, Divider, Flex, Text } from "@components";
 import { format } from "prettier";
@@ -80,7 +80,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
               onChange?.(update.state.doc.toString());
             }
           }),
-          theme === "dark" ? githubDark : githubLight,
+          theme === "light" ? githubLight : githubDark,
         ],
       }),
       parent: container,
