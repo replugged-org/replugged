@@ -1,9 +1,9 @@
-import type { ObjectExports, ReactComponent } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import type { ReactComponent } from "../../../types";
+import { filters, waitForModule } from "../webpack";
 
 export type SwitchItemType = ReactComponent<{
   note?: string;
-  value: boolean;
+  checked: boolean;
   onChange: (e: boolean) => void;
   disabled?: boolean;
   style?: React.CSSProperties;
@@ -11,25 +11,7 @@ export type SwitchItemType = ReactComponent<{
   tooltipNode?: string;
 }>;
 
-export type SwitchType = ReactComponent<{
-  checked: boolean;
-  onChange: (e: boolean) => void;
-  disabled?: boolean;
-  style?: React.CSSProperties;
-  className?: string;
-}>;
-
-const switchModStr = "xMinYMid meet";
-const switchRgx = /{className:\w+\(\)\(\w+,\w+\.className\)}/;
-const switchItemStr = ").dividerDefault";
-
 /**
  * A toggleable SwitchItem
  */
-export const Switch = (await waitForModule(filters.bySource(switchModStr)).then((mod) =>
-  getFunctionBySource(switchRgx, mod as ObjectExports),
-)) as SwitchType;
-
-export const SwitchItem = (await waitForModule(filters.bySource(switchItemStr)).then((mod) =>
-  getFunctionBySource(switchItemStr, mod as ObjectExports),
-)) as SwitchItemType;
+export default (await waitForModule(filters.bySource("xMinYMid meet"))) as SwitchItemType;
