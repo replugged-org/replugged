@@ -1,3 +1,4 @@
+import { Messages } from "@common/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General } from "./pages";
 import { Plugins, Themes } from "./pages/Addons";
@@ -10,17 +11,17 @@ export function start(): void {
     Header("Replugged"),
     Section({
       name: "rp-general",
-      label: "General",
+      label: () => Messages.SETTINGS_GENERAL,
       elem: General,
     }),
     Section({
       name: "rp-plugins",
-      label: "Plugins",
+      label: () => Messages.REPLUGGED_PLUGINS,
       elem: Plugins,
     }),
     Section({
       name: "rp-themes",
-      label: "Themes",
+      label: () => Messages.REPLUGGED_THEMES,
       elem: Themes,
     }),
   ]);

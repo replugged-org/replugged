@@ -3,6 +3,7 @@ import { log } from "../modules/logger";
 
 import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
+import * as i18n from "../modules/i18n";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
 import * as themes from "./themes";
@@ -14,6 +15,7 @@ export async function start(): Promise<void> {
   const startTime = performance.now();
 
   loadStyleSheet("replugged://renderer.css");
+  i18n.load();
   quickCSS.load();
   await Promise.all([
     coremods.startAll(),
