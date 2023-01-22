@@ -51,7 +51,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.31.8",
     "np": "^7.6.2",
-    "prettier": "2.7.1",
+    "prettier": "^2.7.1",
     "style-mod": "^4.0.0",
     "tsx": "^3.9.0",
     "type-fest": "^3.5.0",
