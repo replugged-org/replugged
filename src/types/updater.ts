@@ -2,8 +2,9 @@ export type UpdaterType = "replugged-plugin" | "replugged-theme";
 
 export interface UpdateCheckResultSuccess {
   success: true;
-  id?: string;
-  url?: string;
+  id: string;
+  name: string;
+  url: string;
 }
 
 export interface UpdateCheckResultFailure {
