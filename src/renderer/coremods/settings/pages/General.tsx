@@ -5,7 +5,7 @@ export const General = (): React.ReactElement => {
   React.useEffect(() => {
     const id = requestAnimationFrame(() => {
       // ESLint thinks that hue is not a number for some reason.
-      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+
       setHue((hue + 1) % 360);
     });
     return () => cancelAnimationFrame(id);
