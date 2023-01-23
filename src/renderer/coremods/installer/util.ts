@@ -1,8 +1,8 @@
 import { modal, toast } from "@common";
 import { Logger } from "@replugged";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
-import { plugins } from "../../managers/plugins";
-import { themes } from "../../managers/themes";
+import * as pluginManager from "../../managers/plugins";
+import * as themeManager from "../../managers/themes";
 
 const logger = Logger.coremod("Installer");
 
@@ -58,9 +58,29 @@ export async function getInfo(
 export function checkIsInstalled(data: CheckResultSuccess): boolean {
   switch (data.manifest.type) {
     case "replugged-plugin":
-      return plugins.has(data.manifest.id);
+      return pluginManager.plugins.has(data.manifest.id);
     case "replugged-theme":
-      return themes.has(data.manifest.id);
+      return themeManager.themes.has(data.manifest.id);
+  }
+}
+
+export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
+  try {
+    switch (data.manifest.type) {
+      case "replugged-plugin":
+        await pluginManager.loadAll();
+        await pluginManager.start(data.manifest.id);
+        await pluginManager.enable(data.manifest.id);
+        return true;
+      case "replugged-theme":
+        await themeManager.loadMissing();
+        themeManager.load(data.manifest.id);
+        themeManager.enable(data.manifest.id);
+        return true;
+    }
+  } catch (err) {
+    logger.error(`Failed to load ${data.manifest.name}`, err);
+    return false;
   }
 }
 
@@ -71,14 +91,21 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
   } = data;
 
   const res = await RepluggedNative.installer.install(type, `${id}.asar`, url);
-  if (res.success) {
-    toast.toast(`${name} installed successfully.`, toast.Kind.SUCCESS);
-    return true;
-  } else {
+  if (!res.success) {
     logger.error(`Failed to install ${name}: ${res.error}`);
     toast.toast(`Failed to install ${name}.`, toast.Kind.FAILURE);
     return false;
   }
+
+  const loaded = await loadNew(data);
+
+  if (!loaded) {
+    toast.toast(`${name} was installed but could not be loaded.`, toast.Kind.FAILURE);
+    return false;
+  }
+
+  toast.toast(`${name} installed successfully.`, toast.Kind.SUCCESS);
+  return true;
 }
 
 function authorList(authors: string[]): string {

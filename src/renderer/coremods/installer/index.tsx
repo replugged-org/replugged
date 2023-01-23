@@ -1,3 +1,5 @@
+import { toast } from "@common";
+import { Loader } from "@components";
 import { Injector, Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { ObjectExports } from "src/types";
@@ -63,12 +65,26 @@ async function injectLinks(): Promise<void> {
 
   injector.before(exports, key, ([args]) => {
     const { href } = args;
-    if (!href) return;
+    if (!href) return undefined;
     const installLink = parseInstallLink(href);
-    if (!installLink) return;
+    if (!installLink) return undefined;
 
     delete args.href;
     args.onClick = () => {
+      toast.toast(null, toast.Kind.CUSTOM, {
+        duration: 1000 * 2,
+        component: toast.ToastWithIcon({
+          icon: <Loader />,
+          iconProps: {
+            style: {
+              transform: "scale(0.75)",
+              marginTop: "-8px",
+              marginBottom: "-8px",
+            },
+          },
+          text: "Loading...",
+        }),
+      });
       void installFlow(installLink.identifier, installLink.source, installLink.id);
     };
 
