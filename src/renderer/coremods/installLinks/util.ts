@@ -1,15 +1,15 @@
-import { UpdateCheckResultFailure, UpdateCheckResultSuccess } from "src/types";
+import { CheckResultFailure, CheckResultSuccess } from "src/types";
 
 // First item is the default
 const INSTALLER_TYPES = ["github"] as const;
 
-const cache: Map<string, { data: UpdateCheckResultSuccess; expires: Date }> = new Map();
+const cache: Map<string, { data: CheckResultSuccess; expires: Date }> = new Map();
 
 export async function getInfo(
-  type: (typeof INSTALLER_TYPES)[number],
+  type: typeof INSTALLER_TYPES[number],
   identifier: string,
   id?: string,
-): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> {
+): Promise<CheckResultSuccess | CheckResultFailure> {
   const cacheIdentifier = `${type}:${identifier}:${id ?? ""}`;
   const cached = cache.get(cacheIdentifier);
   if (cached && cached.expires > new Date()) {

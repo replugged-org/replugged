@@ -1,16 +1,14 @@
-import { common, components} from "@replugged";
-import { Downloadable } from "../../../../types/coremods/installLinks";
+import { common, components } from "@replugged";
+import { AnyAddonManifest } from "src/types";
 import { ModalProps } from "../../../modules/webpack/common/modal";
 const { React } = common;
-const { closeModal, openModal} = common.modal;
+const { closeModal, openModal } = common.modal;
 const { Button, Modal } = components;
 const FormText = components.FormText.DEFAULT;
 
 let modalKey: any;
 
-
-function InstallModal(props: ModalProps, downloadable: Downloadable) {
-
+function InstallModal(props: ModalProps, downloadable: AnyAddonManifest) {
   return (
     <Modal.ModalRoot {...props}>
       <Modal.ModalHeader>
@@ -29,11 +27,10 @@ function InstallModal(props: ModalProps, downloadable: Downloadable) {
         </Button>
       </Modal.ModalFooter>
     </Modal.ModalRoot>
-
-  )
+  );
 }
 
-export function openNewModal(downloadable: Downloadable): any {
+export function openNewModal(downloadable: AnyAddonManifest): any {
   modalKey = openModal((props: JSX.IntrinsicAttributes & ModalProps) => (
     <InstallModal {...props} {...downloadable} />
   ));
