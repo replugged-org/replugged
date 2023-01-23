@@ -51,6 +51,10 @@ export const plugin = common.extend({
 
 export type PluginManifest = z.infer<typeof plugin>;
 
+export const anyAddon = z.discriminatedUnion("type", [theme, plugin]);
+
+export type AnyAddonManifest = z.infer<typeof anyAddon>;
+
 export interface PluginExports {
   start?: () => Promisable<void>;
   stop?: () => Promisable<void>;
