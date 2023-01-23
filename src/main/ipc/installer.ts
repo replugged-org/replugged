@@ -42,7 +42,7 @@ async function getFolderHash(path: string): Promise<string> {
 
 async function github(
   identifier: string,
-  id: string,
+  id?: string,
 ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> {
   const [owner, repo] = identifier.split("/");
   if (!owner || !repo) {
@@ -67,7 +67,9 @@ async function github(
     };
   }
 
-  const asset = res.data.assets.find((asset) => asset.name === `${id}.asar`);
+  const asset = res.data.assets.find((asset) =>
+    id ? asset.name === `${id}.asar` : asset.name.endsWith(".asar"),
+  );
 
   if (!asset) {
     return {
@@ -79,24 +81,25 @@ async function github(
   return {
     success: true,
     id: asset.id.toString(),
+    name: asset.name,
     url: asset.browser_download_url,
   };
 }
 
 const handlers: Record<
   string,
-  (identifier: string, id: string) => Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure>
+  (identifier: string, id?: string) => Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure>
 > = {
   github,
 };
 
 ipcMain.handle(
-  RepluggedIpcChannels.CHECK_UPDATE,
+  RepluggedIpcChannels.GET_ADDON_INFO,
   async (
     _,
     type: string,
     identifier: string,
-    id: string,
+    id?: string,
   ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> => {
     if (!(type in handlers)) {
       return {
@@ -119,7 +122,7 @@ const getBaseName = (type: UpdaterType): string => {
 };
 
 ipcMain.handle(
-  RepluggedIpcChannels.INSTALL_UPDATE,
+  RepluggedIpcChannels.INSTALL_ADDON,
   async (
     _,
     type: UpdaterType,

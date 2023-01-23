@@ -43,13 +43,28 @@ const RepluggedNative = {
       repo: string,
       id: string,
     ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.CHECK_UPDATE, type, repo, id),
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, repo, id),
     install: async (
       type: UpdaterType,
       path: string,
       url: string,
     ): Promise<UpdateInstallResultSuccess | UpdateInstallResultFailure> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_UPDATE, type, path, url),
+      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url),
+  },
+
+  installer: {
+    getInfo: async (
+      type: string,
+      repo: string,
+      id?: string,
+    ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, repo, id),
+    install: async (
+      type: UpdaterType,
+      path: string,
+      url: string,
+    ): Promise<UpdateInstallResultSuccess | UpdateInstallResultFailure> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url),
   },
 
   quickCSS: {
