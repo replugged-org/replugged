@@ -54,8 +54,12 @@ async function github(
       error: "No asar asset found",
     };
   }
+
+  console.log(asset.name.replace(/\.asar$/, ".json"));
+  console.log(res.data.assets.map((x) => x.name));
+
   const manifestAsset = res.data.assets.find(
-    (manifestAsset) => (manifestAsset.name = asset.name.replace(/\.asar$/, ".json")),
+    (manifestAsset) => manifestAsset.name === asset.name.replace(/\.asar$/, ".json"),
   );
 
   if (!manifestAsset) {
@@ -65,11 +69,14 @@ async function github(
     };
   }
 
+  console.log(manifestAsset);
+
   let manifest: AnyAddonManifest;
   try {
     const json = await fetch(manifestAsset.browser_download_url).then((res) => res.json());
     manifest = anyAddon.parse(json);
-  } catch {
+  } catch (err) {
+    console.error(err);
     return {
       success: false,
       error: "Failed to parse manifest",
