@@ -7,33 +7,40 @@ import { themes } from "../../managers/themes";
 const logger = Logger.coremod("Installer");
 
 // First item is the default
-const INSTALLER_TYPES = ["store", "github"] as const;
+const INSTALLER_SOURCES = ["store", "github"] as const;
+export type InstallerSource = (typeof INSTALLER_SOURCES)[number];
+
 const CACHE_INTERVAL = 1000 * 60 * 60;
 
 const cache: Map<string, { data: CheckResultSuccess; expires: Date }> = new Map();
 
+export function isValidSource(type: string): type is InstallerSource {
+  // @ts-expect-error Doesn't matter that it might not be a valid type
+  return INSTALLER_SOURCES.includes(type);
+}
+
 export async function getInfo(
-  type: (typeof INSTALLER_TYPES)[number],
   identifier: string,
+  source?: InstallerSource,
   id?: string,
 ): Promise<CheckResultSuccess | null> {
+  source ??= INSTALLER_SOURCES[0];
   // TODO: remove this once store is supported
   // Need to make sure GitHub install links will have the type specified
   // so they won't break once store is available (since that will be the default)
-  if (type === "store") {
-    toast.toast(
-      'Store installers are not supported yet. Please specify "github" as the type.',
-      toast.Kind.FAILURE,
-    );
+  if (source === "store") {
+    logger.error('Store installers are not supported yet. Please specify "github" as the type.');
+    toast.toast(`Failed to get info for addon.`, toast.Kind.FAILURE);
+    return null;
   }
 
-  const cacheIdentifier = `${type}:${identifier}:${id ?? ""}`;
+  const cacheIdentifier = `${source}:${identifier}:${id ?? ""}`;
   const cached = cache.get(cacheIdentifier);
   if (cached && cached.expires > new Date()) {
     return cached.data;
   }
 
-  const info = await RepluggedNative.installer.getInfo(type, identifier, id);
+  const info = await RepluggedNative.installer.getInfo(source, identifier, id);
   if (!info.success) {
     logger.error(`Failed to get info for ${identifier}: ${info.error}`);
     toast.toast(`Failed to get info for addon.`, toast.Kind.FAILURE);
@@ -111,17 +118,17 @@ async function showInstallPrompt(manifest: AnyAddonManifest): Promise<boolean> {
 
 /**
  *
- * @param type Updater source type
  * @param identifier Identifier for the addon in that source
+ * @param source Updater source type
  * @param id Optional ID for the addon in that source. Useful for GitHub repositories that have multiple addons.
  * @returns
  */
 export async function installFlow(
-  type: (typeof INSTALLER_TYPES)[number],
   identifier: string,
+  source?: InstallerSource,
   id?: string,
 ): Promise<void> {
-  const info = await getInfo(type, identifier, id);
+  const info = await getInfo(identifier, source, id);
   if (!info) return;
 
   if (checkIsInstalled(info)) {
