@@ -7,13 +7,13 @@ import {
 
 import { RepluggedIpcChannels } from "./types";
 import type {
+  CheckResultFailure,
+  CheckResultSuccess,
+  InstallResultFailure,
+  InstallResultSuccess,
+  InstallerType,
   RepluggedPlugin,
   RepluggedTheme,
-  UpdateCheckResultFailure,
-  UpdateCheckResultSuccess,
-  UpdateInstallResultFailure,
-  UpdateInstallResultSuccess,
-  UpdaterType,
 } from "./types";
 
 const RepluggedNative = {
@@ -36,19 +36,17 @@ const RepluggedNative = {
   },
 
   updater: {
-    getHash: async (type: UpdaterType, path: string): Promise<string> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_HASH, type, path),
     check: async (
       type: string,
       repo: string,
       id: string,
-    ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> =>
+    ): Promise<CheckResultSuccess | CheckResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, repo, id),
     install: async (
-      type: UpdaterType,
+      type: InstallerType,
       path: string,
       url: string,
-    ): Promise<UpdateInstallResultSuccess | UpdateInstallResultFailure> =>
+    ): Promise<InstallResultSuccess | InstallResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url),
   },
 
@@ -57,13 +55,13 @@ const RepluggedNative = {
       type: string,
       repo: string,
       id?: string,
-    ): Promise<UpdateCheckResultSuccess | UpdateCheckResultFailure> =>
+    ): Promise<CheckResultSuccess | CheckResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, repo, id),
     install: async (
-      type: UpdaterType,
+      type: InstallerType,
       path: string,
       url: string,
-    ): Promise<UpdateInstallResultSuccess | UpdateInstallResultFailure> =>
+    ): Promise<InstallResultSuccess | InstallResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url),
   },
 

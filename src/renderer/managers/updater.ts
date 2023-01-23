@@ -8,10 +8,9 @@ const logger = Logger.coremod("Updater");
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type UpdateSettings = {
   available?: boolean;
-  id?: string;
+  version?: string;
   url?: string;
   lastChecked?: number;
-  hash?: string;
 };
 
 const updaterSettings = await init<{
@@ -56,19 +55,13 @@ export async function checkUpdate(
 
   const updateSettings = getUpdateSettings(id);
 
-  const hash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
-
-  if (
-    updateSettings.lastChecked &&
-    Date.now() - updateSettings.lastChecked < waitSinceLastUpdate &&
-    updateSettings.hash === hash
-  ) {
+  if (updateSettings.lastChecked && Date.now() - updateSettings.lastChecked < waitSinceLastUpdate) {
     if (verbose) logger.log(`Entity ${id} was checked recently, skipping`);
     return;
   }
 
   const {
-    manifest: { updater },
+    manifest: { updater, version },
   } = entity;
   if (!updater) {
     logger.warn(`Entity ${id} has no updater info`);
@@ -82,42 +75,25 @@ export async function checkUpdate(
     return;
   }
 
-  if (!updateSettings.id) {
-    logger.warn(`Entity ${id} has not been checked before, skipping`);
+  const newVersion = res.manifest.version;
+
+  if (newVersion === version) {
+    if (verbose) logger.log(`Entity ${id} is up to date`);
     updaterState.set(id, {
       available: false,
       lastChecked: Date.now(),
-      hash,
       url: res.url,
-      id: res.id,
+      version: newVersion,
     });
     return;
-  }
-
-  if (res.id === updateSettings.id) {
-    const hash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
-    if (hash !== updateSettings.hash) {
-      logger.warn(`Entity ${id}'s hash has changed, forcing update`);
-    } else {
-      if (verbose) logger.log(`Entity ${id} is up to date`);
-      updaterState.set(id, {
-        available: false,
-        lastChecked: Date.now(),
-        hash,
-        url: res.url,
-        id: res.id,
-      });
-      return;
-    }
   }
 
   logger.log(`Entity ${id} has an update available`);
   updaterState.set(id, {
     available: true,
-    id: res.id,
     url: res.url,
     lastChecked: Date.now(),
-    hash,
+    version: newVersion,
   });
 }
 
@@ -156,13 +132,10 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     return false;
   }
 
-  const newHash = await window.RepluggedNative.updater.getHash(entity.manifest.type, entity.path);
-
   // update settings
   updaterState.set(id, {
     ...updateSettings,
     available: false,
-    hash: newHash,
   });
 
   // Temporarily disabled until we can figure out how to properly reload compiled plugins
