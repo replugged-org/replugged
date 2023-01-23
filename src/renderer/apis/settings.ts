@@ -20,10 +20,11 @@ type SettingsUpdate<T> =
  * Once the settings data has been copied into the `SettingsManager`, it can be read and written synchronously.
  * The `SettingsManager` automatically queues and dispatches updates to the file system in the background.
  */
-export class SettingsManager<T extends Record<string, Jsonifiable>> {
+export class SettingsManager<T extends Record<string, Jsonifiable>, D extends keyof T> {
   #settings: T | undefined;
   #saveTimeout: ReturnType<typeof setTimeout> | undefined;
   #queuedUpdates: Map<Extract<keyof T, string>, SettingsUpdate<T>>;
+  #defaultSettings: Partial<T>;
 
   /**
    * Namespace for these settings.
@@ -38,8 +39,9 @@ export class SettingsManager<T extends Record<string, Jsonifiable>> {
    * settings from the file system.
    * @param namespace Namespace of settings to manage.
    */
-  public constructor(namespace: string) {
+  public constructor(namespace: string, defaultSettings: Partial<T>) {
     this.namespace = namespace;
+    this.#defaultSettings = defaultSettings;
     this.#queuedUpdates = new Map();
   }
 
@@ -52,12 +54,16 @@ export class SettingsManager<T extends Record<string, Jsonifiable>> {
   public get<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
     key: K,
     fallback?: F,
-  ): F extends null | undefined ? T[K] : NonNullable<T[K]> | F {
+  ): K extends D
+    ? NonNullable<T[K]>
+    : F extends null | undefined
+    ? T[K] | undefined
+    : NonNullable<T[K]> | F {
     if (typeof this.#settings === "undefined") {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
     // @ts-expect-error It doesn't understand ig
-    return this.#settings[key] ?? fallback;
+    return this.#settings[key] ?? fallback ?? this.#defaultSettings?.[key];
   }
 
   /**
@@ -131,6 +137,24 @@ export class SettingsManager<T extends Record<string, Jsonifiable>> {
       this.#saveTimeout = void 0;
     }); // Add a delay of 1 or 2 seconds?
   }
+
+  /**
+   * React hook for managing settings.
+   * @param key Key of the setting to manage.
+   * @param fallback Value to return if the key does not already exist.
+   * @returns A tuple containing the current value of the setting, and a function to set the value. Works like `useState`.
+   * @example
+   * ```tsx
+   * import { settings, components } from 'replugged';
+   * const { Input } = components;
+   *
+   * const cfg = settings.init<{ hello: string }>('dev.replugged.Example');
+   *
+   * export function Settings() {
+   *  return <Input {...cfg.useSetting('hello', 'world')} />;
+   * }
+   * ```
+   */
 }
 
 // I hope there's some way to force TypeScript to accept this, but for now unknown will do
@@ -146,29 +170,43 @@ const managers = new Map<string, unknown>();
  * Here's an example of how to use this in a plugin:
  *
  * ```ts
- * import { settings } from 'replugged';
+ * import { settings } from "replugged";
  *
- * const cfg = await settings.init<{ hello: string }>('dev.replugged.Example');
+ * const defaultSettings = {
+ *   hello: "world",
+ * };
+ *
+ * const cfg = await settings.init<{ hello: string; something: string }, "something">(
+ *   "dev.replugged.Example",
+ *   { something: "everything" },
+ * );
  *
  * export function start() {
- *   cfg.set('hello', 'world');
- *   console.log(cfg.get('hello')); // world
+ *   cfg.set("hello", "world");
+ *   console.log(cfg.get("hello")); // world
+ *
+ *   cfg.get("hello", "world"); // "world" will be used if there is no value for hello
+ *   cfg.get("something"); // "everything" will be used if there is no value for something
  * }
+ *
  * ```
  * @typeParam T Type definition for the settings to manage in the namespace.
  * This will be an object with strings as keys, and JSON-serializable values.
+ * @typeParam D Keys in `T` that will always have a value. These keys will not be nullable.
  * @param namespace Namespace to manage. A namespace is an ID (for example, the ID of a plugin) that uniquely identifies it.
  * All settings are grouped into namespaces.
  * Settings for a namespace are stored in `settings/NAMESPACE.json` within the [Replugged data folder](https://docs.replugged.dev/#installing-plugins-and-themes).
+ * @param defaultSettings Default values for the settings in the namespace. These will be used if no value is set for a setting. Using the `fallback` parameter of {@link SettingsManager.get get()} will override these defaults.
  * @returns Manager for the namespace.
  */
-export async function init<T extends Record<string, Jsonifiable>>(
+export async function init<T extends Record<string, Jsonifiable>, D extends keyof T = never>(
   namespace: string,
-): Promise<SettingsManager<T>> {
+  defaultSettings?: Partial<T>,
+): Promise<SettingsManager<T, D>> {
   if (managers.has(namespace)) {
-    return managers.get(namespace)! as SettingsManager<T>;
+    return managers.get(namespace)! as SettingsManager<T, D>;
   }
-  const manager = new SettingsManager<T>(namespace);
+  const manager = new SettingsManager<T, D>(namespace, (defaultSettings || {}) as Partial<T>);
   managers.set(namespace, manager);
   await manager.load();
   return manager;

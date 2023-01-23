@@ -54,6 +54,7 @@ export type PluginManifest = z.infer<typeof plugin>;
 export interface PluginExports {
   start?: () => Promisable<void>;
   stop?: () => Promisable<void>;
+  Settings?: React.ComponentType;
   [x: string]: unknown;
 }
 

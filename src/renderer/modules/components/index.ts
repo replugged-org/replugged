@@ -33,10 +33,14 @@ export type { ContextMenuType };
 export let ContextMenu: ContextMenuType;
 importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mod.default));
 
-import type { SwitchItemType } from "./SwitchItem";
+import type { SwitchItemType, SwitchType } from "./SwitchItem";
+export type { SwitchType };
+export let Switch: SwitchType;
+importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
+
 export type { SwitchItemType };
 export let SwitchItem: SwitchItemType;
-importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.default));
+importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.SwitchItem));
 
 import type { ModalType } from "./Modal";
 export type { ModalType };
@@ -82,15 +86,20 @@ export type { CategoryType };
 export let Category: CategoryType;
 importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
 
-import type { InputType } from "./Input";
-export type { InputType };
-export let Input: InputType;
-importTimeout("Input", import("./Input"), (mod) => (Input = mod.default));
+import type { TextInputType } from "./TextInput";
+export type { TextInputType };
+export let TextInput: TextInputType;
+importTimeout("Input", import("./TextInput"), (mod) => (TextInput = mod.default));
 
 import type { TextType } from "./Text";
 export type { TextType };
 export let Text: TextType;
 importTimeout("Text", import("./Text"), (mod) => (Text = mod.default));
+
+import { type ErrorBoundaryType } from "./ErrorBoundary";
+export type { ErrorBoundaryType };
+export let ErrorBoundary: ErrorBoundaryType;
+importTimeout("ErrorBoundary", import("./ErrorBoundary"), (mod) => (ErrorBoundary = mod.default));
 
 /**
  * @internal
