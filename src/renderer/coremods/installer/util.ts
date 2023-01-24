@@ -30,7 +30,6 @@ export async function getInfo(
   // so they won't break once store is available (since that will be the default)
   if (source === "store") {
     logger.error('Store installers are not supported yet. Please specify "github" as the type.');
-    toast.toast(`Failed to get info for addon.`, toast.Kind.FAILURE);
     return null;
   }
 
@@ -43,7 +42,6 @@ export async function getInfo(
   const info = await RepluggedNative.installer.getInfo(source, identifier, id);
   if (!info.success) {
     logger.error(`Failed to get info for ${identifier}: ${info.error}`);
-    toast.toast(`Failed to get info for addon.`, toast.Kind.FAILURE);
     return null;
   }
 
@@ -143,6 +141,24 @@ async function showInstallPrompt(manifest: AnyAddonManifest): Promise<boolean> {
   return res || false;
 }
 
+type InstallResponse =
+  | {
+      kind: "SUCCESS";
+      manifest: AnyAddonManifest;
+    }
+  | {
+      kind: "FAILED";
+      manifest?: AnyAddonManifest;
+    }
+  | {
+      kind: "ALREADY_INSTALLED";
+      manifest: AnyAddonManifest;
+    }
+  | {
+      kind: "CANCELLED";
+      manifest: AnyAddonManifest;
+    };
+
 /**
  *
  * @param identifier Identifier for the addon in that source
@@ -154,20 +170,39 @@ export async function installFlow(
   identifier: string,
   source?: InstallerSource,
   id?: string,
-): Promise<void> {
+  showToasts = true,
+): Promise<InstallResponse> {
   const info = await getInfo(identifier, source, id);
-  if (!info) return;
+  if (!info) {
+    if (showToasts) toast.toast(`Failed to get info for addon.`, toast.Kind.FAILURE);
+    return {
+      kind: "FAILED",
+    };
+  }
 
   if (checkIsInstalled(info)) {
-    toast.toast(`${info.manifest.name} is already installed.`, toast.Kind.MESSAGE);
-    return;
+    if (showToasts) toast.toast(`${info.manifest.name} is already installed.`, toast.Kind.MESSAGE);
+    return {
+      kind: "ALREADY_INSTALLED",
+      manifest: info.manifest,
+    };
   }
+
+  window.DiscordNative.window.focus();
 
   const confirm = await showInstallPrompt(info.manifest);
   if (!confirm) {
     toast.toast("Installation cancelled.", toast.Kind.MESSAGE);
-    return;
+    return {
+      kind: "CANCELLED",
+      manifest: info.manifest,
+    };
   }
 
   await install(info);
+
+  return {
+    kind: "SUCCESS",
+    manifest: info.manifest,
+  };
 }

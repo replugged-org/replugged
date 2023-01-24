@@ -1,6 +1,7 @@
 import { Injector, Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { ObjectExports } from "src/types";
+import { Jsonifiable } from "type-fest";
 import { InstallerSource, installFlow, isValidSource } from "./util";
 
 const injector = new Injector();
@@ -49,6 +50,8 @@ function parseInstallLink(href: string): InstallLinkProps | null {
   }
 }
 
+let uninjectFns: (() => void)[] = [];
+
 async function injectLinks(): Promise<void> {
   const linkMod = await waitForModule(filters.bySource(".useDefaultUnderlineStyles"), {
     raw: true,
@@ -76,12 +79,77 @@ async function injectLinks(): Promise<void> {
   });
 }
 
+type Socket = Record<string, unknown> & {
+  authorization: Record<string, unknown> & {
+    scopes: string[];
+  };
+};
+
+type RPCData = {
+  args: Record<string, Jsonifiable>;
+  cmd: string;
+};
+
+type RPCCommand = {
+  scope?:
+    | string
+    | {
+        $any: string[];
+      };
+  handler: (
+    data: RPCData,
+  ) => Record<string, Jsonifiable> | Promise<Record<string, Jsonifiable>> | void | Promise<void>;
+};
+
+async function injectRpc(): Promise<void> {
+  const rpcValidatorMod = await waitForModule<
+    Record<string, (socket: Socket, client_id: string, origin: string) => Promise<void>>
+  >(filters.bySource("Invalid Client ID"));
+  const validatorFunctionKey = getFunctionKeyBySource("Invalid Client ID", rpcValidatorMod);
+  if (!validatorFunctionKey) {
+    logger.error("Failed to find RPC validator function.");
+    return;
+  }
+
+  injector.instead(rpcValidatorMod, validatorFunctionKey, (args, fn) => {
+    const origin = args[2];
+    if (origin === "https://replugged.dev") {
+      args[0].authorization.scopes = ["REPLUGGED"];
+      return Promise.resolve();
+    }
+
+    return fn(...args);
+  });
+
+  const rpcMod = await waitForModule<{ commands: Record<string, RPCCommand> }>(
+    filters.byProps("setCommandHandler"),
+  );
+
+  rpcMod.commands.REPLUGGED_INSTALL = {
+    scope: "REPLUGGED",
+    handler: async (data: RPCData) => {
+      const { identifier, source, id } = data.args;
+      if (typeof identifier !== "string") throw new Error("Invalid or missing identifier.");
+      if (source !== undefined && typeof source !== "string") throw new Error("Invalid source.");
+      if (id !== undefined && typeof id !== "string") throw new Error("Invalid id.");
+
+      return await installFlow(identifier, source as InstallerSource, id, false);
+    },
+  };
+
+  uninjectFns.push(() => {
+    delete rpcMod.commands.REPLUGGED_INSTALL;
+  });
+}
+
 export async function start(): Promise<void> {
   await injectLinks();
+  await injectRpc();
 }
 
 export function stop(): void {
   injector.uninjectAll();
+  uninjectFns.forEach((fn) => fn());
 }
 
 export { installFlow };
