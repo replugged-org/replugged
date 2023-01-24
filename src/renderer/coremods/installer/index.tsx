@@ -112,10 +112,14 @@ async function injectRpc(): Promise<void> {
   }
 
   injector.instead(rpcValidatorMod, validatorFunctionKey, (args, fn) => {
-    const origin = args[2];
+    const [, clientId, origin] = args;
+    console.log(clientId, origin);
     if (origin === "https://replugged.dev") {
       args[0].authorization.scopes = ["REPLUGGED"];
       return Promise.resolve();
+    }
+    if (clientId.startsWith("REPLUGGED-")) {
+      throw new Error("Invalid Client ID");
     }
 
     return fn(...args);
