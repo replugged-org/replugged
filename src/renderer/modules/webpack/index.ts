@@ -380,6 +380,23 @@ export namespace filters {
       return typeof match === "string" ? source.includes(match) : match.test(source);
     };
   };
+
+  /**
+   * Get a module that has the given value on one of its exports
+   * @param match The string to check the value against
+   * 
+   * @remarks
+   * Great for getting a module for a specific classname
+   */
+  export const byValue = (match: string | RegExp) => {
+    return (m: RawModule) => {
+      if (m.exports) {
+        return typeof match === "string" ? Object.values(m.exports).includes(match) : Object.values(m.exports).some(val => typeof val === "string" &&  match.test(val));
+      } else {
+        return false
+      }
+    }
+  }
 }
 
 // Async
@@ -712,6 +729,22 @@ export function getByProps<
   }
 
   return getExportsForProps<P, T & ModuleExportsWithProps<P>>(result as T & ModuleExports, props);
+}
+
+/**
+ * Equivalent to `getModule(filters.byValue(match), options)`
+ * @param match The string to check the value against
+ * 
+ * @see {@link filters.byValue}
+ */
+export function getByValue(
+  match: string | RegExp,
+  options: GetModuleOptions | undefined = {
+    all: false,
+    raw: false,
+  },
+): RawModule | ModuleExports | Array<RawModule | ModuleExports> | undefined {
+  return getModule(filters.byValue(match), options);
 }
 
 // Specialized, inner-module searchers
