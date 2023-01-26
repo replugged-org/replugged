@@ -1,7 +1,6 @@
 import { Messages } from "@common/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General } from "./pages";
-import { Plugins, Themes } from "./pages/Addons";
+import { General, Plugins, QuickCSS, Themes } from "./pages";
 
 export { insertSections };
 
@@ -13,6 +12,11 @@ export function start(): void {
       name: "rp-general",
       label: () => Messages.SETTINGS_GENERAL,
       elem: General,
+    }),
+    Section({
+      name: "rp-quickcss",
+      label: "Quick CSS",
+      elem: QuickCSS,
     }),
     Section({
       name: "rp-plugins",

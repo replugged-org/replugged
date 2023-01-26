@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 interface BaseTooltipProps {

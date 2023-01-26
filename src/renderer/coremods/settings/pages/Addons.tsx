@@ -1,11 +1,11 @@
-import { api, fluxDispatcher, modal, toast, users } from "@common";
-import React from "@common/react";
 import { Messages } from "@common/i18n";
-import { Button, Divider, Flex, Input, SwitchItem, Text, Tooltip } from "@components";
-import { RepluggedPlugin, RepluggedTheme } from "src/types";
+import { React, api, fluxDispatcher, modal, toast, users } from "@common";
+import { Button, Divider, Flex, Switch, Text, TextInput, Tooltip } from "@components";
+import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import "./Addons.css";
 import Icons from "../icons";
-import { Logger } from "@replugged";
+import { Logger, plugins, themes } from "@replugged";
+import { showAddonSettings } from "./AddonSettings";
 
 const logger = Logger.coremod("AddonSettings");
 
@@ -26,20 +26,31 @@ function getRepluggedNative(type: AddonType) {
 
 function getManager(type: AddonType) {
   if (type === AddonType.Plugin) {
-    return window.replugged.plugins;
+    return plugins;
   }
   if (type === AddonType.Theme) {
-    return window.replugged.themes;
+    return themes;
   }
+  throw new Error("Invalid addon type");
+}
+
+function getSettingsElement(id: string, type: AddonType) {
+  if (type === AddonType.Plugin) {
+    return plugins.getExports(id)?.Settings;
+  }
+  if (type === AddonType.Theme) {
+    return undefined;
+  }
+
   throw new Error("Invalid addon type");
 }
 
 function listAddons(type: AddonType) {
   if (type === AddonType.Plugin) {
-    return window.replugged.plugins.plugins;
+    return plugins.plugins;
   }
   if (type === AddonType.Theme) {
-    return window.replugged.themes.themes;
+    return themes.themes;
   }
   throw new Error("Invalid addon type");
 }
@@ -98,7 +109,7 @@ function openFolder(type: AddonType) {
 
 async function loadMissing(type: AddonType) {
   if (type === AddonType.Plugin) {
-    const manager = window.replugged.plugins;
+    const manager = plugins;
     const disabled = manager.getDisabled();
     const existingPlugins = new Set(manager.plugins.keys());
     await manager.loadAll();
@@ -108,7 +119,7 @@ async function loadMissing(type: AddonType) {
     await Promise.all(newPlugins.map((x) => manager.start(x)));
   }
   if (type === AddonType.Theme) {
-    const manager = window.replugged.themes;
+    const manager = themes;
     const disabled = manager.getDisabled();
     const existingThemes = new Set(manager.themes.keys());
     await manager.loadMissing();
@@ -209,6 +220,8 @@ function Card({
   type,
   addon,
   disabled,
+  hasSettings,
+  openSettings,
   toggleDisabled,
   reload,
   uninstall,
@@ -216,6 +229,8 @@ function Card({
   type: AddonType;
   addon: RepluggedPlugin | RepluggedTheme;
   disabled: boolean;
+  hasSettings: boolean;
+  openSettings: () => void;
   toggleDisabled: () => void;
   reload: () => void;
   uninstall: () => void;
@@ -230,7 +245,7 @@ function Card({
         style={{ gap: "15px", marginBottom: "15px" }}>
         <span>
           <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-            <Text variant="heading-lg/bold" tag="span" style={{ textTransform: "capitalize" }}>
+            <Text variant="heading-lg/bold" tag="span">
               {addon.manifest.name}
             </Text>
             <span>
@@ -252,6 +267,15 @@ function Card({
               </a>
             </Tooltip>
           ) : null}
+          {hasSettings ? (
+            <Tooltip
+              text={`Open ${label(type, { caps: "title" })} Settings`}
+              className="replugged-addon-icon">
+              <a onClick={() => openSettings()}>
+                <Icons.Settings />
+              </a>
+            </Tooltip>
+          ) : null}
           <Tooltip
             text={Messages.REPLUGGED_ADDON_DELETE.format({ type: label(type, { caps: "title" }) })}
             className="replugged-addon-icon">
@@ -270,7 +294,7 @@ function Card({
               </a>
             </Tooltip>
           )}
-          <SwitchItem checked={!disabled} onChange={toggleDisabled} />
+          <Switch checked={!disabled} onChange={toggleDisabled} />
         </Flex>
       </Flex>
       <Text.Normal style={{ margin: "5px 0" }} markdown={true} allowMarkdownLinks={true}>
@@ -300,6 +324,7 @@ function Cards({
           type={type}
           addon={addon}
           key={JSON.stringify(addon.manifest)}
+          hasSettings={Boolean(getSettingsElement(addon.manifest.id, type))}
           disabled={disabled.has(addon.manifest.id)}
           toggleDisabled={async () => {
             const isDisabled = disabled.has(addon.manifest.id);
@@ -384,6 +409,12 @@ function Cards({
               );
             }
             refreshList();
+          }}
+          openSettings={() => {
+            const element = getSettingsElement(addon.manifest.id, type);
+            if (!element) return;
+
+            showAddonSettings(addon, element);
           }}
         />
       ))}
@@ -471,7 +502,7 @@ export const Addons = (type: AddonType) => {
       <Divider style={{ margin: "20px 0px" }} />
       {unfilteredCount ? (
         <div style={{ marginBottom: "20px" }}>
-          <Input
+          <TextInput
             placeholder={Messages.REPLUGGED_SEARCH_FOR_ADDON.format({ type: label(type) })}
             onChange={(e) => setSearch(e)}
             autoFocus={true}
