@@ -47,35 +47,126 @@ interface Provider {
   getMessages: () => Messages;
 }
 
+interface Formats {
+  number: Record<"currency" | "percent", Intl.NumberFormatOptions>;
+  date: Record<"short" | "medium" | "long" | "full", Intl.DateTimeFormatOptions>;
+  time: Record<"short" | "medium" | "long" | "full", Intl.DateTimeFormatOptions>;
+}
+
+interface ASTSimpleFormat {
+  type: "numberFormat" | "dateFormat" | "timeFormat";
+  style: string;
+}
+
+interface ASTPluralFormat extends ASTPluralStyle {
+  ordinal: false;
+}
+
+interface ASTSelectFormat {
+  type: "selectFormat";
+  options: ASTOptionalFormatPattern[];
+}
+
+interface ASTSelectOrdinalFormat extends ASTPluralStyle {
+  ordinal: true;
+}
+
+interface ASTOptionalFormatPattern {
+  type: "optionalFormatPattern";
+  selector: string;
+  value: ASTMessageFormatPattern;
+}
+
+interface ASTPluralStyle {
+  type: "pluralFormat";
+  offset: number;
+  options: ASTOptionalFormatPattern[];
+}
+
+type ASTElementFormat =
+  | ASTSimpleFormat
+  | ASTPluralFormat
+  | ASTSelectOrdinalFormat
+  | ASTSelectFormat;
+
+interface ASTArgumentElement {
+  type: "argumentElement";
+  id: string;
+  format?: ASTElementFormat;
+}
+
+interface ASTMessageTextElement {
+  type: "messageTextElement";
+  value: string;
+}
+
+type ASTElement = ASTMessageTextElement | ASTArgumentElement;
+
+interface ASTMessageFormatPattern {
+  type: "messageFormatPattern";
+  elements: ASTElement[];
+}
+
+interface LocaleData {
+  locale: string;
+  parentLocale?: string;
+  pluralRuleFunction: PluralFunction | undefined;
+}
+
+interface ResolvedOptions {
+  locale?: string;
+}
+
 type FormatXMLElementFn<T, R = string | T | Array<string | T>> = (parts: Array<string | T>) => R;
 type IntlMessageValues = Record<string, Primitive | FormatXMLElementFn<string, string>>;
 
-// @todo: Type method parameters and returns
 interface IntlMessageFormatConstructor {
-  new (message: unknown, locales: unknown, formats: unknown): unknown;
+  new (
+    message: string | ASTMessageFormatPattern,
+    locales: string | string[],
+    formats: Formats | NestedObject,
+  ): IntlMessageFormat;
   prototype: IntlMessageFormat;
 
-  default: (message: unknown, locales: unknown, formats: unknown) => unknown;
-  defaultLocale: string | undefined;
-  formats: object;
+  default: (
+    message: string | ASTMessageFormatPattern,
+    locales: string | string[],
+    formats: Formats | NestedObject,
+  ) => IntlMessageFormat;
+  defaultLocale?: string;
+  formats: Formats;
 
   /* eslint-disable @typescript-eslint/naming-convention */
-  __addLocaleData: () => unknown;
-  __localeData__: () => unknown;
-  __parse: (message: unknown) => unknown;
+  __addLocaleData: (data: LocaleData) => void;
+  __localeData__: () => Record<string, LocaleData>;
+  __parse: (message: string) => ASTMessageFormatPattern;
   /* eslint-enable @typescript-eslint/naming-convention */
 }
 
-// @todo: Type method parameters and returns
+interface NestedObject {
+  [key: string]: string | NestedObject;
+}
+
+type PluralFunction = (value?: number, useOrdinal?: boolean) => string;
+type Pattern = string | ASTPluralFormat | ASTSelectFormat;
+
 interface IntlMessageFormat {
   constructor: IntlMessageFormatConstructor;
 
-  resolvedOptions(): { locale: string };
-  _compilePattern: (ast: unknown, locales: unknown, formats: unknown, pluralFn: unknown) => unknown;
-  _findPluralRuleFunction: (locale: string) => unknown;
-  _format: (pattern: unknown, values: unknown) => unknown;
-  _mergeFormats: (defaults: unknown, formats: unknown) => unknown;
-  _resolveLocale: (locales: string | string[]) => unknown;
+  resolvedOptions: () => ResolvedOptions;
+  _compilePattern: (
+    ast: ASTMessageFormatPattern,
+    locales: string | string[],
+    formats: Formats | NestedObject,
+    pluralFn: PluralFunction,
+  ) => Pattern[];
+  _findPluralRuleFunction: (locale: string) => PluralFunction;
+  _format: (pattern: Pattern[], values: IntlMessageValues) => ASTMessageFormatPattern;
+  _mergeFormats: (
+    defaults: Formats | NestedObject,
+    formats: NestedObject,
+  ) => Formats | NestedObject;
+  _resolveLocale: (locales: string | string[]) => string;
 
   format: (values?: IntlMessageValues) => string;
   _locale: string;
@@ -85,10 +176,10 @@ interface IntlMessageObject {
   hasMarkdown: boolean;
   intlMessage: IntlMessageFormat;
   message: string;
-  astFormat: (values?: IntlMessageValues) => unknown; // @todo: Type return
+  astFormat: (values?: string | IntlMessageValues) => NestedObject;
   format: (values?: IntlMessageValues) => string;
-  getContext: (values?: IntlMessageValues) => Record<string, Primitive>;
-  plainFormat: (values?: IntlMessageValues) => string;
+  getContext: (values?: string | IntlMessageValues) => Record<string, Primitive>;
+  plainFormat: (values?: string | IntlMessageValues) => string;
 }
 
 type Message = string & IntlMessageObject;

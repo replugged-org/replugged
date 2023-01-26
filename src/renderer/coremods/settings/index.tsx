@@ -15,7 +15,7 @@ export function start(): void {
     }),
     Section({
       name: "rp-quickcss",
-      label: "Quick CSS",
+      label: () => Messages.REPLUGGED_QUICKCSS,
       elem: QuickCSS,
     }),
     Section({
