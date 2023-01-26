@@ -1,14 +1,11 @@
 import { i18n } from "@common";
+import type { RepluggedTranslations } from "../../types";
 
-// @ts-expect-error No declaration file
-import strings from "../../../i18n";
-// @ts-expect-error No declaration file
-import overrides from "../../../i18n/overrides";
+const strings = await RepluggedNative.i18n.getStrings();
+const overrides = await RepluggedNative.i18n.getOverrides();
 
 export let locale: string | undefined;
 export const messages = new Map();
-
-type Translations = Record<string, string>;
 
 export function load(): void {
   loadAllStrings(strings);
@@ -33,11 +30,11 @@ export function addRepluggedStrings(): void {
   );
 }
 
-export function loadAllStrings(strings: Record<string, Translations>): void {
+export function loadAllStrings(strings: RepluggedTranslations): void {
   Object.keys(strings).forEach((locale) => loadStrings(locale, strings[locale]));
 }
 
-export function loadStrings(locale: string, strings: Translations): void {
+export function loadStrings(locale: string, strings: RepluggedTranslations): void {
   if (!messages.get(locale)) {
     messages.set(locale, strings);
   } else {

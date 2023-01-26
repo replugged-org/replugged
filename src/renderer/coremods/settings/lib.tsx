@@ -16,13 +16,13 @@ export const Section = ({
   elem,
   pos,
 }: {
-  name?: string;
+  name: string;
   label: string | LabelCallback;
   color?: string;
   elem: React.FunctionComponent;
   pos?: number;
 }): SectionType => ({
-  section: name || `REPLUGGED_${(typeof label === "function" ? label() : label).toUpperCase()}`,
+  section: name,
   label,
   color,
   element: elem,

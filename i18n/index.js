@@ -1,39 +1,13 @@
-export default {
-  ar: require("./ar.json"),
-  az: require("./az.json"),
-  bg: require("./bg.json"),
-  cs: require("./cs.json"),
-  da: require("./da.json"),
-  de: require("./de.json"),
-  el: require("./el.json"),
-  "en-GB": require("./en-GB.json"),
-  "en-US": require("./en-US.json"),
-  et: require("./et.json"),
-  fi: require("./fi.json"),
-  fil: require("./fil.json"),
-  fr: require("./fr.json"),
-  he: require("./he.json"),
-  hr: require("./hr.json"),
-  hu: require("./hu.json"),
-  "id-ID": require("./id-ID.json"),
-  it: require("./it.json"),
-  ja: require("./ja.json"),
-  ko: require("./ko.json"),
-  lt: require("./lt.json"),
-  nl: require("./nl.json"),
-  no: require("./no.json"),
-  pl: require("./pl.json"),
-  "pt-BR": require("./pt-BR.json"),
-  "pt-PT": require("./pt-PT.json"),
-  ro: require("./ro.json"),
-  ru: require("./ru.json"),
-  sk: require("./sk.json"),
-  sl: require("./sl.json"),
-  "sv-SE": require("./sv-SE.json"),
-  th: require("./th.json"),
-  tr: require("./tr.json"),
-  uk: require("./uk.json"),
-  vi: require("./uk.json"),
-  "zh-CN": require("./zh-CN.json"),
-  "zh-TW": require("./zh-TW.json"),
-};
+import { readdirSync } from "fs";
+import { join } from "path";
+
+const i18nDir = join(__dirname, "../i18n");
+
+readdirSync(i18nDir)
+  .filter((file) => file.endsWith(".json"))
+  .forEach((filename) => {
+    const moduleName = filename.split(".")[0];
+    exports[moduleName] = require(`${i18nDir}/${filename}`);
+  });
+
+export default exports;
