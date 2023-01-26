@@ -389,14 +389,14 @@ export namespace filters {
    * ```
    * const classes = getModule(filters.byValue("container-2sjPya"));
    * ```
-   * 
+   *
    * @remarks
    * Great for getting a module for a specific classname
    */
   export const byValue = (match: string | RegExp) => {
     return (m: RawModule) => {
       if (!m.exports) {
-        return false
+        return false;
       }
       return typeof match === "string"
         ? Object.values(m.exports).includes(match)
