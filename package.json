@@ -59,7 +59,8 @@
     "typescript": "^4.8.4"
   },
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
   "dependencies": {
     "@codemirror/lang-css": "^6.0.1",
@@ -71,5 +72,10 @@
     "codemirror": "^6.0.1",
     "node-fetch": "^3.3.0",
     "zod": "^3.19.1"
+  },
+  "bin": {
+    "build_replugged_plugin": "bin/pluginbuild.js",
+    "build_replugged_theme": "bin/themebuild.js",
+    "bundle_replugged_addon": "bin/addonbundle.js"
   }
 }
