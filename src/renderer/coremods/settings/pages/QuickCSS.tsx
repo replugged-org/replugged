@@ -138,7 +138,7 @@ export const QuickCSS = () => {
             onClick={() => window.RepluggedNative.quickCSS.openFolder()}
             color={Button.Colors.PRIMARY}
             look={Button.Looks.LINK}>
-            Open Quick CSS Folder
+            {Messages.REPLUGGED_QUICKCSS_FOLDER_OPEN}
           </Button>
         </div>
       </Flex>
