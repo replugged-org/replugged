@@ -41,9 +41,10 @@ export function getExports(id: string): PluginExports | undefined {
 }
 
 function register(plugin: RepluggedPlugin): void {
+  const existingExports = plugins.get(plugin.manifest.id)?.exports;
   plugins.set(plugin.manifest.id, {
     ...plugin,
-    exports: undefined,
+    exports: existingExports,
   });
 }
 
