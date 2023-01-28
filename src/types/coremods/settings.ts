@@ -1,11 +1,15 @@
 import type { FC } from "react";
 
+export type LabelCallback = () => string;
+
 export interface Section {
   section: string;
-  label?: string;
+  label?: string | LabelCallback;
   color?: string;
   element?: FC;
   pos: number;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  __$$label?: LabelCallback;
 }
 
 export interface SettingsTools {
@@ -13,7 +17,7 @@ export interface SettingsTools {
   rpSectionsAfter: Record<string, Section[]>;
   addSection: (options: {
     name: string;
-    label: string;
+    label: string | LabelCallback;
     color?: string;
     elem: FC;
     pos?: number;
