@@ -2,7 +2,7 @@ import { Injector, Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { ObjectExports } from "src/types";
 import { Jsonifiable } from "type-fest";
-import { InstallerSource, installFlow, isValidSource } from "./util";
+import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./util";
 
 const injector = new Injector();
 const logger = Logger.coremod("Installer");
@@ -129,6 +129,8 @@ async function injectRpc(): Promise<void> {
     filters.byProps("setCommandHandler"),
   );
 
+  const modalFlows = new Map<string, Promise<InstallResponse>>();
+
   rpcMod.commands.REPLUGGED_INSTALL = {
     scope: "REPLUGGED",
     handler: async (data: RPCData) => {
@@ -137,7 +139,17 @@ async function injectRpc(): Promise<void> {
       if (source !== undefined && typeof source !== "string") throw new Error("Invalid source.");
       if (id !== undefined && typeof id !== "string") throw new Error("Invalid id.");
 
-      return await installFlow(identifier, source as InstallerSource, id, false);
+      const cacheIdentifier = `${source}:${identifier}:${id ?? ""}`;
+      if (modalFlows.has(cacheIdentifier)) {
+        return await modalFlows.get(cacheIdentifier)!;
+      }
+
+      const res = installFlow(identifier, source as InstallerSource, id, false);
+
+      modalFlows.set(cacheIdentifier, res);
+      const ret = await res;
+      modalFlows.delete(cacheIdentifier);
+      return ret;
     },
   };
 

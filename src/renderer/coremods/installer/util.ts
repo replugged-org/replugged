@@ -141,7 +141,7 @@ async function showInstallPrompt(manifest: AnyAddonManifest): Promise<boolean> {
   return res || false;
 }
 
-type InstallResponse =
+export type InstallResponse =
   | {
       kind: "SUCCESS";
       manifest: AnyAddonManifest;
