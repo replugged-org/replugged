@@ -164,7 +164,7 @@
     "REPLUGGED_SNIPPET_APPLY": "Apply Snippet",
     "REPLUGGED_SNIPPET_LINE1": "Snippet from #css-snippets applied the {date, date, medium} at {date, time, medium}",
     "REPLUGGED_SNIPPET_LINE2": "Created by {authorTag} ({authorId})",
-    "REPLUGGED_TOAST_INSTALL_HEADER": "Installing {name}...",
+    "REPLUGGED_TOAST_INSTALL_HEADER": "Installing {name} …",
     "REPLUGGED_TOAST_INSTALL_CANCELLED_HEADER": "Cancelled {name} installation",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_HEADER": "Plugin Already Installed",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_CONTENT": "{name} is already installed.",
