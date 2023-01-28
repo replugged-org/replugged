@@ -65,6 +65,11 @@ export type { HighlightJS };
 export let hljs: typeof HighlightJS;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
+import type { I18n } from "./i18n";
+export type { I18n };
+export let i18n: I18n;
+importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod.default));
+
 /**
  * @see {@link https://lodash.com/docs}
  */

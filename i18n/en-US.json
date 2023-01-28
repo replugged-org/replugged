@@ -164,7 +164,7 @@
     "REPLUGGED_SNIPPET_APPLY": "Apply Snippet",
     "REPLUGGED_SNIPPET_LINE1": "Snippet from #css-snippets applied the {date, date, medium} at {date, time, medium}",
     "REPLUGGED_SNIPPET_LINE2": "Created by {authorTag} ({authorId})",
-    "REPLUGGED_TOAST_INSTALL_HEADER": "Installing {name}...",
+    "REPLUGGED_TOAST_INSTALL_HEADER": "Installing {name} …",
     "REPLUGGED_TOAST_INSTALL_CANCELLED_HEADER": "Cancelled {name} installation",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_HEADER": "Plugin Already Installed",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_CONTENT": "{name} is already installed.",
@@ -325,5 +325,12 @@
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Failed to format code",
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Code formatted",
     "REPLUGGED_TOAST_QUICKCSS_RELOAD": "Quick CSS reloaded",
-    "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "Check console for details."
+    "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "Check console for details.",
+    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Do you want to install {name} by {authors}?",
+    "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED": "Failed to install {name}.",
+    "REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED": "{name} was installed but could not be loaded.",
+    "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS": "{name} installed successfully.",
+    "REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED": "Failed to get info for addon.",
+    "REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL": "Install canceled.",
+    "REPLUGGED_QUICKCSS_FOLDER_OPEN": "Open Quick CSS Folder"
 }

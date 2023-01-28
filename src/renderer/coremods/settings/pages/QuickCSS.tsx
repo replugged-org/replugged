@@ -1,4 +1,5 @@
 import { React, toast } from "@common";
+import { Messages } from "@common/i18n";
 import { EditorView, basicSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";
@@ -124,14 +125,14 @@ export const QuickCSS = () => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>Quick CSS</Text.H2>
+        <Text.H2>{Messages.REPLUGGED_QUICKCSS}</Text.H2>
         <div style={{ display: "flex" }}>
           <Button
             onClick={() => {
               window.replugged.quickCSS.reload();
-              toast.toast("Quick CSS reloaded");
+              toast.toast(Messages.REPLUGGED_TOAST_QUICKCSS_RELOAD);
             }}>
-            Apply Changes
+            {Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}
           </Button>
         </div>
       </Flex>

@@ -1,4 +1,8 @@
-import type { Section as SectionType, SettingsTools } from "../../../types/coremods/settings";
+import type {
+  LabelCallback,
+  Section as SectionType,
+  SettingsTools,
+} from "../../../types/coremods/settings";
 import type React from "react";
 
 // todo: Create version of this for plugins that's limited to the plugin section and alphabetized
@@ -12,13 +16,13 @@ export const Section = ({
   elem,
   pos,
 }: {
-  name?: string;
-  label: string;
+  name: string;
+  label: string | LabelCallback;
   color?: string;
   elem: React.FunctionComponent;
   pos?: number;
 }): SectionType => ({
-  section: name || `REPLUGGED_${label.toUpperCase()}`,
+  section: name,
   label,
   color,
   element: elem,
@@ -30,7 +34,7 @@ export const Divider = (pos?: number): SectionType => ({
   pos: getPos(pos),
 });
 
-export const Header = (label: string, pos?: number): SectionType => ({
+export const Header = (label: string | LabelCallback, pos?: number): SectionType => ({
   section: "HEADER",
   label,
   pos: getPos(pos),
@@ -65,6 +69,19 @@ export function insertSections(sections: SectionType[]) {
   for (const sectionName in settingsTools.rpSectionsAfter) {
     const section = sections.findIndex((s) => s.section === sectionName);
     if (section === -1) continue;
+
+    for (const section of settingsTools.rpSectionsAfter[sectionName]) {
+      const labelFn = section.__$$label;
+
+      if (typeof section.label === "function" || typeof labelFn === "function") {
+        if (!labelFn) {
+          section.__$$label = section.label as LabelCallback;
+        }
+
+        section.label = section.__$$label?.();
+      }
+    }
+
     sections.splice(section + 1, 0, ...settingsTools.rpSectionsAfter[sectionName]);
   }
 
