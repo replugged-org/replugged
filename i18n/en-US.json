@@ -333,8 +333,8 @@
     "REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED": "Failed to get info for addon.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL": "Install canceled.",
     "REPLUGGED_QUICKCSS_FOLDER_OPEN": "Open Quick CSS Folder",
-    "REPLUGGED_ADDON_AUTHORS_ONE": "By {author1}",
-    "REPLUGGED_ADDON_AUTHORS_TWO": "By {author1} and {author2}",
-    "REPLUGGED_ADDON_AUTHORS_THREE": "By {author1}, {author2}, and {author3}",
+    "REPLUGGED_ADDON_AUTHORS_ONE": "by {author1}",
+    "REPLUGGED_ADDON_AUTHORS_TWO": "by {author1} and {author2}",
+    "REPLUGGED_ADDON_AUTHORS_THREE": "by {author1}, {author2}, and {author3}",
     "REPLUGGED_ADDON_AUTHORS_MANY": "by {author1}, {author2}, {author3}, and {count} more"
 }

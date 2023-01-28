@@ -295,5 +295,22 @@
     "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Установка плагина…",
     "REPLUGGED_PLUGIN_EMBED_INSTALLING_THEME": "Установка темы…",
     "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Удалить плагин",
-    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Удалить тему"
+    "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Удалить тему",
+    "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Вы уверены, что хотите удалить этот {type}? Это действие необратимо.",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} результат} other {{count} результатов}}",
+    "REPLUGGED_NO_ADDONS_INSTALLED": "Нет установленных {type}.",
+    "REPLUGGED_ADDON_AUTHORS_THREE": "от {author1}, {author2}, и {author3}",
+    "REPLUGGED_ADDON_DELETE": "Удалить {type}",
+    "REPLUGGED_ADDON_PAGE_OPEN": "Открыть страницу {type}",
+    "REPLUGGED_ADDON_PROFILE_OPEN": "Открыть профиль {type}",
+    "REPLUGGED_ADDON_RELOAD": "Перезагрузить {type}",
+    "REPLUGGED_ADDON_SETTINGS": "Открыть настойки {type}",
+    "REPLUGGED_ADDON_UNINSTALL": "Удалить {name}",
+    "REPLUGGED_ADDONS_FOLDER_OPEN": "Открыть папку {type}",
+    "REPLUGGED_ADDONS_LOAD_MISSING": "Загрузить отсутствующие {type}",
+    "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
+    "REPLUGGED_NO_ADDON_RESULTS": "Не найдено подходящих {type}.",
+    "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Применить Изменения",
+    "REPLUGGED_QUICKCSS_CODE_FORMAT": "Форматировать Код",
+    "REPLUGGED_SEARCH_FOR_ADDON": "Искать {type}"
 }
