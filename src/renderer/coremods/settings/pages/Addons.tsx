@@ -157,6 +157,23 @@ function label(
   return base;
 }
 
+function replaceVariable(
+  str: string,
+  variables: Record<string, React.ReactElement | string>,
+): React.ReactElement {
+  const els: Array<React.ReactElement | string> = [];
+  let last = 0;
+  for (const [match, el] of Object.entries(variables)) {
+    const index = str.indexOf(`{${match}}`, last);
+    if (index === -1) continue;
+    els.push(<>{str.slice(last, index)}</>);
+    els.push(el);
+    last = index + match.length + 2;
+  }
+  els.push(<>{str.slice(last)}</>);
+  return <>{els}</>;
+}
+
 function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
   const els = getAuthors(addon).map((author) => (
     <Flex
@@ -190,30 +207,46 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }) {
     </Flex>
   ));
 
+  let message: string = "";
+
   if (els.length === 1) {
-    return els[0];
+    // return Messages.REPLUGGED_ADDON_AUTHORS_ONE.format({
+    //   author1: els[0],
+    // });
+    message = Messages.REPLUGGED_ADDON_AUTHORS_ONE.message;
   }
   if (els.length === 2) {
-    return (
-      <span>
-        {els[0]}
-        <span style={{ padding: "0 5px" }}>and</span>
-        {els[1]}
-      </span>
-    );
+    // return Messages.REPLUGGED_ADDON_AUTHORS_TWO.format({
+    //   author1: els[0],
+    //   author2: els[1],
+    // });
+    message = Messages.REPLUGGED_ADDON_AUTHORS_TWO.message;
   }
-  return (
-    <span>
-      {els.slice(0, -1).map((x, i) => (
-        <React.Fragment key={i}>
-          {x}
-          <span style={{ paddingRight: "5px" }}>,</span>
-        </React.Fragment>
-      ))}
-      <span style={{ paddingRight: "5px" }}>and</span>
-      {els[els.length - 1]}
-    </span>
-  );
+  if (els.length === 3) {
+    // return Messages.REPLUGGED_ADDON_AUTHORS_THREE.format({
+    //   author1: els[0],
+    //   author2: els[1],
+    //   author3: els[2],
+    // });
+
+    message = Messages.REPLUGGED_ADDON_AUTHORS_THREE.message;
+  }
+  if (els.length > 3) {
+    // return Messages.REPLUGGED_ADDON_AUTHORS_MANY.format({
+    //   author1: els[0],
+    //   author2: els[1],
+    //   author3: els[2],
+    //   count: els.length - 3,
+    // });
+    message = Messages.REPLUGGED_ADDON_AUTHORS_MANY.message;
+  }
+
+  return replaceVariable(message, {
+    author1: els[0],
+    author2: els[1],
+    author3: els[2],
+    count: (els.length - 3).toString(),
+  });
 }
 
 function Card({
@@ -250,8 +283,8 @@ function Card({
             </Text>
             <span>
               {" "}
-              <b>v{addon.manifest.version}</b> by{" "}
-            </span>
+              <b>v{addon.manifest.version}</b>
+            </span>{" "}
             <Authors addon={addon} />
           </Text>
         </span>
