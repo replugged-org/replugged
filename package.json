@@ -32,6 +32,10 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
+    "@electron/asar": "^3.2.3",
+    "@parcel/config-default": "^2.8.3",
+    "@parcel/core": "^2.8.3",
+    "@parcel/transformer-sass": "^2.8.3",
     "@types/highlightjs": "^9.12.2",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.8.0",
@@ -51,6 +55,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.31.8",
     "np": "^7.6.2",
+    "parcel": "^2.8.3",
     "prettier": "^2.7.1",
     "style-mod": "^4.0.0",
     "tsx": "^3.9.0",

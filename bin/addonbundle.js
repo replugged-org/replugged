@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 
-const { join } = require("path");
-const dir = process.cwd();
-const asar = require(join(dir, "node_modules/@electron/asar"));
+const asar = require("@electron/asar");
 const { copyFileSync, existsSync, mkdirSync, readFileSync } = require("fs");
 
 const manifest = JSON.parse(readFileSync("dist/manifest.json", "utf-8"));

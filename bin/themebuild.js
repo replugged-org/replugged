@@ -3,7 +3,7 @@
 const dir = process.cwd();
 
 const { join } = require("path");
-const { Parcel } = require(join(dir, "node_modules/@parcel/core"));
+const { Parcel } = require("@parcel/core");
 const { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } = require("fs");
 const _manifest = require(join(dir, "./manifest.json"));
 

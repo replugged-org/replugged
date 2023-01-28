@@ -6,7 +6,6 @@ const esbuild = require("esbuild");
 const { join } = require("path");
 const { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } = require("fs");
 const _manifest = require(join(directory, "./manifest.json"));
-// const { PluginManifest } = require(join(process.cwd(), "node_modules/replugged/dist/types/addon"));
 
 const manifest = _manifest;
 const watch = process.argv.includes("--watch");
