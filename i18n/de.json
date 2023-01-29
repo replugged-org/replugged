@@ -296,5 +296,9 @@
     "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Deinstalliere Theme",
     "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Installiere Plugin…",
     "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Deinstalliere Plugin",
-    "REPLUGGED_ADDON_DELETE": "Lösche {type}"
+    "REPLUGGED_ADDON_DELETE": "Lösche {type}",
+    "REPLUGGED_ADDON_PAGE_OPEN": "Öffne Seite {type}",
+    "REPLUGGED_ADDON_PROFILE_OPEN": "Öffne {type} Profil",
+    "REPLUGGED_ADDON_RELOAD": "lade {type} neu",
+    "REPLUGGED_ADDON_SETTINGS": "Öffne {type} Einstellungen"
 }
