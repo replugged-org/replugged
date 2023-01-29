@@ -14,6 +14,12 @@ export type FlexType = ReactComponent<{
   Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
   Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
   Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
+  Child: ReactComponent<{
+    shrink?: number;
+    grow?: number;
+    basis?: string;
+    wrap?: boolean;
+  }>;
 };
 
 const mod = await waitForModule(filters.bySource("HORIZONTAL_REVERSE:"));
