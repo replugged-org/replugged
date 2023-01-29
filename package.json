@@ -76,11 +76,10 @@
     "@octokit/rest": "^19.0.5",
     "codemirror": "^6.0.1",
     "node-fetch": "^3.3.0",
+    "yargs": "^17.6.2",
     "zod": "^3.19.1"
   },
   "bin": {
-    "build_replugged_plugin": "bin/pluginbuild.js",
-    "build_replugged_theme": "bin/themebuild.js",
-    "bundle_replugged_addon": "bin/addonbundle.js"
+    "replugged": "bin/replugged.js"
   }
 }
