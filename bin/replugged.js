@@ -17,7 +17,7 @@ function bundleAddon() {
   asar.createPackage("dist", `${outputName}.asar`);
   copyFileSync("dist/manifest.json", `${outputName}.json`);
 
-  console.log(`✨ Bundled ${manifest.name}`, production)
+  console.log(`✨ Bundled ${manifest.name}`)
 }
 
 function buildPlugin({ watch, noInstall, production }) {
@@ -255,7 +255,6 @@ const { argv } = require("yargs")
     })
     yargs.option("production", {
       type: "boolean",
-      alias: "prod",
       describe: "Don't compile the source maps when building.",
       default: false
     })
