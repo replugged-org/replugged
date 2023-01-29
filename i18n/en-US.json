@@ -336,6 +336,6 @@
     "REPLUGGED_ADDON_AUTHORS_ONE": "by {author1}",
     "REPLUGGED_ADDON_AUTHORS_TWO": "by {author1} and {author2}",
     "REPLUGGED_ADDON_AUTHORS_THREE": "by {author1}, {author2}, and {author3}",
-    "REPLUGGED_ADDON_AUTHORS_MANY": "by {author1}, {author2}, {author3}, and {count, plural, =1 {{count} other}, other {{count} others}}",
+    "REPLUGGED_ADDON_AUTHORS_MANY": "by {author1}, {author2}, {author3}, and {count, plural, =1 {{count} other} other {{count} others}}",
     "REPLUGGED_CONFIRM_INSTALL": "Install"
 }
