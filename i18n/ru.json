@@ -319,7 +319,7 @@
     "REPLUGGED_ADDON_AUTHORS_TWO": "от {author1} и {author2}",
     "REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL": "Установка отменена.",
     "REPLUGGED_ADDON_AUTHORS_ONE": "от {author1}",
-    "REPLUGGED_ADDON_AUTHORS_MANY": "от {author1}, {author2}, {author3}, и {count} других",
+    "REPLUGGED_ADDON_AUTHORS_MANY": "от {author1}, {author2}, {author3}, и {count, plural, =1 {{count} другого} other {{count} других}}",
     "REPLUGGED_CONFIRM_INSTALL": "Установить",
     "REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS": "{name} отключён",
     "REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS": "{name} включён",
