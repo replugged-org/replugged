@@ -169,7 +169,7 @@
     "REPLUGGED_PLUGINS_DISCORD": "Discord",
     "REPLUGGED_PLUGINS_PATH": "Открыть папку",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Показывает оверлей, сообщающий о текущей проверке обновлений, и предлагает установить их, если они присутствуют. Применяется лишь если обновления в фоне отключены.",
-    "REPLUGGED_QUICKCSS_ENABLED": "Быстрая CSS активирован",
+    "REPLUGGED_QUICKCSS_ENABLED": "Быстрая настройка CSS активирована",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER": "Проверить версию манифеста",
     "REPLUGGED_UPDATES_OPTS_CHECK_VER_DESC": "Replugged покажет обновления только, если версия манифеста изменилась.",
     "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Посмотреть репозиторий",

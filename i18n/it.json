@@ -336,5 +336,6 @@
     "REPLUGGED_ADDON_AUTHORS_TWO": "da {author1} e {author2}",
     "REPLUGGED_CONFIRM_INSTALL": "Installa",
     "REPLUGGED_ADDON_AUTHORS_ONE": "da {author1}",
-    "REPLUGGED_ADDON_AUTHORS_THREE": "da {author1}, {author2}, e {author3}"
+    "REPLUGGED_ADDON_AUTHORS_THREE": "da {author1}, {author2}, e {author3}",
+    "REPLUGGED_ADDON_AUTHORS_MANY": "da {author1}, {author2}, {author3}, e {count, plural, =1 {{count} other} other {{count} others}}"
 }
