@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable consistent-return */
 
 const directory = process.cwd();
 const asar = require("@electron/asar");
@@ -10,18 +9,18 @@ const { join } = require("path");
 
 function bundleAddon() {
   const manifest = JSON.parse(readFileSync("dist/manifest.json", "utf-8"));
-  const outputName = `bundle/${manifest.id}.asar`;
+  const outputName = `bundle/${manifest.id}`;
 
   if (!existsSync("bundle")) {
     mkdirSync("bundle");
   }
-  asar.createPackage("dist", outputName);
+  asar.createPackage("dist", `${outputName}.asar`);
   copyFileSync("dist/manifest.json", `${outputName}.json`);
 
-  console.log(`✨ Bundled ${manifest.name}`)
+  console.log(`✨ Bundled ${manifest.name}`, production)
 }
 
-function buildPlugin({ watch, noInstall }) {
+function buildPlugin({ watch, noInstall, production }) {
   const manifest = require(join(directory, "./manifest.json"));
   const CHROME_VERSION = "91";
   const REPLUGGED_FOLDER_NAME = "replugged";
@@ -29,7 +28,7 @@ function buildPlugin({ watch, noInstall }) {
     name: "globalModules",
     setup: (build) => {
       build.onResolve({ filter: /^replugged.+$/ }, (args) => {
-        if (args.kind !== "import-statement") return;
+        if (args.kind !== "import-statement") return {};
   
         return {
           errors: [
@@ -41,7 +40,7 @@ function buildPlugin({ watch, noInstall }) {
       });
   
       build.onResolve({ filter: /^replugged$/ }, (args) => {
-        if (args.kind !== "import-statement") return;
+        if (args.kind !== "import-statement") return {};
   
         return {
           path: args.path,
@@ -96,10 +95,10 @@ function buildPlugin({ watch, noInstall }) {
     bundle: true,
     format: "esm",
     logLevel: "info",
-    minify: false,
+    minify: production,
     platform: "browser",
     plugins: [globalModules, install],
-    sourcemap: true,
+    sourcemap: !production,
     target: `chrome${CHROME_VERSION}`,
     watch,
   };
@@ -236,22 +235,28 @@ function buildTheme({ watch: shouldWatch, noInstall }) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { argv } = require('yargs')
+const { argv } = require("yargs")
   .scriptName("replugged")
-  .usage('$0 <cmd> [args]')
-  .command('build [addon] [no-install] [watch]', 'Build an Addon', (yargs) => {
-    yargs.positional('addon', {
-      type: 'string',
-      describe: 'Either a plugin or theme'
+  .usage("$0 <cmd> [args]")
+  .command("build [addon] [--no-install] [--watch]", "Build an Addon", (yargs) => {
+    yargs.positional("addon", {
+      type: "string",
+      describe: "Either a plugin or theme"
     })
-    yargs.option('no-install', {
-      type: 'boolean',
+    yargs.option("no-install", {
+      type: "boolean",
       describe: "Don't install the built addon",
       default: false
     })
-    yargs.option('watch', {
-      type: 'boolean',
-      describe: 'Watch the addon for changes to reload building',
+    yargs.option("watch", {
+      type: "boolean",
+      describe: "Watch the addon for changes to reload building",
+      default: false
+    })
+    yargs.option("production", {
+      type: "boolean",
+      alias: "prod",
+      describe: "Don't compile the source maps when building.",
       default: false
     })
   }, (argv) => {
@@ -263,7 +268,7 @@ const { argv } = require('yargs')
       console.log("Invalid addon type.");
     }
   })
-  .command('bundle', 'Bundle any Addon', (_) => {}, bundleAddon)
+  .command("bundle", "Bundle any Addon", (_) => {}, bundleAddon)
   .parserConfiguration({
     "boolean-negation": false
   })
