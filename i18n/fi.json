@@ -301,7 +301,7 @@
     "REPLUGGED_ADDON_PROFILE_OPEN": "Avaa {type} Profiili",
     "REPLUGGED_ADDON_RELOAD": "Uudellen Lataa {type}",
     "REPLUGGED_ADDON_SETTINGS": "Avaa {type} Asetukset",
-    "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Oletko varma että haluat poistaa {type}? Tätä ei voi peruuttaa.",
+    "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Oletko varma että haluat poistaa tämän {type}? Tätä ei voi peruuttaa.",
     "REPLUGGED_ADDON_UNINSTALL": "Poista {name}",
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Avaa {type} Kansio",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Lataa Puuttuva {type}",
