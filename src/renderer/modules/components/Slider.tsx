@@ -35,6 +35,6 @@ export type SliderType = ReactComponent<SliderProps>;
 
 export default ((props) => {
   return (
-    <SliderComp {...props} initialValue={props.value} onValueChange={props.onChange}></SliderComp>
+    <SliderComp initialValue={props.value} onValueChange={props.onChange} {...props}></SliderComp>
   );
 }) as SliderType;
