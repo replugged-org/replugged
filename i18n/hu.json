@@ -238,7 +238,7 @@
     "REPLUGGED_SETTINGS_SYNC_UNAVAILABLE": "A Beállítás szinkronizálás jelenleg nem elérhető.",
     "REPLUGGED_MODULE_MANAGER_MISSING_RETRIEVED": "A következő {type} lett visszakapva:",
     "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Komponens stack:",
-    "REPLUGGED_TOAST_INSTALL_HEADER": "{name} telepítése...",
+    "REPLUGGED_TOAST_INSTALL_HEADER": "{name} telepítése…",
     "REPLUGGED_TOAST_INSTALL_CANCELLED_HEADER": "{name} telepítése visszavonva",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_HEADER": "A Plugin már telepítve van",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_CONTENT": "{name} már telepítve van.",

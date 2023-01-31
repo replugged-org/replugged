@@ -216,7 +216,7 @@
     "REPLUGGED_SETTINGS_EXP_DESC": "Bật các tính năng thử nghiệm của Replugged và tự chịu rủi ro.",
     "REPLUGGED_SETTINGS_ERROR_HEADER": "Đã có sự cố xảy ra khi hiển thị màn hình cài đặt này!",
     "REPLUGGED_SETTINGS_SYNC_UNAVAILABLE": "Đồng bộ hóa cài đặt hiện không có sẵn.",
-    "REPLUGGED_TOAST_INSTALL_HEADER": "Đang cài đặt {name}...",
+    "REPLUGGED_TOAST_INSTALL_HEADER": "Đang cài đặt {name}…",
     "REPLUGGED_TOAST_INSTALL_CANCELLED_HEADER": "Đã hủy cài đặt {name}",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_HEADER": "Plugin đã được cài rồi",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_CONTENT": "{name} đã được cài đặt rồi.",
