@@ -31,7 +31,7 @@ interface SliderProps extends SliderCompProps {
   onChange?: (e: number) => void;
 }
 
-type SliderType = ReactComponent<SliderProps>;
+export type SliderType = ReactComponent<SliderProps>;
 
 export default ((props) => {
   return (
