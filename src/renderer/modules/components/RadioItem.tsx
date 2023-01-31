@@ -8,14 +8,13 @@ type OptionType = {
   desc?: string;
   disabled?: boolean;
   color?: string;
-  icon?: string;
   tooltipText?: string;
   tooltipPosition?: "top" | "bottom" | "left" | "right" | "center";
 };
 
 interface RadioProps {
   options: OptionType[];
-  value: string;
+  value?: string;
   onChange: (e: OptionType) => void;
   disabled?: boolean;
   size?: string;
@@ -25,8 +24,6 @@ interface RadioProps {
   itemInfoClassName?: string;
   itemTitleClassName?: string;
   radioItemClassName?: string;
-  radioItemIconClassName?: string;
-  collapsibleClassName?: string;
 }
 
 export type RadioType = React.ComponentType<RadioProps> & {
