@@ -100,6 +100,11 @@ export type { TextInputType };
 export let TextInput: TextInputType;
 importTimeout("Input", import("./TextInput"), (mod) => (TextInput = mod.default));
 
+import type { SliderType } from "./Slider";
+export type { SliderType };
+export let Slider: SliderType;
+importTimeout("Slider", import("./Slider"), (mod) => (Slider = mod.default));
+
 import type { TextType } from "./Text";
 export type { TextType };
 export let Text: TextType;
