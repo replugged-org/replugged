@@ -20,6 +20,7 @@ interface RadioProps {
   size?: string;
   radioPosition?: "left" | "right";
   withTransparentBackground?: boolean;
+  style?: React.CSSProperties;
   className?: string;
   itemInfoClassName?: string;
   itemTitleClassName?: string;
@@ -50,7 +51,7 @@ export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>) => {
       <FormItem>
         <Text.Eyebrow style={{ marginBottom: 8 }}>{props.children}</Text.Eyebrow>
         <FormText.DESCRIPTION style={{ marginBottom: 8 }}>{props.note}</FormText.DESCRIPTION>
-        {<Radio {...props}></Radio>}
+        <Radio {...props}></Radio>
         <Divider className={classes.dividerDefault} />
       </FormItem>
     </div>
