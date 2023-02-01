@@ -180,17 +180,23 @@ export function useSetting<
     : F extends null | undefined
     ? T[K] | undefined
     : NonNullable<T[K]> | F;
-  onChange: (newValue: T[K]) => void;
+  onChange: (newValue: T[K] | (Record<string, unknown> & { value: T[K] })) => void;
 } {
   const initial = settings.get(key, fallback);
   const [value, setValue] = React.useState(initial);
 
   return {
     value,
-    onChange: (newValue: T[K]) => {
-      // @ts-expect-error It doesn't understand ig
-      setValue(newValue);
-      settings.set(key, newValue);
+    onChange: (newValue: T[K] | (Record<string, unknown> & { value: T[K] })) => {
+      if (newValue && typeof newValue === "object" && "value" in newValue) {
+        // @ts-expect-error It doesn't understand ig
+        setValue(newValue.value as T[K]);
+        settings.set(key, newValue.value as T[K]);
+      } else {
+        // @ts-expect-error It doesn't understand ig
+        setValue(newValue);
+        settings.set(key, newValue);
+      }
     },
   };
 }
