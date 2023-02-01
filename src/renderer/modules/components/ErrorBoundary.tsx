@@ -1,3 +1,4 @@
+import { Messages } from "@common/i18n";
 import React from "@common/react";
 import { Logger } from "../logger";
 import "./ErrorBoundary.css";
@@ -42,8 +43,8 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
       return (
         this.props.fallback || (
           <div className="replugged-error-boundary">
-            <h1>Something went wrong rendering this element!</h1>
-            <p>Check console for details.</p>
+            <h1>{Messages.REPLUGGED_SETTINGS_ERROR_HEADER}</h1>
+            <p>{Messages.REPLUGGED_SETTINGS_ERROR_SUB_HEADER}</p>
           </div>
         )
       );

@@ -2,9 +2,10 @@ import type { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getExportsForProps, getFunctionBySource, waitForModule } from "../webpack";
 
 const mod = await waitForModule(filters.bySource("LABEL_SELECTED"));
-const FormTextComp = getFunctionBySource("selectable", mod as ObjectExports) as ReactComponent<{
-  type: string;
-}>;
+const FormTextComp = getFunctionBySource(
+  '"type","className","disabled","selectable","children","style"',
+  mod as ObjectExports,
+) as ReactComponent<{ type: string }>;
 const types = getExportsForProps(mod, ["LABEL_SELECTED"])!;
 
 export type FormTextType = Record<

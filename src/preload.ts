@@ -9,6 +9,7 @@ import { RepluggedIpcChannels } from "./types";
 import type {
   RepluggedPlugin,
   RepluggedTheme,
+  RepluggedTranslations,
   UpdateCheckResultFailure,
   UpdateCheckResultSuccess,
   UpdateInstallResultFailure,
@@ -74,6 +75,13 @@ const RepluggedNative = {
     endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
       ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER),
+  },
+
+  i18n: {
+    getStrings: (): Promise<RepluggedTranslations> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_STRINGS),
+    getOverrides: (): Promise<RepluggedTranslations> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_OVERRIDES),
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

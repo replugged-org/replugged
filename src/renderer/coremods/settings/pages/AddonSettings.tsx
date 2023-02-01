@@ -1,4 +1,5 @@
 import { ErrorBoundary, Modal, Text } from "@components";
+import { Messages } from "@common/i18n";
 import { modal } from "@common";
 const { ModalRoot, ModalHeader, ModalContent, ModalCloseButton } = Modal;
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
@@ -13,7 +14,7 @@ export function showAddonSettings(
     <ModalRoot {...props} size="large">
       <ModalHeader>
         <Text variant="heading-lg/semibold" style={{ flexGrow: 1 }}>
-          {addon.manifest.name} Settings
+          {addon.manifest.name} {Messages.SETTINGS}
         </Text>
         <ModalCloseButton onClick={() => modal.closeModal(modalKey)} />
       </ModalHeader>
