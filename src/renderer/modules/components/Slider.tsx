@@ -1,7 +1,7 @@
 import { ReactComponent } from "src/types";
 import { filters, waitForModule } from "../webpack";
 
-interface SliderCompProps {
+export interface SliderCompProps {
   disabled?: boolean;
   markers?: number[];
   stickToMarkers?: boolean;
@@ -18,7 +18,7 @@ interface SliderCompProps {
   onMarkerRender?: (e: number) => string;
 }
 
-type SliderCompType = React.ComponentType<SliderCompProps> & {
+export type SliderCompType = React.ComponentType<SliderCompProps> & {
   defaultProps: SliderCompProps;
 };
 
@@ -26,7 +26,7 @@ const SliderComp = (await waitForModule(filters.bySource(".moveGrabber=")).then(
   Object.values(mod).find((x) => "defaultProps" in x && "stickToMarkers" in x.defaultProps),
 )) as SliderCompType;
 
-interface SliderProps extends SliderCompProps {
+export interface SliderProps extends SliderCompProps {
   value?: number;
   onChange?: (e: number) => void;
 }
