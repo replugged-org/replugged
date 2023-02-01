@@ -45,7 +45,7 @@ importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.S
 import { type RadioItemType, RadioType } from "./RadioItem";
 export type { RadioType };
 export let Radio: RadioType;
-importTimeout("RadioItem", import("./RadioItem"), (mod) => (Radio = mod.Radio));
+importTimeout("Radio", import("./RadioItem"), (mod) => (Radio = mod.Radio));
 
 export type { RadioItemType };
 export let RadioItem: RadioItemType;
