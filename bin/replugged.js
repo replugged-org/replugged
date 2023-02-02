@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const directory = process.cwd();
 const asar = require("@electron/asar");
 const { Parcel } = require("@parcel/core");
@@ -15,7 +13,12 @@ const {
 const esbuild = require("esbuild");
 const { join } = require("path");
 
-function bundleAddon() {
+async function bundleAddon(buildFn) {
+  if (existsSync("dist")) {
+    rmSync("dist", { recursive: true });
+  }
+  await buildFn({ watch: false, noInstall: true, production: true });
+
   const manifest = JSON.parse(readFileSync("dist/manifest.json", "utf-8"));
   const outputName = `bundle/${manifest.id}`;
 
@@ -25,7 +28,7 @@ function bundleAddon() {
   asar.createPackage("dist", `${outputName}.asar`);
   copyFileSync("dist/manifest.json", `${outputName}.json`);
 
-  console.log(`✨ Bundled ${manifest.name}`);
+  console.log(`Bundled ${manifest.name}`);
 }
 
 function buildPlugin({ watch, noInstall, production }) {
@@ -146,10 +149,10 @@ function buildPlugin({ watch, noInstall, production }) {
 
   writeFileSync("dist/manifest.json", JSON.stringify(manifest));
 
-  Promise.all(targets);
+  return Promise.all(targets);
 }
 
-function buildTheme({ watch: shouldWatch, noInstall }) {
+function buildTheme({ watch: shouldWatch, noInstall, production }) {
   const manifest = require(join(directory, "./manifest.json"));
 
   const main = manifest.main || "src/main.css";
@@ -162,6 +165,8 @@ function buildTheme({ watch: shouldWatch, noInstall }) {
       main: {
         distDir: "dist",
         distEntry: "main.css",
+        sourceMap: !production,
+        optimize: production,
       },
     },
   });
@@ -214,7 +219,7 @@ function buildTheme({ watch: shouldWatch, noInstall }) {
     try {
       const { bundleGraph, buildTime } = await bundler.run();
       let bundles = bundleGraph.getBundles();
-      console.log(`✨ Built ${bundles.length} bundles in ${buildTime}ms!`);
+      console.log(`Built ${bundles.length} bundles in ${buildTime}ms!`);
       install();
     } catch (err) {
       console.log(err.diagnostics);
@@ -240,7 +245,7 @@ function buildTheme({ watch: shouldWatch, noInstall }) {
   }
 
   const fn = shouldWatch ? watch : build;
-  [mainBundler, splashBundler].filter(Boolean).forEach((bundler) => fn(bundler));
+  const promises = [mainBundler, splashBundler].filter(Boolean).map((bundler) => fn(bundler));
 
   manifest.main = "main.css";
   manifest.splash = splash ? "splash.css" : undefined;
@@ -250,6 +255,8 @@ function buildTheme({ watch: shouldWatch, noInstall }) {
   }
 
   writeFileSync("dist/manifest.json", JSON.stringify(manifest));
+
+  return Promise.all(promises);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -290,7 +297,25 @@ const { argv } = require("yargs")
       }
     },
   )
-  .command("bundle", "Bundle any Addon", (_) => {}, bundleAddon)
+  .command(
+    "bundle [addon]",
+    "Bundle any Addon",
+    (yargs) => {
+      yargs.positional("addon", {
+        type: "string",
+        describe: "Either a plugin or theme",
+      });
+    },
+    (argv) => {
+      if (argv.addon === "plugin") {
+        bundleAddon(buildPlugin);
+      } else if (argv.addon === "theme") {
+        bundleAddon(buildTheme);
+      } else {
+        console.log("Invalid addon type.");
+      }
+    },
+  )
   .parserConfiguration({
     "boolean-negation": false,
   })
