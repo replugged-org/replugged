@@ -2,7 +2,7 @@ import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 import { Divider, FormItem, FormText, Text } from ".";
 
-type OptionType = {
+interface OptionType {
   name: string;
   value: string;
   desc?: string;
@@ -10,7 +10,7 @@ type OptionType = {
   color?: string;
   tooltipText?: string;
   tooltipPosition?: "top" | "bottom" | "left" | "right" | "center";
-};
+}
 
 interface RadioProps {
   options: OptionType[];
@@ -37,7 +37,7 @@ export const Radio = (await waitForModule(filters.bySource(radioStr)).then((mod)
   getFunctionBySource(radioStr, mod as ObjectExports),
 )) as RadioType;
 
-const classes = (await waitForModule(filters.byProps("labelRow"))) as Record<string, string>;
+const classes = await waitForModule<Record<"dividerDefault", string>>(filters.byProps("labelRow"));
 
 interface RadioItemProps extends RadioProps {
   note?: string;
@@ -45,7 +45,7 @@ interface RadioItemProps extends RadioProps {
 
 export type RadioItemType = React.FC<React.PropsWithChildren<RadioItemProps>>;
 
-export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>) => {
+export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React.ReactElement => {
   return (
     <div style={{ marginBottom: 20 }}>
       <FormItem>
