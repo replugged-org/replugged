@@ -2,7 +2,7 @@ import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 import { Divider, FormItem, FormText, Text } from ".";
 
-interface OptionType {
+interface RadioOptionType {
   name: string;
   value: string;
   desc?: string;
@@ -13,9 +13,9 @@ interface OptionType {
 }
 
 interface RadioProps {
-  options: OptionType[];
+  options: RadioOptionType[];
   value?: string;
-  onChange: (e: OptionType) => void;
+  onChange: (e: RadioOptionType) => void;
   disabled?: boolean;
   size?: string;
   radioPosition?: "left" | "right";
