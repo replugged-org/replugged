@@ -1,9 +1,11 @@
 import React from "@common/react";
 
-export const General = () => {
+export const General = (): React.ReactElement => {
   const [hue, setHue] = React.useState(0);
   React.useEffect(() => {
     const id = requestAnimationFrame(() => {
+      // ESLint thinks that hue is not a number for some reason.
+
       setHue((hue + 1) % 360);
     });
     return () => cancelAnimationFrame(id);

@@ -6,11 +6,11 @@ import "./ErrorBoundary.css";
 const logger = new Logger("Components", "ErrorBoundary");
 
 export interface ErrorProps {
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactNode;
   silent?: boolean;
   onError?: (error: unknown, errorInfo: unknown) => void;
   /** Element to show if the error boundary is triggered */
-  fallback?: React.ReactElement | React.ReactElement[];
+  fallback?: React.ReactNode;
 }
 
 export interface ErrorState {
@@ -20,17 +20,16 @@ export interface ErrorState {
 export type ErrorBoundaryType = React.ComponentClass<ErrorProps, ErrorState>;
 
 export default class ErrorBoundary extends React.Component<ErrorProps, ErrorState> {
-  constructor(props: ErrorProps) {
+  public constructor(props: ErrorProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError() {
-    // Update state so the next render will show the fallback UI.
+  public static getDerivedStateFromError(): ErrorState {
     return { hasError: true };
   }
 
-  componentDidCatch(error: unknown, errorInfo: unknown) {
+  public componentDidCatch(error: unknown, errorInfo: unknown): void {
     if (!this.props.silent) {
       logger.error("ErrorBoundary caught an error", error, errorInfo);
     }
@@ -39,7 +38,7 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
     }
   }
 
-  render() {
+  public render(): React.ReactNode {
     if (this.state.hasError) {
       return (
         this.props.fallback || (

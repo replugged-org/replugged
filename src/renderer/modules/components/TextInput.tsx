@@ -21,6 +21,6 @@ export type TextInputType = React.ComponentType<TextInputProps> & {
   defaultProps: TextInputProps;
 };
 
-export default (await waitForModule(filters.bySource(".getIsOverFlowing")).then((mod) =>
+export default await waitForModule(filters.bySource(".getIsOverFlowing")).then((mod) =>
   Object.values(mod).find((x) => "defaultProps" in x && "maxLength" in x.defaultProps),
-)) as TextInputType;
+);

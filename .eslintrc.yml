@@ -39,7 +39,7 @@ rules:
     - argsIgnorePattern: "^_"
 
 overrides:
-  - files: "**/*.ts"
+  - files: "**/*.{ts,tsx}"
     extends: eslint-config-dmitmel/presets/typescript-addon
     rules:
       node/no-missing-import: off
@@ -49,14 +49,14 @@ overrides:
       no-void: off
       consistent-return: off
 
-  - files: "**/src/**/*.ts"
+  - files: "**/src/**/*.{ts,tsx}"
     extends: eslint-config-dmitmel/rules/typescript/with-type-checking
 
   - files: "**/*.d.ts"
     rules:
       no-var: off
 
-  - files: "src/**/*.ts"
+  - files: "src/**/*.{ts,tsx}"
     parserOptions:
       project: tsconfig.json
 
