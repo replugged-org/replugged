@@ -395,7 +395,7 @@ export namespace filters {
    */
   export const byValue = (match: string | RegExp) => {
     return (m: RawModule) => {
-      if (!m.exports && typeof m.exports !== "object") {
+      if (!m.exports || typeof m.exports !== "object") {
         return false;
       }
       return typeof match === "string"
