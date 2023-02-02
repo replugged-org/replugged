@@ -142,6 +142,12 @@ export const QuickCSS = (): React.ReactElement => {
             }}>
             {Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}
           </Button>
+          <Button
+            onClick={() => window.RepluggedNative.quickCSS.openFolder()}
+            color={Button.Colors.PRIMARY}
+            look={Button.Looks.LINK}>
+            {Messages.REPLUGGED_QUICKCSS_FOLDER_OPEN}
+          </Button>
         </div>
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
