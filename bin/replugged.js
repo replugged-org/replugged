@@ -3,7 +3,15 @@
 const directory = process.cwd();
 const asar = require("@electron/asar");
 const { Parcel } = require("@parcel/core");
-const { cpSync, rmSync, writeFileSync, copyFileSync, existsSync, mkdirSync, readFileSync } = require("fs");
+const {
+  cpSync,
+  rmSync,
+  writeFileSync,
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+} = require("fs");
 const esbuild = require("esbuild");
 const { join } = require("path");
 
@@ -17,7 +25,7 @@ function bundleAddon() {
   asar.createPackage("dist", `${outputName}.asar`);
   copyFileSync("dist/manifest.json", `${outputName}.json`);
 
-  console.log(`✨ Bundled ${manifest.name}`)
+  console.log(`✨ Bundled ${manifest.name}`);
 }
 
 function buildPlugin({ watch, noInstall, production }) {
@@ -28,8 +36,8 @@ function buildPlugin({ watch, noInstall, production }) {
     name: "globalModules",
     setup: (build) => {
       build.onResolve({ filter: /^replugged.+$/ }, (args) => {
-        if (args.kind !== "import-statement") return {};
-  
+        if (args.kind !== "import-statement") return undefined;
+
         return {
           errors: [
             {
@@ -38,16 +46,16 @@ function buildPlugin({ watch, noInstall, production }) {
           ],
         };
       });
-  
+
       build.onResolve({ filter: /^replugged$/ }, (args) => {
-        if (args.kind !== "import-statement") return {};
-  
+        if (args.kind !== "import-statement") return undefined;
+
         return {
           path: args.path,
           namespace: "replugged",
         };
       });
-  
+
       build.onLoad(
         {
           filter: /.*/,
@@ -61,13 +69,18 @@ function buildPlugin({ watch, noInstall, production }) {
       );
     },
   };
-  
+
   const CONFIG_PATH = (() => {
     switch (process.platform) {
       case "win32":
         return join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
       case "darwin":
-        return join(process.env.HOME || "", "Library", "Application Support", REPLUGGED_FOLDER_NAME);
+        return join(
+          process.env.HOME || "",
+          "Library",
+          "Application Support",
+          REPLUGGED_FOLDER_NAME,
+        );
       default:
         if (process.env.XDG_CONFIG_HOME) {
           return join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
@@ -75,7 +88,7 @@ function buildPlugin({ watch, noInstall, production }) {
         return join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
     }
   })();
-  
+
   const install = {
     name: "install",
     setup: (build) => {
@@ -89,7 +102,7 @@ function buildPlugin({ watch, noInstall, production }) {
       });
     },
   };
-  
+
   const common = {
     absWorkingDir: directory,
     bundle: true,
@@ -102,9 +115,9 @@ function buildPlugin({ watch, noInstall, production }) {
     target: `chrome${CHROME_VERSION}`,
     watch,
   };
-  
+
   const targets = [];
-  
+
   if ("renderer" in manifest) {
     targets.push(
       esbuild.build({
@@ -113,10 +126,10 @@ function buildPlugin({ watch, noInstall, production }) {
         outfile: "dist/renderer.js",
       }),
     );
-  
+
     manifest.renderer = "renderer.js";
   }
-  
+
   if ("plaintextPatches" in manifest) {
     targets.push(
       esbuild.build({
@@ -125,15 +138,15 @@ function buildPlugin({ watch, noInstall, production }) {
         outfile: "dist/plaintextPatches.js",
       }),
     );
-  
+
     manifest.plaintextPatches = "plaintextPatches.js";
   }
-  
+
   if (!existsSync("dist")) mkdirSync("dist");
-  
+
   writeFileSync("dist/manifest.json", JSON.stringify(manifest));
-  
-  Promise.all(targets);  
+
+  Promise.all(targets);
 }
 
 function buildTheme({ watch: shouldWatch, noInstall }) {
@@ -172,7 +185,12 @@ function buildTheme({ watch: shouldWatch, noInstall }) {
       case "win32":
         return join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
       case "darwin":
-        return join(process.env.HOME || "", "Library", "Application Support", REPLUGGED_FOLDER_NAME);
+        return join(
+          process.env.HOME || "",
+          "Library",
+          "Application Support",
+          REPLUGGED_FOLDER_NAME,
+        );
       default:
         if (process.env.XDG_CONFIG_HOME) {
           return join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
@@ -238,37 +256,42 @@ function buildTheme({ watch: shouldWatch, noInstall }) {
 const { argv } = require("yargs")
   .scriptName("replugged")
   .usage("$0 <cmd> [args]")
-  .command("build [addon] [--no-install] [--watch]", "Build an Addon", (yargs) => {
-    yargs.positional("addon", {
-      type: "string",
-      describe: "Either a plugin or theme"
-    })
-    yargs.option("no-install", {
-      type: "boolean",
-      describe: "Don't install the built addon",
-      default: false
-    })
-    yargs.option("watch", {
-      type: "boolean",
-      describe: "Watch the addon for changes to reload building",
-      default: false
-    })
-    yargs.option("production", {
-      type: "boolean",
-      describe: "Don't compile the source maps when building.",
-      default: false
-    })
-  }, (argv) => {
-    if (argv.addon === "plugin") {
-      buildPlugin(argv);
-    } else if (argv.addon === "theme") {
-      buildTheme(argv);
-    } else {
-      console.log("Invalid addon type.");
-    }
-  })
+  .command(
+    "build [addon] [--no-install] [--watch]",
+    "Build an Addon",
+    (yargs) => {
+      yargs.positional("addon", {
+        type: "string",
+        describe: "Either a plugin or theme",
+      });
+      yargs.option("no-install", {
+        type: "boolean",
+        describe: "Don't install the built addon",
+        default: false,
+      });
+      yargs.option("watch", {
+        type: "boolean",
+        describe: "Watch the addon for changes to reload building",
+        default: false,
+      });
+      yargs.option("production", {
+        type: "boolean",
+        describe: "Don't compile the source maps when building.",
+        default: false,
+      });
+    },
+    (argv) => {
+      if (argv.addon === "plugin") {
+        buildPlugin(argv);
+      } else if (argv.addon === "theme") {
+        buildTheme(argv);
+      } else {
+        console.log("Invalid addon type.");
+      }
+    },
+  )
   .command("bundle", "Bundle any Addon", (_) => {}, bundleAddon)
   .parserConfiguration({
-    "boolean-negation": false
+    "boolean-negation": false,
   })
-  .help()
+  .help();
