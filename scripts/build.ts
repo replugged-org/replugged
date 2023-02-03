@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import path from "path";
 import asar from "@electron/asar";
-import { writeFileSync } from "fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "fs";
 
 const NODE_VERSION = "14";
 const CHROME_VERSION = "91";
@@ -9,23 +9,41 @@ const CHROME_VERSION = "91";
 const watch = process.argv.includes("--watch");
 const production = process.argv.includes("--production");
 
-const install: esbuild.Plugin = {
-  name: "install",
+const preBundle: esbuild.Plugin = {
+  name: "preBundle",
   setup: (build) => {
     build.onEnd(() => {
-      if (production) {
-        writeFileSync(
-          "dist/package.json",
-          JSON.stringify({
-            main: "main.js",
-            name: "replugged",
-          }),
-        );
-        asar.createPackage("dist", "app.asar");
+      if (!existsSync("dist/i18n")) {
+        mkdirSync("dist/i18n");
       }
+
+      readdirSync("i18n").forEach((file) => {
+        if (file.endsWith(".json")) {
+          copyFileSync(`i18n/${file}`, `dist/i18n/${file}`);
+        }
+      });
+
+      writeFileSync(
+        "dist/package.json",
+        JSON.stringify({
+          main: "main.js",
+          name: "replugged",
+        }),
+      );
+      asar.createPackage("dist", "app.asar");
     });
   },
 };
+
+const plugins: esbuild.Plugin[] = [];
+
+if (production) {
+  rmSync("dist", { recursive: true, force: true });
+  plugins.push(preBundle);
+} else {
+  rmSync("dist/i18n", { recursive: true, force: true });
+  rmSync("dist/package.json", { force: true });
+}
 
 const common: esbuild.BuildOptions = {
   absWorkingDir: path.join(__dirname, ".."),
@@ -35,7 +53,7 @@ const common: esbuild.BuildOptions = {
   format: "cjs" as esbuild.Format,
   logLevel: "info",
   watch,
-  plugins: [install],
+  plugins,
 };
 
 Promise.all([
