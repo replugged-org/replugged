@@ -3,14 +3,14 @@ import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 interface SelectOptionType {
   label: string;
-  value: string;
+  value: string | number;
   disabled?: boolean;
   key?: string;
 }
 
 interface SelectCompProps {
   options: SelectOptionType[];
-  isSelected: (e: string) => void;
+  isSelected?: (e: string) => void;
   serialize?: (e: string) => void;
   select?: (e: string) => void;
   clear?: () => void;
@@ -43,19 +43,23 @@ const Select = (await waitForModule(filters.bySource(selectRgx)).then((mod) =>
 )) as SelectCompType;
 
 export interface SelectProps extends SelectCompProps {
-  onSelect: (e: string) => void;
+  onChange?: (e: string) => void;
+  onSelect?: (e: string) => void;
   onClear?: () => void;
+  value?: string | number;
   disabled?: boolean;
 }
 
 export type SelectType = React.FC<React.PropsWithChildren<SelectProps>>;
 
 export default ((props) => {
+  if (!props.isSelected && props.value != null) props.isSelected = (e) => e === props.value;
   if (!props.serialize) props.serialize = (e) => e;
+
   return (
     <Select
       isDisabled={props.disabled}
-      select={props.onSelect}
+      select={props.onChange || props.onSelect}
       clear={props.onClear}
       {...props}></Select>
   );

@@ -4,7 +4,7 @@ import { Divider, FormItem, FormText, Text } from ".";
 
 interface RadioOptionType {
   name: string;
-  value: string;
+  value: string | number;
   desc?: string;
   disabled?: boolean;
   color?: string;
