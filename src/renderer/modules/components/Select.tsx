@@ -10,9 +10,9 @@ interface SelectOptionType {
 
 interface SelectCompProps {
   options: SelectOptionType[];
-  isSelected?: (e: string) => void;
-  serialize?: (e: string) => void;
-  select?: (e: string) => void;
+  isSelected?: (e: string | number) => void;
+  serialize?: (e: string | number) => void;
+  select?: (e: string | number) => void;
   clear?: () => void;
   placeholder?: string;
   isDisabled?: boolean;
@@ -43,8 +43,8 @@ const Select = (await waitForModule(filters.bySource(selectRgx)).then((mod) =>
 )) as SelectCompType;
 
 export interface SelectProps extends SelectCompProps {
-  onChange?: (e: string) => void;
-  onSelect?: (e: string) => void;
+  onChange?: (e: string | number) => void;
+  onSelect?: (e: string | number) => void;
   onClear?: () => void;
   value?: string | number;
   disabled?: boolean;
