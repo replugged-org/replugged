@@ -328,5 +328,8 @@
     "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED": "{name} asentaminen epäonnistui.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED": "{name} asennettiin mutta sitä ei voitu ladata.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL": "Asennus peruttu.",
-    "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS": "{name} asennettiin onnistuneesti."
+    "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS": "{name} asennettiin onnistuneesti.",
+    "REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS": "{name} Poistettiin Käytöstä",
+    "REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS": "{name} Otettiin Käyttöön",
+    "REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED": "Lisäosan tietojen saaminen epäonnistui."
 }
