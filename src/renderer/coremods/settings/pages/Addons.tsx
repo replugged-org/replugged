@@ -186,7 +186,7 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
         <Tooltip
           text={Messages.REPLUGGED_ADDON_PROFILE_OPEN.format({ type: "GitHub" })}
           className="replugged-addon-icon replugged-addon-icon-author">
-          <a href={`https://github.com/${author.github}`} target="_blank">
+          <a href={`https://github.com/${author.github}`} target="_blank" rel="noopener noreferrer">
             <Icons.GitHub />
           </a>
         </Tooltip>
@@ -266,7 +266,7 @@ function Card({
                 type: label(type, { caps: "title" }),
               })}
               className="replugged-addon-icon">
-              <a href={sourceLink} target="_blank">
+              <a href={sourceLink} target="_blank" rel="noopener noreferrer">
                 <Icons.Link />
               </a>
             </Tooltip>
