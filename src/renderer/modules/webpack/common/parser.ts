@@ -6,7 +6,7 @@ interface State {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface Rule<T = any> {
+export interface Rule<T = any> {
   order: number;
   match: (source: string, state: State) => RegExpExecArray | null;
   parse: (match: RegExpExecArray) => T;

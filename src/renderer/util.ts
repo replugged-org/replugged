@@ -1,6 +1,8 @@
-import { channels, fluxDispatcher, guilds } from "@common";
-import { Fiber } from "react-reconciler";
-import { ObjectExports } from "../types";
+import { React, channels, fluxDispatcher, guilds } from "@common";
+import type { Fiber } from "react-reconciler";
+import type { Jsonifiable } from "type-fest";
+import type { ObjectExports } from "../types";
+import { SettingsManager } from "./apis/settings";
 import { getByProps, getBySource, getFunctionBySource } from "./modules/webpack";
 
 /**
@@ -161,4 +163,40 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
     invite: inviteData,
     code: invite,
   });
+}
+
+export function useSetting<
+  T extends Record<string, Jsonifiable>,
+  D extends keyof T,
+  K extends Extract<keyof T, string>,
+  F extends T[K] | undefined,
+>(
+  settings: SettingsManager<T, D>,
+  key: K,
+  fallback?: F,
+): {
+  value: K extends D
+    ? NonNullable<T[K]>
+    : F extends null | undefined
+    ? T[K] | undefined
+    : NonNullable<T[K]> | F;
+  onChange: (newValue: T[K] | (Record<string, unknown> & { value: T[K] })) => void;
+} {
+  const initial = settings.get(key, fallback);
+  const [value, setValue] = React.useState(initial);
+
+  return {
+    value,
+    onChange: (newValue: T[K] | (Record<string, unknown> & { value: T[K] })) => {
+      if (newValue && typeof newValue === "object" && "value" in newValue) {
+        // @ts-expect-error It doesn't understand ig
+        setValue(newValue.value as T[K]);
+        settings.set(key, newValue.value as T[K]);
+      } else {
+        // @ts-expect-error It doesn't understand ig
+        setValue(newValue);
+        settings.set(key, newValue);
+      }
+    },
+  };
 }

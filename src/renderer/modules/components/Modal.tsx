@@ -20,6 +20,11 @@ export interface ModalOptions {
 export interface ModalCompProps {
   children: React.ReactNode;
 }
+
+export interface ModalCloseProps {
+  onClick(): void;
+}
+
 export interface ModalRootProps extends ModalCompProps {
   transitionState?: ModalTransitionState;
   size?: "small" | "medium" | "large" | "dynamic";
@@ -29,13 +34,13 @@ export interface ModalRootProps extends ModalCompProps {
 }
 
 // todo: make props type for each component
-export type ModalType = {
+export interface ModalType {
   ModalRoot: ReactComponent<ModalRootProps>;
   ModalHeader: ReactComponent<ModalCompProps>;
   ModalContent: ReactComponent<ModalCompProps>;
   ModalFooter: ReactComponent<ModalCompProps>;
-  ModalCloseButton: ReactComponent<ModalCompProps>;
-};
+  ModalCloseButton: ReactComponent<ModalCloseProps>;
+}
 
 const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"));
 

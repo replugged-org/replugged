@@ -7,6 +7,8 @@ export type RepluggedWebContents = WebContents & {
 };
 
 export enum RepluggedIpcChannels {
+  GET_I18N_STRINGS = "REPLUGGED_GET_I18N_STRINGS",
+  GET_I18N_OVERRIDES = "REPLUGGED_GET_I18N_OVERRIDES",
   GET_DISCORD_PRELOAD = "REPLUGGED_GET_DISCORD_PRELOAD",
   GET_QUICK_CSS = "REPLUGGED_GET_QUICK_CSS",
   SAVE_QUICK_CSS = "REPLUGGED_SAVE_QUICK_CSS",
@@ -91,6 +93,11 @@ export interface RepluggedTheme {
 export interface RepluggedPlugin {
   path: string;
   manifest: PluginManifest;
+  hasCSS: boolean;
+}
+
+export interface RepluggedTranslations {
+  [key: string]: RepluggedTranslations;
 }
 
 export * from "./discord";

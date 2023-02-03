@@ -1,0 +1,17 @@
+.replugged-error-boundary h1 {
+  font-size: 24px;
+  font-family: var(--font-display);
+  font-weight: bold;
+  color: var(--header-primary);
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.replugged-error-boundary p {
+  font-size: 16px;
+  font-family: var(--font-primary);
+  font-weight: normal;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 0px;
+}

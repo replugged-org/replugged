@@ -210,11 +210,7 @@ function after<
  * ```
  */
 export class Injector {
-  private uninjectors: Set<() => void>;
-
-  public constructor() {
-    this.uninjectors = new Set();
-  }
+  #uninjectors = new Set<() => void>();
 
   /**
    * Run code before a native module
@@ -229,7 +225,7 @@ export class Injector {
     A extends unknown[] = Parameters<T[U]>,
   >(obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
     const uninjector = before(obj, funcName, cb);
-    this.uninjectors.add(uninjector);
+    this.#uninjectors.add(uninjector);
     return uninjector;
   }
 
@@ -247,7 +243,7 @@ export class Injector {
     R = ReturnType<T[U]>,
   >(obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
     const uninjector = instead(obj, funcName, cb);
-    this.uninjectors.add(uninjector);
+    this.#uninjectors.add(uninjector);
     return uninjector;
   }
 
@@ -265,7 +261,7 @@ export class Injector {
     R = ReturnType<T[U]>,
   >(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
     const uninjector = after(obj, funcName, cb);
-    this.uninjectors.add(uninjector);
+    this.#uninjectors.add(uninjector);
     return uninjector;
   }
 
@@ -273,10 +269,10 @@ export class Injector {
    * Remove all injections made by this injector
    */
   public uninjectAll(): void {
-    for (const uninjector of this.uninjectors) {
+    for (const uninjector of this.#uninjectors) {
       if (typeof uninjector === "function") {
         uninjector();
-        this.uninjectors.delete(uninjector);
+        this.#uninjectors.delete(uninjector);
       }
     }
   }
