@@ -3,16 +3,16 @@ import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 interface SelectOptionType {
   label: string;
-  value: string | number;
+  value: string;
   disabled?: boolean;
   key?: string;
 }
 
 interface SelectCompProps {
   options: SelectOptionType[];
-  isSelected?: (e: string | number) => void;
-  serialize?: (e: string | number) => void;
-  select?: (e: string | number) => void;
+  isSelected?: (e: string) => void;
+  serialize?: (e: string) => void;
+  select?: (e: string) => void;
   clear?: () => void;
   placeholder?: string;
   isDisabled?: boolean;
@@ -43,10 +43,10 @@ const Select = (await waitForModule(filters.bySource(selectRgx)).then((mod) =>
 )) as SelectCompType;
 
 export interface SelectProps extends SelectCompProps {
-  onChange?: (e: string | number) => void;
-  onSelect?: (e: string | number) => void;
+  onChange?: (e: string) => void;
+  onSelect?: (e: string) => void;
   onClear?: () => void;
-  value?: string | number;
+  value?: string;
   disabled?: boolean;
 }
 
