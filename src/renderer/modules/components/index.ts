@@ -42,6 +42,24 @@ export type { SwitchItemType };
 export let SwitchItem: SwitchItemType;
 importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.SwitchItem));
 
+import { type RadioItemType, RadioType } from "./RadioItem";
+export type { RadioType };
+export let Radio: RadioType;
+importTimeout("Radio", import("./RadioItem"), (mod) => (Radio = mod.Radio));
+
+export type { RadioItemType };
+export let RadioItem: RadioItemType;
+importTimeout("RadioItem", import("./RadioItem"), (mod) => (RadioItem = mod.RadioItem));
+
+import { type SelectItemType, SelectType } from "./SelectItem";
+export type { SelectType };
+export let Select: SelectType;
+importTimeout("Select", import("./SelectItem"), (mod) => (Select = mod.Select));
+
+export type { SelectItemType };
+export let SelectItem: SelectItemType;
+importTimeout("SelectItem", import("./SelectItem"), (mod) => (SelectItem = mod.SelectItem));
+
 import type { ModalType } from "./Modal";
 export type { ModalType };
 export let Modal: ModalType;
@@ -90,6 +108,11 @@ import type { TextInputType } from "./TextInput";
 export type { TextInputType };
 export let TextInput: TextInputType;
 importTimeout("Input", import("./TextInput"), (mod) => (TextInput = mod.default));
+
+import type { SliderType } from "./Slider";
+export type { SliderType };
+export let Slider: SliderType;
+importTimeout("Slider", import("./Slider"), (mod) => (Slider = mod.default));
 
 import type { TextType } from "./Text";
 export type { TextType };

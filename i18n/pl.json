@@ -244,7 +244,7 @@
     "REPLUGGED_SETTINGS_ERROR_RENDER_PANEL": "Podczas renderowania panelu ustawień wystąpił błąd.",
     "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Stos komponentów:",
     "REPLUGGED_SETTINGS_NO_SLASH_PREFIX": "Prefiks nie powinien być ustawiony na `/`, ponieważ jest już używany przez Discorda i może wyłączyć autouzupełnianie Replugged.",
-    "REPLUGGED_TOAST_INSTALL_HEADER": "Instalowanie {name}...",
+    "REPLUGGED_TOAST_INSTALL_HEADER": "Instalowanie {name}…",
     "REPLUGGED_TOAST_INSTALL_CANCELLED_HEADER": "Anulowano instalacje {name}",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_HEADER": "Plugin już zainstalowany",
     "REPLUGGED_TOAST_PLUGIN_ALREADY_INSTALLED_CONTENT": "{name} jest już zainstalowany.",

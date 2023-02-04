@@ -14,13 +14,14 @@ interface UseCodeMirrorOptions {
   container?: HTMLDivElement | null;
 }
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type ThemeModule = {
   theme: "light" | "dark";
   addChangeListener: (listener: () => unknown) => unknown;
   removeChangeListener: (listener: () => unknown) => unknown;
 };
 
-function useTheme() {
+function useTheme(): "light" | "dark" {
   const [theme, setTheme] = React.useState<"light" | "dark">("dark");
 
   const themeMod = webpack.getByProps<keyof ThemeModule, ThemeModule>(
@@ -31,7 +32,7 @@ function useTheme() {
 
   if (!themeMod) return theme;
 
-  const themeChange = () => {
+  const themeChange = (): void => {
     setTheme(themeMod.theme);
   };
 
@@ -47,11 +48,16 @@ function useTheme() {
   return theme;
 }
 
-function useCodeMirror({ value: initialValueParam, onChange, container }: UseCodeMirrorOptions) {
+function useCodeMirror({ value: initialValueParam, onChange, container }: UseCodeMirrorOptions): {
+  value: string;
+  setValue: (value: string) => void;
+} {
   const theme = useTheme();
 
   const [value, setValue] = React.useState("");
   const [view, setView] = React.useState<EditorView | undefined>(undefined);
+  // ESLint doesn't think x is a number, but it is
+  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
   const [update, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
   React.useEffect(() => {
@@ -73,7 +79,9 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
           css(),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
+              // eslint-disable-next-line @typescript-eslint/no-base-to-string
               setValue(update.state.doc.toString());
+              // eslint-disable-next-line @typescript-eslint/no-base-to-string
               onChange?.(update.state.doc.toString());
             }
           }),
@@ -103,7 +111,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
   return { value, setValue: customSetValue };
 }
 
-export const QuickCSS = () => {
+export const QuickCSS = (): React.ReactElement => {
   const ref = React.useRef<HTMLDivElement>(null);
   const { value, setValue } = useCodeMirror({
     container: ref.current,
@@ -111,7 +119,7 @@ export const QuickCSS = () => {
   const [ready, setReady] = React.useState(false);
 
   React.useEffect(() => {
-    window.RepluggedNative.quickCSS.get().then((val) => {
+    void window.RepluggedNative.quickCSS.get().then((val) => {
       setValue(val);
       setReady(true);
     });
@@ -133,6 +141,12 @@ export const QuickCSS = () => {
               toast.toast(Messages.REPLUGGED_TOAST_QUICKCSS_RELOAD);
             }}>
             {Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}
+          </Button>
+          <Button
+            onClick={() => window.RepluggedNative.quickCSS.openFolder()}
+            color={Button.Colors.PRIMARY}
+            look={Button.Looks.LINK}>
+            {Messages.REPLUGGED_QUICKCSS_FOLDER_OPEN}
           </Button>
         </div>
       </Flex>

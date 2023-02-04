@@ -14,7 +14,7 @@ export interface Section {
 
 export interface SettingsTools {
   rpSections: Section[];
-  rpSectionsAfter: Record<string, Section[]>;
+  rpSectionsAfter: Map<string, Section[]>;
   addSection: (options: {
     name: string;
     label: string | LabelCallback;

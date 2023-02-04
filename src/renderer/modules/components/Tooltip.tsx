@@ -13,11 +13,11 @@ interface BaseTooltipProps {
 }
 
 interface TooltipFunctionChildren extends BaseTooltipProps {
-  children: (props: HTMLAttributes<HTMLSpanElement>) => React.ReactElement;
+  children: (props: HTMLAttributes<HTMLSpanElement>) => React.ReactNode;
 }
 
 interface TooltipCustom extends BaseTooltipProps {
-  children: React.ReactElement;
+  children: React.ReactNode;
 }
 
 type OriginalTooltipType = React.FC<TooltipFunctionChildren>;

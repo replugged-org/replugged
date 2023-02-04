@@ -1,10 +1,11 @@
-import { getByProps, getBySource } from "../../modules/webpack";
+import { filters, getByProps, waitForModule } from "../../modules/webpack";
 import { React } from "@common";
 import { Messages } from "@common/i18n";
 import "./badge.css";
 import Badges from "./badges";
 import { Clickable, Tooltip } from "@components";
 import { goToOrJoinServer } from "../../util";
+import { RawModule } from "src/types";
 
 type Clickable = React.FC<
   Record<string, unknown> & {
@@ -96,15 +97,16 @@ export type BadgeComponent = (args: BadgeArgs) => React.ReactElement<{
 }>;
 
 // todo: move to common modules
-const openExternal = getBySource('.target="_blank";') as (url: string) => Promise<void>;
-if (!openExternal) {
-  throw new Error("Failed to find openExternal function");
-}
+const openExternal = (url: string): Promise<void> =>
+  waitForModule<RawModule & ((url: string) => Promise<void>)>(
+    filters.bySource('.target="_blank";'),
+  ).then((module) => module(url));
 
 // todo: make global (configurable?) variables for these
-const openContributorsPage = () => openExternal("https://replugged.dev/contributors");
-const openTranslationsPage = () => openExternal("https://i18n.replugged.dev");
-const joinRepluggedServer = () => goToOrJoinServer("replugged");
+const openContributorsPage = (): Promise<void> =>
+  openExternal("https://replugged.dev/contributors");
+const openTranslationsPage = (): Promise<void> => openExternal("https://i18n.replugged.dev");
+const joinRepluggedServer = (): Promise<void> => goToOrJoinServer("replugged");
 
 const Custom = React.memo(({ url, name }: BadgeArgs) => (
   <Base children={<img src={url} style={{ width: "100%", height: "100%" }} />} tooltip={name} />

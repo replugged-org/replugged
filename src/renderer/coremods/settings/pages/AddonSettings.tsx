@@ -7,7 +7,7 @@ import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 export function showAddonSettings(
   addon: RepluggedPlugin | RepluggedTheme,
   Element: React.ComponentType,
-) {
+): void {
   let modalKey: string;
 
   modalKey = modal.openModal((props) => (

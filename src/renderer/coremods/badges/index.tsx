@@ -15,10 +15,10 @@ type BadgeMod = (args: BadgeModArgs) => React.ReactElement<{
   className: string;
 }>;
 
-type BadgeCache = {
+interface BadgeCache {
   badges: APIBadges;
   lastFetch: number;
-};
+}
 
 // todo: guilds
 const cache = new Map<string, BadgeCache>();
@@ -33,7 +33,10 @@ export async function start(): Promise<void> {
     throw new Error("Could not find badges function");
   }
 
-  const { containerWithContent } = getByProps("containerWithContent") as Record<string, string>;
+  const { containerWithContent } = getByProps<
+    "containerWithContent",
+    { containerWithContent: "string" }
+  >("containerWithContent")!;
 
   injector.after(
     mod,
@@ -87,7 +90,7 @@ export async function start(): Promise<void> {
         return res;
       }
 
-      if (badges.custom && badges.custom.name && badges.custom.icon) {
+      if (badges.custom?.name && badges.custom.icon) {
         res.props.children.push(<Custom url={badges.custom.icon} name={badges.custom.name} />);
       }
 
