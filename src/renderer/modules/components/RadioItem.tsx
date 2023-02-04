@@ -1,6 +1,6 @@
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import { Divider, FormItem, FormText, Text } from ".";
+import { Divider, FormItem, FormText } from ".";
 
 interface RadioOptionType {
   name: string;
@@ -47,13 +47,10 @@ export type RadioItemType = React.FC<React.PropsWithChildren<RadioItemProps>>;
 
 export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React.ReactElement => {
   return (
-    <div style={{ marginBottom: 20 }}>
-      <FormItem>
-        <Text.Eyebrow style={{ marginBottom: 8 }}>{props.children}</Text.Eyebrow>
-        <FormText.DESCRIPTION style={{ marginBottom: 8 }}>{props.note}</FormText.DESCRIPTION>
-        <Radio {...props}></Radio>
-        <Divider className={classes.dividerDefault} />
-      </FormItem>
-    </div>
+    <FormItem title={props.children} style={{ marginBottom: 20 }}>
+      <FormText.DESCRIPTION style={{ marginBottom: 8 }}>{props.note}</FormText.DESCRIPTION>
+      <Radio {...props}></Radio>
+      <Divider className={classes.dividerDefault} />
+    </FormItem>
   );
 };

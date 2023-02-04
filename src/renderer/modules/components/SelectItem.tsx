@@ -1,6 +1,6 @@
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import { Divider, FormItem, FormText, Text } from ".";
+import { Divider, FormItem, FormText } from ".";
 
 interface SelectOptionType {
   label: string;
@@ -76,13 +76,10 @@ export type SelectItemType = React.FC<React.PropsWithChildren<SelectItemProps>>;
 
 export const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): React.ReactElement => {
   return (
-    <div style={{ marginBottom: 20 }}>
-      <FormItem>
-        <Text.Eyebrow style={{ marginBottom: 8 }}>{props.children}</Text.Eyebrow>
-        <Select {...props}></Select>
-        <FormText.DESCRIPTION style={{ marginTop: 8 }}>{props.note}</FormText.DESCRIPTION>
-        <Divider className={classes.dividerDefault} />
-      </FormItem>
-    </div>
+    <FormItem title={props.children} style={{ marginBottom: 20 }}>
+      <Select {...props}></Select>
+      <FormText.DESCRIPTION style={{ marginTop: 8 }}>{props.note}</FormText.DESCRIPTION>
+      <Divider className={classes.dividerDefault} />
+    </FormItem>
   );
 };

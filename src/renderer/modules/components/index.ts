@@ -83,7 +83,7 @@ importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.FormTex
 import type { FormItemType } from "./FormItem";
 export type { FormItemType };
 export let FormItem: FormItemType;
-importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
+importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.FormItem));
 
 import type { ButtonItemType, ButtonType } from "./Button";
 export type { ButtonType };
