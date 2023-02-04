@@ -113,7 +113,6 @@ async function injectRpc(): Promise<void> {
 
   injector.instead(rpcValidatorMod, validatorFunctionKey, (args, fn) => {
     const [, clientId, origin] = args;
-    console.log(clientId, origin);
     if (origin === "https://replugged.dev") {
       args[0].authorization.scopes = ["REPLUGGED"];
       return Promise.resolve();
