@@ -1,10 +1,11 @@
-import { getByProps, getBySource } from "../../modules/webpack";
+import { filters, getByProps, waitForModule } from "../../modules/webpack";
 import { React } from "@common";
 import { Messages } from "@common/i18n";
 import "./badge.css";
 import Badges from "./badges";
 import { Clickable, Tooltip } from "@components";
 import { goToOrJoinServer } from "../../util";
+import { RawModule } from "src/types";
 
 type Clickable = React.FC<
   Record<string, unknown> & {
@@ -96,7 +97,10 @@ export type BadgeComponent = (args: BadgeArgs) => React.ReactElement<{
 }>;
 
 // todo: move to common modules
-const openExternal = getBySource('.target="_blank";') as (url: string) => Promise<void>;
+const openExternal = (url: string): Promise<void> =>
+  waitForModule<RawModule & ((url: string) => Promise<void>)>(
+    filters.bySource('.target="_blank";'),
+  ).then((module) => module(url));
 if (!openExternal) {
   throw new Error("Failed to find openExternal function");
 }

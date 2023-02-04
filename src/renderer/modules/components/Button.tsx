@@ -33,7 +33,7 @@ export type ButtonType = ReactComponent<{
   Looks: Record<"FILLED" | "INVERTED" | "OUTLINED" | "LINK" | "BLANK", string>;
 };
 
-export const Button = (await waitForModule(filters.bySource('"onDropdownClick"'))) as ButtonType;
+export const Button = (await waitForModule(filters.bySource('"dropdownSize"'))) as ButtonType;
 
 const classes = await waitForModule<
   ObjectExports & Record<"labelRow" | "title" | "note" | "dividerDefault", string>
