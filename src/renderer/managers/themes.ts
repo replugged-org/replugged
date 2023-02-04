@@ -124,9 +124,10 @@ export async function uninstall(id: string): Promise<void> {
   if (!themes.has(id)) {
     throw new Error(`Theme "${id}" does not exist.`);
   }
-  await window.RepluggedNative.themes.uninstall(id);
+  const theme = themes.get(id)!;
   unload(id);
   themes.delete(id);
+  await window.RepluggedNative.themes.uninstall(theme.path);
 }
 
 export function getDisabled(): string[] {

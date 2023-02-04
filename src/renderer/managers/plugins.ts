@@ -215,9 +215,10 @@ export async function uninstall(id: string): Promise<void> {
   if (!plugins.has(id)) {
     throw new Error(`Plugin "${id}" does not exist.`);
   }
-  await window.RepluggedNative.plugins.uninstall(id);
+  const plugin = plugins.get(id)!;
   await stop(id);
   plugins.delete(id);
+  await window.RepluggedNative.plugins.uninstall(plugin.path);
 }
 
 export function getDisabled(): string[] {
