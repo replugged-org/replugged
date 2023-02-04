@@ -211,7 +211,7 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
     </Flex>
   ));
 
-  let message: string = "";
+  let message = "";
 
   if (els.length === 1) {
     // return Messages.REPLUGGED_ADDON_AUTHORS_ONE.format({

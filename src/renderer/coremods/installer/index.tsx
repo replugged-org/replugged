@@ -50,7 +50,7 @@ function parseInstallLink(href: string): InstallLinkProps | null {
   }
 }
 
-let uninjectFns: (() => void)[] = [];
+let uninjectFns: Array<() => void> = [];
 
 async function injectLinks(): Promise<void> {
   const linkMod = await waitForModule(filters.bySource(".useDefaultUnderlineStyles"), {
@@ -85,11 +85,13 @@ type Socket = Record<string, unknown> & {
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type RPCData = {
   args: Record<string, Jsonifiable>;
   cmd: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type RPCCommand = {
   scope?:
     | string
