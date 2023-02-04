@@ -101,9 +101,6 @@ const openExternal = (url: string): Promise<void> =>
   waitForModule<RawModule & ((url: string) => Promise<void>)>(
     filters.bySource('.target="_blank";'),
   ).then((module) => module(url));
-if (!openExternal) {
-  throw new Error("Failed to find openExternal function");
-}
 
 // todo: make global (configurable?) variables for these
 const openContributorsPage = (): Promise<void> =>
