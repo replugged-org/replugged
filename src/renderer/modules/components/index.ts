@@ -51,10 +51,14 @@ export type { RadioItemType };
 export let RadioItem: RadioItemType;
 importTimeout("RadioItem", import("./RadioItem"), (mod) => (RadioItem = mod.RadioItem));
 
-import { type SelectType } from "./Select";
+import { type SelectItemType, SelectType } from "./SelectItem";
 export type { SelectType };
 export let Select: SelectType;
-importTimeout("Select", import("./Select"), (mod) => (Select = mod.default));
+importTimeout("Select", import("./SelectItem"), (mod) => (Select = mod.Select));
+
+export type { SelectItemType };
+export let SelectItem: SelectItemType;
+importTimeout("SelectItem", import("./SelectItem"), (mod) => (SelectItem = mod.SelectItem));
 
 import type { ModalType } from "./Modal";
 export type { ModalType };

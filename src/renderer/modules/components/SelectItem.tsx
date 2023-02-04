@@ -1,5 +1,6 @@
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import { Divider, FormItem, FormText, Text } from ".";
 
 interface SelectOptionType {
   label: string;
@@ -38,7 +39,7 @@ type SelectCompType = React.ComponentType<SelectCompProps>;
 
 const selectRgx = /.\.options,.=.\.placeholder/;
 
-const Select = (await waitForModule(filters.bySource(selectRgx)).then((mod) =>
+const SelectComp = (await waitForModule(filters.bySource(selectRgx)).then((mod) =>
   getFunctionBySource(selectRgx, mod as ObjectExports),
 )) as SelectCompType;
 
@@ -52,15 +53,36 @@ export interface SelectProps extends SelectCompProps {
 
 export type SelectType = React.FC<React.PropsWithChildren<SelectProps>>;
 
-export default ((props) => {
+export const Select = ((props) => {
   if (!props.isSelected && props.value != null) props.isSelected = (e) => e === props.value;
   if (!props.serialize) props.serialize = (e) => e;
 
   return (
-    <Select
+    <SelectComp
       isDisabled={props.disabled}
       select={props.onChange || props.onSelect}
       clear={props.onClear}
-      {...props}></Select>
+      {...props}></SelectComp>
   );
 }) as SelectType;
+
+const classes = await waitForModule<Record<"dividerDefault", string>>(filters.byProps("labelRow"));
+
+interface SelectItemProps extends SelectProps {
+  note?: string;
+}
+
+export type SelectItemType = React.FC<React.PropsWithChildren<SelectItemProps>>;
+
+export const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): React.ReactElement => {
+  return (
+    <div style={{ marginBottom: 20 }}>
+      <FormItem>
+        <Text.Eyebrow style={{ marginBottom: 8 }}>{props.children}</Text.Eyebrow>
+        <Select {...props}></Select>
+        <FormText.DESCRIPTION style={{ marginTop: 8 }}>{props.note}</FormText.DESCRIPTION>
+        <Divider className={classes.dividerDefault} />
+      </FormItem>
+    </div>
+  );
+};
