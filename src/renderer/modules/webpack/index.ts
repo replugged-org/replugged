@@ -254,8 +254,6 @@ export function getModule<T extends ModuleExports | RawModule = ModuleExports | 
  * @param options.raw Return the raw module instead of the exports
  *
  * @see {@link filters}
- *
- * @hidden
  */
 export function getModule<T extends RawModule = RawModule>(
   filter: Filter,
@@ -409,8 +407,6 @@ export async function waitForModule<
  *
  * @remarks
  * Some modules may not be available immediately when Discord starts and will take up to a few seconds. This is useful to ensure that the module is available before using it.
- *
- * @hidden
  */
 export async function waitForModule<
   T extends RawModule | ModuleExports = RawModule | ModuleExports,
@@ -496,8 +492,6 @@ export function getBySource<T extends ModuleExports | RawModule = ModuleExports 
  * *
  * @see {@link filters.bySource}
  * @see {@link getModule}
- *
- * @hidden
  */
 export function getBySource<T extends ModuleExports | RawModule = ModuleExports | RawModule>(
   match: string | RegExp,
@@ -508,6 +502,7 @@ export function getBySource<T extends ModuleExports | RawModule = ModuleExports 
 ): T[] | T | undefined {
   return getModule(filters.bySource(match), options);
 }
+
 export function getByProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
@@ -538,8 +533,6 @@ export function getByProps<
  *
  * @see {@link filters.byProps}
  * @see {@link getModule}
- *
- * @hidden
  */
 export function getByProps<
   P extends string = string,
@@ -566,6 +559,50 @@ export function getByProps<
   if (result instanceof Array) {
     // @ts-expect-error TypeScript isn't going to infer types based on the raw variable, so this is fine
     return result.map((m) => getExportsForProps(m, props));
+  }
+
+  return getExportsForProps<P, T & ModuleExportsWithProps<P>>(result as T & ModuleExports, props);
+}
+
+export function waitForProps<
+  P extends string = string,
+  T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
+>(props: P[], options: { raw?: false }): Promise<T | undefined>;
+export function waitForProps<P extends string = string, T extends RawModule = RawModule>(
+  props: P[],
+  options: { raw?: true },
+): Promise<T | undefined>;
+export function waitForProps<
+  P extends string = string,
+  T extends ModuleExportsWithProps<P> | RawModule = ModuleExportsWithProps<P> | RawModule,
+>(props: P[], options?: { raw?: boolean }): Promise<T | undefined>;
+export function waitForProps<
+  P extends string = string,
+  T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
+>(...props: P[]): T | undefined;
+
+/**
+ * Like {@link getByProps} but waits for the module to be loaded.
+ *
+ * @see {@link getByProps}
+ * @see {@link waitForModule}
+ */
+export async function waitForProps<
+  P extends string = string,
+  T extends ModuleExportsWithProps<P> | RawModule = ModuleExportsWithProps<P> | RawModule,
+>(...args: [P[], GetModuleOptions] | P[]): Promise<T | undefined> {
+  const props = (typeof args[0] === "string" ? args : args[0]) as P[];
+  const raw = typeof args[0] === "string" ? false : (args[1] as GetModuleOptions)?.raw;
+
+  const result = (await (typeof args[args.length - 1] === "object"
+    ? waitForModule(filters.byProps(...props), args[args.length - 1] as GetModuleOptions)
+    : waitForModule(filters.byProps(...props)))) as
+    | ModuleExportsWithProps<P>
+    | RawModule
+    | undefined;
+
+  if (raw || typeof result === "undefined") {
+    return result as (T & RawModule) | undefined;
   }
 
   return getExportsForProps<P, T & ModuleExportsWithProps<P>>(result as T & ModuleExports, props);
