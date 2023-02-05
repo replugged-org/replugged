@@ -1,5 +1,5 @@
 import { filters, waitForModule } from "../webpack";
-import { Divider, Flex, FormText } from ".";
+import { Divider, FormText } from ".";
 import React from "@common/react";
 import type { ObjectExports } from "../../../types";
 
