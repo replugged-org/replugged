@@ -14,13 +14,13 @@
     "plug": "tsx scripts/inject/index.ts inject --no-exit-codes",
     "unplug": "tsx scripts/inject/index.ts uninject --no-exit-codes",
     "typescript:check": "tsc --noEmit",
-    "cspell:check": "cspell lint ./src/**/* ./scripts/**/*",
-    "prettier:check": "prettier ./src ./scripts --check",
-    "eslint:check": "eslint ./src ./scripts",
-    "prettier:fix": "prettier ./src ./scripts --write",
-    "eslint:fix": "eslint ./src ./scripts --fix",
+    "cspell:check": "cspell lint ./src/**/* ./scripts/**/* ./bin*",
+    "prettier:check": "prettier ./src ./scripts ./bin --check",
+    "eslint:check": "eslint ./src ./scripts ./bin",
+    "prettier:fix": "prettier ./src ./scripts ./bin --write",
+    "eslint:fix": "eslint ./src ./scripts ./bin --fix",
     "lint": "pnpm run prettier:check && pnpm run eslint:check && pnpm run cspell:check && pnpm run typescript:check",
-    "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix",
+    "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix && pnpm run cspell:check && pnpm run typescript:check",
     "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src; cp src/*.d.ts dist",
     "postpublish": "rm -rf dist; npm run build",
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
@@ -32,6 +32,10 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
+    "@electron/asar": "^3.2.3",
+    "@parcel/config-default": "^2.8.3",
+    "@parcel/core": "^2.8.3",
+    "@parcel/transformer-sass": "^2.8.3",
     "@types/highlightjs": "^9.12.2",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.8.0",
@@ -51,18 +55,31 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.31.8",
     "np": "^7.6.2",
+    "parcel": "^2.8.3",
     "prettier": "^2.7.1",
+    "style-mod": "^4.0.0",
     "tsx": "^3.9.0",
     "type-fest": "^3.5.0",
     "typedoc": "^0.23.22",
-    "typescript": "^4.8.4",
-    "zod": "^3.19.1"
+    "typescript": "^4.8.4"
   },
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
   "dependencies": {
+    "@codemirror/lang-css": "^6.0.1",
+    "@codemirror/language": "^6.4.0",
+    "@codemirror/state": "^6.2.0",
+    "@ddietr/codemirror-themes": "^1.3.0",
+    "@lezer/highlight": "^1.1.3",
     "@octokit/rest": "^19.0.5",
-    "node-fetch": "^3.3.0"
+    "codemirror": "^6.0.1",
+    "node-fetch": "^3.3.0",
+    "yargs": "^17.6.2",
+    "zod": "^3.19.1"
+  },
+  "bin": {
+    "replugged": "bin/replugged.js"
   }
 }

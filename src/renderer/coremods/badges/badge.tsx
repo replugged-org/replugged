@@ -1,9 +1,11 @@
-import { getByProps, getBySource } from "../../modules/webpack";
+import { filters, getByProps, waitForModule } from "../../modules/webpack";
 import { React } from "@common";
+import { Messages } from "@common/i18n";
 import "./badge.css";
 import Badges from "./badges";
 import { Clickable, Tooltip } from "@components";
 import { goToOrJoinServer } from "../../util";
+import { RawModule } from "src/types";
 
 type Clickable = React.FC<
   Record<string, unknown> & {
@@ -95,15 +97,16 @@ export type BadgeComponent = (args: BadgeArgs) => React.ReactElement<{
 }>;
 
 // todo: move to common modules
-const openExternal = getBySource('.target="_blank";') as (url: string) => Promise<void>;
-if (!openExternal) {
-  throw new Error("Failed to find openExternal function");
-}
+const openExternal = (url: string): Promise<void> =>
+  waitForModule<RawModule & ((url: string) => Promise<void>)>(
+    filters.bySource('.target="_blank";'),
+  ).then((module) => module(url));
 
 // todo: make global (configurable?) variables for these
-const openContributorsPage = () => openExternal("https://replugged.dev/contributors");
-const openTranslationsPage = () => openExternal("https://i18n.replugged.dev");
-const joinRepluggedServer = () => goToOrJoinServer("replugged");
+const openContributorsPage = (): Promise<void> =>
+  openExternal("https://replugged.dev/contributors");
+const openTranslationsPage = (): Promise<void> => openExternal("https://i18n.replugged.dev");
+const joinRepluggedServer = (): Promise<void> => goToOrJoinServer("replugged");
 
 const Custom = React.memo(({ url, name }: BadgeArgs) => (
   <Base children={<img src={url} style={{ width: "100%", height: "100%" }} />} tooltip={name} />
@@ -111,18 +114,18 @@ const Custom = React.memo(({ url, name }: BadgeArgs) => (
 const Booster = React.memo(({ color }: BadgeArgs) => (
   <Base
     children={<Badges.Booster />}
-    tooltip={"Replugged Booster"}
+    tooltip={Messages.REPLUGGED_BADGES_BOOSTER}
     color={color}
     onClick={joinRepluggedServer}
   />
 ));
 const BugHunter = React.memo(({ color }: BadgeArgs) => (
-  <Base children={<Badges.BugHunter />} tooltip={"Replugged Bug Hunter"} color={color} />
+  <Base children={<Badges.BugHunter />} tooltip={Messages.REPLUGGED_BADGES_HUNTER} color={color} />
 ));
 const Contributor = React.memo(({ color }: BadgeArgs) => (
   <Base
     children={<Badges.Contributor />}
-    tooltip={"Replugged Contributor"}
+    tooltip={Messages.REPLUGGED_BADGES_CONTRIBUTOR}
     color={color}
     onClick={openContributorsPage}
   />
@@ -130,18 +133,18 @@ const Contributor = React.memo(({ color }: BadgeArgs) => (
 const Developer = React.memo(({ color }: BadgeArgs) => (
   <Base
     children={<Badges.Developer />}
-    tooltip={"Replugged Developer"}
+    tooltip={Messages.REPLUGGED_BADGES_DEVELOPER}
     color={color}
     onClick={openContributorsPage}
   />
 ));
 const EarlyUser = React.memo(({ color }: BadgeArgs) => (
-  <Base children={<Badges.EarlyUser />} tooltip={"Replugged Early User"} color={color} />
+  <Base children={<Badges.EarlyUser />} tooltip={Messages.REPLUGGED_BADGES_EARLY} color={color} />
 ));
 const Staff = React.memo(({ color }: BadgeArgs) => (
   <Base
     children={<Badges.Staff />}
-    tooltip={"Replugged Staff"}
+    tooltip={Messages.REPLUGGED_BADGES_STAFF}
     color={color}
     onClick={joinRepluggedServer}
   />
@@ -149,7 +152,7 @@ const Staff = React.memo(({ color }: BadgeArgs) => (
 const Support = React.memo(({ color }: BadgeArgs) => (
   <Base
     children={<Badges.Support />}
-    tooltip={"Replugged Support"}
+    tooltip={Messages.REPLUGGED_BADGES_SUPPORT}
     color={color}
     onClick={joinRepluggedServer}
   />
@@ -157,7 +160,7 @@ const Support = React.memo(({ color }: BadgeArgs) => (
 const Translator = React.memo(({ color }: BadgeArgs) => (
   <Base
     children={<Badges.Translator />}
-    tooltip={"Replugged Translator"}
+    tooltip={Messages.REPLUGGED_BADGES_TRANSLATOR}
     color={color}
     onClick={openTranslationsPage}
   />

@@ -1,3 +1,4 @@
+import { Messages } from "@common/i18n";
 import React from "@common/react";
 import { Logger } from "../logger";
 import "./ErrorBoundary.css";
@@ -5,11 +6,11 @@ import "./ErrorBoundary.css";
 const logger = new Logger("Components", "ErrorBoundary");
 
 export interface ErrorProps {
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactNode;
   silent?: boolean;
   onError?: (error: unknown, errorInfo: unknown) => void;
   /** Element to show if the error boundary is triggered */
-  fallback?: React.ReactElement | React.ReactElement[];
+  fallback?: React.ReactNode;
 }
 
 export interface ErrorState {
@@ -19,17 +20,16 @@ export interface ErrorState {
 export type ErrorBoundaryType = React.ComponentClass<ErrorProps, ErrorState>;
 
 export default class ErrorBoundary extends React.Component<ErrorProps, ErrorState> {
-  constructor(props: ErrorProps) {
+  public constructor(props: ErrorProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError() {
-    // Update state so the next render will show the fallback UI.
+  public static getDerivedStateFromError(): ErrorState {
     return { hasError: true };
   }
 
-  componentDidCatch(error: unknown, errorInfo: unknown) {
+  public componentDidCatch(error: unknown, errorInfo: unknown): void {
     if (!this.props.silent) {
       logger.error("ErrorBoundary caught an error", error, errorInfo);
     }
@@ -38,13 +38,13 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
     }
   }
 
-  render() {
+  public render(): React.ReactNode {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
           <div className="replugged-error-boundary">
-            <h1>Something went wrong rendering this element!</h1>
-            <p>Check console for details.</p>
+            <h1>{Messages.REPLUGGED_SETTINGS_ERROR_HEADER}</h1>
+            <p>{Messages.REPLUGGED_SETTINGS_ERROR_SUB_HEADER}</p>
           </div>
         )
       );

@@ -66,7 +66,7 @@ interface TextProps {
   className?: string;
   lineClamp?: number;
   color?: string;
-  children?: React.ReactNode | React.ReactNode[];
+  children?: React.ReactNode;
   style?: React.CSSProperties;
 }
 

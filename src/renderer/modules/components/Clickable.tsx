@@ -11,7 +11,7 @@ const Clickable = (await waitForModule(filters.bySource("renderNonInteractive"))
   Object.values(mod).find((x) => x.prototype?.renderNonInteractive),
 )) as ClickableType;
 
-export default (props: ClickableProps) => {
+export default (props: ClickableProps): React.ReactElement => {
   const style = props.style || {};
   style.cursor = "pointer";
   return <Clickable {...props} style={style} />;

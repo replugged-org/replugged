@@ -1,16 +1,19 @@
 import { filters, waitForModule } from "../webpack";
 import { Divider, Flex, FormItem, FormText } from ".";
 import React from "@common/react";
+import type { ObjectExports } from "../../../types";
 
-const classes = (await waitForModule(filters.byProps("labelRow"))) as Record<string, string>;
+const classes = await waitForModule<
+  ObjectExports & Record<"labelRow" | "title" | "note" | "dividerDefault", string>
+>(filters.byProps("labelRow", "title", "note", "dividerDefault"));
 
-type CategoryProps = {
+interface CategoryProps {
   title: string;
   open?: boolean;
   note?: string;
   disabled?: boolean;
   onChange?: () => void;
-};
+}
 
 export type CategoryType = React.FC<CategoryProps>;
 
@@ -20,7 +23,7 @@ export type CategoryType = React.FC<CategoryProps>;
 export default ((props: React.PropsWithChildren<CategoryProps>) => {
   const [open, setOpen] = React.useState(props.open || false);
 
-  const handleClick = () => {
+  const handleClick = (): void => {
     if (props.disabled) return;
 
     if (typeof props.onChange === "function" && typeof props.open === "boolean") props.onChange();

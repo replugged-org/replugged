@@ -1,7 +1,7 @@
 import type { ObjectExports } from "src/types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
-export type DividerType = React.ComponentType<React.HTMLProps<{}>>;
+export type DividerType = React.ComponentType<React.HTMLProps<Record<string, never>>>;
 
 const rgx = /\.divider,.\),style:./;
 
