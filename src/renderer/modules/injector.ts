@@ -303,7 +303,7 @@ export class Injector {
      */
     addPopoverButton: (item: GetButtonItem) => {
       const uninjector = addButton(item);
-      this.uninjectors.add(uninjector);
+      this.#uninjectors.add(uninjector);
       return uninjector;
     },
   };
