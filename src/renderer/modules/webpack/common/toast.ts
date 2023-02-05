@@ -9,14 +9,16 @@ const Kind = {
 } as const;
 
 interface ToastOpts {
-  options?: {
-    position?: number;
-    component?: React.ReactElement;
-    duration?: number;
-  };
+  position?: number;
+  duration?: number;
+  component?: React.ReactElement;
 }
 
-type ToastFn = (content: string, kind?: number, opts?: ToastOpts) => void;
+type ToastFn = (
+  content: string | React.ReactElement | null,
+  kind?: number,
+  opts?: ToastOpts,
+) => void;
 
 export interface Toast {
   toast: ToastFn;

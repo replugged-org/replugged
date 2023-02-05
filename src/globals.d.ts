@@ -25,6 +25,7 @@ declare global {
   export const DiscordNative: {
     window: {
       setDevtoolsCallbacks(onOpened?: (() => void) | null, onClosed?: (() => void) | null): void;
+      focus(): void;
     };
   };
 

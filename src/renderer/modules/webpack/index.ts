@@ -391,7 +391,7 @@ export namespace filters {
    * ```
    *
    * @remarks
-   * Great for getting a module for a specific classname
+   * Great for getting a module for a specific class name
    */
   export const byValue = (match: string | RegExp) => {
     return (m: RawModule) => {

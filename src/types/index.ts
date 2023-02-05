@@ -26,9 +26,8 @@ export enum RepluggedIpcChannels {
   GET_PLUGIN = "REPLUGGED_GET_PLUGIN",
   UNINSTALL_PLUGIN = "REPLUGGED_UNINSTALL_PLUGIN",
   REGISTER_RELOAD = "REPLUGGED_REGISTER_RELOAD",
-  CHECK_UPDATE = "REPLUGGED_CHECK_UPDATE",
-  INSTALL_UPDATE = "REPLUGGED_INSTALL_UPDATE",
-  GET_HASH = "REPLUGGED_GET_HASH",
+  GET_ADDON_INFO = "REPLUGGED_GET_ADDON_INFO",
+  INSTALL_ADDON = "REPLUGGED_INSTALL_ADDON",
   OPEN_PLUGINS_FOLDER = "REPLUGGED_OPEN_PLUGINS_FOLDER",
   OPEN_THEMES_FOLDER = "REPLUGGED_OPEN_THEMES_FOLDER",
   OPEN_SETTINGS_FOLDER = "REPLUGGED_OPEN_SETTINGS_FOLDER",
@@ -101,8 +100,8 @@ export interface RepluggedTranslations {
 }
 
 export * from "./discord";
-export type { PluginExports, PluginManifest, ThemeManifest } from "./addon";
+export type { PluginExports, PluginManifest, ThemeManifest, AnyAddonManifest } from "./addon";
 export * from "./settings";
 export * from "./util";
 export * from "./webpack";
-export * from "./updater";
+export * from "./installer";
