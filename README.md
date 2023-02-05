@@ -1,5 +1,9 @@
 # Replugged
 
+[Website](https://replugged.dev) | [Discord](https://discord.gg/replugged) |
+[Developer Guide](https://guide.replugged.dev) | [API Docs](https://api.replugged.dev)  
+(API docs will be replaced with the guide in the future)
+
 > **Warning**  
 > This branch of Replugged is still in development. It is not complete and will likely cause
 > issues.  
@@ -22,7 +26,9 @@ See our [wiki page](https://github.com/replugged-org/replugged/wiki/Installing-p
 
 ### Does Replugged work?
 
-Replugged is currently in a Developer preview. While it works and is fairly stable, some things still require using the command line or running code in the console. **If you're not familiar with programming or the command line, we recommend waiting until Replugged is released publicly.**
+Replugged is currently in a Developer preview. While it works and is fairly stable, some things
+still require using the command line or running code in the console. **If you're not familiar with
+programming or the command line, we recommend waiting until Replugged is released publicly.**
 
 ### Is this against the ToS?
 
@@ -43,12 +49,16 @@ for indirect ToS violations (e.g. selfbotting).
 
 ### Can I use Powercord plugins or themes?
 
-No. Replugged was originally based on Powercord, but it is not anymore. Due to the new plugin/theme format, as well as Discord changes, Powercord plugins and themes will have to be rewritten.
+No. Replugged was originally based on Powercord, but it is not anymore. Due to the new plugin/theme
+format, as well as Discord changes, Powercord plugins and themes will have to be rewritten.
 
 ### Can I use plugins and themes from legacy Replugged?
 
-As mentioned above, legacy plugins and themes will need to be rewriten due to Discord changes, as well as changes to our plugin/theme format. 
+As mentioned above, legacy plugins and themes will need to be rewriten due to Discord changes, as
+well as changes to our plugin/theme format.
 
 ### Can I use BetterDiscord plugins?
 
-Not right now. Previously, [BDCompat](https://github.com/Juby210/bdCompat) was used to run BetterDiscord plugins. However, this has not been rewritten for the Replugged rewrite. Unless someone creates a version for the Replugged rewrite, BetterDiscord plugins are not supported.
+Not right now. Previously, [BDCompat](https://github.com/Juby210/bdCompat) was used to run
+BetterDiscord plugins. However, this has not been rewritten for the Replugged rewrite. Unless
+someone creates a version for the Replugged rewrite, BetterDiscord plugins are not supported.
