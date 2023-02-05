@@ -567,19 +567,27 @@ export function getByProps<
 export function waitForProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
->(props: P[], options: { raw?: false }): Promise<T | undefined>;
+>(props: P[], options: { raw?: false; timeout?: undefined }): Promise<T>;
+export function waitForProps<
+  P extends string = string,
+  T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
+>(props: P[], options: { raw?: false; timeout: number }): Promise<T | undefined>;
 export function waitForProps<P extends string = string, T extends RawModule = RawModule>(
   props: P[],
-  options: { raw?: true },
+  options: { raw?: true; timeout?: undefined },
+): Promise<T>;
+export function waitForProps<P extends string = string, T extends RawModule = RawModule>(
+  props: P[],
+  options: { raw?: true; timeout: number },
 ): Promise<T | undefined>;
 export function waitForProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> | RawModule = ModuleExportsWithProps<P> | RawModule,
->(props: P[], options?: { raw?: boolean }): Promise<T | undefined>;
+>(props: P[], options?: { raw?: boolean; timeout?: number | undefined }): Promise<T | undefined>;
 export function waitForProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
->(...props: P[]): T | undefined;
+>(...props: P[]): T;
 
 /**
  * Like {@link getByProps} but waits for the module to be loaded.
@@ -590,12 +598,12 @@ export function waitForProps<
 export async function waitForProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> | RawModule = ModuleExportsWithProps<P> | RawModule,
->(...args: [P[], GetModuleOptions] | P[]): Promise<T | undefined> {
+>(...args: [P[], WaitForOptions] | P[]): Promise<T | undefined> {
   const props = (typeof args[0] === "string" ? args : args[0]) as P[];
-  const raw = typeof args[0] === "string" ? false : (args[1] as GetModuleOptions)?.raw;
+  const raw = typeof args[0] === "string" ? false : (args[1] as WaitForOptions)?.raw;
 
   const result = (await (typeof args[args.length - 1] === "object"
-    ? waitForModule(filters.byProps(...props), args[args.length - 1] as GetModuleOptions)
+    ? waitForModule(filters.byProps(...props), args[args.length - 1] as WaitForOptions)
     : waitForModule(filters.byProps(...props)))) as
     | ModuleExportsWithProps<P>
     | RawModule
