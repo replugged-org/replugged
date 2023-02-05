@@ -6,7 +6,7 @@ export default [
     replacements: [
       {
         match:
-          /(Fragment,{children:\[)(.{0,300}return (.+?)\(.{0,10}"add-reaction".{0,50}channel:(.+?),.{0,20}message:(.+?),)/,
+          /(Fragment,{children:\[)(.{0,200}children:\[.{0,20}?(\w{1,3})\({.{0,5}key:"copy-id".{0,20}channel:(.{1,3})[,}].{0,20}message:(.{1,3})[,}])/,
         replace: (_, prefix, suffix, makeButton, channel, message) =>
           `${prefix}...replugged.api.messagePopover._buildPopoverElements(${message},${channel},${makeButton}),${suffix}`,
       },
