@@ -9,7 +9,7 @@ const logger = Logger.coremod("Installer");
 
 interface AnchorProps {
   href?: string;
-  onClick?: () => void;
+  onClick?: (e: Event) => void;
   className?: string;
   children?: React.ReactNode;
   rel?: string;
@@ -70,8 +70,8 @@ async function injectLinks(): Promise<void> {
     const installLink = parseInstallLink(href);
     if (!installLink) return undefined;
 
-    delete args.href;
-    args.onClick = () => {
+    args.onClick = (e) => {
+      e.preventDefault();
       void installFlow(installLink.identifier, installLink.source, installLink.id);
     };
 
