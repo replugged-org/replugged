@@ -68,7 +68,6 @@ export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
     switch (data.manifest.type) {
       case "replugged-plugin":
         await pluginManager.loadAll();
-        await pluginManager.start(data.manifest.id);
         await pluginManager.enable(data.manifest.id);
         return true;
       case "replugged-theme":
