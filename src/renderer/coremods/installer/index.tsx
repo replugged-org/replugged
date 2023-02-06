@@ -58,7 +58,7 @@ async function injectLinks(): Promise<void> {
   });
   const exports = linkMod.exports as ObjectExports & Record<string, React.FC<AnchorProps>>;
 
-  const key = getFunctionKeyBySource(".useDefaultUnderlineStyles", exports);
+  const key = getFunctionKeyBySource(exports, ".useDefaultUnderlineStyles");
   if (!key) {
     logger.error("Failed to find link component.");
     return;
@@ -107,7 +107,7 @@ async function injectRpc(): Promise<void> {
   const rpcValidatorMod = await waitForModule<
     Record<string, (socket: Socket, client_id: string, origin: string) => Promise<void>>
   >(filters.bySource("Invalid Client ID"));
-  const validatorFunctionKey = getFunctionKeyBySource("Invalid Client ID", rpcValidatorMod);
+  const validatorFunctionKey = getFunctionKeyBySource(rpcValidatorMod, "Invalid Client ID");
   if (!validatorFunctionKey) {
     logger.error("Failed to find RPC validator function.");
     return;
