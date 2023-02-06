@@ -1,18 +1,20 @@
 import { spawnSync } from "child_process";
 import path from "path";
 
-const argv = [
-  path.join(__dirname, "..", "..", "..", "node_modules", ".bin", "tsx"),
-  ...process.argv.slice(1),
-];
-
 const tryToElevate = (command: string): void => {
-  const { error } = spawnSync(command, argv, { stdio: "inherit" });
+  const args = [
+    ...command.split(" "),
+    path.join(__dirname, "..", "..", "..", "node_modules", ".bin", "tsx"),
+    ...process.argv.slice(1),
+    `--home="${process.env.HOME}"`,
+    `--xdg-data-home="${process.env.XDG_DATA_HOME}"`,
+  ];
+  const { error } = spawnSync("env", args, { stdio: "inherit" });
   if (!error) {
     process.exit(0);
   } else if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
     console.error(error);
-    process.exit(argv.includes("--no-exit-codes") ? 0 : 1);
+    process.exit(args.includes("--no-exit-codes") ? 0 : 1);
   }
 };
 
@@ -23,6 +25,6 @@ if (process.platform === "linux" && process.getuid!() !== 0) {
 
   console.warn("Neither doas nor sudo were found. Falling back to su.");
   console.log("Please enter your root password");
-  spawnSync("su", ["-c", argv.join(" ")], { stdio: "inherit" });
+  tryToElevate("su -c");
   process.exit(0);
 }

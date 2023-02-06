@@ -20,6 +20,21 @@ const platformModules = {
 
 const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1;
 const prod = process.argv.includes("--production");
+const homeArg = process.argv
+  .find((v) => v.startsWith("--home="))
+  ?.replace(/^--home=/, "")
+  ?.replace(/^"(.*)"$/, "$1");
+const xdgDataHomeArg = process.argv
+  .find((v) => v.startsWith("--xdg-data-home="))
+  ?.replace(/^--xdg-data-home=/, "")
+  ?.replace(/^"(.*)"$/, "$1");
+if (homeArg) {
+  process.env.HOME = homeArg;
+  delete process.env.XDG_DATA_HOME;
+}
+if (xdgDataHomeArg) {
+  process.env.XDG_DATA_HOME = xdgDataHomeArg;
+}
 const processArgs = process.argv.filter((v) => !v.startsWith("-"));
 
 if (!(process.platform in platformModules)) {

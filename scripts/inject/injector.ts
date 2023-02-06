@@ -4,7 +4,7 @@ import { AnsiEscapes } from "./util";
 import readline from "readline";
 import { exec } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types";
-import { CONFIG_PATH } from "../../src/util";
+import { configPathFn } from "../../src/util";
 
 export const isDiscordInstalled = async (appDir: string, silent?: boolean): Promise<boolean> => {
   try {
@@ -65,6 +65,7 @@ export const inject = async (
   platform: DiscordPlatform,
   prod: boolean,
 ): Promise<boolean> => {
+  const CONFIG_PATH = configPathFn();
   const appDir = await getAppDir(platform);
   if (!(await correctMissingMainAsar(appDir))) return false;
   if (!(await isDiscordInstalled(appDir))) return false;
