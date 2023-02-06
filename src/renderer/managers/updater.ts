@@ -179,6 +179,12 @@ export async function checkAllUpdates(
   logger.log("All updates checked");
 }
 
+export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {
+  return Object.entries(updaterState.all())
+    .map(([id, state]) => ({ id, ...state }))
+    .filter((state) => state.available);
+}
+
 export async function installAllUpdates(force = false, verbose = false): Promise<void> {
   const plugins = Array.from(pluginManager.plugins.values());
   const themes = await themeManager.list();
