@@ -183,7 +183,7 @@ export const inject = async (
   await Promise.all([
     writeFile(
       join(appDir, "index.js"),
-      `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}}")`,
+      `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}")`,
     ),
     writeFile(
       join(appDir, "package.json"),
