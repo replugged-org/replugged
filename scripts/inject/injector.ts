@@ -1,5 +1,5 @@
 import { copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
-import { join } from "path";
+import { join, sep } from "path";
 import { AnsiEscapes } from "./util";
 import readline from "readline";
 import { exec } from "child_process";
@@ -181,7 +181,10 @@ export const inject = async (
 
   await mkdir(appDir);
   await Promise.all([
-    writeFile(join(appDir, "index.js"), `require("${entryPoint}")`),
+    writeFile(
+      join(appDir, "index.js"),
+      `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}}")`,
+    ),
     writeFile(
       join(appDir, "package.json"),
       JSON.stringify({
