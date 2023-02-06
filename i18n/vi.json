@@ -305,7 +305,7 @@
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Mở thư mục của {type}",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Nhập những {type} bị thiếu",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type}, ({count, number})",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} kết quả} other {{count} kết quả}}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} match} other {{count} matches}}",
     "REPLUGGED_NO_ADDON_RESULTS": "Không tìm thấy kết quả nào với từ khóa của bạn cho {type}.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Bạn chưa cài {type} nào.",
     "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Áp dụng các thay đổi",
@@ -332,5 +332,10 @@
     "REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL": "Việc cài đặt đã được hủy bỏ.",
     "REPLUGGED_QUICKCSS_FOLDER_OPEN": "Mở thư muc CSS Nhanh",
     "REPLUGGED_ADDON_PAGE_OPEN": "Mở trang của {type}",
-    "REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED": "Đã có sự cố xảy ra khi gỡ cài đặt {name}"
+    "REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED": "Đã có sự cố xảy ra khi gỡ cài đặt {name}",
+    "REPLUGGED_ADDON_AUTHORS_ONE": "bởi {author1}",
+    "REPLUGGED_ADDON_AUTHORS_TWO": "bởi {author1} và {author2}",
+    "REPLUGGED_ADDON_AUTHORS_THREE": "bởi {author1}, {author2}, và {author3}",
+    "REPLUGGED_CONFIRM_INSTALL": "cài đặt",
+    "REPLUGGED_ADDON_AUTHORS_MANY": "bởi {author1}, {author2}, {author3}, và {count, plural, =1 {{count} other} other {{count} others}}"
 }
