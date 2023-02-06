@@ -324,7 +324,7 @@
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Đã có sự cố xảy ra khi định dạng mã nguồn",
     "REPLUGGED_TOAST_QUICKCSS_RELOAD": "Đã khởi động lại CSS Nhanh",
     "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "Xem tin báo lỗi trên console để biết thêm thông tin.",
-    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Bạn có muốn cài đặt {name} bởi {authors}?",
+    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Bạn có muốn cài đặt {name} {authors}?",
     "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED": "Đã có sự cố xảy ra khi cài đặt {name}.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED": "{name} đã được cài đặt nhưng không thể khởi động được.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS": "{name} đã được cài đặt thành công.",

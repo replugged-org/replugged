@@ -326,7 +326,7 @@
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Codice formattato",
     "REPLUGGED_TOAST_QUICKCSS_RELOAD": "Ricaricato Quick CSS",
     "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "Per maggiori informazioni consultare la console.",
-    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Vuoi installare {name} da {authors}?",
+    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Vuoi installare {name} {authors}?",
     "REPLUGGED_QUICKCSS_FOLDER_OPEN": "Apri Cartella Quick CSS",
     "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED": "Impossibile installare {name}.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED": "{name} è stato installato ma non è stato possibile caricarlo.",

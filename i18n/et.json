@@ -324,7 +324,7 @@
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Koodi vormindamine ebaõnnestus",
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Kood vormindatud",
     "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "Vaadake üksikasju konsoolis.",
-    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Kas soovite installida {name} autorilt {authors}?",
+    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Kas soovite installida {name} {authors}?",
     "REPLUGGED_TOAST_NO_MANIFEST": "Sellel {type} ei ole manifesti, see ei pruugi olla {type}",
     "REPLUGGED_PLUGIN_EMBED_INSTALLING_PLUGIN": "Installin Pistikprogrammi…",
     "REPLUGGED_ADDON_PROFILE_OPEN": "Ava {type} Profiil",
