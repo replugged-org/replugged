@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "tsx scripts/build.ts",
-    "bundle": "rm -rf dist; tsx scripts/build.ts --production",
+    "bundle": "tsx scripts/build.ts --production",
     "watch": "tsx scripts/build.ts --watch",
     "plug": "tsx scripts/inject/index.ts inject --no-exit-codes",
     "unplug": "tsx scripts/inject/index.ts uninject --no-exit-codes",
