@@ -339,5 +339,11 @@
     "REPLUGGED_ADDON_AUTHORS_MANY": "by {author1}, {author2}, {author3}, and {count, plural, =1 {{count} other} other {{count} others}}",
     "REPLUGGED_CONFIRM_INSTALL": "Install",
     "REPLUGGED_UPDATES_UPDATE_ALL": "Update All",
-    "REPLUGGED_UPDATES_UPDATE_TO": "Update to {version}"
+    "REPLUGGED_UPDATES_UPDATE_TO": "Update to {version}",
+    "REPLUGGED_UPDATES_TOAST_NO_NEW": "No new updates available.",
+    "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {{count} new update} other {{count} new updates}} available!",
+    "REPLUGGED_UPDATES_TOAST_FAILED_ONE": "Update failed!",
+    "REPLUGGED_UPDATES_TOAST_FAILED_ALL": "Some updates failed!",
+    "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Updated successfully.",
+    "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "All updates completed successfully."
 }
