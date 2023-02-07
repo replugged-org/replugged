@@ -6,7 +6,7 @@ import { Logger } from "../modules/logger";
 const logger = Logger.coremod("Updater");
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type UpdateSettings = {
+export type UpdateSettings = {
   available?: boolean;
   version?: string;
   url?: string;

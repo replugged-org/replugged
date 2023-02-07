@@ -35,6 +35,13 @@ export async function waitFor(selector: string): Promise<Element> {
 }
 
 /**
+ * Async sleep function
+ */
+export function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
  * Get the React instance of an element
  * @param element Element to get the React instance of
  * @returns React instance
