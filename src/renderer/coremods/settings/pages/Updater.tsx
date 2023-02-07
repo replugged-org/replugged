@@ -49,11 +49,11 @@ export const Updater = (): React.ReactElement => {
     };
   }, [updatePromises]);
 
-  const isAllUpdating =
-    updatesAvailable.length > 0 && updatesAvailable.every((u) => u.id in updatePromises);
-  const isAnyUpdating = Object.keys(updatePromises).length > 0;
-  const isAllComplete = updatesAvailable.length > 0 && updatesAvailable.every((u) => !u.available);
-  const isAnyComplete = updatesAvailable.length > 0 && updatesAvailable.some((u) => !u.available);
+  const hasAnyUpdates = updatesAvailable.length > 0;
+  const isAllUpdating = hasAnyUpdates && updatesAvailable.every((u) => u.id in updatePromises);
+  const isAnyUpdating = hasAnyUpdates && updatesAvailable.some((u) => u.id in updatePromises);
+  const isAllComplete = hasAnyUpdates && updatesAvailable.every((u) => !u.available);
+  const isAnyComplete = hasAnyUpdates && updatesAvailable.some((u) => !u.available);
 
   const checkForUpdates = async (): Promise<void> => {
     const previousUpdates = getAvailableUpdates();
@@ -134,7 +134,7 @@ export const Updater = (): React.ReactElement => {
         ) : (
           <Button
             onClick={installAll}
-            disabled={isAnyUpdating || isAllComplete}
+            disabled={!hasAnyUpdates || isAnyUpdating || isAllComplete}
             color={isAllUpdating ? Button.Colors.PRIMARY : Button.Colors.BRAND}>
             {isAllUpdating ? (
               <Loader type={Loader.Type.PULSING_ELLIPSIS} />
