@@ -27,7 +27,6 @@ export const Updater = (): React.ReactElement => {
 
     let cancelled = false;
 
-    // todo: i18n
     promises.forEach(([id, promise]) => {
       promise
         .then(() => {
@@ -63,11 +62,11 @@ export const Updater = (): React.ReactElement => {
     setChecking(false);
     const newUpdates = getAvailableUpdates();
     setUpdatesAvailable(newUpdates);
-    // todo: i18n
     if (newUpdates.length > previousUpdates.length) {
-      toast.toast("New updates available!", toast.Kind.SUCCESS);
+      const count = newUpdates.length - previousUpdates.length;
+      toast.toast(Messages.REPLUGGED_UPDATES_TOAST_NEW.format({ count }), toast.Kind.SUCCESS);
     } else {
-      toast.toast("No new updates available.", toast.Kind.SUCCESS);
+      toast.toast(Messages.REPLUGGED_UPDATES_TOAST_NO_NEW, toast.Kind.SUCCESS);
     }
   };
 
@@ -78,9 +77,9 @@ export const Updater = (): React.ReactElement => {
     const statuses = await Promise.allSettled(Object.values(promises));
     const didAllSucceed = statuses.every((s) => s.status === "fulfilled" && s.value);
     if (didAllSucceed) {
-      toast.toast("All updates completed successfully.", toast.Kind.SUCCESS);
+      toast.toast(Messages.REPLUGGED_UPDATES_TOAST_SUCCESS_ALL, toast.Kind.SUCCESS);
     } else {
-      toast.toast("Some updates failed!", toast.Kind.FAILURE);
+      toast.toast(Messages.REPLUGGED_UPDATES_TOAST_FAILED_ALL, toast.Kind.FAILURE);
     }
   };
 
@@ -90,9 +89,9 @@ export const Updater = (): React.ReactElement => {
     setUpdatePromises((prev) => ({ ...prev, [id]: promise }));
     const status = await promise.catch(() => false);
     if (status) {
-      toast.toast("Updated completed successfully.", toast.Kind.SUCCESS);
+      toast.toast(Messages.REPLUGGED_UPDATES_TOAST_FAILED_ALL, toast.Kind.SUCCESS);
     } else {
-      toast.toast("Update failed!", toast.Kind.FAILURE);
+      toast.toast(Messages.REPLUGGED_UPDATES_TOAST_FAILED_ONE, toast.Kind.FAILURE);
     }
   };
 
