@@ -89,7 +89,7 @@ export const Updater = (): React.ReactElement => {
     setUpdatePromises((prev) => ({ ...prev, [id]: promise }));
     const status = await promise.catch(() => false);
     if (status) {
-      toast.toast(Messages.REPLUGGED_UPDATES_TOAST_FAILED_ALL, toast.Kind.SUCCESS);
+      toast.toast(Messages.REPLUGGED_UPDATES_TOAST_SUCCESS_ONE, toast.Kind.SUCCESS);
     } else {
       toast.toast(Messages.REPLUGGED_UPDATES_TOAST_FAILED_ONE, toast.Kind.FAILURE);
     }
