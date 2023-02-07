@@ -19,6 +19,8 @@ const updaterSettings = await init<{
 
 const updaterState = await init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
 
+const completedUpdates = new Set<string>();
+
 export function getUpdateSettings(id: string): UpdateSettings {
   const setting = updaterState.get(id);
   if (!setting) return {};
@@ -53,18 +55,32 @@ export async function checkUpdate(
     return;
   }
 
-  const updateSettings = getUpdateSettings(id);
-
-  if (updateSettings.lastChecked && Date.now() - updateSettings.lastChecked < waitSinceLastUpdate) {
-    if (verbose) logger.log(`Entity ${id} was checked recently, skipping`);
-    return;
-  }
-
   const {
     manifest: { updater, version },
   } = entity;
   if (!updater) {
     logger.warn(`Entity ${id} has no updater info`);
+    return;
+  }
+
+  const updateSettings = getUpdateSettings(id);
+
+  if (
+    updateSettings.version &&
+    updateSettings.version !== version &&
+    !updateSettings.available &&
+    !completedUpdates.has(id)
+  ) {
+    if (verbose) logger.log(`Entity ${id} version differs from previous, forcing new update`);
+    updaterState.set(id, {
+      ...updateSettings,
+      available: true,
+    });
+    return;
+  }
+
+  if (updateSettings.lastChecked && Date.now() - updateSettings.lastChecked < waitSinceLastUpdate) {
+    if (verbose) logger.log(`Entity ${id} was checked recently, skipping`);
     return;
   }
 
@@ -138,6 +154,8 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     available: false,
   });
 
+  completedUpdates.add(id);
+
   // Temporarily disabled until we can figure out how to properly reload compiled plugins
   // try {
   //   switch (entity.manifest.type) {
@@ -181,22 +199,17 @@ export async function checkAllUpdates(
 
 export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {
   return Object.entries(updaterState.all())
-    .map(([id, state]) => ({ id, ...state }))
-    .filter((state) => state.available);
+    .map(([id, state]) => ({ ...state, id }))
+    .filter((state) => state.available || completedUpdates.has(state.id));
 }
 
-export async function installAllUpdates(force = false, verbose = false): Promise<void> {
-  const plugins = Array.from(pluginManager.plugins.values());
-  const themes = await themeManager.list();
+export function installAllUpdates(
+  force = false,
+  verbose = false,
+): Record<string, Promise<boolean>> {
+  const available = getAvailableUpdates();
 
-  const successes = await Promise.all([
-    ...plugins.map((plugin) => installUpdate(plugin.manifest.id, force, verbose)),
-    ...themes.map((theme) => installUpdate(theme.manifest.id, force, verbose)),
-  ]);
-
-  if (successes.some(Boolean)) {
-    logger.warn("Please fully quit and restart Replugged to apply updates");
-  } else {
-    logger.log("No updates installed");
-  }
+  return Object.fromEntries(
+    available.map((update) => [update.id, installUpdate(update.id, force, verbose)]),
+  );
 }
