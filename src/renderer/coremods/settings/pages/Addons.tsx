@@ -96,7 +96,7 @@ function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
   return [addon.manifest.author].flat();
 }
 
-export function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefined {
+function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefined {
   const { updater } = addon.manifest;
   if (!updater) return undefined;
   const { type, id } = updater;
