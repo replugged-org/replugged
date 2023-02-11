@@ -187,48 +187,24 @@ export function getExportsForProps<
   ) as T | undefined;
 }
 
-/**
- * Get a function by its ID
- *
- * @param id Module ID
- * @param raw Return the raw module instead of the exports
- *
- * @remarks
- * IDs are not stable between Discord updates. This function is mainly useful for debugging. You should not use this function in production unless the ID is dynamically determined.
- *
- * @hidden
- */
 export function getById<T extends ModuleExports = ModuleExports>(
   id: number,
   raw?: false,
 ): T | undefined;
-/**
- * Get a function by its ID
- *
- * @param id Module ID
- * @param raw Return the raw module instead of the exports
- *
- * @remarks
- * IDs are not stable between Discord updates. This function is mainly useful for debugging. You should not use this function in production unless the ID is dynamically determined.
- *
- * @hidden
- */
 export function getById<T extends RawModule = RawModule>(id: number, raw?: true): T | undefined;
-
-/**
- * Get a function by its ID
- *
- * @param id Module ID
- * @param raw Return the raw module instead of the exports
- *
- * @remarks
- * IDs are not stable between Discord updates. This function is mainly useful for debugging. You should not use this function in production unless the ID is dynamically determined.
- */
 export function getById<T extends ModuleExports | RawModule = ModuleExports | RawModule>(
   id: number,
   raw?: boolean,
 ): T | undefined;
-
+/**
+ * Get a function by its ID
+ *
+ * @param id Module ID
+ * @param raw Return the raw module instead of the exports
+ *
+ * @remarks
+ * IDs are not stable between Discord updates. This function is mainly useful for debugging. You should not use this function in production unless the ID is dynamically determined.
+ */
 export function getById<T extends ModuleExports | RawModule = ModuleExports | RawModule>(
   id: number,
   raw = false,
@@ -250,65 +226,26 @@ export function getById<T extends ModuleExports | RawModule = ModuleExports | Ra
 
 // I'd prefer to use conditional types instead of overloading here, but I had some weird issues with it
 // See https://github.com/microsoft/TypeScript/issues/33014
-/**
- * Find a module that matches the given filter
- * @param filter Filter function
- * @param options Options
- * @param options.all Return all matching modules instead of just the first
- * @param options.raw Return the raw module instead of the exports
- *
- * @see {@link filters}
- *
- * @hidden
- */ export function getModule<T extends ModuleExports = ModuleExports>(
+export function getModule<T extends ModuleExports = ModuleExports>(
   filter: Filter,
   options?: { all?: false; raw?: false },
 ): T | undefined;
-/**
- * Find a module that matches the given filter
- * @param filter Filter function
- * @param options Options
- * @param options.all Return all matching modules instead of just the first
- * @param options.raw Return the raw module instead of the exports
- *
- * @see {@link filters}
- *
- * @hidden
- */ export function getModule<T extends ModuleExports = ModuleExports>(
+export function getModule<T extends ModuleExports = ModuleExports>(
   filter: Filter,
   options?: { all?: true; raw?: false },
 ): T[];
-/**
- * Find a module that matches the given filter
- * @param filter Filter function
- * @param options Options
- * @param options.all Return all matching modules instead of just the first
- * @param options.raw Return the raw module instead of the exports
- *
- * @see {@link filters}
- *
- * @hidden
- */ export function getModule<T extends RawModule = RawModule>(
+export function getModule<T extends RawModule = RawModule>(
   filter: Filter,
   options?: { all?: false; raw?: true },
 ): T | undefined;
-
-/**
- * Find a module that matches the given filter
- * @param filter Filter function
- * @param options Options
- * @param options.all Return all matching modules instead of just the first
- * @param options.raw Return the raw module instead of the exports
- *
- * @see {@link filters}
- *
- * @hidden
- */
 export function getModule<T extends RawModule = RawModule>(
   filter: Filter,
   options?: { all?: true; raw?: true },
 ): T[];
-
+export function getModule<T extends ModuleExports | RawModule = ModuleExports | RawModule>(
+  filter: Filter,
+  options?: { all?: boolean; raw?: boolean },
+): T[] | T | undefined;
 /**
  * Find a module that matches the given filter
  * @param filter Filter function
@@ -318,11 +255,6 @@ export function getModule<T extends RawModule = RawModule>(
  *
  * @see {@link filters}
  */
-export function getModule<T extends ModuleExports | RawModule = ModuleExports | RawModule>(
-  filter: Filter,
-  options?: { all?: boolean; raw?: boolean },
-): T[] | T | undefined;
-
 export function getModule<T extends RawModule = RawModule>(
   filter: Filter,
   options: GetModuleOptions | undefined = {
@@ -391,7 +323,7 @@ export namespace filters {
    * ```
    *
    * @remarks
-   * Great for getting a module for a specific classname
+   * Great for getting a module for a specific class name
    */
   export const byValue = (match: string | RegExp) => {
     return (m: RawModule) => {
@@ -453,44 +385,17 @@ function onModule<T extends ModuleExports | RawModule = ModuleExports | RawModul
   };
 }
 
-/**
- * Wait for a module that matches the given filter
- * @param filter Filter function
- * @param options Options
- * @param options.raw Return the raw module instead of the exports
- * @param options.timeout Timeout in milliseconds
- *
- * @see {@link filters}
- *
- * @remarks
- * Some modules may not be available immediately when Discord starts and will take up to a few seconds. This is useful to ensure that the module is available before using it.
- *
- * @hidden
- */
 export async function waitForModule<T extends ModuleExports = ModuleExports>(
   filter: Filter,
   options?: WaitForOptions & { raw?: false },
 ): Promise<T>;
-
-/**
- * Wait for a module that matches the given filter
- * @param filter Filter function
- * @param options Options
- * @param options.raw Return the raw module instead of the exports
- * @param options.timeout Timeout in milliseconds
- *
- * @see {@link filters}
- *
- * @remarks
- * Some modules may not be available immediately when Discord starts and will take up to a few seconds. This is useful to ensure that the module is available before using it.
- *
- * @hidden
- */
 export async function waitForModule<T extends RawModule = RawModule>(
   filter: Filter,
   options?: WaitForOptions & { raw?: true },
 ): Promise<T>;
-
+export async function waitForModule<
+  T extends RawModule | ModuleExports = RawModule | ModuleExports,
+>(filter: Filter, options: WaitForOptions): Promise<T>;
 /**
  * Wait for a module that matches the given filter
  * @param filter Filter function
@@ -503,10 +408,6 @@ export async function waitForModule<T extends RawModule = RawModule>(
  * @remarks
  * Some modules may not be available immediately when Discord starts and will take up to a few seconds. This is useful to ensure that the module is available before using it.
  */
-export async function waitForModule<
-  T extends RawModule | ModuleExports = RawModule | ModuleExports,
->(filter: Filter, options: WaitForOptions): Promise<T>;
-
 export async function waitForModule<
   T extends RawModule | ModuleExports = RawModule | ModuleExports,
 >(filter: Filter, options: WaitForOptions = {}): Promise<T> {
@@ -565,67 +466,33 @@ export function patchPlaintext(patches: PlaintextPatch[]): void {
 
 // Helpers for the lazy
 
-/**
- * Equivalent to `getModule(filters.bySource(match), options)`
- * *
- * @see {@link filters.bySource}
- * @see {@link getModule}
- *
- * @hidden
- */
 export function getBySource<T extends ModuleExports = ModuleExports>(
   match: string | RegExp,
   options?: { all?: false; raw?: false },
 ): T | undefined;
-
-/**
- * Equivalent to `getModule(filters.bySource(match), options)`
- * *
- * @see {@link filters.bySource}
- * @see {@link getModule}
- *
- * @hidden
- */
 export function getBySource<T extends ModuleExports = ModuleExports>(
   match: string | RegExp,
   options?: { all?: true; raw?: false },
 ): T[];
-/**
- * Equivalent to `getModule(filters.bySource(match), options)`
- * *
- * @see {@link filters.bySource}
- * @see {@link getModule}
- *
- * @hidden
- */
 export function getBySource<T extends RawModule = RawModule>(
   match: string | RegExp,
   options?: { all?: false; raw?: true },
 ): T | undefined;
-/**
- * Equivalent to `getModule(filters.bySource(match), options)`
- * *
- * @see {@link filters.bySource}
- * @see {@link getModule}
- *
- * @hidden
- */
 export function getBySource<T extends RawModule = RawModule>(
   match: string | RegExp,
   options?: { all?: true; raw?: true },
 ): T[];
-
-/**
- * Equivalent to `getModule(filters.bySource(match), options)`
- * *
- * @see {@link filters.bySource}
- * @see {@link getModule}
- */
 export function getBySource<T extends ModuleExports | RawModule = ModuleExports | RawModule>(
   match: string | RegExp,
   options?: { all?: boolean; raw?: boolean },
 ): T[] | T | undefined;
 
+/**
+ * Equivalent to `getModule(filters.bySource(match), options)`
+ * *
+ * @see {@link filters.bySource}
+ * @see {@link getModule}
+ */
 export function getBySource<T extends ModuleExports | RawModule = ModuleExports | RawModule>(
   match: string | RegExp,
   options: GetModuleOptions | undefined = {
@@ -636,77 +503,37 @@ export function getBySource<T extends ModuleExports | RawModule = ModuleExports 
   return getModule(filters.bySource(match), options);
 }
 
-/**
- * Equivalent to `getModule(filters.byProps(...props), options)`
- *
- * @see {@link filters.byProps}
- * @see {@link getModule}
- *
- * @hidden
- */
 export function getByProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
 >(props: P[], options: { all?: false; raw?: false }): T | undefined;
-/**
- * Equivalent to `getModule(filters.byProps(...props), options)`
- *
- * @see {@link filters.byProps}
- * @see {@link getModule}
- *
- * @hidden
- */
 export function getByProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
 >(props: P[], options: { all?: true; raw?: false }): T[];
-/**
- * Equivalent to `getModule(filters.byProps(...props), options)`
- *
- * @see {@link filters.byProps}
- * @see {@link getModule}
- *
- * @hidden
- */
 export function getByProps<P extends string = string, T extends RawModule = RawModule>(
   props: P[],
   options: { all?: false; raw?: true },
 ): T | undefined;
-/**
- * Equivalent to `getModule(filters.byProps(...props), options)`
- *
- * @see {@link filters.byProps}
- * @see {@link getModule}
- *
- * @hidden
- */
 export function getByProps<P extends string = string, T extends RawModule = RawModule>(
   props: P[],
   options: { all?: true; raw?: true },
 ): T[];
-
-/**
- * Equivalent to `getModule(filters.byProps(...props), options)`
- *
- * @see {@link filters.byProps}
- * @see {@link getModule}
- */
 export function getByProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> | RawModule = ModuleExportsWithProps<P> | RawModule,
 >(props: P[], options?: { all?: boolean; raw?: boolean }): T[] | T | undefined;
-
-/**
- * Equivalent to `getModule(filters.byProps(...props), {all: false, raw: false})`
- *
- * @see {@link filters}
- * @see {@link getModule}
- */
 export function getByProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
 >(...props: P[]): T | undefined;
 
+/**
+ * Equivalent to `getModule(filters.byProps(...props), options)`
+ *
+ * @see {@link filters.byProps}
+ * @see {@link getModule}
+ */
 export function getByProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> | RawModule = ModuleExportsWithProps<P> | RawModule,
@@ -737,6 +564,48 @@ export function getByProps<
   return getExportsForProps<P, T & ModuleExportsWithProps<P>>(result as T & ModuleExports, props);
 }
 
+export function waitForProps<
+  P extends string = string,
+  T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
+>(props: P[], options: WaitForOptions & { raw?: false }): Promise<T>;
+export function waitForProps<P extends string = string, T extends RawModule = RawModule>(
+  props: P[],
+  options: WaitForOptions & { raw?: true },
+): Promise<T>;
+export function waitForProps<
+  P extends string = string,
+  T extends ModuleExportsWithProps<P> | RawModule = ModuleExportsWithProps<P> | RawModule,
+>(props: P[], options?: WaitForOptions): Promise<T>;
+export function waitForProps<
+  P extends string = string,
+  T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
+>(...props: P[]): T;
+
+/**
+ * Like {@link getByProps} but waits for the module to be loaded.
+ *
+ * @see {@link getByProps}
+ * @see {@link waitForModule}
+ */
+export async function waitForProps<
+  P extends string = string,
+  T extends ModuleExportsWithProps<P> | RawModule = ModuleExportsWithProps<P> | RawModule,
+>(...args: [P[], WaitForOptions] | P[]): Promise<T> {
+  const props = (typeof args[0] === "string" ? args : args[0]) as P[];
+  const raw = typeof args[0] === "string" ? false : (args[1] as WaitForOptions)?.raw;
+
+  const result = (await (typeof args[args.length - 1] === "object"
+    ? waitForModule(filters.byProps(...props), args[args.length - 1] as WaitForOptions)
+    : waitForModule(filters.byProps(...props)))) as ModuleExportsWithProps<P> | RawModule;
+
+  if (raw) {
+    return result as T & RawModule;
+  }
+
+  // We know this will always exist since filters.byProps will always return a module that has the props
+  return getExportsForProps<P, T & ModuleExportsWithProps<P>>(result as T & ModuleExports, props)!;
+}
+
 /**
  * Equivalent to `getModule(filters.byValue(match), options)`
  * @param match The string to check the value against
@@ -755,6 +624,20 @@ export function getByValue(
 
 // Specialized, inner-module searchers
 
+// TODO: Remove support for this
+/**
+ * @deprecated The argument order has been changed. Please put the module first and the matcher second.
+ */
+export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  module: string | RegExp | ((func: Function) => boolean),
+  match: ObjectExports,
+): T | undefined;
+export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
+  module: ObjectExports,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  match: string | RegExp | ((func: Function) => boolean),
+): T | undefined;
 /**
  * Search for a function within a module by its source code.
  *
@@ -763,19 +646,46 @@ export function getByValue(
  */
 export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
   // eslint-disable-next-line @typescript-eslint/ban-types
-  match: string | RegExp | ((func: Function) => boolean),
-  module: ObjectExports,
+  module: ObjectExports | string | RegExp | ((func: Function) => boolean),
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  match: ObjectExports | string | RegExp | ((func: Function) => boolean),
 ): T | undefined {
-  return Object.values(module).find((v) => {
+  const isDeprecatedOrder =
+    typeof module === "string" || module instanceof RegExp || typeof module === "function";
+  const realModule = (isDeprecatedOrder ? match : module) as ObjectExports;
+  const realMatch = (isDeprecatedOrder ? module : match) as
+    | string
+    | RegExp
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    | ((func: Function) => boolean);
+
+  return Object.values(realModule).find((v) => {
     if (typeof v !== "function") return false;
 
-    if (typeof match === "function") {
-      return match(v);
+    if (typeof realMatch === "function") {
+      return realMatch(v);
     } else {
-      return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+      return typeof realMatch === "string"
+        ? v.toString().includes(realMatch)
+        : realMatch.test(v.toString());
     }
   }) as T | undefined;
 }
+
+// TODO: Remove support for this
+/**
+ * @deprecated The argument order has been changed. Please put the module first and the matcher second.
+ */
+export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  module: string | RegExp | ((func: Function) => boolean),
+  match: T,
+): P | undefined;
+export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
+  module: T,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  match: string | RegExp | ((func: Function) => boolean),
+): P | undefined;
 
 /**
  * Search for a function within a module by its source code. Returns the key of the function.
@@ -787,14 +697,29 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
  * Useful for getting the prop name to inject into.
  */
 export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
-  match: string | RegExp,
-  module: T,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  module: T | string | RegExp | ((func: Function) => boolean),
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  match: T | string | RegExp | ((func: Function) => boolean),
 ): P | undefined {
-  return Object.entries(module).find(([_, v]) => {
-    if (typeof v !== "function") {
-      return false;
-    }
+  const isDeprecatedOrder =
+    typeof module === "string" || module instanceof RegExp || typeof module === "function";
+  const realModule = (isDeprecatedOrder ? match : module) as T;
+  const realMatch = (isDeprecatedOrder ? module : match) as
+    | string
+    | RegExp
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    | ((func: Function) => boolean);
 
-    return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+  return Object.entries(realModule).find(([_, v]) => {
+    if (typeof v !== "function") return false;
+
+    if (typeof realMatch === "function") {
+      return realMatch(v);
+    } else {
+      return typeof realMatch === "string"
+        ? v.toString().includes(realMatch)
+        : realMatch.test(v.toString());
+    }
   })?.[0] as P | undefined;
 }

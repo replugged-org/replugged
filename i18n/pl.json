@@ -309,7 +309,7 @@
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Otwórz folder {type}",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Załaduj brakujące {type}",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} match} other {{count} matches}}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# match} other {# matches}}",
     "REPLUGGED_NO_ADDON_RESULTS": "Żaden {type} nie pasuje do Twojego wyszukiwania.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Nie zainstalowano {type}.",
     "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Zapisz zmiany",
@@ -329,7 +329,7 @@
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Kod sformatowany",
     "REPLUGGED_TOAST_QUICKCSS_RELOAD": "Przeładowano Szybki CSS",
     "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "Sprawdź konsolę, aby uzyskać szczegółowe informacje.",
-    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Czy chcesz zainstalować {name} od {authors}?",
+    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Czy chcesz zainstalować {name} {authors}?",
     "REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED": "{name} został zainstalowany, ale nie mógł zostać załadowany.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL": "Instalacja anulowana.",
     "REPLUGGED_QUICKCSS_FOLDER_OPEN": "Otwórz folder Szybki CSS"

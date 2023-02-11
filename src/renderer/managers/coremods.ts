@@ -18,6 +18,7 @@ export namespace coremods {
   export let settings: Coremod;
   export let badges: Coremod;
   export let notrack: Coremod;
+  export let installer: Coremod;
   export let msgPopover: Coremod;
 }
 
@@ -33,6 +34,7 @@ export async function startAll(): Promise<void> {
   coremods.noDevtoolsWarning = await import("../coremods/noDevtoolsWarning");
   coremods.settings = await import("../coremods/settings");
   coremods.badges = await import("../coremods/badges");
+  coremods.installer = await import("../coremods/installer");
   await Promise.allSettled(Object.values(coremods).map((c) => c.start?.()));
 }
 

@@ -297,7 +297,7 @@
     "REPLUGGED_PLUGIN_EMBED_UNINSTALL_PLUGIN": "Удалить плагин",
     "REPLUGGED_PLUGIN_EMBED_UNINSTALL_THEME": "Удалить тему",
     "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Вы уверены, что хотите удалить этот {type}? Это действие необратимо.",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} результат} other {{count} результатов}}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# результат} other {# результатов}}",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Нет установленных {type}.",
     "REPLUGGED_ADDON_AUTHORS_THREE": "от {author1}, {author2}, и {author3}",
     "REPLUGGED_ADDON_DELETE": "Удалить {type}",
@@ -319,7 +319,7 @@
     "REPLUGGED_ADDON_AUTHORS_TWO": "от {author1} и {author2}",
     "REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL": "Установка отменена.",
     "REPLUGGED_ADDON_AUTHORS_ONE": "от {author1}",
-    "REPLUGGED_ADDON_AUTHORS_MANY": "от {author1}, {author2}, {author3}, и {count, plural, =1 {{count} другого} other {{count} других}}",
+    "REPLUGGED_ADDON_AUTHORS_MANY": "от {author1}, {author2}, {author3}, и {count, plural, =1 {# другого} other {# других}}",
     "REPLUGGED_CONFIRM_INSTALL": "Установить",
     "REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS": "{name} отключён",
     "REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS": "{name} включён",
@@ -335,7 +335,7 @@
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Код отформатирован",
     "REPLUGGED_TOAST_QUICKCSS_RELOAD": "Быстрая настройка CSS перезагружена",
     "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "Проверьте консоль для дополнительной информации.",
-    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Вы хотите удалить {name} от {authors}?",
+    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Вы хотите удалить {name} {authors}?",
     "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS": "{name} устновлен успешно.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED": "Ошибка получения информации для этого расширения."
 }

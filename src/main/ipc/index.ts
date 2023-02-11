@@ -3,7 +3,7 @@ import "./plugins";
 import "./themes";
 import "./quick-css";
 import "./settings";
-import "./updater";
+import "./installer";
 import "./i18n";
 import { RepluggedIpcChannels, type RepluggedWebContents } from "../../types";
 

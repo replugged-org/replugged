@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { join } from "path";
 
 const REPLUGGED_FOLDER_NAME = "replugged";
-export const CONFIG_PATH = (() => {
+export const configPathFn = (): string => {
   switch (process.platform) {
     case "win32":
       return join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
@@ -14,7 +14,9 @@ export const CONFIG_PATH = (() => {
       }
       return join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
-})();
+};
+
+export const CONFIG_PATH = configPathFn();
 
 if (!existsSync(CONFIG_PATH)) {
   mkdirSync(CONFIG_PATH);

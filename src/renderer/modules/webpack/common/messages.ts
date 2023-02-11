@@ -15,6 +15,7 @@ export type Properties = Record<string, unknown>;
 
 export interface CaptchaPayload {
   captcha_key: string;
+  // cspell:ignore rqtoken
   captcha_rqtoken: string;
 }
 

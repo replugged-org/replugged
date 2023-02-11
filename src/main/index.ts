@@ -105,6 +105,14 @@ electron.protocol.registerSchemesAsPrivileged([
 
 // Copied from old codebase
 electron.app.once("ready", () => {
+  electron.session.defaultSession.webRequest.onBeforeRequest(
+    {
+      urls: ["https://*/api/v*/science", "https://*/api/v*/metrics", "https://sentry.io/*"],
+    },
+    function (_details, callback) {
+      callback({ cancel: true });
+    },
+  );
   // @todo: Whitelist a few domains instead of removing CSP altogether; See #386
   electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     if (!responseHeaders) {

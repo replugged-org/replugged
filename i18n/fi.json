@@ -306,7 +306,7 @@
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Avaa {type} Kansio",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Lataa Puuttuva {type}",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} tulos} other {{count} tulosta}}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# tulos} other {# tulosta}}",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Ei {type} asennettuna.",
     "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Tallenna Muutokset",
     "REPLUGGED_CONFIRM_INSTALL": "Asenna",

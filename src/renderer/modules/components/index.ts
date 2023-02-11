@@ -124,6 +124,11 @@ export type { ErrorBoundaryType };
 export let ErrorBoundary: ErrorBoundaryType;
 importTimeout("ErrorBoundary", import("./ErrorBoundary"), (mod) => (ErrorBoundary = mod.default));
 
+import { type LoaderType } from "./Loader";
+export type { LoaderType };
+export let Loader: LoaderType;
+importTimeout("Loader", import("./Loader"), (mod) => (Loader = mod.default));
+
 /**
  * @internal
  * @hidden

@@ -299,7 +299,7 @@
     "REPLUGGED_ADDON_AUTHORS_THREE": "de {author1}, {author2}, y {author3}",
     "REPLUGGED_ADDON_AUTHORS_TWO": "de {author1} y {author2}",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
-    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "¿Quieres instalar {name} de {authors}?",
+    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "¿Quieres instalar {name} {authors}?",
     "REPLUGGED_ADDON_AUTHORS_ONE": "de {author1}",
     "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS": "{name} instalado con éxito.",
     "REPLUGGED_ADDON_AUTHORS_MANY": "de {author1}, {author2}, {author3}, y {count, number} más"

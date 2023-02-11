@@ -83,7 +83,7 @@ export type TextType = OriginalTextType &
   Record<"Normal" | "H1" | "H2" | "H3" | "H4" | "Eyebrow", OriginalTextType>;
 
 const mod = await waitForModule<ObjectExports>(filters.bySource("data-text-variant"));
-const OriginalText = getFunctionBySource("data-text-variant", mod) as OriginalTextType;
+const OriginalText = getFunctionBySource(mod, "data-text-variant") as OriginalTextType;
 
 function TextWithDefaultProps(defaultProps: CustomTextProps) {
   return (props: CustomTextProps) => {

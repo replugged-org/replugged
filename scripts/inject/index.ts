@@ -19,17 +19,32 @@ const platformModules = {
 };
 
 const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1;
+const prod = process.argv.includes("--production");
+const homeArg = process.argv
+  .find((v) => v.startsWith("--home="))
+  ?.replace(/^--home=/, "")
+  ?.replace(/^"(.*)"$/, "$1");
+const xdgDataHomeArg = process.argv
+  .find((v) => v.startsWith("--xdg-data-home="))
+  ?.replace(/^--xdg-data-home=/, "")
+  ?.replace(/^"(.*)"$/, "$1");
+if (homeArg) {
+  process.env.HOME = homeArg;
+  delete process.env.XDG_DATA_HOME;
+}
+if (xdgDataHomeArg) {
+  process.env.XDG_DATA_HOME = xdgDataHomeArg;
+}
 const processArgs = process.argv.filter((v) => !v.startsWith("-"));
-const cmd = processArgs[2];
 
 if (!(process.platform in platformModules)) {
-  console.log(BasicMessages.PLUG_FAILED, "\n");
-  console.log("It seems like your platform is not supported yet.", "\n");
-  console.log("Feel free to open an issue about it, so we can add support for it!");
-  console.log(
+  console.error(BasicMessages.PLUG_FAILED, "\n");
+  console.error("It seems like your platform is not supported yet.", "\n");
+  console.error("Feel free to open an issue about it, so we can add support for it!");
+  console.error(
     `Make sure to mention the platform you are on is "${process.platform}" in your issue ticket.`,
   );
-  console.log("https://github.com/replugged-org/replugged/issues/new/choose");
+  console.error("https://github.com/replugged-org/replugged/issues/new/choose");
   process.exit(exitCode);
 }
 
@@ -42,7 +57,7 @@ const checkInstalled = (appDir: string): boolean => existsSync(join(appDir, ".."
 
 let platform: DiscordPlatform | undefined;
 
-(async () => {
+const run = async (cmd = processArgs[2]): Promise<void> => {
   {
     const platformArg = processArgs[3]?.toLowerCase();
 
@@ -51,7 +66,7 @@ let platform: DiscordPlatform | undefined;
       if (platformArg === "development") {
         platform = "dev";
       } else if (!exists) {
-        console.log(
+        console.error(
           `${AnsiEscapes.RED}Platform you specified isn't valid, please specify a valid one.${
             AnsiEscapes.RESET
           }\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(
@@ -68,7 +83,7 @@ let platform: DiscordPlatform | undefined;
           const appDir = await platformModule.getAppDir(current);
           const installed = checkInstalled(appDir);
           if (installed) {
-            console.log(
+            console.warn(
               `${AnsiEscapes.YELLOW}No platform specified, defaulting to "${current}".${AnsiEscapes.RESET}`,
             );
             platform = current;
@@ -78,7 +93,7 @@ let platform: DiscordPlatform | undefined;
       }
 
       if (!platform) {
-        console.log(
+        console.error(
           `${AnsiEscapes.RED}Could not find any installations of Discord.${AnsiEscapes.RESET}`,
         );
         process.exit(exitCode);
@@ -89,16 +104,12 @@ let platform: DiscordPlatform | undefined;
 
   if (cmd === "inject") {
     try {
-      result = await inject(platformModule, platform);
-    } catch {
-      // this runs if path generator crashes (app folder doesn't exist)
-      console.log(
-        `${AnsiEscapes.RED}Platform you specified isn't installed on this device!${
-          AnsiEscapes.RESET
-        }\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(
-          (x) => `${x}`,
-        ).join("\n")}${AnsiEscapes.RESET}`,
+      result = await inject(platformModule, platform, prod);
+    } catch (e) {
+      console.error(
+        `${AnsiEscapes.RED}An error occurred while trying to inject into Discord!${AnsiEscapes.RESET}`,
       );
+      console.error(e);
       process.exit(exitCode);
     }
     if (result) {
@@ -113,19 +124,17 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
           AnsiEscapes.RESET
         }`,
       );
+    } else {
+      process.exit(exitCode);
     }
   } else if (cmd === "uninject") {
     try {
       result = await uninject(platformModule, platform);
-    } catch {
-      // this runs if path generator crashes (app folder doesn't exist)
-      console.log(
-        `${AnsiEscapes.RED}Platform you specified isn't installed on this device!${
-          AnsiEscapes.RESET
-        }\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(
-          (x) => `${x}`,
-        ).join("\n")}${AnsiEscapes.RESET}`,
+    } catch (e) {
+      console.error(
+        `${AnsiEscapes.RED}An error occurred while trying to uninject from Discord!${AnsiEscapes.RESET}`,
       );
+      console.error(e);
       process.exit(exitCode);
     }
     if (result) {
@@ -141,36 +150,13 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
         }`,
       );
     }
+  } else if (cmd === "reinject") {
+    await run("uninject");
+    await run("inject");
   } else {
-    console.log(`Unsupported argument "${cmd}", exiting.`);
+    console.error(`Unsupported argument "${cmd}", exiting.`);
     process.exit(exitCode);
   }
-})().catch((e) => {
-  if (e.code === "EACCES") {
-    console.log(cmd === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED, "\n");
-    console.log(
-      `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself due to missing permissions.${AnsiEscapes.RESET}`,
-      "\n",
-    );
-    console.log("Try again with elevated permissions.");
-  } else if (e.code === "ENOENT") {
-    console.log(cmd === "inject" ? BasicMessages.PLUG_FAILED : BasicMessages.UNPLUG_FAILED, "\n");
-    console.log(
-      `${AnsiEscapes.BOLD}${AnsiEscapes.YELLOW}Replugged wasn't able to inject itself because Discord could not be found.${AnsiEscapes.RESET}`,
-      "\n",
-    );
-    console.log(`Make sure that specified platform (${platform}) is installed, or try again with a different platform using: ${
-      AnsiEscapes.BOLD
-    }${AnsiEscapes.GREEN}npm run ${cmd === "inject" ? "plug" : "unplug"} <platform>${
-      AnsiEscapes.RESET
-    }
-List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}`).join("\n")}${
-      AnsiEscapes.RESET
-    }`);
-  } else {
-    console.error(
-      `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Something went wrong! Error info:${AnsiEscapes.RESET}\n`,
-      e,
-    );
-  }
-});
+};
+
+run();

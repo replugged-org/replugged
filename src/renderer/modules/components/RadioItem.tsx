@@ -1,6 +1,6 @@
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import { Divider, FormItem, FormText, Text } from ".";
+import { FormItem } from ".";
 
 interface RadioOptionType {
   name: string;
@@ -34,10 +34,8 @@ export type RadioType = React.ComponentType<RadioProps> & {
 const radioStr = ".itemInfoClassName";
 
 export const Radio = (await waitForModule(filters.bySource(radioStr)).then((mod) =>
-  getFunctionBySource(radioStr, mod as ObjectExports),
+  getFunctionBySource(mod as ObjectExports, radioStr),
 )) as RadioType;
-
-const classes = await waitForModule<Record<"dividerDefault", string>>(filters.byProps("labelRow"));
 
 interface RadioItemProps extends RadioProps {
   note?: string;
@@ -47,13 +45,13 @@ export type RadioItemType = React.FC<React.PropsWithChildren<RadioItemProps>>;
 
 export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React.ReactElement => {
   return (
-    <div style={{ marginBottom: 20 }}>
-      <FormItem>
-        <Text.Eyebrow style={{ marginBottom: 8 }}>{props.children}</Text.Eyebrow>
-        <FormText.DESCRIPTION style={{ marginBottom: 8 }}>{props.note}</FormText.DESCRIPTION>
-        <Radio {...props}></Radio>
-        <Divider className={classes.dividerDefault} />
-      </FormItem>
-    </div>
+    <FormItem
+      title={props.children}
+      style={{ marginBottom: 20 }}
+      note={props.note}
+      notePosition="before"
+      divider>
+      <Radio {...props}></Radio>
+    </FormItem>
   );
 };

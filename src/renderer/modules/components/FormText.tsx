@@ -3,8 +3,8 @@ import { filters, getExportsForProps, getFunctionBySource, waitForModule } from 
 
 const mod = await waitForModule(filters.bySource("LABEL_SELECTED"));
 const FormTextComp = getFunctionBySource(
-  '"type","className","disabled","selectable","children","style"',
   mod as ObjectExports,
+  '"type","className","disabled","selectable","children","style"',
 ) as ReactComponent<{ type: string }>;
 const types = getExportsForProps(mod, ["LABEL_SELECTED"])!;
 
