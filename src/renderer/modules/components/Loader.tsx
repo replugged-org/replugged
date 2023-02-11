@@ -21,6 +21,7 @@ export type LoaderType = React.ComponentType<LoaderProps> & {
   Type: typeof TYPES;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 export default (await waitForModule(filters.bySource('"wanderingCubes"')).then((mod) =>
   Object.values(mod).find((x) => typeof x === "function"),
 )) as LoaderType;

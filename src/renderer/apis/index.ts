@@ -13,16 +13,16 @@
  *     label: "Click the button!",
  *     icon: <svg></svg>, // Cool icon
  *     onClick: () => {
- *       // do stuff here when someone leftclicks the button
+ *       // do stuff here when someone left clicks the button
  *     },
  *     onContextMenu: () => {
- *       // do other stuff here when someone rightclicks the button
+ *       // do other stuff here when someone right clicks the button
  *     },
  *   };
  * };
  *
  * function start() {
- *   removeButton = api.messagePopover.addButton(item, "optionaluniquekeyhere");
+ *   removeButton = api.messagePopover.addButton(item, "optional unique key here");
  * }
  *
  * function stop() {
