@@ -305,7 +305,7 @@
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Open {type} Folder",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Laad Ontbrekende {type}",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} match} other {{count} matches}}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# match} other {# matches}}",
     "REPLUGGED_NO_ADDON_RESULTS": "Geen {type} gevonden met jouw zoekopdracht.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Geen {type} geïnstalleerd.",
     "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Wijzigingen Toepassen",

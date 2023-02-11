@@ -89,7 +89,7 @@ export const inject = async (
     return false;
   }
 
-  const fileToCheck = join(__dirname, "..", "..", prod ? "app.asar" : "dist/main.js");
+  const fileToCheck = join(__dirname, "..", "..", prod ? "replugged.asar" : "dist/main.js");
   const fileToCheckExists = await stat(fileToCheck)
     .then(() => true)
     .catch(() => false);
@@ -173,11 +173,11 @@ export const inject = async (
   }
 
   const entryPoint = prod
-    ? join(CONFIG_PATH, "app.asar")
+    ? join(CONFIG_PATH, "replugged.asar")
     : join(__dirname, "..", "..", "dist/main.js");
 
   if (prod) {
-    await copyFile(join(__dirname, "..", "..", "app.asar"), entryPoint);
+    await copyFile(join(__dirname, "..", "..", "replugged.asar"), entryPoint);
   }
 
   await mkdir(appDir);

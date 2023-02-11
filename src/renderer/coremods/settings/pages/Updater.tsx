@@ -13,24 +13,9 @@ import {
   installUpdate,
 } from "src/renderer/managers/updater";
 import { sleep } from "src/renderer/util";
-import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import Icons from "../icons";
 import { AddonType, label } from "./Addons";
 import "./Updater.css";
-
-function getSourceLink(
-  addon: RepluggedPlugin | RepluggedTheme,
-  version: string,
-): string | undefined {
-  const { updater } = addon.manifest;
-  if (!updater) return undefined;
-  const { type, id } = updater;
-  switch (type) {
-    case "github":
-      return `https://github.com/${id}/releases/tag/v${version}`;
-  }
-  return undefined;
-}
 
 export const Updater = (): React.ReactElement => {
   const [checking, setChecking] = React.useState(false);
@@ -179,7 +164,7 @@ export const Updater = (): React.ReactElement => {
           if (!addon) return null;
           const { manifest } = addon;
           const type = manifest.type === "replugged-plugin" ? AddonType.Plugin : AddonType.Theme;
-          const sourceLink = getSourceLink(addon, update.version);
+          const sourceLink = update.webUrl;
           return (
             <>
               <Flex

@@ -10,6 +10,7 @@ export type UpdateSettings = {
   available: boolean;
   version: string;
   url: string;
+  webUrl?: string;
   lastChecked: number;
 };
 
@@ -33,7 +34,7 @@ const updaterState = await init<Record<string, UpdateSettings>>("dev.replugged.U
 
 const completedUpdates = new Set<string>();
 
-export function getUpdateSettings(id: string): UpdateSettings | null {
+export function getUpdateState(id: string): UpdateSettings | null {
   const setting = updaterState.get(id);
   if (!setting) return null;
   if (typeof setting !== "object") return null;
@@ -45,6 +46,7 @@ export function getUpdateSettings(id: string): UpdateSettings | null {
   if (!("version" in setting) || typeof (setting as { version: unknown }).version !== "string")
     return null;
   if (!("url" in setting) || typeof (setting as { url: unknown }).url !== "string") return null;
+  if ("url" in setting && typeof (setting as { url: unknown }).url !== "string") return null;
   if (
     !("lastChecked" in setting) ||
     typeof (setting as { lastChecked: unknown }).lastChecked !== "number"
@@ -83,7 +85,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
     return;
   }
 
-  const updateSettings = getUpdateSettings(id);
+  const updateSettings = getUpdateState(id);
 
   if (
     updateSettings?.version &&
@@ -114,6 +116,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
       available: false,
       lastChecked: Date.now(),
       url: res.url,
+      webUrl: res.webUrl,
       version: newVersion,
     });
     return;
@@ -123,6 +126,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
   updaterState.set(id, {
     available: true,
     url: res.url,
+    webUrl: res.webUrl,
     lastChecked: Date.now(),
     version: newVersion,
   });
@@ -139,7 +143,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     return false;
   }
 
-  const updateSettings = getUpdateSettings(id);
+  const updateSettings = getUpdateState(id);
 
   if (!force && !updateSettings?.available) {
     if (verbose) logger.log(`Entity ${id} has no update available`);

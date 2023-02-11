@@ -309,7 +309,7 @@
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Otwórz folder {type}",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Załaduj brakujące {type}",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} match} other {{count} matches}}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# match} other {# matches}}",
     "REPLUGGED_NO_ADDON_RESULTS": "Żaden {type} nie pasuje do Twojego wyszukiwania.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Nie zainstalowano {type}.",
     "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Zapisz zmiany",

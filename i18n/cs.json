@@ -305,7 +305,7 @@
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Otevřít {type} Složku",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Načíst chybějící {type}",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type}{count, number}",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} match} other {{count} matches}}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# match} other {# matches}}",
     "REPLUGGED_NO_ADDON_RESULTS": "Žádný {type} nesplňoval požadavky vašeho vyhledávání.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Žádny nainstalovaný {type}.",
     "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Aplikovat změny",

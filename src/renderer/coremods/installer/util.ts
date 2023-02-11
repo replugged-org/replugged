@@ -86,6 +86,7 @@ export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
 export async function install(data: CheckResultSuccess): Promise<boolean> {
   const {
     url,
+    webUrl,
     manifest: { name, type, id, version },
   } = data;
 
@@ -103,6 +104,7 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
     available: false,
     lastChecked: Date.now(),
     url,
+    webUrl,
     version,
   });
 

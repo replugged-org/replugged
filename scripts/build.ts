@@ -41,7 +41,7 @@ const preBundle: esbuild.Plugin = {
           version: mainPackage.version,
         }),
       );
-      asar.createPackage("dist", "app.asar");
+      asar.createPackage("dist", "replugged.asar");
     });
   },
 };

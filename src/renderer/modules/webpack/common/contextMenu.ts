@@ -19,7 +19,7 @@ export interface ContextMenu {
 const mod = await waitForModule(filters.bySource('type:"CONTEXT_MENU_OPEN"'));
 
 export default {
-  open: getFunctionBySource("stopPropagation", mod as ObjectExports),
-  openLazy: getFunctionBySource((f) => f.toString().length < 50, mod as ObjectExports),
-  close: getFunctionBySource("CONTEXT_MENU_CLOSE", mod as ObjectExports),
+  open: getFunctionBySource(mod as ObjectExports, "stopPropagation"),
+  openLazy: getFunctionBySource(mod as ObjectExports, (f) => f.toString().length < 50),
+  close: getFunctionBySource(mod as ObjectExports, "CONTEXT_MENU_CLOSE"),
 } as ContextMenu;
