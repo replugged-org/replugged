@@ -13,4 +13,21 @@ export default [
       },
     ],
   },
+  {
+    find: "TRACKING_URL:",
+    replacements: [
+      {
+        replace: "()=>{}",
+      },
+    ],
+  },
+  {
+    find: /this\.metrics\.push\(.\);/,
+    replacements: [
+      {
+        match: /this\.metrics\.push\(.\);/,
+        replace: "",
+      },
+    ],
+  },
 ] as PlaintextPatch[];
