@@ -96,6 +96,7 @@ const RepluggedNative = {
     getOverrides: (): Promise<RepluggedTranslations> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_OVERRIDES),
   },
+  getVersion: () => ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION),
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later

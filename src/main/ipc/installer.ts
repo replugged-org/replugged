@@ -10,7 +10,7 @@ import {
 } from "../../types";
 import { Octokit } from "@octokit/rest";
 import { CONFIG_PATHS } from "../../util";
-import { writeFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
 import { anyAddon } from "src/types/addon";
@@ -163,3 +163,16 @@ ipcMain.handle(
     };
   },
 );
+
+ipcMain.handle(RepluggedIpcChannels.GET_REPLUGGED_VERSION, async () => {
+  const path = join(__dirname, "package.json");
+  try {
+    const packageJson = JSON.parse(await readFile(path, "utf8"));
+    return packageJson.version;
+  } catch (err) {
+    if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
+      return "dev";
+    }
+    throw err;
+  }
+});
