@@ -134,7 +134,7 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
       throw new Error("Could not find transitionTo");
     }
 
-    transitionTo = getFunctionBySource("Transitioning to", transitionToMod as ObjectExports);
+    transitionTo = getFunctionBySource(transitionToMod as ObjectExports, "Transitioning to");
     if (!transitionTo) {
       throw new Error("Could not find transitionTo");
     }

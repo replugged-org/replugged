@@ -26,10 +26,10 @@ export interface Toast {
 }
 
 const mod = await waitForModule(filters.bySource("queuedToasts"));
-const fn = getFunctionBySource("queuedToasts).concat", mod as ObjectExports)!;
+const fn = getFunctionBySource(mod as ObjectExports, "queuedToasts).concat")!;
 
 const propGenMod = await waitForModule(filters.bySource(/case \w+\.\w+\.FAILURE/));
-const propGenFn = getFunctionBySource("position", propGenMod as ObjectExports)!;
+const propGenFn = getFunctionBySource(propGenMod as ObjectExports, "position")!;
 
 const toast: ToastFn = (content, kind = Kind.SUCCESS, opts = undefined) => {
   const props = propGenFn(content, kind, opts);

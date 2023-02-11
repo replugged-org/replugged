@@ -47,7 +47,7 @@ const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: 
 const source = sourceStrings[rawMod?.id].matchAll(/if\(\w+\.type===\w+\.(\w+)\).+?type:"(.+?)"/g);
 
 const Menu = {
-  ContextMenu: getFunctionBySource("getContainerProps", menuMod as ObjectExports),
+  ContextMenu: getFunctionBySource(menuMod as ObjectExports, "getContainerProps"),
 } as ContextMenuType;
 
 for (const [, identifier, type] of source) {

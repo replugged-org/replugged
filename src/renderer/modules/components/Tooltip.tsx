@@ -29,8 +29,8 @@ const rawTooltipMod = await waitForModule<Record<string, React.FC>>(
 );
 
 const TooltipMod = getFunctionBySource<React.FC>(
-  /shouldShowTooltip:!1/,
   rawTooltipMod,
+  /shouldShowTooltip:!1/,
 ) as OriginalTooltipType;
 
 const Tooltip: TooltipType = (props) => (

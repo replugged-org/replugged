@@ -92,10 +92,10 @@ const classes = getBySource<RawModule & ModalClasses>("().justifyStart")!;
 
 export default {
   openModal: getFunctionBySource<Modal["openModal"]>(
-    "onCloseRequest:null!=",
     mod as ObjectExports,
+    "onCloseRequest:null!=",
   )!,
-  closeModal: getFunctionBySource<Modal["closeModal"]>("onCloseCallback&&", mod as ObjectExports)!,
+  closeModal: getFunctionBySource<Modal["closeModal"]>(mod as ObjectExports, "onCloseCallback&&")!,
   Direction: classes?.Direction,
   Align: classes?.Align,
   Justify: classes?.Justify,

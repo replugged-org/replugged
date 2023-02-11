@@ -7,5 +7,5 @@ const rgx = /\.divider,.\),style:./;
 
 export default (await waitForModule(filters.bySource(rgx)).then((mod) => {
   if (typeof mod === "function") return mod;
-  return getFunctionBySource(rgx, mod as ObjectExports);
+  return getFunctionBySource(mod as ObjectExports, rgx);
 })) as DividerType;
