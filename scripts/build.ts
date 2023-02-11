@@ -30,7 +30,7 @@ const preBundle: esbuild.Plugin = {
           name: "replugged",
         }),
       );
-      asar.createPackage("dist", "app.asar");
+      asar.createPackage("dist", "replugged.asar");
     });
   },
 };
