@@ -9,7 +9,7 @@ interface RadioOptionType {
   disabled?: boolean;
   color?: string;
   tooltipText?: string;
-  tooltipPosition?: "top" | "bottom" | "left" | "right" | "center";
+  tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
 }
 
 interface RadioProps {

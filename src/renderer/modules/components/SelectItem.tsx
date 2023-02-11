@@ -22,7 +22,7 @@ interface SelectCompProps {
   popoutWidth?: number;
   clearable?: boolean;
   look?: number;
-  popoutPosition?: "top" | "bottom" | "left" | "right" | "center";
+  popoutPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   closeOnSelect?: boolean;
   hideIcon?: boolean;
   onClose?: () => void;
