@@ -1,6 +1,6 @@
 import { Messages } from "@common/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, QuickCSS, Themes } from "./pages";
+import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
 export { insertSections };
 
@@ -27,6 +27,11 @@ export function start(): void {
       name: "rp-themes",
       label: () => Messages.REPLUGGED_THEMES,
       elem: Themes,
+    }),
+    Section({
+      name: "rp-updater",
+      label: () => Messages.REPLUGGED_UPDATES_UPDATER,
+      elem: Updater,
     }),
   ]);
 }

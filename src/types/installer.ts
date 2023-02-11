@@ -7,6 +7,7 @@ export interface CheckResultSuccess {
   manifest: AnyAddonManifest;
   name: string;
   url: string;
+  webUrl: string;
 }
 
 export interface CheckResultFailure {
