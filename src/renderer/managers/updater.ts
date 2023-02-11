@@ -13,9 +13,21 @@ export type UpdateSettings = {
   lastChecked?: number;
 };
 
-const updaterSettings = await init<{
-  waitSinceLastUpdate: number;
-}>("dev.replugged.Updater");
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type MainUpdaterSettings = {
+  // Todo: implement
+  checkInterval?: number;
+  lastChecked?: number;
+};
+
+const mainUpdaterDefaultSettings: Partial<MainUpdaterSettings> = {
+  checkInterval: 1000 * 60 * 60,
+};
+
+const updaterSettings = await init<MainUpdaterSettings, keyof typeof mainUpdaterDefaultSettings>(
+  "dev.replugged.Updater",
+  mainUpdaterDefaultSettings,
+);
 
 const updaterState = await init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
 
@@ -37,14 +49,14 @@ export function getUpdateSettings(id: string): UpdateSettings {
   return setting;
 }
 
+export function getMainUpdaterSettings(): MainUpdaterSettings {
+  return updaterSettings.all();
+}
+
 /**
  * @param id Entity ID to check updates for
  */
-export async function checkUpdate(
-  id: string,
-  waitSinceLastUpdate = 0,
-  verbose = true,
-): Promise<void> {
+export async function checkUpdate(id: string, verbose = true): Promise<void> {
   const entity = pluginManager.plugins.get(id) || (await themeManager.get(id));
   if (!entity) {
     logger.error(`Entity ${id} not found`);
@@ -76,11 +88,6 @@ export async function checkUpdate(
       ...updateSettings,
       available: true,
     });
-    return;
-  }
-
-  if (updateSettings.lastChecked && Date.now() - updateSettings.lastChecked < waitSinceLastUpdate) {
-    if (verbose) logger.log(`Entity ${id} was checked recently, skipping`);
     return;
   }
 
@@ -176,25 +183,19 @@ export async function installUpdate(id: string, force = false, verbose = true): 
   return true;
 }
 
-export async function checkAllUpdates(
-  waitSinceLastUpdate?: number | undefined,
-  verbose = false,
-): Promise<void> {
-  if (waitSinceLastUpdate === undefined) {
-    waitSinceLastUpdate = updaterSettings.get("waitSinceLastUpdate") || 1000 * 60 * 60 * 15;
-  }
-
+export async function checkAllUpdates(verbose = false): Promise<void> {
   const plugins = Array.from(pluginManager.plugins.values());
   const themes = await themeManager.list();
 
   logger.log("Checking for updates");
 
   await Promise.all([
-    ...plugins.map((plugin) => checkUpdate(plugin.manifest.id, waitSinceLastUpdate, verbose)),
-    ...themes.map((theme) => checkUpdate(theme.manifest.id, waitSinceLastUpdate, verbose)),
+    ...plugins.map((plugin) => checkUpdate(plugin.manifest.id, verbose)),
+    ...themes.map((theme) => checkUpdate(theme.manifest.id, verbose)),
   ]);
 
   logger.log("All updates checked");
+  updaterSettings.set("lastChecked", Date.now());
 }
 
 export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {

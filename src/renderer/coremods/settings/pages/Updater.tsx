@@ -1,5 +1,5 @@
 import { toast } from "@common";
-import { Messages } from "@common/i18n";
+import i18n, { Messages } from "@common/i18n";
 import React from "@common/react";
 import { Button, Divider, Flex, Loader, Text, Tooltip } from "@components";
 import { plugins } from "src/renderer/managers/plugins";
@@ -8,6 +8,7 @@ import {
   type UpdateSettings,
   checkAllUpdates,
   getAvailableUpdates,
+  getMainUpdaterSettings,
   installAllUpdates,
   installUpdate,
 } from "src/renderer/managers/updater";
@@ -23,6 +24,7 @@ export const Updater = (): React.ReactElement => {
   >(getAvailableUpdates());
   const [updatePromises, setUpdatePromises] = React.useState<Record<string, Promise<boolean>>>({});
   const [didInstallAll, setDidInstallAll] = React.useState(false);
+  const [lastChecked, setLastChecked] = React.useState(getMainUpdaterSettings().lastChecked);
 
   React.useEffect(() => {
     const promises = Object.entries(updatePromises);
@@ -60,8 +62,9 @@ export const Updater = (): React.ReactElement => {
   const checkForUpdates = async (): Promise<void> => {
     const previousUpdates = getAvailableUpdates();
     setChecking(true);
-    await Promise.all([checkAllUpdates(undefined, true), sleep(1000)]);
+    await Promise.all([checkAllUpdates(true), sleep(1000)]);
     setChecking(false);
+    setLastChecked(getMainUpdaterSettings().lastChecked);
     const newUpdates = getAvailableUpdates();
     setUpdatesAvailable(newUpdates);
     if (newUpdates.length > previousUpdates.length) {
@@ -105,7 +108,27 @@ export const Updater = (): React.ReactElement => {
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
         <Text.H2>{Messages.REPLUGGED_UPDATES_UPDATER}</Text.H2>
-        <div style={{ display: "flex" }}>
+      </Flex>
+      <Divider style={{ margin: "20px 0px" }} />
+      <Flex
+        className="replugged-updater-header"
+        justify={Flex.Justify.BETWEEN}
+        align={Flex.Align.CENTER}>
+        <div>
+          <Text variant="heading-md/bold">
+            {updatesAvailable.length
+              ? Messages.REPLUGGED_UPDATES_AVAILABLE.format({ count: updatesAvailable.length })
+              : Messages.REPLUGGED_UPDATES_UP_TO_DATE}
+          </Text>
+          {lastChecked ? (
+            <Text.Normal>
+              {Messages.REPLUGGED_UPDATES_LAST_CHECKED.format({
+                date: new Date(lastChecked).toLocaleString(i18n.getLocale()),
+              })}
+            </Text.Normal>
+          ) : null}
+        </div>
+        {!hasAnyUpdates ? (
           <Button
             className="replugged-updater-check"
             onClick={checkForUpdates}
@@ -117,26 +140,14 @@ export const Updater = (): React.ReactElement => {
               Messages.REPLUGGED_UPDATES_CHECK
             )}
           </Button>
-        </div>
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
-      <Flex
-        className="replugged-updater-header"
-        justify={Flex.Justify.BETWEEN}
-        align={Flex.Align.CENTER}>
-        <Text variant="heading-md/bold">
-          {updatesAvailable.length
-            ? Messages.REPLUGGED_UPDATES_AVAILABLE.format({ count: updatesAvailable.length })
-            : Messages.REPLUGGED_UPDATES_UP_TO_DATE}
-        </Text>
-        {isAllComplete && didInstallAll ? (
+        ) : isAllComplete && didInstallAll ? (
           <Button onClick={reload} color={Button.Colors.RED}>
             {Messages.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE}
           </Button>
         ) : (
           <Button
             onClick={installAll}
-            disabled={!hasAnyUpdates || isAnyUpdating || isAllComplete}
+            disabled={isAnyUpdating || isAllComplete}
             color={isAllUpdating ? Button.Colors.PRIMARY : Button.Colors.BRAND}>
             {isAllUpdating ? (
               <Loader type={Loader.Type.PULSING_ELLIPSIS} />
