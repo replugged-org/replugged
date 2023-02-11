@@ -1,7 +1,7 @@
 import { toast } from "@common";
 import { Messages } from "@common/i18n";
 import React from "@common/react";
-import { Button, Divider, Flex, Loader, Text } from "@components";
+import { Button, Divider, Flex, Loader, Text, Tooltip } from "@components";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import {
@@ -12,6 +12,8 @@ import {
   installUpdate,
 } from "src/renderer/managers/updater";
 import { sleep } from "src/renderer/util";
+import Icons from "../icons";
+import { AddonType, getSourceLink, label } from "./Addons";
 import "./Updater.css";
 
 export const Updater = (): React.ReactElement => {
@@ -150,6 +152,8 @@ export const Updater = (): React.ReactElement => {
           const isUpdating = update.id in updatePromises;
           if (!addon) return null;
           const { manifest } = addon;
+          const type = manifest.type === "replugged-plugin" ? AddonType.Plugin : AddonType.Theme;
+          const sourceLink = getSourceLink(addon);
           return (
             <>
               <Flex
@@ -157,12 +161,25 @@ export const Updater = (): React.ReactElement => {
                 justify={Flex.Justify.BETWEEN}
                 align={Flex.Align.CENTER}>
                 <div>
-                  <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-                    <Text variant="heading-lg/bold" tag="span">
-                      {manifest.name}
-                    </Text>{" "}
-                    v{manifest.version}
-                  </Text>
+                  <Flex align={Flex.Align.CENTER} style={{ gap: "5px" }}>
+                    <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
+                      <Text variant="heading-lg/bold" tag="span">
+                        {manifest.name}
+                      </Text>{" "}
+                      v{manifest.version}
+                    </Text>
+                    {sourceLink ? (
+                      <Tooltip
+                        text={Messages.REPLUGGED_ADDON_PAGE_OPEN.format({
+                          type: label(type, { caps: "title" }),
+                        })}
+                        className="replugged-addon-icon">
+                        <a href={sourceLink} target="_blank" rel="noopener noreferrer">
+                          <Icons.Link />
+                        </a>
+                      </Tooltip>
+                    ) : null}
+                  </Flex>
                   <Text.Normal>
                     {Messages.REPLUGGED_UPDATES_UPDATE_TO.format({ version: `v${update.version}` })}
                   </Text.Normal>

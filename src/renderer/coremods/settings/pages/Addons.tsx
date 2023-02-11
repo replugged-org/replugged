@@ -10,7 +10,7 @@ import { showAddonSettings } from "./AddonSettings";
 
 const logger = Logger.coremod("AddonSettings");
 
-enum AddonType {
+export enum AddonType {
   Plugin = "plugin",
   Theme = "theme",
 }
@@ -96,7 +96,7 @@ function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
   return [addon.manifest.author].flat();
 }
 
-function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefined {
+export function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefined {
   const { updater } = addon.manifest;
   if (!updater) return undefined;
   const { type, id } = updater;
@@ -134,7 +134,7 @@ async function loadMissing(type: AddonType): Promise<void> {
   }
 }
 
-function label(
+export function label(
   type: AddonType,
   {
     caps,
