@@ -18,16 +18,16 @@ export default [
     replacements: [
       {
         replace: "()=>{}",
-      }
-    ]
+      },
+    ],
   },
   {
     find: /this\.metrics\.push\(.\);/,
     replacements: [
       {
         match: /this\.metrics\.push\(.\);/,
-        replace: ""
-      }
-    ]
-  }
+        replace: "",
+      },
+    ],
+  },
 ] as PlaintextPatch[];
