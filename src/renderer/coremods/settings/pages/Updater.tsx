@@ -114,8 +114,8 @@ export const Updater = (): React.ReactElement => {
         className="replugged-updater-header"
         justify={Flex.Justify.BETWEEN}
         align={Flex.Align.CENTER}>
-        <div>
-          <Text variant="heading-md/bold">
+        <Flex justify={Flex.Justify.CENTER} direction={Flex.Direction.VERTICAL}>
+          <Text variant="heading-lg/bold">
             {updatesAvailable.length
               ? Messages.REPLUGGED_UPDATES_AVAILABLE.format({ count: updatesAvailable.length })
               : Messages.REPLUGGED_UPDATES_UP_TO_DATE}
@@ -127,7 +127,7 @@ export const Updater = (): React.ReactElement => {
               })}
             </Text.Normal>
           ) : null}
-        </div>
+        </Flex>
         {!hasAnyUpdates ? (
           <Button
             className="replugged-updater-check"
