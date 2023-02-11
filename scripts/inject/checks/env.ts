@@ -8,7 +8,7 @@ const nodeModulesPath = join(rootPath, "node_modules");
 
 const installDeps = (): void => {
   console.log("Installing dependencies, please wait...");
-  execSync("npm install", {
+  execSync("pnpm install", {
     cwd: rootPath,
     stdio: [null, null, null],
   });
