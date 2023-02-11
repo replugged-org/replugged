@@ -35,6 +35,13 @@ export async function waitFor(selector: string): Promise<Element> {
 }
 
 /**
+ * Async sleep function
+ */
+export function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
  * Get the React instance of an element
  * @param element Element to get the React instance of
  * @returns React instance
@@ -134,7 +141,7 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
       throw new Error("Could not find transitionTo");
     }
 
-    transitionTo = getFunctionBySource("Transitioning to", transitionToMod as ObjectExports);
+    transitionTo = getFunctionBySource(transitionToMod as ObjectExports, "Transitioning to");
     if (!transitionTo) {
       throw new Error("Could not find transitionTo");
     }

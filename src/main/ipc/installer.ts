@@ -82,6 +82,7 @@ async function github(
     manifest,
     name: asset.name,
     url: asset.browser_download_url,
+    webUrl: res.data.html_url,
   };
 }
 
