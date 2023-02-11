@@ -1,6 +1,7 @@
 import { modal, toast } from "@common";
 import { Messages } from "@common/i18n";
 import { Logger } from "@replugged";
+import { setUpdaterState } from "src/renderer/managers/updater";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
@@ -85,7 +86,8 @@ export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
 export async function install(data: CheckResultSuccess): Promise<boolean> {
   const {
     url,
-    manifest: { name, type, id },
+    webUrl,
+    manifest: { name, type, id, version },
   } = data;
 
   const res = await RepluggedNative.installer.install(type, `${id}.asar`, url);
@@ -97,6 +99,14 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
     );
     return false;
   }
+
+  setUpdaterState(id, {
+    available: false,
+    lastChecked: Date.now(),
+    url,
+    webUrl,
+    version,
+  });
 
   const loaded = await loadNew(data);
 

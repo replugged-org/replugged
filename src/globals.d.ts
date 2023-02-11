@@ -23,6 +23,9 @@ declare global {
   export const RepluggedNative: RepluggedNativeType;
 
   export const DiscordNative: {
+    app: {
+      relaunch: () => void;
+    };
     window: {
       setDevtoolsCallbacks(onOpened?: (() => void) | null, onClosed?: (() => void) | null): void;
       focus(): void;

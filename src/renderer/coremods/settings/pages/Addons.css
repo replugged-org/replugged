@@ -20,6 +20,10 @@
   height: 2ch;
 }
 
+.replugged-addon-icon-md svg {
+  height: 1.75ch;
+}
+
 .replugged-addon-icon-author svg {
   height: 1.5ch;
 }
