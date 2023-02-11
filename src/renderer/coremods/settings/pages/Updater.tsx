@@ -115,13 +115,13 @@ export const Updater = (): React.ReactElement => {
         justify={Flex.Justify.BETWEEN}
         align={Flex.Align.CENTER}>
         <Flex justify={Flex.Justify.CENTER} direction={Flex.Direction.VERTICAL}>
-          <Text variant="heading-lg/bold">
+          <Text variant="heading-md/bold" color="header-primary">
             {updatesAvailable.length
               ? Messages.REPLUGGED_UPDATES_AVAILABLE.format({ count: updatesAvailable.length })
               : Messages.REPLUGGED_UPDATES_UP_TO_DATE}
           </Text>
           {lastChecked ? (
-            <Text.Normal>
+            <Text.Normal style={{ marginTop: "5px" }}>
               {Messages.REPLUGGED_UPDATES_LAST_CHECKED.format({
                 date: new Date(lastChecked).toLocaleString(i18n.getLocale()),
               })}
@@ -172,9 +172,9 @@ export const Updater = (): React.ReactElement => {
                 justify={Flex.Justify.BETWEEN}
                 align={Flex.Align.CENTER}>
                 <div>
-                  <Flex align={Flex.Align.CENTER} style={{ gap: "5px" }}>
+                  <Flex align={Flex.Align.CENTER} style={{ gap: "5px", marginBottom: "5px" }}>
                     <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-                      <Text variant="heading-lg/bold" tag="span">
+                      <Text variant="heading-md/bold" color="header-primary" tag="span">
                         {manifest.name}
                       </Text>{" "}
                       v{manifest.version}
@@ -184,7 +184,7 @@ export const Updater = (): React.ReactElement => {
                         text={Messages.REPLUGGED_ADDON_PAGE_OPEN.format({
                           type: label(type, { caps: "title" }),
                         })}
-                        className="replugged-addon-icon">
+                        className="replugged-addon-icon replugged-addon-icon-md">
                         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
                           <Icons.Link />
                         </a>

@@ -276,13 +276,10 @@ function Card({
 
   return (
     <div className="replugged-addon-card">
-      <Flex
-        align={Flex.Align.START}
-        justify={Flex.Justify.BETWEEN}
-        style={{ gap: "15px", marginBottom: "15px" }}>
+      <Flex align={Flex.Align.START} justify={Flex.Justify.BETWEEN} style={{ marginBottom: "5px" }}>
         <span>
           <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-            <Text variant="heading-lg/bold" tag="span">
+            <Text variant="heading-md/bold" tag="span" color="header-primary">
               {addon.manifest.name}
             </Text>
             <span>
