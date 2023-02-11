@@ -36,7 +36,7 @@ importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mo
 import type { SwitchItemType, SwitchType } from "./SwitchItem";
 export type { SwitchType };
 export let Switch: SwitchType;
-importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
+importTimeout("Switch", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
 
 export type { SwitchItemType };
 export let SwitchItem: SwitchItemType;
@@ -92,7 +92,7 @@ importTimeout("Button", import("./Button"), (mod) => (Button = mod.Button));
 
 export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
-importTimeout("Button", import("./Button"), (mod) => (ButtonItem = mod.ButtonItem));
+importTimeout("ButtonItem", import("./Button"), (mod) => (ButtonItem = mod.ButtonItem));
 
 import type { ClickableType } from "./Clickable";
 export type { ClickableType };
