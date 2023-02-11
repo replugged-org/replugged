@@ -305,7 +305,7 @@
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Ava {type} Kaust",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Lae Puuduv {type}",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} vaste} other {{count} vastet}}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# vaste} other {# vastet}}",
     "REPLUGGED_NO_ADDON_RESULTS": "Ükski {type} ei vastanud teie otsingule.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "{type} pole installitud.",
     "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Rakenda Muudatused",

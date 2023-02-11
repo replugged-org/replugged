@@ -306,7 +306,7 @@
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Open {type} Folder",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Load Missing {type}",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {{count} match} other {{count} matches}}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# match} other {# matches}}",
     "REPLUGGED_NO_ADDON_RESULTS": "No {type} matched your search.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "No {type} installed.",
     "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Apply Changes",
