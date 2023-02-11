@@ -108,7 +108,11 @@ function TextWithDefaultProps(defaultProps: CustomTextProps) {
 const Text = TextWithDefaultProps({}) as TextType;
 Text.Normal = TextWithDefaultProps({ variant: "text-sm/normal", tag: "span" });
 Text.H1 = TextWithDefaultProps({ variant: "heading-xl/bold", color: "header-primary", tag: "h1" });
-Text.H2 = TextWithDefaultProps({ variant: "heading-lg/bold", color: "header-primary", tag: "h2" });
+Text.H2 = TextWithDefaultProps({
+  variant: "heading-lg/semibold",
+  color: "header-primary",
+  tag: "h2",
+});
 Text.H3 = TextWithDefaultProps({ variant: "heading-md/bold", tag: "h3" });
 Text.H4 = TextWithDefaultProps({ variant: "heading-sm/bold", tag: "h4" });
 Text.Eyebrow = TextWithDefaultProps({ variant: "eyebrow" });
