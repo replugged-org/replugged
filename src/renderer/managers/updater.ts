@@ -7,10 +7,10 @@ const logger = Logger.coremod("Updater");
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type UpdateSettings = {
-  available?: boolean;
-  version?: string;
-  url?: string;
-  lastChecked?: number;
+  available: boolean;
+  version: string;
+  url: string;
+  lastChecked: number;
 };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -33,19 +33,23 @@ const updaterState = await init<Record<string, UpdateSettings>>("dev.replugged.U
 
 const completedUpdates = new Set<string>();
 
-export function getUpdateSettings(id: string): UpdateSettings {
+export function getUpdateSettings(id: string): UpdateSettings | null {
   const setting = updaterState.get(id);
-  if (!setting) return {};
-  if (typeof setting !== "object") return {};
-  if ("available" in setting && typeof (setting as { available: unknown }).available !== "boolean")
-    return {};
-  if ("id" in setting && typeof (setting as { id: unknown }).id !== "string") return {};
-  if ("url" in setting && typeof (setting as { url: unknown }).url !== "string") return {};
+  if (!setting) return null;
+  if (typeof setting !== "object") return null;
   if (
-    "lastChecked" in setting &&
+    !("available" in setting) ||
+    typeof (setting as { available: unknown }).available !== "boolean"
+  )
+    return null;
+  if (!("version" in setting) || typeof (setting as { version: unknown }).version !== "string")
+    return null;
+  if (!("url" in setting) || typeof (setting as { url: unknown }).url !== "string") return null;
+  if (
+    !("lastChecked" in setting) ||
     typeof (setting as { lastChecked: unknown }).lastChecked !== "number"
   )
-    return {};
+    return null;
   return setting;
 }
 
@@ -82,9 +86,9 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
   const updateSettings = getUpdateSettings(id);
 
   if (
-    updateSettings.version &&
-    updateSettings.version !== version &&
-    !updateSettings.available &&
+    updateSettings?.version &&
+    updateSettings?.version !== version &&
+    !updateSettings?.available &&
     !completedUpdates.has(id)
   ) {
     if (verbose) logger.log(`Entity ${id} version differs from previous, forcing new update`);
@@ -137,12 +141,12 @@ export async function installUpdate(id: string, force = false, verbose = true): 
 
   const updateSettings = getUpdateSettings(id);
 
-  if (!force && !updateSettings.available) {
+  if (!force && !updateSettings?.available) {
     if (verbose) logger.log(`Entity ${id} has no update available`);
     return false;
   }
 
-  if (!updateSettings.url) {
+  if (!updateSettings?.url) {
     logger.error(`Entity ${id} has no update URL`);
     return false;
   }
