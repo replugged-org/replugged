@@ -53,6 +53,10 @@ export function getMainUpdaterSettings(): MainUpdaterSettings {
   return updaterSettings.all();
 }
 
+export function setUpdaterState(id: string, state: UpdateSettings): void {
+  updaterState.set(id, state);
+}
+
 /**
  * @param id Entity ID to check updates for
  */
