@@ -34,7 +34,5 @@ export interface SliderProps extends SliderCompProps {
 export type SliderType = ReactComponent<SliderProps>;
 
 export default ((props) => {
-  return (
-    <SliderComp initialValue={props.value} onValueChange={props.onChange} {...props}></SliderComp>
-  );
+  return <SliderComp initialValue={props.value} onValueChange={props.onChange} {...props} />;
 }) as SliderType;

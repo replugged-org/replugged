@@ -62,7 +62,8 @@ export const Select = ((props) => {
       isDisabled={props.disabled}
       select={props.onChange || props.onSelect}
       clear={props.onClear}
-      {...props}></SelectComp>
+      {...props}
+    />
   );
 }) as SelectType;
 
@@ -80,7 +81,7 @@ export const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): Rea
       note={props.note}
       notePosition="after"
       divider>
-      <Select {...props}></Select>
+      <Select {...props} />
     </FormItem>
   );
 };

@@ -51,7 +51,7 @@ export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React
       note={props.note}
       notePosition="before"
       divider>
-      <Radio {...props}></Radio>
+      <Radio {...props} />
     </FormItem>
   );
 };
