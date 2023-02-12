@@ -106,7 +106,7 @@
     "REPLUGGED_THEMES_WIP1": "This part of Replugged is not completed yet.",
     "REPLUGGED_THEMES_WIP2": "We're working on it and will release it before 2021.",
     "REPLUGGED_UNLINK": "Unlink",
-    "REPLUGGED_UPDATES_AVAILABLE": "Updates are available.",
+    "REPLUGGED_UPDATES_AVAILABLE": "{count, plural, =1 {# update is} other {# updates are}} available.",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_DESC": "Some updates may require a client reload to complete.",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "Reload Required",
     "REPLUGGED_UPDATES_BRANCH": "Branch:",

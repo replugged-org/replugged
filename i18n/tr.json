@@ -104,7 +104,7 @@
     "REPLUGGED_THEMES_WIP1": "Replugged'ın bu kısmı henüz yapılmadı.",
     "REPLUGGED_THEMES_WIP2": "Üzerinde çalışıyoruz ve 2021'den önce bitireceğiz.",
     "REPLUGGED_UNLINK": "Bağlantıyı kaldır",
-    "REPLUGGED_UPDATES_AVAILABLE": "Güncellemeler var.",
+    "REPLUGGED_UPDATES_AVAILABLE": "",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_DESC": "Bazı güncellemelerin tamamlanması için istemcinin yeniden yüklenmesi gerekir.",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "Yeniden Başlatma Gerekli",
     "REPLUGGED_UPDATES_BRANCH": "Dal:",

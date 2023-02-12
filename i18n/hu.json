@@ -113,7 +113,7 @@
     "REPLUGGED_THEMES_WIP1": "Ez a része a Replugged-nak még nincs kész.",
     "REPLUGGED_THEMES_WIP2": "Dolgozunk rajta és 2021 előtt fogjuk kiadni.",
     "REPLUGGED_UNLINK": "Leválasztás",
-    "REPLUGGED_UPDATES_AVAILABLE": "Vannak elérhető frissítések.",
+    "REPLUGGED_UPDATES_AVAILABLE": "",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_DESC": "Nehány frissítéshez a kliens újraindítása szükséges.",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "Újraindítás szükséges",
     "REPLUGGED_UPDATES_BRANCH": "Branch:",

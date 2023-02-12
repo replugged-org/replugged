@@ -111,7 +111,7 @@
     "REPLUGGED_THEMES_WIP1": "Tämä osa Repluggedia ei ole vielä valmis.",
     "REPLUGGED_THEMES_WIP2": "Olemme työskentelemässä sen parissa ja se julkaistaan ennen vuotta 2021.",
     "REPLUGGED_UNLINK": "Poista linkkaus",
-    "REPLUGGED_UPDATES_AVAILABLE": "Päivityksiä saatavilla.",
+    "REPLUGGED_UPDATES_AVAILABLE": "",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_DESC": "Jotkut päivitykset vaativat uudelleenlatauksen toimiakseen.",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "Uudelleenlataus vaadittu",
     "REPLUGGED_UPDATES_BRANCH": "Haara:",

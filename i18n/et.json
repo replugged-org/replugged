@@ -62,7 +62,7 @@
     "REPLUGGED_SETTINGS_OVERLAY": "Ülekatte DevTools",
     "REPLUGGED_SETTINGS_OVERLAY_DESC": "Avab DevTools'i akna, mis võimaldab teil kontrollida, mis Discord'i mängusiseses ülekattes toimub.",
     "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Muudab kõik Discordiga avatud aknad läbipaistvaks, mis on kasulik teemade kujundamiseks.\n****HOIATUS.**** See katkestab Windowsis **akna paigale klõpsamise**. **Riistvaraline kiirendus** tuleb Linuxis **välja lülitada**. Mõnel juhul võib tekkida probleeme ja must taust , näiteks kui aken on monitori eraldusvõime tõttu üla- või alaosast ära lõigatud või kui arendajatööriistad on avatud ja dokitud. **Nõuab taaskäivitamist**.",
-    "REPLUGGED_UPDATES_AVAILABLE": "Värskendused on saadaval.",
+    "REPLUGGED_UPDATES_AVAILABLE": "",
     "REPLUGGED_UPDATES_CHECKING_STATUS": "Otsin {checked}/{total}",
     "REPLUGGED_UPDATES_DISABLE_MODAL": "Kas olete kindel, et soovite selle jaoks uuendused keelata? Te peate uuendama käsitsi.",
     "REPLUGGED_UPDATES_FORCE_MODAL": "Sundvärskendamine võib üle kirjutada kohalikud muudatused, mis te tegite Repluggedile. Kui olete mõne teinud, salvestage need kindlasti enne! See toiming on pöördumatu.",

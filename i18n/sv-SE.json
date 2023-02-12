@@ -81,7 +81,7 @@
     "REPLUGGED_UPDATES_UPSTREAM": "Uppströms:",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Senast kollat: {date}",
     "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged är aktuellt.",
-    "REPLUGGED_UPDATES_AVAILABLE": "Uppdateringar är tillgängliga.",
+    "REPLUGGED_UPDATES_AVAILABLE": "",
     "REPLUGGED_UPDATES_FAILED": "Några uppdateringar misslyckades!",
     "REPLUGGED_UPDATES_CHECKING_STATUS": "Kollar {checked}/{total}",
     "REPLUGGED_UPDATES_PAUSED_RESUME": "De kommer att återupptas efter nästa omstart.",
