@@ -56,7 +56,9 @@ export default ((props: React.PropsWithChildren<CategoryProps>) => {
           <div className={classes.labelRow}>
             <label className={classes.title}>{props.title}</label>
           </div>
-          <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
+          {props.note && (
+            <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
+          )}
         </div>
       </div>
       {open ? (
