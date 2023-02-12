@@ -412,7 +412,7 @@ export async function waitForModule<
   T extends RawModule | ModuleExports = RawModule | ModuleExports,
 >(filter: Filter, options: WaitForOptions = {}): Promise<T> {
   const existing = getModule(filter, { all: false, raw: options.raw }) as
-    | (typeof options["raw"] extends true ? T & RawModule : T & ModuleExports)
+    | ((typeof options)["raw"] extends true ? T & RawModule : T & ModuleExports)
     | undefined;
   if (existing) {
     return Promise.resolve(existing);
@@ -579,7 +579,7 @@ export function waitForProps<
 export function waitForProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
->(...props: P[]): T;
+>(...props: P[]): Promise<T>;
 
 /**
  * Like {@link getByProps} but waits for the module to be loaded.
