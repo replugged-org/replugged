@@ -138,6 +138,15 @@ export type { LoaderType };
 export let Loader: LoaderType;
 importTimeout("Loader", import("./Loader"), (mod) => (Loader = mod.default));
 
+import { type CheckboxItemType, CheckboxType } from "./CheckboxItem";
+export type { CheckboxType };
+export let Checkbox: CheckboxType;
+importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
+
+export type { CheckboxItemType };
+export let CheckboxItem: CheckboxItemType;
+importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
+
 /**
  * @internal
  * @hidden
