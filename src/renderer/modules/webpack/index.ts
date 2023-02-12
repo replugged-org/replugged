@@ -579,7 +579,7 @@ export function waitForProps<
 export function waitForProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
->(...props: P[]): T;
+>(...props: P[]): Promise<T>;
 
 /**
  * Like {@link getByProps} but waits for the module to be loaded.
