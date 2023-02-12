@@ -8,7 +8,7 @@ export type SwitchType = ReactComponent<{
   className?: string;
 }>;
 
-interface SwitchItemCompProps {
+export type SwitchItemType = ReactComponent<{
   value: boolean;
   onChange: (e: boolean) => void;
   note?: string;
@@ -17,15 +17,7 @@ interface SwitchItemCompProps {
   hideBorder?: boolean;
   style?: React.CSSProperties;
   className?: string;
-}
-
-type SelectCompType = React.ComponentType<SwitchItemCompProps>;
-
-interface SwitchItemProps extends SwitchItemCompProps {
-  divider?: boolean;
-}
-
-export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;
+}>;
 
 const switchModStr = "xMinYMid meet";
 const switchRgx = /{className:\w+\(\)\(\w+,\w+\.className\)}/;
@@ -36,12 +28,7 @@ export const Switch = (await waitForModule(filters.bySource(switchModStr)).then(
   return getFunctionBySource(mod as ObjectExports, switchRgx);
 })) as SwitchType;
 
-const SwitchItemComp = (await waitForModule(filters.bySource(switchItemStr)).then((mod) => {
+export const SwitchItem = (await waitForModule(filters.bySource(switchItemStr)).then((mod) => {
   if (typeof mod === "function") return mod;
   return getFunctionBySource(mod as ObjectExports, switchItemStr);
-})) as SelectCompType;
-
-export const SwitchItem = ((props) => {
-  if (props.divider) props.hideBorder = props.divider;
-  return <SwitchItemComp {...props} />;
-}) as SwitchItemType;
+})) as SwitchItemType;
