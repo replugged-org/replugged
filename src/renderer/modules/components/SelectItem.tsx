@@ -29,7 +29,6 @@ interface SelectCompProps {
   onOpen?: () => void;
   renderOptionLabel?: (e: SelectOptionType) => void;
   renderOptionValue?: (e: SelectOptionType[]) => void;
-  style?: React.CSSProperties;
   className?: string;
   popoutClassName?: string;
   optionClassName?: string;
@@ -69,6 +68,7 @@ export const Select = ((props) => {
 
 interface SelectItemProps extends SelectProps {
   note?: string;
+  style?: React.CSSProperties;
 }
 
 export type SelectItemType = React.FC<React.PropsWithChildren<SelectItemProps>>;
@@ -77,7 +77,7 @@ export const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): Rea
   return (
     <FormItem
       title={props.children}
-      style={{ marginBottom: 20 }}
+      style={{ marginBottom: 20, ...props.style }}
       note={props.note}
       notePosition="after"
       divider>

@@ -3,6 +3,7 @@ import { filters, waitForModule } from "../webpack";
 interface TextInputProps {
   autoFocus?: boolean;
   disabled?: boolean;
+  editable?: boolean;
   minLength?: number;
   maxLength?: number;
   name?: string;
@@ -11,6 +12,9 @@ interface TextInputProps {
   type?: string;
   error?: string;
   value?: string;
+  style?: React.CSSProperties;
+  className?: string;
+  inputClassName?: string;
   onChange?: (e: string) => void;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -19,6 +23,7 @@ interface TextInputProps {
 
 export type TextInputType = React.ComponentType<TextInputProps> & {
   defaultProps: TextInputProps;
+  Sizes: Record<"DEFAULT" | "MINI", string>;
 };
 
 export default await waitForModule(filters.bySource(".getIsOverFlowing")).then((mod) =>
