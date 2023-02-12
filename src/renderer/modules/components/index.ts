@@ -107,7 +107,12 @@ importTimeout("Category", import("./Category"), (mod) => (Category = mod.default
 import type { TextInputType } from "./TextInput";
 export type { TextInputType };
 export let TextInput: TextInputType;
-importTimeout("Input", import("./TextInput"), (mod) => (TextInput = mod.default));
+importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
+
+import type { TextAreaType } from "./TextArea";
+export type { TextAreaType };
+export let TextArea: TextAreaType;
+importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default));
 
 import type { SliderItemType, SliderType } from "./SliderItem";
 export type { SliderType };
