@@ -35,6 +35,12 @@ export const Checkbox = await waitForModule(filters.bySource(".getInputMode")).t
 
 export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
   return (
-    <Checkbox {...props}>{props.children && <Text.Normal>{props.children}</Text.Normal>}</Checkbox>
+    <Checkbox {...props}>
+      {props.children && (
+        <Text variant="text-sm/normal" style={props.style}>
+          {props.children}
+        </Text>
+      )}
+    </Checkbox>
   );
 };
