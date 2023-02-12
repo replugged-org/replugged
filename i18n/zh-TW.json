@@ -109,7 +109,7 @@
     "REPLUGGED_THEMES_WIP1": "這一部分的Replugged還沒完成。",
     "REPLUGGED_THEMES_WIP2": "我們正在努力，並將在2021年之前發布它。",
     "REPLUGGED_UNLINK": "取消連接",
-    "REPLUGGED_UPDATES_AVAILABLE": "",
+    "REPLUGGED_UPDATES_AVAILABLE": "有 {count} 個可用的更新。",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_DESC": "有些更新需要客戶端重新啟動以完成。",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "需要重新啟動",
     "REPLUGGED_UPDATES_BRANCH": "分支：",
@@ -284,7 +284,7 @@
     "REPLUGGED_MODULE_MANAGER_INSTALL_LABEL": "安裝 {type}",
     "REPLUGGED_MODULE_MANAGER_FOUND_MISSING": "找到 {missingCount} missing {type}！",
     "REPLUGGED_MODULE_MANAGER_CONFIRM_INSTALL": "你確定你要安裝 {type} {name} from {url}{branch} 嗎？",
-    "REPLUGGED_MODULE_MANAGER_MISSING_RETRIEVED": "檢索到以下 {type}：",
+    "REPLUGGED_MODULE_MANAGER_MISSING_RETRIEVED": "找到以下的 {type}：",
     "REPLUGGED_MODULE_MANAGER_NO_MISSING": "沒有找到丟失的 {type}，請稍後再試！",
     "REPLUGGED_NOTICES_WELCOME_NEW_USER": "歡迎！Replugged 已成功注入到你的 Discord 客戶端。隨時加入我們的 Discord 伺服器以獲得公告、幫助和更多的訊息！",
     "REPLUGGED_SETTINGS_EXP": "Replugged 試驗功能",
@@ -339,5 +339,6 @@
     "REPLUGGED_UPDATES_TOAST_FAILED_ONE": "更新失敗！",
     "REPLUGGED_UPDATES_TOAST_FAILED_ALL": "有些更新失敗！",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "所有更新已成功完成。",
-    "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "更新已成功完成。"
+    "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "更新已成功完成。",
+    "REPLUGGED_LIST_RESULTS": "{count} 項結果"
 }
