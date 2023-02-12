@@ -109,10 +109,14 @@ export type { TextInputType };
 export let TextInput: TextInputType;
 importTimeout("Input", import("./TextInput"), (mod) => (TextInput = mod.default));
 
-import type { SliderType } from "./Slider";
+import type { SliderItemType, SliderType } from "./SliderItem";
 export type { SliderType };
 export let Slider: SliderType;
-importTimeout("Slider", import("./Slider"), (mod) => (Slider = mod.default));
+importTimeout("Slider", import("./SliderItem"), (mod) => (Slider = mod.Slider));
+
+export type { SliderItemType };
+export let SliderItem: SliderItemType;
+importTimeout("SliderItem", import("./SliderItem"), (mod) => (SliderItem = mod.SliderItem));
 
 import type { TextType } from "./Text";
 export type { TextType };
