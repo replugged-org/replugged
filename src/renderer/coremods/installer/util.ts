@@ -246,6 +246,17 @@ export async function installFlow(
 
   await install(info);
 
+  if ("plaintextPatches" in info.manifest) {
+    const res = await modal.confirm({
+      title: "This plugin needs to be reloaded to work",
+      body: "This plugin uses plaintext patches, which require a reload to work. Reload now?",
+      confirmText: "Reload",
+    });
+    if (res) {
+      window.location.reload();
+    }
+  }
+
   return {
     kind: "SUCCESS",
     manifest: info.manifest,
