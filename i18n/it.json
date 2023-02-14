@@ -123,7 +123,7 @@
     "REPLUGGED_UPDATES_LAST_CHECKED": "Controllato l'ultima volta: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Apri il programma di aggiornamento",
     "REPLUGGED_UPDATES_OPTS_AUTO": "Aggiorna automaticamente in background",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged può scaricare e installare aggiornamenti in background senza infastidirti troppo. Nota bene che gli aggiornamenti avranno bisogno di un azione dell'utente se il reload è necessario, o se è presente un conflitto.",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged può scaricare e installare aggiornamenti in background senza infastidirti troppo. Nota bene che gli aggiornamenti avranno bisogno di un azione dell'utente se il riavvio è necessario, o se è presente un conflitto.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Apri il Log dei Cambiamenti",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Ti sei perso il log dei cambiamenti oppure vuoi vederlo di nuovo?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Aggiorna il limite di concorrenza",
@@ -135,7 +135,7 @@
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Cambia Canale di Pubblicazione",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Puoi scegliere tra il ramo stabile, o il ramo di sviluppo. Il ramo stabile otterrà solo aggiornamenti maggiori, di sicurezza e update critici. Se sei insicuro, stai su stabile.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "Cambia a ramo di sviluppo",
-    "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL": "Sei sicuro di voler cambiare il tuo canale di pubblicazione? Replugged ricaricherà il tuo client Discord.",
+    "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL": "Sei sicuro di voler cambiare il tuo canale di pubblicazione? Replugged riavvierà il tuo client Discord.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL_HEADER": "Cambia canale di pubblicazione",
     "REPLUGGED_UPDATES_OPTS_RELEASE_STABLE_BTN": "Cambia a stabile",
     "REPLUGGED_UPDATES_OPTS_RELEASE_SWITCH": "Cambia",
@@ -345,5 +345,7 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Tutti gli aggiornamenti sono stati completati con successo.",
     "REPLUGGED_UPDATES_UPDATE_ALL": "Aggiorna Tutto",
     "REPLUGGED_UPDATES_TOAST_FAILED_ALL": "Alcuni aggiornamenti sono falliti!",
-    "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Aggiornamento completato con successo."
+    "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Aggiornamento completato con successo.",
+    "REPLUGGED_RELOAD": "Ricarica",
+    "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} necessita di essere ricaricato per funzionare correttamente. Ricaricare ora?"
 }
