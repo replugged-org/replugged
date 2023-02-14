@@ -47,5 +47,5 @@
   "REPLUGGED_COMMAND_UNINSTALL_MODAL_HEADER": "إلغاء تنزيل {id}",
   "REPLUGGED_COMMAND_UNINSTALL_MODAL_DESC": "هل أنت متأكد من أنك تريد إلغاء التثبيت وحذف {id}؟ هذا لا يمكن التراجع عنه.",
   "REPLUGGED_COMMAND_UNINSTALL_TOAST_CONTENT": "تم إلغاء تثبيت و حذف {id}",
-  "REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER": "تم إلغاء تنزيل {type}",
+  "REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER": "تم إلغاء تنزيل {type}"
 }

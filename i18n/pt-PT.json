@@ -114,5 +114,5 @@
     "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} está em uso tanto por um plugin quanto por um tema. Você terá que especificar com a flag --theme ou --plugin.",
     "REPLUGGED_NOTICES_JOIN_SERVER_BUTTON": "Entrar no Servidor",
     "REPLUGGED_PLUGIN": "Plugin",
-    "REPLUGGED_NOTICES_WELCOME_NEW_USER": "Bem-vindo! O Replugged foi injetado com sucesso no seu cliente do Discord. Sinta-se à vontade para se juntar ao nosso servidor do Discord para anúncios, suporte e muito mais!",
+    "REPLUGGED_NOTICES_WELCOME_NEW_USER": "Bem-vindo! O Replugged foi injetado com sucesso no seu cliente do Discord. Sinta-se à vontade para se juntar ao nosso servidor do Discord para anúncios, suporte e muito mais!"
 }
