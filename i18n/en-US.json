@@ -345,5 +345,7 @@
     "REPLUGGED_UPDATES_TOAST_FAILED_ONE": "Update failed!",
     "REPLUGGED_UPDATES_TOAST_FAILED_ALL": "Some updates failed!",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Update completed successfully.",
-    "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "All updates completed successfully."
+    "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "All updates completed successfully.",
+    "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} requires a reload to work properly. Reload now?",
+    "REPLUGGED_RELOAD": "Reload"
 }
