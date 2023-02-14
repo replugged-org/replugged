@@ -27,23 +27,26 @@ interface FormItemProps extends FormItemCompProps {
   note?: string;
   notePosition?: "before" | "after";
   noteStyle?: React.CSSProperties;
+  noteClassName?: string;
   divider?: boolean;
 }
 
 export type FormItemType = ReactComponent<FormItemProps>;
 
 export default ((props) => {
-  const { note, notePosition = "before", noteStyle, divider, ...compProps } = props;
+  const { note, notePosition = "before", noteStyle, noteClassName, divider, ...compProps } = props;
   return (
     <FormItemComp {...compProps}>
       {note && notePosition === "before" && (
-        <FormText.DESCRIPTION style={{ marginBottom: 8, ...noteStyle }}>
+        <FormText.DESCRIPTION className={noteClassName} style={{ marginBottom: 8, ...noteStyle }}>
           {note}
         </FormText.DESCRIPTION>
       )}
       {props.children}
       {note && notePosition === "after" && (
-        <FormText.DESCRIPTION style={{ marginTop: 8, ...noteStyle }}>{note}</FormText.DESCRIPTION>
+        <FormText.DESCRIPTION className={noteClassName} style={{ marginTop: 8, ...noteStyle }}>
+          {note}
+        </FormText.DESCRIPTION>
       )}
       {divider && <Divider className={classes.dividerDefault} />}
     </FormItemComp>

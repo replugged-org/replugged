@@ -58,7 +58,7 @@ export const SliderItem = (props: React.PropsWithChildren<SliderItemProps>): Rea
       title={children}
       style={{ marginBottom: 20, ...props.style }}
       note={props.note}
-      noteStyle={{ marginBottom: props.markers ? 20 : 4 }}
+      noteStyle={{ marginBottom: props.markers ? 16 : 4 }}
       divider>
       <Slider {...props} />
     </FormItem>
