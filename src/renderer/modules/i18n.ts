@@ -1,4 +1,4 @@
-import { i18n } from "@common";
+import { i18n } from "src/renderer/modules/common";
 import type { RepluggedTranslations } from "../../types";
 
 const strings = await RepluggedNative.i18n.getStrings();

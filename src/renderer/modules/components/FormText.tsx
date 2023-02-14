@@ -1,5 +1,5 @@
 import type { ObjectExports, ReactComponent } from "../../../types";
-import { filters, getExportsForProps, getFunctionBySource, waitForModule } from "../webpack";
+import { filters, getExportsForProps, getFunctionBySource, waitForModule } from "../common/webpack";
 
 const mod = await waitForModule(filters.bySource("LABEL_SELECTED"));
 const FormTextComp = getFunctionBySource(

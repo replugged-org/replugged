@@ -1,5 +1,5 @@
 import { ReactComponent } from "src/types";
-import { filters, waitForModule } from "../webpack";
+import { filters, waitForModule } from "../common/webpack";
 
 export interface SliderCompProps {
   disabled?: boolean;

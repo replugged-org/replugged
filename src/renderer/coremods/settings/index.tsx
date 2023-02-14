@@ -1,4 +1,4 @@
-import { Messages } from "@common/i18n";
+import { Messages } from "src/renderer/modules/common/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 

@@ -1,6 +1,6 @@
-import { filters, getByProps, waitForModule } from "../../modules/webpack";
+import { filters, getByProps, waitForModule } from "../../modules/common/webpack";
 import { Injector } from "../../modules/injector";
-import React from "@common/react";
+import React from "src/renderer/modules/common/react";
 import type { User } from "discord-types/general";
 import { APIBadges, Custom, badgeElements } from "./badge";
 const injector = new Injector();

@@ -1,5 +1,5 @@
 import { Injector, Logger } from "@replugged";
-import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
+import { filters, getFunctionKeyBySource, waitForModule } from "@common/webpack";
 import { ObjectExports } from "src/types";
 import { Jsonifiable } from "type-fest";
 import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./util";

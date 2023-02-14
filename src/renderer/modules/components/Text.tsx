@@ -1,6 +1,6 @@
-import { parser } from "@common";
+import { parser } from "src/renderer/modules/common";
 import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import { filters, getFunctionBySource, waitForModule } from "../common/webpack";
 
 type Variant =
   | "heading-sm/normal"

@@ -1,6 +1,6 @@
 import { ErrorBoundary, Modal, Text } from "@components";
-import { Messages } from "@common/i18n";
-import { modal } from "@common";
+import { Messages } from "src/renderer/modules/common/i18n";
+import { modal } from "src/renderer/modules/common";
 const { ModalRoot, ModalHeader, ModalContent, ModalCloseButton } = Modal;
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 

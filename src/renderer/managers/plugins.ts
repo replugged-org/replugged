@@ -2,7 +2,7 @@
 import { loadStyleSheet } from "../util";
 import type { PluginExports, RepluggedPlugin } from "../../types";
 import { Logger } from "../modules/logger";
-import { patchPlaintext } from "../modules/webpack";
+import { patchPlaintext } from "../modules/common/webpack";
 import { init } from "../apis/settings";
 import type { AddonSettings } from "src/types/addon";
 

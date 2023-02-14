@@ -1,6 +1,6 @@
-import { toast } from "@common";
-import i18n, { Messages } from "@common/i18n";
-import React from "@common/react";
+import { toast } from "src/renderer/modules/common";
+import i18n, { Messages } from "src/renderer/modules/common/i18n";
+import React from "src/renderer/modules/common/react";
 import { Button, Divider, Flex, Loader, Text, Tooltip } from "@components";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";

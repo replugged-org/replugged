@@ -1,5 +1,5 @@
 import type { ObjectExports, ReactComponent } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import { filters, getFunctionBySource, waitForModule } from "../common/webpack";
 
 export type SwitchItemType = ReactComponent<{
   note?: string;

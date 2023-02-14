@@ -1,6 +1,6 @@
-import { filters, getByProps, waitForModule } from "../../modules/webpack";
-import { React } from "@common";
-import { Messages } from "@common/i18n";
+import { filters, getByProps, waitForModule } from "../../modules/common/webpack";
+import { React } from "src/renderer/modules/common";
+import { Messages } from "src/renderer/modules/common/i18n";
 import "./badge.css";
 import Badges from "./badges";
 import { Clickable, Tooltip } from "@components";

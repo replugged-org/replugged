@@ -1,6 +1,6 @@
-import { filters, waitForModule } from "../webpack";
+import { filters, waitForModule } from "../common/webpack";
 import { Divider, FormText } from ".";
-import React from "@common/react";
+import React from "src/renderer/modules/common/react";
 import type { ObjectExports } from "../../../types";
 
 const classes = await waitForModule<

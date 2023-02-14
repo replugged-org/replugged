@@ -1,4 +1,4 @@
-import { filters, waitForModule } from "../webpack";
+import { filters, waitForModule } from "../common/webpack";
 
 interface TextInputProps {
   autoFocus?: boolean;

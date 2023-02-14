@@ -1,4 +1,4 @@
-import React from "@common/react";
+import React from "src/renderer/modules/common/react";
 
 export default React.memo((props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 558 558" {...props}>

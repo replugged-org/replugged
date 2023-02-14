@@ -1,4 +1,4 @@
-import React from "@common/react";
+import React from "src/renderer/modules/common/react";
 
 export const General = (): React.ReactElement => {
   const [hue, setHue] = React.useState(0);

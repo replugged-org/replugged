@@ -1,5 +1,5 @@
-import { modal, toast } from "@common";
-import { Messages } from "@common/i18n";
+import { modal, toast } from "src/renderer/modules/common";
+import { Messages } from "src/renderer/modules/common/i18n";
 import { Logger } from "@replugged";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";

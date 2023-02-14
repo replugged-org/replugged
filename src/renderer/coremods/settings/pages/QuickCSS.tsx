@@ -1,5 +1,5 @@
-import { React, toast } from "@common";
-import { Messages } from "@common/i18n";
+import { React, toast } from "src/renderer/modules/common";
+import { Messages } from "src/renderer/modules/common/i18n";
 import { EditorView, basicSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";

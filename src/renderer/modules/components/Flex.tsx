@@ -1,5 +1,5 @@
 import type { ReactComponent } from "../../../types";
-import { filters, waitForModule } from "../webpack";
+import { filters, waitForModule } from "../common/webpack";
 
 export type FlexType = ReactComponent<{
   direction?: string;

@@ -1,5 +1,5 @@
-import { Messages } from "@common/i18n";
-import { React, api, fluxDispatcher, modal, toast, users } from "@common";
+import { Messages } from "src/renderer/modules/common/i18n";
+import { React, api, fluxDispatcher, modal, toast, users } from "src/renderer/modules/common";
 import { Button, Divider, Flex, Switch, Text, TextInput, Tooltip } from "@components";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { Author } from "src/types/addon";

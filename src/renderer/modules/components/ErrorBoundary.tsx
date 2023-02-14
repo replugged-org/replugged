@@ -1,5 +1,5 @@
-import { Messages } from "@common/i18n";
-import React from "@common/react";
+import { Messages } from "src/renderer/modules/common/i18n";
+import React from "src/renderer/modules/common/react";
 import { Logger } from "../logger";
 import "./ErrorBoundary.css";
 

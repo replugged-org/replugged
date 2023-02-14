@@ -1,5 +1,5 @@
 import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import { filters, getFunctionBySource, waitForModule } from "../common/webpack";
 import { FormItem } from ".";
 
 interface SelectOptionType {

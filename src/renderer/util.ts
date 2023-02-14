@@ -1,9 +1,9 @@
-import { React, channels, fluxDispatcher, guilds } from "@common";
+import { React, channels, fluxDispatcher, guilds } from "src/renderer/modules/common";
 import type { Fiber } from "react-reconciler";
 import type { Jsonifiable } from "type-fest";
 import type { ObjectExports } from "../types";
 import { SettingsManager } from "./apis/settings";
-import { getByProps, getBySource, getFunctionBySource } from "./modules/webpack";
+import { getByProps, getBySource, getFunctionBySource } from "./modules/common/webpack";
 
 /**
  * Loads a stylesheet into the document

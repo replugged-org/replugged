@@ -1,5 +1,5 @@
 import type { ObjectExports } from "src/types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import { filters, getFunctionBySource, waitForModule } from "../common/webpack";
 
 export type DividerType = React.ComponentType<React.HTMLProps<Record<string, never>>>;
 
