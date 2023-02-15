@@ -250,14 +250,13 @@ export async function installFlow(
     ("plaintextPatches" in info.manifest || "reloadRequired" in info.manifest) &&
     info.manifest.reloadRequired
   ) {
-    const res = await modal.confirm({
+    void modal.confirm({
       title: Messages.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE,
-      body: Messages.PLUGIN_INSTALL_PROMPT_BODY.format({ name: info.manifest.name }),
-      confirmText: Messages.REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY,
+      body: Messages.REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY.format({ name: info.manifest.name }),
+      confirmText: Messages.REPLUGGED_RELOAD,
+    }).then((a) => {
+      if (a) window.location.reload();
     });
-    if (res) {
-      window.location.reload();
-    }
   }
 
   return {
