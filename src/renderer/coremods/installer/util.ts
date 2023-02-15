@@ -1,5 +1,6 @@
 import { modal, toast } from "@common";
 import { Messages } from "@common/i18n";
+import { Button } from "@components";
 import { Logger } from "@replugged";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
@@ -257,9 +258,12 @@ export async function installFlow(
           name: info.manifest.name,
         }),
         confirmText: Messages.REPLUGGED_RELOAD,
+        confirmColor: Button.Colors.RED,
       })
-      .then((a) => {
-        if (a) window.location.reload();
+      .then((answer) => {
+        if (answer) {
+          setTimeout(() => window.location.reload(), 250);
+        }
       });
   }
 
