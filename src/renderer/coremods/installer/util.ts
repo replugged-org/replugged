@@ -10,7 +10,7 @@ const logger = Logger.coremod("Installer");
 
 // First item is the default
 const INSTALLER_SOURCES = ["store", "github"] as const;
-export type InstallerSource = typeof INSTALLER_SOURCES[number];
+export type InstallerSource = (typeof INSTALLER_SOURCES)[number];
 
 const CACHE_INTERVAL = 1000 * 60 * 60;
 
@@ -250,13 +250,17 @@ export async function installFlow(
     ("plaintextPatches" in info.manifest || "reloadRequired" in info.manifest) &&
     info.manifest.reloadRequired
   ) {
-    void modal.confirm({
-      title: Messages.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE,
-      body: Messages.REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY.format({ name: info.manifest.name }),
-      confirmText: Messages.REPLUGGED_RELOAD,
-    }).then((a) => {
-      if (a) window.location.reload();
-    });
+    void modal
+      .confirm({
+        title: Messages.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE,
+        body: Messages.REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY.format({
+          name: info.manifest.name,
+        }),
+        confirmText: Messages.REPLUGGED_RELOAD,
+      })
+      .then((a) => {
+        if (a) window.location.reload();
+      });
   }
 
   return {
