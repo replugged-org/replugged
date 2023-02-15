@@ -32,7 +32,7 @@ export const CONFIG_PATHS = Object.fromEntries(
     }
     return [name, path];
   }),
-) as Record<typeof CONFIG_FOLDER_NAMES[number], string>;
+) as Record<(typeof CONFIG_FOLDER_NAMES)[number], string>;
 
 const QUICK_CSS_FILE = join(CONFIG_PATHS.quickcss, "main.css");
 if (!existsSync(QUICK_CSS_FILE)) {
