@@ -247,8 +247,9 @@ export async function installFlow(
   await install(info);
 
   if (
-    ("plaintextPatches" in info.manifest || "reloadRequired" in info.manifest) &&
-    info.manifest.reloadRequired
+    "reloadRequired" in info.manifest
+      ? info.manifest.reloadRequired
+      : "plaintextPatches" in info.manifest
   ) {
     void modal
       .confirm({
