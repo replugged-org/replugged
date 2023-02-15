@@ -1,4 +1,4 @@
-import { filters, waitForModule } from "..";
+import { filters, waitForModule } from "../webpack";
 import EventEmitter from "events";
 
 import type { RawModule } from "../../../../types";

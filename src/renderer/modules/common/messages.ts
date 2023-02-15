@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { filters, waitForModule } from "..";
+import { filters, waitForModule } from "../webpack";
 
 import type { RawModule } from "../../../../types";
 import type { Message, MessageAttachment } from "discord-types/general";
