@@ -47,6 +47,7 @@ export const plugin = common.extend({
   type: z.literal("replugged-plugin"),
   renderer: z.string().optional(),
   plaintextPatches: z.string().optional(),
+  reloadRequired: z.boolean().optional(),
 });
 
 export type PluginManifest = z.infer<typeof plugin>;
