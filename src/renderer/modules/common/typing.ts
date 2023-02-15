@@ -1,4 +1,4 @@
-import type { RawModule } from "../../../../types";
+import type { RawModule } from "../../../types";
 import { filters, waitForModule } from "../webpack";
 
 export interface Typing {

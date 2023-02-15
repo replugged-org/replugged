@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { RawModule, ReactComponent } from "../../../../types";
+import type { RawModule, ReactComponent } from "../../../types";
 import type { FluxDispatcher as Dispatcher } from "./fluxDispatcher";
 import { filters, waitForModule } from "../webpack";
 

@@ -1,4 +1,4 @@
-import { RawModule } from "../../../../types";
+import { RawModule } from "../../../types";
 import { filters, waitForModule } from "../webpack";
 
 interface State {

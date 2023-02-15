@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { filters, getExportsForProps, waitForModule } from "../webpack";
 
 export const raw = await waitForModule(filters.bySource("BASE_URL:"));
