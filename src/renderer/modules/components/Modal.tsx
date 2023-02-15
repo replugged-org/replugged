@@ -21,10 +21,6 @@ export interface ModalCompProps {
   children: React.ReactNode;
 }
 
-export interface ModalCloseProps {
-  onClick(): void;
-}
-
 export interface ModalRootProps extends ModalCompProps {
   transitionState?: ModalTransitionState;
   size?: "small" | "medium" | "large" | "dynamic";
@@ -33,12 +29,28 @@ export interface ModalRootProps extends ModalCompProps {
   onAnimationEnd?(): string;
 }
 
-// todo: make props type for each component
+export interface ModalHeaderProps extends ModalCompProps {
+  direction?: string;
+  justify?: string;
+  align?: string;
+  wrap?: string;
+  className?: string;
+}
+
+export interface ModalFooterProps extends ModalHeaderProps {}
+
+export interface ModalCloseProps {
+  onClick(): void;
+  withCircleBackground?: boolean;
+  hideOnFullscreen?: boolean;
+  className?: string;
+}
+
 export interface ModalType {
   ModalRoot: ReactComponent<ModalRootProps>;
-  ModalHeader: ReactComponent<ModalCompProps>;
+  ModalHeader: ReactComponent<ModalHeaderProps>;
   ModalContent: ReactComponent<ModalCompProps>;
-  ModalFooter: ReactComponent<ModalCompProps>;
+  ModalFooter: ReactComponent<ModalFooterProps>;
   ModalCloseButton: ReactComponent<ModalCloseProps>;
 }
 

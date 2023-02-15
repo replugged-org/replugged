@@ -80,7 +80,9 @@ export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>): Rea
               button
             )}
           </div>
-          <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
+          {props.note && (
+            <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
+          )}
         </Flex.Child>
       </Flex>
       <Divider className={classes.dividerDefault} />

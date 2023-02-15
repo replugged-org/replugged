@@ -20,6 +20,10 @@ export type FormTextType = Record<
   | string,
   ReactComponent<{
     children?: React.ReactNode;
+    disabled?: boolean;
+    selectable?: boolean;
+    style?: React.CSSProperties;
+    className?: string;
   }>
 >;
 export const FormText: FormTextType = {

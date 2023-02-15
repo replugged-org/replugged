@@ -1,20 +1,20 @@
 import type { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
-export type SwitchItemType = ReactComponent<{
-  note?: string;
-  value: boolean;
-  onChange: (e: boolean) => void;
-  disabled?: boolean;
-  style?: React.CSSProperties;
-  className?: string;
-  tooltipNode?: string;
-}>;
-
 export type SwitchType = ReactComponent<{
   checked: boolean;
   onChange: (e: boolean) => void;
   disabled?: boolean;
+  className?: string;
+}>;
+
+export type SwitchItemType = ReactComponent<{
+  value: boolean;
+  onChange: (e: boolean) => void;
+  note?: string;
+  tooltipNote?: string;
+  disabled?: boolean;
+  hideBorder?: boolean;
   style?: React.CSSProperties;
   className?: string;
 }>;
