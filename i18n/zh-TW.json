@@ -54,7 +54,7 @@
     "REPLUGGED_UPDATES_OPTS_RELEASE": "變更版本",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "您可以在穩定分支或開發分支之間進行選擇。穩定分支只會獲得重大更新、安全和關鍵更新。如果不確定，請選擇穩定。",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "切換到開發分支",
-    "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL": "確定要更改版本嗎？Replugged將重新載入您的Discord客戶端。",
+    "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL": "確定要更改版本嗎？Replugged 將重新載入您的 Discord 客戶端。",
     "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL_HEADER": "變更版本",
     "REPLUGGED_UPDATES_OPTS_RELEASE_STABLE_BTN": "切換到穩定",
     "REPLUGGED_UPDATES_OPTS_RELEASE_SWITCH": "切換",
@@ -63,7 +63,7 @@
     "REPLUGGED_UPDATES_UPDATE": "更新",
     "REPLUGGED_UPDATES_UPDATING": "正在更新 Replugged…",
     "REPLUGGED_UPDATES_UPDATING_ITEM": "正在更新…",
-    "REPLUGGED_UPDATES_UP_TO_DATE": "一切都更新到最新版本。",
+    "REPLUGGED_UPDATES_UP_TO_DATE": "所有插件或主題已更新到最新版本。",
     "REPLUGGED_PLUGIN_EMBED_COPY": "複製網址",
     "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "查看儲存庫",
     "REPLUGGED_PLUGIN_EMBED_COPIED": "已複製！",
@@ -198,5 +198,10 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "所有更新已成功完成。",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "更新已成功完成。",
     "REPLUGGED_LIST_RESULTS": "{count, number} 項結果",
-    "REPLUGGED_UPDATES_TOAST_NEW": "有 {count, number} 個新更新！"
+    "REPLUGGED_UPDATES_TOAST_NEW": "有 {count, number} 個新更新！",
+    "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} 需要重新載入才能使用。要現在重新載入嗎？",
+    "REPLUGGED_RELOAD": "重新載入",
+    "REPLUGGED_ADDON_AUTHORS_TWO": "由{author1}和{author2}編寫",
+    "REPLUGGED_ADDON_AUTHORS_THREE": "由{author1}、{author2}和{author3}編寫",
+    "REPLUGGED_ADDON_AUTHORS_ONE": "由{author1}編寫"
 }
