@@ -40,7 +40,6 @@
   "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "البلقن او الثيم المطلوب لم يتم ايجاده او خاطئ.",
   "REPLUGGED_COMMAND_PLUGINS_DESC": "إظهار قائمة البلوقنات التي تم تحميلها.",
   "REPLUGGED_COMMAND_SHARE_DESCRIPTION": "نشر بلوقن او ثيم تم تنزيلها",
-  "REPLUGGED_CUTIE_TIER_1_DESC": "احصل على **role قابل التخصيص بااكامل** على سيرفر Replugged و ** ألوان مخصصة** في شارة الملف الشخصي لـReplugged.",
   "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} قيد الاستخدام من قبل الplugins و themes بنفس الوقت. سيتعين عليك التحديد بكتابة --theme أو --plugin.",
   "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "لم يتم العثور على رابط من اجل plugin {id}",
   "REPLUGGED_COMMAND_THEMES_DESC": "إظهار قائمة الthemes التي تم تحميلها.",
@@ -48,15 +47,5 @@
   "REPLUGGED_COMMAND_UNINSTALL_MODAL_HEADER": "إلغاء تنزيل {id}",
   "REPLUGGED_COMMAND_UNINSTALL_MODAL_DESC": "هل أنت متأكد من أنك تريد إلغاء التثبيت وحذف {id}؟ هذا لا يمكن التراجع عنه.",
   "REPLUGGED_COMMAND_UNINSTALL_TOAST_CONTENT": "تم إلغاء تثبيت و حذف {id}",
-  "REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER": "تم إلغاء تنزيل {type}",
-  "REPLUGGED_CUTIE_DONATE": "تبرع",
-  "REPLUGGED_CUTIE_SUBTITLE": "واحصل على ميزات رائعة",
-  "REPLUGGED_CUTIE_TIER_1_PRICE": "**$1 USD**/شهر",
-  "REPLUGGED_CUTIE_TIER_2_DESC": "احصل على شارة مخصصة **قابلة للتخصيص بالكامل** في ملفك الشخصي.",
-  "REPLUGGED_CUTIE_TIER_2_PRICE": "**$5 USD**/شهر",
-  "REPLUGGED_CUTIE_TIER_3_PRICE": "**$10 USD**/شهر",
-  "REPLUGGED_CUTIE_TIER_EASTER_PRICE": "**$1،337،420.69 USD**",
-  "REPLUGGED_CUTIE_TITLE": "دعم برمجة Replugged",
-  "REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME": "لم يتم العثور على اي plugin أو theme مطابق ل\"{id}\".",
-  "REPLUGGED_ERROR_COULD_NOT_FIND_PLUGIN_THEME_AT_REPO": "لم يتم العثور على اي plugin او theme في {repoURL}"
+  "REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER": "تم إلغاء تنزيل {type}"
 }
