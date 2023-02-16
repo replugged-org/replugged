@@ -1,23 +1,28 @@
-import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import { filters, waitForModule } from "../webpack";
 
-enum NoticeTypes {
-  WARNING = 0,
-  INFO = 1,
-  ERROR = 2,
-  POSITIVE = 3,
-}
+const NoticeTypes = {
+  WARNING: 0,
+  INFO: 1,
+  ERROR: 2,
+  POSITIVE: 3,
+} as const;
 
-export type NoticeType = React.ComponentType<{
+interface NoticeProps {
   children: React.ReactNode;
-  messageType?: NoticeTypes;
+  messageType?: (typeof NoticeTypes)[keyof typeof NoticeTypes];
   textColor?: string;
   textVariant?: string;
   className?: string;
-}>;
+}
 
-const noticeRgx = /.\.messageType/;
+export type NoticeType = React.ComponentType<NoticeProps> & {
+  NoticeTypes: typeof NoticeTypes;
+};
 
-export default (await waitForModule(filters.bySource(noticeRgx)).then((mod) =>
-  getFunctionBySource(mod as ObjectExports, noticeRgx),
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+const Notice = (await waitForModule(filters.bySource(/.\.messageType/)).then((mod) =>
+  Object.values(mod).find((x) => typeof x === "function"),
 )) as NoticeType;
+Notice.NoticeTypes = NoticeTypes;
+
+export default Notice;
