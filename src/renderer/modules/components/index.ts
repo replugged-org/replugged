@@ -147,6 +147,11 @@ export type { CheckboxItemType };
 export let CheckboxItem: CheckboxItemType;
 importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
 
+import { type NoticeType } from "./Notice";
+export type { NoticeType };
+export let Notice: NoticeType;
+importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));
+
 /**
  * @internal
  * @hidden
