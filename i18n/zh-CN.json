@@ -54,7 +54,7 @@
     "REPLUGGED_UPDATES_OPTS_RELEASE": "变更版本途径",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "您可以在稳定分支或开发分支之间进行选择。稳定分支只会获得重大更新、安全和关键更新。如果不确定，请选择稳定。",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "切换到开发分支",
-    "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL": "确定要更改版本途径吗？ Replugged将重新载入您的Discord客户端。",
+    "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL": "确定要更改版本途径吗？ Replugged 将重新载入您的 Discord 客户端。",
     "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL_HEADER": "变更版本途径",
     "REPLUGGED_UPDATES_OPTS_RELEASE_STABLE_BTN": "切换到稳定",
     "REPLUGGED_UPDATES_OPTS_RELEASE_SWITCH": "切换",
@@ -110,5 +110,7 @@
     "REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER": "{type} 已解除安装",
     "REPLUGGED_COMMAND_UNINSTALL_TOAST_CONTENT": "{id} 已解除安装并删除",
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "执行指令时发生错误：",
-    "REPLUGGED_ERROR_CHECK_CONSOLE": "检查控制台以获得更多详细信息。"
+    "REPLUGGED_ERROR_CHECK_CONSOLE": "检查控制台以获得更多详细信息。",
+    "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} 需要重新载入才能使用。要现在重新载入吗？",
+    "REPLUGGED_RELOAD": "重新载入"
 }
