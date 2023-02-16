@@ -1,5 +1,5 @@
-import { RawModule } from "../../../../types";
-import { filters, waitForModule } from "..";
+import { RawModule } from "../../../types";
+import { filters, waitForModule } from "../webpack";
 
 interface State {
   prevCapture: RegExpExecArray | null;

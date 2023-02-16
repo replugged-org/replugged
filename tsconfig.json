@@ -32,8 +32,8 @@
     "paths": {
       "@replugged": ["src/renderer/replugged.ts"],
       "@replugged/*": ["src/renderer/"],
-      "@common": ["src/renderer/modules/webpack/common"],
-      "@common/*": ["src/renderer/modules/webpack/common/*"],
+      "@common": ["src/renderer/modules/common"],
+      "@common/*": ["src/renderer/modules/common/*"],
       "@components": ["src/renderer/modules/components"],
       "@components/*": ["src/renderer/modules/components/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,

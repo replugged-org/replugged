@@ -1,4 +1,4 @@
-import { filters, waitForModule } from "..";
+import { filters, waitForModule } from "../webpack";
 import type React from "react";
 
 export default await waitForModule<typeof React>(
