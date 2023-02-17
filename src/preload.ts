@@ -44,7 +44,7 @@ const RepluggedNative = {
     ): Promise<CheckResultSuccess | CheckResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, repo, id),
     install: async (
-      type: InstallerType,
+      type: InstallerType | "replugged",
       path: string,
       url: string,
     ): Promise<InstallResultSuccess | InstallResultFailure> =>
@@ -96,7 +96,7 @@ const RepluggedNative = {
     getOverrides: (): Promise<RepluggedTranslations> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_OVERRIDES),
   },
-  getVersion: () => ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION),
+  getVersion: (): Promise<string> => ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION),
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later

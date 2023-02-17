@@ -2,6 +2,7 @@ import { init } from "../apis/settings";
 import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 import { Logger } from "../modules/logger";
+import { RepluggedPlugin, RepluggedTheme } from "src/types";
 
 const logger = Logger.coremod("Updater");
 
@@ -13,6 +14,18 @@ export type UpdateSettings = {
   webUrl?: string;
   lastChecked: number;
 };
+
+interface RepluggedEntity {
+  manifest: {
+    version: string;
+    updater: {
+      id: string;
+      type: "github";
+    };
+    type: "replugged";
+  };
+  path: string;
+}
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type MainUpdaterSettings = {
@@ -63,11 +76,33 @@ export function setUpdaterState(id: string, state: UpdateSettings): void {
   updaterState.set(id, state);
 }
 
+async function getAddonFromManager(
+  id: string,
+): Promise<RepluggedPlugin | RepluggedTheme | RepluggedEntity | undefined> {
+  if (id === "dev.replugged.Replugged") {
+    const version = await window.RepluggedNative.getVersion();
+    if (version === "dev") return undefined;
+    return {
+      manifest: {
+        version,
+        updater: {
+          type: "github",
+          id: "replugged-org/replugged",
+        },
+        type: "replugged",
+      },
+      path: "replugged.asar",
+    };
+  }
+
+  return pluginManager.plugins.get(id) || (await themeManager.get(id));
+}
+
 /**
  * @param id Entity ID to check updates for
  */
 export async function checkUpdate(id: string, verbose = true): Promise<void> {
-  const entity = pluginManager.plugins.get(id) || (await themeManager.get(id));
+  const entity = await getAddonFromManager(id);
   if (!entity) {
     logger.error(`Entity ${id} not found`);
     return;
@@ -133,7 +168,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
 }
 
 export async function installUpdate(id: string, force = false, verbose = true): Promise<boolean> {
-  const entity = pluginManager.plugins.get(id) || (await themeManager.get(id));
+  const entity = await getAddonFromManager(id);
   if (!entity) {
     logger.error(`Entity ${id} not found`);
     return false;

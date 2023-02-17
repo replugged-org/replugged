@@ -125,7 +125,7 @@ ipcMain.handle(
   RepluggedIpcChannels.INSTALL_ADDON,
   async (
     _,
-    type: InstallerType,
+    type: InstallerType | "replugged",
     path: string,
     url: string,
   ): Promise<InstallResultSuccess | InstallResultFailure> => {
