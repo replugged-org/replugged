@@ -5,5 +5,9 @@
     "https://json.schemastore.org/github-issue-config.json": ".github/ISSUE_TEMPLATE/config.yml",
     "https://json.schemastore.org/github-workflow.json": ".github/workflows/cspell.yml"
   },
-  "typescript.tsdk": "./node_modules/typescript/lib"
+  "prettier.prettierPath": "./node_modules/prettier",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "eslint.format.enable": true,
+  "eslint.packageManager": "pnpm"
 }

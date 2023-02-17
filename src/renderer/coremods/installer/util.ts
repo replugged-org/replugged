@@ -1,5 +1,6 @@
 import { modal, toast } from "@common";
 import { Messages } from "@common/i18n";
+import { Button } from "@components";
 import { Logger } from "@replugged";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
@@ -10,7 +11,7 @@ const logger = Logger.coremod("Installer");
 
 // First item is the default
 const INSTALLER_SOURCES = ["store", "github"] as const;
-export type InstallerSource = typeof INSTALLER_SOURCES[number];
+export type InstallerSource = (typeof INSTALLER_SOURCES)[number];
 
 const CACHE_INTERVAL = 1000 * 60 * 60;
 
@@ -245,6 +246,26 @@ export async function installFlow(
   }
 
   await install(info);
+
+  if (
+    info.manifest.type === "replugged-plugin" &&
+    (info.manifest.reloadRequired ?? info.manifest.plaintextPatches)
+  ) {
+    void modal
+      .confirm({
+        title: Messages.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE,
+        body: Messages.REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY.format({
+          name: info.manifest.name,
+        }),
+        confirmText: Messages.REPLUGGED_RELOAD,
+        confirmColor: Button.Colors.RED,
+      })
+      .then((answer) => {
+        if (answer) {
+          setTimeout(() => window.location.reload(), 250);
+        }
+      });
+  }
 
   return {
     kind: "SUCCESS",

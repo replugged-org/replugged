@@ -1,5 +1,5 @@
-import type { ObjectExports } from "../../../../types";
-import { filters, getFunctionBySource, waitForModule } from "..";
+import type { ObjectExports } from "../../../types";
+import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 const Kind = {
   MESSAGE: 0,

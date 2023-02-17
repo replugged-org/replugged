@@ -1,6 +1,5 @@
-import type { ObjectExports, RawModule } from "../../../../types/webpack";
-import type { ReactComponent } from "../../../../types/util";
-import { filters, getBySource, getFunctionBySource, waitForModule } from "..";
+import type { ObjectExports, RawModule } from "../../../types/webpack";
+import { filters, getBySource, getFunctionBySource, waitForModule } from "../webpack";
 
 enum ModalTransitionState {
   ENTERING,
@@ -26,23 +25,6 @@ export interface ModalClasses {
   Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
   Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
   Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
-}
-
-export interface ModalRootProps {
-  transitionState?: ModalTransitionState;
-  size?: "small" | "medium" | "large" | "dynamic";
-  role?: "alertdialog" | "dialog";
-  className?: string;
-  onAnimationEnd?(): string;
-}
-
-// todo: make props type for each component
-export interface ModalComponents {
-  ModalRoot: ReactComponent<ModalRootProps>;
-  ModalHeader: ReactComponent<unknown>;
-  ModalContent: ReactComponent<unknown>;
-  ModalFooter: ReactComponent<unknown>;
-  ModalCloseButton: ReactComponent<unknown>;
 }
 
 interface AlertProps {

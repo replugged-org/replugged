@@ -1,7 +1,7 @@
-import { filters, waitForModule } from "..";
+import { filters, waitForModule } from "../webpack";
 import EventEmitter from "events";
 
-import type { RawModule } from "../../../../types";
+import type { RawModule } from "../../../types";
 import type { Primitive } from "type-fest";
 import type { Rule } from "./parser";
 

@@ -22,14 +22,13 @@ interface SelectCompProps {
   popoutWidth?: number;
   clearable?: boolean;
   look?: number;
-  popoutPosition?: "top" | "bottom" | "left" | "right" | "center";
+  popoutPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   closeOnSelect?: boolean;
   hideIcon?: boolean;
   onClose?: () => void;
   onOpen?: () => void;
   renderOptionLabel?: (e: SelectOptionType) => void;
   renderOptionValue?: (e: SelectOptionType[]) => void;
-  style?: React.CSSProperties;
   className?: string;
   popoutClassName?: string;
   optionClassName?: string;
@@ -62,12 +61,14 @@ export const Select = ((props) => {
       isDisabled={props.disabled}
       select={props.onChange || props.onSelect}
       clear={props.onClear}
-      {...props}></SelectComp>
+      {...props}
+    />
   );
 }) as SelectType;
 
 interface SelectItemProps extends SelectProps {
   note?: string;
+  style?: React.CSSProperties;
 }
 
 export type SelectItemType = React.FC<React.PropsWithChildren<SelectItemProps>>;
@@ -76,11 +77,11 @@ export const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): Rea
   return (
     <FormItem
       title={props.children}
-      style={{ marginBottom: 20 }}
+      style={{ marginBottom: 20, ...props.style }}
       note={props.note}
       notePosition="after"
       divider>
-      <Select {...props}></Select>
+      <Select {...props} />
     </FormItem>
   );
 };
