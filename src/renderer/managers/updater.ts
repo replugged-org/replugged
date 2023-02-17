@@ -3,6 +3,7 @@ import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 import { Logger } from "../modules/logger";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
+import { RepluggedManifest } from "src/types/addon";
 
 const logger = Logger.coremod("Updater");
 
@@ -16,14 +17,7 @@ export type UpdateSettings = {
 };
 
 interface RepluggedEntity {
-  manifest: {
-    version: string;
-    updater: {
-      id: string;
-      type: "github";
-    };
-    type: "replugged";
-  };
+  manifest: RepluggedManifest;
   path: string;
 }
 
@@ -33,6 +27,8 @@ type MainUpdaterSettings = {
   checkInterval?: number;
   lastChecked?: number;
 };
+
+const REPLUGGED_ID = "dev.replugged.Replugged";
 
 const mainUpdaterDefaultSettings: Partial<MainUpdaterSettings> = {
   checkInterval: 1000 * 60 * 60,
@@ -79,7 +75,7 @@ export function setUpdaterState(id: string, state: UpdateSettings): void {
 async function getAddonFromManager(
   id: string,
 ): Promise<RepluggedPlugin | RepluggedTheme | RepluggedEntity | undefined> {
-  if (id === "dev.replugged.Replugged") {
+  if (id === REPLUGGED_ID) {
     const version = await window.RepluggedNative.getVersion();
     if (version === "dev") return undefined;
     return {
@@ -136,7 +132,11 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
     return;
   }
 
-  const res = await window.RepluggedNative.updater.check(updater.type, updater.id, id);
+  const res = await window.RepluggedNative.updater.check(
+    updater.type,
+    updater.id,
+    id === REPLUGGED_ID ? "replugged" : id,
+  );
 
   if (!res.success) {
     logger.error(`Update check for entity ${id} failed: ${res.error}`);
@@ -222,6 +222,7 @@ export async function checkAllUpdates(verbose = false): Promise<void> {
   logger.log("Checking for updates");
 
   await Promise.all([
+    checkUpdate(REPLUGGED_ID, verbose),
     ...plugins.map((plugin) => checkUpdate(plugin.manifest.id, verbose)),
     ...themes.map((theme) => checkUpdate(theme.manifest.id, verbose)),
   ]);
@@ -236,7 +237,9 @@ export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {
     .filter(
       (state) =>
         (state.available || completedUpdates.has(state.id)) &&
-        (pluginManager.plugins.has(state.id) || themeManager.themes.has(state.id)),
+        (state.id === REPLUGGED_ID ||
+          pluginManager.plugins.has(state.id) ||
+          themeManager.themes.has(state.id)),
     );
 }
 

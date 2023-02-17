@@ -13,7 +13,7 @@ import { CONFIG_PATH, CONFIG_PATHS } from "../../util";
 import { readFile, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
-import { anyAddon } from "src/types/addon";
+import { anyAddon, RepluggedManifest } from "src/types/addon";
 
 const octokit = new Octokit();
 
@@ -59,21 +59,33 @@ async function github(
     (manifestAsset) => manifestAsset.name === asset.name.replace(/\.asar$/, ".json"),
   );
 
-  if (!manifestAsset) {
+  if (!manifestAsset && identifier !== "replugged-org/replugged") {
     return {
       success: false,
       error: "No manifest asset found",
     };
   }
 
-  let manifest: AnyAddonManifest;
-  try {
-    const json = await fetch(manifestAsset.browser_download_url).then((res) => res.json());
-    manifest = anyAddon.parse(json);
-  } catch {
-    return {
-      success: false,
-      error: "Failed to parse manifest",
+  let manifest: AnyAddonManifest | RepluggedManifest;
+  if (manifestAsset) {
+    try {
+      const json = await fetch(manifestAsset.browser_download_url).then((res) => res.json());
+      manifest = anyAddon.parse(json);
+    } catch {
+      return {
+        success: false,
+        error: "Failed to parse manifest",
+      };
+    }
+  } else {
+    // For Replugged itself
+    manifest = {
+      version: res.data.tag_name.replace(/^v/, ""),
+      updater: {
+        id: identifier,
+        type: "github",
+      },
+      type: "replugged",
     };
   }
 
