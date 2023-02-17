@@ -204,5 +204,6 @@
     "REPLUGGED_UPDATES_TOAST_FAILED_ALL": "Alcuni aggiornamenti sono falliti!",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Aggiornamento completato con successo.",
     "REPLUGGED_RELOAD": "Ricarica",
-    "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} necessita di essere ricaricato per funzionare correttamente. Ricaricare ora?"
+    "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} necessita di essere ricaricato per funzionare correttamente. Ricaricare ora?",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Aggiornamento"
 }
