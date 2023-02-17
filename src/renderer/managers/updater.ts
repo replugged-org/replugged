@@ -175,21 +175,6 @@ export async function installUpdate(id: string, force = false, verbose = true): 
 
   completedUpdates.add(id);
 
-  // Temporarily disabled until we can figure out how to properly reload compiled plugins
-  // try {
-  //   switch (entity.manifest.type) {
-  //     case "replugged-plugin":
-  //       await pluginManager.reload(`${id}.asar`);
-  //       break;
-  //     case "replugged-theme":
-  //       themeManager.reload(`${id}.asar`);
-  //       break;
-  //   }
-  // } catch (err) {
-  //   logger.error(`Update install failed: ${err}`);
-  //   return;
-  // }
-
   logger.log(`Entity ${id} updated successfully`);
 
   return true;
@@ -213,7 +198,11 @@ export async function checkAllUpdates(verbose = false): Promise<void> {
 export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {
   return Object.entries(updaterState.all())
     .map(([id, state]) => ({ ...state, id }))
-    .filter((state) => state.available || completedUpdates.has(state.id));
+    .filter(
+      (state) =>
+        (state.available || completedUpdates.has(state.id)) &&
+        (pluginManager.plugins.has(state.id) || themeManager.themes.has(state.id)),
+    );
 }
 
 export function installAllUpdates(
