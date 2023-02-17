@@ -190,8 +190,7 @@ export const Updater = (): React.ReactElement => {
                     {sourceLink ? (
                       <Tooltip
                         text={Messages.REPLUGGED_ADDON_PAGE_OPEN.format({
-                          // TODO: i18n
-                          type: "Update",
+                          type: Messages.REPLUGGED_UPDATES_UPDATE_NOUN,
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
                         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
