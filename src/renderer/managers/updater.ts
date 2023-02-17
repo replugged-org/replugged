@@ -2,7 +2,7 @@ import { init } from "../apis/settings";
 import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 import { Logger } from "../modules/logger";
-import { RepluggedPlugin, RepluggedTheme } from "src/types";
+import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 
 const logger = Logger.coremod("Updater");
 

@@ -9,7 +9,7 @@ import {
   RepluggedIpcChannels,
 } from "../../types";
 import { Octokit } from "@octokit/rest";
-import { CONFIG_PATHS } from "../../util";
+import { CONFIG_PATH, CONFIG_PATHS } from "../../util";
 import { readFile, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
@@ -112,12 +112,14 @@ ipcMain.handle(
   },
 );
 
-const getBaseName = (type: InstallerType): string => {
+const getBaseName = (type: InstallerType | "replugged"): string => {
   switch (type) {
     case "replugged-plugin":
       return CONFIG_PATHS.plugins;
     case "replugged-theme":
       return CONFIG_PATHS.themes;
+    case "replugged":
+      return CONFIG_PATH;
   }
 };
 
