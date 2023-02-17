@@ -3,7 +3,7 @@ import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 import { Logger } from "../modules/logger";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
-import { RepluggedManifest } from "src/types/addon";
+import type { RepluggedManifest } from "src/types/addon";
 
 const logger = Logger.coremod("Updater");
 
