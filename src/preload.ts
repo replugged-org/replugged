@@ -17,6 +17,11 @@ import type {
   RepluggedTranslations,
 } from "./types";
 
+let version = "";
+ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
+  version = v;
+});
+
 const RepluggedNative = {
   themes: {
     list: async (): Promise<RepluggedTheme[]> =>
@@ -96,7 +101,7 @@ const RepluggedNative = {
     getOverrides: (): Promise<RepluggedTranslations> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_OVERRIDES),
   },
-  getVersion: (): Promise<string> => ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION),
+  getVersion: () => version,
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later

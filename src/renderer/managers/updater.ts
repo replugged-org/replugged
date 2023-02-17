@@ -76,7 +76,7 @@ async function getAddonFromManager(
   id: string,
 ): Promise<RepluggedPlugin | RepluggedTheme | RepluggedEntity | undefined> {
   if (id === REPLUGGED_ID) {
-    const version = await window.RepluggedNative.getVersion();
+    const version = window.RepluggedNative.getVersion();
     if (version === "dev") return undefined;
     return {
       manifest: {
@@ -237,7 +237,7 @@ export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {
     .filter(
       (state) =>
         (state.available || completedUpdates.has(state.id)) &&
-        (state.id === REPLUGGED_ID ||
+        ((state.id === REPLUGGED_ID && window.RepluggedNative.getVersion() !== "dev") ||
           pluginManager.plugins.has(state.id) ||
           themeManager.themes.has(state.id)),
     );
