@@ -47,6 +47,10 @@ export async function getInfo(
     logger.error(`Failed to get info for ${identifier}: ${info.error}`);
     return null;
   }
+  if (info.manifest.type === "replugged") {
+    logger.error("Cannot install Replugged itself");
+    return null;
+  }
 
   cache.set(cacheIdentifier, {
     data: info,
@@ -57,6 +61,10 @@ export async function getInfo(
 }
 
 export function checkIsInstalled(data: CheckResultSuccess): boolean {
+  if (data.manifest.type === "replugged") {
+    throw new Error("Cannot check Replugged itself");
+  }
+
   switch (data.manifest.type) {
     case "replugged-plugin":
       return pluginManager.plugins.has(data.manifest.id);
@@ -66,6 +74,10 @@ export function checkIsInstalled(data: CheckResultSuccess): boolean {
 }
 
 export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
+  if (data.manifest.type === "replugged") {
+    throw new Error("Cannot load Replugged itself");
+  }
+
   try {
     switch (data.manifest.type) {
       case "replugged-plugin":
@@ -85,6 +97,10 @@ export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
 }
 
 export async function install(data: CheckResultSuccess): Promise<boolean> {
+  if (data.manifest.type === "replugged") {
+    throw new Error("Cannot install Replugged itself");
+  }
+
   const {
     url,
     webUrl,
@@ -220,6 +236,10 @@ export async function installFlow(
     return {
       kind: "FAILED",
     };
+  }
+
+  if (info.manifest.type === "replugged") {
+    throw new Error("Cannot install Replugged itself");
   }
 
   if (checkIsInstalled(info)) {

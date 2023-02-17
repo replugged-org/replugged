@@ -13,7 +13,7 @@ import { CONFIG_PATH, CONFIG_PATHS } from "../../util";
 import { readFile, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
-import { anyAddon, RepluggedManifest } from "src/types/addon";
+import { RepluggedManifest, anyAddon } from "src/types/addon";
 
 const octokit = new Octokit();
 

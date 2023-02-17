@@ -56,14 +56,14 @@ export const anyAddon = z.discriminatedUnion("type", [theme, plugin]);
 
 export type AnyAddonManifest = z.infer<typeof anyAddon>;
 
-export type RepluggedManifest = {
+export interface RepluggedManifest {
   version: string;
   updater: {
     id: string;
     type: "github";
   };
   type: "replugged";
-};
+}
 
 export interface PluginExports {
   start?: () => Promisable<void>;

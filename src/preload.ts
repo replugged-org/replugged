@@ -18,7 +18,7 @@ import type {
 } from "./types";
 
 let version = "";
-ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
+void ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
   version = v;
 });
 
