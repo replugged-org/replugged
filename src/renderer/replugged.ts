@@ -17,7 +17,7 @@ export * as logger from "./modules/logger";
 export { Logger } from "./modules/logger";
 
 export * as webpack from "./modules/webpack";
-export * as common from "./modules/webpack/common";
+export * as common from "./modules/common";
 export * as components from "./modules/components";
 export * as i18n from "./modules/i18n";
 

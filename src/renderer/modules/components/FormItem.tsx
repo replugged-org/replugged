@@ -26,23 +26,29 @@ const classes = await waitForModule<Record<"dividerDefault", string>>(filters.by
 interface FormItemProps extends FormItemCompProps {
   note?: string;
   notePosition?: "before" | "after";
+  noteStyle?: React.CSSProperties;
+  noteClassName?: string;
   divider?: boolean;
 }
 
 export type FormItemType = ReactComponent<FormItemProps>;
 
 export default ((props) => {
-  if (!props.notePosition) props.notePosition = "before";
+  const { note, notePosition = "before", noteStyle, noteClassName, divider, ...compProps } = props;
   return (
-    <FormItemComp {...props}>
-      {props.note && props.notePosition === "before" && (
-        <FormText.DESCRIPTION style={{ marginBottom: 8 }}>{props.note}</FormText.DESCRIPTION>
+    <FormItemComp {...compProps}>
+      {note && notePosition === "before" && (
+        <FormText.DESCRIPTION className={noteClassName} style={{ marginBottom: 8, ...noteStyle }}>
+          {note}
+        </FormText.DESCRIPTION>
       )}
       {props.children}
-      {props.note && props.notePosition === "after" && (
-        <FormText.DESCRIPTION style={{ marginTop: 8 }}>{props.note}</FormText.DESCRIPTION>
+      {note && notePosition === "after" && (
+        <FormText.DESCRIPTION className={noteClassName} style={{ marginTop: 8, ...noteStyle }}>
+          {note}
+        </FormText.DESCRIPTION>
       )}
-      {props.divider && <Divider className={classes.dividerDefault} />}
+      {divider && <Divider className={classes.dividerDefault} />}
     </FormItemComp>
   );
 }) as FormItemType;

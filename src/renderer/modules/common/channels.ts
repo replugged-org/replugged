@@ -1,4 +1,4 @@
-import { filters, getExportsForProps, waitForModule } from "..";
+import { filters, getExportsForProps, waitForModule } from "../webpack";
 import type { Store } from "./flux";
 
 export interface LastChannelFollowingDestination {

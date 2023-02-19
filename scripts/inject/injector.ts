@@ -76,7 +76,7 @@ export const inject = async (
      * @todo: prompt to automatically uninject and continue
      */
     console.error(
-      `${AnsiEscapes.RED}Looks like you already have an injector in place. Try unplugging (\`npm run unplug\`) and try again.${AnsiEscapes.RESET}`,
+      `${AnsiEscapes.RED}Looks like you already have an injector in place. Try unplugging (\`pnpm run unplug\`) and try again.${AnsiEscapes.RESET}`,
       "\n",
     );
     console.error(
@@ -84,7 +84,7 @@ export const inject = async (
       "\n",
     );
     console.error(
-      `If you already have Replugged installed and want to replace it, use ${AnsiEscapes.GREEN}npm run replug${AnsiEscapes.RESET} to unplug and plug again.`,
+      `If you already have Replugged installed and want to replace it, use ${AnsiEscapes.GREEN}pnpm run replug${AnsiEscapes.RESET} to unplug and plug again.`,
     );
     return false;
   }
@@ -98,10 +98,10 @@ export const inject = async (
       `${AnsiEscapes.RED}Looks like you haven't built Replugged yet!${AnsiEscapes.RESET}`,
     );
     console.error(
-      `To build for development, run ${AnsiEscapes.GREEN}npm run build${AnsiEscapes.RESET}`,
+      `To build for development, run ${AnsiEscapes.GREEN}pnpm run build${AnsiEscapes.RESET}`,
     );
     console.error(
-      `To build for production, run ${AnsiEscapes.GREEN}npm run bundle${AnsiEscapes.RESET}`,
+      `To build for production, run ${AnsiEscapes.GREEN}pnpm run bundle${AnsiEscapes.RESET}`,
     );
     return false;
   }

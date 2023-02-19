@@ -216,14 +216,10 @@ function buildTheme({ watch: shouldWatch, noInstall, production }) {
   }
 
   async function build(bundler) {
-    try {
-      const { bundleGraph, buildTime } = await bundler.run();
-      let bundles = bundleGraph.getBundles();
-      console.log(`Built ${bundles.length} bundles in ${buildTime}ms!`);
-      install();
-    } catch (err) {
-      console.log(err.diagnostics);
-    }
+    const { bundleGraph, buildTime } = await bundler.run();
+    let bundles = bundleGraph.getBundles();
+    console.log(`Built ${bundles.length} bundles in ${buildTime}ms!`);
+    install();
   }
 
   async function watch(bundler) {

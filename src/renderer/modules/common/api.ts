@@ -1,4 +1,4 @@
-import { filters, getExportsForProps, waitForModule } from "..";
+import { filters, getExportsForProps, waitForModule } from "../webpack";
 
 export type API = Record<
   "get" | "patch" | "post" | "put" | "delete",

@@ -1,5 +1,5 @@
-import type { RawModule } from "../../../../types";
-import { filters, waitForModule } from "..";
+import type { RawModule } from "../../../types";
+import { filters, waitForModule } from "../webpack";
 
 export interface Typing {
   startTyping: (channelId: string) => void;

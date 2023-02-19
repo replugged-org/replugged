@@ -9,7 +9,7 @@ const TYPES = {
 } as const;
 
 interface LoaderProps {
-  type?: typeof TYPES[keyof typeof TYPES];
+  type?: (typeof TYPES)[keyof typeof TYPES];
   animated?: boolean;
   className?: string;
   itemClassName?: string;

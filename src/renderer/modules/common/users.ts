@@ -1,4 +1,4 @@
-import { filters, getExportsForProps, waitForModule } from "..";
+import { filters, getExportsForProps, waitForModule } from "../webpack";
 import type { GuildMember, User } from "discord-types/general";
 
 export interface UserCommunicationDisabled {

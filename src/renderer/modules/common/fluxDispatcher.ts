@@ -1,5 +1,5 @@
-import type { RawModule } from "../../../../types/webpack";
-import { filters, waitForModule } from "..";
+import type { RawModule } from "../../../types/webpack";
+import { filters, waitForModule } from "../webpack";
 
 type FluxCallback = (event?: { [index: string]: unknown }) => void;
 export interface FluxDispatcher {

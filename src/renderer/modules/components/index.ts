@@ -36,7 +36,7 @@ importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mo
 import type { SwitchItemType, SwitchType } from "./SwitchItem";
 export type { SwitchType };
 export let Switch: SwitchType;
-importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
+importTimeout("Switch", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
 
 export type { SwitchItemType };
 export let SwitchItem: SwitchItemType;
@@ -92,7 +92,7 @@ importTimeout("Button", import("./Button"), (mod) => (Button = mod.Button));
 
 export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
-importTimeout("Button", import("./Button"), (mod) => (ButtonItem = mod.ButtonItem));
+importTimeout("ButtonItem", import("./Button"), (mod) => (ButtonItem = mod.ButtonItem));
 
 import type { ClickableType } from "./Clickable";
 export type { ClickableType };
@@ -107,12 +107,21 @@ importTimeout("Category", import("./Category"), (mod) => (Category = mod.default
 import type { TextInputType } from "./TextInput";
 export type { TextInputType };
 export let TextInput: TextInputType;
-importTimeout("Input", import("./TextInput"), (mod) => (TextInput = mod.default));
+importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
 
-import type { SliderType } from "./Slider";
+import type { TextAreaType } from "./TextArea";
+export type { TextAreaType };
+export let TextArea: TextAreaType;
+importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default));
+
+import type { SliderItemType, SliderType } from "./SliderItem";
 export type { SliderType };
 export let Slider: SliderType;
-importTimeout("Slider", import("./Slider"), (mod) => (Slider = mod.default));
+importTimeout("Slider", import("./SliderItem"), (mod) => (Slider = mod.Slider));
+
+export type { SliderItemType };
+export let SliderItem: SliderItemType;
+importTimeout("SliderItem", import("./SliderItem"), (mod) => (SliderItem = mod.SliderItem));
 
 import type { TextType } from "./Text";
 export type { TextType };
@@ -128,6 +137,20 @@ import { type LoaderType } from "./Loader";
 export type { LoaderType };
 export let Loader: LoaderType;
 importTimeout("Loader", import("./Loader"), (mod) => (Loader = mod.default));
+
+import { type CheckboxItemType, CheckboxType } from "./CheckboxItem";
+export type { CheckboxType };
+export let Checkbox: CheckboxType;
+importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
+
+export type { CheckboxItemType };
+export let CheckboxItem: CheckboxItemType;
+importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
+
+import { type NoticeType } from "./Notice";
+export type { NoticeType };
+export let Notice: NoticeType;
+importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));
 
 /**
  * @internal

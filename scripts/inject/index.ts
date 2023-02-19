@@ -119,7 +119,7 @@ const run = async (cmd = processArgs[2]): Promise<void> => {
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
           AnsiEscapes.GREEN
-        }npm run plug <platform>${AnsiEscapes.RESET}
+        }pnpm run plug <platform>${AnsiEscapes.RESET}
 List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}`).join("\n")}${
           AnsiEscapes.RESET
         }`,
@@ -144,7 +144,7 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
           AnsiEscapes.GREEN
-        }npm run unplug <platform>${AnsiEscapes.RESET}
+        }pnpm run unplug <platform>${AnsiEscapes.RESET}
 List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}`).join("\n")}${
           AnsiEscapes.RESET
         }`,
