@@ -1,1 +1,22 @@
-{}
+{
+    "REPLUGGED_BADGES_HUNTER": "Replugged बग Hunter",
+    "REPLUGGED_BADGES_SUPPORT": "Replugged सहायता",
+    "REPLUGGED_BADGES_TRANSLATOR": "Replugged अनुवादक",
+    "REPLUGGED_BADGES_BOOSTER": "Replugged Server Booster",
+    "REPLUGGED_BUTTON_GOT_IT": "समझ गया",
+    "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} install किया",
+    "REPLUGGED_CANCEL": "रद्द करें",
+    "REPLUGGED_CONFIRM": "इसे पुष्टिकृत करें",
+    "REPLUGGED_OK": "ठीक",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Theme - {description}",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Device का Discord और replugged का debug जानकारी chat मैं भेजती है",
+    "REPLUGGED_COMMAND_DISABLE_DESC": "plugin/theme को अक्षम करें",
+    "REPLUGGED_BADGES_DEVELOPER": "Replugged डेवलपर",
+    "REPLUGGED_BADGES_STAFF": "Replugged स्टाफ़",
+    "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Download {type}",
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Plugins और themes, install हो गया है",
+    "REPLUGGED_ACCOUNT": "Replugged खाता",
+    "REPLUGGED_BADGES_CONTRIBUTOR": "Replugged सहायक",
+    "REPLUGGED_BADGES_EARLY": "Replugged प्रारंभिक उपयोगकर्ता"
+}
