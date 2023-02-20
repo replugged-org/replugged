@@ -8,15 +8,7 @@ enum ModalTransitionState {
   EXITED,
   HIDDEN,
 }
-export interface ModalProps {
-  transitionState: ModalTransitionState;
-  onClose(): Promise<void>;
-}
-export interface ModalOptions {
-  modalKey?: string;
-  onCloseRequest?: () => void;
-  onCloseCallback?: () => void;
-}
+
 export interface ModalCompProps {
   children: React.ReactNode;
 }
