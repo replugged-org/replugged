@@ -6,12 +6,14 @@ export interface SliderCompProps {
   disabled?: boolean;
   markers?: number[];
   stickToMarkers?: boolean;
+  equidistant?: boolean;
   initialValue?: number;
   defaultValue?: number;
   minValue?: number;
   maxValue?: number;
   mini?: boolean;
   hideBubble?: boolean;
+  keyboardStep?: number;
   barStyles?: React.CSSProperties;
   fillStyles?: React.CSSProperties;
   grabberStyles?: React.CSSProperties;
@@ -51,16 +53,16 @@ interface SliderItemProps extends SliderProps {
 export type SliderItemType = React.FC<React.PropsWithChildren<SliderItemProps>>;
 
 export const SliderItem = (props: React.PropsWithChildren<SliderItemProps>): React.ReactElement => {
-  const { children } = props;
-  delete props.children;
+  const { children, ...compProps } = props;
   return (
     <FormItem
       title={children}
       style={{ marginBottom: 20, ...props.style }}
       note={props.note}
       noteStyle={{ marginBottom: props.markers ? 16 : 4 }}
+      disabled={props.disabled}
       divider>
-      <Slider {...props} />
+      <Slider {...compProps} />
     </FormItem>
   );
 };

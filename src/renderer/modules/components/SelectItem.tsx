@@ -80,6 +80,7 @@ export const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): Rea
       style={{ marginBottom: 20, ...props.style }}
       note={props.note}
       notePosition="after"
+      disabled={props.disabled}
       divider>
       <Select {...props} />
     </FormItem>

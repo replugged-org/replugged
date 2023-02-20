@@ -4,7 +4,6 @@ interface TextAreaProps {
   autoFocus?: boolean;
   disabled?: boolean;
   required?: boolean;
-  editable?: boolean;
   allowOverflow?: boolean;
   resizeable?: boolean;
   flex?: boolean;

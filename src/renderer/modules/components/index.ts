@@ -85,14 +85,14 @@ export type { FormItemType };
 export let FormItem: FormItemType;
 importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
 
-import type { ButtonItemType, ButtonType } from "./Button";
+import type { ButtonItemType, ButtonType } from "./ButtonItem";
 export type { ButtonType };
 export let Button: ButtonType;
-importTimeout("Button", import("./Button"), (mod) => (Button = mod.Button));
+importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
 
 export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
-importTimeout("ButtonItem", import("./Button"), (mod) => (ButtonItem = mod.ButtonItem));
+importTimeout("ButtonItem", import("./ButtonItem"), (mod) => (ButtonItem = mod.ButtonItem));
 
 import type { ClickableType } from "./Clickable";
 export type { ClickableType };

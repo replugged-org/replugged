@@ -63,6 +63,7 @@ interface TextProps {
   variant?: Variant;
   tag?: string;
   selectable?: boolean;
+  tabularNumbers?: boolean;
   className?: string;
   lineClamp?: number;
   color?: string;

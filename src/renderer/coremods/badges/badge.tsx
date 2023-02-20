@@ -19,7 +19,7 @@ type Clickable = React.FC<
 interface BadgeProps {
   color?: string;
   tooltip?: string;
-  tooltipPosition?: "top" | "bottom" | "left" | "right";
+  tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   className?: string;
   children: React.ReactElement;
   gap?: boolean;
@@ -58,7 +58,7 @@ export const Base = ({
       {tooltip ? (
         <Tooltip
           text={tooltip}
-          position={tooltipPosition || "top"}
+          position={tooltipPosition || Tooltip.Positions.TOP}
           spacing={gap === false ? 0 : 12}>
           {child}
         </Tooltip>

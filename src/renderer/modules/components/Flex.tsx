@@ -10,6 +10,7 @@ export type FlexType = ReactComponent<{
   grow?: number;
   basis?: string;
   style?: React.CSSProperties;
+  className?: string;
 }> & {
   Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
   Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
@@ -20,6 +21,8 @@ export type FlexType = ReactComponent<{
     grow?: number;
     basis?: string;
     wrap?: boolean;
+    style?: React.CSSProperties;
+    className?: string;
   }>;
 };
 

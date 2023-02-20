@@ -49,6 +49,7 @@ export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React
       title={props.children}
       style={{ marginBottom: 20, ...props.style }}
       note={props.note}
+      disabled={props.disabled}
       divider>
       <Radio {...props} />
     </FormItem>
