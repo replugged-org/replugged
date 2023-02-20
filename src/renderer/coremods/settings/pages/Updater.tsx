@@ -132,7 +132,7 @@ export const Updater = (): React.ReactElement => {
           <Button
             className="replugged-updater-check"
             onClick={checkForUpdates}
-            disabled={isAnyComplete}
+            disabled={isAnyUpdating || isAnyComplete}
             color={checking ? Button.Colors.PRIMARY : Button.Colors.BRAND}
             submitting={checking}>
             {Messages.REPLUGGED_UPDATES_CHECK}
@@ -146,7 +146,7 @@ export const Updater = (): React.ReactElement => {
             onClick={installAll}
             disabled={isAllComplete}
             color={isAllUpdating ? Button.Colors.PRIMARY : Button.Colors.BRAND}
-            submitting={isAllUpdating}>
+            submitting={isAnyUpdating}>
             {Messages.REPLUGGED_UPDATES_UPDATE_ALL}
           </Button>
         )}
