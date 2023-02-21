@@ -6,10 +6,10 @@ import Badges from "./badges";
 import { Clickable, Tooltip } from "@components";
 import { goToOrJoinServer } from "../../util";
 import { RawModule } from "src/types";
-import { settings } from "@replugged";
+import { init as initSettings } from "../../apis/settings";
 import { GeneralSettings } from "../settings/pages";
 
-const generalSettings = await settings.init<GeneralSettings>("rp-settings");
+const generalSettings = await initSettings<GeneralSettings>("rp-settings");
 
 interface BadgeProps {
   color?: string;

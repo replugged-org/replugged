@@ -60,7 +60,7 @@ export const General = (): React.ReactElement => {
 
   return (
     // NOTE(lexisother): These are mock settings, none of these do or save anything
-    <div style={{ color: "var(--text-normal)" }}>
+    <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
         {/* TODO(lexisother): Add an i18n string */}
         <Text.H2>Settings</Text.H2>
@@ -113,6 +113,6 @@ export const General = (): React.ReactElement => {
           <span style={{ color: `hsl(${hue}, 100%, 50%)` }}>Wake up. Wake up. Wake up.</span>
         </>
       )}
-    </div>
+    </>
   );
 };
