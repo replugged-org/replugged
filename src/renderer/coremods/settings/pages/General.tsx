@@ -1,10 +1,7 @@
 import React from "@common/react";
-import { getBySource } from "../../../modules/webpack";
 import { Divider, Flex, FormItem, SwitchItem, Text, TextInput } from "@components";
-import Users from "@common/users";
 import { settings, util } from "@replugged";
 import { Jsonifiable } from "type-fest";
-const { getCurrentUser } = Users;
 
 export interface GeneralSettings {
   apiUrl: string;
@@ -21,15 +18,6 @@ const configs = await settings.init<GeneralSettings, keyof typeof defaultSetting
   "rp-settings",
   defaultSettings,
 );
-
-// I'm not going to be waiting for Notice to be added to @components before
-// making this PR. Just switch it out later.
-// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-const NoticeMod = getBySource(/.\.messageType/) as {
-  Z: React.ElementType;
-  Q: Record<string, never>;
-};
-const { Z: Notice, Q: NoticeTypes } = NoticeMod;
 
 export const General = (): React.ReactElement => {
   const [hue, setHue] = React.useState(0);
@@ -67,18 +55,6 @@ export const General = (): React.ReactElement => {
       </Flex>
 
       <Divider style={{ margin: "20px 0px" }} />
-
-      <Notice messageType={NoticeTypes.ERROR}>
-        <p>Hello {getCurrentUser().username}! These are the Replugged settings.</p>
-        <p>
-          Currently, we have nothing for you to configure! However, these settings are simply here
-          so whoever is implementing functionality behind these switches and text fields doesn't
-          have to make a layout for them.
-        </p>
-        <p>
-          Please don't report any bugs saying the settings don't work, because this is intentional!
-        </p>
-      </Notice>
 
       <FormItem
         title="Replugged API URL"

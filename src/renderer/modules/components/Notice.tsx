@@ -14,6 +14,7 @@ interface NoticeProps {
   textColor?: string;
   textVariant?: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export type NoticeType = React.ComponentType<NoticeProps> & {
