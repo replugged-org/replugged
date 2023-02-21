@@ -2,7 +2,25 @@ import React from "@common/react";
 import { getBySource } from "../../../modules/webpack";
 import { Divider, Flex, FormItem, SwitchItem, Text, TextInput } from "@components";
 import Users from "@common/users";
+import { settings, util } from "@replugged";
+import { Jsonifiable } from "type-fest";
 const { getCurrentUser } = Users;
+
+export interface GeneralSettings {
+  apiUrl: string;
+  // pluginEmbeds: boolean;
+  experiments: boolean;
+  [key: string]: Jsonifiable;
+}
+const defaultSettings: Partial<GeneralSettings> = {
+  apiUrl: "https://replugged.dev",
+  // pluginEmbeds: false,
+  experiments: false,
+};
+const configs = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
+  "rp-settings",
+  defaultSettings,
+);
 
 // I'm not going to be waiting for Notice to be added to @components before
 // making this PR. Just switch it out later.
@@ -68,14 +86,21 @@ export const General = (): React.ReactElement => {
         divider={true}
         style={{ marginBottom: "18px" }}>
         {/* NOTE(lexisother): For whoever is implementing the settings functionality, please update this accordingly! */}
-        <TextInput value="https://replugged.dev/api/v2" placeholder="https://example.com/api/v2" />
+        <TextInput
+          {...util.useSetting(configs, "apiUrl", "https://replugged.dev")}
+          placeholder="https://example.com/api/v2"
+        />
       </FormItem>
 
-      <SwitchItem value={false} onChange={() => false} note="Enable embedding plugins in chat">
+      {/* <SwitchItem
+        {...util.useSetting(configs, "experiments", false)}
+        note="Enable embedding plugins in chat">
         Plugin Embeds
-      </SwitchItem>
+      </SwitchItem> */}
 
-      <SwitchItem value={false} onChange={() => false} note="Enable Discord experiments">
+      <SwitchItem
+        {...util.useSetting(configs, "experiments", false)}
+        note="Enable Discord experiments">
         Experiments
       </SwitchItem>
 

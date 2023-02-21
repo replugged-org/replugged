@@ -3,7 +3,11 @@ import { Injector } from "../../modules/injector";
 import React from "@common/react";
 import type { User } from "discord-types/general";
 import { APIBadges, Custom, badgeElements } from "./badge";
+import { settings } from "@replugged";
+import { GeneralSettings } from "../settings/pages/General";
 const injector = new Injector();
+
+const generalSettings = await settings.init<GeneralSettings>("rp-settings");
 
 interface BadgeModArgs {
   guildId: string;
@@ -59,7 +63,12 @@ export async function start(): Promise<void> {
             cache.set(
               id,
               // TODO: new backend
-              await fetch(`https://replugged.dev/api/v1/users/${id}`)
+              await fetch(
+                `https://${generalSettings.get(
+                  "apiUrl",
+                  "https://replugged.dev",
+                )}/api/v1/users/${id}`,
+              )
                 .then(async (res) => {
                   const body = (await res.json()) as Record<string, unknown> & {
                     badges: APIBadges;
