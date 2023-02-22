@@ -31,14 +31,14 @@ export const General = (): React.ReactElement => {
 
   /* @see view-source:https://sysspa.alyxia.dev/ lines 172 to 183 */
   const konami = "38,38,40,40,37,39,37,39,66,65";
-  const kkeys: number[] = [];
+  const kKeys: number[] = [];
   let listener: (e: KeyboardEvent) => void;
   document.addEventListener(
     "keydown",
     (listener = function (e) {
-      kkeys.push(e.keyCode);
+      kKeys.push(e.keyCode);
 
-      if (kkeys.toString().includes(konami)) {
+      if (kKeys.toString().includes(konami)) {
         document.removeEventListener("keydown", listener);
 
         setSleep(true);

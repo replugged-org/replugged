@@ -50,7 +50,8 @@
     "uninject",
     "uninjector",
     "uninjectors",
-    "XLARGE"
+    "XLARGE",
+    "konami"
   ],
   "ignoreWords": [],
   "import": []
