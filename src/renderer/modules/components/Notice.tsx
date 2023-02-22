@@ -19,10 +19,9 @@ export type NoticeType = React.ComponentType<NoticeProps> & {
   Types: typeof Types;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-const Notice = (await waitForModule(filters.bySource(/.\.messageType/)).then((mod) =>
+const Notice: NoticeType = await waitForModule(filters.bySource(/.\.messageType/)).then((mod) =>
   Object.values(mod).find((x) => typeof x === "function"),
-)) as NoticeType;
+);
 Notice.Types = Types;
 
 export default Notice;
