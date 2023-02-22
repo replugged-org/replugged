@@ -27,7 +27,7 @@
     "REPLUGGED_SNIPPET_APPLY": "Pas Snippet Toe",
     "REPLUGGED_SNIPPET_LINE1": "Snippet van #css-snippets toegepast op {date, date, medium} om {date, time, medium}",
     "REPLUGGED_THEMES": "Thema's",
-    "REPLUGGED_UPDATES_AVAILABLE": "{count, plural, =1 {{count} update is} other {{count} updates zijn}} beschikbaar.",
+    "REPLUGGED_UPDATES_AVAILABLE": "{count, plural, =1 {# update is} other {# updates zijn}} beschikbaar.",
     "REPLUGGED_SNIPPET_LINE2": "Gemaakt door {authorTag} ({authorId})",
     "REPLUGGED_UPDATES_CHECK": "Check voor Updates",
     "REPLUGGED_UPDATES_ENABLE": "Updates Aanzetten",
