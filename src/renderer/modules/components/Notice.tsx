@@ -1,6 +1,6 @@
 import { filters, waitForModule } from "../webpack";
 
-const NoticeTypes = {
+const Types = {
   WARNING: 0,
   INFO: 1,
   ERROR: 2,
@@ -9,20 +9,20 @@ const NoticeTypes = {
 
 interface NoticeProps {
   children: React.ReactNode;
-  messageType: (typeof NoticeTypes)[keyof typeof NoticeTypes];
+  messageType: (typeof Types)[keyof typeof Types];
   textColor?: string;
   textVariant?: string;
   className?: string;
 }
 
 export type NoticeType = React.ComponentType<NoticeProps> & {
-  NoticeTypes: typeof NoticeTypes;
+  Types: typeof Types;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const Notice = (await waitForModule(filters.bySource(/.\.messageType/)).then((mod) =>
   Object.values(mod).find((x) => typeof x === "function"),
 )) as NoticeType;
-Notice.NoticeTypes = NoticeTypes;
+Notice.Types = Types;
 
 export default Notice;
