@@ -1,5 +1,4 @@
 import type { PlaintextPatch } from "src/types";
-import { generalSettings } from "../settings/pages";
 
 export default [
   {

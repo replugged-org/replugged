@@ -22,12 +22,16 @@ export const generalSettings = await settings.init<GeneralSettings, keyof typeof
   defaultSettings,
 );
 
-export function getExperimentsEnabled() {
+export function getExperimentsEnabled(): NonNullable<Jsonifiable> {
   return generalSettings.get("experiment", false);
 }
 
 export const General = (): React.ReactElement => {
-  const { expValue, expOnChange } = util.useSetting(generalSettings, "experiments", false);
+  const { value: expValue, onChange: expOnChange } = util.useSetting(
+    generalSettings,
+    "experiments",
+    false,
+  );
   const [hue, setHue] = React.useState(0);
   const [sleep, setSleep] = React.useState(false);
   React.useEffect(() => {
@@ -83,7 +87,6 @@ export const General = (): React.ReactElement => {
       </SwitchItem> */}
 
       <SwitchItem
-        // {...util.useSetting(generalSettings, "experiments", false)}
         value={expValue}
         onChange={(value) => {
           void modal
