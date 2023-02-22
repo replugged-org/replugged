@@ -1,8 +1,5 @@
 import type { PlaintextPatch } from "src/types";
-import { GeneralSettings } from "../settings/pages";
-import { init as initSettings } from "../../apis/settings";
-
-const generalSettings = await initSettings<GeneralSettings>("rp-settings");
+import { generalSettings } from "../settings/pages";
 
 export default [
   {

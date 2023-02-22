@@ -14,7 +14,7 @@ const defaultSettings: Partial<GeneralSettings> = {
   // pluginEmbeds: false,
   experiments: false,
 };
-const configs = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
+export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "rp-settings",
   defaultSettings,
 );
@@ -63,7 +63,7 @@ export const General = (): React.ReactElement => {
         style={{ marginBottom: "18px" }}>
         {/* NOTE(lexisother): For whoever is implementing the settings functionality, please update this accordingly! */}
         <TextInput
-          {...util.useSetting(configs, "apiUrl", "https://replugged.dev")}
+          {...util.useSetting(generalSettings, "apiUrl", "https://replugged.dev")}
           placeholder="https://example.com/api/v2"
         />
       </FormItem>
@@ -75,7 +75,7 @@ export const General = (): React.ReactElement => {
       </SwitchItem> */}
 
       <SwitchItem
-        {...util.useSetting(configs, "experiments", false)}
+        {...util.useSetting(generalSettings, "experiments", false)}
         note="Enable Discord experiments">
         Experiments
       </SwitchItem>

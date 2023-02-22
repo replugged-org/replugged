@@ -3,11 +3,8 @@ import { Injector } from "../../modules/injector";
 import React from "@common/react";
 import type { User } from "discord-types/general";
 import { APIBadges, Custom, badgeElements } from "./badge";
-import { init as initSettings } from "../../apis/settings";
-import { GeneralSettings } from "../settings/pages/General";
+import { generalSettings } from "../settings/pages/General";
 const injector = new Injector();
-
-const generalSettings = await initSettings<GeneralSettings>("rp-settings");
 
 interface BadgeModArgs {
   guildId: string;
