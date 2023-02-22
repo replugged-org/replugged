@@ -1,7 +1,7 @@
 import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
 import type { GetButtonItem } from "../../types/coremods/message";
-import { addButton } from "../apis/message-popover";
+import { addButton } from "../coremods/messagePopover";
 
 enum InjectionTypes {
   Before,

@@ -2,13 +2,13 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
-    find: 'navId:"message-actions",',
+    find: 'key:"copy-id"',
     replacements: [
       {
         match:
-          /(Fragment,{children:\[)(.{0,200}children:\[.{0,20}?(\w{1,3})\({.{0,5}key:"copy-id".{0,20}channel:(.{1,3})[,}].{0,20}message:(.{1,3})[,}])/,
+          /(Fragment,{children:\[)(.{0,200}children:\[.{0,20}?(\w{1,3})\({.{0,5}\s?key:"copy-id".{0,20}channel:(.{1,3})[,}].{0,20}message:(.{1,3})[,}])/,
         replace: (_, prefix, suffix, makeButton, channel, message) =>
-          `${prefix}...replugged.api.messagePopover._buildPopoverElements(${message},${channel},${makeButton}),${suffix}`,
+          `${prefix}...replugged.coremods.coremods.messagePopover._buildPopoverElements(${message},${channel},${makeButton}),${suffix}`,
       },
     ],
   },

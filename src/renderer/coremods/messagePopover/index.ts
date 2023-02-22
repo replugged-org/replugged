@@ -1,6 +1,6 @@
 import type { Channel, Message } from "discord-types/general";
-import { Logger } from "../modules/logger";
-import type { ButtonItem, GetButtonItem } from "../../types/coremods/message";
+import { Logger } from "../../modules/logger";
+import type { ButtonItem, GetButtonItem } from "../../../types/coremods/message";
 
 const logger = Logger.api("MessagePopover");
 
