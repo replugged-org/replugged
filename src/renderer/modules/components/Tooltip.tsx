@@ -1,5 +1,5 @@
+import type React from "react";
 import type { ObjectExports } from "../../../types";
-import type { HTMLAttributes } from "react";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 const Aligns = {
@@ -40,7 +40,7 @@ interface BaseTooltipProps {
 }
 
 interface TooltipFunctionChildren extends BaseTooltipProps {
-  children: (props: HTMLAttributes<HTMLSpanElement>) => React.ReactNode;
+  children: (props: React.HTMLAttributes<HTMLSpanElement>) => React.ReactNode;
 }
 
 interface TooltipCustom extends BaseTooltipProps {

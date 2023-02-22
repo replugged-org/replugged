@@ -1,6 +1,7 @@
+import type React from "react";
+import { Divider, FormText } from ".";
 import type { ReactComponent } from "../../../types";
 import { filters, waitForModule } from "../webpack";
-import { Divider, FormText } from ".";
 
 interface FormItemCompProps {
   children: React.ReactNode;

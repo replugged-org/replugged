@@ -1,6 +1,7 @@
+import type React from "react";
+import { FormItem } from ".";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import { FormItem } from ".";
 
 interface RadioOptionType {
   name: string;

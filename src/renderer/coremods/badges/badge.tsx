@@ -7,15 +7,6 @@ import { Clickable, Tooltip } from "@components";
 import { goToOrJoinServer } from "../../util";
 import { RawModule } from "src/types";
 
-type Clickable = React.FC<
-  Record<string, unknown> & {
-    "aria-label"?: string;
-    className?: string;
-    children: React.ReactElement | React.ReactElement[];
-    onClick?: () => void;
-  }
->;
-
 interface BadgeProps {
   color?: string;
   tooltip?: string;

@@ -42,7 +42,7 @@ export type { SwitchItemType };
 export let SwitchItem: SwitchItemType;
 importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.SwitchItem));
 
-import { type RadioItemType, RadioType } from "./RadioItem";
+import type { RadioItemType, RadioType } from "./RadioItem";
 export type { RadioType };
 export let Radio: RadioType;
 importTimeout("Radio", import("./RadioItem"), (mod) => (Radio = mod.Radio));
@@ -51,7 +51,7 @@ export type { RadioItemType };
 export let RadioItem: RadioItemType;
 importTimeout("RadioItem", import("./RadioItem"), (mod) => (RadioItem = mod.RadioItem));
 
-import { type SelectItemType, SelectType } from "./SelectItem";
+import type { SelectItemType, SelectType } from "./SelectItem";
 export type { SelectType };
 export let Select: SelectType;
 importTimeout("Select", import("./SelectItem"), (mod) => (Select = mod.Select));
@@ -128,17 +128,17 @@ export type { TextType };
 export let Text: TextType;
 importTimeout("Text", import("./Text"), (mod) => (Text = mod.default));
 
-import { type ErrorBoundaryType } from "./ErrorBoundary";
+import type { ErrorBoundaryType } from "./ErrorBoundary";
 export type { ErrorBoundaryType };
 export let ErrorBoundary: ErrorBoundaryType;
 importTimeout("ErrorBoundary", import("./ErrorBoundary"), (mod) => (ErrorBoundary = mod.default));
 
-import { type LoaderType } from "./Loader";
+import type { LoaderType } from "./Loader";
 export type { LoaderType };
 export let Loader: LoaderType;
 importTimeout("Loader", import("./Loader"), (mod) => (Loader = mod.default));
 
-import { type CheckboxItemType, CheckboxType } from "./CheckboxItem";
+import type { CheckboxItemType, CheckboxType } from "./CheckboxItem";
 export type { CheckboxType };
 export let Checkbox: CheckboxType;
 importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
@@ -147,7 +147,7 @@ export type { CheckboxItemType };
 export let CheckboxItem: CheckboxItemType;
 importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
 
-import { type NoticeType } from "./Notice";
+import type { NoticeType } from "./Notice";
 export type { NoticeType };
 export let Notice: NoticeType;
 importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));

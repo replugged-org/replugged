@@ -1,4 +1,5 @@
 import { parser } from "@common";
+import type React from "react";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 

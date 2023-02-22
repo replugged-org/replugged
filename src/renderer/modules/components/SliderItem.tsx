@@ -1,6 +1,7 @@
+import type React from "react";
 import { ReactComponent } from "src/types";
-import { filters, waitForModule } from "../webpack";
 import { FormItem } from ".";
+import { filters, waitForModule } from "../webpack";
 
 export interface SliderCompProps {
   disabled?: boolean;

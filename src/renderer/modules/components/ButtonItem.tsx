@@ -1,8 +1,8 @@
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import type { ReactComponent } from "../../../types/util";
 import type React from "react";
 import { Divider, Flex, FormText, Tooltip } from ".";
 import type { ObjectExports } from "../../../types";
+import type { ReactComponent } from "../../../types/util";
+import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 export type ButtonType = ReactComponent<{
   onClick: () => void;

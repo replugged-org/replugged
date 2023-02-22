@@ -1,7 +1,7 @@
-import { filters, waitForModule } from "../webpack";
-import { Divider, FormText } from ".";
 import React from "@common/react";
+import { Divider, FormText } from ".";
 import type { ObjectExports } from "../../../types";
+import { filters, waitForModule } from "../webpack";
 
 const classes = await waitForModule<
   ObjectExports & Record<"labelRow" | "title" | "note" | "dividerDefault", string>
