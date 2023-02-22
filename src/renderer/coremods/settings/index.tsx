@@ -2,6 +2,8 @@ import { Messages } from "@common/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
+export { getExperimentsEnabled } from "./pages/General";
+
 export { insertSections };
 
 export function start(): void {

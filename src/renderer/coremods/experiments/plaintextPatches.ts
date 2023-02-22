@@ -8,14 +8,11 @@ export default [
       // Why write an entire function for it? :trolley:
       // If `experiments` is true, the array element is present, otherwise it is
       // not.
-      ...(generalSettings.get("experiments")
-        ? [
-            {
-              match: "window.GLOBAL_ENV.RELEASE_CHANNEL",
-              replace: '"staging"',
-            },
-          ]
-        : []),
+      {
+        match: "window.GLOBAL_ENV.RELEASE_CHANNEL",
+        replace:
+          'replugged.coremods.coremods.settings.getExperimentsEnabled() ? "staging" : window.GLOBAL_ENV.RELEASE_CHANNEL',
+      },
     ],
   },
 ] as PlaintextPatch[];

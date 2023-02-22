@@ -1,7 +1,10 @@
+import { modal } from "@common";
 import React from "@common/react";
-import { Divider, Flex, FormItem, SwitchItem, Text, TextInput } from "@components";
-import { settings, util } from "@replugged";
+import { Button, Divider, Flex, FormItem, SwitchItem, Text, TextInput } from "@components";
+import * as settings from "../../../apis/settings";
+import * as util from "../../../util";
 import { Jsonifiable } from "type-fest";
+import { Messages } from "@common/i18n";
 
 export interface GeneralSettings {
   apiUrl: string;
@@ -19,7 +22,12 @@ export const generalSettings = await settings.init<GeneralSettings, keyof typeof
   defaultSettings,
 );
 
+export function getExperimentsEnabled() {
+  return generalSettings.get("experiment", false);
+}
+
 export const General = (): React.ReactElement => {
+  const { expValue, expOnChange } = util.useSetting(generalSettings, "experiments", false);
   const [hue, setHue] = React.useState(0);
   const [sleep, setSleep] = React.useState(false);
   React.useEffect(() => {
@@ -75,7 +83,23 @@ export const General = (): React.ReactElement => {
       </SwitchItem> */}
 
       <SwitchItem
-        {...util.useSetting(generalSettings, "experiments", false)}
+        // {...util.useSetting(generalSettings, "experiments", false)}
+        value={expValue}
+        onChange={(value) => {
+          void modal
+            .confirm({
+              title: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS,
+              body: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC,
+              confirmText: Messages.REPLUGGED_RELOAD,
+              confirmColor: Button.Colors.RED,
+            })
+            .then((answer) => {
+              if (answer) {
+                expOnChange(value);
+                setTimeout(() => window.location.reload(), 250);
+              }
+            });
+        }}
         note="Enable Discord experiments">
         Experiments
       </SwitchItem>
