@@ -1,7 +1,7 @@
-import { filters, waitForModule } from "../webpack";
-import { Divider, FormText } from ".";
 import React from "@common/react";
+import { Divider, FormText } from ".";
 import type { ObjectExports } from "../../../types";
+import { filters, waitForModule } from "../webpack";
 
 const classes = await waitForModule<
   ObjectExports & Record<"labelRow" | "title" | "note" | "dividerDefault", string>
@@ -33,7 +33,12 @@ export default ((props: React.PropsWithChildren<CategoryProps>) => {
   return (
     <div style={{ marginBottom: 20 }}>
       <div
-        style={{ cursor: "pointer", alignItems: "center", display: "flex" }}
+        style={{
+          cursor: props.disabled ? "not-allowed" : "pointer",
+          alignItems: "center",
+          display: "flex",
+          opacity: props.disabled ? 0.3 : undefined,
+        }}
         onClick={() => {
           handleClick();
         }}>
@@ -54,7 +59,11 @@ export default ((props: React.PropsWithChildren<CategoryProps>) => {
         </svg>
         <div style={{ flex: 1 }}>
           <div className={classes.labelRow}>
-            <label className={classes.title}>{props.title}</label>
+            <label
+              className={classes.title}
+              style={{ cursor: props.disabled ? "not-allowed" : "pointer" }}>
+              {props.title}
+            </label>
           </div>
           {props.note && (
             <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
@@ -68,6 +77,8 @@ export default ((props: React.PropsWithChildren<CategoryProps>) => {
             marginLeft: 12,
             borderLeft: "1px var(--background-modifier-accent) solid",
             paddingLeft: 33,
+            cursor: props.disabled ? "not-allowed" : undefined,
+            opacity: props.disabled ? 0.3 : undefined,
           }}>
           {props.children}
         </div>

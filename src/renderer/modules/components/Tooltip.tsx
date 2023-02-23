@@ -1,37 +1,61 @@
-import type { HTMLAttributes } from "react";
+import type React from "react";
+import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
+
+const Aligns = {
+  BOTTOM: "bottom",
+  CENTER: "center",
+  LEFT: "left",
+  RIGHT: "right",
+  TOP: "top",
+} as const;
+
+interface TooltipEnums {
+  Aligns: typeof Aligns;
+  Positions: Record<"TOP" | "BOTTOM" | "LEFT" | "RIGHT" | "CENTER" | "WINDOW_CENTER", string>;
+  Colors: Record<
+    "PRIMARY" | "BLACK" | "GREY" | "BRAND" | "GREEN" | "YELLOW" | "RED" | "CUSTOM",
+    string
+  >;
+}
 
 interface BaseTooltipProps {
   text: string;
-  className?: string;
-  style?: React.CSSProperties;
+  color?: string;
   position?: string;
   align?: string;
   spacing?: number;
   delay?: number;
+  allowOverflow?: boolean;
+  disableTooltipPointerEvents?: boolean;
+  forceOpen?: boolean;
+  hide?: boolean;
+  hideOnClick?: boolean;
   shouldShow?: boolean;
+  tooltipClassName?: string;
+  tooltipContentClassName?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  onAnimationRest?: (e: object, t: object) => void;
 }
 
 interface TooltipFunctionChildren extends BaseTooltipProps {
-  children: (props: HTMLAttributes<HTMLSpanElement>) => React.ReactNode;
+  children: (props: React.HTMLAttributes<HTMLSpanElement>) => React.ReactNode;
 }
 
 interface TooltipCustom extends BaseTooltipProps {
   children: React.ReactNode;
 }
 
-type OriginalTooltipType = React.FC<TooltipFunctionChildren>;
+type OriginalTooltipType = React.FC<TooltipFunctionChildren> & TooltipEnums;
 
-export type TooltipType = React.FC<TooltipCustom>;
+export type TooltipType = React.FC<TooltipCustom> & TooltipEnums;
 
-const rawTooltipMod = await waitForModule<Record<string, React.FC>>(
-  filters.bySource(/shouldShowTooltip:!1/),
-);
+const tooltipRgx = /shouldShowTooltip:!1/;
 
-const TooltipMod = getFunctionBySource<React.FC>(
-  rawTooltipMod,
-  /shouldShowTooltip:!1/,
-) as OriginalTooltipType;
+const TooltipMod = (await waitForModule(filters.bySource(tooltipRgx)).then((mod) =>
+  getFunctionBySource(mod as ObjectExports, tooltipRgx),
+)) as OriginalTooltipType;
 
 const Tooltip: TooltipType = (props) => (
   <TooltipMod {...props}>
@@ -55,5 +79,8 @@ const Tooltip: TooltipType = (props) => (
     }}
   </TooltipMod>
 );
+Tooltip.Aligns = Aligns;
+Tooltip.Colors = TooltipMod.Colors;
+Tooltip.Positions = TooltipMod.Positions;
 
 export default Tooltip;
