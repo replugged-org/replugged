@@ -18,7 +18,7 @@ interface CheckboxProps {
   className?: string;
   innerClassName?: string;
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>, t: boolean) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>, state: boolean) => void;
 }
 
 export type CheckboxType = React.ComponentType<CheckboxProps> & {
