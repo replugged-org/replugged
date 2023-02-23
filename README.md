@@ -11,12 +11,7 @@
 
 ## Installation
 
-> **Note**  
-> In the future, there will be a GUI installer for general users. For now, you will have to use the
-> command line. **If you're not sure how to use the command line, you should wait for the public
-> release.**
-
-Installation guide: https://replugged.dev/installation
+Download Replugged from https://replugged.dev/download
 
 ## Installing plugins and themes
 
