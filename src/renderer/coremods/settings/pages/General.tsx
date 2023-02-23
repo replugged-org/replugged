@@ -59,7 +59,6 @@ export const General = (): React.ReactElement => {
   );
 
   return (
-    // NOTE(lexisother): These are mock settings, none of these do or save anything
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
         {/* TODO(lexisother): Add an i18n string */}
@@ -75,8 +74,8 @@ export const General = (): React.ReactElement => {
         style={{ marginBottom: "18px" }}>
         {/* NOTE(lexisother): For whoever is implementing the settings functionality, please update this accordingly! */}
         <TextInput
-          {...util.useSetting(generalSettings, "apiUrl", "https://replugged.dev")}
-          placeholder="https://example.com/api/v2"
+          {...util.useSetting(generalSettings, "apiUrl")}
+          placeholder="https://replugged.dev"
         />
       </FormItem>
 

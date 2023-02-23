@@ -62,8 +62,7 @@ export async function start(): Promise<void> {
               // TODO: new backend
               await fetch(
                 `https://${generalSettings.get(
-                  "apiUrl",
-                  "https://replugged.dev",
+                  "apiUrl"
                 )}/api/v1/users/${id}`,
               )
                 .then(async (res) => {

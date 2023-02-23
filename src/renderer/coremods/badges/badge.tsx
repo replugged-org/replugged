@@ -96,7 +96,7 @@ const openExternal = (url: string): Promise<void> =>
 
 // todo: make global (configurable?) variables for these
 const openContributorsPage = (): Promise<void> =>
-  openExternal(`https://${generalSettings.get("apiUrl", "https://replugged.dev")}/contributors`);
+  openExternal(`https://${generalSettings.get("apiUrl")}/contributors`);
 const openTranslationsPage = (): Promise<void> => openExternal("https://i18n.replugged.dev");
 const joinRepluggedServer = (): Promise<void> => goToOrJoinServer("replugged");
 
