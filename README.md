@@ -13,10 +13,6 @@
 
 Download Replugged from https://replugged.dev/download
 
-## Installing plugins and themes
-
-See our [wiki page](https://github.com/replugged-org/replugged/wiki/Installing-plugins-and-themes)
-
 ## FAQ
 
 ### Does Replugged work?
