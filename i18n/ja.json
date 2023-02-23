@@ -20,7 +20,7 @@
     "REPLUGGED_SETTINGS_BACKEND": "バックエンドURL",
     "REPLUGGED_SETTINGS_BACKEND_DESC": "アセットを取得し、RepluggedのREST APIにクエリを実行するために使用するURLです。",
     "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Discord Experimentsを有効にする",
-    "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****警告:**** これを有効にすると、Discordによって検出される可能性のある機能にアクセスできるようになり、**アカウントが停止**される可能性があります。Repluggedはこの機能を使った行為に**責任を持ちません**。不安な場合は無効のままにしておいてください。Repluggedチームはいかなる実験的機能に関してもサポートを**行いません**。**再起動が必要です**。",
+    "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****警告:**** これを有効にすると、Discordによって検出される可能性のある機能にアクセスできるようになり、****アカウントが停止****される可能性があります。Repluggedはこの機能を使った行為に**責任を持ちません**。不安な場合は無効のままにしておいてください。Repluggedチームはいかなる実験的機能に関してもサポートを**行いません**。**再起動が必要です**。",
     "REPLUGGED_SETTINGS_KEEP_TOKEN": "トークンを保存する",
     "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "DiscordがlocalStorageからトークンを削除するのを防ぎ、不要なログアウトの数を減らします。",
     "REPLUGGED_SETTINGS_NO_CLYDE": "Clydeを削除する",
@@ -33,7 +33,7 @@
     "REPLUGGED_SNIPPET_LINE1": "Snippet from #css-snippets applied the {date, date, medium} at {date, time, medium}",
     "REPLUGGED_SNIPPET_LINE2": "{authorTag} ({authorId}) によって作成",
     "REPLUGGED_THEMES": "テーマ",
-    "REPLUGGED_UPDATES_AVAILABLE": "{count} 個のアップデートがあります。",
+    "REPLUGGED_UPDATES_AVAILABLE": "{count, number}個のアップデートがあります。",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "再読み込みが必要です",
     "REPLUGGED_UPDATES_CHECK": "アップデートを確認する",
     "REPLUGGED_UPDATES_ENABLE": "アップデートを有効にする",
@@ -171,7 +171,7 @@
     "REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS": "無効な{name}",
     "REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS": "有効な{name}",
     "REPLUGGED_TOAST_ADDON_RELOAD_FAILED": "{name}の再読み込みに失敗しました",
-    "REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS": "{name} を再読み込みしました",
+    "REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS": "{name}を再読み込みしました",
     "REPLUGGED_TOAST_ADDON_TOGGLE_FAILED": "{name}の切り替えに失敗しました",
     "REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED": "{name}のアンインストールに失敗しました",
     "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "{name}をアンインストールしました",
@@ -182,7 +182,9 @@
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "コードをフォーマットしました",
     "REPLUGGED_TOAST_QUICKCSS_RELOAD": "クイック CSSが再読込されました",
     "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "詳細はコンソールをご確認ください。",
-    "REPLUGGED_LIST_RESULTS": "{count}",
+    "REPLUGGED_LIST_RESULTS": "{count, number}個一致しました",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} を正しく動作させるには再読み込みが必要です。今すぐ再読み込みしますか？",
-    "REPLUGGED_RELOAD": "再読み込み"
+    "REPLUGGED_RELOAD": "再読み込み",
+    "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED": "{name}のインストールに失敗しました。",
+    "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "{name} {authors}をインストールしますか？"
 }
