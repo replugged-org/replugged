@@ -62,16 +62,16 @@ export const General = (): React.ReactElement => {
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
         {/* TODO(lexisother): Add an i18n string */}
-        <Text.H2>Settings</Text.H2>
+        <Text.H2>{Messages.REPLUGGED_GENERAL_SETTINGS}</Text.H2>
       </Flex>
 
       <Divider style={{ margin: "20px 0px" }} />
 
       <FormItem
-        title="Replugged API URL"
-        note="Doing development of the Replugged API? Change the URL here to your testing instance so Replugged can connect to it."
+        title={Messages.REPLUGGED_SETTINGS_BACKEND}
+        note={Messages.REPLUGGED_SETTINGS_BACKEND_DESC}
         divider={true}
-        style={{ marginBottom: "18px" }}>
+        style={{ marginBottom: "20px" }}>
         {/* NOTE(lexisother): For whoever is implementing the settings functionality, please update this accordingly! */}
         <TextInput
           {...util.useSetting(generalSettings, "apiUrl")}
@@ -102,8 +102,8 @@ export const General = (): React.ReactElement => {
               }
             });
         }}
-        note="Enable Discord experiments">
-        Experiments
+        note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC}>
+        {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
       </SwitchItem>
 
       {/* Sleeping? Wake up. */}
