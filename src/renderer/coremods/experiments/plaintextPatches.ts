@@ -1,4 +1,12 @@
+import { init } from "src/renderer/apis/settings";
 import type { PlaintextPatch } from "src/types";
+import { type GeneralSettings, defaultSettings } from "../settings/pages";
+
+// TODO: see if we can import this from General.tsx
+const generalSettings = await init<GeneralSettings, keyof typeof defaultSettings>(
+  "rp-settings",
+  defaultSettings,
+);
 
 export default [
   {
@@ -7,11 +15,14 @@ export default [
       // Why write an entire function for it? :trolley:
       // If `experiments` is true, the array element is present, otherwise it is
       // not.
-      {
-        match: "window.GLOBAL_ENV.RELEASE_CHANNEL",
-        replace:
-          'replugged.coremods.coremods.settings.getExperimentsEnabled() ? "staging" : window.GLOBAL_ENV.RELEASE_CHANNEL',
-      },
+      ...(generalSettings.get("experiments")
+        ? [
+            {
+              match: "window.GLOBAL_ENV.RELEASE_CHANNEL",
+              replace: '"staging"',
+            },
+          ]
+        : []),
     ],
   },
 ] as PlaintextPatch[];
