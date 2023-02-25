@@ -3,28 +3,25 @@ import React from "@common/react";
 import { Button, Divider, Flex, FormItem, SwitchItem, Text, TextInput } from "@components";
 import * as settings from "../../../apis/settings";
 import * as util from "../../../util";
-import { Jsonifiable } from "type-fest";
 import { Messages } from "@common/i18n";
 
-export interface GeneralSettings {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type GeneralSettings = {
   apiUrl: string;
   // pluginEmbeds: boolean;
   experiments: boolean;
-  [key: string]: Jsonifiable;
-}
-const defaultSettings: Partial<GeneralSettings> = {
+};
+
+export const defaultSettings: Partial<GeneralSettings> = {
   apiUrl: "https://replugged.dev",
   // pluginEmbeds: false,
   experiments: false,
 };
+
 export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "rp-settings",
   defaultSettings,
 );
-
-export function getExperimentsEnabled(): NonNullable<Jsonifiable> {
-  return generalSettings.get("experiment", false);
-}
 
 export const General = (): React.ReactElement => {
   const { value: expValue, onChange: expOnChange } = util.useSetting(
@@ -91,7 +88,7 @@ export const General = (): React.ReactElement => {
           void modal
             .confirm({
               title: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS,
-              body: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC,
+              body: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format(),
               confirmText: Messages.REPLUGGED_RELOAD,
               confirmColor: Button.Colors.RED,
             })
@@ -102,7 +99,7 @@ export const General = (): React.ReactElement => {
               }
             });
         }}
-        note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC}>
+        note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}>
         {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
       </SwitchItem>
 
