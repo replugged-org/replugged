@@ -60,11 +60,7 @@ export async function start(): Promise<void> {
             cache.set(
               id,
               // TODO: new backend
-              await fetch(
-                `https://${generalSettings.get(
-                  "apiUrl"
-                )}/api/v1/users/${id}`,
-              )
+              await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${id}`)
                 .then(async (res) => {
                   const body = (await res.json()) as Record<string, unknown> & {
                     badges: APIBadges;
