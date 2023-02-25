@@ -204,5 +204,6 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Mise à jour complétée avec succès.",
     "REPLUGGED_ADDON_AUTHORS_MANY": "par {author1}, {author2}, {author3}, et {count, plural, =1 {# other} other {# others}}",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} nécessitent un rechargement pour fonctionner correctement. Recharger maintenant ?",
-    "REPLUGGED_RELOAD": "Rechargement"
+    "REPLUGGED_RELOAD": "Rechargement",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Mise a jour"
 }
