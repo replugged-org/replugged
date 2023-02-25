@@ -8,6 +8,5 @@
   "prettier.prettierPath": "./node_modules/prettier",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "eslint.format.enable": true,
-  "eslint.packageManager": "pnpm"
+  "eslint.format.enable": true
 }

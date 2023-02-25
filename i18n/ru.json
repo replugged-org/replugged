@@ -204,5 +204,6 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Обновление завершено успешно.",
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# новое обновление} other {# новых обновлений}} доступно!",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} требует перезагрузки для корректной работы. Перезагрузить сейчас?",
-    "REPLUGGED_RELOAD": "Перезагрузить"
+    "REPLUGGED_RELOAD": "Перезагрузить",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Обновление"
 }

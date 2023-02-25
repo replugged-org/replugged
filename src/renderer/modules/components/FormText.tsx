@@ -1,3 +1,4 @@
+import type React from "react";
 import type { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getExportsForProps, getFunctionBySource, waitForModule } from "../webpack";
 

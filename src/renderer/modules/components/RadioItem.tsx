@@ -1,6 +1,7 @@
+import type React from "react";
+import { FormItem } from ".";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import { FormItem } from ".";
 
 interface RadioOptionType {
   name: string;
@@ -49,6 +50,7 @@ export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React
       title={props.children}
       style={{ marginBottom: 20, ...props.style }}
       note={props.note}
+      disabled={props.disabled}
       divider>
       <Radio {...props} />
     </FormItem>

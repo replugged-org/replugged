@@ -624,15 +624,6 @@ export function getByValue(
 
 // Specialized, inner-module searchers
 
-// TODO: Remove support for this
-/**
- * @deprecated The argument order has been changed. Please put the module first and the matcher second.
- */
-export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  module: string | RegExp | ((func: Function) => boolean),
-  match: ObjectExports,
-): T | undefined;
 export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
   module: ObjectExports,
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -645,42 +636,21 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
  * @param module The module to search.
  */
 export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
+  module: ObjectExports,
   // eslint-disable-next-line @typescript-eslint/ban-types
-  module: ObjectExports | string | RegExp | ((func: Function) => boolean),
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  match: ObjectExports | string | RegExp | ((func: Function) => boolean),
+  match: string | RegExp | ((func: Function) => boolean),
 ): T | undefined {
-  const isDeprecatedOrder =
-    typeof module === "string" || module instanceof RegExp || typeof module === "function";
-  const realModule = (isDeprecatedOrder ? match : module) as ObjectExports;
-  const realMatch = (isDeprecatedOrder ? module : match) as
-    | string
-    | RegExp
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    | ((func: Function) => boolean);
-
-  return Object.values(realModule).find((v) => {
+  return Object.values(module).find((v) => {
     if (typeof v !== "function") return false;
 
-    if (typeof realMatch === "function") {
-      return realMatch(v);
+    if (typeof match === "function") {
+      return match(v);
     } else {
-      return typeof realMatch === "string"
-        ? v.toString().includes(realMatch)
-        : realMatch.test(v.toString());
+      return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
     }
   }) as T | undefined;
 }
 
-// TODO: Remove support for this
-/**
- * @deprecated The argument order has been changed. Please put the module first and the matcher second.
- */
-export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  module: string | RegExp | ((func: Function) => boolean),
-  match: T,
-): P | undefined;
 export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
   module: T,
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -697,29 +667,17 @@ export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExport
  * Useful for getting the prop name to inject into.
  */
 export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
+  module: T,
   // eslint-disable-next-line @typescript-eslint/ban-types
-  module: T | string | RegExp | ((func: Function) => boolean),
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  match: T | string | RegExp | ((func: Function) => boolean),
+  match: string | RegExp | ((func: Function) => boolean),
 ): P | undefined {
-  const isDeprecatedOrder =
-    typeof module === "string" || module instanceof RegExp || typeof module === "function";
-  const realModule = (isDeprecatedOrder ? match : module) as T;
-  const realMatch = (isDeprecatedOrder ? module : match) as
-    | string
-    | RegExp
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    | ((func: Function) => boolean);
-
-  return Object.entries(realModule).find(([_, v]) => {
+  return Object.entries(module).find(([_, v]) => {
     if (typeof v !== "function") return false;
 
-    if (typeof realMatch === "function") {
-      return realMatch(v);
+    if (typeof match === "function") {
+      return match(v);
     } else {
-      return typeof realMatch === "string"
-        ? v.toString().includes(realMatch)
-        : realMatch.test(v.toString());
+      return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
     }
   })?.[0] as P | undefined;
 }

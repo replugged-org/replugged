@@ -1,6 +1,7 @@
+import type React from "react";
 import type { ObjectExports, ReactComponent } from "../../../types";
-import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack";
 import type { AnyFunction } from "../../../types/util";
+import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack";
 
 export type ContextMenuType = Record<string, unknown> & {
   ContextMenu: ReactComponent<{

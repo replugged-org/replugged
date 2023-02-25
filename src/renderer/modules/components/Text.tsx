@@ -1,4 +1,5 @@
 import { parser } from "@common";
+import type React from "react";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
@@ -63,6 +64,7 @@ interface TextProps {
   variant?: Variant;
   tag?: string;
   selectable?: boolean;
+  tabularNumbers?: boolean;
   className?: string;
   lineClamp?: number;
   color?: string;

@@ -109,5 +109,7 @@
     "REPLUGGED_COMMAND_SHARE_URL_NOT_FOUND": "Nu a putut fi găsit un url pentru plugin-ul {id}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Plugin-uri și teme instalate",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
-    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Temă - {description}"
+    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Temă - {description}",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_THEMES": "Teme:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "Ultima:"
 }

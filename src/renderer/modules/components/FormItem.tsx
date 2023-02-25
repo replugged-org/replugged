@@ -1,6 +1,7 @@
+import type React from "react";
+import { Divider, FormText } from ".";
 import type { ReactComponent } from "../../../types";
 import { filters, waitForModule } from "../webpack";
-import { Divider, FormText } from ".";
 
 interface FormItemCompProps {
   children: React.ReactNode;
@@ -38,13 +39,19 @@ export default ((props) => {
   return (
     <FormItemComp {...compProps}>
       {note && notePosition === "before" && (
-        <FormText.DESCRIPTION className={noteClassName} style={{ marginBottom: 8, ...noteStyle }}>
+        <FormText.DESCRIPTION
+          disabled={props.disabled}
+          className={noteClassName}
+          style={{ marginBottom: 8, ...noteStyle }}>
           {note}
         </FormText.DESCRIPTION>
       )}
       {props.children}
       {note && notePosition === "after" && (
-        <FormText.DESCRIPTION className={noteClassName} style={{ marginTop: 8, ...noteStyle }}>
+        <FormText.DESCRIPTION
+          disabled={props.disabled}
+          className={noteClassName}
+          style={{ marginTop: 8, ...noteStyle }}>
           {note}
         </FormText.DESCRIPTION>
       )}

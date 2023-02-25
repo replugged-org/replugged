@@ -1,7 +1,7 @@
 # Replugged
 
 [Website](https://replugged.dev) | [Discord](https://discord.gg/replugged) |
-[Developer Guide](https://guide.replugged.dev) | [API Docs](https://api.replugged.dev)  
+[Developer Guide](https://guide.replugged.dev) | [API Docs](https://docs.replugged.dev)  
 (API docs will be replaced with the guide in the future)
 
 > **Warning**  
@@ -11,16 +11,7 @@
 
 ## Installation
 
-> **Note**  
-> In the future, there will be a GUI installer for general users. For now, you will have to use the
-> command line. **If you're not sure how to use the command line, you should wait for the public
-> release.**
-
-Installation guide: https://replugged.dev/installation
-
-## Installing plugins and themes
-
-See our [wiki page](https://github.com/replugged-org/replugged/wiki/Installing-plugins-and-themes)
+Download Replugged from https://replugged.dev/download
 
 ## FAQ
 

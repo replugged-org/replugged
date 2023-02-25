@@ -202,5 +202,8 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Оновлення виконано успішно.",
     "REPLUGGED_UPDATES_UPDATE_TO": "Оновитись до {version}",
     "REPLUGGED_UPDATES_TOAST_FAILED_ONE": "Оновлення не вдалось!",
-    "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Усі оновлення виконано успішно."
+    "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Усі оновлення виконано успішно.",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Оновлення",
+    "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} потребує перезавантаження, щоб працювати. Перезавантажити зараз?",
+    "REPLUGGED_RELOAD": "Перезавантажити"
 }

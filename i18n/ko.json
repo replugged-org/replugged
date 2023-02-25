@@ -204,5 +204,6 @@
     "REPLUGGED_UPDATES_TOAST_NEW": "사용 가능한 {count, plural, =1 {# 업데이트} other {# 업데이트}}가 있어요!",
     "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# 찾음} other {# 찾음}}",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name}이(가) 적용되려면 재시작이 필요해요. 지금 재시작할까요?",
-    "REPLUGGED_RELOAD": "새로고침"
+    "REPLUGGED_RELOAD": "새로고침",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "업데이트"
 }
