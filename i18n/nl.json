@@ -177,8 +177,8 @@
     "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "{name} verwijderd",
     "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Kan gebruikersprofiel niet ophalen",
     "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Weet je zeker dat je {type, select, plugin {deze plugin} theme {dit thema} other {dit}} wil verwijderen? Dit kan niet ongedaan gemaakt worden.",
-    "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED": "Laden van {type, select, plugin {ontbrekende} theme {ontbrekend} other {ontbrekend}} {type} mislukt",
-    "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS": "{type, select, plugin {Ontbrekende} theme {Ontbrekend} other {Ontbrekend}} {type} geladen",
+    "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED": "Laden van {type, select, plugin {ontbrekende} other {ontbrekend}} {type} mislukt",
+    "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS": "{type, select, plugin {Ontbrekende} other {Ontbrekend}} {type} geladen",
     "REPLUGGED_ADDON_AUTHORS_ONE": "van {author1}",
     "REPLUGGED_ADDON_AUTHORS_TWO": "van {author1} en {author2}",
     "REPLUGGED_ADDON_AUTHORS_THREE": "van {author1}, {author2} en {author3}",
@@ -204,5 +204,6 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Update succesvol voltooid.",
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# nieuwe update} other {# nieuwe updates}} beschikbaar!",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} moet opnieuw geladen worden om te werken. Nu opnieuw laden?",
-    "REPLUGGED_RELOAD": "Opnieuw laden"
+    "REPLUGGED_RELOAD": "Opnieuw laden",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Update"
 }
