@@ -24,7 +24,11 @@ async function injectVersionInfo(): Promise<void> {
     const element = lastSection.element?.({});
     if (!element) return;
     element.props.children.push(
-      <Text variant="text-xs/normal" color="text-muted" tag="span">
+      <Text
+        variant="text-xs/normal"
+        color="text-muted"
+        tag="span"
+        style={{ textTransform: "none" }}>
         {Messages.REPLUGGED_VERSION.format({ version: window.RepluggedNative.getVersion() })}
       </Text>,
     );
