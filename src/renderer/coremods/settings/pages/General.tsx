@@ -11,37 +11,39 @@ export const generalSettings = await settings.init<GeneralSettings, keyof typeof
   defaultSettings,
 );
 
+const konamiCode = ["38", "38", "40", "40", "37", "39", "37", "39", "66", "65"];
+
 export const General = (): React.ReactElement => {
   const { value: expValue, onChange: expOnChange } = util.useSetting(
     generalSettings,
     "experiments",
   );
+
+  const [kKeys, setKKeys] = React.useState<number[]>([]);
+
+  const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
+
   const [hue, setHue] = React.useState(0);
-  const [sleep, setSleep] = React.useState(false);
+
   React.useEffect(() => {
+    if (!isEasterEgg) return;
+
     const id = requestAnimationFrame(() => {
       setHue((hue + 1) % 360);
     });
     return () => cancelAnimationFrame(id);
-  }, [hue]);
+  }, [hue, isEasterEgg]);
 
-  /* @see view-source:https://sysspa.alyxia.dev/ lines 172 to 183 */
-  const konami = "38,38,40,40,37,39,37,39,66,65";
-  const [kKeys, setKKeys] = React.useState<number[]>([]);
   const listener = (e: KeyboardEvent): void => {
-    setKKeys([...kKeys, e.keyCode]);
-
-    if (kKeys.toString().includes(konami)) {
-      document.removeEventListener("keydown", listener);
-
-      setSleep(true);
-    }
+    if (isEasterEgg) return;
+    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), e.keyCode]);
   };
+
   React.useEffect(() => {
     document.addEventListener("keydown", listener);
 
     return () => document.removeEventListener("keydown", listener);
-  }, []);
+  }, [kKeys, isEasterEgg]);
 
   return (
     <>
@@ -90,7 +92,7 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       {/* Sleeping? Wake up. */}
-      {sleep && (
+      {isEasterEgg && (
         <>
           <Text.H1
             variant="heading-xxl/semibold"
