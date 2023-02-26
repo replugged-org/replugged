@@ -132,7 +132,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH": "Chemin de Replugged",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Chemin de Discord",
     "REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM": "Upstream :",
-    "REPLUGGED_UPDATES_UPDATER": "Mettre à jour",
+    "REPLUGGED_UPDATES_UPDATER": "Updater",
     "REPLUGGED_BUTTON_GOT_IT": "Bien reçu",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Retourne la liste des plugins actuellement installés.",
     "REPLUGGED_COMMAND_ECHO_DESC": "Retourne les arguments indiqués.",
@@ -204,5 +204,6 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Mise à jour complétée avec succès.",
     "REPLUGGED_ADDON_AUTHORS_MANY": "par {author1}, {author2}, {author3}, et {count, plural, =1 {# other} other {# others}}",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} nécessitent un rechargement pour fonctionner correctement. Recharger maintenant ?",
-    "REPLUGGED_RELOAD": "Rechargement"
+    "REPLUGGED_RELOAD": "Rechargement",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Mise a jour"
 }
