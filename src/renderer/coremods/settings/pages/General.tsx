@@ -4,19 +4,7 @@ import { Button, Divider, Flex, FormItem, SwitchItem, Text, TextInput } from "@c
 import * as settings from "../../../apis/settings";
 import * as util from "../../../util";
 import { Messages } from "@common/i18n";
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type GeneralSettings = {
-  apiUrl: string;
-  // pluginEmbeds: boolean;
-  experiments: boolean;
-};
-
-export const defaultSettings: Partial<GeneralSettings> = {
-  apiUrl: "https://replugged.dev",
-  // pluginEmbeds: false,
-  experiments: false,
-};
+import { type GeneralSettings, defaultSettings } from "src/types";
 
 export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",

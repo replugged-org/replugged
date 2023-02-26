@@ -1,6 +1,6 @@
 import { init } from "src/renderer/apis/settings";
 import type { PlaintextPatch } from "src/types";
-import { type GeneralSettings, defaultSettings } from "../settings/pages";
+import { type GeneralSettings, defaultSettings } from "src/types";
 
 // TODO: see if we can import this from General.tsx
 const generalSettings = await init<GeneralSettings, keyof typeof defaultSettings>(
