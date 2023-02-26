@@ -5,28 +5,32 @@ import type {
 } from "../../../types/coremods/settings";
 import type React from "react";
 
-// todo: Create version of this for plugins that's limited to the plugin section and alphabetized
-
 const getPos = (pos: number | undefined): number => pos ?? -4;
 
 export const Section = ({
   name,
+  _id,
   label,
   color,
   elem,
   pos,
+  fromEnd,
 }: {
   name: string;
-  label: string | LabelCallback;
+  _id?: string;
+  label?: string | LabelCallback;
   color?: string;
   elem: React.FunctionComponent;
   pos?: number;
+  fromEnd?: boolean;
 }): SectionType => ({
   section: name,
+  _id,
   label,
   color,
   element: elem,
   pos: getPos(pos),
+  fromEnd: fromEnd ?? getPos(pos) < 0,
 });
 
 export const Divider = (pos?: number): SectionType => ({
@@ -49,6 +53,11 @@ export const settingsTools: SettingsTools = {
     settingsTools.rpSections.push(data);
     return data;
   },
+  removeSection(sectionName) {
+    settingsTools.rpSections = settingsTools.rpSections.filter(
+      (s) => s.section !== sectionName && s._id !== sectionName,
+    );
+  },
   addAfter(sectionName, sections) {
     if (!Array.isArray(sections)) sections = [sections];
     settingsTools.rpSectionsAfter.set(sectionName, sections);
@@ -62,7 +71,7 @@ export const settingsTools: SettingsTools = {
 
 export function insertSections(sections: SectionType[]): SectionType[] {
   for (const section of settingsTools.rpSections) {
-    sections.splice(section.pos < 0 ? sections.length + section.pos : section.pos, 0, section);
+    sections.splice(section.fromEnd ? sections.length + section.pos : section.pos, 0, section);
   }
 
   for (const sectionName of settingsTools.rpSectionsAfter.keys()) {

@@ -1,4 +1,5 @@
 import { Messages } from "@common/i18n";
+import { Text } from "@components";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
@@ -34,8 +35,30 @@ export function start(): void {
       elem: Updater,
     }),
   ]);
+
+  settingsTools.addSection({
+    name: "CUSTOM",
+    _id: "rp-version",
+    elem: () => (
+      <Text
+        variant="text-xs/normal"
+        color="text-muted"
+        style={{
+          padding: "0px 10px",
+          // Section above has padding of 10px, so we need to offset it
+          // Each line has an extra 4px of line height (2px top, 2px bottom) so we need to add 2px
+          // So -10px + 2px = -8px
+          marginTop: "-8px",
+        }}>
+        {Messages.REPLUGGED_VERSION.format({ version: window.RepluggedNative.getVersion() })}
+      </Text>
+    ),
+    pos: 0,
+    fromEnd: true,
+  });
 }
 
 export function stop(): void {
   settingsTools.removeAfter("Billing");
+  settingsTools.removeSection("rp-version");
 }
