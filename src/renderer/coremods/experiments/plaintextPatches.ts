@@ -4,7 +4,7 @@ import { type GeneralSettings, defaultSettings } from "../settings/pages";
 
 // TODO: see if we can import this from General.tsx
 const generalSettings = await init<GeneralSettings, keyof typeof defaultSettings>(
-  "rp-settings",
+  "dev.replugged.Settings",
   defaultSettings,
 );
 

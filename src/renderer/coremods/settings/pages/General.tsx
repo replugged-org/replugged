@@ -19,7 +19,7 @@ export const defaultSettings: Partial<GeneralSettings> = {
 };
 
 export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
-  "rp-settings",
+  "dev.replugged.Settings",
   defaultSettings,
 );
 
@@ -27,7 +27,6 @@ export const General = (): React.ReactElement => {
   const { value: expValue, onChange: expOnChange } = util.useSetting(
     generalSettings,
     "experiments",
-    false,
   );
   const [hue, setHue] = React.useState(0);
   const [sleep, setSleep] = React.useState(false);
