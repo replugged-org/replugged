@@ -58,7 +58,6 @@ export const General = (): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        {/* TODO(lexisother): Add an i18n string */}
         <Text.H2>{Messages.REPLUGGED_GENERAL_SETTINGS}</Text.H2>
       </Flex>
 
@@ -69,7 +68,6 @@ export const General = (): React.ReactElement => {
         note={Messages.REPLUGGED_SETTINGS_BACKEND_DESC}
         divider={true}
         style={{ marginBottom: "20px" }}>
-        {/* NOTE(lexisother): For whoever is implementing the settings functionality, please update this accordingly! */}
         <TextInput
           {...util.useSetting(generalSettings, "apiUrl")}
           placeholder="https://replugged.dev"
