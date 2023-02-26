@@ -106,10 +106,11 @@ export const General = (): React.ReactElement => {
       {/* Sleeping? Wake up. */}
       {sleep && (
         <>
-          <br />
-          <br />
-          <br />
-          <span style={{ color: `hsl(${hue}, 100%, 50%)` }}>Wake up. Wake up. Wake up.</span>
+          <Text.H1
+            variant="heading-xxl/semibold"
+            style={{ display: "inherit", textAlign: "center", color: `hsl(${hue}, 100%, 50%)` }}>
+            Wake up. Wake up. Wake up.
+          </Text.H1>
         </>
       )}
     </>
