@@ -50,6 +50,7 @@ export async function start(): Promise<void> {
       ],
       res,
     ) => {
+      if (!generalSettings.get("badges")) return res;
       if (!res?.props?.children) return res;
 
       const [badges, setBadges] = React.useState<APIBadges | undefined>();
