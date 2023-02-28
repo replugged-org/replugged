@@ -206,5 +206,7 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Update completed successfully.",
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# new update} other {# new updates}} available!",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} requires a reload to work properly. Reload now?",
-    "REPLUGGED_RELOAD": "Reload"
+    "REPLUGGED_RELOAD": "Reload",
+    "REPLUGGED_SETTINGS_BADGES": "Enable Replugged Badges",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles"
 }
