@@ -16,7 +16,7 @@ const Positions = {
   LEFT: "left",
   RIGHT: "right",
   CENTER: "center",
-  WINDOW_CENTER: "window-center",
+  WINDOW_CENTER: "window_center",
 } as const;
 
 interface TooltipEnums {
