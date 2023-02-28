@@ -10,9 +10,18 @@ const Aligns = {
   TOP: "top",
 } as const;
 
+const Positions = {
+  TOP: "top",
+  BOTTOM: "bottom",
+  LEFT: "left",
+  RIGHT: "right",
+  CENTER: "center",
+  WINDOW_CENTER: "window-center",
+} as const;
+
 interface TooltipEnums {
   Aligns: typeof Aligns;
-  Positions: Record<"TOP" | "BOTTOM" | "LEFT" | "RIGHT" | "CENTER" | "WINDOW_CENTER", string>;
+  Positions: typeof Positions;
   Colors: Record<
     "PRIMARY" | "BLACK" | "GREY" | "BRAND" | "GREEN" | "YELLOW" | "RED" | "CUSTOM",
     string
@@ -53,8 +62,8 @@ export type TooltipType = React.FC<TooltipCustom> & TooltipEnums;
 
 const tooltipRgx = /shouldShowTooltip:!1/;
 
-const TooltipMod = (await waitForModule(filters.bySource(tooltipRgx)).then((mod) =>
-  getFunctionBySource(mod as ObjectExports, tooltipRgx),
+const TooltipMod = (await waitForModule(filters.bySource(/tooltipTop,.{0,20}tooltipBottom/)).then(
+  (mod) => getFunctionBySource(mod as ObjectExports, tooltipRgx),
 )) as OriginalTooltipType;
 
 const Tooltip: TooltipType = (props) => (
@@ -81,6 +90,6 @@ const Tooltip: TooltipType = (props) => (
 );
 Tooltip.Aligns = Aligns;
 Tooltip.Colors = TooltipMod.Colors;
-Tooltip.Positions = TooltipMod.Positions;
+Tooltip.Positions = Positions;
 
 export default Tooltip;

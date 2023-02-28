@@ -1,6 +1,5 @@
 import type React from "react";
 import type { ObjectExports, ReactComponent } from "../../../types";
-import type { AnyFunction } from "../../../types/util";
 import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack";
 
 export type ContextMenuType = Record<string, unknown> & {
@@ -45,16 +44,23 @@ const componentMap: Record<string, string> = {
 const menuMod = await waitForModule(filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"));
 
 const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
-const source = sourceStrings[rawMod?.id].matchAll(/if\(\w+\.type===\w+\.(\w+)\).+?type:"(.+?)"/g);
+const source = sourceStrings[rawMod?.id].matchAll(
+  /if\(\w+\.type===(\w+)(?:\.\w+)?\).+?type:"(.+?)"/gs,
+);
+
+const menuComponents = Object.values(menuMod)
+  .filter((m) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
+  .reduce((components, component) => {
+    components[component.name] = component;
+    return components;
+  }, {});
 
 const Menu = {
   ContextMenu: getFunctionBySource(menuMod as ObjectExports, "getContainerProps"),
 } as ContextMenuType;
 
 for (const [, identifier, type] of source) {
-  Menu[componentMap[type]] = (rawMod.exports as Record<string, AnyFunction | undefined>)[
-    identifier
-  ];
+  Menu[componentMap[type]] = menuComponents[identifier];
 }
 
 export default Menu;
