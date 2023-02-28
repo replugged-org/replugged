@@ -62,8 +62,8 @@ export type TooltipType = React.FC<TooltipCustom> & TooltipEnums;
 
 const tooltipRgx = /shouldShowTooltip:!1/;
 
-const TooltipMod = (await waitForModule(filters.bySource(/tooltipTop,.{0,20}tooltipBottom/)).then((mod) =>
-  getFunctionBySource(mod as ObjectExports, tooltipRgx),
+const TooltipMod = (await waitForModule(filters.bySource(/tooltipTop,.{0,20}tooltipBottom/)).then(
+  (mod) => getFunctionBySource(mod as ObjectExports, tooltipRgx),
 )) as OriginalTooltipType;
 
 const Tooltip: TooltipType = (props) => (

@@ -17,7 +17,7 @@ interface ToastOpts {
 type ToastFn = (
   content: string | React.ReactElement | null,
   kind?: number,
-  opts?: ToastOpts,
+  opts?: ToastOpts
 ) => void;
 
 export interface Toast {
@@ -28,8 +28,11 @@ export interface Toast {
 const mod = await waitForModule(filters.bySource("queuedToasts"));
 const fn = getFunctionBySource(mod as ObjectExports, "queuedToasts).concat")!;
 
-const propGenMod = await waitForModule(filters.bySource(/case \w+\.\w+\.FAILURE/));
-const propGenFn = getFunctionBySource(propGenMod as ObjectExports, "position")!;
+const propGenMod = await waitForModule(filters.bySource(/case (\w+\.){1,2}FAILURE/));
+const propGenFn = getFunctionBySource(
+  propGenMod as ObjectExports,
+  /options:{position:\w+,component:\w+,duration:\w+}/
+)!;
 
 const toast: ToastFn = (content, kind = Kind.SUCCESS, opts = undefined) => {
   const props = propGenFn(content, kind, opts);
