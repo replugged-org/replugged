@@ -70,11 +70,10 @@ export const General = (): React.ReactElement => {
         Plugin Embeds
       </SwitchItem> */}
 
-      {/* todo: i18n */}
       <SwitchItem
         {...util.useSetting(generalSettings, "badges")}
-        note="Show custom Replugged badges on user profiles">
-        Enable Replugged Badges
+        note={Messages.REPLUGGED_SETTINGS_BADGES_DESC}>
+        {Messages.REPLUGGED_SETTINGS_BADGES}
       </SwitchItem>
 
       <SwitchItem
