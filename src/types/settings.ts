@@ -9,10 +9,12 @@ export type GeneralSettings = {
   apiUrl: string;
   // pluginEmbeds: boolean;
   experiments: boolean;
+  badges: boolean;
 };
 
 export const defaultSettings: Partial<GeneralSettings> = {
   apiUrl: "https://replugged.dev",
   // pluginEmbeds: false,
   experiments: false,
+  badges: true,
 };

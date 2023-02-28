@@ -71,6 +71,12 @@ export const General = (): React.ReactElement => {
       </SwitchItem> */}
 
       <SwitchItem
+        {...util.useSetting(generalSettings, "badges")}
+        note={Messages.REPLUGGED_SETTINGS_BADGES_DESC}>
+        {Messages.REPLUGGED_SETTINGS_BADGES}
+      </SwitchItem>
+
+      <SwitchItem
         value={expValue}
         onChange={(value) => {
           void modal
