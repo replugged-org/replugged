@@ -162,7 +162,7 @@
     "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Voulez-vous vraiment désinstaller ce {type} ? Cette action ne pourra pas être annulée.",
     "REPLUGGED_ADDON_UNINSTALL": "Désinstaller {name}",
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Ouvrir le dossier {type}",
-    "REPLUGGED_ADDONS_LOAD_MISSING": "Charger le {type} manquant",
+    "REPLUGGED_ADDONS_LOAD_MISSING": "Charger les {type} manquant",
     "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
     "REPLUGGED_NO_ADDON_RESULTS": "Aucun {type} ne correspond à votre recherche.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Aucun {type} installé.",
