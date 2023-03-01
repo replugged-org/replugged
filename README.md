@@ -4,22 +4,11 @@
 [Developer Guide](https://guide.replugged.dev) | [API Docs](https://docs.replugged.dev)  
 (API docs will be replaced with the guide in the future)
 
-> **Warning**  
-> This branch of Replugged is still in development. It is not complete and will likely cause
-> issues.  
-> **No support will be provided.**
-
 ## Installation
 
 Download Replugged from https://replugged.dev/download
 
 ## FAQ
-
-### Does Replugged work?
-
-Replugged is currently in a Developer preview. While it works and is fairly stable, some things
-still require using the command line or running code in the console. **If you're not familiar with
-programming or the command line, we recommend waiting until Replugged is released publicly.**
 
 ### Is this against the ToS?
 
