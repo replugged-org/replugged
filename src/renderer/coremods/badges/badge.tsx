@@ -6,6 +6,7 @@ import Badges from "./badges";
 import { Clickable, Tooltip } from "@components";
 import { goToOrJoinServer } from "../../util";
 import { RawModule } from "src/types";
+import { generalSettings } from "../settings/pages";
 
 interface BadgeProps {
   color?: string;
@@ -95,7 +96,7 @@ const openExternal = (url: string): Promise<void> =>
 
 // todo: make global (configurable?) variables for these
 const openContributorsPage = (): Promise<void> =>
-  openExternal("https://replugged.dev/contributors");
+  openExternal(`${generalSettings.get("apiUrl")}/contributors`);
 const openTranslationsPage = (): Promise<void> => openExternal("https://i18n.replugged.dev");
 const joinRepluggedServer = (): Promise<void> => goToOrJoinServer("replugged");
 

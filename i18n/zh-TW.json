@@ -48,7 +48,7 @@
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "更新並行限制",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY_DESC": "Replugged將在後台運行多少並行任務以檢查更新。最少1。如果不確定，請留下2。",
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Debug 訊息",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "您可能會發現對故障排除或調整某些統計數據有用的東西。",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "您可能會發現對故障排除或炫耀某些統計數據有用的東西。",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "更新檢查間隔",
     "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Replugged檢查更新的頻率(以分鐘為單位)。最少10分鐘。",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "變更版本",
@@ -205,5 +205,6 @@
     "REPLUGGED_ADDON_AUTHORS_THREE": "作者：{author1}、{author2} 和 {author3}",
     "REPLUGGED_ADDON_AUTHORS_ONE": "作者：{author1}",
     "REPLUGGED_UPDATES_UPDATE_NOUN": "更新",
-    "REPLUGGED_ADDON_AUTHORS_MANY": "作者：{author1}、{author2}、{author3} 和另外 {count, number} 個人"
+    "REPLUGGED_ADDON_AUTHORS_MANY": "作者：{author1}、{author2}、{author3} 和另外 {count, number} 個人",
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[開發模式]} other {v{version}}}"
 }

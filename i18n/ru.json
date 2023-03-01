@@ -205,5 +205,8 @@
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# новое обновление} other {# новых обновлений}} доступно!",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} требует перезагрузки для корректной работы. Перезагрузить сейчас?",
     "REPLUGGED_RELOAD": "Перезагрузить",
-    "REPLUGGED_UPDATES_UPDATE_NOUN": "Обновление"
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Обновление",
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[РЕЖИМ РАЗРАБОТЧИКА]} other {v{version}}}",
+    "REPLUGGED_SETTINGS_BADGES": "Включить Значки Replugged",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Показывать значки Replugged на профилях пользователей"
 }

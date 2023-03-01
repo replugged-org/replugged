@@ -48,7 +48,7 @@
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "更新并行限制",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY_DESC": "Replugged将在后台运行多少并行任务以检查更新。最少1。如果不确定，请留下2。",
     "REPLUGGED_UPDATES_OPTS_DEBUG": "调试信息",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "您可能会发现对故障排除或炫耀某些统计数据有用的东西。",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "更新检查间隔",
     "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Replugged检查更新的频率(以分钟为单位)。最少10分钟。",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "变更版本途径",
@@ -128,5 +128,6 @@
     "REPLUGGED_SETTINGS_ERROR_RENDER_PANEL": "渲染设置面板时发生错误。",
     "REPLUGGED_UPDATES_OPTS_DEBUG_ARCH": "系统结构：",
     "REPLUGGED_THEME": "主题",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC": "设置同步："
+    "REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC": "设置同步：",
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[开发模式]} other {v{version}}}"
 }

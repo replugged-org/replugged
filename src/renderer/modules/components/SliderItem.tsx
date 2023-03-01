@@ -32,7 +32,7 @@ export type SliderCompType = React.ComponentType<SliderCompProps> & {
 };
 
 const SliderComp = await waitForModule(filters.bySource(".moveGrabber=")).then((mod) =>
-  Object.values(mod).find((x) => "defaultProps" in x && "stickToMarkers" in x.defaultProps),
+  Object.values(mod).find((x) => x?.defaultProps && "stickToMarkers" in x.defaultProps),
 );
 
 export interface SliderProps extends SliderCompProps {
