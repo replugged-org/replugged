@@ -154,7 +154,9 @@ export const Updater = (): React.ReactElement => {
         {updatesAvailable.map((update) => {
           const isReplugged = update.id == "dev.replugged.Replugged";
           const addon =
-            plugins.get(update.id) || themes.get(update.id) || isReplugged
+            plugins.get(update.id) ||
+            themes.get(update.id) ||
+            (isReplugged
               ? {
                   manifest: {
                     type: "replugged",
@@ -162,7 +164,7 @@ export const Updater = (): React.ReactElement => {
                     version: window.RepluggedNative.getVersion(),
                   },
                 }
-              : null;
+              : null);
           const isUpdating = update.id in updatePromises;
           if (!addon) return null;
           const { manifest } = addon;
