@@ -1,10 +1,10 @@
-import { AnyAddonManifest } from "./addon";
+import { AnyAddonManifest, RepluggedManifest } from "./addon";
 
 export type InstallerType = AnyAddonManifest["type"];
 
 export interface CheckResultSuccess {
   success: true;
-  manifest: AnyAddonManifest;
+  manifest: AnyAddonManifest | RepluggedManifest;
   name: string;
   url: string;
   webUrl: string;

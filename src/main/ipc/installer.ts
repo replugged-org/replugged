@@ -9,11 +9,11 @@ import {
   RepluggedIpcChannels,
 } from "../../types";
 import { Octokit } from "@octokit/rest";
-import { CONFIG_PATHS } from "../../util";
-import { writeFile } from "fs/promises";
+import { CONFIG_PATH, CONFIG_PATHS } from "../../util";
+import { readFile, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
-import { anyAddon } from "src/types/addon";
+import { RepluggedManifest, anyAddon } from "src/types/addon";
 
 const octokit = new Octokit();
 
@@ -59,21 +59,33 @@ async function github(
     (manifestAsset) => manifestAsset.name === asset.name.replace(/\.asar$/, ".json"),
   );
 
-  if (!manifestAsset) {
+  if (!manifestAsset && identifier !== "replugged-org/replugged") {
     return {
       success: false,
       error: "No manifest asset found",
     };
   }
 
-  let manifest: AnyAddonManifest;
-  try {
-    const json = await fetch(manifestAsset.browser_download_url).then((res) => res.json());
-    manifest = anyAddon.parse(json);
-  } catch {
-    return {
-      success: false,
-      error: "Failed to parse manifest",
+  let manifest: AnyAddonManifest | RepluggedManifest;
+  if (manifestAsset) {
+    try {
+      const json = await fetch(manifestAsset.browser_download_url).then((res) => res.json());
+      manifest = anyAddon.parse(json);
+    } catch {
+      return {
+        success: false,
+        error: "Failed to parse manifest",
+      };
+    }
+  } else {
+    // For Replugged itself
+    manifest = {
+      version: res.data.tag_name.replace(/^v/, ""),
+      updater: {
+        id: identifier,
+        type: "github",
+      },
+      type: "replugged",
     };
   }
 
@@ -112,12 +124,14 @@ ipcMain.handle(
   },
 );
 
-const getBaseName = (type: InstallerType): string => {
+const getBaseName = (type: InstallerType | "replugged"): string => {
   switch (type) {
     case "replugged-plugin":
       return CONFIG_PATHS.plugins;
     case "replugged-theme":
       return CONFIG_PATHS.themes;
+    case "replugged":
+      return CONFIG_PATH;
   }
 };
 
@@ -125,7 +139,7 @@ ipcMain.handle(
   RepluggedIpcChannels.INSTALL_ADDON,
   async (
     _,
-    type: InstallerType,
+    type: InstallerType | "replugged",
     path: string,
     url: string,
   ): Promise<InstallResultSuccess | InstallResultFailure> => {
@@ -164,3 +178,16 @@ ipcMain.handle(
     };
   },
 );
+
+ipcMain.handle(RepluggedIpcChannels.GET_REPLUGGED_VERSION, async () => {
+  const path = join(__dirname, "package.json");
+  try {
+    const packageJson = JSON.parse(await readFile(path, "utf8"));
+    return packageJson.version;
+  } catch (err) {
+    if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
+      return "dev";
+    }
+    throw err;
+  }
+});

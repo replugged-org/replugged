@@ -14,7 +14,6 @@ import {
 } from "src/renderer/managers/updater";
 import { sleep } from "src/renderer/util";
 import Icons from "../icons";
-import { AddonType, label } from "./Addons";
 import "./Updater.css";
 
 export const Updater = (): React.ReactElement => {
@@ -153,11 +152,20 @@ export const Updater = (): React.ReactElement => {
       </Flex>
       <Flex className="replugged-updater-items" direction={Flex.Direction.VERTICAL}>
         {updatesAvailable.map((update) => {
-          const addon = plugins.get(update.id) || themes.get(update.id);
+          const isReplugged = update.id == "dev.replugged.Replugged";
+          const addon =
+            plugins.get(update.id) || themes.get(update.id) || isReplugged
+              ? {
+                  manifest: {
+                    type: "replugged",
+                    name: "Replugged",
+                    version: window.RepluggedNative.getVersion(),
+                  },
+                }
+              : null;
           const isUpdating = update.id in updatePromises;
           if (!addon) return null;
           const { manifest } = addon;
-          const type = manifest.type === "replugged-plugin" ? AddonType.Plugin : AddonType.Theme;
           const sourceLink = update.webUrl;
           return (
             <>
@@ -176,7 +184,7 @@ export const Updater = (): React.ReactElement => {
                     {sourceLink ? (
                       <Tooltip
                         text={Messages.REPLUGGED_ADDON_PAGE_OPEN.format({
-                          type: label(type, { caps: "title" }),
+                          type: Messages.REPLUGGED_UPDATES_UPDATE_NOUN,
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
                         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
