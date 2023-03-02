@@ -1,8 +1,10 @@
+import { execSync } from "child_process";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { join } from "path";
 
 const REPLUGGED_FOLDER_NAME = "replugged";
 export const configPathFn = (): string => {
+  const realUser = process.env.SUDO_USER || process.env.DOAS_USER;
   switch (process.platform) {
     case "win32":
       return join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
@@ -11,11 +13,13 @@ export const configPathFn = (): string => {
     default:
       if (process.env.XDG_CONFIG_HOME) {
         return join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
-      } else {
-        const realUser = process.env.SUDO_USER || process.env.DOAS_USER;
-        const home = realUser ? join("/home", realUser) : process.env.HOME;
-        return join(home || "", ".config", REPLUGGED_FOLDER_NAME);
       }
+      if (realUser) {
+        // Get the home directory of the sudo user from /etc/passwd
+        const homeDir = execSync(`getent passwd ${realUser}`).toString('utf-8').split(':')[5];
+        return join(homeDir, ".config", REPLUGGED_FOLDER_NAME);
+      }
+      return join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
 };
 
