@@ -14,10 +14,18 @@ export const configPathFn = (): string => {
       if (process.env.XDG_CONFIG_HOME) {
         return join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
       }
-      if (realUser) {
-        // Get the home directory of the sudo user from /etc/passwd
-        const homeDir = execSync(`getent passwd ${realUser}`).toString('utf-8').split(':')[5];
-        return join(homeDir, ".config", REPLUGGED_FOLDER_NAME);
+      try {
+        if (realUser) {
+          // Get the home directory of the sudo user from /etc/passwd
+          const homeDir = execSync(`getent passwd ${realUser}`, {
+            stdio: [null, null, "ignore"],
+          })
+            .toString("utf-8")
+            .split(":")[5];
+          return join(homeDir, ".config", REPLUGGED_FOLDER_NAME);
+        }
+      } catch {
+        console.error("Could not get home directory of sudo/doas user. Falling back to $HOME.");
       }
       return join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
