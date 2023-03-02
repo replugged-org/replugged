@@ -11,8 +11,11 @@ export const configPathFn = (): string => {
     default:
       if (process.env.XDG_CONFIG_HOME) {
         return join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
+      } else {
+        const realUser = process.env.SUDO_USER || process.env.DOAS_USER;
+        const home = realUser ? join("/home", realUser) : process.env.HOME;
+        return join(home || "", ".config", REPLUGGED_FOLDER_NAME);
       }
-      return join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
 };
 
