@@ -1,3 +1,4 @@
+import type React from "react";
 import { filters, waitForModule } from "../webpack";
 
 const Types = {
@@ -19,9 +20,9 @@ export type NoticeType = React.ComponentType<NoticeProps> & {
   Types: typeof Types;
 };
 
-const Notice: NoticeType = await waitForModule(filters.bySource(/.\.messageType/)).then((mod) =>
+const Notice = (await waitForModule(filters.bySource(/.\.messageType/)).then((mod) =>
   Object.values(mod).find((x) => typeof x === "function"),
-);
+)) as NoticeType;
 Notice.Types = Types;
 
 export default Notice;

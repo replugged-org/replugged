@@ -17,6 +17,11 @@ import type {
   RepluggedTranslations,
 } from "./types";
 
+let version = "";
+void ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
+  version = v;
+});
+
 const RepluggedNative = {
   themes: {
     list: async (): Promise<RepluggedTheme[]> =>
@@ -44,7 +49,7 @@ const RepluggedNative = {
     ): Promise<CheckResultSuccess | CheckResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, repo, id),
     install: async (
-      type: InstallerType,
+      type: InstallerType | "replugged",
       path: string,
       url: string,
     ): Promise<InstallResultSuccess | InstallResultFailure> =>
@@ -96,6 +101,7 @@ const RepluggedNative = {
     getOverrides: (): Promise<RepluggedTranslations> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_OVERRIDES),
   },
+  getVersion: () => version,
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later

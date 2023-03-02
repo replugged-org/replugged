@@ -2,6 +2,8 @@ import { init } from "../apis/settings";
 import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 import { Logger } from "../modules/logger";
+import type { RepluggedPlugin, RepluggedTheme } from "src/types";
+import type { RepluggedManifest } from "src/types/addon";
 
 const logger = Logger.coremod("Updater");
 
@@ -14,12 +16,19 @@ export type UpdateSettings = {
   lastChecked: number;
 };
 
+interface RepluggedEntity {
+  manifest: RepluggedManifest;
+  path: string;
+}
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type MainUpdaterSettings = {
   // Todo: implement
   checkInterval?: number;
   lastChecked?: number;
 };
+
+const REPLUGGED_ID = "dev.replugged.Replugged";
 
 const mainUpdaterDefaultSettings: Partial<MainUpdaterSettings> = {
   checkInterval: 1000 * 60 * 60,
@@ -63,11 +72,33 @@ export function setUpdaterState(id: string, state: UpdateSettings): void {
   updaterState.set(id, state);
 }
 
+async function getAddonFromManager(
+  id: string,
+): Promise<RepluggedPlugin | RepluggedTheme | RepluggedEntity | undefined> {
+  if (id === REPLUGGED_ID) {
+    const version = window.RepluggedNative.getVersion();
+    if (version === "dev") return undefined;
+    return {
+      manifest: {
+        version,
+        updater: {
+          type: "github",
+          id: "replugged-org/replugged",
+        },
+        type: "replugged",
+      },
+      path: "replugged.asar",
+    };
+  }
+
+  return pluginManager.plugins.get(id) || (await themeManager.get(id));
+}
+
 /**
  * @param id Entity ID to check updates for
  */
 export async function checkUpdate(id: string, verbose = true): Promise<void> {
-  const entity = pluginManager.plugins.get(id) || (await themeManager.get(id));
+  const entity = await getAddonFromManager(id);
   if (!entity) {
     logger.error(`Entity ${id} not found`);
     return;
@@ -101,7 +132,11 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
     return;
   }
 
-  const res = await window.RepluggedNative.updater.check(updater.type, updater.id, id);
+  const res = await window.RepluggedNative.updater.check(
+    updater.type,
+    updater.id,
+    id === REPLUGGED_ID ? "replugged" : id,
+  );
 
   if (!res.success) {
     logger.error(`Update check for entity ${id} failed: ${res.error}`);
@@ -133,7 +168,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
 }
 
 export async function installUpdate(id: string, force = false, verbose = true): Promise<boolean> {
-  const entity = pluginManager.plugins.get(id) || (await themeManager.get(id));
+  const entity = await getAddonFromManager(id);
   if (!entity) {
     logger.error(`Entity ${id} not found`);
     return false;
@@ -187,6 +222,7 @@ export async function checkAllUpdates(verbose = false): Promise<void> {
   logger.log("Checking for updates");
 
   await Promise.all([
+    checkUpdate(REPLUGGED_ID, verbose),
     ...plugins.map((plugin) => checkUpdate(plugin.manifest.id, verbose)),
     ...themes.map((theme) => checkUpdate(theme.manifest.id, verbose)),
   ]);
@@ -201,7 +237,9 @@ export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {
     .filter(
       (state) =>
         (state.available || completedUpdates.has(state.id)) &&
-        (pluginManager.plugins.has(state.id) || themeManager.themes.has(state.id)),
+        ((state.id === REPLUGGED_ID && window.RepluggedNative.getVersion() !== "dev") ||
+          pluginManager.plugins.has(state.id) ||
+          themeManager.themes.has(state.id)),
     );
 }
 

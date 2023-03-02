@@ -1,6 +1,7 @@
+import type React from "react";
+import { FormItem } from ".";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import { FormItem } from ".";
 
 interface SelectOptionType {
   label: string;
@@ -80,6 +81,7 @@ export const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): Rea
       style={{ marginBottom: 20, ...props.style }}
       note={props.note}
       notePosition="after"
+      disabled={props.disabled}
       divider>
       <Select {...props} />
     </FormItem>

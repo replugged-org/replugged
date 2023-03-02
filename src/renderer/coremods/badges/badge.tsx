@@ -6,20 +6,12 @@ import Badges from "./badges";
 import { Clickable, Tooltip } from "@components";
 import { goToOrJoinServer } from "../../util";
 import { RawModule } from "src/types";
-
-type Clickable = React.FC<
-  Record<string, unknown> & {
-    "aria-label"?: string;
-    className?: string;
-    children: React.ReactElement | React.ReactElement[];
-    onClick?: () => void;
-  }
->;
+import { generalSettings } from "../settings/pages";
 
 interface BadgeProps {
   color?: string;
   tooltip?: string;
-  tooltipPosition?: "top" | "bottom" | "left" | "right";
+  tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   className?: string;
   children: React.ReactElement;
   gap?: boolean;
@@ -58,7 +50,7 @@ export const Base = ({
       {tooltip ? (
         <Tooltip
           text={tooltip}
-          position={tooltipPosition || "top"}
+          position={tooltipPosition || Tooltip.Positions.TOP}
           spacing={gap === false ? 0 : 12}>
           {child}
         </Tooltip>
@@ -104,7 +96,7 @@ const openExternal = (url: string): Promise<void> =>
 
 // todo: make global (configurable?) variables for these
 const openContributorsPage = (): Promise<void> =>
-  openExternal("https://replugged.dev/contributors");
+  openExternal(`${generalSettings.get("apiUrl")}/contributors`);
 const openTranslationsPage = (): Promise<void> => openExternal("https://i18n.replugged.dev");
 const joinRepluggedServer = (): Promise<void> => goToOrJoinServer("replugged");
 

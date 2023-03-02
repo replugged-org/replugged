@@ -189,5 +189,6 @@
     "REPLUGGED_UPDATES_TOAST_NO_NEW": "Keine neuen Updates verfügbar.",
     "REPLUGGED_UPDATES_TOAST_FAILED_ALL": "Einige Aktualisierungen sind fehlgeschlagen!",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Die Aktualisierung wurde erfolgreich abgeschlossen.",
-    "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Alle Aktualisierungen wurden erfolgreich abgeschlossen."
+    "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Alle Aktualisierungen wurden erfolgreich abgeschlossen.",
+    "REPLUGGED_ADDONS_FOLDER_OPEN": "Öffne {type} Ordner"
 }

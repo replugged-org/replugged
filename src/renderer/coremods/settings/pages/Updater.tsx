@@ -1,7 +1,7 @@
 import { toast } from "@common";
 import i18n, { Messages } from "@common/i18n";
 import React from "@common/react";
-import { Button, Divider, Flex, Loader, Text, Tooltip } from "@components";
+import { Button, Divider, Flex, Text, Tooltip } from "@components";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import {
@@ -14,7 +14,6 @@ import {
 } from "src/renderer/managers/updater";
 import { sleep } from "src/renderer/util";
 import Icons from "../icons";
-import { AddonType, label } from "./Addons";
 import "./Updater.css";
 
 export const Updater = (): React.ReactElement => {
@@ -132,13 +131,10 @@ export const Updater = (): React.ReactElement => {
           <Button
             className="replugged-updater-check"
             onClick={checkForUpdates}
-            disabled={checking || isAnyUpdating || isAnyComplete}
-            color={checking ? Button.Colors.PRIMARY : Button.Colors.BRAND}>
-            {checking ? (
-              <Loader type={Loader.Type.PULSING_ELLIPSIS} />
-            ) : (
-              Messages.REPLUGGED_UPDATES_CHECK
-            )}
+            disabled={isAnyUpdating || isAnyComplete}
+            color={checking ? Button.Colors.PRIMARY : Button.Colors.BRAND}
+            submitting={checking}>
+            {Messages.REPLUGGED_UPDATES_CHECK}
           </Button>
         ) : isAllComplete && didInstallAll ? (
           <Button onClick={reload} color={Button.Colors.RED}>
@@ -147,23 +143,31 @@ export const Updater = (): React.ReactElement => {
         ) : (
           <Button
             onClick={installAll}
-            disabled={isAnyUpdating || isAllComplete}
-            color={isAllUpdating ? Button.Colors.PRIMARY : Button.Colors.BRAND}>
-            {isAllUpdating ? (
-              <Loader type={Loader.Type.PULSING_ELLIPSIS} />
-            ) : (
-              Messages.REPLUGGED_UPDATES_UPDATE_ALL
-            )}
+            disabled={isAllComplete}
+            color={isAllUpdating ? Button.Colors.PRIMARY : Button.Colors.BRAND}
+            submitting={isAnyUpdating}>
+            {Messages.REPLUGGED_UPDATES_UPDATE_ALL}
           </Button>
         )}
       </Flex>
       <Flex className="replugged-updater-items" direction={Flex.Direction.VERTICAL}>
         {updatesAvailable.map((update) => {
-          const addon = plugins.get(update.id) || themes.get(update.id);
+          const isReplugged = update.id == "dev.replugged.Replugged";
+          const addon =
+            plugins.get(update.id) ||
+            themes.get(update.id) ||
+            (isReplugged
+              ? {
+                  manifest: {
+                    type: "replugged",
+                    name: "Replugged",
+                    version: window.RepluggedNative.getVersion(),
+                  },
+                }
+              : null);
           const isUpdating = update.id in updatePromises;
           if (!addon) return null;
           const { manifest } = addon;
-          const type = manifest.type === "replugged-plugin" ? AddonType.Plugin : AddonType.Theme;
           const sourceLink = update.webUrl;
           return (
             <>
@@ -182,7 +186,7 @@ export const Updater = (): React.ReactElement => {
                     {sourceLink ? (
                       <Tooltip
                         text={Messages.REPLUGGED_ADDON_PAGE_OPEN.format({
-                          type: label(type, { caps: "title" }),
+                          type: Messages.REPLUGGED_UPDATES_UPDATE_NOUN,
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
                         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
@@ -198,13 +202,9 @@ export const Updater = (): React.ReactElement => {
                 {update.available ? (
                   <Button
                     onClick={() => installOne(update.id)}
-                    disabled={isUpdating}
-                    color={Button.Colors.PRIMARY}>
-                    {isUpdating ? (
-                      <Loader type={Loader.Type.PULSING_ELLIPSIS} />
-                    ) : (
-                      Messages.REPLUGGED_UPDATES_UPDATE
-                    )}
+                    color={Button.Colors.PRIMARY}
+                    submitting={isUpdating}>
+                    {Messages.REPLUGGED_UPDATES_UPDATE}
                   </Button>
                 ) : didInstallAll ? null : (
                   <Button onClick={reload} color={Button.Colors.RED}>

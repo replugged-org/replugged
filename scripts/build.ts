@@ -1,7 +1,15 @@
 import esbuild from "esbuild";
 import path from "path";
 import asar from "@electron/asar";
-import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "fs";
 
 const NODE_VERSION = "14";
 const CHROME_VERSION = "91";
@@ -23,11 +31,14 @@ const preBundle: esbuild.Plugin = {
         }
       });
 
+      const mainPackage = JSON.parse(readFileSync("package.json", "utf-8"));
+
       writeFileSync(
         "dist/package.json",
         JSON.stringify({
           main: "main.js",
           name: "replugged",
+          version: mainPackage.version,
         }),
       );
       asar.createPackage("dist", "replugged.asar");

@@ -1,3 +1,4 @@
+import type React from "react";
 import type { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
@@ -8,15 +9,7 @@ enum ModalTransitionState {
   EXITED,
   HIDDEN,
 }
-export interface ModalProps {
-  transitionState: ModalTransitionState;
-  onClose(): Promise<void>;
-}
-export interface ModalOptions {
-  modalKey?: string;
-  onCloseRequest?: () => void;
-  onCloseCallback?: () => void;
-}
+
 export interface ModalCompProps {
   children: React.ReactNode;
 }

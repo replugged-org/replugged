@@ -1,3 +1,4 @@
+import type React from "react";
 import { filters, waitForModule } from "../webpack";
 
 interface TextInputProps {

@@ -1,10 +1,10 @@
+import type React from "react";
 import { filters, waitForModule } from "../webpack";
 
 interface TextAreaProps {
   autoFocus?: boolean;
   disabled?: boolean;
   required?: boolean;
-  editable?: boolean;
   allowOverflow?: boolean;
   resizeable?: boolean;
   flex?: boolean;
@@ -28,6 +28,6 @@ export type TextAreaType = React.ComponentType<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 
-export default await waitForModule(filters.bySource(".getIsOverFlowing")).then((mod) =>
-  Object.values(mod).find((x) => "defaultProps" in x && "resizeable" in x.defaultProps),
-);
+export default (await waitForModule(filters.bySource(/.resizeable,/)).then((mod) =>
+  Object.values(mod).find((x) => x?.defaultProps && "resizeable" in x.defaultProps),
+)) as TextAreaType;
