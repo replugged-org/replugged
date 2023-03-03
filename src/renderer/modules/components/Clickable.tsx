@@ -1,14 +1,14 @@
 import type React from "react";
 import { filters, waitForModule } from "../webpack";
 
-interface ClickableProps {
+type ClickableProps = React.HTMLAttributes<HTMLDivElement> & {
   onClick?: () => void;
   role?: string;
   tag?: string;
   tabIndex?: number;
   style?: React.CSSProperties;
   className?: string;
-}
+};
 
 export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
 
