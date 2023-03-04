@@ -172,7 +172,6 @@
     "REPLUGGED_ADDON_AUTHORS_ONE": "by {author1}",
     "REPLUGGED_ADDON_AUTHORS_TWO": "by {author1} and {author2}",
     "REPLUGGED_ADDON_AUTHORS_MANY": "by {author1}, {author2}, {author3}, and {count, plural, =1 {# other} other {# others}}",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} overrides to Discord's translations",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "إظهار تحديث checker toast",
     "REPLUGGED_UPDATES_UP_TO_DATE": "كل شيء محدث إلى الأن.",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Show an overlay over the client which says updates are being checked for, and if updates are found, prompt you to update. Only applies if update in background is disabled.",

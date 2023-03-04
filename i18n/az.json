@@ -11,7 +11,6 @@
     "REPLUGGED_COMMAND_PREFIX": "Əmr Prefiksi",
     "REPLUGGED_GENERAL_SETTINGS": "Ümumi Parametrlər",
     "REPLUGGED_QUICKCSS": "Tez CSS",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} Discord-un tərcümələrini ləğv edir",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% tərcümə edildi",
     "REPLUGGED_LINK_NOW": "İndi əlaqələndirin",
     "REPLUGGED_PLUGINS": "Pluginlər",

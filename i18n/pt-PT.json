@@ -10,7 +10,6 @@
     "REPLUGGED_COMMAND_PREFIX": "Prefixo de Comandos",
     "REPLUGGED_GENERAL_SETTINGS": "Definições",
     "REPLUGGED_I18N_CONTRIBUTE": "Psst! Queres ajudar a traduzir o Replugged? Vem ao nosso [Weblate]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} substituções às traduções do Discord",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% traduzido",
     "REPLUGGED_LINK_NOW": "Conectar agora",
     "REPLUGGED_PLUGINS": "Plugins",

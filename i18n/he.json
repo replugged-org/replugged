@@ -10,7 +10,6 @@
     "REPLUGGED_COMMAND_PREFIX": "קידומת פקודה",
     "REPLUGGED_GENERAL_SETTINGS": "הגדרות כלליות",
     "REPLUGGED_I18N_CONTRIBUTE": "היי! רוצה לעזור לתרגם את ריפלגד? אפשר לעשות את זה ב[Weblate שלנו]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} החלפות מהתרגומים של דיסקורד",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "ריפלגד: {translated,number}% מתורגם",
     "REPLUGGED_PLUGINS": "תוספים",
     "REPLUGGED_QUICKCSS": "CSS מהיר",
