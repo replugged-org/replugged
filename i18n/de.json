@@ -93,7 +93,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_OS_64BIT": "64-bit",
     "REPLUGGED_UPDATES_OPTS_DEBUG_ARCH": "Architektur:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DISTRO": "Distro:",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_RELEASE_CHANNEL": "Release Channel:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_RELEASE_CHANNEL": "Release Kanal:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_APP_VERSION": "App Version:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_NUMBER": "Build Nummer:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_ID": "Build ID:",
@@ -124,7 +124,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_SYSTEM_DISCORD": "System / Discord",
     "REPLUGGED_UPDATES_OPTS_DEBUG_COPIED": "Kopiert!",
     "REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_MORE": "Mehr Anzeigen",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "Neueste:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_LATEST": "Neustes:",
     "REPLUGGED_BUTTON_GOT_IT": "Verstanden",
     "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} Installiert",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Download {type}",
@@ -205,5 +205,8 @@
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# neues Update} other {# neue Updates}} verfügbar!",
     "REPLUGGED_ADDON_AUTHORS_MANY": "von {author1}, {author2}, {author3}, und {count, plural, =1 {# anderem} other {# anderen}}",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} muss neu geladen werden um richtig zu funktionieren. Jetzt neu laden?",
-    "REPLUGGED_RELOAD": "Neu laden"
+    "REPLUGGED_RELOAD": "Neu laden",
+    "REPLUGGED_ADDONS_LOAD_MISSING": "Lade fehlendes {type}",
+    "REPLUGGED_TOAST_ADDON_TOGGLE_FAILED": "Fehler beim Umschalten von {name}",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# Treffer} other {# Treffer}}"
 }
