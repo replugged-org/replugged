@@ -12,7 +12,6 @@
     "REPLUGGED_BADGES_BOOSTER": "Replugged Szervergyorsító",
     "REPLUGGED_COMMAND_PREFIX": "Parancs Előtag",
     "REPLUGGED_I18N_CONTRIBUTE": "Hé! Akarsz segíteni a Replugged lefordításában? Nézz rá a [Weblateünkre]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} felülírja a Discord fordításokat",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}%-ig lefordítva",
     "REPLUGGED_LINK_NOW": "Kapcsold össze most",
     "REPLUGGED_PLUGINS": "Pluginok",

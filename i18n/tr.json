@@ -10,7 +10,6 @@
     "REPLUGGED_COMMAND_PREFIX": "Komut öneki",
     "REPLUGGED_GENERAL_SETTINGS": "Genel Ayarlar",
     "REPLUGGED_I18N_CONTRIBUTE": "Pışşt! Replugged'un başka dillere tercüme edilmesine yardım etmek ister misin? Gel katıl bize, [Weblate]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "Discord'un yerine geçen {overrides,number} çeviri",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% çevrildi",
     "REPLUGGED_LINK_NOW": "Şimdi bağlayın",
     "REPLUGGED_PLUGINS": "Eklentiler",
