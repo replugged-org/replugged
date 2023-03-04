@@ -30,7 +30,7 @@ export interface Channels extends Store {
   getMutableGuildChannelsForGuild(guildId: string): Record<number, Channel>;
   getMutablePrivateChannels(): Record<number, Channel>;
   getPrivateChannelsVersion(): number;
-  getSortedPrivateChannels(): Channel[]
+  getSortedPrivateChannels(): Channel[];
   hasChannel(channelId: string): boolean;
   hasRestoredGuild(): boolean;
   loadAllGuildAndPrivateChannelsFromDisk(): Channel[];
