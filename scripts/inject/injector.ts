@@ -1,4 +1,4 @@
-import { copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
+import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import { join, sep } from "path";
 import { AnsiEscapes } from "./util";
 import readline from "readline";
@@ -178,6 +178,15 @@ export const inject = async (
 
   if (prod) {
     await copyFile(join(__dirname, "..", "..", "replugged.asar"), entryPoint);
+    if (["linux", "darwin"].includes(process.platform)) {
+      try {
+        // Adjust ownership of config folder and asar file to match the parent config folder
+        // We want to make sure all Replugged files are owned by the user
+        const { uid, gid } = await stat(join(CONFIG_PATH, ".."));
+        await chown(CONFIG_PATH, uid, gid);
+        await chown(entryPoint, uid, gid);
+      } catch {}
+    }
   }
 
   await mkdir(appDir);
