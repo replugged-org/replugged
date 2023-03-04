@@ -98,8 +98,6 @@ const RepluggedNative = {
   i18n: {
     getStrings: (): Promise<RepluggedTranslations> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_STRINGS),
-    getOverrides: (): Promise<RepluggedTranslations> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_OVERRIDES),
   },
   getVersion: () => version,
 
