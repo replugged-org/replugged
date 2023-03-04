@@ -19,10 +19,21 @@ export interface Channels extends Store {
 
   // ChannelStore
   getAllThreadsForParent(channelId: string): Channel[];
+  getBasicChannel(channelId: string): Channel[];
+  getCachedChannelJsonForGuild(e: unknown): unknown;
   getChannel(channelId: string): Channel;
   getDMFromUserId(userId: string): Channel;
   getDMUserIds(): string[];
+  getGuildChannelsVersion(guildId: string): number;
+  getInitialOverlayState(): Record<number, Channel>;
+  getMutableBasicGuildChannelsForGuild(guildId: string): Record<number, Channel>;
+  getMutableGuildChannelsForGuild(guildId: string): Record<number, Channel>;
+  getMutablePrivateChannels(): Record<number, Channel>;
+  getPrivateChannelsVersion(): number;
+  getSortedPrivateChannels(): Channel[]
   hasChannel(channelId: string): boolean;
+  hasRestoredGuild(): boolean;
+  loadAllGuildAndPrivateChannelsFromDisk(): Channel[];
 }
 
 export default {
