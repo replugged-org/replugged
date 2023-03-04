@@ -1,4 +1,4 @@
-import { copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
+import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import { join, sep } from "path";
 import { AnsiEscapes } from "./util";
 import readline from "readline";
@@ -178,6 +178,8 @@ export const inject = async (
 
   if (prod) {
     await copyFile(join(__dirname, "..", "..", "replugged.asar"), entryPoint);
+    const { uid, gid } = await stat(CONFIG_PATH);
+    await chown(entryPoint, uid, gid);
   }
 
   await mkdir(appDir);
