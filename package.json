@@ -26,7 +26,8 @@
     "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src; cp src/*.d.ts dist",
     "postpublish": "rm -rf dist; npm run build",
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
-    "docs:watch": "pnpm run docs --watch"
+    "docs:watch": "pnpm run docs --watch",
+    "prepare": "husky install"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",
@@ -53,6 +54,7 @@
     "eslint-config-dmitmel": "github:dmitmel/eslint-config-dmitmel",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.31.8",
+    "husky": "^8.0.3",
     "np": "^7.6.2",
     "parcel": "^2.8.3",
     "prettier": "^2.8.4",

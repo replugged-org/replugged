@@ -32,6 +32,7 @@ specifiers:
   eslint-config-dmitmel: github:dmitmel/eslint-config-dmitmel
   eslint-plugin-node: ^11.1.0
   eslint-plugin-react: ^7.31.8
+  husky: ^8.0.3
   node-fetch: ^3.3.0
   np: ^7.6.2
   parcel: ^2.8.3
@@ -81,6 +82,7 @@ devDependencies:
   eslint-config-dmitmel: github.com/dmitmel/eslint-config-dmitmel/690f1b1121d342fcc8ee511ca9f2af7502f53db6_eslint@8.34.0
   eslint-plugin-node: 11.1.0_eslint@8.34.0
   eslint-plugin-react: 7.31.8_eslint@8.34.0
+  husky: 8.0.3
   np: 7.6.2
   parcel: 2.8.3
   prettier: 2.8.4
@@ -4266,6 +4268,12 @@ packages:
   /human-signals/2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
+    dev: true
+
+  /husky/8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /iconv-lite/0.4.24:
