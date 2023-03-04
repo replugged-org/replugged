@@ -1,6 +1,6 @@
 import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import { join, sep } from "path";
-import { AnsiEscapes } from "./util";
+import { AnsiEscapes, getCommand } from "./util";
 import readline from "readline";
 import { exec } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types";
@@ -76,15 +76,15 @@ export const inject = async (
      * @todo: prompt to automatically uninject and continue
      */
     console.error(
-      `${AnsiEscapes.RED}Looks like you already have an injector in place. Try unplugging (\`pnpm run unplug\`) and try again.${AnsiEscapes.RESET}`,
+      `${AnsiEscapes.RED}Looks like you already have an injector in place.${AnsiEscapes.RESET} If you already have BetterDiscord or another client mod injected, Replugged cannot run along with it! Please uninstall it before continuing.`,
       "\n",
     );
     console.error(
-      `${AnsiEscapes.YELLOW}NOTE:${AnsiEscapes.RESET} If you already have BetterDiscord or another client mod injected, Replugged cannot run along with it!`,
-      "\n",
-    );
-    console.error(
-      `If you already have Replugged installed and want to replace it, use ${AnsiEscapes.GREEN}pnpm run replug${AnsiEscapes.RESET} to unplug and plug again.`,
+      `If you already have Replugged installed and want to replace it, use ${
+        AnsiEscapes.GREEN
+      }${getCommand({ action: "replug", prod, platform })}${
+        AnsiEscapes.RESET
+      } to unplug and plug again.`,
     );
     return false;
   }
