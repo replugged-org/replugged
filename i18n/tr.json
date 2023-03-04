@@ -205,5 +205,8 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Güncelleme başarıyla tamamlandı.",
     "REPLUGGED_ADDON_AUTHORS_MANY": "{author1}, {author2}, {author3}, ve {count, number} diğer kişi tarafından",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} düzgün çalışması için yeniden yüklemeye ihtiyacı var. Şimdi yeniden yükle?",
-    "REPLUGGED_RELOAD": "Yeniden Yükle"
+    "REPLUGGED_RELOAD": "Yeniden Yükle",
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[GELİŞTİRİCİ MODU]} other {v{version}}}",
+    "REPLUGGED_SETTINGS_BADGES": "Replugged Rozetlerini Etkinleştir",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Kullanıcı profillerinde özel Replugged rozetlerini göster"
 }
