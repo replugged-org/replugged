@@ -1,4 +1,4 @@
-import { filters, getExportsForProps, waitForProps } from "../webpack";
+import { waitForProps } from "../webpack";
 import type { Store } from "./flux";
 import { Channel } from "discord-types/general";
 
@@ -26,6 +26,8 @@ export interface Channels extends Store {
 }
 
 export default {
-  ...(await waitForProps("getChannelId", "getLastSelectedChannelId", "getVoiceChannelId").then(Object.getPrototypeOf)),
-  ...(await waitForProps("getChannel", "hasChannel").then(Object.getPrototypeOf))
+  ...(await waitForProps("getChannelId", "getLastSelectedChannelId", "getVoiceChannelId").then(
+    Object.getPrototypeOf,
+  )),
+  ...(await waitForProps("getChannel", "hasChannel").then(Object.getPrototypeOf)),
 } as Channels;
