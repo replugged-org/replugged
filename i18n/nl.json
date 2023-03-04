@@ -9,7 +9,6 @@
     "REPLUGGED_COMMAND_PREFIX": "Commando-prefix",
     "REPLUGGED_GENERAL_SETTINGS": "Algemene Instellingen",
     "REPLUGGED_I18N_CONTRIBUTE": "Psst! Wil je helpen met het vertalen van Replugged? Ga naar onze [Weblate]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} overschrijvingen van Discord's vertalingen",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% vertaald",
     "REPLUGGED_QUICKCSS": "Quick CSS",
     "REPLUGGED_SETTINGS_BACKEND": "Backend URL",

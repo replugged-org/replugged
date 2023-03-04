@@ -10,7 +10,6 @@
     "REPLUGGED_COMMAND_PREFIX": "Prefix pro příkazy",
     "REPLUGGED_GENERAL_SETTINGS": "Obecná nastavení",
     "REPLUGGED_I18N_CONTRIBUTE": "Psst! Chceš pomoct s překladem Replugged? Jdi na náš [Weblate]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} změn překladu Discordu",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% přeloženo",
     "REPLUGGED_LINK_NOW": "Propojit účet",
     "REPLUGGED_PLUGINS": "Pluginy",

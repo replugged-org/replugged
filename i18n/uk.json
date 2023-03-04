@@ -10,7 +10,6 @@
     "REPLUGGED_COMMAND_PREFIX": "Префікс команд",
     "REPLUGGED_GENERAL_SETTINGS": "Основні налаштування",
     "REPLUGGED_I18N_CONTRIBUTE": "Пссс! Хочеш допомогти перекласти Replugged? Заходи на наш [Weblate]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} змін в перекладі Discord",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% переведено",
     "REPLUGGED_LINK_NOW": "Прив'язати зараз",
     "REPLUGGED_PLUGINS": "Плагіни",
