@@ -9,5 +9,8 @@
   "prettier.configPath": "./.prettierrc.json",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "eslint.format.enable": true
+  "eslint.format.enable": true,
+  "conventionalCommits.gitmoji": false,
+  "conventionalCommits.promptFooter": false,
+  "conventionalCommits.promptBody": false
 }
