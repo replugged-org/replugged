@@ -6,6 +6,7 @@
     "https://json.schemastore.org/github-workflow.json": ".github/workflows/cspell.yml"
   },
   "prettier.prettierPath": "./node_modules/prettier",
+  "prettier.configPath": "./.prettierrc.json",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
   "eslint.format.enable": true

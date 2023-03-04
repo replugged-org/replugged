@@ -6,8 +6,6 @@ const tryToElevate = (command: string): void => {
     ...command.split(" "),
     path.join(__dirname, "..", "..", "..", "node_modules", ".bin", "tsx"),
     ...process.argv.slice(1),
-    `--home="${process.env.HOME}"`,
-    `--xdg-data-home="${process.env.XDG_DATA_HOME}"`,
   ];
   const { error } = spawnSync("env", args, { stdio: "inherit" });
   if (!error) {
