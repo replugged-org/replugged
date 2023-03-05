@@ -11,7 +11,6 @@
     "REPLUGGED_BADGES_BOOSTER": "Người nâng cấp Server của Replugged",
     "REPLUGGED_GENERAL_SETTINGS": "Cài Đặt Chung",
     "REPLUGGED_I18N_CONTRIBUTE": "Muốn giúp đỡ quá trình dịch Replugged? Hãy vào trang [Weblate]({weblateUrl}) của chúng tôi!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} ghi đè vào những bản dịch của Discord",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: Đã dịch được {translated,number}%",
     "REPLUGGED_LINK_NOW": "Liên kết",
     "REPLUGGED_PLUGINS": "Các Plugins",

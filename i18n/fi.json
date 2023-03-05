@@ -17,7 +17,6 @@
     "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
     "REPLUGGED_SETTINGS_BACKEND_DESC": "URL, jota käytetään muutaman tavaran hakuun ja Repluggedin REST-ohjelmointirajapinnan pyyntöihin.",
     "REPLUGGED_BADGES_STAFF": "Repluggedin henkilökunta",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} ohittaa Discordin käännökset",
     "REPLUGGED_SETTINGS_ADVANCED_DESC": "Älä koske näihin juttuihin, jos et tiedä mitä teet. Odottamattomia asioita voi tapahtua kissallesi.",
     "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Aktivoi Discord-kokeilut",
     "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****VAROITUS:**** Tämän käyttöönotto antaa sinulle pääsyn ominaisuuksiin, jotka Discord voi havaita ja jotka voivat johtaa ****tilin lopettamiseen****. Replugged **ei ole vastuussa** siitä, mitä teet tällä ominaisuudella. Jätä se pois käytöstä, jos olet epävarma. Replugged-tiimi **ei** anna mitään tukea minkään kokeilun suhteen. **Vaatii uudelleenkäynnistyksen**.",

@@ -53,7 +53,6 @@
     "REPLUGGED_ERROR_CHECK_CONSOLE": "Check the console for more details.",
     "REPLUGGED_GENERAL_SETTINGS": "General Settings",
     "REPLUGGED_I18N_CONTRIBUTE": "Psst! Want to help translate Replugged? Go to our [Weblate]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} overrides to Discord's translations",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% translated",
     "REPLUGGED_INSTALL_MODAL_HEADER": "Install {type}",
     "REPLUGGED_LINK_NOW": "Link it now",

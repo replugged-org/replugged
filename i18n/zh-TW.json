@@ -11,7 +11,6 @@
     "REPLUGGED_COMMAND_PREFIX": "指令前綴",
     "REPLUGGED_GENERAL_SETTINGS": "一般設定",
     "REPLUGGED_I18N_CONTRIBUTE": "嘿！想幫忙翻譯Replugged嗎？到我們的[Weblate]({weblateUrl})！",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} 覆蓋Discord的翻譯",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged：{translated,number}% 已翻譯",
     "REPLUGGED_LINK_NOW": "立即連接",
     "REPLUGGED_PLUGINS": "插件",

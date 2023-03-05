@@ -42,7 +42,6 @@
     "REPLUGGED_ERROR_CHECK_CONSOLE": "Za več podrobnosti preverite konzolo.",
     "REPLUGGED_GENERAL_SETTINGS": "Splošne nastavitve",
     "REPLUGGED_I18N_CONTRIBUTE": "Psst! Želite pomagati pri prevodu Replugged? Pojdite na naš [Weblate]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} preglasi prevode Discord",
     "REPLUGGED_INSTALL_MODAL_HEADER": "Namesti {type}",
     "REPLUGGED_LINK_NOW": "Povežite zdaj",
     "REPLUGGED_NOTICES_JOIN_SERVER_BUTTON": "Pridružite se strežniku",

@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
 import readline from "readline";
 import { DiscordPlatform } from "../types";
-import { AnsiEscapes, BasicMessages, PlatformNames } from "../util";
+import { AnsiEscapes, PlatformNames } from "../util";
 
 const installDirFile = join(__dirname, "../../../.installdir-");
 
@@ -81,7 +81,9 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
 
       if (!existsSync(discordPath)) {
         console.log("");
-        console.log(BasicMessages.PLUG_FAILED);
+        console.log(
+          `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
+        );
         console.log("The path you provided is invalid.");
         process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
       }

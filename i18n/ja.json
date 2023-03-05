@@ -11,7 +11,6 @@
     "REPLUGGED_COMMAND_PREFIX": "コマンドプレフィックス",
     "REPLUGGED_GENERAL_SETTINGS": "一般設定",
     "REPLUGGED_I18N_CONTRIBUTE": "ちょっと！Repluggedの翻訳を手伝いたいですか？[Weblate]({weblateUrl})へどうぞ！",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} Discordの翻訳を上書きする",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% 翻訳済み",
     "REPLUGGED_LINK_NOW": "今すぐリンクする",
     "REPLUGGED_PLUGINS": "プラグイン",

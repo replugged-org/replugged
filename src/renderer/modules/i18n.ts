@@ -2,14 +2,12 @@ import { i18n } from "@common";
 import type { RepluggedTranslations } from "../../types";
 
 const strings = await RepluggedNative.i18n.getStrings();
-const overrides = await RepluggedNative.i18n.getOverrides();
 
 export let locale: string | undefined;
 export const messages = new Map();
 
 export function load(): void {
   loadAllStrings(strings);
-  loadAllStrings(overrides);
 
   locale = i18n._chosenLocale;
   i18n.on("locale", (newLocale: string) => {
