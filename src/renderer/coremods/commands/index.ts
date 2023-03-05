@@ -1,11 +1,6 @@
 import { Injector } from "../../modules/injector";
-import {
-  filters,
-  getFunctionBySource,
-  getFunctionKeyBySource,
-  waitForModule,
-} from "../../modules/webpack";
-import { ObjectExports, RawModule, RepluggedCommand } from "../../../types";
+import { filters, getFunctionKeyBySource, waitForModule } from "../../modules/webpack";
+import { ObjectExports, RepluggedCommand } from "../../../types";
 
 import { commands, section as rpSection } from "../../apis/commands";
 
@@ -13,52 +8,62 @@ const injector = new Injector();
 
 export async function start(): Promise<void> {
   interface ApplicationStoreType {
-    JK: (args: unknown) => {
-      sectionDescriptors: Array<{id: string}>;
-      commands: RepluggedCommand[]
-    }
-  }  
-  const ApplicationCommandStore = await waitForModule<RawModule & ApplicationStoreType>(
+    [key: string]: (args: unknown) => {
+      sectionDescriptors: Array<{ id: string }>;
+      commands: RepluggedCommand[];
+    };
+  }
+  const ApplicationCommandStore = await waitForModule(
     filters.bySource('type:"APPLICATION_COMMAND_SEARCH_STORE_UPDATE"'),
   );
-  injector.after(ApplicationCommandStore, "JK", (args, res) => {
-    console.log("applicationcommandstore", args, res);
-    if (!res || !commands.size) return;
-    if (
-      !Array.isArray(res.sectionDescriptors) ||
-      !res.sectionDescriptors.some((section) => section.id == rpSection.id)
-    )
-      res.sectionDescriptors = Array.isArray(res.sectionDescriptors)
-        ? res.sectionDescriptors.splice(1, 0, rpSection)
-        : [rpSection];
-    if (
-      !Array.isArray(res.commands) ||
-      Array.from(commands.values()).some((command) => !res.commands.includes(command))
-    )
-      res.commands = Array.isArray(res.commands)
-        ? [
-            ...res.commands.filter((command) => !Array.from(commands.values()).includes(command)),
-            ...Array.from(commands.values()),
-          ]
-        : Array.from(commands.values());
-    return res;
-  });
+  const commandStoreKey = getFunctionKeyBySource(
+    ApplicationCommandStore as ObjectExports,
+    "APPLICATION_COMMAND_SEARCH_OPEN_TIMING",
+  );
+
+  injector.after(
+    ApplicationCommandStore as ObjectExports & ApplicationStoreType,
+    commandStoreKey!,
+    (_, res) => {
+      if (!res || !commands.size) return;
+      if (
+        !Array.isArray(res.sectionDescriptors) ||
+        !res.sectionDescriptors.some((section) => section.id == rpSection.id)
+      )
+        res.sectionDescriptors = Array.isArray(res.sectionDescriptors)
+          ? res.sectionDescriptors.splice(1, 0, rpSection)
+          : [rpSection];
+      if (
+        !Array.isArray(res.commands) ||
+        Array.from(commands.values()).some((command) => !res.commands.includes(command))
+      )
+        res.commands = Array.isArray(res.commands)
+          ? [
+              ...res.commands.filter((command) => !Array.from(commands.values()).includes(command)),
+              ...Array.from(commands.values()),
+            ]
+          : Array.from(commands.values());
+      return res;
+    },
+  );
 
   interface storeType {
     getChannelState: (args: unknown) => {
-      applicationSections: Array<{id: string}>
+      applicationSections: Array<{ id: string }>;
+      applicationCommands: RepluggedCommand[];
     };
+    getApplicationSections: (args: string) => Array<{ id: string }>;
+    useSearchManager: (args: unknown) => unknown;
+    getQueryCommands: (...args: [string, string, string]) => RepluggedCommand[];
   }
-  const CommandStore = Object.entries(ApplicationCommandStore).find(([_, v]) => {
-    if (typeof v === 'function') return false;
-
+  const SearchStore = Object.entries(ApplicationCommandStore).find(([_, v]) => {
+    if (typeof v === "function") return false;
     if (v.getChannelState) return true;
 
     return false;
-  });
-  if (CommandStore) {
-    injector.after(CommandStore[1] as unknown as storeType, "getChannelState", (args, res) => {
-      console.log("getchannelstate", args, res);
+  })?.[1] as unknown as storeType;
+  if (SearchStore) {
+    injector.after(SearchStore, "getChannelState", (_, res) => {
       if (!res || !commands.size) return;
       if (
         !Array.isArray(res.applicationSections) ||
@@ -68,16 +73,41 @@ export async function start(): Promise<void> {
           ? [rpSection, ...res.applicationSections]
           : [rpSection];
       if (
-                      !Array.isArray(res.applicationCommands) ||
-                      Array.from(commands.values()).some(
-                        (command) => !res.applicationCommands.includes(command)
-                      )
-                    )
-                      res.applicationCommands = Array.isArray(
-                        res.applicationCommands
-                      )
-                        ? [...Array.from(commands.values()), ...res.applicationCommands]
-                        : Array.from(commands.values());   
+        !Array.isArray(res.applicationCommands) ||
+        Array.from(commands.values()).some((command) => !res.applicationCommands.includes(command))
+      )
+        res.applicationCommands = Array.isArray(res.applicationCommands)
+          ? [...Array.from(commands.values()), ...res.applicationCommands]
+          : Array.from(commands.values());
+      return res;
+    });
+
+    injector.after(SearchStore, "getApplicationSections", (_, res) => {
+      if (!res.find((s) => s.id === rpSection.id)) {
+        res.push(rpSection);
+      }
+
+      return res;
+    });
+
+    injector.after(SearchStore, "getQueryCommands", ([, , query], res) => {
+      if (!query || query.startsWith("/")) return res;
+
+      res ??= [];
+      for (const command of commands.values()) {
+        const exists = res.some((c) => c.id === command.id);
+
+        if (exists || !query.includes(command.name)) {
+          continue;
+        }
+
+        try {
+          res.unshift(command);
+        } catch {
+          res = [...res, command];
+        }
+      }
+
       return res;
     });
   } else {
@@ -85,21 +115,19 @@ export async function start(): Promise<void> {
   }
 
   interface AssetType {
-    getApplicationIconURL: (args: {
-      id: string;
-      icon: string;
-    }) => string
+    getApplicationIconURL: (args: { id: string; icon: string }) => string;
   }
-  const Assets = Object.entries(await waitForModule(filters.byProps("getApplicationIconURL"))).find(([_, v]) => {
-    if (typeof v === 'function') return false;
-    if (v.getApplicationIconURL) return true;
+  const Assets = Object.entries(await waitForModule(filters.byProps("getApplicationIconURL"))).find(
+    ([_, v]) => {
+      if (typeof v === "function") return false;
+      if (v.getApplicationIconURL) return true;
 
-    return false;
-  });
+      return false;
+    },
+  );
   if (Assets) {
-    injector.after(Assets[1] as unknown as AssetType, "getApplicationIconURL", (args, res) => {
-      if (args[0].id !== rpSection.id) return res;
-      return args[0].icon;
+    injector.after(Assets[1] as unknown as AssetType, "getApplicationIconURL", (args, _) => {
+      if (args[0].id === rpSection.id) return args[0].icon;
     });
   } else {
     // make error
