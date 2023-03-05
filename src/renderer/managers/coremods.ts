@@ -18,6 +18,7 @@ export namespace coremods {
   export let badges: Coremod;
   export let notrack: Coremod;
   export let installer: Coremod;
+  export let commands: Coremod;
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
@@ -33,6 +34,7 @@ export async function startAll(): Promise<void> {
   coremods.settings = await import("../coremods/settings");
   coremods.badges = await import("../coremods/badges");
   coremods.installer = await import("../coremods/installer");
+  coremods.commands = await import("../coremods/commands");
   await Promise.allSettled(Object.values(coremods).map((c) => c.start?.()));
 }
 
