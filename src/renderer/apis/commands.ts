@@ -1,7 +1,34 @@
-import type { RepluggedCommand } from "../../types";
+import type { RepluggedCommand, RepluggedCommandResult } from "../../types";
 import { Logger } from "../modules/logger";
+import { channels, messages } from '../modules/common';
 
 const commandsLogger = Logger.api("Commands");
+
+async function executeCommand(cmdExecutor: (args: unknown) => Promise<RepluggedCommandResult>, args: unknown): Promise<void> {
+  let result: RepluggedCommandResult;
+
+  try {
+    result = await cmdExecutor(args);
+  } catch (err) {
+    result = {
+      send: false,
+      result: "Something went wrong"
+    }
+  }
+
+  if (!result?.result) return;
+
+  if (result.send) {
+    messages.sendMessage(channels.getChannelId(), {
+      content: result.result,
+      invalidEmojis: [],
+      validNonShortcutEmojis: [],
+      tts: false
+    });
+  } else {
+    messages.sendBotMessage(channels.getChannelId(), result.result);
+  }
+}
 
 export const section = {
   id: "replugged",
@@ -26,11 +53,11 @@ export function registerCommand(command: RepluggedCommand): void {
   command.displayName ??= command.name;
   command.displayDescription ??= command.description;
   command.type = 1;
-  command.id = `-${Math.floor(Math.random() * 5000)}`;
-  command.defaultPermission ??= true;
-  command.permissions ??= undefined;
-  command.dmPermission ??= true;
-  command.defaultMemberPermissions ??= undefined;
+  command.id ??= command.name;
+  
+  command.execute ??= async (args) => {
+    await executeCommand(command.executor, args ?? []);
+  }
   
   if (command.options) {
     for (const option of command.options) {
@@ -38,6 +65,7 @@ export function registerCommand(command: RepluggedCommand): void {
       option.displayDescription ??= option.description;
     }
   }
+
 
   commands.set(command.name, command);
 }
@@ -49,3 +77,4 @@ export function unregisterCommand(name: string): void {
     commandsLogger.error(`Command “${name}” is not registered!`);
   }
 }
+

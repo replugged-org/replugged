@@ -69,8 +69,14 @@ export interface RepluggedCommand {
   description: string;
   displayDescription?: string;
   usage: string;
-  execute: (args: unknown) => void;
+  executor: (args: unknown) => Promise<RepluggedCommandResult>;
+  execute?: (args: unknown) => Promise<void>;
   options?: CommandOptions[];
+}
+
+export interface RepluggedCommandResult {
+  send: boolean;
+  result: string;
 }
 
 export interface RepluggedConnection {
