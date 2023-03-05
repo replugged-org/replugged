@@ -113,7 +113,7 @@
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "Произошла ошибка во время исполнения команнды:",
     "REPLUGGED_ERROR_CHECK_CONSOLE": "Проверьте консоль для дополнительной информации.",
     "REPLUGGED_INSTALL_MODAL_HEADER": "Установить {type}",
-    "REPLUGGED_NOTICES_JOIN_SERVER_BUTTON": "Зайти на сервер",
+    "REPLUGGED_NOTICES_JOIN_SERVER_BUTTON": "Присоединиться к Серверу",
     "REPLUGGED_PLUGIN": "Плагин",
     "REPLUGGED_SETTINGS_ERROR_HEADER": "Что-то пошло не так при загрузке этого элемента!",
     "REPLUGGED_SETTINGS_ERROR_RENDER_PANEL": "Произошла ошибка при отображении панели настроек.",
