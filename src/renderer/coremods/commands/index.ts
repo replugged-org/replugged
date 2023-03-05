@@ -67,22 +67,22 @@ export async function start(): Promise<void> {
         res.applicationSections = Array.isArray(res.applicationSections)
           ? [rpSection, ...res.applicationSections]
           : [rpSection];
+      if (
+                      !Array.isArray(res.applicationCommands) ||
+                      Array.from(commands.values()).some(
+                        (command) => !res.applicationCommands.includes(command)
+                      )
+                    )
+                      res.applicationCommands = Array.isArray(
+                        res.applicationCommands
+                      )
+                        ? [...Array.from(commands.values()), ...res.applicationCommands]
+                        : Array.from(commands.values());   
       return res;
     });
   } else {
     // make error
   }
-  const BuiltInCommands = await waitForModule(filters.bySource(/\.Messages\.COMMAND_MSG_ERROR/));
-  injector.after(BuiltInCommands, "Kh", (args, res) => {
-    console.log("builtincommands", args, res);
-    const cmds = Array.from(commands.values());
-    return Array.isArray(res)
-      ? [
-          ...res.filter(({ name }) => !Array.from(commands.keys()).includes(name)),
-          ...cmds,
-        ]
-      : cmds;
-  });
 
   interface AssetType {
     getApplicationIconURL: (args: {
