@@ -1,5 +1,19 @@
+export enum ApplicationCommandOptionType {
+	Subcommand = 1,
+	SubcommandGroup,
+	String,
+	Integer,
+	Boolean,
+	User,
+	Channel,
+	Role,
+	Mentionable,
+	Number,
+	Attachment,
+}
+
 export interface CommandOptions {
-  type: number;
+  type: ApplicationCommandOptionType;
   name: string;
   displayName?: string;
   description: string;

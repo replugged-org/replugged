@@ -61,13 +61,9 @@ export interface RepluggedToast {
 }
 
 export interface RepluggedCommand {
-  applicationId: string;
-  type: number;
-  id: string;
-  defaultPermission?: boolean;
-  dmPermission?: boolean;
-  permissions?: unknown;
-  defaultMemberPermissions?: unknown;
+  applicationId?: string;
+  type?: number;
+  id?: string;
   name: string;
   displayName?: string;
   description: string;
