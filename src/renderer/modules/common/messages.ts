@@ -100,6 +100,11 @@ export interface TrackInviteOptions {
   overrideProperties: Properties;
 }
 
+export interface MessageStore {
+  getMessage: (channelId: string, messageId: string) => Message;
+  getMessages: (channelId: string) => Messages;
+}
+
 export interface Messages extends MessageStore {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => void;
@@ -162,11 +167,6 @@ export interface Messages extends MessageStore {
     options: OutgoingMessageOptions,
   ) => void;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
-}
-
-export interface MessageStore {
-  getMessage: (channelId: string, messageId: string) => Message;
-  getMessages: (channelId: string) => Messages;
 }
 
 const MessageStore = await waitForModule<RawModule & MessageStore>(
