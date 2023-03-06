@@ -201,8 +201,5 @@ export default {
     createMessages,
     "createMessage",
   )!,
-  createSnowflake: getFunctionBySource<MoreMessages["createSnowflake"]>(
-    createMessages,
-    "now",
-  )!,
+  createSnowflake: getFunctionBySource<MoreMessages["createSnowflake"]>(createMessages, "now")!,
 };
