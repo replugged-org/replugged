@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { filters, waitForModule, getFunctionBySource } from "../webpack";
+import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 import type { ObjectExports, RawModule } from "../../../types";
 import type { Message, MessageAttachment, User } from "discord-types/general";
-import { RepluggedCommandEmbed } from '../../../types';
+import { RepluggedCommandEmbed } from "../../../types";
 
 export enum ActivityActionTypes {
   JOIN = 1,

@@ -85,12 +85,12 @@ const commands: RepluggedCommand[] = [
         get choices() {
           let choices = [];
 
-          const enabledPlugins = Array.from(plugins.plugins.values()).filter((plugin) =>
-            !plugins.getDisabled().includes(plugin.manifest.id),
+          const enabledPlugins = Array.from(plugins.plugins.values()).filter(
+            (plugin) => !plugins.getDisabled().includes(plugin.manifest.id),
           );
 
-          const enabledThemes = Array.from(themes.themes.values()).filter((theme) =>
-            !themes.getDisabled().includes(theme.manifest.id),
+          const enabledThemes = Array.from(themes.themes.values()).filter(
+            (theme) => !themes.getDisabled().includes(theme.manifest.id),
           );
 
           choices.push(

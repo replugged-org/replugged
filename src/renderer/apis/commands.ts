@@ -1,7 +1,7 @@
 import type { RepluggedCommand, RepluggedCommandResult } from "../../types";
 import { Logger } from "../modules/logger";
-import { channels, messages } from '../modules/common';
-import { CommandOptionReturn } from '../../types/discord';
+import { channels, messages } from "../modules/common";
+import { CommandOptionReturn } from "../../types/discord";
 
 const commandsLogger = Logger.api("Commands");
 
@@ -12,7 +12,10 @@ export const section = {
   icon: "https://cdn.discordapp.com/attachments/1043690690330251335/1081935346457133167/8f6316fcbe578be33b39917b49431e63.webp",
 };
 
-async function executeCommand(cmdExecutor: (args: CommandOptionReturn[]) => Promise<RepluggedCommandResult>, args: CommandOptionReturn[]): Promise<void> {
+async function executeCommand(
+  cmdExecutor: (args: CommandOptionReturn[]) => Promise<RepluggedCommandResult>,
+  args: CommandOptionReturn[],
+): Promise<void> {
   let result: RepluggedCommandResult;
 
   try {
@@ -20,8 +23,8 @@ async function executeCommand(cmdExecutor: (args: CommandOptionReturn[]) => Prom
   } catch (err) {
     result = {
       send: false,
-      result: `Something went wrong: ${err}`
-    }
+      result: `Something went wrong: ${err}`,
+    };
   }
 
   if (!result?.result && !result?.embeds) return;
@@ -31,18 +34,18 @@ async function executeCommand(cmdExecutor: (args: CommandOptionReturn[]) => Prom
       content: result.result,
       invalidEmojis: [],
       validNonShortcutEmojis: [],
-      tts: false
+      tts: false,
     });
   } else {
     const botMessage = messages.createBotMessage({
       channelId: channels.getChannelId()!,
       content: result.result || "",
       embeds: result.embeds || [],
-      loggingName: "Replugged"
-    })
-    
-    botMessage.author.username = 'Replugged';
-    botMessage.author.avatar = 'replugged';
+      loggingName: "Replugged",
+    });
+
+    botMessage.author.username = "Replugged";
+    botMessage.author.avatar = "replugged";
 
     messages.receiveMessage(channels.getChannelId()!, botMessage);
   }
@@ -65,11 +68,11 @@ export function registerCommand(command: RepluggedCommand): void {
   command.displayDescription ??= command.description;
   command.type = 1;
   command.id ??= command.name;
-  
+
   command.execute ??= async (args) => {
     await executeCommand(command.executor, args ?? []);
-  }
-  
+  };
+
   if (command.options) {
     for (const option of command.options) {
       option.displayName ??= option.name;
@@ -87,4 +90,3 @@ export function unregisterCommand(name: string): void {
     commandsLogger.error(`Command “${name}” is not registered!`);
   }
 }
-

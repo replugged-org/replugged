@@ -14,13 +14,11 @@ const injector = new Injector();
 
 export async function start(): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-  const BOT_AVATARS = getExportsForProps(
-    await waitForModule(filters.byProps("BOT_AVATARS")),
-    ["BOT_AVATARS"],
-  ) as Record<string, Record<string, string>>;
+  const BOT_AVATARS = getExportsForProps(await waitForModule(filters.byProps("BOT_AVATARS")), [
+    "BOT_AVATARS",
+  ]) as Record<string, Record<string, string>>;
   if (BOT_AVATARS) {
     BOT_AVATARS.BOT_AVATARS.replugged = rpSection.icon;
-    console.log(BOT_AVATARS)
   } else {
     // make error
   }

@@ -75,26 +75,32 @@ export interface RepluggedCommand {
   options?: CommandOptions[];
 }
 
-export interface RepluggedCommandEmbed extends Omit<Embed, "fields" | "id" | "type" | "rawDescription" | "rawTitle" | "referenceId" | "url" | "color"> {
+export interface RepluggedCommandEmbed
+  extends Omit<
+    Embed,
+    "fields" | "id" | "type" | "rawDescription" | "rawTitle" | "referenceId" | "url" | "color"
+  > {
   fields?: [];
   id?: string;
   type?: string;
-  rawDescription?: string;                                                                                    
+  rawDescription?: string;
   rawTitle?: string;
   referenceId?: unknown;
   url?: string;
   color: string | number;
 }
 
-export type RepluggedCommandResult = {
-  send: boolean;
-  result: string;
-  embeds?: RepluggedCommandEmbed[];
-} | {
-  send: false; // Never send if embeds is specified. Considered self-botting
-  result?: string;
-  embeds: RepluggedCommandEmbed[];
-}
+export type RepluggedCommandResult =
+  | {
+      send: boolean;
+      result: string;
+      embeds?: RepluggedCommandEmbed[];
+    }
+  | {
+      send: false; // Never send if embeds is specified. Considered self-bot
+      result?: string;
+      embeds: RepluggedCommandEmbed[];
+    };
 
 export interface RepluggedConnection {
   type: string;
