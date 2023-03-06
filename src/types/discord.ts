@@ -21,7 +21,8 @@ export interface CommandOptions {
   required?: boolean;
   choices?: Array<{
     name: string;
-    values: string | number;
+    displayName: string;
+    value: string | number;
   }>;
   options?: CommandOptions[];
   /* eslint-disable @typescript-eslint/naming-convention */
@@ -30,6 +31,13 @@ export interface CommandOptions {
   max_value?: number;
   /* eslint-enable @typescript-eslint/naming-convention */
   autocomplete?: boolean;
+}
+
+export interface CommandOptionReturn {
+  focused: unknown; // literally no clue what it is for...
+  name: string;
+  type: ApplicationCommandOptionType;
+  value: string;
 }
 
 export interface ConnectedAccount {

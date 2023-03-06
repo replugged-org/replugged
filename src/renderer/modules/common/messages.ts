@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { filters, waitForModule } from "../webpack";
+import { filters, waitForModule, getFunctionBySource } from "../webpack";
 
-import type { RawModule } from "../../../types";
-import type { Message, MessageAttachment } from "discord-types/general";
+import type { ObjectExports, RawModule } from "../../../types";
+import type { Message, MessageAttachment, User } from "discord-types/general";
+import { RepluggedCommandEmbed } from '../../../types';
 
 export enum ActivityActionTypes {
   JOIN = 1,
@@ -100,7 +101,7 @@ export interface TrackInviteOptions {
   overrideProperties: Properties;
 }
 
-export interface Messages {
+interface SomeMessages {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => void;
   deleteMessage: (channelId: string, messageId: string) => void;
@@ -164,6 +165,44 @@ export interface Messages {
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 }
 
-export default await waitForModule<RawModule & Messages>(
-  filters.byProps("sendMessage", "editMessage", "deleteMessage"),
-);
+interface MoreMessages {
+  createBotMessage: (args: {
+    channelId: string;
+    content: string;
+    embeds?: RepluggedCommandEmbed[];
+    loggingName?: string;
+  }) => Message;
+  createMessage: (args: {
+    channelId: string;
+    content: string;
+    tts?: boolean;
+    type?: string;
+    messageReference?: Message;
+    allowedMentions?: { parse?: string[]; replied_user?: boolean };
+    author: User;
+    flags?: number;
+  }) => Message;
+  createSnowflake: () => string;
+}
+
+export type Messages = SomeMessages & MoreMessages;
+
+const createMessages = await waitForModule(filters.bySource('username:"Clyde"'));
+
+export default {
+  ...(await waitForModule<RawModule & SomeMessages>(
+    filters.byProps("sendMessage", "editMessage", "deleteMessage"),
+  )),
+  createBotMessage: getFunctionBySource<MoreMessages["createBotMessage"]>(
+    createMessages as ObjectExports,
+    'username:"Clyde"',
+  ),
+  createMessage: getFunctionBySource<MoreMessages["createMessage"]>(
+    createMessages as ObjectExports,
+    "createMessage",
+  ),
+  createSnowflake: getFunctionBySource<MoreMessages["createSnowflake"]>(
+    createMessages as ObjectExports,
+    "now",
+  ),
+};

@@ -1,6 +1,7 @@
 import type { WebContents } from "electron";
-import type { CommandOptions, ConnectedAccount } from "./discord";
+import type { CommandOptionReturn, CommandOptions, ConnectedAccount } from "./discord";
 import type { PluginManifest, ThemeManifest } from "./addon";
+import { Embed } from "discord-types/general";
 
 export type RepluggedWebContents = WebContents & {
   originalPreload?: string;
@@ -69,14 +70,30 @@ export interface RepluggedCommand {
   description: string;
   displayDescription?: string;
   usage: string;
-  executor: (args: unknown) => Promise<RepluggedCommandResult>;
-  execute?: (args: unknown) => Promise<void>;
+  executor: (args: CommandOptionReturn[]) => Promise<RepluggedCommandResult>;
+  execute?: (args: CommandOptionReturn[]) => Promise<void>;
   options?: CommandOptions[];
 }
 
-export interface RepluggedCommandResult {
+export interface RepluggedCommandEmbed extends Omit<Embed, "fields" | "id" | "type" | "rawDescription" | "rawTitle" | "referenceId" | "url" | "color"> {
+  fields?: [];
+  id?: string;
+  type?: string;
+  rawDescription?: string;                                                                                    
+  rawTitle?: string;
+  referenceId?: unknown;
+  url?: string;
+  color: string | number;
+}
+
+export type RepluggedCommandResult = {
   send: boolean;
   result: string;
+  embeds?: RepluggedCommandEmbed[];
+} | {
+  send: false; // Never send if embeds is specified. Considered self-botting
+  result?: string;
+  embeds: RepluggedCommandEmbed[];
 }
 
 export interface RepluggedConnection {

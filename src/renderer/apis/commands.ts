@@ -1,34 +1,9 @@
 import type { RepluggedCommand, RepluggedCommandResult } from "../../types";
 import { Logger } from "../modules/logger";
 import { channels, messages } from '../modules/common';
+import { CommandOptionReturn } from '../../types/discord';
 
 const commandsLogger = Logger.api("Commands");
-
-async function executeCommand(cmdExecutor: (args: unknown) => Promise<RepluggedCommandResult>, args: unknown): Promise<void> {
-  let result: RepluggedCommandResult;
-
-  try {
-    result = await cmdExecutor(args);
-  } catch (err) {
-    result = {
-      send: false,
-      result: "Something went wrong"
-    }
-  }
-
-  if (!result?.result) return;
-
-  if (result.send) {
-    messages.sendMessage(channels.getChannelId(), {
-      content: result.result,
-      invalidEmojis: [],
-      validNonShortcutEmojis: [],
-      tts: false
-    });
-  } else {
-    messages.sendBotMessage(channels.getChannelId(), result.result);
-  }
-}
 
 export const section = {
   id: "replugged",
@@ -36,6 +11,42 @@ export const section = {
   type: 1,
   icon: "https://cdn.discordapp.com/attachments/1043690690330251335/1081935346457133167/8f6316fcbe578be33b39917b49431e63.webp",
 };
+
+async function executeCommand(cmdExecutor: (args: CommandOptionReturn[]) => Promise<RepluggedCommandResult>, args: CommandOptionReturn[]): Promise<void> {
+  let result: RepluggedCommandResult;
+
+  try {
+    result = await cmdExecutor(args);
+  } catch (err) {
+    result = {
+      send: false,
+      result: `Something went wrong: ${err}`
+    }
+  }
+
+  if (!result?.result && !result?.embeds) return;
+
+  if (result.send) {
+    messages.sendMessage(channels.getChannelId()!, {
+      content: result.result,
+      invalidEmojis: [],
+      validNonShortcutEmojis: [],
+      tts: false
+    });
+  } else {
+    const botMessage = messages.createBotMessage({
+      channelId: channels.getChannelId()!,
+      content: result.result || "",
+      embeds: result.embeds || [],
+      loggingName: "Replugged"
+    })
+    
+    botMessage.author.username = 'Replugged';
+    botMessage.author.avatar = 'replugged';
+
+    messages.receiveMessage(channels.getChannelId()!, botMessage);
+  }
+}
 
 /**
  * @internal
@@ -65,7 +76,6 @@ export function registerCommand(command: RepluggedCommand): void {
       option.displayDescription ??= option.description;
     }
   }
-
 
   commands.set(command.name, command);
 }

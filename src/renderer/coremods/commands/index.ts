@@ -1,5 +1,10 @@
 import { Injector } from "../../modules/injector";
-import { filters, getFunctionKeyBySource, waitForModule } from "../../modules/webpack";
+import {
+  filters,
+  getExportsForProps,
+  getFunctionKeyBySource,
+  waitForModule,
+} from "../../modules/webpack";
 import { ObjectExports, RepluggedCommand } from "../../../types";
 
 import { commands, section as rpSection } from "../../apis/commands";
@@ -7,6 +12,18 @@ import { commands, section as rpSection } from "../../apis/commands";
 const injector = new Injector();
 
 export async function start(): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+  const BOT_AVATARS = getExportsForProps(
+    await waitForModule(filters.byProps("BOT_AVATARS")),
+    ["BOT_AVATARS"],
+  ) as Record<string, Record<string, string>>;
+  if (BOT_AVATARS) {
+    BOT_AVATARS.BOT_AVATARS.replugged = rpSection.icon;
+    console.log(BOT_AVATARS)
+  } else {
+    // make error
+  }
+
   interface ApplicationStoreType {
     [key: string]: (args: unknown) => {
       sectionDescriptors: Array<{ id: string }>;
