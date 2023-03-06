@@ -187,22 +187,22 @@ interface MoreMessages {
 
 export type Messages = SomeMessages & MoreMessages;
 
-const createMessages = await waitForModule(filters.bySource('username:"Clyde"'));
+const createMessages: ObjectExports = await waitForModule(filters.bySource('username:"Clyde"'));
 
 export default {
   ...(await waitForModule<RawModule & SomeMessages>(
     filters.byProps("sendMessage", "editMessage", "deleteMessage"),
   )),
   createBotMessage: getFunctionBySource<MoreMessages["createBotMessage"]>(
-    createMessages as ObjectExports,
+    createMessages,
     'username:"Clyde"',
-  ),
+  )!,
   createMessage: getFunctionBySource<MoreMessages["createMessage"]>(
-    createMessages as ObjectExports,
+    createMessages,
     "createMessage",
-  ),
+  )!,
   createSnowflake: getFunctionBySource<MoreMessages["createSnowflake"]>(
-    createMessages as ObjectExports,
+    createMessages,
     "now",
-  ),
+  )!,
 };
