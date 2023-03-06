@@ -8,6 +8,7 @@ import {
 import { ObjectExports, RepluggedCommand } from "../../../types";
 
 import { commands, section as rpSection } from "../../apis/commands";
+import { loadCommands } from "./commands";
 
 const injector = new Injector();
 
@@ -149,6 +150,8 @@ export async function start(): Promise<void> {
   } else {
     // make error
   }
+
+  loadCommands();
 }
 
 export function stop(): void {
