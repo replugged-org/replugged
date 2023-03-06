@@ -100,7 +100,7 @@ export interface TrackInviteOptions {
   overrideProperties: Properties;
 }
 
-export interface Messages {
+export interface Messages extends MessageStore {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => void;
   deleteMessage: (channelId: string, messageId: string) => void;
@@ -126,7 +126,7 @@ export interface Messages {
   sendGreetMessage: (
     channelId: string,
     stickerId: string,
-    i: {
+    options: {
       messageReference: MessageReference;
       allowedMentions: AllowedMentions;
       captchaPayload?: CaptchaPayload;
@@ -164,6 +164,19 @@ export interface Messages {
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 }
 
-export default await waitForModule<RawModule & Messages>(
-  filters.byProps("sendMessage", "editMessage", "deleteMessage"),
+export interface MessageStore {
+  getMessage: (channelId: string, messageId: string) => Message;
+  getMessages: (channelId: string) => Messages;
+}
+
+const MessageStore = await waitForModule<RawModule & MessageStore>(
+  filters.byProps("getMessage", "getMessages"),
 );
+
+export default {
+  ...(await waitForModule<RawModule & Messages>(
+    filters.byProps("sendMessage", "editMessage", "deleteMessage"),
+  )),
+  getMessage: MessageStore.getMessage,
+  getMessages: MessageStore.getMessages,
+} as Messages;
