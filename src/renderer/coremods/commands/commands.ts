@@ -45,7 +45,11 @@ const commands: RepluggedCommand[] = [
     ],
     executor: async (args) => {
       try {
-        await plugins.enable(args[0].value);
+        if (plugins.plugins.has(args[0].value)) {
+          await plugins.enable(args[0].value);
+        } else {
+          themes.enable(args[0].value);
+        }
         return {
           send: false,
           embeds: [
@@ -114,7 +118,11 @@ const commands: RepluggedCommand[] = [
     ],
     executor: async (args) => {
       try {
-        await plugins.disable(args[0].value);
+        if (plugins.plugins.has(args[0].value)) {
+          await plugins.disable(args[0].value);
+        } else {
+          themes.disable(args[0].value);
+        }
         return {
           send: false,
           embeds: [
