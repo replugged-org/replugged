@@ -1,5 +1,7 @@
 import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
+import type { GetButtonItem } from "../../types/coremods/message";
+import { addButton } from "../coremods/messagePopover";
 
 enum InjectionTypes {
   Before,
@@ -264,6 +266,47 @@ export class Injector {
     this.#uninjectors.add(uninjector);
     return uninjector;
   }
+
+  /**
+   * A few utils to add stuff in frequent modules.
+   */
+  public utils = {
+    /**
+     * A utility function to add a button to any message popover.
+     * @param item The function that creates the button to add
+     * @returns Uninject Function.
+     *
+     * @example
+     * ```
+     * import { Injector, webpack } from "replugged";
+     * const inject = new Injector();
+     *
+     * function start() {
+     *   injector.utils.addPopoverButton((msg: Message, channel: Channel) => {
+     *     return {
+     *       label: "Click the button!",
+     *       icon: <svg></svg>, // Cool icon
+     *       onClick: () => {
+     *         // do stuff here when someone left clicks the button
+     *       },
+     *       onContextMenu: () => {
+     *         // do other stuff here when someone right clicks the button
+     *       },
+     *     };
+     *   });
+     * }
+     *
+     * function stop() {
+     *   injector.uninjectAll();
+     * }
+     * ```
+     */
+    addPopoverButton: (item: GetButtonItem) => {
+      const uninjector = addButton(item);
+      this.#uninjectors.add(uninjector);
+      return uninjector;
+    },
+  };
 
   /**
    * Remove all injections made by this injector

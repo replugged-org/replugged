@@ -5,6 +5,7 @@ import { default as experimentsPlaintext } from "../coremods/experiments/plainte
 import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
 import { default as notrackPlaintext } from "../coremods/notrack/plaintextPatches";
 import { default as noDevtoolsWarningPlaintext } from "../coremods/noDevtoolsWarning/plaintextPatches";
+import { default as messagePopover } from "../coremods/messagePopover/plaintextPatches";
 
 interface Coremod {
   start?: () => Promisable<void>;
@@ -19,6 +20,7 @@ export namespace coremods {
   export let notrack: Coremod;
   export let installer: Coremod;
   export let commands: Coremod;
+  export let messagePopover: Coremod;
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
@@ -35,6 +37,7 @@ export async function startAll(): Promise<void> {
   coremods.badges = await import("../coremods/badges");
   coremods.installer = await import("../coremods/installer");
   coremods.commands = await import("../coremods/commands");
+  coremods.messagePopover = await import("../coremods/messagePopover");
   await Promise.allSettled(Object.values(coremods).map((c) => c.start?.()));
 }
 
@@ -43,7 +46,11 @@ export async function stopAll(): Promise<void> {
 }
 
 export function runPlaintextPatches(): void {
-  [experimentsPlaintext, settingsPlaintext, notrackPlaintext, noDevtoolsWarningPlaintext].forEach(
-    patchPlaintext,
-  );
+  [
+    experimentsPlaintext,
+    settingsPlaintext,
+    notrackPlaintext,
+    noDevtoolsWarningPlaintext,
+    messagePopover,
+  ].forEach(patchPlaintext);
 }
