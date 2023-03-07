@@ -27,14 +27,14 @@ const commands: RepluggedCommand[] = [
           choices.push(
             ...disabledPlugins.map((plugin) => ({
               name: plugin.manifest.name,
-              displayName: plugin.manifest.name,
+              displayName: `Plugin: ${plugin.manifest.name}`,
               value: plugin.manifest.id,
             })),
           );
           choices.push(
             ...disabledThemes.map((theme) => ({
               name: theme.manifest.name,
-              displayName: theme.manifest.name,
+              displayName: `Theme: ${theme.manifest.name}`,
               value: theme.manifest.id,
             })),
           );
@@ -100,14 +100,14 @@ const commands: RepluggedCommand[] = [
           choices.push(
             ...enabledPlugins.map((plugin) => ({
               name: plugin.manifest.name,
-              displayName: plugin.manifest.name,
+              displayName: `Plugin: ${plugin.manifest.name}`,
               value: plugin.manifest.id,
             })),
           );
           choices.push(
             ...enabledThemes.map((theme) => ({
               name: theme.manifest.name,
-              displayName: theme.manifest.name,
+              displayName: `Theme: ${theme.manifest.name}`,
               value: theme.manifest.id,
             })),
           );
@@ -131,6 +131,74 @@ const commands: RepluggedCommand[] = [
               color: 0x1bbb1b,
               title: "Success",
               description: `${args[0].value} has been disabled!`,
+            },
+          ],
+        };
+      } catch (err) {
+        return {
+          send: false,
+          embeds: [
+            {
+              type: "rich",
+              color: 0xdd2d2d,
+              title: "Error",
+              description: err,
+            },
+          ],
+        };
+      }
+    },
+  },
+  {
+    name: "reload",
+    description: "Reload a plugin or theme",
+    usage: "/reload <plugin/theme>",
+    options: [
+      {
+        name: "addon",
+        description: "Choose the addon you want to reload",
+        type: ApplicationCommandOptionType.String,
+        required: true,
+        get choices() {
+          let choices = [];
+
+          const enabledPlugins = Array.from(plugins.plugins.values());
+          const enabledThemes = Array.from(themes.themes.values());
+
+          choices.push(
+            ...enabledPlugins.map((plugin) => ({
+              name: plugin.manifest.name,
+              displayName: `Plugin: ${plugin.manifest.name}`,
+              value: plugin.manifest.id,
+            })),
+          );
+          choices.push(
+            ...enabledThemes.map((theme) => ({
+              name: theme.manifest.name,
+              displayName: `Theme: ${theme.manifest.name}`,
+              value: theme.manifest.id,
+            })),
+          );
+
+          return choices;
+        },
+      },
+    ],
+    executor: async (args) => {
+      try {
+        if (plugins.plugins.has(args[0].value)) {
+          await plugins.reload(args[0].value);
+        } else {
+          themes.reload(args[0].value);
+        }
+        return {
+          send: false,
+          embeds: [
+            {
+              type: "rich",
+              color: 0x1bbb1b,
+              title: "Success",
+              description: `${args[0].value} has been reloaded!`,
             },
           ],
         };
