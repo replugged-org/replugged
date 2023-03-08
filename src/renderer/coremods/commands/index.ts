@@ -113,7 +113,7 @@ export async function start(): Promise<void> {
       for (const command of commands.values()) {
         const exists = res.some((c) => c.id === command.id);
 
-        if (exists || !command.name.startsWith(query)) {
+        if (exists || !command.name.toLowerCase().includes(query.toLowerCase())) {
           continue;
         }
 
