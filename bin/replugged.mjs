@@ -1,17 +1,40 @@
 const directory = process.cwd();
-const asar = require("@electron/asar");
-const { Parcel } = require("@parcel/core");
-const {
-  cpSync,
-  rmSync,
-  writeFileSync,
+import asar from "@electron/asar";
+import { Parcel } from "@parcel/core";
+import {
   copyFileSync,
+  cpSync,
   existsSync,
   mkdirSync,
   readFileSync,
-} = require("fs");
-const esbuild = require("esbuild");
-const { join } = require("path");
+  rmSync,
+  writeFileSync,
+} from "fs";
+import esbuild from "esbuild";
+import { dirname as dirnameFn, join } from "path";
+import updateNotifier from "update-notifier";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
+import chalk from "chalk";
+
+const dirname = dirnameFn(new URL(import.meta.url).pathname);
+
+const packageJson = JSON.parse(readFileSync(join(dirname, "../package.json"), "utf-8"));
+
+const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
+  " → ",
+)}${chalk.green("{latestVersion}")} \nRun ${chalk.cyan("pnpm i -D replugged")} to update`;
+
+const notifier = updateNotifier({
+  pkg: packageJson,
+  shouldNotifyInNpmScript: true,
+});
+
+function sendUpdateNotification() {
+  notifier.notify({
+    message: updateMessage,
+  });
+}
 
 async function bundleAddon(buildFn) {
   if (existsSync("dist")) {
@@ -31,8 +54,10 @@ async function bundleAddon(buildFn) {
   console.log(`Bundled ${manifest.name}`);
 }
 
-function buildPlugin({ watch, noInstall, production }) {
-  const manifest = require(join(directory, "./manifest.json"));
+async function buildPlugin({ watch, noInstall, production }) {
+  const manifest = await import(join(directory, "./manifest.json"), {
+    assert: { type: "json" },
+  });
   const CHROME_VERSION = "91";
   const REPLUGGED_FOLDER_NAME = "replugged";
   const globalModules = {
@@ -152,8 +177,10 @@ function buildPlugin({ watch, noInstall, production }) {
   return Promise.all(targets);
 }
 
-function buildTheme({ watch: shouldWatch, noInstall, production }) {
-  const manifest = require(join(directory, "./manifest.json"));
+async function buildTheme({ watch: shouldWatch, noInstall, production }) {
+  const manifest = await import(join(directory, "./manifest.json"), {
+    assert: { type: "json" },
+  });
 
   const main = manifest.main || "src/main.css";
   const splash = manifest.splash || (existsSync("src/splash.css") ? "src/splash.css" : undefined);
@@ -256,7 +283,7 @@ function buildTheme({ watch: shouldWatch, noInstall, production }) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { argv } = require("yargs")
+const { argv } = yargs(hideBin(process.argv))
   .scriptName("replugged")
   .usage("$0 <cmd> [args]")
   .command(
@@ -291,6 +318,7 @@ const { argv } = require("yargs")
       } else {
         console.log("Invalid addon type.");
       }
+      sendUpdateNotification();
     },
   )
   .command(
@@ -310,6 +338,7 @@ const { argv } = require("yargs")
       } else {
         console.log("Invalid addon type.");
       }
+      sendUpdateNotification();
     },
   )
   .parserConfiguration({
