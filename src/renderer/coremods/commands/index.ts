@@ -55,9 +55,9 @@ export async function start(): Promise<void> {
       )
         res.commands = Array.isArray(res.commands)
           ? [
-              ...res.commands.filter((command) => !Array.from(commands.values()).includes(command)),
-              ...Array.from(commands.values()),
-            ]
+            ...res.commands.filter((command) => !Array.from(commands.values()).includes(command)),
+            ...Array.from(commands.values()),
+          ]
           : Array.from(commands.values());
       return res;
     },
@@ -113,7 +113,7 @@ export async function start(): Promise<void> {
       for (const command of commands.values()) {
         const exists = res.some((c) => c.id === command.id);
 
-        if (exists || !query.includes(command.name)) {
+        if (exists || !command.name.startsWith(query)) {
           continue;
         }
 
