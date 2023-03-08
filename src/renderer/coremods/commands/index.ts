@@ -113,14 +113,14 @@ export async function start(): Promise<void> {
       for (const command of commands.values()) {
         const exists = res.some((c) => c.id === command.id);
 
-        if (exists || !query.includes(command.name)) {
+        if (exists || !command.name.includes(query)) {
           continue;
         }
 
         try {
           res.unshift(command);
         } catch {
-          res = [...res, command];
+          res = [command, ...res];
         }
       }
 
