@@ -7,12 +7,12 @@ import { messages } from "../../modules/i18n";
 const defaultLocale = "en-US";
 const weblateUrl = "https://i18n.replugged.dev";
 
-const percentages = new Map();
+export const percentages = new Map<string, number>();
 
 export function Card(): React.ReactElement {
   return (
     <FormNotice
-      title="Replugged Translations"
+      title={Messages.REPLUGGED_I18N}
       body={Messages.REPLUGGED_I18N_CONTRIBUTE.format({ weblateUrl })}
       type={FormNotice.Types.PRIMARY}
       style={{ marginBottom: 20 }}
@@ -25,8 +25,8 @@ export function Percentage(
   localizedName: React.ReactElement,
   flag: React.ReactElement,
 ): React.ReactElement {
-  const name = localeName.props.children;
-  const locale = i18n.getLanguages().find((language) => language.name === name)?.code;
+  const name = localeName.props.children as string;
+  const locale = i18n.getLanguages().find((language) => language.name === name)!.code;
   const percentage = percentages.get(locale);
 
   return (
@@ -47,7 +47,8 @@ export function start(): void {
   const totalStrCount = Object.keys(messages.get(defaultLocale)).length;
 
   messages.forEach((strings, locale) => {
-    const percentage = Math.floor((Object.keys(strings).length / totalStrCount) * 100);
+    const strCount = Object.values(strings).filter((str) => str !== "").length;
+    const percentage = Math.floor((strCount / totalStrCount) * 100);
     percentages.set(locale, percentage);
   });
 }

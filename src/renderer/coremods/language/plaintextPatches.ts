@@ -5,7 +5,7 @@ export default [
     find: "getAvailableLocales",
     replacements: [
       {
-        match: /\.Messages\.LANGUAGE,children:([^}]*}[^}]*}[^}]*}[^}]*)/,
+        match: /\.Messages\.LANGUAGE,children:((?:[^}]*}){3}[^}]*)/,
         replace: (_, ogChild) =>
           `.Messages.LANGUAGE,children:[replugged.coremods.coremods.language.Card(),${ogChild}]`,
       },
