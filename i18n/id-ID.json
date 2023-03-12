@@ -10,7 +10,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Booster Server Replugged",
     "REPLUGGED_COMMAND_PREFIX": "Awalan Perintah",
     "REPLUGGED_GENERAL_SETTINGS": "Pengaturan Umum",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Ingin membantu menerjemahkan Replugged? Pergi ke [Weblate]({weblateUrl}) kami!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Ingin membantu menerjemahkan Replugged? Pergi ke [Weblate]({weblateUrl}) kami!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% diterjemahkan",
     "REPLUGGED_LINK_NOW": "Sambungkan sekarang",
     "REPLUGGED_PLUGINS": "Plugin",

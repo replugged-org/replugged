@@ -9,7 +9,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Mejorador del servidor de Replugged",
     "REPLUGGED_COMMAND_PREFIX": "Prefijo de Comando",
     "REPLUGGED_GENERAL_SETTINGS": "Configuración general",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! ¿Quieres ayudar a traducir Replugged? ¡Ve a nuestro [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "¿Quieres ayudar a traducir Replugged? ¡Ve a nuestro [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% traducido",
     "REPLUGGED_LINK_NOW": "Vincular ahora",
     "REPLUGGED_PLUGINS": "Complementos",
@@ -207,5 +207,6 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Actualización",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[MODO DESARROLLADOR]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Habilitar insignias de Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Mostrar insignias personalizadas de Replugged en los perfiles de usuario"
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Mostrar insignias personalizadas de Replugged en los perfiles de usuario",
+    "REPLUGGED_I18N": "Traducciones de Replugged"
 }

@@ -101,7 +101,12 @@ export interface TrackInviteOptions {
   overrideProperties: Properties;
 }
 
-interface SomeMessages {
+export interface MessageStore {
+  getMessage: (channelId: string, messageId: string) => Message;
+  getMessages: (channelId: string) => Messages;
+}
+
+export interface Messages extends MessageStore {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => void;
   deleteMessage: (channelId: string, messageId: string) => void;
@@ -127,7 +132,7 @@ interface SomeMessages {
   sendGreetMessage: (
     channelId: string,
     stickerId: string,
-    i: {
+    options: {
       messageReference: MessageReference;
       allowedMentions: AllowedMentions;
       captchaPayload?: CaptchaPayload;
@@ -165,7 +170,7 @@ interface SomeMessages {
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 }
 
-interface MoreMessages {
+interface CreateMessages {
   createBotMessage: (args: {
     channelId: string;
     content: string;
@@ -184,22 +189,25 @@ interface MoreMessages {
   }) => Message;
   createSnowflake: () => string;
 }
-
-export type Messages = SomeMessages & MoreMessages;
-
 const createMessages: ObjectExports = await waitForModule(filters.bySource('username:"Clyde"'));
 
+const MessageStore = await waitForModule<RawModule & MessageStore>(
+  filters.byProps("getMessage", "getMessages"),
+);
+
 export default {
-  ...(await waitForModule<RawModule & SomeMessages>(
+  ...(await waitForModule<RawModule & Messages>(
     filters.byProps("sendMessage", "editMessage", "deleteMessage"),
   )),
-  createBotMessage: getFunctionBySource<MoreMessages["createBotMessage"]>(
+  getMessage: MessageStore.getMessage,
+  getMessages: MessageStore.getMessages,
+  createBotMessage: getFunctionBySource<CreateMessages["createBotMessage"]>(
     createMessages,
     'username:"Clyde"',
   )!,
-  createMessage: getFunctionBySource<MoreMessages["createMessage"]>(
+  createMessage: getFunctionBySource<CreateMessages["createMessage"]>(
     createMessages,
     "createMessage",
   )!,
-  createSnowflake: getFunctionBySource<MoreMessages["createSnowflake"]>(createMessages, "now")!,
-};
+  createSnowflake: getFunctionBySource<CreateMessages["createSnowflake"]>(createMessages, "now")!,
+} as Messages;

@@ -14,7 +14,7 @@
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% tərcümə edildi",
     "REPLUGGED_LINK_NOW": "İndi əlaqələndirin",
     "REPLUGGED_PLUGINS": "Pluginlər",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Replugged tərcüməsinə kömək etmək istəyirsiniz? [Weblate]({weblateUrl}) səhifəmizə keçin!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Replugged tərcüməsinə kömək etmək istəyirsiniz? [Weblate]({weblateUrl}) səhifəmizə keçin!",
     "REPLUGGED_SETTINGS_ADVANCED_DESC": "Nə etdiyinizi bilmirsinizsə, buradakı əşyalara toxunmayın. Pişikinizin başına gözlənilməz hadisələr gələ bilər.",
     "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
     "REPLUGGED_SETTINGS_BACKEND_DESC": "URL bəzi aktivləri əldə etmək və Replugged-in REST API-sini sorğulamaq üçün istifadə olunur.",

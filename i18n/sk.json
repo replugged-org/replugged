@@ -11,7 +11,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Booster servera Replugged",
     "REPLUGGED_COMMAND_PREFIX": "Prefix pre príkazy",
     "REPLUGGED_GENERAL_SETTINGS": "Všeobecné nastavenia",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Chceš pomôcť s prekladom Repluggedu? Choď na náš [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Chceš pomôcť s prekladom Repluggedu? Choď na náš [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% preložené",
     "REPLUGGED_PLUGINS": "Pluginy",
     "REPLUGGED_QUICKCSS": "Rýchle nastavenie CSS",
