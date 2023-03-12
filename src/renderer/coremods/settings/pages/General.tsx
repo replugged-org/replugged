@@ -1,10 +1,20 @@
 import { modal } from "@common";
 import React from "@common/react";
-import { Button, Divider, Flex, FormItem, SwitchItem, Text, TextInput } from "@components";
+import {
+  Button,
+  ButtonItem,
+  Divider,
+  Flex,
+  FormItem,
+  SwitchItem,
+  Text,
+  TextInput,
+} from "@components";
 import * as settings from "../../../apis/settings";
 import * as util from "../../../util";
 import { Messages } from "@common/i18n";
 import { type GeneralSettings, defaultSettings } from "src/types";
+import { initWs, socket } from "../../devCompanion";
 
 export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
@@ -96,6 +106,16 @@ export const General = (): React.ReactElement => {
         note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}>
         {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
       </SwitchItem>
+
+      <ButtonItem
+        button="Reconnect"
+        note="Reconnects the Dev Companion coremod to the VSCode extension."
+        onClick={() => {
+          socket?.close(1000, "Reconnecting");
+          initWs(true);
+        }}>
+        Reconnect Dev Companion
+      </ButtonItem>
 
       {/* Sleeping? Wake up. */}
       {isEasterEgg && (
