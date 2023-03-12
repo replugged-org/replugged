@@ -10,7 +10,7 @@
     "REPLUGGED_BADGES_TRANSLATOR": "Traducător Replugged",
     "REPLUGGED_BADGES_BOOSTER": "Stimulator Server Replugged",
     "REPLUGGED_COMMAND_PREFIX": "Prefix Comandă",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Dorești să ajuți cu traducerea la Reppluged? Accesează [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Dorești să ajuți cu traducerea la Reppluged? Accesează [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% tradus",
     "REPLUGGED_LINK_NOW": "Conectează-l acum",
     "REPLUGGED_PLUGINS": "Plugin-uri",
