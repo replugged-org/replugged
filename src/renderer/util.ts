@@ -207,3 +207,58 @@ export function useSetting<
     },
   };
 }
+
+// Credit to @Vendicated - https://github.com/Vendicated/virtual-merge
+
+type UnionToIntersection<U> = (U extends never ? never : (k: U) => void) extends (
+  k: infer I,
+) => void
+  ? I
+  : never;
+
+type ObjectType = Record<string, unknown>;
+
+type ExtractObjectType<O extends ObjectType[]> = O extends Array<infer T>
+  ? UnionToIntersection<T>
+  : never;
+
+export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObjectType<O> {
+  const fallback = {};
+
+  function findObjectByProp(prop: PropertyKey): ObjectType {
+    for (const object of objects) {
+      if (prop in object) return object;
+    }
+    return fallback;
+  }
+
+  const handler: ProxyHandler<ExtractObjectType<O>> = {
+    ownKeys() {
+      return objects.map((obj) => Reflect.ownKeys(obj)).flat();
+    },
+  };
+
+  for (const method of [
+    "defineProperty",
+    "deleteProperty",
+    "get",
+    "getOwnPropertyDescriptor",
+    "has",
+    "set",
+  ] as const) {
+    // @ts-expect-error Type is ok
+    handler[method] = function (_: unknown, ...args: unknown[]) {
+      if (method === "get" && args[0] === "all") {
+        // Return function that returns all objects combined
+        // For use in devtools to see everything available
+        return () => objects.reduce((acc, obj) => ({ ...acc, ...obj }), {});
+      }
+      return Reflect[method](
+        findObjectByProp(args[0] as PropertyKey),
+        // @ts-expect-error It's ok that it's not a tuple
+        ...args,
+      )!;
+    };
+  }
+  return new Proxy(fallback, handler) as ExtractObjectType<O>;
+}
