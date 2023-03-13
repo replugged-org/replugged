@@ -213,7 +213,7 @@ export function useSetting<
 type UnionToIntersection<U> = (U extends never ? never : (k: U) => void) extends (
   k: infer I,
 ) => void
-  ? I
+  ? I & { all: () => I }
   : never;
 
 type ObjectType = Record<string, unknown>;
