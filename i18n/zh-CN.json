@@ -128,5 +128,6 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_ARCH": "系统结构：",
     "REPLUGGED_THEME": "主题",
     "REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC": "设置同步：",
-    "REPLUGGED_VERSION": "Replugged {version, select, dev {[开发模式]} other {v{version}}}"
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[开发模式]} other {v{version}}}",
+    "REPLUGGED_I18N": "Replugged 翻译"
 }
