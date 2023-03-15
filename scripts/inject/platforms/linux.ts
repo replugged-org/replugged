@@ -23,6 +23,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
   const KnownLinuxPaths = {
     stable: [
       "/usr/share/discord",
+      "/usr/lib/discord",
       "/usr/lib64/discord",
       "/opt/discord",
       "/opt/Discord",
@@ -32,6 +33,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
     ],
     ptb: [
       "/usr/share/discord-ptb",
+      "/usr/lib/discord-ptb",
       "/usr/lib64/discord-ptb",
       "/opt/discord-ptb",
       "/opt/DiscordPTB",
@@ -39,6 +41,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
     ],
     canary: [
       "/usr/share/discord-canary",
+      "/usr/lib/discord-canary",
       "/usr/lib64/discord-canary",
       "/opt/discord-canary",
       "/opt/DiscordCanary",
@@ -48,6 +51,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
     ],
     dev: [
       "/usr/share/discord-development",
+      "/usr/lib/discord-development",
       "/usr/lib64/discord-development",
       "/opt/discord-development",
       "/opt/DiscordDevelopment",
