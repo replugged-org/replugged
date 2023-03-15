@@ -12,5 +12,6 @@
   "eslint.format.enable": true,
   "conventionalCommits.gitmoji": false,
   "conventionalCommits.promptFooter": false,
-  "conventionalCommits.promptBody": false
+  "conventionalCommits.promptBody": false,
+  "git.commandsToLog": ["commit"]
 }
