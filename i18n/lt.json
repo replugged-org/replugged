@@ -13,7 +13,7 @@
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "„Replugged“: išversta {translated,number}%",
     "REPLUGGED_LINK_NOW": "Prijunk dabar",
     "REPLUGGED_PLUGINS": "Įskiepiai",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Nori padėti išversti „Replugged“? Peržiūrėk mūsų [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Nori padėti išversti „Replugged“? Peržiūrėk mūsų [Weblate]({weblateUrl})!",
     "REPLUGGED_QUICKCSS": "Greitasis CSS",
     "REPLUGGED_SETTINGS_ADVANCED_DESC": "Neliesk čia esančių jungiklių, jei nežinai, ką darai. Kitaip tavo katei gali kažkas atsitikti.",
     "REPLUGGED_SETTINGS_BACKEND": "\"Backend\" nuoroda",

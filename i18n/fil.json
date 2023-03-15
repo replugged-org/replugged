@@ -15,7 +15,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Na-replug na Server Booster",
     "REPLUGGED_COMMAND_PREFIX": "Unlapi ng Utos",
     "REPLUGGED_GENERAL_SETTINGS": "Pangkalahatang na Settings",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Gusto mo tumulong i-translate ang Replugged? Punta ka sa [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Gusto mo tumulong i-translate ang Replugged? Punta ka sa [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% na ang na-translate",
     "REPLUGGED_SETTINGS_ADVANCED_DESC": "",
     "REPLUGGED_SETTINGS_BACKEND_DESC": "",

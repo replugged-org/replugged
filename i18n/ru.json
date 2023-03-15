@@ -9,7 +9,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Бустер сервера Replugged",
     "REPLUGGED_COMMAND_PREFIX": "Префикс Команд",
     "REPLUGGED_GENERAL_SETTINGS": "Основные настройки",
-    "REPLUGGED_I18N_CONTRIBUTE": "Пссс! Хочешь помочь перевести Replugged? Заходи на наш [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Хочешь помочь перевести Replugged? Заходи на наш [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% переведено",
     "REPLUGGED_LINK_NOW": "Привязать сейчас",
     "REPLUGGED_PLUGINS": "Плагины",
@@ -207,5 +207,6 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Обновление",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[РЕЖИМ РАЗРАБОТЧИКА]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Включить Значки Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Показывать значки Replugged на профилях пользователей"
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Показывать значки Replugged на профилях пользователей",
+    "REPLUGGED_I18N": "Перевод Replugged"
 }

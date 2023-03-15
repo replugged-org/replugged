@@ -1,3 +1,5 @@
+/// <reference types="standalone-electron-types"/>
+
 // TODO: Scope global types to each component
 
 import type { WebpackChunkGlobal } from "./types/discord";

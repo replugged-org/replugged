@@ -14,7 +14,7 @@
     "REPLUGGED_QUICKCSS": "Quick CSS",
     "REPLUGGED_ACCOUNT": "Replugged Account",
     "REPLUGGED_BADGES_CONTRIBUTOR": "Replugged Contributor",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Want to help translate Replugged? Go to our [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Want to help translate Replugged? Go to our [Weblate]({weblateUrl})!",
     "REPLUGGED_SETTINGS_ADVANCED_DESC": "Don't touch stuff in here if you don't know what you're doing. Unexpected things can happen to your cat.",
     "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
     "REPLUGGED_SETTINGS_BACKEND_DESC": "URL used to fetch some assets and to query Replugged's REST API.",
@@ -207,5 +207,6 @@
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} requires a reload to work properly. Reload now?",
     "REPLUGGED_RELOAD": "Reload",
     "REPLUGGED_SETTINGS_BADGES": "Enable Replugged Badges",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles"
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles",
+    "REPLUGGED_I18N": "Replugged Translations"
 }

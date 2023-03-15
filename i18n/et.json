@@ -13,7 +13,7 @@
     "REPLUGGED_QUICKCSS": "Kiire CSS",
     "REPLUGGED_ACCOUNT": "Replugged Kasutaja",
     "REPLUGGED_BADGES_SUPPORT": "Replugged Toetaja",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Tahad aidata tõlkida Replugged'i? Mine meie [Weblate]({weblateUrl}) lehele!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Tahad aidata tõlkida Replugged'i? Mine meie [Weblate]({weblateUrl}) lehele!",
     "REPLUGGED_SETTINGS_OVERLAY": "Ülekatte DevTools",
     "REPLUGGED_SETTINGS_OVERLAY_DESC": "Avab DevTools'i akna, mis võimaldab teil kontrollida, mis Discord'i mängusiseses ülekattes toimub.",
     "REPLUGGED_UPDATES_AVAILABLE": "",
