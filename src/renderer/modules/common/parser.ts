@@ -10,7 +10,7 @@ export interface Rule<T = any> {
   order: number;
   match: (source: string, state: State) => RegExpExecArray | null;
   parse: (match: RegExpExecArray) => T;
-  react: (props: T) => React.ReactElement;
+  react: (props: T, ...rest: unknown[]) => React.ReactElement;
 }
 
 interface ParseOpts {
