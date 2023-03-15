@@ -32,7 +32,7 @@
     "REPLUGGED_SETTINGS_KEEP_TOKEN": "Hoidke žetoon salvestatud",
     "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Takistab Discordil teie žetooni eemaldamist localStorage'ist, vähendades soovimatute väljalogimiste arvu.",
     "REPLUGGED_SETTINGS_NO_CLYDE": "Likvideerige Clyde",
-    "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Asendab käsu [Clyde]({clydeUrl}) Replugged'i käskudes erinevate avatarite ja kasutajanimedega, mille on valinud pistikprogrammide arendajad – vaikimisi naaseb valikule \"Replugged\".",
+    "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Asendab käsu [Clyde]({clydeUrl}) Replugged'i käskudes erinevate avatarite ja kasutajanimedega, mille on valinud pistikprogrammide arendajad - vaikimisi naaseb valikule \"Replugged\".",
     "REPLUGGED_SETTINGS_RESTART": "Selle sätte jõustumiseks peate Discord'i taaskäivitama. Kas soovite Discord'i kohe taaskäivitada?",
     "REPLUGGED_SNIPPET_APPLIED": "Väljavõte Rakendatud",
     "REPLUGGED_SNIPPET_APPLY": "Rakenda Väljavõte",
