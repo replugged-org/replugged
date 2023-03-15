@@ -1,6 +1,7 @@
 import { filters, getExportsForProps, waitForModule } from "../webpack";
 import type { Guild } from "discord-types/general";
 import type { Store } from "./flux";
+import { virtualMerge } from "src/renderer/util";
 
 export interface State {
   selectedGuildTimestampMillis: number;
@@ -8,7 +9,7 @@ export interface State {
   lastSelectedGuildId: string;
 }
 
-export interface Guilds extends Store {
+export type Guilds = (Store & Record<string, unknown>) & {
   getCurrentGuild: () => Guild | undefined;
   getGuild: (guildId?: string) => Guild | undefined;
   getGuildCount: () => number;
@@ -19,7 +20,7 @@ export interface Guilds extends Store {
   getState: () => State;
   getTabsV2SelectedGuildId: () => string | undefined;
   isLoaded: () => boolean;
-}
+};
 
 const guilds: Guilds = {
   ...(await waitForModule(filters.byProps("getGuild", "getGuilds")).then(Object.getPrototypeOf)),
@@ -32,7 +33,4 @@ export function getCurrentGuild(): Guild | undefined {
   return guilds.getGuild(guilds.getGuildId());
 }
 
-export default {
-  ...guilds,
-  getCurrentGuild,
-} as Guilds;
+export default virtualMerge(guilds, { getCurrentGuild });

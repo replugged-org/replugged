@@ -1,13 +1,14 @@
 import { waitForProps } from "../webpack";
 import type { Store } from "./flux";
 import { Channel } from "discord-types/general";
+import { virtualMerge } from "src/renderer/util";
 
 export interface LastChannelFollowingDestination {
   channelId: string;
   guildId: string;
 }
 
-export interface Channels extends Store {
+export type SelectedChannelStore = (Store & Record<string, unknown>) & {
   // Selected Channel Store
   getChannelId: (guildId?: string) => string | undefined;
   getCurrentlySelectedChannelId: (guildId?: string) => string | undefined;
@@ -16,7 +17,9 @@ export interface Channels extends Store {
   getLastSelectedChannels: (guildId?: string) => string | undefined;
   getMostRecentSelectedTextChannelId: (guildId?: string) => string | undefined;
   getVoiceChannelId: () => string | undefined;
+};
 
+export type ChannelStore = (Store & Record<string, unknown>) & {
   // ChannelStore
   getAllThreadsForParent(channelId: string): Channel[];
   getBasicChannel(channelId: string): Channel[];
@@ -34,11 +37,13 @@ export interface Channels extends Store {
   hasChannel(channelId: string): boolean;
   hasRestoredGuild(): boolean;
   loadAllGuildAndPrivateChannelsFromDisk(): Channel[];
-}
+};
 
-export default {
-  ...(await waitForProps("getChannelId", "getLastSelectedChannelId", "getVoiceChannelId").then(
+export type Channels = SelectedChannelStore & ChannelStore;
+
+export default virtualMerge(
+  (await waitForProps("getChannelId", "getLastSelectedChannelId", "getVoiceChannelId").then(
     Object.getPrototypeOf,
-  )),
-  ...(await waitForProps("getChannel", "hasChannel").then(Object.getPrototypeOf)),
-} as Channels;
+  )) as SelectedChannelStore,
+  (await waitForProps("getChannel", "hasChannel").then(Object.getPrototypeOf)) as ChannelStore,
+);
