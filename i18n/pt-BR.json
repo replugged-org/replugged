@@ -196,7 +196,7 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Todas as atualizações foram completadas com sucesso.",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} requer que seja recarregado para funcionar com sucesso. Recarregar agora?",
     "REPLUGGED_RELOAD": "Recarregar",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# match} other {# matches}}",
+    "REPLUGGED_LIST_RESULTS": "",
     "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED": "Falha ao instalar {name}.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED": "{name} foi instalado, mas não pôde ser carregado.",
     "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS": "{name} instalado com sucesso.",

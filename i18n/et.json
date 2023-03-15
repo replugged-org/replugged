@@ -140,7 +140,7 @@
     "REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL": "Vigane URL! Määrake kehtiv GitHubi URL või kasutajanimi/hoidla.",
     "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "Taotletud pistikprogrammi või teemat ei leitud või see on kehtetu.",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Prindib välja praegu installitud pistikprogrammide loendi.",
-    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Installitud {type} ({count}",
+    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Installitud {type} ({count})",
     "REPLUGGED_COMMAND_THEMES_DESC": "Prindib välja praegu installitud teemade loendi.",
     "REPLUGGED_SETTINGS_ERROR_HEADER": "Selle elemendi renderdamisel läks midagi valesti!",
     "REPLUGGED_SETTINGS_ERROR_RENDER_PANEL": "Seadete paneeli renderdamisel ilmnes viga.",

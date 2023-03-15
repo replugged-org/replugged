@@ -79,7 +79,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_COMMANDS": "Komennot:",
     "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" otettu käyttöön!",
     "REPLUGGED_COMMAND_ECHO_DESC": "Palauttaa määritellyt argumentit.",
-    "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id} ladattu uudestaan!",
+    "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id}\" ladattu uudestaan!",
     "REPLUGGED_COMMAND_UNINSTALL_DESC": "Poista pluginin/teeman asennus",
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "Virhe tapahtui seuraavaa komentoa suorittaessa:",
     "REPLUGGED_COMMAND_HELP_DESC": "Antaa sinulle luettelon komennoista tai tietoa jostain tietystä komennosta.",

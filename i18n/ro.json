@@ -92,7 +92,7 @@
     "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "Tema sau pluginul cerut nu poate fi găsit sau este invalid.",
     "REPLUGGED_COMMAND_HELP_COMMAND_FOOTER": "Inheritat de la \"{commandOrigin}\".",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Printează o listă cu pluginurile instalate.",
-    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Listă de {type} ({count} instalate",
+    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Listă de {type} ({count}) instalate",
     "REPLUGGED_COMMAND_RELOAD_DESC": "Reîncarcă un plugin/temă",
     "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id}\" reîncărcat!",
     "REPLUGGED_COMMAND_SAY_DESC": "Trimite argumentele specificate.",

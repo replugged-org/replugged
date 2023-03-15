@@ -29,7 +29,7 @@
     "REPLUGGED_SETTINGS_RESTART": "이 설정은 디스코드를 재시작해야 활성화돼요. 지금 디스코드를 재시작할까요?",
     "REPLUGGED_SNIPPET_APPLIED": "스니펫 적용됨",
     "REPLUGGED_SNIPPET_APPLY": "스니펫 적용",
-    "REPLUGGED_SNIPPET_LINE1": "Snippet from #css-snippets applied the {date, date, medium} at {date, time, medium}",
+    "REPLUGGED_SNIPPET_LINE1": "",
     "REPLUGGED_SNIPPET_LINE2": "{authorTag} ({authorId}) 제작",
     "REPLUGGED_THEMES": "테마",
     "REPLUGGED_UPDATES_AVAILABLE": "사용 가능한 {count, plural, =1 {# 업데이트} other {# 업데이트}}가 있어요.",

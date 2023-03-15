@@ -28,7 +28,7 @@
     "REPLUGGED_SNIPPET_APPLIED": "",
     "REPLUGGED_SNIPPET_APPLY": "החל קטע קוד",
     "REPLUGGED_SNIPPET_LINE1": "קטע קוד מ#css-snippets החיל את {date, date, medium} ב {date, time, medium}",
-    "REPLUGGED_SNIPPET_LINE2": "נוצר ע\"י {authorTag} {authorId}",
+    "REPLUGGED_SNIPPET_LINE2": "נוצר ע\"י {authorTag} ({authorId})",
     "REPLUGGED_THEMES": "ערכות נושא",
     "REPLUGGED_UPDATES_AVAILABLE": "",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "נדרשת טעינה מחדש",
