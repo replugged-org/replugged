@@ -187,5 +187,18 @@
     "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS": "{name} asennettiin onnistuneesti.",
     "REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS": "{name} Poistettiin Käytöstä",
     "REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS": "{name} Otettiin Käyttöön",
-    "REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED": "Lisäosan tietojen saaminen epäonnistui."
+    "REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED": "Lisäosan tietojen saaminen epäonnistui.",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Päivitys",
+    "REPLUGGED_SETTINGS_BADGES": "Ota Replugged merkit käyttöön",
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[KEHITTÄJÄTILA]} other {v{version}}}",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Näytä mukautetut Replugged merkit käyttäjäprofiileissa",
+    "REPLUGGED_RELOAD": "Lataa uudelleen",
+    "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} vaatii uudelleen käynnistyksen toimiakseen oikein. Halutko käynnistää uudelleen nyt?",
+    "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Kaikki päivitykset suoritettu onnistuneesti.",
+    "REPLUGGED_UPDATES_UPDATE_TO": "Päivitä versioon {version}",
+    "REPLUGGED_UPDATES_TOAST_NO_NEW": "Ei uusia päivityksiä saatavilla.",
+    "REPLUGGED_UPDATES_TOAST_FAILED_ONE": "Päivitys epäonnistui!",
+    "REPLUGGED_UPDATES_TOAST_FAILED_ALL": "Jotkut päivitykset epäonnistuivat!",
+    "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Päivitys suoritettu onnistuneesti.",
+    "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# uusi päivitys} other {# uutta päivitystä}} saatavilla!"
 }
