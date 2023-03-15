@@ -9,7 +9,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Replugged-palvelimen nostattaja",
     "REPLUGGED_COMMAND_PREFIX": "Komentoetuliite",
     "REPLUGGED_GENERAL_SETTINGS": "Yleiset asetukset",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Haluatko auttaa kääntämään Repluggedia? Mene meidän [Weblateen]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Haluatko auttaa kääntämään Repluggedia? Mene meidän [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% käännetty",
     "REPLUGGED_LINK_NOW": "Linkitä se nyt",
     "REPLUGGED_PLUGINS": "Pluginit",

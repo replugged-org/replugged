@@ -11,7 +11,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Replugged 伺服器加成者",
     "REPLUGGED_COMMAND_PREFIX": "命令前缀",
     "REPLUGGED_GENERAL_SETTINGS": "一般设定",
-    "REPLUGGED_I18N_CONTRIBUTE": "嘿！想帮忙翻译Replugged吗？到我们的[Weblate]({weblateUrl})！",
+    "REPLUGGED_I18N_CONTRIBUTE": "想帮忙翻译Replugged吗？到我们的[Weblate]({weblateUrl})！",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged：{translated,number}% 已翻译",
     "REPLUGGED_LINK_NOW": "立即连接",
     "REPLUGGED_QUICKCSS": "Quick CSS",
@@ -128,5 +128,6 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_ARCH": "系统结构：",
     "REPLUGGED_THEME": "主题",
     "REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC": "设置同步：",
-    "REPLUGGED_VERSION": "Replugged {version, select, dev {[开发模式]} other {v{version}}}"
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[开发模式]} other {v{version}}}",
+    "REPLUGGED_I18N": "Replugged 翻译"
 }

@@ -9,7 +9,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Impulsionador do Replugged",
     "REPLUGGED_COMMAND_PREFIX": "Prefixo de Comando",
     "REPLUGGED_GENERAL_SETTINGS": "Configurações gerais",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psiu! Quer ajudar a traduzir o Replugged? Venha ao nosso [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Quer ajudar a traduzir o Replugged? Venha ao nosso [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% traduzido",
     "REPLUGGED_LINK_NOW": "Vincular agora",
     "REPLUGGED_PLUGINS": "Plugins",

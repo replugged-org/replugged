@@ -11,7 +11,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Ενισχυτής του Διακομιστή Replugged",
     "REPLUGGED_COMMAND_PREFIX": "Πρόθεμα εντολής",
     "REPLUGGED_GENERAL_SETTINGS": "Γενικές Ρυθμίσεις",
-    "REPLUGGED_I18N_CONTRIBUTE": "Ψιιτ! Θέλετε να βοηθήσετε στη μετάφραση του Replugged; Πηγαίνετε στο δικό μας [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Θέλετε να βοηθήσετε στη μετάφραση του Replugged; Πηγαίνετε στο δικό μας [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% μεταφρασμένο",
     "REPLUGGED_LINK_NOW": "Συνδέστε τον τώρα",
     "REPLUGGED_PLUGINS": "Πρόσθετα",
