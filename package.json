@@ -84,6 +84,6 @@
     "zod": "^3.19.1"
   },
   "bin": {
-    "replugged": "bin/replugged.js"
+    "replugged": "bin/replugged.mjs"
   }
 }
