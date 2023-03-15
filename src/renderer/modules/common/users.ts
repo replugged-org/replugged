@@ -1,11 +1,13 @@
 import { filters, getExportsForProps, waitForModule } from "../webpack";
 import type { GuildMember, User } from "discord-types/general";
+import { virtualMerge } from "src/renderer/util";
 
 export interface UserCommunicationDisabled {
   communicationDisabledUntil: number | undefined;
 }
 
-export interface Users {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type UsersStore = {
   // User Store
   filter: (predicate: (user: User) => User | boolean, sort?: boolean) => User[];
   findByTag: (username?: string, discriminator?: string) => User | undefined;
@@ -13,7 +15,10 @@ export interface Users {
   getCurrentUser: () => User;
   getUser: (userId?: string) => User | undefined;
   getUsers: () => Record<string, User>;
+};
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type GuildMemberStore = {
   // Guild Member Store
   getCommunicationDisabledUserMap: () => Record<string, UserCommunicationDisabled>;
   getCommunicationDisabledVersion: () => number;
@@ -33,13 +38,15 @@ export interface Users {
   };
   isMember: (guildId?: string, userId?: string) => boolean;
   memberOf: (userId?: string) => string[];
-}
+};
 
-export default {
-  ...(await waitForModule(filters.byProps("getUser", "getCurrentUser")).then(
+export type Users = UsersStore & GuildMemberStore;
+
+export default virtualMerge(
+  (await waitForModule(filters.byProps("getUser", "getCurrentUser")).then(
     Object.getPrototypeOf,
-  )),
-  ...(await waitForModule(filters.byProps("getTrueMember", "getMember")).then((mod) =>
+  )) as UsersStore,
+  (await waitForModule(filters.byProps("getTrueMember", "getMember")).then((mod) =>
     Object.getPrototypeOf(getExportsForProps(mod, ["getTrueMember", "getMember"])),
-  )),
-} as Users;
+  )) as GuildMemberStore,
+);

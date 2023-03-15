@@ -116,22 +116,6 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
     return;
   }
 
-  const updateSettings = getUpdateState(id);
-
-  if (
-    updateSettings?.version &&
-    updateSettings?.version !== version &&
-    !updateSettings?.available &&
-    !completedUpdates.has(id)
-  ) {
-    if (verbose) logger.log(`Entity ${id} version differs from previous, forcing new update`);
-    updaterState.set(id, {
-      ...updateSettings,
-      available: true,
-    });
-    return;
-  }
-
   const res = await window.RepluggedNative.updater.check(
     updater.type,
     updater.id,
