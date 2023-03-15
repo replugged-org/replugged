@@ -9,8 +9,7 @@
     "REPLUGGED_BADGES_BOOSTER": "Booster del Server Replugged",
     "REPLUGGED_COMMAND_PREFIX": "Prefisso dei Comandi",
     "REPLUGGED_GENERAL_SETTINGS": "Settaggi Generali",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Vuoi aiutare a tradurre Replugged? Vai su [Weblate]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} sovrascrive le traduzioni di Discord",
+    "REPLUGGED_I18N_CONTRIBUTE": "Vuoi aiutare a tradurre Replugged? Vai su [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: tradotto al {translated,number}%",
     "REPLUGGED_LINK_NOW": "Collegalo ora",
     "REPLUGGED_PLUGINS": "Plugin",
@@ -208,5 +207,6 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Aggiornamento",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[MODALITÀ DEV]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Abilita i Badge Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Mostra i badge personalizzati di Replugged sui profili utente"
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Mostra i badge personalizzati di Replugged sui profili utente",
+    "REPLUGGED_I18N": "Traduzioni di Replugged"
 }

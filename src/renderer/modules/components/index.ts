@@ -85,6 +85,11 @@ export type { FormItemType };
 export let FormItem: FormItemType;
 importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
 
+import type { FormNoticeType } from "./FormNotice";
+export type { FormNoticeType };
+export let FormNotice: FormNoticeType;
+importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
+
 import type { ButtonItemType, ButtonType } from "./ButtonItem";
 export type { ButtonType };
 export let Button: ButtonType;

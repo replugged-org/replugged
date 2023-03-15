@@ -52,8 +52,7 @@
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "An error occurred while executing the command:",
     "REPLUGGED_ERROR_CHECK_CONSOLE": "Check the console for more details.",
     "REPLUGGED_GENERAL_SETTINGS": "General Settings",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Want to help translate Replugged? Go to our [Weblate]({weblateUrl})!",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "{overrides,number} overrides to Discord's translations",
+    "REPLUGGED_I18N_CONTRIBUTE": "Want to help translate Replugged? Go to our [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% translated",
     "REPLUGGED_INSTALL_MODAL_HEADER": "Install {type}",
     "REPLUGGED_LINK_NOW": "Link it now",
@@ -208,5 +207,6 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Update",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Enable Replugged Badges",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles"
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles",
+    "REPLUGGED_I18N": "Replugged Translations"
 }

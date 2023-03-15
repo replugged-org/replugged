@@ -1,6 +1,5 @@
 {
     "REPLUGGED_SETTINGS_OVERLAY": "Overlay DevTools",
-    "REPLUGGED_I18N_TRANSLATED_OVERRIDES": "ändrar {overrides,number} av Discord's översättningar",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% översatt",
     "REPLUGGED_UPDATES_UPDATING_ITEM": "Uppdaterar…",
     "REPLUGGED_UPDATES_UPDATING": "Uppdaterar Replugged…",
@@ -11,7 +10,7 @@
     "REPLUGGED_BADGES_CONTRIBUTOR": "Replugged Bidragsgivare",
     "REPLUGGED_BADGES_STAFF": "Replugged Personal",
     "REPLUGGED_BADGES_DEVELOPER": "Replugged Utvecklare",
-    "REPLUGGED_I18N_CONTRIBUTE": "Psst! Vill du hjälpa översätta Replugged? Gå till vår [Weblate]({weblateUrl})!",
+    "REPLUGGED_I18N_CONTRIBUTE": "Vill du hjälpa översätta Replugged? Gå till vår [Weblate]({weblateUrl})!",
     "REPLUGGED_THEMES": "Teman",
     "REPLUGGED_PLUGINS": "Plugins",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Öppna Uppdateraren",

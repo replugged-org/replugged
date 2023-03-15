@@ -3,7 +3,7 @@ import "./checks/elevate";
 import "./checks/env";
 
 import { join } from "path";
-import { AnsiEscapes, BasicMessages } from "./util";
+import { AnsiEscapes, getCommand } from "./util";
 import { inject, uninject } from "./injector";
 
 import * as darwin from "./platforms/darwin";
@@ -23,7 +23,10 @@ const prod = process.argv.includes("--production");
 const processArgs = process.argv.filter((v) => !v.startsWith("-"));
 
 if (!(process.platform in platformModules)) {
-  console.error(BasicMessages.PLUG_FAILED, "\n");
+  console.error(
+    `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
+    "\n",
+  );
   console.error("It seems like your platform is not supported yet.", "\n");
   console.error("Feel free to open an issue about it, so we can add support for it!");
   console.error(
@@ -42,8 +45,8 @@ const checkInstalled = (appDir: string): boolean => existsSync(join(appDir, ".."
 
 let platform: DiscordPlatform | undefined;
 
-const run = async (cmd = processArgs[2]): Promise<void> => {
-  {
+const run = async (cmd = processArgs[2], replug = false): Promise<void> => {
+  if (!platform) {
     const platformArg = processArgs[3]?.toLowerCase();
 
     if (platformArg) {
@@ -70,6 +73,7 @@ const run = async (cmd = processArgs[2]): Promise<void> => {
           if (installed) {
             console.warn(
               `${AnsiEscapes.YELLOW}No platform specified, defaulting to "${current}".${AnsiEscapes.RESET}`,
+              "\n",
             );
             platform = current;
             break;
@@ -85,6 +89,7 @@ const run = async (cmd = processArgs[2]): Promise<void> => {
       }
     }
   }
+
   let result;
 
   if (cmd === "inject") {
@@ -99,15 +104,17 @@ const run = async (cmd = processArgs[2]): Promise<void> => {
     }
     if (result) {
       // @todo: prompt to (re)start automatically
-      console.log(BasicMessages.PLUG_SUCCESS, "\n");
+      console.log(
+        `${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}Replugged has been successfully ${
+          replug ? "replugged" : "plugged"
+        } :D${AnsiEscapes.RESET}`,
+        "\n",
+      );
       console.log(
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
           AnsiEscapes.GREEN
-        }pnpm run plug <platform>${AnsiEscapes.RESET}
-List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}`).join("\n")}${
-          AnsiEscapes.RESET
-        }`,
+        }${getCommand({ action: replug ? "replug" : "plug", prod })}${AnsiEscapes.RESET}`,
       );
     } else {
       process.exit(exitCode);
@@ -123,21 +130,25 @@ List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}
       process.exit(exitCode);
     }
     if (result) {
-      // @todo: prompt to (re)start automatically
-      console.log(BasicMessages.UNPLUG_SUCCESS, "\n");
-      console.log(
-        `You now have to completely close the Discord client, from the system tray or through the task manager.\n
+      if (replug) {
+        console.log("Unplug successful, continuing to replug...", "\n");
+      } else {
+        // @todo: prompt to (re)start automatically
+        console.log(
+          `${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}Replugged has been successfully unplugged${AnsiEscapes.RESET}`,
+          "\n",
+        );
+        console.log(
+          `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
-          AnsiEscapes.GREEN
-        }pnpm run unplug <platform>${AnsiEscapes.RESET}
-List of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => `${x}`).join("\n")}${
-          AnsiEscapes.RESET
-        }`,
-      );
+            AnsiEscapes.GREEN
+          }${getCommand({ action: "unplug", prod })}${AnsiEscapes.RESET}`,
+        );
+      }
     }
   } else if (cmd === "reinject") {
-    await run("uninject");
-    await run("inject");
+    await run("uninject", true);
+    await run("inject", true);
   } else {
     console.error(`Unsupported argument "${cmd}", exiting.`);
     process.exit(exitCode);

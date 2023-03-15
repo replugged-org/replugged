@@ -6,11 +6,9 @@
   "words": [
     "alertdialog",
     "APPDATA",
-    "Arrayable",
     "asar",
     "autosize",
     "blurple",
-    "camelcase",
     "Chunkdiscord",
     "codemirror",
     "coremod",
@@ -24,12 +22,13 @@
     "flatpaks",
     "fontawesome",
     "Fonticons",
+    "getent",
     "globstar",
     "groupstart",
     "HighlightJS",
     "installdir",
     "Jsonifiable",
-    "lexisother",
+    "konami",
     "lezer",
     "LOCALAPPDATA",
     "logname",
@@ -51,8 +50,9 @@
     "uninject",
     "uninjector",
     "uninjectors",
-    "XLARGE",
-    "konami"
+    "Vendicated",
+    "weblate",
+    "XLARGE"
   ],
   "ignoreWords": [],
   "import": []
