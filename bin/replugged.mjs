@@ -55,9 +55,10 @@ async function bundleAddon(buildFn) {
 }
 
 async function buildPlugin({ watch, noInstall, production }) {
-  const manifest = await import(join(directory, "./manifest.json"), {
+  let manifest = await import(join(directory, "./manifest.json"), {
     assert: { type: "json" },
   });
+  if ("default" in manifest) manifest = manifest.default;
   const CHROME_VERSION = "91";
   const REPLUGGED_FOLDER_NAME = "replugged";
   const globalModules = {
@@ -178,9 +179,10 @@ async function buildPlugin({ watch, noInstall, production }) {
 }
 
 async function buildTheme({ watch: shouldWatch, noInstall, production }) {
-  const manifest = await import(join(directory, "./manifest.json"), {
+  let manifest = await import(join(directory, "./manifest.json"), {
     assert: { type: "json" },
   });
+  if ("default" in manifest) manifest = manifest.default;
 
   const main = manifest.main || "src/main.css";
   const splash = manifest.splash || (existsSync("src/splash.css") ? "src/splash.css" : undefined);
