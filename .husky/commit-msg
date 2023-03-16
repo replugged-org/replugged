@@ -4,4 +4,9 @@
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
+if [ ! -f .lint-commit-msg ]; then
+    # commit msg linting is disabled
+    exit 0
+fi
+
 npx --no -- commitlint --edit ${1}

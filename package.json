@@ -28,7 +28,9 @@
     "postpublish": "rm -rf dist; npm run build",
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
     "docs:watch": "pnpm run docs --watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cfg:lint-commit-msg:true": "touch .lint-commit-msg",
+    "cfg:lint-commit-msg:false": "rm -f .lint-commit-msg"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",

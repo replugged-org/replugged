@@ -15,6 +15,7 @@ config.json
 .DS_Store
 
 .installdir-*
+.lint-commit-msg
 
 /docs
 /*.asar
