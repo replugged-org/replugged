@@ -1,4 +1,5 @@
 {
-    "tests": false,
-    "releaseDraft": false
+  "tests": false,
+  "releaseDraft": false,
+  "message": "chore(release): v%s"
 }
