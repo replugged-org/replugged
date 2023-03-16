@@ -3,10 +3,7 @@ name: Lint Commit Messages
 on:
   push:
     branches:
-      - "*"
-  pull_request:
-    branches:
-      - "*"
+      - "main"
 
 jobs:
   lint-commits:
