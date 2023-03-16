@@ -183,7 +183,7 @@
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Fallo al formatear el código",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Falta carga {type}",
     "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "Desinstalado {name}",
-    "REPLUGGED_LIST_RESULTS": "",
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# match} other {# matches}}",
     "REPLUGGED_CONFIRM_INSTALL": "Instalar",
     "REPLUGGED_TOAST_ADDON_TOGGLE_FAILED": "Error al apagar/encender {name}",
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Código formateado",
