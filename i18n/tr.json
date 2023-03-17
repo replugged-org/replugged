@@ -207,5 +207,6 @@
     "REPLUGGED_RELOAD": "Yeniden Yükle",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[GELİŞTİRİCİ MODU]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Replugged Rozetlerini Etkinleştir",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Kullanıcı profillerinde özel Replugged rozetlerini göster"
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Kullanıcı profillerinde özel Replugged rozetlerini göster",
+    "REPLUGGED_I18N": "Replugged Çevirileri"
 }
