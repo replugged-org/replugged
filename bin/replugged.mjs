@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const directory = process.cwd();
 import asar from "@electron/asar";
 import { Parcel } from "@parcel/core";
