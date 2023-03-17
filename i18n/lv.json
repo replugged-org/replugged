@@ -90,8 +90,8 @@
     "REPLUGGED_NOTICES_WELCOME_NEW_USER": "Laipni lūdzam! Replugged ir veiksmīgi ievadīts jūsu Discord klientā. Pievienojieties mūsu Discord serverim, lai saņemtu paziņojumus, atbalstu un daudz ko citu!",
     "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****BRĪDINĀJUMS:**** Šādas funkcijas ieslēgšana nodrošina piekļuvi funkcijām, kas var atklāt Discords un kas var izraisīt ****konta bannu****. Replugged nav **atbildīgs** par to, ko jūs darāt ar šo funkciju. Ja neesat pārliecināts, atstājiet to izslēgtu. Replugged komanda **nenodrošinās** nekādu atbalstu saistībā ar jebkuru eksperimentu. **Tiek pieprasīts restartēt**.",
     "REPLUGGED_SETTINGS_OVERLAY_DESC": "Atvers DevTools logu, kas ļauj pārbaudīt, kas notiek Discord spēles pārklājumā.",
-    "REPLUGGED_SNIPPET_LINE1": "Fragments no #css-snippets pielietoja {datums, datums, vidēja} pie {datums, laiks, vidēja}",
-    "REPLUGGED_UPDATES_AVAILABLE": "{count, daudzskaitlis, =1 {# update is} citi{# updates are}} pieejami.",
+    "REPLUGGED_SNIPPET_LINE1": "Fragments no #css-snippets pielietoja {date, date, medium} pie {date, time, medium}",
+    "REPLUGGED_UPDATES_AVAILABLE": "{count, plural, =1 {# update is} other {# updates are}} pieejami.",
     "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged var lejupielādēt un instalēt atjauninājumus fona režīmā, neradot jums pārāk lielu kaitinājumu. Ņemiet vērā, ka atjauninājumiem būs nepieciešama lietotāja darbība, ja būs nepieciešama ielāde vai ja būs konflikts.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Atvērt Izmaiņu Žurnālu",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Vai esat palaidis garām izmaiņu žurnālu vai vēlaties to apskatīt vēlreiz?"
