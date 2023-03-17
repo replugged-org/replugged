@@ -29,8 +29,8 @@
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
     "docs:watch": "pnpm run docs --watch",
     "prepare": "husky install",
-    "cfg:lint-commit-msg:true": "touch .lint-commit-msg",
-    "cfg:lint-commit-msg:false": "rm -f .lint-commit-msg"
+    "cfg:lint-commit-msg:true": "shx touch .lint-commit-msg",
+    "cfg:lint-commit-msg:false": "shx rm -f .lint-commit-msg"
   },
   "repository": "https://github.com/replugged-org/replugged.git",
   "author": "Replugged",
@@ -62,6 +62,7 @@
     "np": "^7.6.2",
     "parcel": "^2.8.3",
     "prettier": "^2.8.4",
+    "shx": "^0.3.4",
     "style-mod": "^4.0.0",
     "tsx": "^3.9.0",
     "type-fest": "^3.5.0",
