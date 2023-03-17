@@ -1,6 +1,5 @@
 export default {
-  //  ["prettier --check", "eslint", "cspell lint", () => "tsc -p tsconfig.json --noEmit"]
-  "*.ts": (filenames) => {
+  "*.{ts,tsx,js,mjs,cjs}": (filenames) => {
     const joinedNames = filenames.join(" ");
 
     const commands = [
