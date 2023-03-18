@@ -4,7 +4,7 @@ import type { Store } from "./flux";
 import { virtualMerge } from "src/renderer/util";
 
 export interface State {
-  selectedGuildTimestampMillis: number;
+  selectedGuildTimestampMillis: Record<string, number>;
   selectedGuildId: string;
   lastSelectedGuildId: string;
 }
@@ -16,7 +16,7 @@ export type Guilds = (Store & Record<string, unknown>) & {
   getGuildId: () => string | undefined;
   getGuilds: () => Record<string, Guild>;
   getLastSelectedGuildId: () => string | undefined;
-  getLastSelectedTimeout: (guildId: string) => number;
+  getLastSelectedTimestamp: (guildId: string) => number;
   getState: () => State;
   getTabsV2SelectedGuildId: () => string | undefined;
   isLoaded: () => boolean;
