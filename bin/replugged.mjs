@@ -18,8 +18,9 @@ import updateNotifier from "update-notifier";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import chalk from "chalk";
+import { fileURLToPath } from "url";
 
-const dirname = dirnameFn(new URL(import.meta.url).pathname);
+const dirname = dirnameFn(fileURLToPath(import.meta.url));
 
 const packageJson = JSON.parse(readFileSync(join(dirname, "../package.json"), "utf-8"));
 
