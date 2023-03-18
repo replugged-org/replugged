@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const directory = process.cwd();
 import asar from "@electron/asar";
 import { Parcel } from "@parcel/core";
 import {
@@ -13,18 +12,18 @@ import {
   writeFileSync,
 } from "fs";
 import esbuild from "esbuild";
-import { dirname as dirnameFn, join } from "path";
+import path from "path";
 import updateNotifier from "update-notifier";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import chalk from "chalk";
 import { fileURLToPath, pathToFileURL } from "url";
 
-const dirname = dirnameFn(fileURLToPath(import.meta.url));
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const directory = process.cwd();
+const manifestPath = pathToFileURL(path.join(directory, "manifest.json"));
 
-const packageJson = JSON.parse(
-  readFileSync(pathToFileURL(join(dirname, "../package.json")), "utf-8"),
-);
+const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "../package.json"), "utf-8"));
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
   " → ",
@@ -60,7 +59,7 @@ async function bundleAddon(buildFn) {
 }
 
 async function buildPlugin({ watch, noInstall, production }) {
-  let manifest = await import(join(directory, "./manifest.json"), {
+  let manifest = await import(manifestPath, {
     assert: { type: "json" },
   });
   if ("default" in manifest) manifest = manifest.default;
@@ -107,9 +106,9 @@ async function buildPlugin({ watch, noInstall, production }) {
   const CONFIG_PATH = (() => {
     switch (process.platform) {
       case "win32":
-        return join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
+        return path.join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
       case "darwin":
-        return join(
+        return path.join(
           process.env.HOME || "",
           "Library",
           "Application Support",
@@ -117,9 +116,9 @@ async function buildPlugin({ watch, noInstall, production }) {
         );
       default:
         if (process.env.XDG_CONFIG_HOME) {
-          return join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
+          return path.join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
         }
-        return join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
+        return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
     }
   })();
 
@@ -128,7 +127,7 @@ async function buildPlugin({ watch, noInstall, production }) {
     setup: (build) => {
       build.onEnd(() => {
         if (!noInstall) {
-          const dest = join(CONFIG_PATH, "plugins", manifest.id);
+          const dest = path.join(CONFIG_PATH, "plugins", manifest.id);
           if (existsSync(dest)) rmSync(dest, { recursive: true });
           cpSync("dist", dest, { recursive: true });
           console.log("Installed updated version");
@@ -184,7 +183,7 @@ async function buildPlugin({ watch, noInstall, production }) {
 }
 
 async function buildTheme({ watch: shouldWatch, noInstall, production }) {
-  let manifest = await import(join(directory, "./manifest.json"), {
+  let manifest = await import(manifestPath, {
     assert: { type: "json" },
   });
   if ("default" in manifest) manifest = manifest.default;
@@ -222,9 +221,9 @@ async function buildTheme({ watch: shouldWatch, noInstall, production }) {
   const CONFIG_PATH = (() => {
     switch (process.platform) {
       case "win32":
-        return join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
+        return path.join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
       case "darwin":
-        return join(
+        return path.join(
           process.env.HOME || "",
           "Library",
           "Application Support",
@@ -232,15 +231,15 @@ async function buildTheme({ watch: shouldWatch, noInstall, production }) {
         );
       default:
         if (process.env.XDG_CONFIG_HOME) {
-          return join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
+          return path.join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
         }
-        return join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
+        return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
     }
   })();
 
   function install() {
     if (!noInstall) {
-      const dest = join(CONFIG_PATH, "themes", manifest.id);
+      const dest = path.join(CONFIG_PATH, "themes", manifest.id);
       if (existsSync(dest)) {
         rmSync(dest, { recursive: true });
       }
