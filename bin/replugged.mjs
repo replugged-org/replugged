@@ -18,11 +18,13 @@ import updateNotifier from "update-notifier";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import chalk from "chalk";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 
 const dirname = dirnameFn(fileURLToPath(import.meta.url));
 
-const packageJson = JSON.parse(readFileSync(join(dirname, "../package.json"), "utf-8"));
+const packageJson = JSON.parse(
+  readFileSync(pathToFileURL(join(dirname, "../package.json")), "utf-8"),
+);
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
   " → ",
