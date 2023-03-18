@@ -19,6 +19,7 @@ export const RPCEvents = getExportsForProps<string, Record<string, string>>(raw,
   "GUILD_CREATE",
   "ERROR",
 ])!;
+/** @deprecated Use {@link ColorGenerator} instead */
 export const Colors = getExportsForProps<string, Record<string, string>>(raw, ["GREY1", "GREY2"])!;
 export const Status = getExportsForProps<string, Record<string, string>>(raw, ["ONLINE", "IDLE"])!;
 export const Paths = getExportsForProps<string, Record<string, string>>(raw, [
