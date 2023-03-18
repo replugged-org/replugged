@@ -1,4 +1,4 @@
-import { filters, getExportsForProps, waitForModule } from "../webpack";
+import { filters, getExportsForProps, waitForModule, waitForProps } from "../webpack";
 
 export const raw = await waitForModule(filters.bySource("BASE_URL:"));
 
@@ -26,6 +26,11 @@ export const Paths = getExportsForProps<string, Record<string, string>>(raw, [
   "DOWNLOADS",
 ])!;
 
+export const CSSVariables = await waitForProps<string, Record<string, string>>(
+  "TEXT_NORMAL",
+  "BACKGROUND_PRIMARY",
+);
+
 interface ColorResponse {
   hex: () => string;
   hsl: () => string;
@@ -51,8 +56,8 @@ type ColorMod = {
   unsafe_rawColors: Record<string, UnsafeRawColor>;
 };
 
-export const CSSVariables = await waitForModule<ColorMod>(
+export const ColorGenerator = await waitForModule<ColorMod>(
   filters.bySource(/\w+\.unsafe_rawColors\[\w+\]\.resolve\(\w+\)/),
 );
 
-export const Themes = CSSVariables.themes;
+export const Themes = ColorGenerator.themes;
