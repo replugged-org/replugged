@@ -203,5 +203,10 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Cập nhật đã hoàn tất.",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Tất cả cập nhật đã hoàn tất.",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} cần Discord phải khởi động lại để hoạt động một cách bình thường. Khởi động lại ngay bây giờ?",
-    "REPLUGGED_RELOAD": "Khởi động lại"
+    "REPLUGGED_RELOAD": "Khởi động lại",
+    "REPLUGGED_I18N": "Các bản dịch Replugged",
+    "REPLUGGED_SETTINGS_BADGES": "Bật các huy hiệu Replugged",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Hiển thị các huy hiệu của Replugged trên các profile của những người có huy hiệu Replugged",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Cập nhật",
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[CHẾ ĐỘ NHÀ PHÁT TRIỂN]} other {Phiên bản v{version}}}"
 }
