@@ -131,7 +131,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH": "Chemin de Replugged",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Chemin de Discord",
     "REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM": "Upstream :",
-    "REPLUGGED_UPDATES_UPDATER": "Updater",
+    "REPLUGGED_UPDATES_UPDATER": "Mises à jour",
     "REPLUGGED_BUTTON_GOT_IT": "Bien reçu",
     "REPLUGGED_COMMAND_PLUGINS_DESC": "Retourne la liste des plugins actuellement installés.",
     "REPLUGGED_COMMAND_ECHO_DESC": "Retourne les arguments indiqués.",
