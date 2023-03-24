@@ -19,6 +19,9 @@ import type {
   WebpackModule,
   WebpackRequire,
 } from "../../types/webpack";
+import { Logger } from "./logger";
+
+const logger = Logger.api("webpack");
 
 // Handlers
 
@@ -177,14 +180,60 @@ export function getExportsForProps<
   P extends string = string,
   T extends ModuleExportsWithProps<P> = ModuleExportsWithProps<P>,
 >(m: ModuleExports, props: P[]): T | undefined {
-  if (typeof m !== "object") return;
+  try {
+    if (typeof m !== "object") return;
 
-  return [m, ...Object.values(m)].find(
-    (o) =>
-      (typeof o === "object" || typeof o === "function") &&
-      o !== null &&
-      props.every((p) => p in o),
-  ) as T | undefined;
+    return [m, ...Object.values(m)].find((o) => {
+      if (typeof o !== "object" && typeof o !== "function") return false;
+      if (o === null) return false;
+
+      return props.every((p) => {
+        try {
+          return p in o;
+        } catch (err) {
+          const isError = err instanceof Error;
+          if (isError) {
+            // Reduce noise by ignoring expected errors
+
+            // Blocked frame error - see #370
+            if (
+              err.name === "SecurityError" &&
+              /^Blocked a frame with origin ".+" from accessing a cross-origin frame\.$/.test(
+                err.message,
+              )
+            ) {
+              return false;
+            }
+          }
+
+          logger.error("Error accessing property in getExportsForProps", {
+            module: m,
+            props,
+            object: o,
+            prop: p,
+            err,
+          });
+          return false;
+        }
+      });
+    }) as T | undefined;
+  } catch (err) {
+    const isError = err instanceof Error;
+    if (isError) {
+      // Reduce noise by ignoring expected errors
+
+      // Illegal invocation error
+      if (err.name === "TypeError" && /^Illegal invocation$/.test(err.message)) {
+        return;
+      }
+    }
+
+    logger.error("Error in getExportsForProps", {
+      module: m,
+      props,
+      err,
+    });
+  }
 }
 
 export function getById<T extends ModuleExports = ModuleExports>(
@@ -262,22 +311,36 @@ export function getModule<T extends RawModule = RawModule>(
     raw: false,
   },
 ): T[] | T | undefined {
-  if (typeof wpRequire?.c === "undefined") return options.all ? [] : void 0;
+  try {
+    if (typeof wpRequire?.c === "undefined") return options.all ? [] : undefined;
 
-  const modules = options.all
-    ? Object.values(wpRequire.c).filter(filter)
-    : Object.values(wpRequire.c).find(filter);
+    const wrappedFilter: Filter = (mod) => {
+      try {
+        return filter(mod);
+      } catch (err) {
+        logger.error("Error in getModule filter", { filter, mod, err });
+        return false;
+      }
+    };
 
-  if (options.raw) {
-    return modules as T & RawModule;
-  }
+    const modules = options.all
+      ? Object.values(wpRequire.c).filter(wrappedFilter)
+      : Object.values(wpRequire.c).find(wrappedFilter);
 
-  if (Array.isArray(modules)) {
-    return modules
-      .map((m) => getExports<T & ModuleExports>(m))
-      .filter((m): m is T & ModuleExports => typeof m !== "undefined");
-  } else if (modules) {
-    return getExports<T & ModuleExports>(modules);
+    if (options.raw) {
+      return modules as T & RawModule;
+    }
+
+    if (Array.isArray(modules)) {
+      return modules
+        .map((m) => getExports<T & ModuleExports>(m))
+        .filter((m): m is T & ModuleExports => typeof m !== "undefined");
+    } else if (modules) {
+      return getExports<T & ModuleExports>(modules);
+    }
+  } catch (err) {
+    logger.error("Error getting module", { filter, err });
+    return options.all ? [] : undefined;
   }
 }
 
@@ -640,15 +703,23 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
   // eslint-disable-next-line @typescript-eslint/ban-types
   match: string | RegExp | ((func: Function) => boolean),
 ): T | undefined {
-  return Object.values(module).find((v) => {
-    if (typeof v !== "function") return false;
+  try {
+    return Object.values(module).find((v) => {
+      if (typeof v !== "function") return false;
 
-    if (typeof match === "function") {
-      return match(v);
-    } else {
-      return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
-    }
-  }) as T | undefined;
+      if (typeof match === "function") {
+        return match(v);
+      } else {
+        return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+      }
+    }) as T | undefined;
+  } catch (err) {
+    logger.error("Error in getFunctionBySource", {
+      module,
+      match,
+      err,
+    });
+  }
 }
 
 export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
@@ -671,13 +742,21 @@ export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExport
   // eslint-disable-next-line @typescript-eslint/ban-types
   match: string | RegExp | ((func: Function) => boolean),
 ): P | undefined {
-  return Object.entries(module).find(([_, v]) => {
-    if (typeof v !== "function") return false;
+  try {
+    return Object.entries(module).find(([_, v]) => {
+      if (typeof v !== "function") return false;
 
-    if (typeof match === "function") {
-      return match(v);
-    } else {
-      return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
-    }
-  })?.[0] as P | undefined;
+      if (typeof match === "function") {
+        return match(v);
+      } else {
+        return typeof match === "string" ? v.toString().includes(match) : match.test(v.toString());
+      }
+    })?.[0] as P | undefined;
+  } catch (err) {
+    logger.error("Error in getFunctionKeyBySource", {
+      module,
+      match,
+      err,
+    });
+  }
 }
