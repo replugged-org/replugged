@@ -26,7 +26,11 @@ type RPCCommand = {
       };
   handler: (
     data: RPCData,
-  ) => Record<string, Jsonifiable> | Promise<Record<string, Jsonifiable>> | void | Promise<void>;
+  ) =>
+    | Record<string, Jsonifiable | undefined>
+    | Promise<Record<string, Jsonifiable | undefined>>
+    | void
+    | Promise<void>;
 };
 
 type Commands = Record<string, RPCCommand>;
