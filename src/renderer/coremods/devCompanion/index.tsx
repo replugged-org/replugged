@@ -86,7 +86,9 @@ function search(find: string | RegExp): string[] {
       return s.includes(find);
     }
     if (find instanceof RegExp) {
-      return find.test(s);
+      const matches = find.test(s);
+      find.lastIndex = 0;
+      return matches;
     }
     return false;
   });
