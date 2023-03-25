@@ -317,7 +317,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
       build.onEnd(async () => {
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "plugins", manifest.id);
-          if (existsSync(dest)) rmSync(dest, { recursive: true });
+          if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
           cpSync("dist", dest, { recursive: true });
           console.log("Installed updated version");
 
@@ -442,7 +442,7 @@ async function buildTheme({ watch: shouldWatch, noInstall, production, noReload 
     if (!noInstall) {
       const dest = path.join(CONFIG_PATH, "themes", manifest.id);
       if (existsSync(dest)) {
-        rmSync(dest, { recursive: true });
+        rmSync(dest, { recursive: true, force: true });
       }
       cpSync("dist", dest, { recursive: true });
       console.log("Installed updated version");
