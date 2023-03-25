@@ -101,9 +101,142 @@ export interface TrackInviteOptions {
   overrideProperties: Properties;
 }
 
+export interface MessagesData {
+  _after: MessageCache;
+  _array: Message[];
+  _before: MessageCache;
+  _map: Record<string, Message>;
+  cached: boolean;
+  channelId: string;
+  error: boolean;
+  hasFetched: boolean;
+  hasMoreAfter: boolean;
+  hasMoreBefore: boolean;
+  jumped: boolean;
+  jumpedToPresent: boolean;
+  jumpFlash: boolean;
+  jumpReturnTargetId: string | null;
+  jumpSequenceId: number;
+  jumpTargetId: string | null;
+  jumpTargetOffset: number;
+  jumpType: "ANIMATED" | "INSTANT";
+  length: number;
+  loadingMore: boolean;
+  ready: boolean;
+  revealedMessageId: string | null;
+  _clearMessages: () => void;
+  _merge: (messages: Message[], cacheBefore?: boolean, clearCache?: boolean) => void;
+  addCachedMessages: (messages: Message[], cache?: boolean) => MessagesData;
+  findNewest: (
+    callback: (message: Message, index: number, messages: Message) => unknown,
+  ) => Message | undefined;
+  findOldest: (
+    callback: (message: Message, index: number, messages: Message) => unknown,
+  ) => Message | undefined;
+  first: () => Message | undefined;
+  focusOnMessage: (focusTargetId: string) => MessagesData;
+  forAll: (
+    callback: (message: Message, index: number, messages: Message[]) => void,
+    thisArg?: unknown,
+  ) => void;
+  forEach: (
+    callback: (message: Message, index: number, messages: Message[]) => void,
+    thisArg?: unknown,
+    reverse?: boolean,
+  ) => void;
+  get: (messageId: string, cache?: boolean) => Message | undefined;
+  getAfter: (messageId: string) => Message | null;
+  getByIndex: (index: number) => Message | undefined;
+  getManyAfter: (
+    messageId: string,
+    count: number,
+    callback: (message: Message) => unknown,
+  ) => Message[] | null;
+  getManyBefore: (
+    messageId: string,
+    count: number,
+    callback: (message: Message) => unknown,
+  ) => Message[] | null;
+  has: (messageId: string, cache?: boolean) => boolean;
+  hasAfterCached: (messageId: string) => boolean;
+  hasBeforeCached: (messageId: string) => boolean;
+  hasPresent: () => boolean;
+  indexOf: (messageId: string) => number;
+  jumpToMessage: (
+    jumpTargetId: string | null,
+    jumpFlash: boolean,
+    jumpTargetOffset: number,
+    jumpReturnTargetId: string | null,
+    jumpType?: "ANIMATED" | "INSTANT",
+  ) => MessagesData;
+  jumpToPresent: (count: number) => MessagesData;
+  last: () => Message | undefined;
+  loadComplete: (messageData: MessagesData) => MessagesData;
+  loadFromCache: (beforeCache: boolean, extractCount: number) => MessagesData;
+  loadStart: (jumpData: {
+    present: boolean;
+    messageId: string | null;
+    offset: number;
+    returnMessageId: string;
+  }) => MessagesData;
+  map: (
+    callback: (message: Message, index: number, messages: Message[]) => unknown,
+    thisArg?: unknown,
+  ) => Message[];
+  merge: (messages: Message[], cacheBefore?: boolean, clearCache?: boolean) => MessagesData;
+  mutate: (
+    data: ((messageData: MessagesData) => MessagesData) | MessagesData,
+    clone?: boolean,
+  ) => MessagesData;
+  receiveMessage: (message: Message, truncate?: boolean) => MessagesData;
+  receivePushNotification: (message: Message) => MessagesData;
+  reduce: (
+    callback: (
+      previousValue: unknown,
+      currentMessage: Message,
+      currentIndex: number,
+      messages: Message[],
+    ) => unknown,
+    initialValue?: unknown,
+  ) => void;
+  remove: (messageId: string) => MessagesData;
+  removeMany: (messages: string[]) => MessagesData;
+  replace: (messageId: string, message: Message) => MessagesData;
+  reset: (messages: Message[]) => MessagesData;
+  toArray: () => Message[];
+  truncate: (bottom?: boolean, top?: boolean) => MessagesData;
+  truncateBottom: (count: number, clone?: boolean) => MessagesData;
+  truncateTop: (count: number, clone?: boolean) => MessagesData;
+  update: (messageId: string, callback: (message: Message) => Message) => MessagesData;
+}
+
+export interface MessageCache {
+  _isCacheBefore: boolean;
+  _map: Record<string, Message>;
+  _messages: Message[];
+  _wasAtEdge: boolean;
+  length: number;
+  wasAtEdge: boolean;
+  cache: (messages: Message[], wasAtEdge?: boolean) => void;
+  clear: () => void;
+  clone: () => MessageCache;
+  extract: (count: number) => Message[];
+  extractAll: () => Message[];
+  forEach: (
+    callback: (message: Message, index: number, messages: Message[]) => void,
+    thisArg?: unknown,
+  ) => void;
+  get: (messageId: string) => Message | undefined;
+  has: (messageId: string) => boolean;
+  remove: (messageId: string) => void;
+  removeMany: (messageIds: string[]) => void;
+  replace: (messageId: string, message: Message) => void;
+  update: (messageId: string, callback: (message: Message) => Message) => void;
+}
+
 export interface MessageStore {
-  getMessage: (channelId: string, messageId: string) => Message;
-  getMessages: (channelId: string) => Messages;
+  getMessage: (channelId: string, messageId: string) => Message | undefined;
+  getMessages: (channelId: string) => MessagesData;
 }
 
 export interface Messages extends MessageStore {
@@ -113,6 +246,13 @@ export interface Messages extends MessageStore {
   dismissAutomatedMessage: (message: Message) => void;
   editMessage: (channelId: string, messageId: string, message: { content: string }) => void;
   endEditMessage: (channelId: string, messageId: string) => void;
+  fetchLocalMessages: (
+    channelId: string,
+    before: boolean,
+    after: boolean,
+    limit: number,
+    completeClass: object,
+  ) => void;
   fetchMessages: (options: FetchMessageOptions) => void;
   focusMessage: (options: { channelId: string; messageId: string }) => void;
   getSendMessageOptionsForReply: (

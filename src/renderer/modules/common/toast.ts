@@ -8,6 +8,11 @@ const Kind = {
   CUSTOM: 3,
 } as const;
 
+const Position = {
+  TOP: 0,
+  BOTTOM: 1,
+} as const;
+
 interface ToastOpts {
   position?: number;
   duration?: number;
@@ -23,6 +28,7 @@ type ToastFn = (
 export interface Toast {
   toast: ToastFn;
   Kind: typeof Kind;
+  Position: typeof Position;
 }
 
 const mod = await waitForModule(filters.bySource("queuedToasts"));
@@ -42,4 +48,5 @@ const toast: ToastFn = (content, kind = Kind.SUCCESS, opts = undefined) => {
 export default {
   toast,
   Kind,
+  Position,
 } as Toast;

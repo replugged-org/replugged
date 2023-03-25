@@ -25,9 +25,11 @@ interface ParseOpts {
   previewLinkTarget?: boolean;
   disableAnimatedEmoji?: boolean;
   disableAutoBlockNewlines?: boolean;
+  highlightWord?: string;
+  returnMentionIds?: boolean;
 }
 
-type ParseFn = (text: string, unknown?: boolean, opts?: ParseOpts) => React.ReactElement;
+type ParseFn = (text: string, inline?: boolean, opts?: ParseOpts) => React.ReactElement;
 
 export interface Parser {
   parse: ParseFn;
@@ -38,6 +40,7 @@ export interface Parser {
   parseGuildEventDescription: ParseFn;
   parseAutoModerationSystemMessage: ParseFn;
   parseForumPostGuidelines: ParseFn;
+  parseForumPostMostRecentMessage: ParseFn;
   reactParserFor(rules: Record<string, Rule>): ParseFn;
   defaultRules: Record<string, Rule>;
 }
