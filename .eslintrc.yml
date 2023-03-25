@@ -39,15 +39,20 @@ rules:
     - argsIgnorePattern: "^_"
 
 overrides:
-  - files: "**/*.{ts,tsx}"
+  - files: "**/*.{js,ts,tsx}"
     extends: eslint-config-dmitmel/presets/typescript-addon
     rules:
       node/no-missing-import: off
-      eqeqeq: off
+      eqeqeq:
+        - error
+        - always
+        - "null": "ignore"
       \@typescript-eslint/no-dynamic-delete: off
       no-return-assign: off
       no-void: off
       consistent-return: off
+  - files: "bin/**.js"
+    extends: eslint-config-dmitmel/presets/node
 
   - files: "**/src/**/*.{ts,tsx}"
     extends: eslint-config-dmitmel/rules/typescript/with-type-checking
