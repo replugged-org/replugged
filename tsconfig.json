@@ -36,6 +36,7 @@
     "paths": {
       "@replugged": ["src/renderer/replugged.ts"],
       "@replugged/*": ["src/renderer/"],
+      "@webpack": ["src/renderer/modules/webpack.ts"],
       "@common": ["src/renderer/modules/common"],
       "@common/*": ["src/renderer/modules/common/*"],
       "@components": ["src/renderer/modules/components"],
