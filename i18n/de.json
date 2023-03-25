@@ -103,7 +103,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS": "Plugins:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_LESS": "Weniger Anzeigen",
     "REPLUGGED_UPDATES_OPTS_DEBUG_UNAUTHORIZED_PLUGINS": "Nicht autorisierte Plugins:",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_BETTERDISCORD_PLUGINS": "BetterDiscord Plugins:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_BETTERDISCORD_PLUGINS": "BetterDiscord Erweiterungen:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_THEMES": "Themes:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_LABS": "Labs:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC": "Einstellungen Synchronisieren:",
@@ -207,5 +207,6 @@
     "REPLUGGED_RELOAD": "Neu laden",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Lade fehlendes {type}",
     "REPLUGGED_TOAST_ADDON_TOGGLE_FAILED": "Fehler beim Umschalten von {name}",
-    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# Treffer} other {# Treffer}}"
+    "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# Treffer} other {# Treffer}}",
+    "REPLUGGED_I18N": "Replugged Übersetzungen"
 }
