@@ -23,6 +23,44 @@ import { Logger } from "./logger";
 
 const logger = Logger.api("webpack");
 
+/**
+ * Log caught errors from webpack query, while doing some filtering to reduce noise
+ * @param opts Object containing the properties below. Any other properties provided will be logged as metadata.
+ * @param opts.text Text to be logged with the error
+ * @param opts.err Error object is expected, but can be anything
+ */
+function logError({
+  text,
+  err,
+  ...logMetadata
+}: {
+  text: string;
+  err?: unknown;
+} & Record<string, unknown>): void {
+  const isError = err instanceof Error;
+  if (isError) {
+    // Reduce noise by ignoring expected errors
+
+    // Blocked frame error - see #370
+    if (
+      err.name === "SecurityError" &&
+      /^Blocked a frame with origin ".+" from accessing a cross-origin frame\.$/.test(err.message)
+    ) {
+      return;
+    }
+
+    // Illegal invocation. Caused by interacting with some native classes/objects, e.g. DOMTokenList
+    if (err.name === "TypeError" && /^Illegal invocation$/.test(err.message)) {
+      return;
+    }
+  }
+
+  logger.error(text, {
+    err,
+    ...logMetadata,
+  });
+}
+
 // Handlers
 
 let wpRequire: WebpackRequire;
@@ -191,48 +229,20 @@ export function getExportsForProps<
         try {
           return p in o;
         } catch (err) {
-          const isError = err instanceof Error;
-          if (isError) {
-            // Reduce noise by ignoring expected errors
-
-            // Blocked frame error - see #370
-            if (
-              err.name === "SecurityError" &&
-              /^Blocked a frame with origin ".+" from accessing a cross-origin frame\.$/.test(
-                err.message,
-              )
-            ) {
-              return false;
-            }
-          }
-
-          logger.error("Error accessing property in getExportsForProps", {
+          logError({
+            text: "Error accessing property in getExportsForProps",
+            err,
             module: m,
             props,
             object: o,
             prop: p,
-            err,
           });
           return false;
         }
       });
     }) as T | undefined;
   } catch (err) {
-    const isError = err instanceof Error;
-    if (isError) {
-      // Reduce noise by ignoring expected errors
-
-      // Illegal invocation error
-      if (err.name === "TypeError" && /^Illegal invocation$/.test(err.message)) {
-        return;
-      }
-    }
-
-    logger.error("Error in getExportsForProps", {
-      module: m,
-      props,
-      err,
-    });
+    logError({ text: "Error in getExportsForProps", err, module: m, props });
   }
 }
 
@@ -318,7 +328,7 @@ export function getModule<T extends RawModule = RawModule>(
       try {
         return filter(mod);
       } catch (err) {
-        logger.error("Error in getModule filter", { filter, mod, err });
+        logError({ text: "Error in getModule filter", err, filter, mod });
         return false;
       }
     };
@@ -339,7 +349,7 @@ export function getModule<T extends RawModule = RawModule>(
       return getExports<T & ModuleExports>(modules);
     }
   } catch (err) {
-    logger.error("Error getting module", { filter, err });
+    logError({ text: "Error getting module", err, filter });
     return options.all ? [] : undefined;
   }
 }
@@ -714,11 +724,7 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
       }
     }) as T | undefined;
   } catch (err) {
-    logger.error("Error in getFunctionBySource", {
-      module,
-      match,
-      err,
-    });
+    logError({ text: "Error in getFunctionBySource", err, module, match });
   }
 }
 
@@ -753,10 +759,6 @@ export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExport
       }
     })?.[0] as P | undefined;
   } catch (err) {
-    logger.error("Error in getFunctionKeyBySource", {
-      module,
-      match,
-      err,
-    });
+    logError({ text: "Error in getFunctionKeyBySource", err, module, match });
   }
 }
