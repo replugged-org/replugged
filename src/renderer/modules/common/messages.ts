@@ -22,13 +22,13 @@ export interface CaptchaPayload {
 
 export interface MessageReference {
   guild_id?: string;
-  channel_id: string;
-  message_id: string;
+  channel_id?: string;
+  message_id?: string;
 }
 
 export interface AllowedMentions {
-  parse: Array<"users" | "roles" | "everyone">;
-  replied_user: boolean;
+  parse?: Array<"users" | "roles" | "everyone">;
+  replied_user?: boolean;
 }
 
 export interface InviteSuggestion {
@@ -66,7 +66,7 @@ export interface SendMessageForReplyOptions {
 }
 
 export interface SendMessageOptionsForReply {
-  messageReference: MessageReference;
+  messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
 }
 
@@ -83,11 +83,24 @@ export interface MessageJumpOptions {
   jumpType?: string;
 }
 
+export interface Emoji {
+  allNamesString: string;
+  animated?: boolean;
+  available?: boolean;
+  guildId: string;
+  id: string;
+  managed?: boolean;
+  name: string;
+  require_colons?: boolean;
+  roles?: string[];
+  url: string;
+}
+
 export interface OutgoingMessage {
   content: string;
-  invalidEmojis: string[];
-  validNonShortcutEmojis: string[];
-  tts: boolean;
+  invalidEmojis: Emoji[];
+  validNonShortcutEmojis: Emoji[];
+  tts?: boolean;
 }
 
 export interface OutgoingMessageOptions {
@@ -110,8 +123,8 @@ export interface TrackInviteOptions {
 }
 
 export interface MessageGreetOptions {
-  messageReference: MessageReference;
-  allowedMentions: AllowedMentions;
+  messageReference?: MessageReference;
+  allowedMentions?: AllowedMentions;
   captchaPayload?: CaptchaPayload;
 }
 
@@ -335,7 +348,7 @@ export interface Messages extends MessageStore {
     channelId: string,
     message: OutgoingMessage,
     options: OutgoingMessageOptions,
-  ) => Promise<void>;
+  ) => void;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 }
 
