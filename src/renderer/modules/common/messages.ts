@@ -55,6 +55,7 @@ export interface FetchMessageOptions {
     returnMessageId?: boolean;
   };
   isPreload?: boolean;
+  skipLocalFetch?: boolean;
   truncate?: boolean;
 }
 
