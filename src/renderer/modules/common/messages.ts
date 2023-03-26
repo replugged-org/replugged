@@ -2,7 +2,7 @@
 import { filters, waitForModule } from "../webpack";
 
 import type { ObjectExports } from "../../../types";
-import type { Message, MessageAttachment } from "discord-types/general";
+import type { Channel, Message, MessageAttachment } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
 export enum ActivityActionTypes {
@@ -58,9 +58,16 @@ export interface FetchMessageOptions {
   truncate?: boolean;
 }
 
+export interface SendMessageForReplyOptions {
+  channel: Channel;
+  message: Message;
+  shouldMention: boolean;
+  showMentionToggle: boolean;
+}
+
 export interface SendMessageOptionsForReply {
   messageReference: MessageReference;
-  allowed_mentions?: AllowedMentions;
+  allowedMentions?: AllowedMentions;
 }
 
 export interface MessageJumpOptions {
@@ -72,6 +79,7 @@ export interface MessageJumpOptions {
   extraProperties?: Properties;
   isPreload?: boolean;
   returnMessageId?: string;
+  skipLocalFetch?: boolean;
   jumpType?: string;
 }
 
@@ -97,8 +105,14 @@ export interface TrackInviteOptions {
   channelId: string;
   messageId: string;
   location: string;
-  suggested: InviteSuggestion;
-  overrideProperties: Properties;
+  suggested?: InviteSuggestion;
+  overrideProperties?: Properties;
+}
+
+export interface MessageGreetOptions {
+  messageReference: MessageReference;
+  allowedMentions: AllowedMentions;
+  captchaPayload?: CaptchaPayload;
 }
 
 export interface MessagesData {
@@ -241,22 +255,30 @@ export interface MessageStore {
 
 export interface Messages extends MessageStore {
   clearChannel: (channelId: string) => void;
-  crosspostMessage: (channelId: string, messageId: string) => void;
-  deleteMessage: (channelId: string, messageId: string) => void;
+  crosspostMessage: (channelId: string, messageId: string) => Promise<unknown | void>;
+  deleteMessage: (
+    channelId: string,
+    messageId: string,
+    keepThreadArchived?: boolean,
+  ) => Promise<void>;
   dismissAutomatedMessage: (message: Message) => void;
-  editMessage: (channelId: string, messageId: string, message: { content: string }) => void;
-  endEditMessage: (channelId: string, messageId: string) => void;
+  editMessage: (
+    channelId: string,
+    messageId: string,
+    message: { content: string },
+  ) => Promise<void>;
+  endEditMessage: (channelId: string, response: unknown) => void;
   fetchLocalMessages: (
     channelId: string,
-    before: boolean,
-    after: boolean,
+    before: string,
+    after: string,
     limit: number,
-    completeClass: object,
-  ) => void;
-  fetchMessages: (options: FetchMessageOptions) => void;
+    completeClass: unknown,
+  ) => Promise<void>;
+  fetchMessages: (options: FetchMessageOptions) => Promise<boolean>;
   focusMessage: (options: { channelId: string; messageId: string }) => void;
   getSendMessageOptionsForReply: (
-    options: Message,
+    options: SendMessageForReplyOptions,
   ) => SendMessageOptionsForReply | Record<never, never>;
   jumpToMessage: (options: MessageJumpOptions) => void;
   jumpToPresent: (channelId: string, limit?: number) => void;
@@ -264,49 +286,56 @@ export interface Messages extends MessageStore {
     channelId: string,
     messageId: string,
     attachments: MessageAttachment[],
+  ) => Promise<void>;
+  receiveMessage: (
+    channelId: string,
+    message: Message,
+    optimistic?: boolean,
+    sendMessageOptions?: unknown,
   ) => void;
-  receiveMessage: (channelId: string, message: Message) => void;
   revealMessage: (channelId: string, messageId: string) => void;
-  sendBotMessage: (channelId: string, content: string, messageName?: string) => null;
-  sendClydeError: (channelId: string, errorKey?: string) => void;
+  sendBotMessage: (channelId: string, content: string, messageName?: string) => void;
+  sendClydeError: (channelId: string, errorKey?: number) => void;
   sendGreetMessage: (
     channelId: string,
     stickerId: string,
-    options: {
-      messageReference: MessageReference;
-      allowedMentions: AllowedMentions;
-      captchaPayload?: CaptchaPayload;
-    },
-  ) => void;
+    options?: MessageGreetOptions,
+  ) => Promise<unknown | void>;
   sendInvite: (
     channelId: string,
     inviteCode: string,
-    analyticsTriggeredFrom: string,
-    suggestedInvite: InviteSuggestion,
-  ) => void;
+    analyticsTriggeredFrom?: string,
+    suggestedInvite?: InviteSuggestion,
+  ) => Promise<unknown | void>;
   sendMessage: (
     channelId: string,
     message: OutgoingMessage,
     promise?: boolean,
     options?: OutgoingMessageOptions,
+  ) => Promise<unknown | void>;
+  sendStickers: (
+    channelId: string,
+    stickerIds: string[],
+    content?: string,
+    options?: SendMessageOptionsForReply | Record<never, never>,
+    tts?: boolean,
   ) => void;
-  sendStickers: (channelId: string, stickerIds: string[]) => void;
   startEditMessage: (channelId: string, messageId: string, content: string) => void;
-  suppressEmbeds: (channelId: string, messageId: string) => void;
+  suppressEmbeds: (channelId: string, messageId: string) => Promise<void>;
   trackInvite: (options: TrackInviteOptions) => void;
   trackJump(
     channelId: string,
     messageId: string,
     context: string,
-    extraProperties: Properties,
+    extraProperties?: Properties,
   ): void;
   truncateMessages: (channelId: string, truncateBottom: number, truncateTop: number) => void;
-  updateEditMessage: (channelId: string, textValue: string, richValue: string) => void;
+  updateEditMessage: (channelId: string, textValue: string, richValue: unknown) => void;
   _sendMessage: (
     channelId: string,
     message: OutgoingMessage,
     options: OutgoingMessageOptions,
-  ) => void;
+  ) => Promise<void>;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 }
 
