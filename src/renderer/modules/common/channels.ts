@@ -9,34 +9,32 @@ export interface LastChannelFollowingDestination {
 }
 
 export type SelectedChannelStore = (Store & Record<string, unknown>) & {
-  // Selected Channel Store
   getChannelId: (guildId?: string) => string | undefined;
   getCurrentlySelectedChannelId: (guildId?: string) => string | undefined;
   getLastChannelFollowingDestination: () => LastChannelFollowingDestination;
   getLastSelectedChannelId: (guildId?: string) => string | undefined;
-  getLastSelectedChannels: (guildId?: string) => string | undefined;
+  getLastSelectedChannels: (guildId: string) => string | undefined;
   getMostRecentSelectedTextChannelId: (guildId?: string) => string | undefined;
   getVoiceChannelId: () => string | undefined;
 };
 
 export type ChannelStore = (Store & Record<string, unknown>) & {
-  // ChannelStore
-  getAllThreadsForParent(channelId: string): Channel[];
-  getBasicChannel(channelId: string): Channel[];
-  getCachedChannelJsonForGuild(e: unknown): unknown;
-  getChannel(channelId: string): Channel;
-  getDMFromUserId(userId: string): Channel;
+  getAllThreadsForParent(channelId?: string): Channel[];
+  getBasicChannel(channelId: string): Channel | undefined;
+  getCachedChannelJsonForGuild(channelId: string): unknown;
+  getChannel(channelId: string): Channel | undefined;
+  getDMFromUserId(userId: string): string | undefined;
   getDMUserIds(): string[];
-  getGuildChannelsVersion(guildId: string): number;
-  getInitialOverlayState(): Record<number, Channel>;
-  getMutableBasicGuildChannelsForGuild(guildId: string): Record<number, Channel>;
-  getMutableGuildChannelsForGuild(guildId: string): Record<number, Channel>;
-  getMutablePrivateChannels(): Record<number, Channel>;
+  getGuildChannelsVersion(guildId?: string): number;
+  getInitialOverlayState(): Record<string, Channel>;
+  getMutableBasicGuildChannelsForGuild(guildId?: string): Record<string, Channel>;
+  getMutableGuildChannelsForGuild(guildId?: string): Record<string, Channel>;
+  getMutablePrivateChannels(): Record<string, Channel>;
   getPrivateChannelsVersion(): number;
   getSortedPrivateChannels(): Channel[];
   hasChannel(channelId: string): boolean;
-  hasRestoredGuild(): boolean;
-  loadAllGuildAndPrivateChannelsFromDisk(): Channel[];
+  hasRestoredGuild(guildId: string): boolean;
+  loadAllGuildAndPrivateChannelsFromDisk(): Record<string, Channel>;
 };
 
 export type Channels = SelectedChannelStore & ChannelStore;

@@ -2,13 +2,13 @@ import { filters, getExportsForProps, waitForModule } from "../webpack";
 import type { GuildMember, User } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
-export interface UserCommunicationDisabled {
-  communicationDisabledUntil: number | undefined;
+export interface PendingRoleUpdate {
+  added: Record<string, string[]>;
+  removed: Record<string, string[]>;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type UsersStore = {
-  // User Store
+export type UserStore = {
   filter: (predicate: (user: User) => User | boolean, sort?: boolean) => User[];
   findByTag: (username?: string, discriminator?: string) => User | undefined;
   forEach: (callback: (user: User) => unknown) => void;
@@ -19,8 +19,7 @@ export type UsersStore = {
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type GuildMemberStore = {
-  // Guild Member Store
-  getCommunicationDisabledUserMap: () => Record<string, UserCommunicationDisabled>;
+  getCommunicationDisabledUserMap: () => Record<string, string>;
   getCommunicationDisabledVersion: () => number;
   getMember: (guildId?: string, userId?: string) => GuildMember | undefined;
   getMemberIds: (guildId?: string) => string[];
@@ -32,20 +31,17 @@ export type GuildMemberStore = {
   getNicknames: (userId?: string) => string[];
   getSelfMember: (guildId?: string) => GuildMember | undefined;
   getTrueMember: (guildId?: string, userId?: string) => GuildMember | undefined;
-  getPendingRoleUpdates: (guildId?: string) => {
-    added: Record<string, string[]>;
-    removed: Record<string, string[]>;
-  };
+  getPendingRoleUpdates: (guildId?: string) => PendingRoleUpdate;
   isMember: (guildId?: string, userId?: string) => boolean;
   memberOf: (userId?: string) => string[];
 };
 
-export type Users = UsersStore & GuildMemberStore;
+export type Users = UserStore & GuildMemberStore;
 
 export default virtualMerge(
   (await waitForModule(filters.byProps("getUser", "getCurrentUser")).then(
     Object.getPrototypeOf,
-  )) as UsersStore,
+  )) as UserStore,
   (await waitForModule(filters.byProps("getTrueMember", "getMember")).then((mod) =>
     Object.getPrototypeOf(getExportsForProps(mod, ["getTrueMember", "getMember"])),
   )) as GuildMemberStore,

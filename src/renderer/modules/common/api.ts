@@ -15,7 +15,7 @@ export type API = Record<
     text: string;
   }>
 > & {
-  getAPIBaseURL: () => string;
+  getAPIBaseURL: (version?: boolean) => string;
 };
 
 const props = ["getAPIBaseURL", "get", "patch", "post", "put", "delete"];
