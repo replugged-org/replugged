@@ -30,7 +30,9 @@ const guilds: Guilds = {
 };
 
 export function getCurrentGuild(): Guild | undefined {
-  return guilds.getGuild(guilds.getGuildId());
+  const guildId = guilds.getGuildId();
+  if (!guildId) return undefined;
+  return guilds.getGuild(guildId);
 }
 
 export default virtualMerge(guilds, { getCurrentGuild });
