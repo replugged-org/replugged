@@ -11,7 +11,7 @@ export interface State {
 
 export type Guilds = (Store & Record<string, unknown>) & {
   getCurrentGuild: () => Guild | undefined;
-  getGuild: (guildId?: string) => Guild | undefined;
+  getGuild: (guildId: string) => Guild | undefined;
   getGuildCount: () => number;
   getGuildId: () => string | undefined;
   getGuilds: () => Record<string, Guild>;
