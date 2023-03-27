@@ -39,6 +39,7 @@ interface AlertProps {
   secondaryConfirmText?: string;
   onConfirmSecondary?: () => void;
   className?: string;
+  titleClassName?: string;
 }
 
 interface AlertMod {
@@ -58,7 +59,6 @@ export interface Modal {
     contextKey?: string,
   ) => string;
   closeModal: (modalKey: string, contextKey?: string) => void;
-  ModalSize: "small" | "medium" | "large" | "dynamic";
   Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
   Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
   Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
