@@ -6,7 +6,7 @@
   "main": "dist/main.mjs",
   "types": "dist/renderer/replugged.d.ts",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "build": "tsx scripts/build.ts",
