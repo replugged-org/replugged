@@ -1,6 +1,7 @@
 import type React from "react";
 import type { ObjectExports, ReactComponent } from "../../../types";
-import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack";
+import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import { sourceStrings } from "../webpack/patch-load";
 
 export type ContextMenuType = Record<string, unknown> & {
   ContextMenu: ReactComponent<{

@@ -1,4 +1,4 @@
-import { signalStart, waitForReady } from "../modules/webpack";
+import { signalStart, waitForReady } from "../modules/webpack/patch-load";
 import { log } from "../modules/logger";
 
 import { ready as commonReady } from "@common";
