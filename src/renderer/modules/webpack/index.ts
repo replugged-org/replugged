@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { AnyFunction } from "../../types/util";
+import type { AnyFunction } from "../../../types/util";
 import type {
   Filter,
   GetModuleOptions,
@@ -18,8 +18,8 @@ import type {
   WebpackChunkGlobal,
   WebpackModule,
   WebpackRequire,
-} from "../../types/webpack";
-import { Logger } from "./logger";
+} from "../../../types/webpack";
+import { Logger } from "../logger";
 
 const logger = Logger.api("webpack");
 
