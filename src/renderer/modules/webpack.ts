@@ -504,7 +504,8 @@ export async function waitForModule<
 
   if (!options.timeout) return promise;
 
-  let timeout: NodeJS.Timeout;
+  // Different in Node and browser environments--number in browser, NodeJS.Timeout in Node
+  let timeout: ReturnType<typeof setTimeout>;
 
   const timeoutPromise = new Promise<never>((_, reject) => {
     timeout = setTimeout(() => {
@@ -697,11 +698,6 @@ export function getByValue(
 
 // Specialized, inner-module searchers
 
-export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
-  module: ObjectExports,
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  match: string | RegExp | ((func: Function) => boolean),
-): T | undefined;
 /**
  * Search for a function within a module by its source code.
  *
@@ -727,12 +723,6 @@ export function getFunctionBySource<T extends AnyFunction = AnyFunction>(
     logError({ text: "Error in getFunctionBySource", err, module, match });
   }
 }
-
-export function getFunctionKeyBySource<P extends keyof T, T extends ObjectExports = ObjectExports>(
-  module: T,
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  match: string | RegExp | ((func: Function) => boolean),
-): P | undefined;
 
 /**
  * Search for a function within a module by its source code. Returns the key of the function.
