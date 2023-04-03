@@ -10,7 +10,7 @@
     "REPLUGGED_GENERAL_SETTINGS": "Algemene Instellingen",
     "REPLUGGED_I18N_CONTRIBUTE": "Wil je helpen met het vertalen van Replugged? Ga naar onze [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% vertaald",
-    "REPLUGGED_QUICKCSS": "Quick CSS",
+    "REPLUGGED_QUICKCSS": "Snelle CSS",
     "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
     "REPLUGGED_SETTINGS_BACKEND_DESC": "URL die gebruikt word voor het ophalen van sommige assets en aanvragen te plegen aan Replugged's REST API.",
     "REPLUGGED_PLUGINS": "Plugins",
