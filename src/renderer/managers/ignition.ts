@@ -20,9 +20,7 @@ export async function start(): Promise<void> {
   await Promise.all([
     coremods.startAll(),
     plugins.startAll(),
-    themes.loadMissing().then(() => {
-      themes.loadAll();
-    }),
+    themes.loadMissing().then(themes.loadAll),
   ]);
 
   log(

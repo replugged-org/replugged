@@ -86,7 +86,7 @@ export function getByProps<
 
   const result = (
     typeof args.at(-1) === "object"
-      ? getModule(filters.byProps(...props), args[args.length - 1] as GetModuleOptions)
+      ? getModule(filters.byProps(...props), args.at(-1) as GetModuleOptions)
       : getModule(filters.byProps(...props))
   ) as
     | Array<ModuleExportsWithProps<P>>

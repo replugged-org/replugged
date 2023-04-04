@@ -20,7 +20,7 @@ async function injectVersionInfo(): Promise<void> {
   const mod = await waitForModule<VersionMod>(filters.bySource("().versionHash"), { raw: true });
 
   injector.after(mod.exports, "Z", (_, sections: SectionType[]) => {
-    const lastSection = sections[sections.length - 1];
+    const lastSection = sections.at(-1)!;
     const element = lastSection.element?.({});
     if (!element) return;
     element.props.children.push(
