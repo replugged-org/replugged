@@ -7,7 +7,6 @@ import type {
 } from "src/types";
 import { wpRequire } from "./patch-load";
 import { logError } from "./util";
-import { byValue } from "./filters";
 
 // Helpers
 
@@ -165,20 +164,4 @@ export function getModule<T extends RawModule = RawModule>(
     logError({ text: "Error getting module", err, filter });
     return options.all ? [] : undefined;
   }
-}
-
-/**
- * Equivalent to `getModule(filters.byValue(match), options)`
- * @param match The string to check the value against
- *
- * @see {@link filters.byValue}
- */
-export function getByValue(
-  match: string | RegExp,
-  options: GetModuleOptions | undefined = {
-    all: false,
-    raw: false,
-  },
-): RawModule | ModuleExports | Array<RawModule | ModuleExports> | undefined {
-  return getModule(byValue(match), options);
 }

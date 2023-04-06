@@ -148,3 +148,19 @@ export async function waitForProps<
   // We know this will always exist since filters.byProps will always return a module that has the props
   return getExportsForProps<P, T & ModuleExportsWithProps<P>>(result as T & ModuleExports, props)!;
 }
+
+/**
+ * Equivalent to `getModule(filters.byValue(match), options)`
+ * @param match The string to check the value against
+ *
+ * @see {@link filters.byValue}
+ */
+export function getByValue(
+  match: string | RegExp,
+  options: GetModuleOptions | undefined = {
+    all: false,
+    raw: false,
+  },
+): RawModule | ModuleExports | Array<RawModule | ModuleExports> | undefined {
+  return getModule(filters.byValue(match), options);
+}
