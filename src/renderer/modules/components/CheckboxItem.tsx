@@ -21,7 +21,7 @@ interface CheckboxProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>, state: boolean) => void;
 }
 
-export type CheckboxType = React.ComponentType<CheckboxProps> & {
+export type CheckboxType = React.FC<React.PropsWithChildren<CheckboxProps>> & {
   defaultProps: CheckboxProps;
   Types: Record<"DEFAULT" | "INVERTED" | "GHOST" | "ROW", string>;
   Aligns: Record<"TOP" | "CENTER", string>;
