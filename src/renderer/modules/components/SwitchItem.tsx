@@ -21,12 +21,11 @@ export type SwitchItemType = ReactComponent<{
 }>;
 
 const switchModStr = "xMinYMid meet";
-const switchRgx = /{className:\w+\(\)\(\w+,\w+\.className\)}/;
 const switchItemStr = ").dividerDefault";
 
 export const Switch = (await waitForModule(filters.bySource(switchModStr)).then((mod) => {
   if (typeof mod === "function") return mod;
-  return getFunctionBySource(mod as ObjectExports, switchRgx);
+  return getFunctionBySource(mod as ObjectExports, switchModStr);
 })) as SwitchType;
 
 export const SwitchItem = (await waitForModule(filters.bySource(switchItemStr)).then((mod) => {
