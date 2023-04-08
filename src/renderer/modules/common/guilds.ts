@@ -18,7 +18,6 @@ export type Guilds = (Store & Record<string, unknown>) & {
   getLastSelectedGuildId: () => string | undefined;
   getLastSelectedTimestamp: (guildId: string) => number;
   getState: () => State;
-  getTabsV2SelectedGuildId: () => string | undefined;
   isLoaded: () => boolean;
 };
 
