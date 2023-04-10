@@ -1,7 +1,9 @@
 import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
 import type { GetButtonItem } from "../../types/coremods/message";
+import type { GetContextItem } from "../../types/coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
+import { addContextMenuItem } from "../coremods/contextMenu";
 
 enum InjectionTypes {
   Before,
@@ -307,6 +309,17 @@ export class Injector {
       this.#uninjectors.add(uninjector);
       return uninjector;
     },
+
+    // todo add documentation
+    addMenuItem: (navId: string, item: GetContextItem) => {
+      // if any of the code is uncommented, then discord fails to start
+
+      // addContextMenuItem.toString()
+
+      // const uninject = addContextMenuItem(navId, item);
+      // this.#uninjectors.add(uninject);
+      // return uninjector;
+    }
   };
 
   /**
