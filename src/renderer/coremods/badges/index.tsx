@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { filters, getByProps, waitForModule } from "../../modules/webpack";
 import { Injector } from "../../modules/injector";
 import React from "@common/react";
@@ -39,86 +40,88 @@ export async function start(): Promise<void> {
     { containerWithContent: "string" }
   >("containerWithContent")!;
 
-  injector.after(
-    mod,
-    fnPropName,
-    (
-      [
-        {
-          user: { id },
-        },
-      ],
+  injector.after(mod, fnPropName, (_, res: any) => {
+    injector.after(
       res,
-    ) => {
-      if (!generalSettings.get("badges")) return res;
-      if (!res?.props?.children) return res;
+      "type",
+      (
+        [
+          {
+            user: { id },
+          },
+        ]: any,
+        res,
+      ) => {
+        if (!generalSettings.get("badges")) return res;
+        if (!res?.props?.children) return res;
 
-      const [badges, setBadges] = React.useState<APIBadges | undefined>();
+        const [badges, setBadges] = React.useState<APIBadges | undefined>();
 
-      React.useEffect(() => {
-        (async () => {
-          if (!cache.has(id) || cache.get(id)!.lastFetch < Date.now() - REFRESH_INTERVAL) {
-            cache.set(
-              id,
-              // TODO: new backend
-              await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${id}`)
-                .then(async (res) => {
-                  const body = (await res.json()) as Record<string, unknown> & {
-                    badges: APIBadges;
-                  };
+        React.useEffect(() => {
+          (async () => {
+            if (!cache.has(id) || cache.get(id)!.lastFetch < Date.now() - REFRESH_INTERVAL) {
+              cache.set(
+                id,
+                // TODO: new backend
+                await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${id}`)
+                  .then(async (res) => {
+                    const body = (await res.json()) as Record<string, unknown> & {
+                      badges: APIBadges;
+                    };
 
-                  if (res.status === 200 || res.status === 404) {
+                    if (res.status === 200 || res.status === 404) {
+                      return {
+                        badges: body.badges || {},
+                        lastFetch: Date.now(),
+                      };
+                    }
+
+                    cache.delete(id);
                     return {
-                      badges: body.badges || {},
+                      badges: {},
                       lastFetch: Date.now(),
                     };
-                  }
+                  })
+                  .catch((e) => e),
+              );
+            }
 
-                  cache.delete(id);
-                  return {
-                    badges: {},
-                    lastFetch: Date.now(),
-                  };
-                })
-                .catch((e) => e),
+            setBadges(cache.get(id)?.badges);
+          })();
+        }, []);
+
+        if (!badges) {
+          return res;
+        }
+
+        if (badges.custom?.name && badges.custom.icon) {
+          res.props.children.push(<Custom url={badges.custom.icon} name={badges.custom.name} />);
+        }
+
+        badgeElements.forEach(({ type, component }) => {
+          const value = badges[type];
+          if (value) {
+            res.props.children.push(
+              React.createElement(component, {
+                color: badges.custom?.color,
+              }),
             );
           }
+        });
 
-          setBadges(cache.get(id)?.badges);
-        })();
-      }, []);
+        if (res.props.children.length > 0) {
+          if (!res.props.className.includes(containerWithContent)) {
+            res.props.className += ` ${containerWithContent}`;
+          }
+          if (!res.props.className.includes("replugged-badges-container")) {
+            res.props.className += " replugged-badges-container";
+          }
+        }
 
-      if (!badges) {
         return res;
-      }
-
-      if (badges.custom?.name && badges.custom.icon) {
-        res.props.children.push(<Custom url={badges.custom.icon} name={badges.custom.name} />);
-      }
-
-      badgeElements.forEach(({ type, component }) => {
-        const value = badges[type];
-        if (value) {
-          res.props.children.push(
-            React.createElement(component, {
-              color: badges.custom?.color,
-            }),
-          );
-        }
-      });
-
-      if (res.props.children.length > 0) {
-        if (!res.props.className.includes(containerWithContent)) {
-          res.props.className += ` ${containerWithContent}`;
-        }
-        if (!res.props.className.includes("replugged-badges-container")) {
-          res.props.className += " replugged-badges-container";
-        }
-      }
-
-      return res;
-    },
-  );
+      },
+    );
+  });
 }
 
 export function stop(): void {
