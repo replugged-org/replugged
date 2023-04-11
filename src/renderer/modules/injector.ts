@@ -316,10 +316,10 @@ export class Injector {
 
       // addContextMenuItem.toString()
 
-      // const uninject = addContextMenuItem(navId, item);
-      // this.#uninjectors.add(uninject);
-      // return uninjector;
-    }
+      const uninjector = addContextMenuItem(navId, item);
+      this.#uninjectors.add(uninjector);
+      return uninjector;
+    },
   };
 
   /**
