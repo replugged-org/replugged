@@ -11,10 +11,15 @@ interface BadgeModArgs {
   user: User;
 }
 
-type BadgeMod = (args: BadgeModArgs) => React.ReactElement<{
-  children: React.ReactElement[];
-  className: string;
-}>;
+type BadgeMod = (args: BadgeModArgs) => {
+  props: unknown;
+  type: (props: unknown) => {
+    props: {
+      className: string;
+      children: React.ReactElement[];
+    };
+  };
+};
 
 interface BadgeCache {
   badges: APIBadges;
@@ -51,7 +56,8 @@ export async function start(): Promise<void> {
       res,
     ) => {
       if (!generalSettings.get("badges")) return res;
-      if (!res?.props?.children) return res;
+      const memoRes = res.type(res.props);
+      res.type = () => memoRes;
 
       const [badges, setBadges] = React.useState<APIBadges | undefined>();
 
@@ -93,13 +99,13 @@ export async function start(): Promise<void> {
       }
 
       if (badges.custom?.name && badges.custom.icon) {
-        res.props.children.push(<Custom url={badges.custom.icon} name={badges.custom.name} />);
+        memoRes.props.children.push(<Custom url={badges.custom.icon} name={badges.custom.name} />);
       }
 
       badgeElements.forEach(({ type, component }) => {
         const value = badges[type];
         if (value) {
-          res.props.children.push(
+          memoRes.props.children.push(
             React.createElement(component, {
               color: badges.custom?.color,
             }),
@@ -107,12 +113,12 @@ export async function start(): Promise<void> {
         }
       });
 
-      if (res.props.children.length > 0) {
-        if (!res.props.className.includes(containerWithContent)) {
-          res.props.className += ` ${containerWithContent}`;
+      if (memoRes.props.children.length > 0) {
+        if (!memoRes.props.className.includes(containerWithContent)) {
+          memoRes.props.className += ` ${containerWithContent}`;
         }
-        if (!res.props.className.includes("replugged-badges-container")) {
-          res.props.className += " replugged-badges-container";
+        if (!memoRes.props.className.includes("replugged-badges-container")) {
+          memoRes.props.className += " replugged-badges-container";
         }
       }
 
