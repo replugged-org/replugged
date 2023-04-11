@@ -7,11 +7,11 @@ export default [
     find: "getAvailableLocales",
     replacements: [
       {
-        match: /(\.Messages\.LANGUAGE,)\s*children:((?:[^}]*}){3}[^}]*)/,
+        match: /(\.Messages\.LANGUAGE,)\s*children:((?:[^}]*?}){3}\))/,
         replace: (_, prefix, ogChild) => `${prefix}children:[${coremodStr}.Card(),${ogChild}]`,
       },
       {
-        match: /children:\[(.+\.localeName[^\]]*)]/,
+        match: /children:\[(.+?\.localeName[^\]]*?)]/,
         replace: (_, ogChild) => `children:[${coremodStr}.Percentage(${ogChild})]`,
       },
     ],
