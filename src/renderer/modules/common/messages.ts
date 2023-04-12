@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { waitForProps } from "../webpack";
 
-import type { Channel, Message, MessageAttachment } from "discord-types/general";
+import { Channel, Message, MessageAttachment } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
 export enum ActivityActionTypes {
@@ -355,9 +355,9 @@ export interface Messages extends MessageStore {
 const MessageStore = (await waitForProps(["getMessage", "getMessages"])) as MessageStore;
 
 export default virtualMerge(
-  (await waitForProps(["sendMessage", "editMessage", "deleteMessage"])) as unknown as Messages,
+  (await waitForProps(["sendMessage", "editMessage", "deleteMessage"])) as Partial<Messages>,
   {
     getMessage: MessageStore.getMessage,
     getMessages: MessageStore.getMessages,
   },
-);
+) as Messages;
