@@ -1,4 +1,4 @@
-import { filters, getExportsForProps, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
 export type API = Record<
   "get" | "patch" | "post" | "put" | "delete",
@@ -24,6 +24,4 @@ export type API = Record<
 
 const props = ["getAPIBaseURL", "get", "patch", "post", "put", "delete"];
 
-export default (await waitForModule(filters.byProps(...props)).then((mod) =>
-  getExportsForProps(mod, props),
-)) as API;
+export default (await waitForProps(props)) as unknown as API;

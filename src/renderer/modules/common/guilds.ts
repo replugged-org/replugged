@@ -1,4 +1,4 @@
-import { filters, getExportsForProps, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 import type { Guild } from "discord-types/general";
 import type { Store } from "./flux";
 import { virtualMerge } from "src/renderer/util";
@@ -22,10 +22,8 @@ export type Guilds = (Store & Record<string, unknown>) & {
 };
 
 const guilds: Guilds = {
-  ...(await waitForModule(filters.byProps("getGuild", "getGuilds")).then(Object.getPrototypeOf)),
-  ...(await waitForModule(filters.byProps("getGuildId", "getLastSelectedGuildId")).then((mod) =>
-    Object.getPrototypeOf(getExportsForProps(mod, ["getGuildId", "getLastSelectedGuildId"])),
-  )),
+  ...(await waitForProps(["getGuild", "getGuilds"]).then(Object.getPrototypeOf)),
+  ...(await waitForProps(["getGuildId", "getLastSelectedGuildId"]).then(Object.getPrototypeOf)),
 };
 
 export function getCurrentGuild(): Guild | undefined {

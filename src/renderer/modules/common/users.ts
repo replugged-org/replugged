@@ -1,4 +1,4 @@
-import { filters, getExportsForProps, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 import type { GuildMember, User } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
@@ -15,6 +15,7 @@ export type UserStore = {
   getCurrentUser: () => User;
   getUser: (userId?: string) => User | undefined;
   getUsers: () => Record<string, User>;
+  getUserStoreVersion: () => number;
 };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -39,10 +40,8 @@ export type GuildMemberStore = {
 export type Users = UserStore & GuildMemberStore;
 
 export default virtualMerge(
-  (await waitForModule(filters.byProps("getUser", "getCurrentUser")).then(
+  (await waitForProps(["getUser", "getCurrentUser"]).then(Object.getPrototypeOf)) as UserStore,
+  (await waitForProps(["getTrueMember", "getMember"]).then(
     Object.getPrototypeOf,
-  )) as UserStore,
-  (await waitForModule(filters.byProps("getTrueMember", "getMember")).then((mod) =>
-    Object.getPrototypeOf(getExportsForProps(mod, ["getTrueMember", "getMember"])),
   )) as GuildMemberStore,
 );

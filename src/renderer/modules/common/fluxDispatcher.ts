@@ -1,4 +1,4 @@
-import { filters, getExportsForProps, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
 type FluxCallback = (event?: { [index: string]: unknown }) => void;
 
@@ -27,8 +27,7 @@ export interface FluxDispatcher {
   wait: (callback: (...rest: unknown[]) => unknown) => void;
 }
 
-export default (await waitForModule(
-  filters.byProps("_currentDispatchActionType", "_processingWaitQueue"),
-).then((mod) =>
-  getExportsForProps(mod, ["_currentDispatchActionType", "_processingWaitQueue"]),
-)) as FluxDispatcher;
+export default (await waitForProps([
+  "_currentDispatchActionType",
+  "_processingWaitQueue",
+])) as unknown as FluxDispatcher;

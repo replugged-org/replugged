@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
-import type { ObjectExports } from "../../../types";
 import type { Channel, Message, MessageAttachment } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
@@ -353,14 +352,10 @@ export interface Messages extends MessageStore {
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 }
 
-const MessageStore = await waitForModule<ObjectExports & MessageStore>(
-  filters.byProps("getMessage", "getMessages"),
-);
+const MessageStore = (await waitForProps(["getMessage", "getMessages"])) as MessageStore;
 
 export default virtualMerge(
-  await waitForModule<ObjectExports & Messages>(
-    filters.byProps("sendMessage", "editMessage", "deleteMessage"),
-  ),
+  (await waitForProps(["sendMessage", "editMessage", "deleteMessage"])) as unknown as Messages,
   {
     getMessage: MessageStore.getMessage,
     getMessages: MessageStore.getMessages,

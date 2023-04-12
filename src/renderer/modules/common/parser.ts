@@ -1,5 +1,4 @@
-import { RawModule } from "../../../types";
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
 interface State {
   prevCapture: RegExpExecArray | null;
@@ -44,4 +43,5 @@ export interface Parser {
   reactParserFor(rules: Record<string, Rule>): ParseFn;
   defaultRules: Record<string, Rule>;
 }
-export default await waitForModule<RawModule & Parser>(filters.byProps("parse", "parseTopic"));
+
+export default (await waitForProps(["parse", "parseTopic"])) as unknown as Parser;

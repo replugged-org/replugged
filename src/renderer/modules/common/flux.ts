@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { RawModule, ReactComponent } from "../../../types";
+import type { ReactComponent } from "../../../types";
 import type { FluxDispatcher as Dispatcher } from "./fluxDispatcher";
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
 type DispatchToken = string;
 type ActionType = string;
@@ -155,4 +155,4 @@ export interface Flux {
   get initialized(): Promise<boolean | undefined>;
 }
 
-export default await waitForModule<RawModule & Flux>(filters.byProps("Store", "connectStores"));
+export default (await waitForProps(["Store", "connectStores"])) as unknown as Flux;
