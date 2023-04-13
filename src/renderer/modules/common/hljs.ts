@@ -1,6 +1,4 @@
-import HighlightJS from "highlightjs";
+import type HighlightJS from "highlightjs";
 import { waitForProps } from "../webpack";
 
-const props = ["initHighlighting", "highlight"];
-
-export default await waitForProps<(typeof props)[number], typeof HighlightJS>(props);
+export default await waitForProps<typeof HighlightJS>("initHighlighting", "highlight");

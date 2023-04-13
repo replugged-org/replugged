@@ -156,6 +156,4 @@ export type Flux = {
   get initialized(): Promise<boolean | undefined>;
 };
 
-const props = ["Store", "connectStores"];
-
-export default await waitForProps<(typeof props)[number], Flux>(props);
+export default await waitForProps<Flux>("Store", "connectStores");

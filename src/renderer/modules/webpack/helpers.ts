@@ -58,40 +58,40 @@ export function getBySource<T>(
 
 // Get by props
 
-export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function getByProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options?: { all?: false; raw?: false },
 ): T | undefined;
-export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function getByProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options: { all: true; raw?: false },
 ): T[];
-export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function getByProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options: { all?: false; raw: true },
 ): RawModule<T> | undefined;
-export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function getByProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options: { all: true; raw: true },
 ): Array<RawModule<T>>;
-export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function getByProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options?: { all: true; raw?: boolean },
 ): T[] | Array<RawModule<T>>;
-export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function getByProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options: { all?: false; raw?: boolean },
 ): T | RawModule<T> | undefined;
-export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function getByProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options: { all?: boolean; raw: true },
 ): RawModule<T> | Array<RawModule<T>> | undefined;
-export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(
+export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P,
   options: { all?: boolean; raw?: false },
 ): T | T[] | undefined;
-export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function getByProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options?: { all?: boolean; raw?: boolean },
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined;
 export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(...props: P): T | undefined;
@@ -102,10 +102,10 @@ export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(...props
  * @see {@link filters.byProps}
  * @see {@link getModule}
  */
-export function getByProps<T, P extends PropertyKey[] = PropertyKey[]>(
-  ...args: [P, GetModuleOptions] | P
+export function getByProps<T, P extends PropertyKey = keyof T>(
+  ...args: [P[], GetModuleOptions] | P[]
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
-  const props = (typeof args[0] === "string" ? args : args[0]) as P;
+  const props = (typeof args[0] === "string" ? args : args[0]) as P[];
   const raw = typeof args[0] === "string" ? false : (args[1] as GetModuleOptions)?.raw;
 
   const result =
@@ -127,19 +127,19 @@ export function getByProps<T, P extends PropertyKey[] = PropertyKey[]>(
 
 // Wait for props
 
-export function waitForProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function waitForProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options: WaitForOptions & { raw?: false },
 ): Promise<T>;
-export function waitForProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function waitForProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options: WaitForOptions & { raw: true },
 ): Promise<RawModule<T>>;
-export function waitForProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  props: P,
+export function waitForProps<T, P extends PropertyKey = keyof T>(
+  props: P[],
   options?: WaitForOptions,
 ): Promise<T | RawModule<T>>;
-export function waitForProps<T, P extends PropertyKey[] = Array<keyof T>>(...props: P): Promise<T>;
+export function waitForProps<T, P extends PropertyKey = keyof T>(...props: P[]): Promise<T>;
 
 /**
  * Like {@link getByProps} but waits for the module to be loaded.
@@ -147,10 +147,10 @@ export function waitForProps<T, P extends PropertyKey[] = Array<keyof T>>(...pro
  * @see {@link getByProps}
  * @see {@link waitForModule}
  */
-export async function waitForProps<T, P extends PropertyKey[] = Array<keyof T>>(
-  ...args: [P, WaitForOptions] | P
+export async function waitForProps<T, P extends PropertyKey = keyof T>(
+  ...args: [P[], WaitForOptions] | P[]
 ): Promise<T> {
-  const props = (typeof args[0] === "string" ? args : args[0]) as P;
+  const props = (typeof args[0] === "string" ? args : args[0]) as P[];
   const raw = typeof args[0] === "string" ? false : (args[1] as WaitForOptions)?.raw;
 
   const result = await (typeof args.at(-1) === "object"
@@ -169,63 +169,63 @@ export async function waitForProps<T, P extends PropertyKey[] = Array<keyof T>>(
 
 export function getByValue<T>(
   match: string | RegExp,
-  options?: GetModuleOptions & {
+  options?: {
     all?: false;
     raw?: false;
   },
 ): T | undefined;
 export function getByValue<T>(
   match: string | RegExp,
-  options: GetModuleOptions & {
+  options: {
     all: true;
     raw?: false;
   },
 ): T[];
 export function getByValue<T>(
   match: string | RegExp,
-  options: GetModuleOptions & {
+  options: {
     all?: false;
     raw: true;
   },
 ): RawModule<T> | undefined;
 export function getByValue<T>(
   match: string | RegExp,
-  options: GetModuleOptions & {
+  options: {
     all: true;
     raw: true;
   },
 ): Array<RawModule<T>>;
 export function getByValue<T>(
   match: string | RegExp,
-  options: GetModuleOptions & {
+  options: {
     all: boolean;
     raw?: false;
   },
 ): T | T[] | undefined;
 export function getByValue<T>(
   match: string | RegExp,
-  options: GetModuleOptions & {
+  options: {
     all: boolean;
     raw: true;
   },
 ): RawModule<T> | Array<RawModule<T>>;
 export function getByValue<T>(
   match: string | RegExp,
-  options: GetModuleOptions & {
+  options: {
     all?: false;
     raw: boolean;
   },
 ): T | RawModule<T> | undefined;
 export function getByValue<T>(
   match: string | RegExp,
-  options: GetModuleOptions & {
+  options: {
     all: true;
     raw: boolean;
   },
 ): T[] | Array<RawModule<T>>;
 export function getByValue<T>(
   match: string | RegExp,
-  options?: GetModuleOptions & {
+  options?: {
     all?: boolean;
     raw?: boolean;
   },

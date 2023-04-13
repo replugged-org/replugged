@@ -356,12 +356,10 @@ export type MessageUtils = {
 
 export type Messages = MessageStore & MessageUtils;
 
-const MessageStore: MessageStore = await waitForProps(["getMessage", "getMessages"]);
-
-const messageProps = ["sendMessage", "editMessage", "deleteMessage"];
+const MessageStore = await waitForProps<MessageStore>("getMessage", "getMessages");
 
 export default virtualMerge(
-  await waitForProps<(typeof messageProps)[number], Messages>(messageProps),
+  await waitForProps<Messages>("sendMessage", "editMessage", "deleteMessage"),
   {
     getMessage: MessageStore.getMessage,
     getMessages: MessageStore.getMessages,

@@ -1,3 +1,5 @@
+import { UnknownFunction } from "src/types";
+
 /**
  * Get a function in a module to inject into.
  * @param module Module
@@ -6,7 +8,7 @@
  */
 function findFunctionEntryBySource<T>(
   module: T,
-  match: string | RegExp | ((func: unknown) => boolean),
+  match: string | RegExp | ((func: UnknownFunction) => boolean),
 ): [Extract<keyof T, string>, T[Extract<keyof T, string>]] | undefined {
   if (typeof module === "object" && module !== null) {
     for (const k in module) {
@@ -17,7 +19,7 @@ function findFunctionEntryBySource<T>(
           let isSourceMatch = false;
           switch (typeof match) {
             case "function":
-              isSourceMatch = match(v);
+              isSourceMatch = match(v as UnknownFunction);
               break;
             case "string":
               isSourceMatch = v.toString().includes(match);
@@ -39,8 +41,8 @@ function findFunctionEntryBySource<T>(
  * @param module The module to search.
  */
 export function getFunctionBySource<T>(
-  module: T,
-  match: string | RegExp | ((func: unknown) => boolean),
+  module: unknown,
+  match: string | RegExp | ((func: UnknownFunction) => boolean),
 ): T[Extract<keyof T, string>] | undefined {
   return findFunctionEntryBySource(module, match)?.[1];
 }
@@ -56,7 +58,7 @@ export function getFunctionBySource<T>(
  */
 export function getFunctionKeyBySource<T>(
   module: T,
-  match: string | RegExp | ((func: unknown) => boolean),
+  match: string | RegExp | ((func: UnknownFunction) => boolean),
 ): Extract<keyof T, string> | undefined {
   return findFunctionEntryBySource<T>(module, match)?.[0];
 }

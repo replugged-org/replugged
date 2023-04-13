@@ -28,6 +28,7 @@ export type FluxDispatcher = {
   wait: (callback: (...rest: unknown[]) => unknown) => void;
 };
 
-const props = ["_currentDispatchActionType", "_processingWaitQueue"];
-
-export default await waitForProps<(typeof props)[number], FluxDispatcher>(props);
+export default await waitForProps<FluxDispatcher>(
+  "_currentDispatchActionType",
+  "_processingWaitQueue",
+);

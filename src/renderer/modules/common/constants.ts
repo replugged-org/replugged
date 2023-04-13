@@ -2,32 +2,29 @@ import { filters, getExportsForProps, waitForModule, waitForProps } from "../web
 
 export const raw = await waitForModule(filters.bySource("BASE_URL:"));
 
-export const Permissions = getExportsForProps<string, Record<string, bigint>>(raw, [
+export const Permissions = getExportsForProps<Record<string, bigint>>(raw, [
   "ADMINISTRATOR",
   "MANAGE_GUILD",
 ]);
-export const Scopes = getExportsForProps<string, Record<string, string>>(raw, ["BOT", "GUILDS"])!;
-export const RPCErrors = getExportsForProps<string, Record<string, string | number>>(raw, [
+export const Scopes = getExportsForProps<Record<string, string>>(raw, ["BOT", "GUILDS"])!;
+export const RPCErrors = getExportsForProps<Record<string, string | number>>(raw, [
   "RATELIMITED",
   "TOKEN_REVOKED",
 ])!;
-export const RPCCommands = getExportsForProps<string, Record<string, string>>(raw, [
+export const RPCCommands = getExportsForProps<Record<string, string>>(raw, [
   "AUTHENTICATE",
   "AUTHORIZE",
 ])!;
-export const RPCEvents = getExportsForProps<string, Record<string, string>>(raw, [
+export const RPCEvents = getExportsForProps<Record<string, string>>(raw, [
   "GUILD_CREATE",
   "ERROR",
 ])!;
 /** @deprecated Use {@link ColorGenerator} instead */
-export const Colors = getExportsForProps<string, Record<string, string>>(raw, ["GREY1", "GREY2"])!;
-export const Status = getExportsForProps<string, Record<string, string>>(raw, ["ONLINE", "IDLE"])!;
-export const Paths = getExportsForProps<string, Record<string, string>>(raw, [
-  "INDEX",
-  "DOWNLOADS",
-])!;
+export const Colors = getExportsForProps<Record<string, string>>(raw, ["GREY1", "GREY2"])!;
+export const Status = getExportsForProps<Record<string, string>>(raw, ["ONLINE", "IDLE"])!;
+export const Paths = getExportsForProps<Record<string, string>>(raw, ["INDEX", "DOWNLOADS"])!;
 
-export const CSSVariables = await waitForProps<string, Record<string, string>>(
+export const CSSVariables = await waitForProps<Record<string, string>>(
   "TEXT_NORMAL",
   "BACKGROUND_PRIMARY",
 );

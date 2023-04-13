@@ -45,6 +45,4 @@ export type Parser = {
   defaultRules: Record<string, Rule>;
 };
 
-const props = ["parse", "parseTopic"];
-
-export default await waitForProps<(typeof props)[number], Parser>(props);
+export default await waitForProps<Parser>("parse", "parseTopic");

@@ -1,4 +1,3 @@
-import type { ObjectExports, RawModule } from "../../../types/webpack";
 import { filters, getBySource, getFunctionBySource, waitForModule } from "../webpack";
 
 enum ModalTransitionState {
@@ -68,16 +67,13 @@ export interface Modal {
 }
 
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
-const alertMod = await waitForModule<RawModule & AlertMod>(filters.byProps("show", "close"));
+const alertMod = await waitForModule<AlertMod>(filters.byProps("show", "close"));
 
-const classes = getBySource<RawModule & ModalClasses>("().justifyStart")!;
+const classes = getBySource<ModalClasses>("().justifyStart")!;
 
 export default {
-  openModal: getFunctionBySource<Modal["openModal"]>(
-    mod as ObjectExports,
-    "onCloseRequest:null!=",
-  )!,
-  closeModal: getFunctionBySource<Modal["closeModal"]>(mod as ObjectExports, "onCloseCallback&&")!,
+  openModal: getFunctionBySource<Modal["openModal"]>(mod, "onCloseRequest:null!=")!,
+  closeModal: getFunctionBySource<Modal["closeModal"]>(mod, "onCloseCallback&&")!,
   Direction: classes?.Direction,
   Align: classes?.Align,
   Justify: classes?.Justify,

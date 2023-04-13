@@ -124,14 +124,12 @@ let transitionTo: ((route: string) => void | undefined) | undefined;
  */
 export async function goToOrJoinServer(invite: string): Promise<void> {
   if (!getInvite || !resolveInvite || !transitionTo) {
-    getInvite = getByProps<keyof GetInviteMod, GetInviteMod>("getInvite")?.getInvite;
+    getInvite = getByProps<GetInviteMod>("getInvite")?.getInvite;
     if (!getInvite) {
       throw new Error("Could not find getInvite");
     }
 
-    resolveInvite = getByProps<keyof ResolveInviteMod, ResolveInviteMod>(
-      "resolveInvite",
-    )?.resolveInvite;
+    resolveInvite = getByProps<ResolveInviteMod>("resolveInvite")?.resolveInvite;
     if (!resolveInvite) {
       throw new Error("Could not find resolveInvite");
     }

@@ -28,8 +28,10 @@ export type GuildStore = {
 export type Guilds = SelectedGuildStore & GuildStore;
 
 const guilds: Guilds = {
-  ...(await waitForProps(["getGuild", "getGuilds"]).then(Object.getPrototypeOf)),
-  ...(await waitForProps(["getGuildId", "getLastSelectedGuildId"]).then(Object.getPrototypeOf)),
+  ...(await waitForProps<GuildStore>("getGuild", "getGuilds").then(Object.getPrototypeOf)),
+  ...(await waitForProps<SelectedGuildStore>(["getGuildId", "getLastSelectedGuildId"]).then(
+    Object.getPrototypeOf,
+  )),
 };
 
 export function getCurrentGuild(): Guild | undefined {
