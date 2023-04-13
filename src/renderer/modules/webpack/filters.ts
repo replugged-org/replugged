@@ -1,14 +1,13 @@
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
-import type { RawModule, RawModuleWithProps } from "src/types";
+import type { RawModule } from "../../../types";
 
 /**
  * Get a module that has all the given properties on one of its exports
  * @param props List of property names
  */
-export const byProps = <P extends string = string>(...props: P[]) => {
-  return (m: RawModule): m is RawModuleWithProps<P> =>
-    typeof getExportsForProps(m.exports, props) !== "undefined";
+export const byProps = <P extends PropertyKey = PropertyKey>(...props: P[]) => {
+  return (m: RawModule) => typeof getExportsForProps(m.exports, props) !== "undefined";
 };
 
 /**
@@ -16,8 +15,10 @@ export const byProps = <P extends string = string>(...props: P[]) => {
  * @param match String or RegExp to match in the module's source code
  *
  * @remarks
- * This function matches on the minified code, so make sure to keep that in mind when writing your strings/RegExp.
- * Randomized variable names (usually 1-2 letters) are not stable between Discord updates. Make sure to use wildcards to make sure your RegExp matches if the variable name were to.
+ * This function matches on the minified code, so make sure to keep that in mind
+ * when writing your strings/regex.
+ * Randomized variable names (usually 1-2 letters) are not stable between Discord updates.
+ * Make sure to use wildcards to make sure your RegExp matches if the variable name were to change.
  */
 export const bySource = (match: string | RegExp) => {
   return (m: RawModule) => {
@@ -45,8 +46,15 @@ export const byValue = (match: string | RegExp) => {
     if (!m.exports || typeof m.exports !== "object") {
       return false;
     }
-    return typeof match === "string"
-      ? Object.values(m.exports).includes(match)
-      : Object.values(m.exports).some((val) => typeof val === "string" && match.test(val));
+    const matchIsString = typeof match === "string";
+    for (const k in m.exports) {
+      try {
+        const v = (m.exports as Record<PropertyKey, unknown>)[k];
+        if (matchIsString ? v === match : typeof v === "string" && match.test(v)) {
+          return true;
+        }
+      } catch {}
+    }
+    return false;
   };
 };

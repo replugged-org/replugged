@@ -1,7 +1,15 @@
 import type { PlaintextPatch, RawPlaintextPatch, WebpackModule } from "../../../types";
 
+/**
+ * All plaintext patches
+ */
 export const plaintextPatches: RawPlaintextPatch[] = [];
 
+/**
+ * Replace a module with a plaintext-patched version.
+ * @param mod Module
+ * @returns Patched module
+ */
 export function patchModuleSource(mod: WebpackModule): WebpackModule {
   const originalSource = mod.toString();
 
@@ -35,6 +43,8 @@ export function patchModuleSource(mod: WebpackModule): WebpackModule {
 }
 
 /**
+ * Add a plaintext patch.
+ * @param patches Patch to add
  * @internal
  * @hidden
  */

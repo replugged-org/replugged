@@ -1,14 +1,14 @@
-import type {
-  ModuleExports,
-  WebpackChunk,
-  WebpackChunkGlobal,
-  WebpackRequire,
-} from "../../../types";
+import type { WebpackChunk, WebpackChunkGlobal, WebpackRequire } from "../../../types";
 
 import { listeners } from "./lazy";
 
 import { patchModuleSource } from "./plaintext-patch";
 
+/**
+ * Webpack's require function
+ * @internal
+ * @hidden
+ */
 export let wpRequire: WebpackRequire;
 
 let signalReady: () => void;
@@ -38,8 +38,18 @@ export let signalStart: () => void;
  */
 export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
 
+/**
+ * Original stringified module (without plaintext patches applied) for source searches
+ * @internal
+ * @hidden
+ */
 export const sourceStrings: Record<number, string> = {};
 
+/**
+ * Patch the push method of window.webpackChunkdiscord_app
+ * @param webpackChunk Webpack chunk global
+ * @internal
+ */
 function patchPush(webpackChunk: WebpackChunkGlobal): void {
   let original = webpackChunk.push;
 
@@ -72,10 +82,15 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
   });
 }
 
+/**
+ * Modify the webpack chunk global and signal it to begin operations
+ * @param webpackChunk Webpack chunk global
+ * @internal
+ */
 function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
   wpRequire = webpackChunk.push([[Symbol("replugged")], {}, (r: WebpackRequire) => r]);
 
-  wpRequire.d = (module: ModuleExports, exports: Record<string, () => unknown>) => {
+  wpRequire.d = (module: unknown, exports: Record<string, () => unknown>) => {
     for (const prop in exports) {
       if (Object.hasOwnProperty.call(exports, prop) && !Object.hasOwnProperty.call(module, prop)) {
         Object.defineProperty(module, prop, {
@@ -91,6 +106,8 @@ function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
   patchPush(webpackChunk);
   signalReady();
 }
+
+// Intercept the webpack chunk global as soon as Discord creates it
 
 // Because using a timer is bad, thanks Ven
 // https://github.com/Vendicated/Vencord/blob/ef353f1d66dbf1d14e528830d267aac518ed1beb/src/webpack/patchWebpack.ts
