@@ -267,7 +267,8 @@ export type MessageStore = {
   getMessages: (channelId: string) => MessagesData;
 };
 
-export type Messages = MessageStore & {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type MessageUtils = {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => Promise<unknown | void>;
   deleteMessage: (
@@ -352,6 +353,8 @@ export type Messages = MessageStore & {
   ) => void;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
 };
+
+export type Messages = MessageStore & MessageUtils;
 
 const MessageStore: MessageStore = await waitForProps(["getMessage", "getMessages"]);
 

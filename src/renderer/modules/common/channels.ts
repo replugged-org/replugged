@@ -1,5 +1,4 @@
 import { waitForProps } from "../webpack";
-import type { Store } from "./flux";
 import { Channel } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 import { FullObjectExports } from "src/types";
@@ -9,7 +8,8 @@ export interface LastChannelFollowingDestination {
   guildId: string;
 }
 
-export type SelectedChannelStore = (Store & Record<string, unknown>) & {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type SelectedChannelStore = {
   getChannelId: (guildId?: string) => string | undefined;
   getCurrentlySelectedChannelId: (guildId?: string) => string | undefined;
   getLastChannelFollowingDestination: () => LastChannelFollowingDestination;
@@ -19,7 +19,8 @@ export type SelectedChannelStore = (Store & Record<string, unknown>) & {
   getVoiceChannelId: () => string | undefined;
 };
 
-export type ChannelStore = (Store & Record<string, unknown>) & {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type ChannelStore = {
   getAllThreadsForParent(channelId?: string): Channel[];
   getBasicChannel(channelId: string): Channel | undefined;
   getCachedChannelJsonForGuild(channelId: string): unknown;
