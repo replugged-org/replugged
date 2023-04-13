@@ -1,18 +1,18 @@
 import type { PlaintextPatch } from "src/types";
 
+const coremodStr = "replugged.coremods.coremods.language";
+
 export default [
   {
     find: "getAvailableLocales",
     replacements: [
       {
-        match: /\.Messages\.LANGUAGE,children:((?:[^}]*}){3}[^}]*)/,
-        replace: (_, ogChild) =>
-          `.Messages.LANGUAGE,children:[replugged.coremods.coremods.language.Card(),${ogChild}]`,
+        match: /(\.Messages\.LANGUAGE,)\s*children:((?:[^}]*?}){3}\))/,
+        replace: (_, prefix, ogChild) => `${prefix}children:[${coremodStr}.Card(),${ogChild}]`,
       },
       {
-        match: /children:\[(.+\.localeName[^\]]*)]/,
-        replace: (_, ogChild) =>
-          `children:[replugged.coremods.coremods.language.Percentage(${ogChild})]`,
+        match: /children:\[(.+?\.localeName[^\]]*?)]/,
+        replace: (_, ogChild) => `children:[${coremodStr}.Percentage(${ogChild})]`,
       },
     ],
   },
