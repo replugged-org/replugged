@@ -95,7 +95,7 @@ export async function start(): Promise<void> {
           return res;
         }
 
-        const firstChild = res.props.children[0];
+        const firstChild = res.props?.children?.[0];
         if (!firstChild || !Array.isArray(firstChild)) {
           logger.error("Error injecting badges: res.props.children[0] is not an array", { res });
           return res;
