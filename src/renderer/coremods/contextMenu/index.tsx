@@ -6,8 +6,13 @@ import type {
 import { getByProps } from "../../modules/webpack";
 import type ReactType from "react";
 
-export const menuItems = {} as Record<string, GetContextItem[]>; // navId, (id, item)
+export const menuItems = {} as Record<string, GetContextItem[]>;
 
+/**
+ * Converts data into a react element. Any elements or falsy value will be returned as is
+ * @param raw The data to convert
+ * @returns The converted item
+ */
 function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | undefined {
   // Importing React at the top of the file causes an import loop that hangs discord
   const React = getByProps(
@@ -25,16 +30,21 @@ function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | 
     return raw;
   }
 
-  raw = raw as RawContextItem;
-
   const { type, ...props } = raw;
   if (props.children) {
-    props.children = props.children.map((child) => makeItem(child));
+    props.children = props.children.map((child: RawContextItem) => makeItem(child));
   }
 
   return React.createElement(type, props);
 }
 
+
+/**
+ * Add an item to any context menu
+ * @param navId The id of the menu you want to insert to
+ * @param getItem A function that creates and returns the menu item 
+ * @returns A callback to de-register the function
+ */
 export function addContextMenuItem(navId: string, getItem: GetContextItem): () => void {
   if (!menuItems[navId]) menuItems[navId] = [];
 
@@ -42,6 +52,12 @@ export function addContextMenuItem(navId: string, getItem: GetContextItem): () =
   return () => removeContextMenuItem(navId, getItem);
 }
 
+/**
+ * Remove an item from a context menu
+ * @param navId The id of the menu the function was registered to
+ * @param getItem The function to remove
+ * @returns 
+ */
 export function removeContextMenuItem(navId: string, getItem: GetContextItem): void {
   const items = menuItems[navId];
   const index = items.indexOf(getItem);

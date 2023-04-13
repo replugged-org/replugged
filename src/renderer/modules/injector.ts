@@ -310,12 +310,34 @@ export class Injector {
       return uninjector;
     },
 
-    // todo add documentation
+    /**
+     * A utility function to add an item to any context menu
+     * @param navId The id of the menu to add to
+     * @param item The function that creates the item to add
+     * @returns A callback to de-register the function
+     * 
+     * @example
+     * ```
+     * import { Injector, webpack } from "replugged";
+     * const inject = new Injector();
+     *
+     * function start() {
+     *   injector.utils.addMenuItem("user-context",  // Right-clicking a user
+     *     (data, menu) => {
+     *       return <MenuItem 
+     *         id="my-item" 
+     *         label="An Item!" 
+     *         action={() => console.log(data)}
+     *     }
+     *   )
+     * }
+     *
+     * function stop() {
+     *   injector.uninjectAll();
+     * }
+     * ```
+     */
     addMenuItem: (navId: string, item: GetContextItem) => {
-      // if any of the code is uncommented, then discord fails to start
-
-      // addContextMenuItem.toString()
-
       const uninjector = addContextMenuItem(navId, item);
       this.#uninjectors.add(uninjector);
       return uninjector;
