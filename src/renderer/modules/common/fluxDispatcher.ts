@@ -1,5 +1,4 @@
-import type { RawModule } from "../../../types/webpack";
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
 type FluxCallback = (event?: { [index: string]: unknown }) => void;
 
@@ -8,8 +7,10 @@ export interface Event {
   [index: string]: unknown;
 }
 
-export interface FluxDispatcher {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type FluxDispatcher = {
   _currentDispatchActionType: string | null;
+  _defaultBand: number;
   _interceptors: Array<(...reset: unknown[]) => unknown>;
   _processingWaitQueue: boolean;
   _subscriptions: { [index: string]: Set<FluxCallback> };
@@ -25,8 +26,8 @@ export interface FluxDispatcher {
   subscribe: (eventKey: string, callback: FluxCallback) => void;
   unsubscribe: (eventKey: string, callback: FluxCallback) => void;
   wait: (callback: (...rest: unknown[]) => unknown) => void;
-}
+};
 
-export default await waitForModule<RawModule & FluxDispatcher>(
-  filters.byProps("_currentDispatchActionType", "_processingWaitQueue"),
-);
+const props = ["_currentDispatchActionType", "_processingWaitQueue"];
+
+export default await waitForProps<(typeof props)[number], FluxDispatcher>(props);

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
-import type { ObjectExports } from "../../../types";
-import type { Channel, Message, MessageAttachment } from "discord-types/general";
+import { Channel, Message, MessageAttachment } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
 export enum ActivityActionTypes {
@@ -262,12 +261,14 @@ export interface MessageCache {
   update: (messageId: string, callback: (message: Message) => Message) => void;
 }
 
-export interface MessageStore {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type MessageStore = {
   getMessage: (channelId: string, messageId: string) => Message | undefined;
   getMessages: (channelId: string) => MessagesData;
-}
+};
 
-export interface Messages extends MessageStore {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type MessageUtils = {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => Promise<unknown | void>;
   deleteMessage: (
@@ -351,16 +352,16 @@ export interface Messages extends MessageStore {
     options: OutgoingMessageOptions,
   ) => void;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
-}
+};
 
-const MessageStore = await waitForModule<ObjectExports & MessageStore>(
-  filters.byProps("getMessage", "getMessages"),
-);
+export type Messages = MessageStore & MessageUtils;
+
+const MessageStore: MessageStore = await waitForProps(["getMessage", "getMessages"]);
+
+const messageProps = ["sendMessage", "editMessage", "deleteMessage"];
 
 export default virtualMerge(
-  await waitForModule<ObjectExports & Messages>(
-    filters.byProps("sendMessage", "editMessage", "deleteMessage"),
-  ),
+  await waitForProps<(typeof messageProps)[number], Messages>(messageProps),
   {
     getMessage: MessageStore.getMessage,
     getMessages: MessageStore.getMessages,

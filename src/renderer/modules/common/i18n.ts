@@ -1,9 +1,9 @@
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 import EventEmitter from "events";
 
-import type { RawModule } from "../../../types";
 import type { Primitive } from "type-fest";
 import type { Rule } from "./parser";
+import { FullObjectExports } from "src/types";
 
 type LocaleCallback = (locale?: string) => void;
 type ProxyCallback = (context?: ProviderContext) => ProxyConstructor;
@@ -226,7 +226,9 @@ export interface I18n extends EventEmitter {
   _loadMessagesForLocale: (locale?: string) => Promise<void>;
 }
 
-const i18n = await waitForModule<RawModule & I18n>(filters.byProps("Messages", "getLanguages"));
+const props = ["Messages", "getLanguages"];
+
+const i18n = await waitForProps<(typeof props)[number], FullObjectExports & I18n>(props);
 
 export const { Messages } = i18n;
 
