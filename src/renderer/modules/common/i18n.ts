@@ -3,7 +3,7 @@ import EventEmitter from "events";
 
 import type { Primitive } from "type-fest";
 import type { Rule } from "./parser";
-import { ObjectExports } from "src/types";
+import { FullObjectExports } from "src/types";
 
 type LocaleCallback = (locale?: string) => void;
 type ProxyCallback = (context?: ProviderContext) => ProxyConstructor;
@@ -228,7 +228,7 @@ export interface I18n extends EventEmitter {
 
 const props = ["Messages", "getLanguages"];
 
-const i18n = await waitForProps<(typeof props)[number], ObjectExports & I18n>(props);
+const i18n = await waitForProps<(typeof props)[number], FullObjectExports & I18n>(props);
 
 export const { Messages } = i18n;
 

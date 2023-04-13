@@ -2,7 +2,7 @@ import { waitForProps } from "../webpack";
 import type { Store } from "./flux";
 import { Channel } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
-import { ObjectExports } from "src/types";
+import { FullObjectExports } from "src/types";
 
 export interface LastChannelFollowingDestination {
   channelId: string;
@@ -41,12 +41,12 @@ export type ChannelStore = (Store & Record<string, unknown>) & {
 export type Channels = SelectedChannelStore & ChannelStore;
 
 export default virtualMerge(
-  await waitForProps<keyof SelectedChannelStore, ObjectExports & SelectedChannelStore>([
+  await waitForProps<keyof SelectedChannelStore, FullObjectExports & SelectedChannelStore>([
     "getChannelId",
     "getLastSelectedChannelId",
     "getVoiceChannelId",
   ]).then(Object.getPrototypeOf),
-  await waitForProps<keyof ChannelStore, ObjectExports & ChannelStore>([
+  await waitForProps<keyof ChannelStore, FullObjectExports & ChannelStore>([
     "getChannel",
     "hasChannel",
   ]).then(Object.getPrototypeOf),
