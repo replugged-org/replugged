@@ -30,7 +30,8 @@ interface ParseOpts {
 
 type ParseFn = (text: string, inline?: boolean, opts?: ParseOpts) => React.ReactElement;
 
-export interface Parser {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type Parser = {
   parse: ParseFn;
   parseTopic: ParseFn;
   parseEmbedTitle: ParseFn;
@@ -42,6 +43,8 @@ export interface Parser {
   parseForumPostMostRecentMessage: ParseFn;
   reactParserFor(rules: Record<string, Rule>): ParseFn;
   defaultRules: Record<string, Rule>;
-}
+};
 
-export default (await waitForProps(["parse", "parseTopic"])) as unknown as Parser;
+const props = ["parse", "parseTopic"];
+
+export default await waitForProps<(typeof props)[number], Parser>(props);

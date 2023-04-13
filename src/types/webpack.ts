@@ -1,4 +1,4 @@
-export type ObjectExports = Record<string, unknown>;
+export type ObjectExports = Record<string | symbol | number, unknown>;
 
 export type ModuleExports =
   | ObjectExports

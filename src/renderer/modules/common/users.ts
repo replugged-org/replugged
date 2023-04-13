@@ -40,8 +40,10 @@ export type GuildMemberStore = {
 export type Users = UserStore & GuildMemberStore;
 
 export default virtualMerge(
-  (await waitForProps(["getUser", "getCurrentUser"]).then(Object.getPrototypeOf)) as UserStore,
-  (await waitForProps(["getTrueMember", "getMember"]).then(
+  await waitForProps<keyof UserStore, UserStore>(["getUser", "getCurrentUser"]).then(
     Object.getPrototypeOf,
-  )) as GuildMemberStore,
+  ),
+  await waitForProps<keyof GuildMemberStore, GuildMemberStore>(["getTrueMember", "getMember"]).then(
+    Object.getPrototypeOf,
+  ),
 );

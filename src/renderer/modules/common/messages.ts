@@ -261,12 +261,13 @@ export interface MessageCache {
   update: (messageId: string, callback: (message: Message) => Message) => void;
 }
 
-export interface MessageStore {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type MessageStore = {
   getMessage: (channelId: string, messageId: string) => Message | undefined;
   getMessages: (channelId: string) => MessagesData;
-}
+};
 
-export interface Messages extends MessageStore {
+export type Messages = MessageStore & {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => Promise<unknown | void>;
   deleteMessage: (
@@ -350,14 +351,16 @@ export interface Messages extends MessageStore {
     options: OutgoingMessageOptions,
   ) => void;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
-}
+};
 
-const MessageStore = (await waitForProps(["getMessage", "getMessages"])) as MessageStore;
+const MessageStore: MessageStore = await waitForProps(["getMessage", "getMessages"]);
+
+const messageProps = ["sendMessage", "editMessage", "deleteMessage"];
 
 export default virtualMerge(
-  (await waitForProps(["sendMessage", "editMessage", "deleteMessage"])) as Partial<Messages>,
+  await waitForProps<(typeof messageProps)[number], Messages>(messageProps),
   {
     getMessage: MessageStore.getMessage,
     getMessages: MessageStore.getMessages,
   },
-) as Messages;
+);

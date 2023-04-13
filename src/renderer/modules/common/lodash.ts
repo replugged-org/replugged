@@ -1,5 +1,6 @@
 import { waitForProps } from "../webpack";
 
 import type Lodash from "lodash";
+import { ObjectExports } from "src/types";
 
-export default (await waitForProps(["debounce"])) as unknown as typeof Lodash;
+export default await waitForProps<"debounce", ObjectExports & typeof Lodash>(["debounce"]);

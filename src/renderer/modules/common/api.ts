@@ -24,4 +24,4 @@ export type API = Record<
 
 const props = ["getAPIBaseURL", "get", "patch", "post", "put", "delete"];
 
-export default (await waitForProps(props)) as unknown as API;
+export default await waitForProps<(typeof props)[number], API>(props);
