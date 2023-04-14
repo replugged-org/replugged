@@ -3,8 +3,11 @@ import type {
   GetContextItem,
   RawContextItem,
 } from "../../../types/coremods/contextMenu";
+import { Logger } from "../../modules/logger";
 import { getByProps } from "../../modules/webpack";
 import type ReactType from "react";
+
+const logger = Logger.api("ContextMenu");
 
 export const menuItems = {} as Record<string, GetContextItem[]>;
 
@@ -105,9 +108,13 @@ export function _insertMenuItems(menu: {
   repluggedGroup.props.children = [];
 
   menuItems[navId].forEach((getItem) => {
-    repluggedGroup.props.children.push(
-      makeItem(getItem(data, menu as unknown as typeof ContextMenu)),
-    );
+    try {
+      repluggedGroup.props.children.push(
+        makeItem(getItem(data, menu as unknown as typeof ContextMenu)),
+      );
+    } catch (err) {
+      logger.error("Error while running GetContextItem function", err, getItem);
+    }
   });
 
   // Add in the new menu items right above the DevMode Copy ID
