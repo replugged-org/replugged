@@ -41,10 +41,11 @@ export const FormText: FormTextType = {
   SUCCESS: () => null,
 };
 
-Object.keys(types).forEach((key) => {
-  FormText[key] = (props: React.PropsWithChildren<Record<string, unknown>>) => (
-    <FormTextComp type={types[key]} {...props}>
-      {props.children}
-    </FormTextComp>
-  );
-});
+if (typeof types === "object" && types !== null)
+  Object.keys(types).forEach((key) => {
+    FormText[key] = (props: React.PropsWithChildren<Record<string, unknown>>) => (
+      <FormTextComp type={types[key]} {...props}>
+        {props.children}
+      </FormTextComp>
+    );
+  });

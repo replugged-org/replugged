@@ -52,14 +52,14 @@ function* iterateModuleExports(m: unknown): IterableIterator<Record<PropertyKey,
  * @param props Array of prop names
  * @returns Object that contains all the given properties (and any others), or undefined if not found
  */
-export function getExportsForProps<T, P extends PropertyKey = PropertyKey>(
+export function getExportsForProps<T, P extends PropertyKey = keyof T>(
   m: unknown,
   props: P[],
 ): T | undefined {
   // Loop over the module and its exports at the top level
   // Return the first thing that has all the indicated props
   for (const exported of iterateModuleExports(m)) {
-    if (props.every((p) => p in (m as Record<P, unknown>))) {
+    if (props.every((p) => p in (exported as Record<P, unknown>))) {
       return exported as T;
     }
   }

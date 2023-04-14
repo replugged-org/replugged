@@ -122,7 +122,7 @@ export function getByProps<T, P extends PropertyKey = keyof T>(
     return result.map((m) => getExportsForProps(m, props));
   }
 
-  return getExportsForProps<T>(result, props);
+  return getExportsForProps<T, P>(result, props);
 }
 
 // Wait for props
@@ -149,7 +149,7 @@ export function waitForProps<T, P extends PropertyKey = keyof T>(...props: P[]):
  */
 export async function waitForProps<T, P extends PropertyKey = keyof T>(
   ...args: [P[], WaitForOptions] | P[]
-): Promise<T> {
+): Promise<T | RawModule<T>> {
   const props = (typeof args[0] === "string" ? args : args[0]) as P[];
   const raw = typeof args[0] === "string" ? false : (args[1] as WaitForOptions)?.raw;
 
@@ -158,11 +158,11 @@ export async function waitForProps<T, P extends PropertyKey = keyof T>(
     : waitForModule<T>(filters.byProps(...props)));
 
   if (raw) {
-    return result as T & RawModule;
+    return result as RawModule<T>;
   }
 
   // We know this will always exist since filters.byProps will always return a module that has the props
-  return getExportsForProps<T>(result as T, props)!;
+  return getExportsForProps<T, P>(result as T, props)!;
 }
 
 // Get by value
