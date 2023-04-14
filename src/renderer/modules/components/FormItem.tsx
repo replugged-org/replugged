@@ -18,8 +18,15 @@ interface FormItemCompProps {
 const formItemStr =
   '"children","disabled","className","titleClassName","tag","required","style","title","error"';
 
-const FormItemComp = await waitForModule(filters.bySource(formItemStr)).then((mod) =>
-  Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr)),
+const FormItemComp = await waitForModule<
+  Record<
+    string,
+    React.ForwardRefExoticComponent<FormItemCompProps> & {
+      render: React.ForwardRefRenderFunction<unknown>;
+    }
+  >
+>(filters.bySource(formItemStr)).then(
+  (mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!,
 );
 
 const classes = await waitForModule<Record<"dividerDefault", string>>(filters.byProps("labelRow"));
