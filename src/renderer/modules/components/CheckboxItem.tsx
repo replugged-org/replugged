@@ -30,9 +30,11 @@ export type CheckboxType = React.FC<React.PropsWithChildren<CheckboxProps>> & {
 
 export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
 
-export const Checkbox = (await waitForModule(filters.bySource(".getInputMode")).then((mod) =>
-  Object.values(mod).find((x) => "defaultProps" in x && "displayOnly" in x.defaultProps),
-)) as CheckboxType;
+export const Checkbox = await waitForModule<Record<string, CheckboxType>>(
+  filters.bySource(".getInputMode"),
+).then(
+  (mod) => Object.values(mod).find((x) => "defaultProps" in x && "displayOnly" in x.defaultProps)!,
+);
 
 export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
   return (

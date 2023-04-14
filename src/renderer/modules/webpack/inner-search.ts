@@ -40,10 +40,10 @@ function findFunctionEntryBySource<T>(
  * @param match The string or regex to match against the function's source code.
  * @param module The module to search.
  */
-export function getFunctionBySource<T>(
+export function getFunctionBySource<F>(
   module: unknown,
   match: string | RegExp | ((func: UnknownFunction) => boolean),
-): T[Extract<keyof T, string>] | undefined {
+): F | undefined {
   return findFunctionEntryBySource(module, match)?.[1];
 }
 

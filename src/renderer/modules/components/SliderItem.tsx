@@ -1,5 +1,5 @@
 import type React from "react";
-import { ReactComponent } from "src/types";
+import type { ReactComponent } from "src/types";
 import { FormItem } from ".";
 import { filters, waitForModule } from "../webpack";
 
@@ -31,8 +31,10 @@ export type SliderCompType = React.ComponentType<SliderCompProps> & {
   defaultProps: SliderCompProps;
 };
 
-const SliderComp = await waitForModule(filters.bySource(".moveGrabber=")).then((mod) =>
-  Object.values(mod).find((x) => x?.defaultProps && "stickToMarkers" in x.defaultProps),
+const SliderComp = await waitForModule<Record<string, ReactComponent<SliderItemProps>>>(
+  filters.bySource(".moveGrabber="),
+).then(
+  (mod) => Object.values(mod).find((x) => x?.defaultProps && "stickToMarkers" in x.defaultProps)!,
 );
 
 export interface SliderProps extends SliderCompProps {

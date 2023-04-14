@@ -27,12 +27,9 @@ export const Base = ({
   gap,
   onClick,
 }: BadgeProps): React.ReactElement => {
-  const badgeClassMod = getByProps<
-    "profileBadge22",
-    {
-      profileBadge22: string;
-    }
-  >("profileBadge22");
+  const badgeClassMod = getByProps<{
+    profileBadge22: string;
+  }>("profileBadge22");
   if (!badgeClassMod) {
     throw new Error("Failed to find badge class");
   }

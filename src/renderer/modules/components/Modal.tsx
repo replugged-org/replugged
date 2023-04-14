@@ -1,5 +1,5 @@
 import type React from "react";
-import type { ObjectExports, ReactComponent } from "../../../types";
+import type { ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 enum ModalTransitionState {
@@ -50,9 +50,9 @@ export interface ModalType {
 const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"));
 
 export default {
-  ModalRoot: getFunctionBySource(mod as ObjectExports, "().root"),
-  ModalHeader: getFunctionBySource(mod as ObjectExports, "().header"),
-  ModalContent: getFunctionBySource(mod as ObjectExports, "().content"),
-  ModalFooter: getFunctionBySource(mod as ObjectExports, "().footerSeparator"),
-  ModalCloseButton: getFunctionBySource(mod as ObjectExports, "().closeWithCircleBackground"),
+  ModalRoot: getFunctionBySource(mod, "().root"),
+  ModalHeader: getFunctionBySource(mod, "().header"),
+  ModalContent: getFunctionBySource(mod, "().content"),
+  ModalFooter: getFunctionBySource(mod, "().footerSeparator"),
+  ModalCloseButton: getFunctionBySource(mod, "().closeWithCircleBackground"),
 } as ModalType;

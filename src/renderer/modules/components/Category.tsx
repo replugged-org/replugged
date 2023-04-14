@@ -1,11 +1,10 @@
 import React from "@common/react";
 import { Divider, FormText } from ".";
-import type { ObjectExports } from "../../../types";
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
-const classes = await waitForModule<
-  ObjectExports & Record<"labelRow" | "title" | "note" | "dividerDefault", string>
->(filters.byProps("labelRow", "title", "note", "dividerDefault"));
+const classes = await waitForProps<
+  Record<"labelRow" | "title" | "note" | "dividerDefault", string>
+>("labelRow", "title", "note", "dividerDefault");
 
 interface CategoryProps {
   title: string;

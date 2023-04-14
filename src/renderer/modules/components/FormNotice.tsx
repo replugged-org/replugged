@@ -1,5 +1,4 @@
 import type React from "react";
-import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 interface ImageData {
@@ -27,6 +26,6 @@ export type FormNoticeType = React.ComponentType<FormNoticeProps> & {
 
 const formNoticeStr = ".formNoticeTitle";
 
-export default (await waitForModule(filters.bySource(formNoticeStr)).then((mod) =>
-  getFunctionBySource(mod as ObjectExports, formNoticeStr),
-)) as FormNoticeType;
+export default await waitForModule(filters.bySource(formNoticeStr)).then(
+  (mod) => getFunctionBySource<FormNoticeType>(mod, formNoticeStr)!,
+);

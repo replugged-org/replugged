@@ -12,9 +12,9 @@ type ClickableProps = React.HTMLAttributes<HTMLDivElement> & {
 
 export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
 
-const Clickable = (await waitForModule(filters.bySource("renderNonInteractive")).then((mod) =>
-  Object.values(mod).find((x) => x.prototype?.renderNonInteractive),
-)) as ClickableType;
+const Clickable = await waitForModule<Record<string, ClickableType>>(
+  filters.bySource("renderNonInteractive"),
+).then((mod) => Object.values(mod).find((x) => x.prototype?.renderNonInteractive)!);
 
 export default (props: React.PropsWithChildren<ClickableProps>): React.ReactElement => {
   const style = props.style || {};

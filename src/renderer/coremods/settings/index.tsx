@@ -10,12 +10,9 @@ const injector = new Injector();
 
 export { insertSections };
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type VersionMod = {
-  exports: {
-    Z: () => SectionType[];
-  };
-};
+interface VersionMod {
+  Z: () => SectionType[];
+}
 async function injectVersionInfo(): Promise<void> {
   const mod = await waitForModule<VersionMod>(filters.bySource("().versionHash"), { raw: true });
 

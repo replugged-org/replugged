@@ -33,9 +33,9 @@ export type RadioType = React.ComponentType<RadioProps> & {
 
 const radioStr = ".itemInfoClassName";
 
-export const Radio = (await waitForModule(filters.bySource(radioStr)).then((mod) =>
-  getFunctionBySource(mod as ObjectExports, radioStr),
-)) as RadioType;
+export const Radio = await waitForModule(filters.bySource(radioStr)).then(
+  (mod) => getFunctionBySource<RadioType>(mod as ObjectExports, radioStr)!,
+);
 
 interface RadioItemProps extends RadioProps {
   note?: string;

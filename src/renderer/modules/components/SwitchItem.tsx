@@ -1,5 +1,5 @@
 import type React from "react";
-import type { ObjectExports, ReactComponent } from "../../../types";
+import type { ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 export type SwitchType = ReactComponent<{
@@ -23,12 +23,12 @@ export type SwitchItemType = ReactComponent<{
 const switchModStr = "xMinYMid meet";
 const switchItemStr = ").dividerDefault";
 
-export const Switch = (await waitForModule(filters.bySource(switchModStr)).then((mod) => {
-  if (typeof mod === "function") return mod;
-  return getFunctionBySource(mod as ObjectExports, switchModStr);
-})) as SwitchType;
+export const Switch = await waitForModule(filters.bySource(switchModStr)).then((mod) => {
+  if (typeof mod === "function") return mod as SwitchType;
+  return getFunctionBySource<SwitchType>(mod, switchModStr);
+});
 
-export const SwitchItem = (await waitForModule(filters.bySource(switchItemStr)).then((mod) => {
-  if (typeof mod === "function") return mod;
-  return getFunctionBySource(mod as ObjectExports, switchItemStr);
-})) as SwitchItemType;
+export const SwitchItem = await waitForModule(filters.bySource(switchItemStr)).then((mod) => {
+  if (typeof mod === "function") return mod as SwitchItemType;
+  return getFunctionBySource<SwitchItemType>(mod, switchItemStr);
+});

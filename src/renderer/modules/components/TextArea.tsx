@@ -28,6 +28,6 @@ export type TextAreaType = React.ComponentType<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 
-export default (await waitForModule(filters.bySource(/.resizeable,/)).then((mod) =>
-  Object.values(mod).find((x) => x?.defaultProps && "resizeable" in x.defaultProps),
-)) as TextAreaType;
+export default await waitForModule<Record<string, TextAreaType>>(
+  filters.bySource(/.resizeable,/),
+).then((mod) => Object.values(mod).find((x) => x?.defaultProps && "resizeable" in x.defaultProps)!);

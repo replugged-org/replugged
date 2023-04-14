@@ -20,9 +20,9 @@ export type NoticeType = React.ComponentType<NoticeProps> & {
   Types: typeof Types;
 };
 
-const Notice = (await waitForModule(filters.bySource(/.\.messageType/)).then((mod) =>
-  Object.values(mod).find((x) => typeof x === "function"),
-)) as NoticeType;
+const Notice = await waitForModule<Record<string, NoticeType>>(
+  filters.bySource(/.\.messageType/),
+).then((mod) => Object.values(mod).find((x) => typeof x === "function")!);
 Notice.Types = Types;
 
 export default Notice;

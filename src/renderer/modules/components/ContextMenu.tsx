@@ -1,5 +1,5 @@
 import type React from "react";
-import type { ObjectExports, ReactComponent } from "../../../types";
+import type { ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 import { sourceStrings } from "../webpack/patch-load";
 
@@ -15,7 +15,7 @@ export type ContextMenuType = Record<string, unknown> & {
 
   MenuSeparator: React.ComponentType;
 
-  MenuGroup: ReactComponent<unknown>;
+  MenuGroup: React.ComponentType;
 
   MenuItem: ReactComponent<{
     id: string;
@@ -40,9 +40,11 @@ const componentMap: Record<string, string> = {
   control: "MenuControlItem",
   groupstart: "MenuGroup",
   customitem: "MenuItem",
-};
+} as const;
 
-const menuMod = await waitForModule(filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"));
+const menuMod = await waitForModule<Record<string, React.ComponentType>>(
+  filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"),
+);
 
 const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
 const source = sourceStrings[rawMod?.id].matchAll(
@@ -51,13 +53,13 @@ const source = sourceStrings[rawMod?.id].matchAll(
 
 const menuComponents = Object.values(menuMod)
   .filter((m) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
-  .reduce((components, component) => {
+  .reduce<Record<string, React.ComponentType>>((components, component) => {
     components[component.name] = component;
     return components;
   }, {});
 
 const Menu = {
-  ContextMenu: getFunctionBySource(menuMod as ObjectExports, "getContainerProps"),
+  ContextMenu: getFunctionBySource(menuMod, "getContainerProps"),
 } as ContextMenuType;
 
 for (const [, identifier, type] of source) {
