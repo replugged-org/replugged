@@ -3,6 +3,7 @@ import EventEmitter from "events";
 
 import type { Primitive } from "type-fest";
 import type { Rule } from "./parser";
+import { FullObjectExports } from "src/types";
 
 type LocaleCallback = (locale?: string) => void;
 type ProxyCallback = (context?: ProviderContext) => ProxyConstructor;
