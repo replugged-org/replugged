@@ -315,7 +315,7 @@ export class Injector {
      * @param navId The id of the menu to add to
      * @param item The function that creates the item to add
      * @returns A callback to de-register the function
-     * 
+     *
      * @example
      * ```
      * import { Injector, webpack } from "replugged";
@@ -324,9 +324,9 @@ export class Injector {
      * function start() {
      *   injector.utils.addMenuItem("user-context",  // Right-clicking a user
      *     (data, menu) => {
-     *       return <MenuItem 
-     *         id="my-item" 
-     *         label="An Item!" 
+     *       return <MenuItem
+     *         id="my-item"
+     *         label="An Item!"
      *         action={() => console.log(data)}
      *     }
      *   )

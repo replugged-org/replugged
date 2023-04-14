@@ -1,15 +1,8 @@
-// import ContextMenu from "../../renderer/modules/components/ContextMenu";
+import ContextMenu from "../../renderer/modules/components/ContextMenu";
 import { ReactComponent } from "../util";
 
-// const {
-//   // ContextMenu,
-//   MenuCheckboxItem,
-//   MenuControlItem,
-//   MenuGroup,
-//   MenuItem,
-//   MenuRadioItem,
-//   MenuSeparator,
-// } = ContextMenu;
+const { MenuCheckboxItem, MenuControlItem, MenuGroup, MenuItem, MenuRadioItem, MenuSeparator } =
+  ContextMenu;
 
 export interface RawContextItem {
   type: ReactComponent<unknown>;
@@ -28,6 +21,6 @@ export type ContextItem =
   | typeof MenuControlItem;
 
 export type GetContextItem = (
-  data: any,
+  data: Record<string, unknown>,
   menu: typeof ContextMenu.ContextMenu,
 ) => RawContextItem | ContextItem | undefined;
