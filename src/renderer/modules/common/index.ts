@@ -1,13 +1,8 @@
-import type { ModuleExports } from "../../../types";
 import { error } from "../logger";
 
 const modulePromises: Array<Promise<void>> = [];
 
-function importTimeout<T extends ModuleExports>(
-  name: string,
-  moduleImport: Promise<T>,
-  cb: (mod: T) => void,
-): void {
+function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) => void): void {
   modulePromises.push(
     new Promise<void>((res, rej) => {
       const timeout = setTimeout(() => {

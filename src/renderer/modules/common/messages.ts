@@ -261,14 +261,12 @@ export interface MessageCache {
   update: (messageId: string, callback: (message: Message) => Message) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type MessageStore = {
+export interface MessageStore {
   getMessage: (channelId: string, messageId: string) => Message | undefined;
   getMessages: (channelId: string) => MessagesData;
-};
+}
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type MessageUtils = {
+export interface MessageUtils {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => Promise<unknown | void>;
   deleteMessage: (
@@ -352,7 +350,7 @@ export type MessageUtils = {
     options: OutgoingMessageOptions,
   ) => void;
   _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
-};
+}
 
 export type Messages = MessageStore & MessageUtils;
 

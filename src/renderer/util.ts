@@ -214,7 +214,7 @@ type UnionToIntersection<U> = (U extends never ? never : (k: U) => void) extends
   ? I & { all: () => I }
   : never;
 
-type ObjectType = Record<string, unknown>;
+type ObjectType = Record<never, never>;
 
 type ExtractObjectType<O extends ObjectType[]> = O extends Array<infer T>
   ? UnionToIntersection<T>

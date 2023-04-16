@@ -1,5 +1,5 @@
 import { waitForProps } from "../webpack";
-import EventEmitter from "events";
+import type EventEmitter from "events";
 
 import type { Primitive } from "type-fest";
 import type { Rule } from "./parser";

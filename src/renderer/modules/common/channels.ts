@@ -8,8 +8,7 @@ export interface LastChannelFollowingDestination {
   guildId: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type SelectedChannelStore = {
+export interface SelectedChannelStore {
   getChannelId: (guildId?: string) => string | undefined;
   getCurrentlySelectedChannelId: (guildId?: string) => string | undefined;
   getLastChannelFollowingDestination: () => LastChannelFollowingDestination;
@@ -17,10 +16,9 @@ export type SelectedChannelStore = {
   getLastSelectedChannels: (guildId: string) => string | undefined;
   getMostRecentSelectedTextChannelId: (guildId?: string) => string | undefined;
   getVoiceChannelId: () => string | undefined;
-};
+}
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type ChannelStore = {
+export interface ChannelStore {
   getAllThreadsForParent(channelId?: string): Channel[];
   getBasicChannel(channelId: string): Channel | undefined;
   getCachedChannelJsonForGuild(channelId: string): unknown;
@@ -37,15 +35,17 @@ export type ChannelStore = {
   hasChannel(channelId: string): boolean;
   hasRestoredGuild(guildId: string): boolean;
   loadAllGuildAndPrivateChannelsFromDisk(): Record<string, Channel>;
-};
+}
 
 export type Channels = SelectedChannelStore & ChannelStore;
 
 export default virtualMerge(
-  await waitForProps<SelectedChannelStore>([
+  (await waitForProps<SelectedChannelStore>([
     "getChannelId",
     "getLastSelectedChannelId",
     "getVoiceChannelId",
-  ]).then(Object.getPrototypeOf),
-  await waitForProps<ChannelStore>("getChannel", "hasChannel").then(Object.getPrototypeOf),
+  ]).then(Object.getPrototypeOf)) as SelectedChannelStore,
+  (await waitForProps<ChannelStore>("getChannel", "hasChannel").then(
+    Object.getPrototypeOf,
+  )) as ChannelStore,
 );

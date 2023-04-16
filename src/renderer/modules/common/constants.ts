@@ -46,13 +46,12 @@ interface UnsafeRawColor {
   resolve: (theme: { saturation: number }) => ColorResponse;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type ColorMod = {
+interface ColorMod {
   themes: Record<string, string>;
   colors: Record<string, Color>;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   unsafe_rawColors: Record<string, UnsafeRawColor>;
-};
+}
 
 export const ColorGenerator = await waitForModule<ColorMod>(
   filters.bySource(/\w+\.unsafe_rawColors\[\w+\]\.resolve\(\w+\)/),

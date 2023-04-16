@@ -7,8 +7,7 @@ export interface Event {
   [index: string]: unknown;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type FluxDispatcher = {
+export interface FluxDispatcher {
   _currentDispatchActionType: string | null;
   _defaultBand: number;
   _interceptors: Array<(...reset: unknown[]) => unknown>;
@@ -26,7 +25,7 @@ export type FluxDispatcher = {
   subscribe: (eventKey: string, callback: FluxCallback) => void;
   unsubscribe: (eventKey: string, callback: FluxCallback) => void;
   wait: (callback: (...rest: unknown[]) => unknown) => void;
-};
+}
 
 export default await waitForProps<FluxDispatcher>(
   "_currentDispatchActionType",
