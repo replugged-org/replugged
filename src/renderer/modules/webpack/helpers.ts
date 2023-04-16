@@ -1,5 +1,4 @@
 import type { GetModuleOptions, RawModule, WaitForOptions } from "src/types";
-//import type { TupleToUnion } from "type-fest";
 import { getExportsForProps, getModule } from "./get-modules";
 import * as filters from "./filters";
 import { waitForModule } from "./lazy";
@@ -42,7 +41,7 @@ export function getBySource<T>(
 
 /**
  * Equivalent to `getModule(filters.bySource(match), options)`
- * *
+ *
  * @see {@link filters.bySource}
  * @see {@link getModule}
  */
