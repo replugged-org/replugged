@@ -1,7 +1,7 @@
 import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
 import type { GetButtonItem } from "../../types/coremods/message";
-import type { GetContextItem } from "../../types/coremods/contextMenu";
+import type { GetContextItem, navId } from "../../types/coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
 import { addContextMenuItem } from "../coremods/contextMenu";
 
@@ -337,7 +337,7 @@ export class Injector {
      * }
      * ```
      */
-    addMenuItem: (navId: string, item: GetContextItem) => {
+    addMenuItem: (navId: navId, item: GetContextItem) => {
       const uninjector = addContextMenuItem(navId, item);
       this.#uninjectors.add(uninjector);
       return uninjector;

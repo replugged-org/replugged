@@ -2,6 +2,7 @@ import type {
   ContextItem,
   GetContextItem,
   RawContextItem,
+  navId,
 } from "../../../types/coremods/contextMenu";
 import { Logger } from "../../modules/logger";
 import { getByProps } from "../../modules/webpack";
@@ -9,7 +10,7 @@ import type ReactType from "react";
 
 const logger = Logger.api("ContextMenu");
 
-export const menuItems = {} as Record<string, GetContextItem[]>;
+export const menuItems = {} as Record<navId, GetContextItem[]>;
 
 /**
  * Converts data into a react element. Any elements or falsy value will be returned as is
@@ -52,7 +53,7 @@ function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | 
  * @param getItem A function that creates and returns the menu item
  * @returns A callback to de-register the function
  */
-export function addContextMenuItem(navId: string, getItem: GetContextItem): () => void {
+export function addContextMenuItem(navId: navId, getItem: GetContextItem): () => void {
   if (!menuItems[navId]) menuItems[navId] = [];
 
   menuItems[navId].push(getItem);
@@ -65,7 +66,7 @@ export function addContextMenuItem(navId: string, getItem: GetContextItem): () =
  * @param getItem The function to remove
  * @returns
  */
-export function removeContextMenuItem(navId: string, getItem: GetContextItem): void {
+export function removeContextMenuItem(navId: navId, getItem: GetContextItem): void {
   const items = menuItems[navId];
   const index = items.indexOf(getItem);
 
@@ -83,10 +84,11 @@ export function removeContextMenuItem(navId: string, getItem: GetContextItem): v
  */
 export function _insertMenuItems(menu: {
   data: { 0: Record<string, unknown> };
-  navId: string;
+  navId: navId;
   children: JSX.Element[];
 }): void {
   const { navId } = menu;
+  console.log(navId)
 
   // No items to insert
   if (!menuItems[navId]) return;
