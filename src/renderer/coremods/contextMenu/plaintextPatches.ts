@@ -2,7 +2,6 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
-    find: "♫ (つ｡◕‿‿◕｡)つ ♪",
     replacements: [
       {
         match: /(function [\w$]+\((\w)\){)(var \w,\w=.\.navId)/,
