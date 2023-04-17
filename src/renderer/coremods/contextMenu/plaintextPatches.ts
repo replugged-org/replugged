@@ -11,7 +11,6 @@ export default [
     ],
   },
   {
-    find: /navId:[\w"-]+,/,
     replacements: [
       {
         match: /(navId:[\w"-]+,)/g,
