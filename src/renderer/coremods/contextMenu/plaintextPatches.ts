@@ -6,7 +6,6 @@ export default [
     replacements: [
       {
         match: /(function ..?\((.)\){)(var .,.=.\.navId)/,
-        // replace: `$1(()=>{replugged.coremods.coremods.contextMenu._insertMenuItems.($2)})();$3`,
         replace: `$1replugged.coremods.coremods.contextMenu._insertMenuItems($2);$3`,
       },
     ],
