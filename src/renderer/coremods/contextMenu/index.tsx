@@ -115,7 +115,7 @@ export const menuItems = {} as Record<navIds, GetContextItem[]>;
  */
 function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | undefined {
   // Occasionally React won't be loaded when this function is ran, so we don't return anything
-  if (!React) return undefined
+  if (!React) return undefined;
 
   if (!raw) {
     // If something falsy is passed, let it through
