@@ -30,9 +30,11 @@ export type GuildMemberStore = {
   getNick: (guildId?: string, userId?: string) => string | undefined;
   getNicknameGuildsMapping: (userId?: string) => Record<string, string[]>;
   getNicknames: (userId?: string) => string[];
+  getPendingRoleUpdates: (guildId?: string) => PendingRoleUpdate;
   getSelfMember: (guildId?: string) => GuildMember | undefined;
   getTrueMember: (guildId?: string, userId?: string) => GuildMember | undefined;
-  getPendingRoleUpdates: (guildId?: string) => PendingRoleUpdate;
+  isCurrentUserGuest: (guildId?: string) => boolean;
+  isGuestOrLurker: (guildId?: string, userId?: string) => boolean;
   isMember: (guildId?: string, userId?: string) => boolean;
   memberOf: (userId?: string) => string[];
 };
