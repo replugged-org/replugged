@@ -56,9 +56,8 @@ export async function start(): Promise<void> {
       try {
         if (!generalSettings.get("badges")) return res;
 
-        const [badges, setBadges] = React.useState<APIBadges | undefined>();
-
-        React.useEffect(() => {
+        const [currentCache, setCurrentCache] = React.useState<APIBadges | undefined>();
+        const badges = React.useMemo(() => {
           (async () => {
             if (!cache.has(id) || cache.get(id)!.lastFetch < Date.now() - REFRESH_INTERVAL) {
               cache.set(
@@ -87,9 +86,11 @@ export async function start(): Promise<void> {
               );
             }
 
-            setBadges(cache.get(id)?.badges);
+            setCurrentCache(cache.get(id)?.badges);
           })();
-        }, []);
+
+          return currentCache;
+        }, [currentCache, id]);
 
         if (!badges) {
           return res;
