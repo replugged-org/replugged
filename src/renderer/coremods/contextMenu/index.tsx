@@ -5,7 +5,7 @@ import type {
 } from "../../../types/coremods/contextMenu";
 import { Logger } from "../../modules/logger";
 import { getByProps } from "../../modules/webpack";
-import type ReactType from "react";
+import { React } from "@common";
 
 const logger = Logger.api("ContextMenu");
 
@@ -114,12 +114,8 @@ export const menuItems = {} as Record<navIds, GetContextItem[]>;
  * @returns The converted item
  */
 function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | undefined {
-  // Importing React at the top of the file causes an import loop that hangs discord
-  const React = getByProps(
-    "__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED",
-    "createElement",
-    "isValidElement",
-  ) as unknown as typeof ReactType;
+  // Occasionally React won't be loaded when this function is ran, so we don't return anything
+  if (!React) return undefined
 
   if (!raw) {
     // If something falsy is passed, let it through
@@ -184,7 +180,6 @@ export function _insertMenuItems(menu: {
   children: JSX.Element[];
 }): void {
   const { navId } = menu;
-  console.log(navId);
 
   // No items to insert
   if (!menuItems[navId]) return;
