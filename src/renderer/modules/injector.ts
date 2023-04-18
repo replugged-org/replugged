@@ -3,7 +3,7 @@ import type { AnyFunction } from "../../types/util";
 import type { GetButtonItem } from "../../types/coremods/message";
 import type { GetContextItem } from "../../types/coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
-import { addContextMenuItem, navIds } from "../coremods/contextMenu";
+import { addContextMenuItem, NavIds } from "../coremods/contextMenu";
 
 enum InjectionTypes {
   Before,
@@ -337,7 +337,7 @@ export class Injector {
      * }
      * ```
      */
-    addMenuItem: (navId: navIds, item: GetContextItem) => {
+    addMenuItem: (navId: NavIds, item: GetContextItem) => {
       const uninjector = addContextMenuItem(navId, item);
       this.#uninjectors.add(uninjector);
       return uninjector;

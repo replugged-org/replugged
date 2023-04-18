@@ -13,7 +13,7 @@ const logger = Logger.api("ContextMenu");
  * An enum for the navIds of context menus across discord
  * @enum {string}
  */
-export enum navIds {
+export enum NavIds {
   /** Clicking the  user icon in the bottom left */
   Account = "account",
   AddQuestions = "add-questions",
@@ -106,7 +106,7 @@ export enum navIds {
   WelcomeSettingsContext = "welcome-settings-context",
 }
 
-export const menuItems = {} as Record<navIds, GetContextItem[]>;
+export const menuItems = {} as Record<NavIds, GetContextItem[]>;
 
 /**
  * Converts data into a react element. Any elements or falsy value will be returned as is
@@ -145,7 +145,7 @@ function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | 
  * @param getItem A function that creates and returns the menu item
  * @returns A callback to de-register the function
  */
-export function addContextMenuItem(navId: navIds, getItem: GetContextItem): () => void {
+export function addContextMenuItem(navId: NavIds, getItem: GetContextItem): () => void {
   if (!menuItems[navId]) menuItems[navId] = [];
 
   menuItems[navId].push(getItem);
@@ -158,7 +158,7 @@ export function addContextMenuItem(navId: navIds, getItem: GetContextItem): () =
  * @param getItem The function to remove
  * @returns
  */
-export function removeContextMenuItem(navId: navIds, getItem: GetContextItem): void {
+export function removeContextMenuItem(navId: NavIds, getItem: GetContextItem): void {
   const items = menuItems[navId];
   const index = items.indexOf(getItem);
 
@@ -176,7 +176,7 @@ export function removeContextMenuItem(navId: navIds, getItem: GetContextItem): v
  */
 export function _insertMenuItems(menu: {
   data: { 0: Record<string, unknown> };
-  navId: navIds;
+  navId: NavIds;
   children: JSX.Element[];
 }): void {
   const { navId } = menu;
