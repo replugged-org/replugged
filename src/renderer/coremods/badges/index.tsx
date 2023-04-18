@@ -1,21 +1,22 @@
-import { filters, getByProps, waitForModule } from "../../modules/webpack";
-import { Injector } from "../../modules/injector";
 import React from "@common/react";
-import type { User } from "discord-types/general";
-import { APIBadges, Custom, badgeElements } from "./badge";
-import { generalSettings } from "../settings/pages/General";
 import { Logger } from "@replugged";
+import type { User } from "discord-types/general";
+import { Injector } from "../../modules/injector";
+import { filters, getByProps, waitForModule } from "../../modules/webpack";
+import { generalSettings } from "../settings/pages/General";
+import { APIBadges, BadgeSizes, Custom, badgeElements } from "./badge";
+
 const injector = new Injector();
 
 const logger = Logger.coremod("Badges");
 
 interface BadgeModArgs {
-  guildId: string;
   user: User;
+  size: BadgeSizes;
 }
 
 type BadgeMod = (args: BadgeModArgs) => React.ReactElement<{
-  children: React.ReactElement[][];
+  children: React.ReactElement[];
   className: string;
 }>;
 
@@ -29,9 +30,7 @@ const cache = new Map<string, BadgeCache>();
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
 export async function start(): Promise<void> {
-  const mod = await waitForModule<Record<string, BadgeMod>>(
-    filters.bySource(".GUILD_BOOSTER_LEVEL_1,"),
-  );
+  const mod = await waitForModule<Record<string, BadgeMod>>(filters.bySource("getBadges()"));
   const fnPropName = Object.entries(mod).find(([_, v]) => typeof v === "function")?.[0];
   if (!fnPropName) {
     throw new Error("Could not find badges function");
@@ -39,7 +38,7 @@ export async function start(): Promise<void> {
 
   const { containerWithContent } = getByProps<
     "containerWithContent",
-    { containerWithContent: "string" }
+    Record<"containerWithContent", string>
   >("containerWithContent")!;
 
   injector.after(
@@ -49,6 +48,7 @@ export async function start(): Promise<void> {
       [
         {
           user: { id },
+          size,
         },
       ],
       res,
@@ -95,28 +95,29 @@ export async function start(): Promise<void> {
           return res;
         }
 
-        const firstChild = res.props?.children?.[0];
-        if (!firstChild || !Array.isArray(firstChild)) {
-          logger.error("Error injecting badges: res.props.children[0] is not an array", { res });
+        const children = res?.props?.children;
+        if (!children || !Array.isArray(children)) {
+          logger.error("Error injecting badges: res.props.children is not an array", { children });
           return res;
         }
 
         if (badges.custom?.name && badges.custom.icon) {
-          firstChild.push(<Custom url={badges.custom.icon} name={badges.custom.name} />);
+          children.push(<Custom url={badges.custom.icon} name={badges.custom.name} size={size} />);
         }
 
         badgeElements.forEach(({ type, component }) => {
           const value = badges[type];
           if (value) {
-            firstChild.push(
+            children.push(
               React.createElement(component, {
                 color: badges.custom?.color,
+                size,
               }),
             );
           }
         });
 
-        if (firstChild.length > 0) {
+        if (children.length > 0) {
           if (!res.props.className.includes(containerWithContent)) {
             res.props.className += ` ${containerWithContent}`;
           }
