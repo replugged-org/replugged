@@ -1,9 +1,9 @@
 import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
 import type { GetButtonItem } from "../../types/coremods/message";
-import type { GetContextItem } from "../../types/coremods/contextMenu";
+import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
-import { addContextMenuItem, NavIds } from "../coremods/contextMenu";
+import { addContextMenuItem } from "../coremods/contextMenu";
 
 enum InjectionTypes {
   Before,
@@ -318,11 +318,13 @@ export class Injector {
      *
      * @example
      * ```
-     * import { Injector, webpack } from "replugged";
+     * import { Injector, webpack, types } from "replugged";
+     * const { ContextMenuTypes } = types;
+     *
      * const inject = new Injector();
      *
      * function start() {
-     *   injector.utils.addMenuItem("user-context",  // Right-clicking a user
+     *   injector.utils.addMenuItem(ContextMenuTypes.UserContext,  // Right-clicking a user
      *     (data, menu) => {
      *       return <MenuItem
      *         id="my-item"
@@ -337,7 +339,7 @@ export class Injector {
      * }
      * ```
      */
-    addMenuItem: (navId: NavIds, item: GetContextItem) => {
+    addMenuItem: (navId: ContextMenuTypes, item: GetContextItem) => {
       const uninjector = addContextMenuItem(navId, item);
       this.#uninjectors.add(uninjector);
       return uninjector;
