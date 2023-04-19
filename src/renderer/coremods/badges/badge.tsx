@@ -25,9 +25,7 @@ interface BadgeProps {
   onClick?: () => void;
 }
 
-export const Base = (props: BadgeProps): React.ReactElement => {
-  const { color, tooltip, tooltipPosition, className, children, gap, size, onClick } = props;
-
+export function getBadgeSizeClass(size?: BadgeSizes): string {
   const badgeClassMod = getByProps<
     "profileBadge22",
     Record<"profileBadge24" | "profileBadge22" | "profileBadge18", string>
@@ -37,18 +35,22 @@ export const Base = (props: BadgeProps): React.ReactElement => {
   }
   const { profileBadge24, profileBadge22, profileBadge18 } = badgeClassMod;
 
-  let sizeClass = ((): string => {
-    switch (size) {
-      case BadgeSizes.SIZE_24:
-        return profileBadge24;
-      case BadgeSizes.SIZE_22:
-        return profileBadge22;
-      case BadgeSizes.SIZE_18:
-        return profileBadge18;
-      default:
-        return profileBadge24;
-    }
-  })();
+  switch (size) {
+    case BadgeSizes.SIZE_24:
+      return profileBadge24;
+    case BadgeSizes.SIZE_22:
+      return profileBadge22;
+    case BadgeSizes.SIZE_18:
+      return profileBadge18;
+    default:
+      return profileBadge24;
+  }
+}
+
+export const Base = (props: BadgeProps): React.ReactElement => {
+  const { color, tooltip, tooltipPosition, className, children, gap, size, onClick } = props;
+
+  let sizeClass = getBadgeSizeClass(size);
 
   const child = (
     <div
