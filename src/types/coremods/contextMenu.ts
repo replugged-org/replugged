@@ -19,7 +19,7 @@ export type ContextItem =
 
 export type GetContextItem = (
   data: Record<string, unknown>,
-  menu: ContextMenuType["ContextMenus"],
+  menu: ContextMenuType["ContextMenu"],
 ) => RawContextItem | ContextItem | undefined;
 
 /**
