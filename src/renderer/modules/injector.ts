@@ -318,10 +318,11 @@ export class Injector {
      *
      * @example
      * ```
-     * import { Injector, webpack, types } from "replugged";
+     * import { Injector, components, types } from "replugged";
+     * const { ContextMenu: { MenuItem } } = components;
      * const { ContextMenuTypes } = types;
      *
-     * const inject = new Injector();
+     * const injector = new Injector();
      *
      * function start() {
      *   injector.utils.addMenuItem(ContextMenuTypes.UserContext,  // Right-clicking a user
@@ -330,6 +331,7 @@ export class Injector {
      *         id="my-item"
      *         label="An Item!"
      *         action={() => console.log(data)}
+     *       />
      *     }
      *   )
      * }
