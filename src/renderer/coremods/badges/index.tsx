@@ -112,12 +112,14 @@ export async function start(): Promise<void> {
       const sizeClass = getBadgeSizeClass(size);
 
       children.forEach((badge) => {
-        const elem: React.ReactElement = badge.props.children();
-        elem.props.children.props.className = sizeClass;
-        badge.props.children = (props: Record<string, unknown>) => {
-          elem.props = { ...elem.props, ...props };
-          return elem;
-        };
+        const elem: React.ReactElement = badge.props.children?.();
+        if (elem) {
+          elem.props.children.props.className = sizeClass;
+          badge.props.children = (props: Record<string, unknown>) => {
+            elem.props = { ...elem.props, ...props };
+            return elem;
+          };
+        }
       });
 
       if (badges.custom?.name && badges.custom.icon) {
@@ -139,6 +141,9 @@ export async function start(): Promise<void> {
       if (children.length > 0) {
         if (!res.props.className.includes(containerWithContent)) {
           res.props.className += ` ${containerWithContent}`;
+        }
+        if (!res.props.className.includes("replugged-badges-container")) {
+          res.props.className += " replugged-badges-container";
         }
       }
 
