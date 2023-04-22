@@ -14,8 +14,8 @@ export interface RawContextItem {
 
 export type ContextItem = ContextMenuElements[keyof ContextMenuElements];
 
-export type GetContextItem = (
-  data: Record<string, unknown>,
+export type GetContextItem<T extends Record<string, unknown> = Record<string, unknown>> = (
+  data: T,
   menu: ContextMenuProps["ContextMenu"],
 ) => RawContextItem | ContextItem | undefined;
 
