@@ -341,8 +341,11 @@ export class Injector {
      * }
      * ```
      */
-    addMenuItem: (navId: ContextMenuTypes, item: GetContextItem) => {
-      const uninjector = addContextMenuItem(navId, item);
+    addMenuItem: <T extends Record<string, unknown> = Record<string, unknown>>(
+      navId: ContextMenuTypes,
+      item: GetContextItem<T>,
+    ) => {
+      const uninjector = addContextMenuItem(navId, item as GetContextItem);
       this.#uninjectors.add(uninjector);
       return uninjector;
     },

@@ -52,6 +52,7 @@ function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | 
 export function addContextMenuItem(navId: ContextMenuTypes, getItem: GetContextItem): () => void {
   if (!menuItems[navId]) menuItems[navId] = [];
 
+  // Need to cast to GetContextItem since the type parameter is confusing it
   menuItems[navId].push(getItem);
   return () => removeContextMenuItem(navId, getItem);
 }
