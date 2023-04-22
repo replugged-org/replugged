@@ -1,4 +1,7 @@
-import type { ContextMenuElements } from "../../renderer/modules/components/ContextMenu";
+import type {
+  ContextMenuElements,
+  ContextMenuProps,
+} from "../../renderer/modules/components/ContextMenu";
 import { ReactComponent } from "../util";
 
 export interface RawContextItem {
@@ -13,7 +16,7 @@ export type ContextItem = ContextMenuElements[keyof ContextMenuElements];
 
 export type GetContextItem = (
   data: Record<string, unknown>,
-  menu: ContextMenuElements["ContextMenu"],
+  menu: ContextMenuProps["ContextMenu"],
 ) => RawContextItem | ContextItem | undefined;
 
 /**
