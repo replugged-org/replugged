@@ -5,7 +5,7 @@ export const raw = await waitForModule(filters.bySource("BASE_URL:"));
 export const Permissions = getExportsForProps<string, Record<string, bigint>>(raw, [
   "ADMINISTRATOR",
   "MANAGE_GUILD",
-]);
+])!;
 export const Scopes = getExportsForProps<string, Record<string, string>>(raw, ["BOT", "GUILDS"])!;
 export const RPCErrors = getExportsForProps<string, Record<string, string | number>>(raw, [
   "RATELIMITED",
