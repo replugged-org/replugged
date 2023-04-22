@@ -2,37 +2,46 @@ import type React from "react";
 import type { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack";
 
-export type ContextMenuType = Record<string, unknown> & {
-  ContextMenu: ReactComponent<{
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type ContextMenuProps = {
+  ContextMenu: {
     navId: string;
     onClose?: () => void;
     className?: string;
     style?: React.CSSProperties;
     hideScroller?: boolean;
     onSelect?: () => void;
-  }>;
+  };
 
-  MenuSeparator: React.ComponentType;
+  MenuSeparator: unknown;
 
-  MenuGroup: ReactComponent<unknown>;
+  MenuGroup: unknown;
 
-  MenuItem: ReactComponent<{
+  MenuItem: {
     id: string;
     label: string;
     render?: React.ComponentType;
     onChildrenScroll?: () => void;
     childRowHeight?: number;
     listClassName?: string;
-  }>;
+  };
 
-  MenuCheckboxItem: ReactComponent<{ id: string }>;
+  MenuCheckboxItem: { id: string };
 
-  MenuRadioItem: ReactComponent<{ id: string }>;
+  MenuRadioItem: { id: string };
 
   MenuControlItem: ReactComponent<{ id: string }>;
 };
 
-const componentMap: Record<string, string> = {
+export type ContextMenuType = {
+  [K in keyof ContextMenuProps]: ReactComponent<ContextMenuProps[K]>;
+};
+
+export type ContextMenuElements = {
+  [K in keyof ContextMenuProps]: React.ReactElement<ContextMenuProps[K]>;
+};
+
+const componentMap: Record<string, keyof ContextMenuType> = {
   separator: "MenuSeparator",
   checkbox: "MenuCheckboxItem",
   radio: "MenuRadioItem",

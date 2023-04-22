@@ -1,4 +1,4 @@
-import type { ContextMenuType } from "../../renderer/modules/components/ContextMenu";
+import type { ContextMenuElements } from "../../renderer/modules/components/ContextMenu";
 import { ReactComponent } from "../util";
 
 export interface RawContextItem {
@@ -9,17 +9,11 @@ export interface RawContextItem {
   [key: string]: unknown;
 }
 
-export type ContextItem =
-  | ContextMenuType["MenuItem"]
-  | ContextMenuType["MenuGroup"]
-  | ContextMenuType["MenuCheckboxItem"]
-  | ContextMenuType["MenuControlItem"]
-  | ContextMenuType["MenuRadioItem"]
-  | ContextMenuType["MenuSeparator"];
+export type ContextItem = ContextMenuElements[keyof ContextMenuElements];
 
 export type GetContextItem = (
   data: Record<string, unknown>,
-  menu: ContextMenuType["ContextMenu"],
+  menu: ContextMenuElements["ContextMenu"],
 ) => RawContextItem | ContextItem | undefined;
 
 /**
