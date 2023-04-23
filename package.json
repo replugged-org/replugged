@@ -1,13 +1,15 @@
 {
   "name": "replugged",
-  "version": "4.2.0",
+  "version": "4.2.6",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "dist/main.mjs",
   "types": "dist/renderer/replugged.d.ts",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   },
+  "packageManager": "pnpm@8.0.0",
   "scripts": {
     "build": "tsx scripts/build.ts",
     "bundle": "tsx scripts/build.ts --production",
@@ -23,7 +25,6 @@
     "eslint:fix": "eslint ./src ./scripts ./bin --fix",
     "lint": "pnpm run prettier:check && pnpm run eslint:check && pnpm run cspell:check && pnpm run typescript:check",
     "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix && pnpm run cspell:check && pnpm run typescript:check",
-    "lint:staged": "lint-staged",
     "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src; cp src/*.d.ts dist",
     "postpublish": "rm -rf dist; npm run build",
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
@@ -94,6 +95,6 @@
     "zod": "^3.19.1"
   },
   "bin": {
-    "replugged": "bin/replugged.js"
+    "replugged": "bin/replugged.mjs"
   }
 }

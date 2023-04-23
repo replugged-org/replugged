@@ -1,5 +1,4 @@
-import { RawModule } from "../../../types";
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
 interface State {
   prevCapture: RegExpExecArray | null;
@@ -25,11 +24,14 @@ interface ParseOpts {
   previewLinkTarget?: boolean;
   disableAnimatedEmoji?: boolean;
   disableAutoBlockNewlines?: boolean;
+  highlightWord?: string;
+  returnMentionIds?: boolean;
 }
 
-type ParseFn = (text: string, unknown?: boolean, opts?: ParseOpts) => React.ReactElement;
+type ParseFn = (text: string, inline?: boolean, opts?: ParseOpts) => React.ReactElement;
 
-export interface Parser {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type Parser = {
   parse: ParseFn;
   parseTopic: ParseFn;
   parseEmbedTitle: ParseFn;
@@ -38,7 +40,11 @@ export interface Parser {
   parseGuildEventDescription: ParseFn;
   parseAutoModerationSystemMessage: ParseFn;
   parseForumPostGuidelines: ParseFn;
+  parseForumPostMostRecentMessage: ParseFn;
   reactParserFor(rules: Record<string, Rule>): ParseFn;
   defaultRules: Record<string, Rule>;
-}
-export default await waitForModule<RawModule & Parser>(filters.byProps("parse", "parseTopic"));
+};
+
+const props = ["parse", "parseTopic"];
+
+export default await waitForProps<(typeof props)[number], Parser>(props);

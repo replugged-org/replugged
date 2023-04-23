@@ -1,26 +1,26 @@
-import { filters, getExportsForProps, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 import type { GuildMember, User } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
-export interface UserCommunicationDisabled {
-  communicationDisabledUntil: number | undefined;
+export interface PendingRoleUpdate {
+  added: Record<string, string[]>;
+  removed: Record<string, string[]>;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type UsersStore = {
-  // User Store
+export type UserStore = {
   filter: (predicate: (user: User) => User | boolean, sort?: boolean) => User[];
   findByTag: (username?: string, discriminator?: string) => User | undefined;
   forEach: (callback: (user: User) => unknown) => void;
   getCurrentUser: () => User;
   getUser: (userId?: string) => User | undefined;
   getUsers: () => Record<string, User>;
+  getUserStoreVersion: () => number;
 };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type GuildMemberStore = {
-  // Guild Member Store
-  getCommunicationDisabledUserMap: () => Record<string, UserCommunicationDisabled>;
+  getCommunicationDisabledUserMap: () => Record<string, string>;
   getCommunicationDisabledVersion: () => number;
   getMember: (guildId?: string, userId?: string) => GuildMember | undefined;
   getMemberIds: (guildId?: string) => string[];
@@ -30,23 +30,22 @@ export type GuildMemberStore = {
   getNick: (guildId?: string, userId?: string) => string | undefined;
   getNicknameGuildsMapping: (userId?: string) => Record<string, string[]>;
   getNicknames: (userId?: string) => string[];
+  getPendingRoleUpdates: (guildId?: string) => PendingRoleUpdate;
   getSelfMember: (guildId?: string) => GuildMember | undefined;
   getTrueMember: (guildId?: string, userId?: string) => GuildMember | undefined;
-  getPendingRoleUpdates: (guildId?: string) => {
-    added: Record<string, string[]>;
-    removed: Record<string, string[]>;
-  };
+  isCurrentUserGuest: (guildId?: string) => boolean;
+  isGuestOrLurker: (guildId?: string, userId?: string) => boolean;
   isMember: (guildId?: string, userId?: string) => boolean;
   memberOf: (userId?: string) => string[];
 };
 
-export type Users = UsersStore & GuildMemberStore;
+export type Users = UserStore & GuildMemberStore;
 
 export default virtualMerge(
-  (await waitForModule(filters.byProps("getUser", "getCurrentUser")).then(
+  await waitForProps<keyof UserStore, UserStore>(["getUser", "getCurrentUser"]).then(
     Object.getPrototypeOf,
-  )) as UsersStore,
-  (await waitForModule(filters.byProps("getTrueMember", "getMember")).then((mod) =>
-    Object.getPrototypeOf(getExportsForProps(mod, ["getTrueMember", "getMember"])),
-  )) as GuildMemberStore,
+  ),
+  await waitForProps<keyof GuildMemberStore, GuildMemberStore>(["getTrueMember", "getMember"]).then(
+    Object.getPrototypeOf,
+  ),
 );

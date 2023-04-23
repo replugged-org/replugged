@@ -109,7 +109,7 @@
     "REPLUGGED_INSTALL_MODAL_HEADER": "Instalar {type}",
     "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id}\" recarregado!",
     "REPLUGGED_COMMAND_SAY_DESC": "Envia os argumentos especificados.",
-    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Lista de Instalados {type} ({count}",
+    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Lista de Instalados {type} ({count})",
     "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} está em uso tanto por um plugin quanto por um tema. Você terá que especificar com a flag --theme ou --plugin.",
     "REPLUGGED_NOTICES_JOIN_SERVER_BUTTON": "Entrar no Servidor",
     "REPLUGGED_PLUGIN": "Plugin",

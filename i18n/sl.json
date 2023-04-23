@@ -51,7 +51,7 @@
     "REPLUGGED_COMMAND_ENABLE_DESC": "Omogoči plugin/temo",
     "REPLUGGED_COMMAND_HELP_COMMAND_NOT_FOUND": "Ukaz `{commandName}` ni bil naden.",
     "REPLUGGED_COMMAND_HELP_LIST_FOOTER": "Za več informacij o določenem ukazu zaženite {prefix}help <ImeUkaza>.",
-    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Seznam nameščenih {type} ({count}",
+    "REPLUGGED_COMMAND_LIST_OF_INSTALLED": "Seznam nameščenih {type} ({count})",
     "REPLUGGED_COMMAND_SHARE_BOTH_ENTITY": "{id} uporablja tako plugin kot tema. Določiti boste morali z zastavico --theme ali --plugin.",
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "Med izvajanjem ukaza je prišlo do napake:",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% preveden",

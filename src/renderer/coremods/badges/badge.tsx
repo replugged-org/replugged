@@ -1,12 +1,18 @@
-import { filters, getByProps, waitForModule } from "../../modules/webpack";
-import { React } from "@common";
 import { Messages } from "@common/i18n";
+import React from "@common/react";
+import { Clickable, Tooltip } from "@components";
+import { RawModule } from "src/types";
+import { filters, getByProps, waitForModule } from "../../modules/webpack";
+import { goToOrJoinServer } from "../../util";
+import { generalSettings } from "../settings/pages";
 import "./badge.css";
 import Badges from "./badges";
-import { Clickable, Tooltip } from "@components";
-import { goToOrJoinServer } from "../../util";
-import { RawModule } from "src/types";
-import { generalSettings } from "../settings/pages";
+
+export enum BadgeSizes {
+  SIZE_24,
+  SIZE_22,
+  SIZE_18,
+}
 
 interface BadgeProps {
   color?: string;
@@ -15,36 +21,45 @@ interface BadgeProps {
   className?: string;
   children: React.ReactElement;
   gap?: boolean;
+  size?: BadgeSizes;
   onClick?: () => void;
 }
 
-export const Base = ({
-  color,
-  tooltip,
-  tooltipPosition,
-  className,
-  children,
-  gap,
-  onClick,
-}: BadgeProps): React.ReactElement => {
+export function getBadgeSizeClass(size?: BadgeSizes): string {
   const badgeClassMod = getByProps<
     "profileBadge22",
-    {
-      profileBadge22: string;
-    }
+    Record<"profileBadge24" | "profileBadge22" | "profileBadge18", string>
   >("profileBadge22");
   if (!badgeClassMod) {
     throw new Error("Failed to find badge class");
   }
-  const { profileBadge22 } = badgeClassMod;
+  const { profileBadge24, profileBadge22, profileBadge18 } = badgeClassMod;
+
+  switch (size) {
+    case BadgeSizes.SIZE_24:
+      return profileBadge24;
+    case BadgeSizes.SIZE_22:
+      return profileBadge22;
+    case BadgeSizes.SIZE_18:
+      return profileBadge18;
+    default:
+      return profileBadge24;
+  }
+}
+
+export const Base = (props: BadgeProps): React.ReactElement => {
+  const { color, tooltip, tooltipPosition, className, children, gap, size, onClick } = props;
+
+  let sizeClass = getBadgeSizeClass(size);
 
   const child = (
     <div
-      className={`${profileBadge22} replugged-badge ${className || ""}`}
+      className={`${sizeClass} replugged-badge${className ? ` ${className}` : ""}`}
       style={{ color: `#${color || "7289da"}` }}>
       {children}
     </div>
   );
+
   return (
     <Clickable onClick={onClick}>
       {tooltip ? (
@@ -65,6 +80,7 @@ export interface BadgeArgs {
   color?: string;
   url?: string;
   name?: string;
+  size?: BadgeSizes;
 }
 
 export interface APIBadges {
@@ -100,61 +116,81 @@ const openContributorsPage = (): Promise<void> =>
 const openTranslationsPage = (): Promise<void> => openExternal("https://i18n.replugged.dev");
 const joinRepluggedServer = (): Promise<void> => goToOrJoinServer("replugged");
 
-const Custom = React.memo(({ url, name }: BadgeArgs) => (
-  <Base children={<img src={url} style={{ width: "100%", height: "100%" }} />} tooltip={name} />
+const Custom = React.memo(({ url, name, size }: BadgeArgs) => (
+  <Base
+    children={<img src={url} style={{ width: "100%", height: "100%" }} />}
+    tooltip={name}
+    size={size}
+  />
 ));
-const Booster = React.memo(({ color }: BadgeArgs) => (
+const Booster = React.memo(({ color, size }: BadgeArgs) => (
   <Base
     children={<Badges.Booster />}
     tooltip={Messages.REPLUGGED_BADGES_BOOSTER}
     color={color}
     onClick={joinRepluggedServer}
+    size={size}
   />
 ));
-const BugHunter = React.memo(({ color }: BadgeArgs) => (
-  <Base children={<Badges.BugHunter />} tooltip={Messages.REPLUGGED_BADGES_HUNTER} color={color} />
+const BugHunter = React.memo(({ color, size }: BadgeArgs) => (
+  <Base
+    children={<Badges.BugHunter />}
+    tooltip={Messages.REPLUGGED_BADGES_HUNTER}
+    color={color}
+    size={size}
+  />
 ));
-const Contributor = React.memo(({ color }: BadgeArgs) => (
+const Contributor = React.memo(({ color, size }: BadgeArgs) => (
   <Base
     children={<Badges.Contributor />}
     tooltip={Messages.REPLUGGED_BADGES_CONTRIBUTOR}
     color={color}
     onClick={openContributorsPage}
+    size={size}
   />
 ));
-const Developer = React.memo(({ color }: BadgeArgs) => (
+const Developer = React.memo(({ color, size }: BadgeArgs) => (
   <Base
     children={<Badges.Developer />}
     tooltip={Messages.REPLUGGED_BADGES_DEVELOPER}
     color={color}
     onClick={openContributorsPage}
+    size={size}
   />
 ));
-const EarlyUser = React.memo(({ color }: BadgeArgs) => (
-  <Base children={<Badges.EarlyUser />} tooltip={Messages.REPLUGGED_BADGES_EARLY} color={color} />
+const EarlyUser = React.memo(({ color, size }: BadgeArgs) => (
+  <Base
+    children={<Badges.EarlyUser />}
+    tooltip={Messages.REPLUGGED_BADGES_EARLY}
+    color={color}
+    size={size}
+  />
 ));
-const Staff = React.memo(({ color }: BadgeArgs) => (
+const Staff = React.memo(({ color, size }: BadgeArgs) => (
   <Base
     children={<Badges.Staff />}
     tooltip={Messages.REPLUGGED_BADGES_STAFF}
     color={color}
     onClick={joinRepluggedServer}
+    size={size}
   />
 ));
-const Support = React.memo(({ color }: BadgeArgs) => (
+const Support = React.memo(({ color, size }: BadgeArgs) => (
   <Base
     children={<Badges.Support />}
     tooltip={Messages.REPLUGGED_BADGES_SUPPORT}
     color={color}
     onClick={joinRepluggedServer}
+    size={size}
   />
 ));
-const Translator = React.memo(({ color }: BadgeArgs) => (
+const Translator = React.memo(({ color, size }: BadgeArgs) => (
   <Base
     children={<Badges.Translator />}
     tooltip={Messages.REPLUGGED_BADGES_TRANSLATOR}
     color={color}
     onClick={openTranslationsPage}
+    size={size}
   />
 ));
 

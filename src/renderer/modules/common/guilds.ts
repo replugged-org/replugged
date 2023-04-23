@@ -1,36 +1,41 @@
-import { filters, getExportsForProps, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 import type { Guild } from "discord-types/general";
-import type { Store } from "./flux";
 import { virtualMerge } from "src/renderer/util";
 
 export interface State {
-  selectedGuildTimestampMillis: number;
+  selectedGuildTimestampMillis: Record<string, number>;
   selectedGuildId: string;
   lastSelectedGuildId: string;
 }
 
-export type Guilds = (Store & Record<string, unknown>) & {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type SelectedGuildStore = {
   getCurrentGuild: () => Guild | undefined;
-  getGuild: (guildId?: string) => Guild | undefined;
-  getGuildCount: () => number;
   getGuildId: () => string | undefined;
-  getGuilds: () => Record<string, Guild>;
   getLastSelectedGuildId: () => string | undefined;
-  getLastSelectedTimeout: (guildId: string) => number;
+  getLastSelectedTimestamp: (guildId: string) => number;
   getState: () => State;
-  getTabsV2SelectedGuildId: () => string | undefined;
+};
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type GuildStore = {
+  getGuild: (guildId: string) => Guild | undefined;
+  getGuildCount: () => number;
+  getGuilds: () => Record<string, Guild>;
   isLoaded: () => boolean;
 };
 
+export type Guilds = SelectedGuildStore & GuildStore;
+
 const guilds: Guilds = {
-  ...(await waitForModule(filters.byProps("getGuild", "getGuilds")).then(Object.getPrototypeOf)),
-  ...(await waitForModule(filters.byProps("getGuildId", "getLastSelectedGuildId")).then((mod) =>
-    Object.getPrototypeOf(getExportsForProps(mod, ["getGuildId", "getLastSelectedGuildId"])),
-  )),
+  ...(await waitForProps(["getGuild", "getGuilds"]).then(Object.getPrototypeOf)),
+  ...(await waitForProps(["getGuildId", "getLastSelectedGuildId"]).then(Object.getPrototypeOf)),
 };
 
 export function getCurrentGuild(): Guild | undefined {
-  return guilds.getGuild(guilds.getGuildId());
+  const guildId = guilds.getGuildId();
+  if (!guildId) return undefined;
+  return guilds.getGuild(guildId);
 }
 
 export default virtualMerge(guilds, { getCurrentGuild });

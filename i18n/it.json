@@ -193,7 +193,7 @@
     "REPLUGGED_CONFIRM_INSTALL": "Installa",
     "REPLUGGED_ADDON_AUTHORS_ONE": "da {author1}",
     "REPLUGGED_ADDON_AUTHORS_THREE": "da {author1}, {author2}, e {author3}",
-    "REPLUGGED_ADDON_AUTHORS_MANY": "da {author1}, {author2}, {author3}, e {count, plural, =1 {# other} other {# others}}",
+    "REPLUGGED_ADDON_AUTHORS_MANY": "da {author1}, {author2}, {author3}, e {count, plural, =1 {# un altro} other {# altri}}",
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# nuovo aggiornamento disponibile} other {# nuovi aggiornamenti disponibili}}!",
     "REPLUGGED_UPDATES_UPDATE_TO": "Aggiorna a {version}",
     "REPLUGGED_UPDATES_TOAST_NO_NEW": "Nessun nuovo aggiornamento disponibile.",

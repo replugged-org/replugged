@@ -29,7 +29,7 @@
     "REPLUGGED_SETTINGS_RESTART": "この設定を有効にするには、Discordを再起動する必要があります。今すぐDiscordを再起動しますか？",
     "REPLUGGED_SNIPPET_APPLIED": "スニペット適用済み",
     "REPLUGGED_SNIPPET_APPLY": "スニペット適用",
-    "REPLUGGED_SNIPPET_LINE1": "Snippet from #css-snippets applied the {date, date, medium} at {date, time, medium}",
+    "REPLUGGED_SNIPPET_LINE1": "",
     "REPLUGGED_SNIPPET_LINE2": "{authorTag} ({authorId}) によって作成",
     "REPLUGGED_THEMES": "テーマ",
     "REPLUGGED_UPDATES_AVAILABLE": "{count, number}個のアップデートがあります。",

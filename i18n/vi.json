@@ -161,7 +161,7 @@
     "REPLUGGED_ADDON_UNINSTALL": "Gỡ cài đặt {name}",
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Mở thư mục của {type}",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Nhập những {type} bị thiếu",
-    "REPLUGGED_ADDONS_TITLE_COUNT": "{type}, ({count, number})",
+    "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
     "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# kết quả} other {# kết quả}}",
     "REPLUGGED_NO_ADDON_RESULTS": "Không tìm thấy kết quả nào với từ khóa của bạn cho {type}.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Bạn chưa cài {type} nào.",
@@ -203,5 +203,10 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Cập nhật đã hoàn tất.",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Tất cả cập nhật đã hoàn tất.",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} cần Discord phải khởi động lại để hoạt động một cách bình thường. Khởi động lại ngay bây giờ?",
-    "REPLUGGED_RELOAD": "Khởi động lại"
+    "REPLUGGED_RELOAD": "Khởi động lại",
+    "REPLUGGED_I18N": "Các bản dịch Replugged",
+    "REPLUGGED_SETTINGS_BADGES": "Bật huy hiệu Replugged",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Hiện huy hiệu Replugged tùy chỉnh trên hồ sơ người dùng",
+    "REPLUGGED_UPDATES_UPDATE_NOUN": "Cập nhật",
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[CHẾ ĐỘ NHÀ PHÁT TRIỂN]} other {v{version}}}"
 }
