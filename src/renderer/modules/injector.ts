@@ -65,7 +65,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
   funcName: U,
 ): void {
   if (typeof obj[funcName] !== "function") {
-    throw new Error(`Value of '${funcName}' in object is not a function`);
+    throw new TypeError(`Value of '${funcName}' in object is not a function`);
   }
 
   let objInjections: ObjectInjections;
@@ -154,7 +154,8 @@ function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
       throw new Error(`Invalid injection type: ${type}`);
   }
   set.add(cb);
-  return () => void set.delete(cb);
+  const setRef = new WeakRef(set);
+  return () => void setRef.deref()?.delete(cb);
 }
 
 function before<

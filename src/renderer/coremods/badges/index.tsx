@@ -1,14 +1,23 @@
-import { filters, getByProps, waitForModule } from "../../modules/webpack";
-import { Injector } from "../../modules/injector";
 import React from "@common/react";
+import { Logger } from "@replugged";
 import type { User } from "discord-types/general";
-import { APIBadges, Custom, badgeElements } from "./badge";
+import { Injector } from "../../modules/injector";
+import { filters, getByProps, waitForModule } from "../../modules/webpack";
 import { generalSettings } from "../settings/pages/General";
+import { APIBadges, BadgeSizes, Custom, badgeElements, getBadgeSizeClass } from "./badge";
+
 const injector = new Injector();
 
+const logger = Logger.coremod("Badges");
+
 interface BadgeModArgs {
-  guildId: string;
   user: User;
+  guildId: string;
+  className?: string;
+  shrinkAtCount?: number;
+  shrinkToSize?: number;
+  isTryItOutFlow?: boolean;
+  size?: BadgeSizes;
 }
 
 type BadgeMod = (args: BadgeModArgs) => React.ReactElement<{
@@ -26,9 +35,7 @@ const cache = new Map<string, BadgeCache>();
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
 export async function start(): Promise<void> {
-  const mod = await waitForModule<Record<string, BadgeMod>>(
-    filters.bySource(".GUILD_BOOSTER_LEVEL_1,"),
-  );
+  const mod = await waitForModule<Record<string, BadgeMod>>(filters.bySource("getBadges()"));
   const fnPropName = Object.entries(mod).find(([_, v]) => typeof v === "function")?.[0];
   if (!fnPropName) {
     throw new Error("Could not find badges function");
@@ -36,26 +43,22 @@ export async function start(): Promise<void> {
 
   const { containerWithContent } = getByProps<
     "containerWithContent",
-    { containerWithContent: "string" }
+    Record<"containerWithContent", string>
   >("containerWithContent")!;
 
-  injector.after(
-    mod,
-    fnPropName,
-    (
-      [
-        {
-          user: { id },
-        },
-      ],
-      res,
-    ) => {
+  injector.after(mod, fnPropName, ([props], res) => {
+    let {
+      user: { id },
+      shrinkAtCount,
+      shrinkToSize,
+      size,
+    } = props;
+
+    try {
       if (!generalSettings.get("badges")) return res;
-      if (!res?.props?.children) return res;
 
-      const [badges, setBadges] = React.useState<APIBadges | undefined>();
-
-      React.useEffect(() => {
+      const [currentCache, setCurrentCache] = React.useState<APIBadges | undefined>();
+      const badges = React.useMemo(() => {
         (async () => {
           if (!cache.has(id) || cache.get(id)!.lastFetch < Date.now() - REFRESH_INTERVAL) {
             cache.set(
@@ -84,30 +87,58 @@ export async function start(): Promise<void> {
             );
           }
 
-          setBadges(cache.get(id)?.badges);
+          setCurrentCache(cache.get(id)?.badges);
         })();
-      }, []);
+
+        return currentCache;
+      }, [currentCache, id]);
 
       if (!badges) {
         return res;
       }
 
+      const children = res?.props?.children;
+      if (!children || !Array.isArray(children)) {
+        logger.error("Error injecting badges: res.props.children is not an array", { children });
+        return res;
+      }
+
+      // Calculate badge size with new added badges
+      const addedBadgesCount =
+        children.length + Object.values(badges).filter((value) => value).length;
+      size =
+        shrinkAtCount && shrinkToSize && addedBadgesCount > shrinkAtCount ? shrinkToSize : size;
+
+      const sizeClass = getBadgeSizeClass(size);
+
+      children.forEach((badge) => {
+        const elem: React.ReactElement = badge.props.children?.();
+        if (elem) {
+          elem.props.children.props.className = sizeClass;
+          badge.props.children = (props: Record<string, unknown>) => {
+            elem.props = { ...elem.props, ...props };
+            return elem;
+          };
+        }
+      });
+
       if (badges.custom?.name && badges.custom.icon) {
-        res.props.children.push(<Custom url={badges.custom.icon} name={badges.custom.name} />);
+        children.push(<Custom url={badges.custom.icon} name={badges.custom.name} size={size} />);
       }
 
       badgeElements.forEach(({ type, component }) => {
         const value = badges[type];
         if (value) {
-          res.props.children.push(
+          children.push(
             React.createElement(component, {
               color: badges.custom?.color,
+              size,
             }),
           );
         }
       });
 
-      if (res.props.children.length > 0) {
+      if (children.length > 0) {
         if (!res.props.className.includes(containerWithContent)) {
           res.props.className += ` ${containerWithContent}`;
         }
@@ -117,8 +148,11 @@ export async function start(): Promise<void> {
       }
 
       return res;
-    },
-  );
+    } catch (err) {
+      logger.error(err);
+      return res;
+    }
+  });
 }
 
 export function stop(): void {

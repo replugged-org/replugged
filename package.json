@@ -1,13 +1,15 @@
 {
   "name": "replugged",
-  "version": "4.2.3",
+  "version": "4.2.6",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "dist/main.mjs",
   "types": "dist/renderer/replugged.d.ts",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   },
+  "packageManager": "pnpm@8.0.0",
   "scripts": {
     "build": "tsx scripts/build.ts",
     "bundle": "tsx scripts/build.ts --production",

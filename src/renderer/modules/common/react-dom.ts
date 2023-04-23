@@ -1,4 +1,6 @@
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 import type ReactDOM from "react-dom";
 
-export default await waitForModule<typeof ReactDOM>(filters.byProps("createPortal", "flushSync"));
+const props = ["createPortal", "flushSync"];
+
+export default await waitForProps<(typeof props)[number], typeof ReactDOM>(props);
