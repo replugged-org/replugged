@@ -252,9 +252,9 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
   const REPLUGGED_FOLDER_NAME = "replugged";
   const globalModules = {
     name: "globalModules",
-    // @ts-ignore
+    // @ts-expect-error
     setup: (build) => {
-      // @ts-ignore
+      // @ts-expect-error
       build.onResolve({ filter: /^replugged.+$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
@@ -267,7 +267,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
         };
       });
 
-      // @ts-ignore
+      // @ts-expect-error
       build.onResolve({ filter: /^replugged$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
@@ -312,7 +312,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
 
   const install = {
     name: "install",
-    // @ts-ignore
+    // @ts-expect-error
     setup: (build) => {
       build.onEnd(async () => {
         if (!noInstall) {
@@ -346,7 +346,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
 
   if ("renderer" in manifest) {
     targets.push(
-      // @ts-ignore
+      // @ts-expect-error
       esbuild.build({
         ...common,
         entryPoints: [manifest.renderer],
@@ -359,7 +359,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
 
   if ("plaintextPatches" in manifest) {
     targets.push(
-      // @ts-ignore
+      // @ts-expect-error
       esbuild.build({
         ...common,
         entryPoints: [manifest.plaintextPatches],
@@ -448,13 +448,13 @@ async function buildTheme({ watch: shouldWatch, noInstall, production, noReload 
       console.log("Installed updated version");
 
       if (!noReload) {
-        // @ts-ignore
+        // @ts-expect-error
         await reload(manifest.id, watch);
       }
     }
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   async function build(bundler) {
     const { bundleGraph, buildTime } = await bundler.run();
     let bundles = bundleGraph.getBundles();
@@ -462,9 +462,9 @@ async function buildTheme({ watch: shouldWatch, noInstall, production, noReload 
     install();
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   async function watch(bundler) {
-    // @ts-ignore
+    // @ts-expect-error
     await bundler.watch((err, event) => {
       if (err) {
         // fatal error
@@ -499,7 +499,7 @@ async function buildTheme({ watch: shouldWatch, noInstall, production, noReload 
   ws?.close();
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line no-unused-vars
 const { argv } = yargs(hideBin(process.argv))
   .scriptName("replugged")
   .usage("$0 <cmd> [args]")
@@ -534,10 +534,10 @@ const { argv } = yargs(hideBin(process.argv))
     },
     (argv) => {
       if (argv.addon === "plugin") {
-        // @ts-ignore
+        // @ts-expect-error
         buildPlugin(argv);
       } else if (argv.addon === "theme") {
-        // @ts-ignore
+        // @ts-expect-error
         buildTheme(argv);
       } else {
         console.log("Invalid addon type.");
@@ -558,7 +558,6 @@ const { argv } = yargs(hideBin(process.argv))
       if (argv.addon === "plugin") {
         bundleAddon(buildPlugin);
       } else if (argv.addon === "theme") {
-        // @ts-ignore
         bundleAddon(buildTheme);
       } else {
         console.log("Invalid addon type.");
