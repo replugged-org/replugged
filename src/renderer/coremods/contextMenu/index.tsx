@@ -31,8 +31,6 @@ function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | 
     return raw as unknown as ContextItem;
   }
 
-  raw = raw as RawContextItem;
-
   const { type, ...props } = raw;
   if (props.children) {
     props.children = props.children.map((child: RawContextItem | ContextItem | undefined) =>
@@ -40,7 +38,7 @@ function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | 
     );
   }
 
-  return React.createElement(type, props as Record<string, unknown>) as unknown as ContextItem;
+  return React.createElement(type, props as Record<string, unknown>) as ContextItem;
 }
 
 /**
