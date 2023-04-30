@@ -1,10 +1,10 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
-import { loadStyleSheet } from "../util";
 import type { PluginExports, RepluggedPlugin } from "../../types";
 import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack";
 import { init } from "../apis/settings";
 import type { AddonSettings } from "src/types/addon";
+import { loadStyleSheet } from "../util";
 
 const logger = Logger.api("Plugins");
 const settings = await init<AddonSettings>("plugins");
@@ -83,6 +83,8 @@ export async function start(id: string): Promise<void> {
     }
 
     if (plugin.hasCSS) {
+      // Need to use dynamic import here to prevent loading modules before we ignite
+      // const { loadStyleSheet } = await import("../util");
       const el = loadStyleSheet(
         `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
       );

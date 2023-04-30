@@ -190,8 +190,12 @@ function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
 let webpackChunk: WebpackChunkGlobal | undefined;
 
 Object.defineProperty(window, "webpackChunkdiscord_app", {
-  get: () => webpackChunk,
+  get: () => {
+    console.log("GET", webpackChunk);
+    return webpackChunk;
+  },
   set: (v) => {
+    console.log(window.webpackChunkdiscord_app, window.webpackChunkdiscord_app?.length);
     if (!ready && v?.push !== Array.prototype.push) {
       console.log("DEBUG: loading webpack modules");
       loadWebpackModules(v);
@@ -202,6 +206,7 @@ Object.defineProperty(window, "webpackChunkdiscord_app", {
   },
   configurable: true,
 });
+console.log(window.webpackChunkdiscord_app);
 
 // Helpers
 
