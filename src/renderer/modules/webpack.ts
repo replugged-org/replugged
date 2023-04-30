@@ -75,6 +75,7 @@ let ready = false;
 export const waitForReady = new Promise<void>(
   (resolve) =>
     (signalReady = () => {
+      console.log("DEBUG: signal ready");
       ready = true;
       resolve();
     }),
@@ -133,7 +134,9 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
   let original = webpackChunk.push;
 
   async function handlePush(chunk: WebpackChunk): Promise<unknown> {
+    console.log("DEBUG: handlePush");
     await waitForStart;
+    console.log("DEBUG: handlePush: start");
 
     const modules = chunk[1];
     for (const id in modules) {
@@ -162,6 +165,7 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
 }
 
 function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
+  console.log("DEBUG: loadWebpackModules");
   wpRequire = webpackChunk.push([[Symbol("replugged")], {}, (r: WebpackRequire) => r]);
 
   wpRequire.d = (module: ModuleExports, exports: Record<string, () => unknown>) => {
@@ -189,7 +193,10 @@ Object.defineProperty(window, "webpackChunkdiscord_app", {
   get: () => webpackChunk,
   set: (v) => {
     if (!ready && v?.push !== Array.prototype.push) {
+      console.log("DEBUG: loading webpack modules");
       loadWebpackModules(v);
+    } else {
+      console.log("DEBUG: webpackChunk set but loading not called");
     }
     webpackChunk = v;
   },

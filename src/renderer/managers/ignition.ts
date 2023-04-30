@@ -67,11 +67,17 @@ Load order:
 
 export async function ignite(): Promise<void> {
   // This is the function that will be called when loading the window.
+  console.log("DEBUG: Ignition started");
   coremods.runPlaintextPatches();
   await plugins.runPlaintextPatches();
+  console.log("DEBUG: Ignition waiting for webpack ready");
   await waitForReady;
+  console.log("DEBUG: Webpack ready");
   signalStart();
   await commonReady;
+  console.log("DEBUG: Common ready");
   await componentsReady;
+  console.log("DEBUG: Components ready");
   await start();
+  console.log("DEBUG: Ignition finished");
 }

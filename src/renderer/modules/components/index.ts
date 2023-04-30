@@ -3,6 +3,8 @@ import { error } from "../logger";
 
 const modulePromises: Array<Promise<void>> = [];
 
+console.log("DEBUG: components loaded");
+
 function importTimeout<T extends ModuleExports>(
   name: string,
   moduleImport: Promise<T>,
