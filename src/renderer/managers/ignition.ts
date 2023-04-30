@@ -14,12 +14,15 @@ export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");
   const startTime = performance.now();
 
+  const replugged = await import("../replugged");
+  window.replugged = replugged;
+
   loadStyleSheet("replugged://renderer.css");
   i18n.load();
   quickCSS.load();
   await Promise.all([
     coremods.startAll(),
-    plugins.startAll(),
+    plugins.loadAll().then(() => plugins.startAll()),
     themes.loadMissing().then(() => {
       themes.loadAll();
     }),

@@ -39,11 +39,6 @@ export * as quickCSS from "./managers/quick-css";
  */
 export * as themes from "./managers/themes";
 /**
- * @internal
- * @hidden
- */
-export * as ignition from "./managers/ignition";
-/**
  * @internal Mostly for internal use, or within the console.
  */
 export * as plugins from "./managers/plugins";
