@@ -7,6 +7,8 @@ import type {
 import { Logger } from "../../modules/logger";
 import { getByProps } from "../../modules/webpack";
 import { React } from "@common";
+import type { ContextMenuProps, ContextMenuType } from "@components/ContextMenu";
+import type { ReactElement } from "react";
 
 const logger = Logger.api("ContextMenu");
 
@@ -28,7 +30,7 @@ function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | 
   }
   if (React.isValidElement(raw)) {
     // We can't construct something that's already made
-    return raw as unknown as ContextItem;
+    return raw as ContextItem;
   }
 
   const { type, ...props } = raw;
@@ -73,15 +75,17 @@ export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetConte
   items.splice(index, 1);
 }
 
+type ContextMenuData = ContextMenuProps["ContextMenu"] & {
+  children: ReactElement[];
+  data: Array<Record<string, unknown>>;
+  navId: ContextMenuTypes;
+};
+
 /**
  * @internal
  * @hidden
  */
-export function _insertMenuItems(menu: {
-  data: { 0: Record<string, unknown> };
-  navId: ContextMenuTypes;
-  children: JSX.Element[];
-}): void {
+export function _insertMenuItems(menu: ContextMenuData): void {
   const { navId } = menu;
 
   // No items to insert
@@ -93,8 +97,9 @@ export function _insertMenuItems(menu: {
 
   // We delay getting the items until now, as importing at the start of the file causes discord to hang
   // Using `await import(...)` is undesirable because the new items will only appear once the menu is interacted with
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unnecessary-type-assertion
-  const { ContextMenu, MenuGroup } = getByProps(["Menu", "MenuItem", "MenuGroup"]) as any;
+  const { MenuGroup } = getByProps(["Menu", "MenuItem", "MenuGroup"]) as {
+    MenuGroup: ContextMenuType["MenuGroup"];
+  };
 
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
   const data = menu.data[0];
@@ -105,9 +110,7 @@ export function _insertMenuItems(menu: {
 
   menuItems[navId].forEach((getItem) => {
     try {
-      repluggedGroup.props.children.push(
-        makeItem(getItem(data, menu as unknown as typeof ContextMenu)),
-      );
+      repluggedGroup.props.children.push(makeItem(getItem(data, menu)));
     } catch (err) {
       logger.error("Error while running GetContextItem function", err, getItem);
     }
