@@ -101,6 +101,8 @@ export function _insertMenuItems(menu: ContextMenuData): void {
     MenuGroup: ContextMenuType["MenuGroup"];
   };
 
+  if (!MenuGroup) return;
+
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
   const data = menu.data[0];
 
