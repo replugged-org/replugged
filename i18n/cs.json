@@ -31,7 +31,7 @@
     "REPLUGGED_SNIPPET_LINE1": "Snippet z #css-snippets použit {date, date, medium} v {date, time, medium}",
     "REPLUGGED_SNIPPET_LINE2": "Vytvořen uživatelem {authorTag} ({authorId})",
     "REPLUGGED_THEMES": "Motivy",
-    "REPLUGGED_UPDATES_AVAILABLE": "",
+    "REPLUGGED_UPDATES_AVAILABLE": "{count, plural, one {Je dostupná # aktualizace} few {Jsou dostupné # aktualizace} other {Je dostupných # aktualizací}}.",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "Vyžadován restart",
     "REPLUGGED_UPDATES_CHECK": "Zkontrolovat aktualizace",
     "REPLUGGED_UPDATES_ENABLE": "Povolit aktualizace",
@@ -207,5 +207,6 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Aktualizace proběhla úspěšně.",
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, one {Nalezena # aktualizace!} few {Nalezeno # aktualizací} other {Nalezeno # aktualizací}}!",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} potřebuje přenačtení pro jeho správné fungování. Přenačíst nyní?",
-    "REPLUGGED_RELOAD": "Přenačíst"
+    "REPLUGGED_RELOAD": "Přenačíst",
+    "REPLUGGED_I18N": "Překlady Replugged"
 }
