@@ -12,7 +12,10 @@ import type { ReactElement } from "react";
 
 const logger = Logger.api("ContextMenu");
 
-export const menuItems = {} as Record<ContextMenuTypes, GetContextItem[]>;
+export const menuItems = {} as Record<
+  ContextMenuTypes,
+  Array<{ getItem: GetContextItem; sectionId: number; sectionIndex: number }>
+>;
 
 /**
  * Converts data into a react element. Any elements or falsy value will be returned as is
@@ -47,12 +50,19 @@ function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | 
  * Add an item to any context menu
  * @param navId The id of the menu you want to insert to
  * @param getItem A function that creates and returns the menu item
+ * @param sectionId The number of the section to add to. Defaults to replugged's section
+ * @param sectionIndex The index in the section to add to. Defaults to the end position
  * @returns A callback to de-register the function
  */
-export function addContextMenuItem(navId: ContextMenuTypes, getItem: GetContextItem): () => void {
+export function addContextMenuItem(
+  navId: ContextMenuTypes,
+  getItem: GetContextItem,
+  sectionId: number,
+  sectionIndex: number,
+): () => void {
   if (!menuItems[navId]) menuItems[navId] = [];
 
-  menuItems[navId].push(getItem);
+  menuItems[navId].push({ getItem, sectionId, sectionIndex });
   return () => removeContextMenuItem(navId, getItem);
 }
 
@@ -64,14 +74,8 @@ export function addContextMenuItem(navId: ContextMenuTypes, getItem: GetContextI
  */
 export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetContextItem): void {
   const items = menuItems[navId];
-  const index = items.indexOf(getItem);
 
-  if (index === -1) {
-    // Already removed
-    return;
-  }
-
-  items.splice(index, 1);
+  menuItems[navId] = items.filter((item) => item.getItem !== getItem);
 }
 
 type ContextMenuData = ContextMenuProps["ContextMenu"] & {
@@ -109,15 +113,16 @@ export function _insertMenuItems(menu: ContextMenuData): void {
   repluggedGroup.props.name = "replugged";
   repluggedGroup.props.children = [];
 
-  menuItems[navId].forEach((getItem) => {
-    try {
-      repluggedGroup.props.children.push(makeItem(getItem(data, menu)));
-    } catch (err) {
-      logger.error("Error while running GetContextItem function", err, getItem);
-    }
-  });
-
   // Add in the new menu items right above the DevMode Copy ID
   // If the user doesn't have DevMode enabled, the new items will be at the bottom
   menu.children.splice(-1, 0, repluggedGroup);
+
+  menuItems[navId].forEach((item) => {
+    try {
+      const res = makeItem(item.getItem(data, menu));
+      menu.children.at(item.sectionId)?.props?.children?.splice(item.sectionIndex, 0, res);
+    } catch (err) {
+      logger.error("Error while running GetContextItem function", err, item.getItem);
+    }
+  });
 }
