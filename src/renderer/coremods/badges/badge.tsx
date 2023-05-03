@@ -26,9 +26,10 @@ interface BadgeProps {
 }
 
 export function getBadgeSizeClass(size?: BadgeSizes): string {
-  const badgeClassMod = getByProps<
-    Record<"profileBadge24" | "profileBadge22" | "profileBadge18", string>
-  >("profileBadge22");
+  const badgeClassMod =
+    getByProps<Record<"profileBadge24" | "profileBadge22" | "profileBadge18", string>>(
+      "profileBadge22",
+    );
   if (!badgeClassMod) {
     throw new Error("Failed to find badge class");
   }
