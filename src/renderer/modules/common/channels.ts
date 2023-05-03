@@ -20,7 +20,6 @@ export interface SelectedChannelStore {
 export interface ChannelStore {
   getAllThreadsForParent(channelId?: string): Channel[];
   getBasicChannel(channelId: string): Channel | undefined;
-  getCachedChannelJsonForGuild(channelId: string): unknown;
   getChannel(channelId: string): Channel | undefined;
   getDMFromUserId(userId: string): string | undefined;
   getDMUserIds(): string[];

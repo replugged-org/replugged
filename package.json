@@ -80,8 +80,8 @@
     "codemirror": "^6.0.1",
     "esbuild": "^0.16.1",
     "node-fetch": "^3.3.0",
-    "update-notifier": "^6.0.2",
     "standalone-electron-types": "^1.0.0",
+    "update-notifier": "^6.0.2",
     "yargs": "^17.6.2",
     "zod": "^3.19.1"
   },
