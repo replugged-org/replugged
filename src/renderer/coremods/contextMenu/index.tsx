@@ -119,7 +119,15 @@ export function _insertMenuItems(menu: ContextMenuData): void {
 
   menuItems[navId].forEach((item) => {
     try {
-      const res = makeItem(item.getItem(data, menu));
+      const res = makeItem(item.getItem(data, menu)) as ContextItem & { props: { id?: string } };
+
+      if (res?.props) {
+        // add in unique ids
+        res.props.id = `${res.props.id || "repluggedItem"}-${Math.random()
+          .toString(36)
+          .substring(2)}`;
+      }
+
       menu.children.at(item.sectionId)?.props?.children?.splice(item.sectionIndex, 0, res);
     } catch (err) {
       logger.error("Error while running GetContextItem function", err, item.getItem);
