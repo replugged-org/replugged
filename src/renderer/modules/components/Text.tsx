@@ -35,6 +35,7 @@ type Variant =
   | "heading-deprecated-12/semibold"
   | "heading-deprecated-12/bold"
   | "heading-deprecated-12/extrabold"
+  | "redesign/heading-18/bold"
   | "text-xxs/normal"
   | "text-xxs/medium"
   | "text-xxs/semibold"

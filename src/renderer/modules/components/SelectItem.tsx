@@ -3,6 +3,11 @@ import { FormItem } from ".";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
+const Looks = {
+  FILLED: 0,
+  CUSTOM: 1,
+} as const;
+
 interface SelectOptionType {
   label: string;
   value: string;
@@ -22,7 +27,7 @@ interface SelectCompProps {
   autoFocus?: boolean;
   popoutWidth?: number;
   clearable?: boolean;
-  look?: number;
+  look?: (typeof Looks)[keyof typeof Looks];
   popoutPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   closeOnSelect?: boolean;
   hideIcon?: boolean;
@@ -43,7 +48,7 @@ const SelectComp = (await waitForModule(filters.bySource(selectRgx)).then((mod) 
   getFunctionBySource(mod as ObjectExports, selectRgx),
 )) as SelectCompType;
 
-export interface SelectProps extends SelectCompProps {
+interface SelectProps extends SelectCompProps {
   onChange?: (e: string) => void;
   onSelect?: (e: string) => void;
   onClear?: () => void;
@@ -51,7 +56,9 @@ export interface SelectProps extends SelectCompProps {
   disabled?: boolean;
 }
 
-export type SelectType = React.FC<React.PropsWithChildren<SelectProps>>;
+export type SelectType = React.FC<React.PropsWithChildren<SelectProps>> & {
+  Looks: typeof Looks;
+};
 
 export const Select = ((props) => {
   if (!props.isSelected && props.value != null) props.isSelected = (e) => e === props.value;
@@ -66,6 +73,7 @@ export const Select = ((props) => {
     />
   );
 }) as SelectType;
+Select.Looks = Looks;
 
 interface SelectItemProps extends SelectProps {
   note?: string;

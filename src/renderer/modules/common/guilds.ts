@@ -11,8 +11,9 @@ export interface State {
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type SelectedGuildStore = {
   getCurrentGuild: () => Guild | undefined;
-  getGuildId: () => string | undefined;
-  getLastSelectedGuildId: () => string | undefined;
+
+  getGuildId: () => string | null;
+  getLastSelectedGuildId: () => string | null;
   getLastSelectedTimestamp: (guildId: string) => number;
   getState: () => State;
 };

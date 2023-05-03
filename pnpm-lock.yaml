@@ -75,6 +75,9 @@ devDependencies:
   '@types/react-reconciler':
     specifier: ^0.28.1
     version: 0.28.1
+  '@types/superagent':
+    specifier: ^4.1.17
+    version: 4.1.17
   '@types/toposort':
     specifier: ^2.0.3
     version: 2.0.3
@@ -1779,6 +1782,10 @@ packages:
       '@types/responselike': 1.0.0
     dev: true
 
+  /@types/cookiejar@2.1.2:
+    resolution: {integrity: sha512-t73xJJrvdTjXrn4jLS9VSGRbz0nUY3cl2DMGDU48lKl+HR9dbbjW2A9r3g40VA++mQpy6uuHg33gy7du2BKpog==}
+    dev: true
+
   /@types/glob@7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     requiresBuild: true
@@ -1871,6 +1878,13 @@ packages:
 
   /@types/semver@7.3.13:
     resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
+    dev: true
+
+  /@types/superagent@4.1.17:
+    resolution: {integrity: sha512-FFK/rRjNy24U6J1BvQkaNWu2ohOIF/kxRQXRsbT141YQODcOcZjzlcc4DGdI2SkTa0rhmF+X14zu6ICjCGIg+w==}
+    dependencies:
+      '@types/cookiejar': 2.1.2
+      '@types/node': 18.11.3
     dev: true
 
   /@types/toposort@2.0.3:

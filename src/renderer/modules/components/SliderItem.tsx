@@ -3,7 +3,7 @@ import { ReactComponent } from "src/types";
 import { FormItem } from ".";
 import { filters, waitForModule } from "../webpack";
 
-export interface SliderCompProps {
+interface SliderCompProps {
   disabled?: boolean;
   markers?: number[];
   stickToMarkers?: boolean;
@@ -35,7 +35,7 @@ const SliderComp = await waitForModule(filters.bySource(".moveGrabber=")).then((
   Object.values(mod).find((x) => x?.defaultProps && "stickToMarkers" in x.defaultProps),
 );
 
-export interface SliderProps extends SliderCompProps {
+interface SliderProps extends SliderCompProps {
   value?: number;
   onChange?: (e: number) => void;
 }

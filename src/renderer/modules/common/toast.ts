@@ -6,6 +6,7 @@ const Kind = {
   SUCCESS: 1,
   FAILURE: 2,
   CUSTOM: 3,
+  CLIP: 4,
 } as const;
 
 const Position = {
@@ -14,14 +15,14 @@ const Position = {
 } as const;
 
 interface ToastOpts {
-  position?: number;
+  position?: (typeof Position)[keyof typeof Position];
   duration?: number;
   component?: React.ReactElement;
 }
 
 type ToastFn = (
   content: string | React.ReactElement | null,
-  kind?: number,
+  kind?: (typeof Kind)[keyof typeof Kind],
   opts?: ToastOpts,
 ) => void;
 

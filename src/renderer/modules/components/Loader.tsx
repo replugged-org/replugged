@@ -1,7 +1,7 @@
 import type React from "react";
 import { filters, waitForModule } from "../webpack";
 
-const TYPES = {
+const Types = {
   WANDERING_CUBES: "wanderingCubes",
   CHASING_DOTS: "chasingDots",
   PULSING_ELLIPSIS: "pulsingEllipsis",
@@ -10,7 +10,7 @@ const TYPES = {
 } as const;
 
 interface LoaderProps {
-  type?: (typeof TYPES)[keyof typeof TYPES];
+  type?: (typeof Types)[keyof typeof Types];
   animated?: boolean;
   className?: string;
   itemClassName?: string;
@@ -19,7 +19,7 @@ interface LoaderProps {
 }
 
 export type LoaderType = React.ComponentType<LoaderProps> & {
-  Type: typeof TYPES;
+  Type: typeof Types;
 };
 
 const Loader = (await waitForModule(filters.bySource('"wanderingCubes"')).then((mod) =>
