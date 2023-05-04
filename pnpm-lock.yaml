@@ -78,9 +78,6 @@ devDependencies:
   '@types/superagent':
     specifier: ^4.1.17
     version: 4.1.17
-  '@types/toposort':
-    specifier: ^2.0.3
-    version: 2.0.3
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.53.0
     version: 5.53.0(@typescript-eslint/parser@5.53.0)(eslint@8.34.0)(typescript@4.9.5)
@@ -1885,10 +1882,6 @@ packages:
     dependencies:
       '@types/cookiejar': 2.1.2
       '@types/node': 18.11.3
-    dev: true
-
-  /@types/toposort@2.0.3:
-    resolution: {integrity: sha512-jRtyvEu0Na/sy0oIxBW0f6wPQjidgVqlmCTJVHEGTNEUdL1f0YSvdPzHY7nX7MUWAZS6zcAa0KkqofHjy/xDZQ==}
     dev: true
 
   /@typescript-eslint/eslint-plugin@5.53.0(@typescript-eslint/parser@5.53.0)(eslint@8.34.0)(typescript@4.9.5):

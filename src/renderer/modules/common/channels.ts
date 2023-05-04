@@ -1,5 +1,5 @@
 import { waitForProps } from "../webpack";
-import { Channel } from "discord-types/general";
+import type { Channel } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 import { FullObjectExports } from "src/types";
 

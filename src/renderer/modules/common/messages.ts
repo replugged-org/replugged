@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { waitForProps } from "../webpack";
 
-import { Channel, Message, MessageAttachment } from "discord-types/general";
+import type { Channel, Message, MessageAttachment } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
 export enum ActivityActionTypes {

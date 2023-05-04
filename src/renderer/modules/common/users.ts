@@ -10,7 +10,7 @@ export interface PendingRoleUpdate {
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type UserStore = {
   filter: (callback: (user: User) => User | boolean, sort?: boolean) => User[];
-  findByTag: (username: string, discriminator: string) => User | undefined;
+  findByTag: (username: string, discriminator?: string) => User | undefined;
   forEach: (callback: (user: User) => void) => void;
   getCurrentUser: () => User;
   getUser: (userId: string) => User | undefined;

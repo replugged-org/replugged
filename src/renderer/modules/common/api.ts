@@ -12,7 +12,7 @@ interface HTTPField {
   value: string;
 }
 
-// superagent's ProgressEvent and Request aren't fully typed
+// superagent's isn't fully typed
 interface HTTPRequest {
   url: string;
   attachments?: HTTPAttachment[];
