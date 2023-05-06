@@ -1,13 +1,15 @@
 {
   "name": "replugged",
-  "version": "4.2.3",
+  "version": "4.2.6",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "dist/main.mjs",
   "types": "dist/renderer/replugged.d.ts",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   },
+  "packageManager": "pnpm@8.0.0",
   "scripts": {
     "build": "tsx scripts/build.ts",
     "bundle": "tsx scripts/build.ts --production",
@@ -78,8 +80,8 @@
     "codemirror": "^6.0.1",
     "esbuild": "^0.16.1",
     "node-fetch": "^3.3.0",
-    "update-notifier": "^6.0.2",
     "standalone-electron-types": "^1.0.0",
+    "update-notifier": "^6.0.2",
     "yargs": "^17.6.2",
     "zod": "^3.19.1"
   },

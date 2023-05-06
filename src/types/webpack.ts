@@ -1,4 +1,5 @@
 export type ObjectExports = Record<string, unknown>;
+export type FullObjectExports = Record<PropertyKey, unknown>;
 
 export type ModuleExports =
   | ObjectExports

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { RawModule, ReactComponent } from "../../../types";
+import type { ReactComponent } from "../../../types";
 import type { FluxDispatcher as Dispatcher } from "./fluxDispatcher";
-import { filters, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
 type DispatchToken = string;
 type ActionType = string;
@@ -138,7 +138,8 @@ export declare class PersistedStore extends Store {
 export type DeviceSettingsStore = typeof PersistedStore;
 export type OfflineCacheStore = typeof PersistedStore;
 
-export interface Flux {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type Flux = {
   DeviceSettingsStore: DeviceSettingsStore;
   Emitter: Emitter;
   OfflineCacheStore: OfflineCacheStore;
@@ -153,6 +154,8 @@ export interface Flux {
   destroy(): void;
   initialize(): void;
   get initialized(): Promise<boolean | undefined>;
-}
+};
 
-export default await waitForModule<RawModule & Flux>(filters.byProps("Store", "connectStores"));
+const props = ["Store", "connectStores"];
+
+export default await waitForProps<(typeof props)[number], Flux>(props);

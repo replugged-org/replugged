@@ -1,7 +1,6 @@
-import { filters, getExportsForProps, waitForModule } from "../webpack";
+import { waitForProps } from "../webpack";
 
 import type Lodash from "lodash";
+import { FullObjectExports } from "src/types";
 
-export default getExportsForProps(await waitForModule(filters.byProps("debounce")), [
-  "debounce",
-]) as unknown as typeof Lodash;
+export default await waitForProps<"debounce", FullObjectExports & typeof Lodash>(["debounce"]);
