@@ -126,12 +126,14 @@ electron.app.once("ready", () => {
     const headersWithoutCSP = Object.fromEntries(
       Object.entries(responseHeaders).filter(
         ([k]) =>
+          !/^x-frame-options/i.test(k) &&
           !/^content-security-policy/i.test(k) &&
           !(/^access-control-allow-origin$/i.test(k) && !hasAllowCredentials),
       ),
     );
 
     if (!hasAllowCredentials) {
+      headersWithoutCSP["Content-Security-Policy"] = ["frame-ancestors 'self' https://discord.com https://*.discord.com;"];
       headersWithoutCSP["Access-Control-Allow-Origin"] = ["*"];
     }
 
