@@ -133,8 +133,10 @@ electron.app.once("ready", () => {
     );
 
     if (!hasAllowCredentials) {
-      headersWithoutCSP["Content-Security-Policy"] = ["frame-ancestors 'self' https://discord.com https://*.discord.com;"];
       headersWithoutCSP["Access-Control-Allow-Origin"] = ["*"];
+      headersWithoutCSP["Content-Security-Policy"] = [
+        "frame-ancestors 'self' https://discord.com https://*.discord.com;",
+      ];
     }
 
     done({ responseHeaders: headersWithoutCSP });
