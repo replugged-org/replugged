@@ -263,7 +263,7 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
   return new Proxy(fallback, handler) as ExtractObjectType<O>;
 }
 
-type Tree = React.ComponentType | React.ComponentType[] | Record<string, Tree>;
+interface Tree { [key: string]: Tree }
 type TreeFilter = string | ((tree: Tree) => boolean);
 
 /**
