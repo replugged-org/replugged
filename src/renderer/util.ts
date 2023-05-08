@@ -273,8 +273,10 @@ type TreeFilter = string | ((tree: Tree) => boolean);
  * 
  * @remarks Used mainly in findInReactTree
 */
-export function findInTree (tree: Tree, searchFilter: TreeFilter, args: { walkable?: string[], ignore?: string[] } = {}): React.ComponentType | null | undefined {
-  const { walkable, ignore } = args;
+export function findInTree (tree: Tree, searchFilter: TreeFilter, args: { walkable?: string[], ignore?: string[], maxRecursion: number } = { maxRecursion: 100 }): Tree | null | undefined {
+  const { walkable, ignore, maxRecursion } = args;
+
+  if (maxRecursion <= 0) return undefined;
 
   if (typeof searchFilter === "string") {
       if (Object.prototype.hasOwnProperty.call(tree, searchFilter)) return tree[searchFilter];
@@ -288,7 +290,7 @@ export function findInTree (tree: Tree, searchFilter: TreeFilter, args: { walkab
   let tempReturn;
   if (Array.isArray(tree)) {
       for (const value of tree) {
-          tempReturn = findInTree(value, searchFilter, {walkable, ignore});
+          tempReturn = findInTree(value, searchFilter, {walkable, ignore, maxRecursion: maxRecursion - 1});
           if (typeof tempReturn != "undefined") return tempReturn;
       }
   }
@@ -296,7 +298,7 @@ export function findInTree (tree: Tree, searchFilter: TreeFilter, args: { walkab
       const toWalk = walkable == null ? Object.keys(tree) : walkable;
       for (const key of toWalk) {
           if (!Object.prototype.hasOwnProperty.call(tree, key) || ignore?.includes(key)) continue;
-          tempReturn = findInTree(tree[key], searchFilter, {walkable, ignore});
+          tempReturn = findInTree(tree[key], searchFilter, {walkable, ignore, maxRecursion: maxRecursion - 1});
           if (typeof tempReturn != "undefined") return tempReturn;
       }
   }
@@ -307,9 +309,10 @@ export function findInTree (tree: Tree, searchFilter: TreeFilter, args: { walkab
  * Find the component you are looking for in a tree, recursively.
  * 
  * @param tree The tree to search through
- * @param searchFilter The filter. Either a string or a function
+ * @param searchFilter The filter. Either a string or a function. Should be unique
+ * @param maxRecursion The max depth. Avoids call stack exceeded error.
  * @returns The component you are looking for
  */
-export function findInReactTree(tree: Tree, searchFilter: TreeFilter): React.ComponentType | null | undefined {
-  return findInTree(tree, searchFilter, { walkable: ["props", "children", "child", "sibling"] });
+export function findInReactTree(tree: Tree, searchFilter: TreeFilter, maxRecursion = 100): Tree | null | undefined {
+  return findInTree(tree, searchFilter, { walkable: ["props", "children", "child", "sibling"], maxRecursion });
 }
