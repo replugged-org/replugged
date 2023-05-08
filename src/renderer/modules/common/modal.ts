@@ -16,6 +16,7 @@ export interface ModalProps {
 
 export interface ModalOptions {
   modalKey?: string;
+  instant?: boolean;
   onCloseRequest?: () => void;
   onCloseCallback?: () => void;
 }

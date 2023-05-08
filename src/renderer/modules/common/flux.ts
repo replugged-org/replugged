@@ -46,11 +46,11 @@ type Callback = () => void;
 
 declare class Callbacks {
   public listeners: Set<Callback>;
-  public add(callback: Callback): void;
-  public remove(callback: Callback): void;
-  public addConditional(callback: Callback, condition: boolean): void;
+  public add(listener: Callback): void;
+  public remove(listener: Callback): void;
+  public addConditional(listener: Callback, condition: boolean): void;
 
-  public has(callback: Callback): boolean;
+  public has(listener: Callback): boolean;
   public hasAny(): boolean;
   public invokeAll(): void;
 }
@@ -68,6 +68,7 @@ export declare class Store {
   public _dispatcher: Dispatcher;
   public _changeCallbacks: Callbacks;
   public _reactChangeCallbacks: Callbacks;
+  public _mustEmitChanges: Parameters<Store["mustEmitChanges"]>[0];
 
   public initialize(): void;
   public initializeIfNeeded(): void;
@@ -75,7 +76,7 @@ export declare class Store {
   public getName(): string;
 
   public emitChange(): void;
-  public mustEmitChanges(func?: () => boolean): void;
+  public mustEmitChanges(func?: (action?: Action) => boolean): void;
   public syncWith(stores: Store[], func: () => boolean, timeout?: number): void;
   public waitFor(...stores: Store[]): void;
 

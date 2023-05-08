@@ -27,7 +27,7 @@ interface SelectCompProps {
   autoFocus?: boolean;
   popoutWidth?: number;
   clearable?: boolean;
-  look?: (typeof Looks)[keyof typeof Looks];
+  look?: number;
   popoutPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   closeOnSelect?: boolean;
   hideIcon?: boolean;

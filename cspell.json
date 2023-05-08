@@ -16,6 +16,7 @@
     "coremods",
     "crosspost",
     "customitem",
+    "dependants",
     "discordapp",
     "doas",
     "esbuild",

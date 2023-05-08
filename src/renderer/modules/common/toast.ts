@@ -15,14 +15,14 @@ const Position = {
 } as const;
 
 interface ToastOpts {
-  position?: (typeof Position)[keyof typeof Position];
+  position?: number;
   duration?: number;
   component?: React.ReactElement;
 }
 
 type ToastFn = (
   content: string | React.ReactElement | null,
-  kind?: (typeof Kind)[keyof typeof Kind],
+  kind?: number,
   opts?: ToastOpts,
 ) => void;
 

@@ -12,7 +12,6 @@ interface HTTPField {
   value: string;
 }
 
-// superagent's isn't fully typed
 interface HTTPRequest {
   url: string;
   attachments?: HTTPAttachment[];
@@ -52,21 +51,22 @@ interface HTTPResponse<T = Record<string, unknown>> {
 declare class Backoff {
   public constructor(min?: number, max?: number | null, jitter?: boolean);
 
-  public _callback?: () => void;
-  public _current: number;
-  public _fails: number;
-  public _timeoutId?: number;
+  private _callback?: () => void;
+  private _current: number;
+  private _fails: number;
+  private _timeoutId?: number;
+
   public jitter: boolean;
   public max: number;
   public min: number;
 
-  public cancel: () => void;
-  public fail: (callback?: () => void) => number;
-  public succeed: () => void;
-
   public get current(): number;
   public get fails(): number;
   public get pending(): boolean;
+
+  public cancel: () => void;
+  public fail: (callback?: () => void) => number;
+  public succeed: () => void;
 }
 
 declare class V6OrEarlierAPIError {

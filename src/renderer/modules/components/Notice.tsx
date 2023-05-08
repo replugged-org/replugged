@@ -10,7 +10,7 @@ const Types = {
 
 interface NoticeProps {
   children: React.ReactNode;
-  messageType: (typeof Types)[keyof typeof Types];
+  messageType: number;
   textColor?: string;
   textVariant?: string;
   className?: string;
