@@ -14,7 +14,7 @@ const Position = {
   BOTTOM: 1,
 } as const;
 
-interface ToastOpts {
+interface ToastOptions {
   position?: number;
   duration?: number;
   component?: React.ReactElement;
@@ -23,7 +23,7 @@ interface ToastOpts {
 type ToastFn = (
   content: string | React.ReactElement | null,
   kind?: number,
-  opts?: ToastOpts,
+  opts?: ToastOptions,
 ) => void;
 
 export interface Toast {

@@ -2,7 +2,7 @@ import { waitForProps } from "../webpack";
 import type { GuildMember, User } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
-export interface PendingRoleUpdate {
+interface PendingRoleUpdate {
   added: Record<string, string[]>;
   removed: Record<string, string[]>;
 }

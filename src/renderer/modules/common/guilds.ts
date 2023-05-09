@@ -2,7 +2,7 @@ import { waitForProps } from "../webpack";
 import type { Guild } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
-export interface State {
+interface State {
   selectedGuildTimestampMillis: Record<string, number>;
   selectedGuildId: string;
   lastSelectedGuildId: string;

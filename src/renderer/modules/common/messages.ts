@@ -4,33 +4,33 @@ import { waitForProps } from "../webpack";
 import type { Channel, Message, MessageAttachment } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
-export enum ActivityActionTypes {
+enum ActivityActionTypes {
   JOIN = 1,
   LISTEN = 3,
   WATCH = 4,
   JOIN_REQUEST = 5,
 }
 
-export type Properties = Record<string, unknown>;
+type Properties = Record<string, unknown>;
 
-export interface CaptchaPayload {
+interface CaptchaPayload {
   captcha_key: string;
   // cspell:ignore rqtoken
   captcha_rqtoken: string;
 }
 
-export interface MessageReference {
+interface MessageReference {
   guild_id?: string;
   channel_id?: string;
   message_id?: string;
 }
 
-export interface AllowedMentions {
+interface AllowedMentions {
   parse?: Array<"users" | "roles" | "everyone">;
   replied_user?: boolean;
 }
 
-export interface InviteSuggestion {
+interface InviteSuggestion {
   isAffinitySuggestion: boolean;
   rowNum: number;
   numTotal: number;
@@ -38,7 +38,7 @@ export interface InviteSuggestion {
   isFiltered: boolean;
 }
 
-export interface FetchMessageOptions {
+interface FetchMessageOptions {
   channelId: string;
   /** Snowflake */
   before?: string;
@@ -53,24 +53,32 @@ export interface FetchMessageOptions {
     offset?: number;
     returnMessageId?: boolean;
   };
+  focus?: { messageId: string };
   isPreload?: boolean;
   skipLocalFetch?: boolean;
   truncate?: boolean;
 }
 
-export interface SendMessageForReplyOptions {
+type FetchMessagesCachedOptions = Omit<FetchMessageOptions, "isPreload" | "skipLocalFetch">;
+
+interface FocusMessageOptions {
+  channelId: string;
+  messageId: string;
+}
+
+interface SendMessageForReplyOptions {
   channel: Channel;
   message: Message;
   shouldMention: boolean;
   showMentionToggle: boolean;
 }
 
-export interface SendMessageOptionsForReply {
+interface SendMessageOptionsForReply {
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
 }
 
-export interface MessageJumpOptions {
+interface MessageJumpOptions {
   channelId: string;
   messageId: string;
   flash?: boolean;
@@ -83,7 +91,7 @@ export interface MessageJumpOptions {
   jumpType?: string;
 }
 
-export interface Emoji {
+interface Emoji {
   allNamesString: string;
   animated?: boolean;
   available?: boolean;
@@ -96,14 +104,14 @@ export interface Emoji {
   url: string;
 }
 
-export interface OutgoingMessage {
+interface OutgoingMessage {
   content: string;
-  invalidEmojis: Emoji[];
+  invalidEmojis?: Emoji[];
   validNonShortcutEmojis: Emoji[];
   tts?: boolean;
 }
 
-export interface OutgoingMessageOptions {
+interface OutgoingMessageOptions {
   activityAction?: ActivityActionTypes;
   location?: string;
   suggestedInvite?: InviteSuggestion;
@@ -113,7 +121,7 @@ export interface OutgoingMessageOptions {
   captchaPayload?: CaptchaPayload;
 }
 
-export interface TrackInviteOptions {
+interface TrackInviteOptions {
   inviteKey: string;
   channelId: string;
   messageId: string;
@@ -122,102 +130,182 @@ export interface TrackInviteOptions {
   overrideProperties?: Properties;
 }
 
-export interface MessageGreetOptions {
+interface MessageGreetOptions {
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
   captchaPayload?: CaptchaPayload;
 }
 
-export interface MessagesData {
+declare class LocalFetchComplete {
+  public completed: boolean;
+
+  public markComplete: () => void;
+}
+
+declare class MessageCache {
+  public constructor(isCacheBefore: boolean);
+
+  public _isCacheBefore: boolean;
+  public _map: Record<string, Message>;
+  public _messages: Message[];
+  public _wasAtEdge: boolean;
+
+  public get length(): number;
+  public get wasAtEdge(): boolean;
+  public set wasAtEdge(value: boolean);
+
+  public cache: (messages: Message[], isAtEdge?: boolean) => void;
+  public clear: () => void;
+  public clone: () => MessageCache;
+  public extract: (amount: number) => Message[];
+  public extractAll: () => Message[];
+  public forEach: (
+    callback: (message: Message, index: number, messages: Message[]) => void,
+    thisArg?: unknown,
+  ) => void;
+  public get: (messageId: string) => Message | undefined;
+  public has: (messageId: string) => boolean;
+  public remove: (messageId: string) => void;
+  public removeMany: (messageIds: string[]) => void;
+  public replace: (messageId: string, message: Message) => void;
+  public update: (messageId: string, callback: (message: Message) => Message) => void;
+}
+
+interface MutatedChannelMessages {
   _after: MessageCache;
   _array: Message[];
   _before: MessageCache;
   _map: Record<string, Message>;
-  cached: boolean;
-  channelId: string;
-  error: boolean;
-  hasFetched: boolean;
-  hasMoreAfter: boolean;
-  hasMoreBefore: boolean;
-  jumped: boolean;
-  jumpedToPresent: boolean;
-  jumpFlash: boolean;
-  jumpReturnTargetId: string | null;
-  jumpSequenceId: number;
-  jumpTargetId: string | null;
-  jumpTargetOffset: number;
-  jumpType: "ANIMATED" | "INSTANT";
-  length: number;
-  loadingMore: boolean;
-  ready: boolean;
-  revealedMessageId: string | null;
-  _clearMessages: () => void;
-  _merge: (messages: Message[], cacheBefore?: boolean, clearCache?: boolean) => void;
-  addCachedMessages: (messages: Message[], cache?: boolean) => MessagesData;
-  findNewest: (
+  cached?: boolean;
+  error?: boolean;
+  focusTargetId?: string | undefined;
+  hasFetched?: boolean;
+  hasMoreAfter?: boolean;
+  hasMoreBefore?: boolean;
+  jumped?: boolean;
+  jumpedToPresent?: boolean;
+  jumpFlash?: boolean;
+  jumpReturnTargetId?: string | null;
+  jumpSequenceId?: number;
+  jumpTargetId?: string | null;
+  jumpTargetOffset?: number;
+  jumpType?: "ANIMATED" | "INSTANT";
+  loadingMore?: boolean;
+  ready?: boolean;
+  revealedMessageId?: string | null;
+}
+
+declare class ChannelMessages {
+  public constructor(channelId: string);
+
+  private static _channelMessages: Record<string, ChannelMessages>;
+
+  public static clear: (channelId: string) => void;
+  public static clearCache: (channelId: string) => void;
+  public static commit: (channelMessages: ChannelMessages) => void;
+  public static forEach: (
+    callback: (
+      messages: ChannelMessages,
+      index: number,
+      channelMessages: Record<string, ChannelMessages>,
+    ) => void,
+  ) => void;
+  public static get: (channelId: string) => ChannelMessages;
+  public static getOrCreate: (channelId: string) => ChannelMessages;
+  public static hasPresent: (channelId: string) => boolean;
+
+  private _after: MessageCache;
+  private _array: Message[];
+  private _before: MessageCache;
+  private _map: Record<string, Message>;
+  public cached: boolean;
+  public channelId: string;
+  public error: boolean;
+  public focusTargetId?: string | undefined;
+  public hasFetched: boolean;
+  public hasMoreAfter: boolean;
+  public hasMoreBefore: boolean;
+  public jumped: boolean;
+  public jumpedToPresent: boolean;
+  public jumpFlash: boolean;
+  public jumpReturnTargetId: string | null;
+  public jumpSequenceId: number;
+  public jumpTargetId: string | null;
+  public jumpTargetOffset: number;
+  public jumpType: "ANIMATED" | "INSTANT";
+  public loadingMore: boolean;
+  public ready: boolean;
+  public revealedMessageId: string | null;
+
+  public get length(): number;
+
+  public _clearMessages: () => void;
+  public _merge: (messages: Message[], prepend?: boolean, clearCache?: boolean) => void;
+  public addCachedMessages: (messages: Message[], cache?: boolean) => ChannelMessages;
+  public findNewest: (
     callback: (message: Message, index: number, messages: Message) => unknown,
   ) => Message | undefined;
-  findOldest: (
+  public findOldest: (
     callback: (message: Message, index: number, messages: Message) => unknown,
   ) => Message | undefined;
-  first: () => Message | undefined;
-  focusOnMessage: (focusTargetId: string) => MessagesData;
-  forAll: (
+  public first: () => Message | undefined;
+  public focusOnMessage: (focusTargetId: string) => ChannelMessages;
+  public forAll: (
     callback: (message: Message, index: number, messages: Message[]) => void,
     thisArg?: unknown,
   ) => void;
-  forEach: (
+  public forEach: (
     callback: (message: Message, index: number, messages: Message[]) => void,
     thisArg?: unknown,
     reverse?: boolean,
   ) => void;
-  get: (messageId: string, cache?: boolean) => Message | undefined;
-  getAfter: (messageId: string) => Message | null;
-  getByIndex: (index: number) => Message | undefined;
-  getManyAfter: (
+  public get: (messageId: string, cache?: boolean) => Message | undefined;
+  public getAfter: (messageId: string) => Message | null;
+  public getByIndex: (index: number) => Message | undefined;
+  public getManyAfter: (
     messageId: string,
     count: number,
     callback: (message: Message) => unknown,
   ) => Message[] | null;
-  getManyBefore: (
+  public getManyBefore: (
     messageId: string,
     count: number,
     callback: (message: Message) => unknown,
   ) => Message[] | null;
-  has: (messageId: string, cache?: boolean) => boolean;
-  hasAfterCached: (messageId: string) => boolean;
-  hasBeforeCached: (messageId: string) => boolean;
-  hasPresent: () => boolean;
-  indexOf: (messageId: string) => number;
-  jumpToMessage: (
+  public has: (messageId: string, cache?: boolean) => boolean;
+  public hasAfterCached: (afterId: string) => boolean;
+  public hasBeforeCached: (beforeId: string) => boolean;
+  public hasPresent: () => boolean;
+  public indexOf: (messageId: string) => number;
+  public jumpToMessage: (
     jumpTargetId: string | null,
     jumpFlash: boolean,
     jumpTargetOffset: number,
     jumpReturnTargetId: string | null,
     jumpType?: "ANIMATED" | "INSTANT",
-  ) => MessagesData;
-  jumpToPresent: (count: number) => MessagesData;
-  last: () => Message | undefined;
-  loadComplete: (messageData: MessagesData) => MessagesData;
-  loadFromCache: (beforeCache: boolean, extractCount: number) => MessagesData;
-  loadStart: (jumpData: {
+  ) => ChannelMessages;
+  public jumpToPresent: (limit: number) => ChannelMessages;
+  public last: () => Message | undefined;
+  public loadComplete: (messages: ChannelMessages) => ChannelMessages;
+  public loadFromCache: (before: boolean, limit: number) => ChannelMessages;
+  public loadStart: (jumpData: {
     present: boolean;
     messageId: string | null;
     offset: number;
     returnMessageId: string;
-  }) => MessagesData;
-  map: (
-    callback: (message: Message, index: number, messages: Message[]) => unknown,
+  }) => ChannelMessages;
+  public map: (
+    callback: (message: Message, index: number, messages: Message[]) => Message,
     thisArg?: unknown,
   ) => Message[];
-  merge: (messages: Message[], cacheBefore?: boolean, clearCache?: boolean) => MessagesData;
-  mutate: (
-    data: ((messageData: MessagesData) => MessagesData) | MessagesData,
-    clone?: boolean,
-  ) => MessagesData;
-  receiveMessage: (message: Message, truncate?: boolean) => MessagesData;
-  receivePushNotification: (message: Message) => MessagesData;
-  reduce: (
+  public merge: (messages: Message[], prepend?: boolean, clearCache?: boolean) => ChannelMessages;
+  public mutate: (
+    callback: ((messages: ChannelMessages) => void) | MutatedChannelMessages,
+    deep?: boolean,
+  ) => ChannelMessages;
+  public receiveMessage: (message: Message, truncateFromTop?: boolean) => ChannelMessages;
+  public receivePushNotification: (message: Message) => ChannelMessages;
+  public reduce: (
     callback: (
       previousValue: unknown,
       currentMessage: Message,
@@ -226,49 +314,33 @@ export interface MessagesData {
     ) => unknown,
     initialValue?: unknown,
   ) => void;
-  remove: (messageId: string) => MessagesData;
-  removeMany: (messages: string[]) => MessagesData;
-  replace: (messageId: string, message: Message) => MessagesData;
-  reset: (messages: Message[]) => MessagesData;
-  toArray: () => Message[];
-  truncate: (bottom?: boolean, top?: boolean) => MessagesData;
-  truncateBottom: (count: number, clone?: boolean) => MessagesData;
-  truncateTop: (count: number, clone?: boolean) => MessagesData;
-  update: (messageId: string, callback: (message: Message) => Message) => MessagesData;
-}
-
-export interface MessageCache {
-  _isCacheBefore: boolean;
-  _map: Record<string, Message>;
-  _messages: Message[];
-  _wasAtEdge: boolean;
-  length: number;
-  wasAtEdge: boolean;
-  cache: (messages: Message[], wasAtEdge?: boolean) => void;
-  clear: () => void;
-  clone: () => MessageCache;
-  extract: (count: number) => Message[];
-  extractAll: () => Message[];
-  forEach: (
-    callback: (message: Message, index: number, messages: Message[]) => void,
-    thisArg?: unknown,
-  ) => void;
-  get: (messageId: string) => Message | undefined;
-  has: (messageId: string) => boolean;
-  remove: (messageId: string) => void;
-  removeMany: (messageIds: string[]) => void;
-  replace: (messageId: string, message: Message) => void;
-  update: (messageId: string, callback: (message: Message) => Message) => void;
+  public remove: (messageId: string) => ChannelMessages;
+  public removeMany: (messageIds: string[]) => ChannelMessages;
+  public replace: (prevMessageId: string, newMessage: Message) => ChannelMessages;
+  public reset: (messages: Message[]) => ChannelMessages;
+  public toArray: () => Message[];
+  public truncate: (bottom?: boolean, top?: boolean) => ChannelMessages;
+  public truncateBottom: (count: number, deep?: boolean) => ChannelMessages;
+  public truncateTop: (count: number, deep?: boolean) => ChannelMessages;
+  public update: (messageId: string, callback: (message: Message) => Message) => ChannelMessages;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type MessageStore = {
+  focusedMessageId: (channelId: string) => string | null | undefined;
+  getLastCommandMessage: (channelId: string) => Message | undefined;
+  getLastEditableMessage: (channelId: string) => Message | undefined;
   getMessage: (channelId: string, messageId: string) => Message | undefined;
-  getMessages: (channelId: string) => MessagesData;
+  getMessages: (channelId: string) => ChannelMessages;
+  hasCurrentUserSentMessage: (channelId: string) => boolean;
+  hasPresent: (channelId: string) => boolean;
+  isLoadingMessages: (channelId: string) => boolean;
+  jumpedMessageId: (channelId: string) => string | null | undefined;
+  whenReady: (channelId: string, callback: () => void) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type MessageUtils = {
+export type MessageActions = {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => Promise<unknown | void>;
   deleteMessage: (
@@ -282,21 +354,21 @@ export type MessageUtils = {
     messageId: string,
     message: { content: string },
   ) => Promise<void>;
-  endEditMessage: (channelId: string, response: unknown) => void;
+  endEditMessage: (channelId: string, response?: unknown) => void;
   fetchLocalMessages: (
     channelId: string,
     before: string,
     after: string,
     limit: number,
-    completeClass: unknown,
+    localFetchComplete: LocalFetchComplete,
   ) => Promise<void>;
   fetchMessages: (options: FetchMessageOptions) => Promise<boolean>;
-  focusMessage: (options: { channelId: string; messageId: string }) => void;
+  focusMessage: (options: FocusMessageOptions) => void;
   getSendMessageOptionsForReply: (
     options: SendMessageForReplyOptions,
   ) => SendMessageOptionsForReply | Record<never, never>;
-  jumpToMessage: (options: MessageJumpOptions) => void;
-  jumpToPresent: (channelId: string, limit?: number) => void;
+  jumpToMessage: (options: MessageJumpOptions) => Promise<boolean>;
+  jumpToPresent: (channelId: string, limit: number) => void;
   patchMessageAttachments: (
     channelId: string,
     messageId: string,
@@ -306,11 +378,17 @@ export type MessageUtils = {
     channelId: string,
     message: Message,
     optimistic?: boolean,
-    sendMessageOptions?: unknown,
+    options?: OutgoingMessageOptions,
   ) => void;
   revealMessage: (channelId: string, messageId: string) => void;
+  sendActivityBookmark: (
+    channelId: string,
+    activityDetails: string,
+    analyticsTriggeredFrom?: string,
+    suggestedInvite?: InviteSuggestion,
+  ) => Promise<unknown | void>;
   sendBotMessage: (channelId: string, content: string, messageName?: string) => void;
-  sendClydeError: (channelId: string, errorKey?: number) => void;
+  sendClydeError: (channelId: string, code?: number) => void;
   sendGreetMessage: (
     channelId: string,
     stickerId: string,
@@ -334,7 +412,7 @@ export type MessageUtils = {
     content?: string,
     options?: SendMessageOptionsForReply | Record<never, never>,
     tts?: boolean,
-  ) => void;
+  ) => Promise<unknown | void>;
   startEditMessage: (channelId: string, messageId: string, content: string) => void;
   suppressEmbeds: (channelId: string, messageId: string) => Promise<void>;
   trackInvite: (options: TrackInviteOptions) => void;
@@ -344,26 +422,21 @@ export type MessageUtils = {
     context: string,
     extraProperties?: Properties,
   ): void;
-  truncateMessages: (channelId: string, truncateBottom: number, truncateTop: number) => void;
+  truncateMessages: (channelId: string, truncateBottom: boolean, truncateTop: boolean) => void;
   updateEditMessage: (channelId: string, textValue: string, richValue: unknown) => void;
   _sendMessage: (
     channelId: string,
     message: OutgoingMessage,
     options: OutgoingMessageOptions,
-  ) => void;
-  _tryFetchMessagesCached: (options: FetchMessageOptions) => void;
+  ) => Promise<unknown | void>;
+  _tryFetchMessagesCached: (options: FetchMessagesCachedOptions) => boolean;
 };
 
-export type Messages = MessageStore & MessageUtils;
+export type Messages = MessageStore & MessageActions;
 
-const MessageStore: MessageStore = await waitForProps(["getMessage", "getMessages"]);
-
-const messageProps = ["sendMessage", "editMessage", "deleteMessage"];
+const messageActionsProps = ["sendMessage", "editMessage", "deleteMessage"];
 
 export default virtualMerge(
-  await waitForProps<(typeof messageProps)[number], Messages>(messageProps),
-  {
-    getMessage: MessageStore.getMessage,
-    getMessages: MessageStore.getMessages,
-  },
+  await waitForProps<(typeof messageActionsProps)[number], MessageActions>(messageActionsProps),
+  await waitForProps(["getMessage", "getMessages"]).then(Object.getPrototypeOf),
 );

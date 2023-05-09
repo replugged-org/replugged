@@ -3,7 +3,7 @@ import type { Channel } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 import { FullObjectExports } from "src/types";
 
-export interface LastChannelFollowingDestination {
+interface LastChannelFollowingDestination {
   channelId: string;
   guildId: string;
 }
