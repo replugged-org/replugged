@@ -48,7 +48,7 @@ interface HTTPResponse<T = Record<string, unknown>> {
   text: string;
 }
 
-declare class Backoff {
+export declare class Backoff {
   public constructor(min?: number, max?: number | null, jitter?: boolean);
 
   private _callback?: () => void;
@@ -82,7 +82,7 @@ declare class V6OrEarlierAPIError {
   public getFieldMessage: (field: string) => unknown;
 }
 
-declare class APIError {
+export declare class APIError {
   public constructor(error: Record<string, unknown> | null, code: number, message?: string);
 
   public captchaFields: Record<string, unknown>;

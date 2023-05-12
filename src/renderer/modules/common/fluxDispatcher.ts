@@ -10,7 +10,7 @@ interface Action {
 
 type ActionMetric = [string, string, number];
 
-declare class ActionLogger extends EventEmitter {
+export declare class ActionLogger extends EventEmitter {
   public constructor(data?: { persist: boolean });
 
   public persist: boolean;
@@ -57,7 +57,7 @@ interface NodeData {
   storeDidChange: (action: Action) => void;
 }
 
-declare class DepGraph {
+export declare class DepGraph {
   public constructor(opts?: { circular?: boolean });
 
   public nodes: Record<string, { name: string }>;

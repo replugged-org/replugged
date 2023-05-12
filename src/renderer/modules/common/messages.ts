@@ -4,7 +4,7 @@ import { waitForProps } from "../webpack";
 import type { Channel, Message, MessageAttachment } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
-enum ActivityActionTypes {
+export enum ActivityActionTypes {
   JOIN = 1,
   LISTEN = 3,
   WATCH = 4,
@@ -195,7 +195,7 @@ interface MutatedChannelMessages {
   revealedMessageId?: string | null;
 }
 
-declare class ChannelMessages {
+export declare class ChannelMessages {
   public constructor(channelId: string);
 
   private static _channelMessages: Record<string, ChannelMessages>;
@@ -339,6 +339,8 @@ export type MessageStore = {
   whenReady: (channelId: string, callback: () => void) => void;
 };
 
+export type PartialMessageStore = Pick<MessageStore, "getMessage" | "getMessages">;
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type MessageActions = {
   clearChannel: (channelId: string) => void;
@@ -432,11 +434,16 @@ export type MessageActions = {
   _tryFetchMessagesCached: (options: FetchMessagesCachedOptions) => boolean;
 };
 
-export type Messages = MessageStore & MessageActions;
+export type Messages = PartialMessageStore & MessageActions;
 
 const messageActionsProps = ["sendMessage", "editMessage", "deleteMessage"];
 
+const MessageStore: MessageStore = await waitForProps(["getMessage", "getMessages"]);
+
 export default virtualMerge(
   await waitForProps<(typeof messageActionsProps)[number], MessageActions>(messageActionsProps),
-  await waitForProps(["getMessage", "getMessages"]).then(Object.getPrototypeOf),
+  {
+    getMessage: MessageStore.getMessage,
+    getMessages: MessageStore.getMessages,
+  },
 );
