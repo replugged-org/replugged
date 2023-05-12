@@ -1,6 +1,12 @@
 import type EventEmitter from "events";
 import { waitForProps } from "../webpack";
 
+export enum Band {
+  Early,
+  Database,
+  Default,
+}
+
 type FluxCallback = (action?: { [index: string]: unknown }) => void;
 
 interface Action {
@@ -52,7 +58,7 @@ declare class ActionLog {
 
 interface NodeData {
   actionHandler: Record<string, FluxCallback>;
-  band: number;
+  band: Band;
   name: string;
   storeDidChange: (action: Action) => void;
 }
@@ -98,12 +104,12 @@ declare class ActionHandlers {
     name: string,
     actionHandler: Record<string, FluxCallback>,
     storeDidChange: (action: Action) => void,
-    band: number,
+    band: Band,
     token?: string,
   ) => string;
 
-  private _addToBand: (token: string, band: number) => void;
-  private _bandToken: (band: number) => string;
+  private _addToBand: (token: string, band: Band) => void;
+  private _bandToken: (band: Band) => string;
   private _computeOrderedActionHandlers: (type: string) => Handler[];
   private _computeOrderedCallbackTokens: () => string[];
   private _invalidateCaches: () => void;
@@ -114,7 +120,7 @@ declare class ActionHandlers {
 export type FluxDispatcher = {
   _actionHandlers: ActionHandlers;
   _currentDispatchActionType: string | null;
-  _defaultBand: number;
+  _defaultBand: Band;
   _interceptors: Array<(...rest: unknown[]) => unknown>;
   _processingWaitQueue: boolean;
   _subscriptions: Record<string, Set<FluxCallback>>;
@@ -128,7 +134,7 @@ export type FluxDispatcher = {
     func: (name: string, dispatchFunc: unknown) => boolean | undefined,
   ) => boolean | undefined;
 
-  addDependencies: (token: string, tokens: string) => void;
+  addDependencies: (token: string, tokens: string[]) => void;
   addInterceptor: (callback: (...rest: unknown[]) => unknown) => void;
   createToken: () => string;
   dispatch: (action: Action) => void;
@@ -141,7 +147,7 @@ export type FluxDispatcher = {
     name: string,
     actionHandler: Record<string, FluxCallback>,
     storeDidChange: (action: Action) => void,
-    band: number,
+    band: Band,
     token?: string,
   ) => string;
 };
