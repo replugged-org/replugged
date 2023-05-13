@@ -44,10 +44,10 @@ const RepluggedNative = {
   updater: {
     check: async (
       type: string,
-      repo: string,
+      identifier: string,
       id: string,
     ): Promise<CheckResultSuccess | CheckResultFailure> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, repo, id),
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, identifier, id),
     install: async (
       type: InstallerType | "replugged",
       path: string,

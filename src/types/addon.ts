@@ -26,7 +26,7 @@ export const common = z.object({
   version: z.string(),
   updater: z
     .object({
-      type: z.literal("github"),
+      type: z.enum(["store", "github"]),
       id: z.string(),
     })
     .optional(),
@@ -34,6 +34,17 @@ export const common = z.object({
 });
 
 export type Common = z.infer<typeof common>;
+
+export const repluggedManifest = common.extend({
+  type: z.literal("replugged"),
+});
+
+export type RepluggedManifest = z.infer<typeof repluggedManifest>;
+
+export interface RepluggedEntity {
+  manifest: RepluggedManifest;
+  path: string;
+}
 
 export const theme = common.extend({
   type: z.literal("replugged-theme"),
@@ -56,14 +67,9 @@ export const anyAddon = z.discriminatedUnion("type", [theme, plugin]);
 
 export type AnyAddonManifest = z.infer<typeof anyAddon>;
 
-export interface RepluggedManifest {
-  version: string;
-  updater: {
-    id: string;
-    type: "github";
-  };
-  type: "replugged";
-}
+export const anyAddonOrReplugged = z.discriminatedUnion("type", [repluggedManifest, theme, plugin]);
+
+export type AnyAddonManifestOrReplugged = z.infer<typeof anyAddonOrReplugged>;
 
 export interface PluginExports {
   start?: () => Promisable<void>;
