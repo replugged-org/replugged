@@ -85,8 +85,7 @@ async function github(
   };
 }
 
-// TODO: replugged.dev
-const STORE_BASE_URL = `http://localhost:8080/api/v1/store`;
+const STORE_BASE_URL = `https://replugged.dev/api/v1/store`;
 
 async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
