@@ -3,7 +3,7 @@ import type React from "react";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
-type Variant =
+export type Variant =
   | "heading-sm/normal"
   | "heading-sm/medium"
   | "heading-sm/semibold"

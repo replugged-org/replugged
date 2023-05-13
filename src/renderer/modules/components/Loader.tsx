@@ -9,16 +9,21 @@ const Types = {
   LOW_MOTION: "lowMotion",
 } as const;
 
-interface LoaderProps {
-  type?: (typeof Types)[keyof typeof Types];
+interface GenericLoaderProps {
   animated?: boolean;
   className?: string;
   itemClassName?: string;
-  "aria-label"?: string;
   style?: React.CSSProperties;
 }
 
-export type LoaderType = React.ComponentType<LoaderProps> & {
+type LoaderProps = GenericLoaderProps & {
+  type: (typeof Types)[keyof typeof Types];
+} & React.ComponentPropsWithoutRef<"span">;
+type SpinningCircleLoaderProps = GenericLoaderProps & {
+  type: (typeof Types)["SPINNING_CIRCLE"];
+} & React.ComponentPropsWithoutRef<"div">;
+
+export type LoaderType = React.ComponentType<LoaderProps | SpinningCircleLoaderProps> & {
   Type: typeof Types;
 };
 

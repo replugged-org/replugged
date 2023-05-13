@@ -17,9 +17,9 @@ interface SelectOptionType {
 
 interface SelectCompProps {
   options: SelectOptionType[];
-  isSelected?: (e: string) => void;
-  serialize?: (e: string) => void;
-  select?: (e: string) => void;
+  isSelected?: (value: string) => void;
+  serialize?: (value: string) => void;
+  select?: (value: string) => void;
   clear?: () => void;
   placeholder?: string;
   isDisabled?: boolean;
@@ -27,14 +27,16 @@ interface SelectCompProps {
   autoFocus?: boolean;
   popoutWidth?: number;
   clearable?: boolean;
-  look?: number;
+  look?: (typeof Looks)[keyof typeof Looks];
   popoutPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   closeOnSelect?: boolean;
   hideIcon?: boolean;
   onClose?: () => void;
   onOpen?: () => void;
-  renderOptionLabel?: (e: SelectOptionType) => void;
-  renderOptionValue?: (e: SelectOptionType[]) => void;
+  renderOptionLabel?: (option: SelectOptionType) => string;
+  renderOptionValue?: (option: SelectOptionType[]) => string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
   className?: string;
   popoutClassName?: string;
   optionClassName?: string;
@@ -49,8 +51,8 @@ const SelectComp = (await waitForModule(filters.bySource(selectRgx)).then((mod) 
 )) as SelectCompType;
 
 interface SelectProps extends SelectCompProps {
-  onChange?: (e: string) => void;
-  onSelect?: (e: string) => void;
+  onChange?: (value: string) => void;
+  onSelect?: (value: string) => void;
   onClear?: () => void;
   value?: string;
   disabled?: boolean;

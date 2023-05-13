@@ -114,6 +114,9 @@ devDependencies:
   prettier:
     specifier: ^2.8.4
     version: 2.8.4
+  simple-markdown:
+    specifier: ^0.7.3
+    version: 0.7.3
   style-mod:
     specifier: ^4.0.0
     version: 4.0.0
@@ -5919,6 +5922,12 @@ packages:
 
   /signal-exit@3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
+
+  /simple-markdown@0.7.3:
+    resolution: {integrity: sha512-uGXIc13NGpqfPeFJIt/7SHHxd6HekEJYtsdoCM06mEBPL9fQH/pSD7LRM6PZ7CKchpSvxKL4tvwMamqAaNDAyg==}
+    dependencies:
+      '@types/react': 18.0.21
+    dev: true
 
   /slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}

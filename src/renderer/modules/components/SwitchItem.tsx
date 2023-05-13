@@ -1,24 +1,30 @@
 import type React from "react";
-import type { ObjectExports, ReactComponent } from "../../../types";
+import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
-export type SwitchType = ReactComponent<{
+interface SwitchProps {
   checked: boolean;
-  onChange: (e: boolean) => void;
+  onChange: (value: boolean) => void;
   disabled?: boolean;
+  id?: string;
+  innerRef?: React.Ref<HTMLInputElement>;
   className?: string;
-}>;
+}
 
-export type SwitchItemType = ReactComponent<{
+export type SwitchType = React.ComponentType<React.PropsWithChildren<SwitchProps>>;
+
+interface SwitchItemProps {
   value: boolean;
-  onChange: (e: boolean) => void;
+  onChange: (value: boolean) => void;
   note?: string;
   tooltipNote?: string;
   disabled?: boolean;
   hideBorder?: boolean;
   style?: React.CSSProperties;
   className?: string;
-}>;
+}
+
+export type SwitchItemType = React.ComponentType<React.PropsWithChildren<SwitchItemProps>>;
 
 const switchModStr = "xMinYMid meet";
 const switchItemStr = ").dividerDefault";

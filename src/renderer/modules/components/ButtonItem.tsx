@@ -89,7 +89,7 @@ interface ButtonItemProps {
   button: string;
   note?: string;
   tooltipText?: string;
-  tooltipPosition?: string;
+  tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   success?: boolean;
   color?: string;
   disabled?: boolean;
