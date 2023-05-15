@@ -40,12 +40,15 @@ interface BaseTooltipProps {
   forceOpen?: boolean;
   hide?: boolean;
   hideOnClick?: boolean;
+  clickableOnMobile?: boolean;
   shouldShow?: boolean;
+  "aria-label"?: string;
+  className?: string;
   tooltipClassName?: string;
   tooltipContentClassName?: string;
-  className?: string;
   style?: React.CSSProperties;
-  onAnimationRest?: (e: object, t: object) => void;
+  onTooltipShow?: () => void;
+  onAnimationRest?: (result: unknown, spring: unknown, item?: unknown) => void;
 }
 
 interface TooltipFunctionChildren extends BaseTooltipProps {

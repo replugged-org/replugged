@@ -63,8 +63,8 @@ export type SelectType = React.FC<React.PropsWithChildren<SelectProps>> & {
 };
 
 export const Select = ((props) => {
-  if (!props.isSelected && props.value != null) props.isSelected = (e) => e === props.value;
-  if (!props.serialize) props.serialize = (e) => e;
+  if (!props.isSelected && props.value != null) props.isSelected = (value) => value === props.value;
+  if (!props.serialize) props.serialize = (value) => value;
 
   return (
     <SelectComp

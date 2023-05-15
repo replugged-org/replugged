@@ -22,6 +22,7 @@ export type SelectedGuildStore = {
 export type GuildStore = {
   getGuild: (guildId: string) => Guild | undefined;
   getGuildCount: () => number;
+  getGuildIds: () => string[];
   getGuilds: () => Record<string, Guild>;
   isLoaded: () => boolean;
 };

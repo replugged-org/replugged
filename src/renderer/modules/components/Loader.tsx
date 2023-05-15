@@ -17,10 +17,10 @@ interface GenericLoaderProps {
 }
 
 type LoaderProps = GenericLoaderProps & {
-  type: (typeof Types)[keyof typeof Types];
+  type?: (typeof Types)[keyof typeof Types];
 } & React.ComponentPropsWithoutRef<"span">;
 type SpinningCircleLoaderProps = GenericLoaderProps & {
-  type: (typeof Types)["SPINNING_CIRCLE"];
+  type?: (typeof Types)["SPINNING_CIRCLE"];
 } & React.ComponentPropsWithoutRef<"div">;
 
 export type LoaderType = React.ComponentType<LoaderProps | SpinningCircleLoaderProps> & {

@@ -34,7 +34,6 @@ export type ChannelStore = {
   getPrivateChannelsVersion(): number;
   getSortedPrivateChannels(): Channel[];
   hasChannel(channelId: string): boolean;
-  hasRestoredGuild(guildId: string): boolean;
   loadAllGuildAndPrivateChannelsFromDisk(): Record<string, Channel>;
 };
 

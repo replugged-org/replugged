@@ -1,34 +1,53 @@
 import type React from "react";
 import { Divider, Flex, FormText, Tooltip } from ".";
 import type { ObjectExports } from "../../../types";
-import type { ReactComponent } from "../../../types/util";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
-export type ButtonType = ReactComponent<{
-  onClick: () => void;
+interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   look?: string;
   size?: string;
   color?: string;
   borderColor?: string;
   hover?: string;
-  disabled?: boolean;
   fullWidth?: boolean;
   grow?: boolean;
   submitting?: boolean;
   submittingStartedLabel?: string;
   submittingFinishedLabel?: string;
-  type?: string;
-  style?: React.CSSProperties;
-  className?: string;
+  buttonRef?: React.Ref<HTMLButtonElement>;
+  focusProps?: React.ComponentPropsWithoutRef<"div">;
   innerClassName?: string;
   wrapperClassName?: string;
-  onDoubleClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onMouseDown?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onMouseUp?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onMouseEnter?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onMouseLeave?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
-}> & {
+}
+
+interface Path {
+  pathname?: string;
+  search?: string;
+  hash?: string;
+}
+
+interface LinkProps extends Omit<React.ComponentPropsWithoutRef<"a">, "href"> {
+  replace?: boolean;
+  state?: unknown;
+  to: string | Path;
+  reloadDocument?: boolean;
+  preventScrollReset?: boolean;
+  relative?: "route" | "path";
+}
+
+interface ButtonLinkProps extends LinkProps {
+  look?: string;
+  size?: string;
+  color?: string;
+  borderColor?: string;
+  hover?: string;
+  fullWidth?: boolean;
+  grow?: boolean;
+  innerClassName?: string;
+}
+
+export type ButtonType = React.ComponentType<React.PropsWithChildren<ButtonProps>> & {
+  Link: React.ComponentType<React.PropsWithChildren<ButtonLinkProps>>;
   Looks: Record<"FILLED" | "INVERTED" | "OUTLINED" | "LINK" | "BLANK", string>;
   Colors: Record<
     | "BRAND"
@@ -85,8 +104,8 @@ const classes = await waitForModule<
 >(filters.byProps("labelRow", "title", "note", "dividerDefault"));
 
 interface ButtonItemProps {
-  onClick: () => void;
-  button: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  button?: string;
   note?: string;
   tooltipText?: string;
   tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
@@ -105,7 +124,7 @@ export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>): Rea
     <Button
       color={props.success ? Button.Colors.GREEN : props.color}
       disabled={props.disabled}
-      onClick={() => props.onClick()}>
+      onClick={props.onClick}>
       {props.button}
     </Button>
   );
