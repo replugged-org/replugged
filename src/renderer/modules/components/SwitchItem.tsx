@@ -8,6 +8,7 @@ interface SwitchProps {
   disabled?: boolean;
   id?: string;
   innerRef?: React.Ref<HTMLInputElement>;
+  focusProps?: Record<string, unknown>;
   className?: string;
 }
 

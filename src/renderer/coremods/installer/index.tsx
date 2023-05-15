@@ -7,16 +7,8 @@ import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./
 const injector = new Injector();
 const logger = Logger.coremod("Installer");
 
-interface AnchorProps {
-  href?: string;
-  onClick?: (e: Event) => void;
-  className?: string;
-  children?: React.ReactNode;
-  rel?: string;
-  target?: string;
+interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
-  title?: string;
-  style?: React.CSSProperties;
   focusProps?: Record<string, unknown>;
 }
 
@@ -56,7 +48,8 @@ async function injectLinks(): Promise<void> {
   const linkMod = await waitForModule(filters.bySource(".useDefaultUnderlineStyles"), {
     raw: true,
   });
-  const exports = linkMod.exports as ObjectExports & Record<string, React.FC<AnchorProps>>;
+  const exports = linkMod.exports as ObjectExports &
+    Record<string, React.FC<React.PropsWithChildren<AnchorProps>>>;
 
   const key = getFunctionKeyBySource(exports, ".useDefaultUnderlineStyles");
   if (!key) {

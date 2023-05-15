@@ -9,7 +9,7 @@ interface TextInputProps
   size?: string;
   error?: string;
   inputRef?: React.Ref<HTMLInputElement>;
-  focusProps?: React.ComponentPropsWithoutRef<"div">;
+  focusProps?: Record<string, unknown>;
   inputClassName?: string;
   onChange?: (value: string) => void;
 }

@@ -15,7 +15,7 @@ interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   submittingStartedLabel?: string;
   submittingFinishedLabel?: string;
   buttonRef?: React.Ref<HTMLButtonElement>;
-  focusProps?: React.ComponentPropsWithoutRef<"div">;
+  focusProps?: Record<string, unknown>;
   innerClassName?: string;
   wrapperClassName?: string;
 }
