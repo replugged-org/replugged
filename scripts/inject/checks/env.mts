@@ -1,9 +1,12 @@
-import { join } from "path";
+import path, { join } from "path";
+import { fileURLToPath } from "url";
 import { existsSync } from "fs";
 import { execSync } from "child_process";
-import { AnsiEscapes } from "../util";
+import { AnsiEscapes } from "../util.mjs";
 
-const rootPath = join(__dirname, "..", "..", "..");
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const rootPath = join(dirname, "..", "..", "..");
 const nodeModulesPath = join(rootPath, "node_modules");
 
 const installDeps = (): void => {
@@ -16,7 +19,7 @@ const installDeps = (): void => {
 };
 
 // Don't clone in System32
-if (__dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
+if (dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
   console.log(
     `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
     "\n",

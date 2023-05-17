@@ -1,15 +1,15 @@
 // Pre-inject checks
-import "./checks/elevate";
-import "./checks/env";
+import "./checks/elevate.mjs";
+import "./checks/env.mjs";
 
 import { join } from "path";
-import { AnsiEscapes, getCommand } from "./util";
-import { inject, uninject } from "./injector";
+import { AnsiEscapes, getCommand } from "./util.mjs";
+import { inject, uninject } from "./injector.mjs";
 
-import * as darwin from "./platforms/darwin";
-import * as linux from "./platforms/linux";
-import * as win32 from "./platforms/win32";
-import { DiscordPlatform } from "./types";
+import * as darwin from "./platforms/darwin.mjs";
+import * as linux from "./platforms/linux.mjs";
+import * as win32 from "./platforms/win32.mjs";
+import { DiscordPlatform } from "./types.mjs";
 import { existsSync } from "fs";
 
 const platformModules = {
