@@ -7,7 +7,7 @@ import type {
   SettingsTransactionHandler,
   TransactionHandler,
 } from "../../types/settings";
-import { CONFIG_PATHS } from "src/util";
+import { CONFIG_PATHS } from "src/util.mjs";
 
 const SETTINGS_DIR = CONFIG_PATHS.settings;
 

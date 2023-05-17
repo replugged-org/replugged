@@ -5,7 +5,7 @@ import { AnsiEscapes, getCommand } from "./util.mjs";
 import readline from "readline";
 import { exec } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
-import { configPathFn } from "../../src/util";
+import { configPathFn } from "../../src/util.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
