@@ -1,9 +1,12 @@
-import { join } from "path";
-import { existsSync } from "fs";
+import path, { join } from "path";
+import { fileURLToPath } from "url";
+import { existsSync, readFileSync } from "fs";
 import { execSync } from "child_process";
-import { AnsiEscapes } from "../util";
+import { AnsiEscapes } from "../util.mjs";
 
-const rootPath = join(__dirname, "..", "..", "..");
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const rootPath = join(dirname, "..", "..", "..");
 const nodeModulesPath = join(rootPath, "node_modules");
 
 const installDeps = (): void => {
@@ -16,7 +19,7 @@ const installDeps = (): void => {
 };
 
 // Don't clone in System32
-if (__dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
+if (dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
   console.log(
     `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
     "\n",
@@ -36,7 +39,7 @@ if (__dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
 }
 
 // Verify if we're on node 10.x
-if (!require("fs").promises) {
+if (!(await import("fs")).promises) {
   console.log(
     `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
     "\n",
@@ -51,7 +54,9 @@ if (!require("fs").promises) {
 if (!existsSync(nodeModulesPath)) {
   installDeps();
 } else {
-  const { dependencies } = require("../../../package.json");
+  const { dependencies } = JSON.parse(
+    readFileSync(join(rootPath, "package.json"), { encoding: "utf8" }),
+  );
   for (const dependency in dependencies) {
     const depPath = join(nodeModulesPath, dependency);
     if (!existsSync(depPath)) {
@@ -59,7 +64,9 @@ if (!existsSync(nodeModulesPath)) {
       break;
     }
 
-    const depPackage = require(join(depPath, "package.json"));
+    const depPackage = JSON.parse(
+      readFileSync(join(depPath, "package.json"), { encoding: "utf8" }),
+    );
     const expectedVerInt = parseInt(dependencies[dependency].replace(/[^\d]/g, ""), 10);
     const installedVerInt = parseInt(depPackage.version.replace(/[^\d]/g, ""), 10);
     if (installedVerInt < expectedVerInt) {

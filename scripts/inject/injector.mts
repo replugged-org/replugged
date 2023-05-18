@@ -1,10 +1,13 @@
 import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
-import { join, sep } from "path";
-import { AnsiEscapes, getCommand } from "./util";
+import path, { join, sep } from "path";
+import { fileURLToPath } from "url";
+import { AnsiEscapes, getCommand } from "./util.mjs";
 import readline from "readline";
 import { exec } from "child_process";
-import { DiscordPlatform, PlatformModule } from "./types";
-import { configPathFn } from "../../src/util";
+import { DiscordPlatform, PlatformModule } from "./types.mjs";
+import { configPathFn } from "../../src/util.mjs";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const isDiscordInstalled = async (appDir: string, silent?: boolean): Promise<boolean> => {
   try {
@@ -89,7 +92,7 @@ export const inject = async (
     return false;
   }
 
-  const fileToCheck = join(__dirname, "..", "..", prod ? "replugged.asar" : "dist/main.js");
+  const fileToCheck = join(dirname, "..", "..", prod ? "replugged.asar" : "dist/main.js");
   const fileToCheckExists = await stat(fileToCheck)
     .then(() => true)
     .catch(() => false);
@@ -110,12 +113,12 @@ export const inject = async (
     const discordName = platform === "canary" ? "DiscordCanary" : "Discord";
     const overrideCommand = `${
       appDir.startsWith("/var") ? "sudo flatpak override" : "flatpak override --user"
-    } com.discordapp.${discordName} --filesystem=${join(__dirname, "..")}`;
+    } com.discordapp.${discordName} --filesystem=${join(dirname, "..")}`;
     const updateScript = `
     #!/bin/bash
     shopt -s globstar
     
-    for folder in ${join(__dirname, "..")}/**/.git; do
+    for folder in ${join(dirname, "..")}/**/.git; do
       (cd "$folder/.." && echo "Pulling $PWD" && git pull)
     done`;
     const readlineInterface = readline.createInterface({
@@ -174,10 +177,10 @@ export const inject = async (
 
   const entryPoint = prod
     ? join(CONFIG_PATH, "replugged.asar")
-    : join(__dirname, "..", "..", "dist/main.js");
+    : join(dirname, "..", "..", "dist/main.js");
 
   if (prod) {
-    await copyFile(join(__dirname, "..", "..", "replugged.asar"), entryPoint);
+    await copyFile(join(dirname, "..", "..", "replugged.asar"), entryPoint);
     if (["linux", "darwin"].includes(process.platform)) {
       try {
         // Adjust ownership of config folder and asar file to match the parent config folder

@@ -1,11 +1,14 @@
-import { join } from "path";
+import path, { join } from "path";
+import { fileURLToPath } from "url";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
 import readline from "readline";
-import { DiscordPlatform } from "../types";
-import { AnsiEscapes, PlatformNames } from "../util";
+import { DiscordPlatform } from "../types.mjs";
+import { AnsiEscapes, PlatformNames } from "../util.mjs";
 
-const installDirFile = join(__dirname, "../../../.installdir-");
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const installDirFile = join(dirname, "../../../.installdir-");
 
 const ProcessRegex = {
   stable: /discord$/i,

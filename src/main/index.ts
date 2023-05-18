@@ -2,7 +2,7 @@ import { dirname, join } from "path";
 
 import electron from "electron";
 import type { RepluggedWebContents } from "../types";
-import { CONFIG_PATHS } from "src/util";
+import { CONFIG_PATHS } from "src/util.mjs";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
