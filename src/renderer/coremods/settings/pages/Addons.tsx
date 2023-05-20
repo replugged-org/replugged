@@ -521,7 +521,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
         <Flex align={Flex.Align.CENTER} className={BreadcrumbClasses.breadcrumbs}>
-          {section == `rp_${type}` ? (
+          {section === `rp_${type}` ? (
             <Text.H2
               style={{
                 // Do not turn "(num)" into a single symbol
