@@ -554,6 +554,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
               renderCustomBreadcrumb={(breadcrumb, active) => (
                 <Text.H2
+                  color={active ? "header-primary" : "inherit"}
                   className={
                     active
                       ? BreadcrumbClasses.breadcrumbActive
