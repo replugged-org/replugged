@@ -40,6 +40,7 @@
     "Promisable",
     "quickcss",
     "ratelimited",
+    "rauenzi",
     "RDNN",
     "reinject",
     "replug",
@@ -55,5 +56,6 @@
     "XLARGE"
   ],
   "ignoreWords": [],
-  "import": []
+  "import": [],
+  "enabled": true
 }
