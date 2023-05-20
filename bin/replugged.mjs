@@ -171,7 +171,7 @@ async function reload(id) {
      * @param {import('ws').RawData} data
      * @returns
      */
-    const onMessage = (data) => {
+    const onMessage = async (data) => {
       const message = JSON.parse(data.toString());
       if (message.nonce !== nonce) {
         return;
@@ -181,7 +181,7 @@ async function reload(id) {
       reloading = false;
       if (reloadAgain) {
         reloadAgain = false;
-        resolve(reload(id));
+        resolve(await reload(id));
         return;
       }
 
@@ -203,6 +203,7 @@ async function reload(id) {
             break;
         }
         console.error(`Failed to reload addon: ${error}`);
+        resolve(undefined);
       }
     };
 
