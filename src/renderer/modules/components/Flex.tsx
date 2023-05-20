@@ -1,8 +1,7 @@
 import type React from "react";
-import type { ReactComponent } from "../../../types";
 import { filters, waitForModule } from "../webpack";
 
-export type FlexType = ReactComponent<{
+interface FlexProps extends React.ComponentPropsWithoutRef<"div"> {
   direction?: string;
   justify?: string;
   align?: string;
@@ -10,21 +9,21 @@ export type FlexType = ReactComponent<{
   shrink?: number;
   grow?: number;
   basis?: string;
-  style?: React.CSSProperties;
-  className?: string;
-}> & {
+}
+
+interface FlexChildProps extends React.ComponentPropsWithoutRef<"div"> {
+  shrink?: number;
+  grow?: number;
+  basis?: string;
+  wrap?: boolean;
+}
+
+export type FlexType = React.ComponentType<React.PropsWithChildren<FlexProps>> & {
   Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
   Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
   Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
   Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
-  Child: ReactComponent<{
-    shrink?: number;
-    grow?: number;
-    basis?: string;
-    wrap?: boolean;
-    style?: React.CSSProperties;
-    className?: string;
-  }>;
+  Child: React.ComponentType<React.PropsWithChildren<FlexChildProps>>;
 };
 
 const mod = await waitForModule(filters.bySource("HORIZONTAL_REVERSE:"));

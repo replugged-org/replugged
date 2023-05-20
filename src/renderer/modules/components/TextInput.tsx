@@ -1,25 +1,17 @@
 import type React from "react";
 import { filters, waitForModule } from "../webpack";
 
-interface TextInputProps {
-  autoFocus?: boolean;
-  disabled?: boolean;
+interface TextInputProps
+  extends Omit<React.ComponentPropsWithoutRef<"input">, "size" | "onChange"> {
   editable?: boolean;
-  minLength?: number;
-  maxLength?: number;
-  name?: string;
-  placeholder?: string;
+  inputPrefix?: string;
+  prefixElement?: React.ReactNode;
   size?: string;
-  type?: string;
   error?: string;
-  value?: string;
-  style?: React.CSSProperties;
-  className?: string;
+  inputRef?: React.Ref<HTMLInputElement>;
+  focusProps?: Record<string, unknown>;
   inputClassName?: string;
-  onChange?: (e: string) => void;
-  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange?: (value: string) => void;
 }
 
 export type TextInputType = React.ComponentType<TextInputProps> & {
