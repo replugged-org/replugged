@@ -155,7 +155,7 @@ export const Updater = (): React.ReactElement => {
       </Flex>
       <Flex className="replugged-updater-items" direction={Flex.Direction.VERTICAL}>
         {updatesAvailable.map((update) => {
-          const isReplugged = update.id == "dev.replugged.Replugged";
+          const isReplugged = update.id === "dev.replugged.Replugged";
           const addon =
             plugins.get(update.id) ||
             themes.get(update.id) ||

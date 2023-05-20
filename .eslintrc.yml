@@ -43,11 +43,23 @@ overrides:
     extends: eslint-config-dmitmel/presets/typescript-addon
     rules:
       node/no-missing-import: off
-      eqeqeq: off
+      eqeqeq:
+        - error
+        - always
+        - "null": "ignore"
       \@typescript-eslint/no-dynamic-delete: off
       no-return-assign: off
       no-void: off
       consistent-return: off
+  - files: "bin/**.{js,mjs,cjs}"
+    extends: eslint-config-dmitmel/presets/node
+    rules:
+      "@typescript-eslint/no-unused-vars": off
+      no-undefined: off
+
+  - files: "bin/**.mjs"
+    rules:
+      node/no-unsupported-features/es-syntax: off
 
   - files: "**/src/**/*.{ts,tsx,mts,cts}"
     extends: eslint-config-dmitmel/rules/typescript/with-type-checking

@@ -42,6 +42,9 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.10",
     "@types/react-reconciler": "^0.28.1",
+    "@types/update-notifier": "^6.0.2",
+    "@types/ws": "^8.5.4",
+    "@types/yargs": "^17.0.23",
     "@types/superagent": "^4.1.17",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
@@ -83,6 +86,7 @@
     "node-fetch": "^3.3.0",
     "standalone-electron-types": "^1.0.0",
     "update-notifier": "^6.0.2",
+    "ws": "^8.13.0",
     "yargs": "^17.6.2",
     "zod": "^3.19.1"
   },
