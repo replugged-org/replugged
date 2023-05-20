@@ -39,7 +39,7 @@ rules:
     - argsIgnorePattern: "^_"
 
 overrides:
-  - files: "**/*.{ts,tsx}"
+  - files: "**/*.{ts,tsx,mts,cts}"
     extends: eslint-config-dmitmel/presets/typescript-addon
     rules:
       node/no-missing-import: off
@@ -61,17 +61,17 @@ overrides:
     rules:
       node/no-unsupported-features/es-syntax: off
 
-  - files: "**/src/**/*.{ts,tsx}"
+  - files: "**/src/**/*.{ts,tsx,mts,cts}"
     extends: eslint-config-dmitmel/rules/typescript/with-type-checking
 
   - files: "**/*.d.ts"
     rules:
       no-var: off
 
-  - files: "src/**/*.{ts,tsx}"
+  - files: "src/**/*.{ts,tsx,mts,cts}"
     parserOptions:
       project: tsconfig.json
 
-  - files: "src/renderer/**/*.ts"
+  - files: "src/renderer/**/*.{ts,tsx,mts,cts}"
     rules:
       no-console: error

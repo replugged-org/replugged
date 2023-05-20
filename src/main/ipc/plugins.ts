@@ -10,7 +10,7 @@ import { ipcMain, shell } from "electron";
 import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
 import type { Dirent, Stats } from "fs";
-import { CONFIG_PATHS } from "src/util";
+import { CONFIG_PATHS } from "src/util.mjs";
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
 

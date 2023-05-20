@@ -1,5 +1,6 @@
 import esbuild from "esbuild";
 import path from "path";
+import { fileURLToPath } from "url";
 import asar from "@electron/asar";
 import {
   copyFileSync,
@@ -16,6 +17,8 @@ const CHROME_VERSION = "91";
 
 const watch = process.argv.includes("--watch");
 const production = process.argv.includes("--production");
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const preBundle: esbuild.Plugin = {
   name: "preBundle",
@@ -57,7 +60,7 @@ if (production) {
 }
 
 const common: esbuild.BuildOptions = {
-  absWorkingDir: path.join(__dirname, ".."),
+  absWorkingDir: path.join(dirname, ".."),
   bundle: true,
   minify: production,
   sourcemap: !production,

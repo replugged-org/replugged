@@ -1,13 +1,10 @@
 import type React from "react";
 import { filters, waitForModule } from "../webpack";
 
-type ClickableProps = React.HTMLAttributes<HTMLDivElement> & {
-  onClick?: () => void;
-  role?: string;
-  tag?: string;
-  tabIndex?: number;
-  style?: React.CSSProperties;
-  className?: string;
+// TODO: generic type for tags?
+type ClickableProps = React.ComponentPropsWithoutRef<"div"> & {
+  tag?: keyof JSX.IntrinsicElements;
+  ignoreKeyPress?: boolean;
 };
 
 export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
