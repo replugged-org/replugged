@@ -300,7 +300,7 @@ export function findInTree(
         ignore,
         maxRecursion: maxRecursion - 1,
       });
-      if (typeof tempReturn != "undefined") return tempReturn;
+      if (typeof tempReturn !== "undefined") return tempReturn;
     }
   } else {
     const toWalk = walkable == null ? Object.keys(tree) : walkable;
@@ -311,7 +311,7 @@ export function findInTree(
         ignore,
         maxRecursion: maxRecursion - 1,
       });
-      if (typeof tempReturn != "undefined") return tempReturn;
+      if (typeof tempReturn !== "undefined") return tempReturn;
     }
   }
   return tempReturn;
