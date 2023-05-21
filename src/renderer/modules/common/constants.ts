@@ -39,9 +39,27 @@ interface ColorResponse {
   spring: () => string;
 }
 
+interface ShadowColorResponse {
+  boxShadow: string;
+  filter: string;
+  nativeStyles: {
+    shadowOffset: { width: number; height: number };
+    shadowColor: string;
+    shadowOpacity: number;
+    shadowRadius: number;
+    elevation: number;
+    shadowColorAndroid: string;
+  };
+}
+
 interface Color {
   css: string;
   resolve: (theme: { theme: string; saturation: number }) => ColorResponse;
+}
+
+interface ShadowColor {
+  css: string;
+  resolve: (theme: { theme: string }) => ShadowColorResponse;
 }
 
 interface UnsafeRawColor {
@@ -53,6 +71,9 @@ interface UnsafeRawColor {
 type ColorMod = {
   themes: Record<string, string>;
   colors: Record<string, Color>;
+  spacing: Record<string, string>;
+  radii: Record<string, number>;
+  shadows: Record<string, ShadowColor>;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   unsafe_rawColors: Record<string, UnsafeRawColor>;
 };

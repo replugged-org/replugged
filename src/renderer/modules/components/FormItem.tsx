@@ -1,26 +1,25 @@
 import type React from "react";
 import { Divider, FormText } from ".";
-import type { ReactComponent } from "../../../types";
 import { filters, waitForModule } from "../webpack";
 
-interface FormItemCompProps {
+interface FormItemCompProps extends Omit<React.ComponentPropsWithoutRef<"div">, "title"> {
   children: React.ReactNode;
   title?: React.ReactNode;
   error?: React.ReactNode;
   disabled?: boolean;
   required?: boolean;
   tag?: "h1" | "h2" | "h3" | "h4" | "h5" | "label" | "legend";
-  style?: React.CSSProperties;
-  className?: string;
   titleClassName?: string;
 }
+
+type FormItemCompType = React.ComponentType<FormItemCompProps>;
 
 const formItemStr =
   '"children","disabled","className","titleClassName","tag","required","style","title","error"';
 
-const FormItemComp = await waitForModule(filters.bySource(formItemStr)).then((mod) =>
+const FormItemComp = (await waitForModule(filters.bySource(formItemStr)).then((mod) =>
   Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr)),
-);
+)) as FormItemCompType;
 
 const classes = await waitForModule<Record<"dividerDefault", string>>(filters.byProps("labelRow"));
 
@@ -32,7 +31,7 @@ interface FormItemProps extends FormItemCompProps {
   divider?: boolean;
 }
 
-export type FormItemType = ReactComponent<FormItemProps>;
+export type FormItemType = React.FC<FormItemProps>;
 
 export default ((props) => {
   const { note, notePosition = "before", noteStyle, noteClassName, divider, ...compProps } = props;

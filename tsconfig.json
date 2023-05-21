@@ -36,6 +36,7 @@
     "paths": {
       "@replugged": ["src/renderer/replugged.ts"],
       "@replugged/*": ["src/renderer/"],
+      "@webpack": ["src/renderer/modules/webpack.ts"],
       "@common": ["src/renderer/modules/common"],
       "@common/*": ["src/renderer/modules/common/*"],
       "@components": ["src/renderer/modules/components"],
@@ -51,7 +52,7 @@
 
     /* JavaScript Support */
     // "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
-    // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
+    "checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
     // "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
 
     /* Emit */
@@ -110,5 +111,6 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
-  }
+  },
+  "exclude": ["dist", "docs"]
 }

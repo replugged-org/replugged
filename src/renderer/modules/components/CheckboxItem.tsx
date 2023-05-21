@@ -17,11 +17,11 @@ interface CheckboxProps {
   style?: React.CSSProperties;
   className?: string;
   innerClassName?: string;
-  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>, state: boolean) => void;
+  onClick?: React.MouseEventHandler<HTMLInputElement>;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>, value: boolean) => void;
 }
 
-export type CheckboxType = React.FC<React.PropsWithChildren<CheckboxProps>> & {
+export type CheckboxType = React.ComponentType<React.PropsWithChildren<CheckboxProps>> & {
   defaultProps: CheckboxProps;
   Types: Record<"DEFAULT" | "INVERTED" | "GHOST" | "ROW", string>;
   Aligns: Record<"TOP" | "CENTER", string>;
