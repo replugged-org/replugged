@@ -9,6 +9,7 @@
     "asar",
     "Automod",
     "autosize",
+    "backoff",
     "blurple",
     "Chunkdiscord",
     "codemirror",
@@ -16,8 +17,10 @@
     "coremods",
     "crosspost",
     "customitem",
+    "dependants",
     "discordapp",
     "doas",
+    "dont",
     "esbuild",
     "flatpak",
     "flatpaks",
@@ -41,6 +44,7 @@
     "Promisable",
     "quickcss",
     "ratelimited",
+    "rauenzi",
     "RDNN",
     "Recents",
     "reinject",
@@ -59,5 +63,6 @@
     "XLARGE"
   ],
   "ignoreWords": [],
-  "import": []
+  "import": [],
+  "enabled": true
 }

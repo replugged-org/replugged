@@ -1,14 +1,40 @@
 import { Messages } from "@common/i18n";
 import { React, api, fluxDispatcher, modal, toast, users } from "@common";
-import { Button, Divider, Flex, Switch, Text, TextInput, Tooltip } from "@components";
+import {
+  Button,
+  Divider,
+  ErrorBoundary,
+  Flex,
+  Switch,
+  Text,
+  TextInput,
+  Tooltip,
+} from "@components";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { Author } from "src/types/addon";
 import "./Addons.css";
 import Icons from "../icons";
-import { Logger, plugins, themes } from "@replugged";
-import { showAddonSettings } from "./AddonSettings";
+import { Logger, plugins, themes, webpack } from "@replugged";
 
 const logger = Logger.coremod("AddonSettings");
+const Breadcrumbs = webpack.getBySource("().breadcrumbFinalWrapper") as React.ComponentType<{
+  activeId: string;
+  breadcrumbs: Array<{ id: string; label: string }>;
+  onBreadcrumbClick: (breadcrumb: { id: string; label: string }) => void;
+  renderCustomBreadcrumb: (
+    breadcrumb: { id: string; label: string },
+    active: boolean,
+  ) => React.ReactElement;
+}>;
+
+const BreadcrumbClasses: {
+  spinner: string;
+  backButton: string;
+  backArrow: string;
+  breadcrumbs: string;
+  breadcrumbActive: string;
+  breadcrumbInactive: string;
+} = webpack.getBySource("breadcrumbActive")!;
 
 export enum AddonType {
   Plugin = "plugin",
@@ -303,7 +329,9 @@ function Card({
           ) : null}
           {hasSettings ? (
             <Tooltip
-              text={`Open ${label(type, { caps: "title" })} Settings`}
+              text={Messages.REPLUGGED_ADDON_SETTINGS.format({
+                type: label(type, { caps: "title" }),
+              })}
               className="replugged-addon-icon">
               <a onClick={() => openSettings()}>
                 <Icons.Settings />
@@ -341,12 +369,14 @@ function Card({
 function Cards({
   type,
   disabled,
+  setSection,
   setDisabled,
   list,
   refreshList,
 }: {
   type: AddonType;
   disabled: Set<string>;
+  setSection: (section: string) => void;
   setDisabled: (disabled: Set<string>) => void;
   list: Array<RepluggedPlugin | RepluggedTheme>;
   refreshList: () => void;
@@ -445,10 +475,9 @@ function Cards({
             refreshList();
           }}
           openSettings={() => {
-            const element = getSettingsElement(addon.manifest.id, type);
-            if (!element) return;
+            setSection(`rp_plugin_${addon.manifest.id}`);
 
-            showAddonSettings(addon, element);
+            document.querySelector('div[class^="contentRegionScroller"]')!.scrollTo({ top: 0 });
           }}
         />
       ))}
@@ -461,6 +490,9 @@ export const Addons = (type: AddonType): React.ReactElement => {
   const [search, setSearch] = React.useState("");
   const [list, setList] = React.useState<Array<RepluggedPlugin | RepluggedTheme> | null>();
   const [unfilteredCount, setUnfilteredCount] = React.useState(0);
+  const [section, setSection] = React.useState(`rp_${type}`);
+
+  let SettingsElement: React.ComponentType | undefined;
 
   function refreshList(): void {
     const list = [...listAddons(type).values()];
@@ -488,53 +520,95 @@ export const Addons = (type: AddonType): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2
-          style={{
-            // Do not turn "(num)" into a single symbol
-            fontVariantLigatures: "none",
-          }}>
-          {Messages.REPLUGGED_ADDONS_TITLE_COUNT.format({
-            type: label(type, { caps: "title", plural: true }),
-            count: unfilteredCount,
-          })}
-        </Text.H2>
-        <div style={{ display: "flex" }}>
-          <Button onClick={() => openFolder(type)}>
-            {Messages.REPLUGGED_ADDONS_FOLDER_OPEN.format({
-              type: label(type, { caps: "title", plural: true }),
-            })}
-          </Button>
-          <Button
-            onClick={async () => {
-              try {
-                await loadMissing(type);
-                toast.toast(
-                  Messages.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS.format({
-                    type: label(type, { plural: true }),
+        <Flex align={Flex.Align.CENTER} className={BreadcrumbClasses.breadcrumbs}>
+          {section === `rp_${type}` ? (
+            <Text.H2
+              style={{
+                // Do not turn "(num)" into a single symbol
+                fontVariantLigatures: "none",
+              }}>
+              {Messages.REPLUGGED_ADDONS_TITLE_COUNT.format({
+                type: label(type, { caps: "title", plural: true }),
+                count: unfilteredCount,
+              })}
+            </Text.H2>
+          ) : (
+            <Breadcrumbs
+              activeId={section.toString()}
+              breadcrumbs={[
+                {
+                  id: `rp_${type}`,
+                  label: Messages.REPLUGGED_ADDONS_TITLE_COUNT.format({
+                    type: label(type, { caps: "title", plural: true }),
+                    count: unfilteredCount,
                   }),
-                );
-              } catch (e) {
-                logger.error("Error loading missing", e);
-                toast.toast(
-                  Messages.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED.format({
-                    type: label(type, { plural: true }),
-                  }),
-                  toast.Kind.FAILURE,
-                );
-              }
+                },
+                {
+                  id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
+                  label:
+                    list?.filter?.(
+                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
+                    )?.[0]?.manifest?.name || "",
+                },
+              ]}
+              onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
+              renderCustomBreadcrumb={(breadcrumb, active) => (
+                <Text.H2
+                  color={active ? "header-primary" : "inherit"}
+                  className={
+                    active
+                      ? BreadcrumbClasses.breadcrumbActive
+                      : BreadcrumbClasses.breadcrumbInactive
+                  }
+                  style={{
+                    // Do not turn "(num)" into a single symbol
+                    fontVariantLigatures: "none",
+                  }}>
+                  {breadcrumb.label}
+                </Text.H2>
+              )}
+            />
+          )}
+        </Flex>
+        {section === `rp_${type}` && (
+          <div style={{ display: "flex" }}>
+            <Button onClick={() => openFolder(type)}>
+              {Messages.REPLUGGED_ADDONS_FOLDER_OPEN.format({
+                type: label(type, { caps: "title", plural: true }),
+              })}
+            </Button>
+            <Button
+              onClick={async () => {
+                try {
+                  await loadMissing(type);
+                  toast.toast(
+                    Messages.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS.format({
+                      type: label(type, { plural: true }),
+                    }),
+                  );
+                } catch (e) {
+                  logger.error("Error loading missing", e);
+                  toast.toast(
+                    Messages.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED.format({
+                      type: label(type, { plural: true }),
+                    }),
+                    toast.Kind.FAILURE,
+                  );
+                }
 
-              refreshList();
-            }}
-            color={Button.Colors.PRIMARY}
-            look={Button.Looks.LINK}>
-            {Messages.REPLUGGED_ADDONS_LOAD_MISSING.format({
-              type: label(type, { caps: "title", plural: true }),
-            })}
-          </Button>
-        </div>
+                refreshList();
+              }}
+              color={Button.Colors.PRIMARY}
+              look={Button.Looks.LINK}>
+              {Messages.REPLUGGED_ADDONS_LOAD_MISSING.format({
+                type: label(type, { caps: "title", plural: true }),
+              })}
+            </Button>
+          </div>
+        )}
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
-      {unfilteredCount ? (
+      {section === `rp_${type}` && unfilteredCount ? (
         <div style={{ marginBottom: "20px" }}>
           <TextInput
             placeholder={Messages.REPLUGGED_SEARCH_FOR_ADDON.format({ type: label(type) })}
@@ -543,30 +617,39 @@ export const Addons = (type: AddonType): React.ReactElement => {
           />
         </div>
       ) : null}
-      {search && list?.length ? (
+      {section === `rp_${type}` && search && list?.length ? (
         <Text variant="heading-md/bold" style={{ marginBottom: "10px" }}>
           {Messages.REPLUGGED_LIST_RESULTS.format({ count: list.length })}
         </Text>
       ) : null}
-      {list?.length ? (
-        <>
-          <Cards
-            type={type}
-            disabled={disabled}
-            setDisabled={setDisabled}
-            list={list}
-            refreshList={refreshList}
-          />
-        </>
-      ) : list ? (
-        <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
-          {unfilteredCount
-            ? Messages.REPLUGGED_NO_ADDON_RESULTS.format({ type: label(type, { plural: true }) })
-            : Messages.REPLUGGED_NO_ADDONS_INSTALLED.format({
-                type: label(type, { plural: true }),
-              })}
-        </Text>
-      ) : null}
+      {section === `rp_${type}` ? (
+        list?.length ? (
+          <>
+            <Cards
+              type={type}
+              disabled={disabled}
+              setSection={setSection}
+              setDisabled={setDisabled}
+              list={list}
+              refreshList={refreshList}
+            />
+          </>
+        ) : list ? (
+          <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
+            {unfilteredCount
+              ? Messages.REPLUGGED_NO_ADDON_RESULTS.format({ type: label(type, { plural: true }) })
+              : Messages.REPLUGGED_NO_ADDONS_INSTALLED.format({
+                  type: label(type, { plural: true }),
+                })}
+          </Text>
+        ) : null
+      ) : (
+        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length), type)) && (
+          <ErrorBoundary>
+            <SettingsElement />
+          </ErrorBoundary>
+        )
+      )}
     </>
   );
 };

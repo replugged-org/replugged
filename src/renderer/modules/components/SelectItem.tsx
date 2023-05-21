@@ -3,6 +3,11 @@ import { FormItem } from ".";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
+const Looks = {
+  FILLED: 0,
+  CUSTOM: 1,
+} as const;
+
 interface SelectOptionType {
   label: string;
   value: string;
@@ -12,9 +17,9 @@ interface SelectOptionType {
 
 interface SelectCompProps {
   options: SelectOptionType[];
-  isSelected?: (e: string) => void;
-  serialize?: (e: string) => void;
-  select?: (e: string) => void;
+  isSelected?: (value: string) => void;
+  serialize?: (value: string) => void;
+  select?: (value: string) => void;
   clear?: () => void;
   placeholder?: string;
   isDisabled?: boolean;
@@ -22,14 +27,16 @@ interface SelectCompProps {
   autoFocus?: boolean;
   popoutWidth?: number;
   clearable?: boolean;
-  look?: number;
+  look?: (typeof Looks)[keyof typeof Looks];
   popoutPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   closeOnSelect?: boolean;
   hideIcon?: boolean;
   onClose?: () => void;
   onOpen?: () => void;
-  renderOptionLabel?: (e: SelectOptionType) => void;
-  renderOptionValue?: (e: SelectOptionType[]) => void;
+  renderOptionLabel?: (option: SelectOptionType) => string;
+  renderOptionValue?: (option: SelectOptionType[]) => string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
   className?: string;
   popoutClassName?: string;
   optionClassName?: string;
@@ -43,19 +50,21 @@ const SelectComp = (await waitForModule(filters.bySource(selectRgx)).then((mod) 
   getFunctionBySource(mod as ObjectExports, selectRgx),
 )) as SelectCompType;
 
-export interface SelectProps extends SelectCompProps {
-  onChange?: (e: string) => void;
-  onSelect?: (e: string) => void;
+interface SelectProps extends SelectCompProps {
+  onChange?: (value: string) => void;
+  onSelect?: (value: string) => void;
   onClear?: () => void;
   value?: string;
   disabled?: boolean;
 }
 
-export type SelectType = React.FC<React.PropsWithChildren<SelectProps>>;
+export type SelectType = React.FC<React.PropsWithChildren<SelectProps>> & {
+  Looks: typeof Looks;
+};
 
 export const Select = ((props) => {
-  if (!props.isSelected && props.value != null) props.isSelected = (e) => e === props.value;
-  if (!props.serialize) props.serialize = (e) => e;
+  if (!props.isSelected && props.value != null) props.isSelected = (value) => value === props.value;
+  if (!props.serialize) props.serialize = (value) => value;
 
   return (
     <SelectComp
@@ -66,6 +75,7 @@ export const Select = ((props) => {
     />
   );
 }) as SelectType;
+Select.Looks = Looks;
 
 interface SelectItemProps extends SelectProps {
   note?: string;

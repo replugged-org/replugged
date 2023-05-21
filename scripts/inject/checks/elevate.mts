@@ -1,10 +1,13 @@
 import { spawnSync } from "child_process";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const tryToElevate = (command: string): void => {
   const args = [
     ...command.split(" "),
-    path.join(__dirname, "..", "..", "..", "node_modules", ".bin", "tsx"),
+    path.join(dirname, "..", "..", "..", "node_modules", ".bin", "tsx"),
     ...process.argv.slice(1),
   ];
   const { error } = spawnSync("env", args, { stdio: "inherit" });

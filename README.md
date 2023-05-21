@@ -8,6 +8,11 @@
 
 Download Replugged from https://replugged.dev/download
 
+## Contributing to Replugged
+
+Please see [the guide](https://guide.replugged.dev/docs/contributing/replugged) for information on
+how to contribute to the Replugged. Thanks for your help!
+
 ## FAQ
 
 ### Is this against the ToS?
