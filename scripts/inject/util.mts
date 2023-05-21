@@ -1,4 +1,4 @@
-import { DiscordPlatform } from "./types";
+import { DiscordPlatform } from "./types.mjs";
 
 export const AnsiEscapes = {
   RESET: "\x1b[0m",

@@ -25,7 +25,7 @@ export declare class Emitter {
   public static pauseTimer: ReturnType<typeof setTimeout> | undefined;
   public static reactChangedStores: Set<Store>;
 
-  public batched(): void;
+  public batched(func: () => void): void;
   public destroy(): void;
 
   public emit(): void;
@@ -35,27 +35,28 @@ export declare class Emitter {
   public getChangeSentinel(): number;
   public getIsPaused(): boolean;
 
-  public injectBatchEmitChanges(): void;
-  public markChanged(): void;
+  public injectBatchEmitChanges(func: () => void): void;
+  public markChanged(store: Store): void;
 
-  public pause(callback?: () => void): void;
-  public resume(callback?: () => void): void;
+  public pause(timeout?: number): void;
+  public resume(shouldEmit?: boolean): void;
 }
 
 type Callback = () => void;
 
-interface Callbacks {
-  listeners: Set<Callback>;
-  add(callback: Callback): void;
-  addConditional(callback: Callback, condition: boolean): void;
-  remove(callback: Callback): void;
-  has(callback: Callback): boolean;
-  hasAny(): boolean;
-  invokeAll(): void;
+declare class Callbacks {
+  public listeners: Set<Callback>;
+  public add(listener: Callback): void;
+  public remove(listener: Callback): void;
+  public addConditional(listener: Callback, condition: boolean): void;
+
+  public has(listener: Callback): boolean;
+  public hasAny(): boolean;
+  public invokeAll(): void;
 }
 
 export declare class Store {
-  public constructor(dispatcher: Dispatcher, actions: ActionHandlerRecord);
+  public constructor(dispatcher: Dispatcher, actions?: ActionHandlerRecord, band?: number);
 
   public static destroy(): void;
   public static getAll(): Store[];
@@ -67,6 +68,7 @@ export declare class Store {
   public _dispatcher: Dispatcher;
   public _changeCallbacks: Callbacks;
   public _reactChangeCallbacks: Callbacks;
+  public _mustEmitChanges: Parameters<Store["mustEmitChanges"]>[0];
 
   public initialize(): void;
   public initializeIfNeeded(): void;
@@ -74,7 +76,7 @@ export declare class Store {
   public getName(): string;
 
   public emitChange(): void;
-  public mustEmitChanges(func?: () => boolean): void;
+  public mustEmitChanges(func?: (action?: Action) => boolean): void;
   public syncWith(stores: Store[], func: () => boolean, timeout?: number): void;
   public waitFor(...stores: Store[]): void;
 
@@ -84,8 +86,10 @@ export declare class Store {
   public removeChangeListener(listener: Callback): void;
   public removeReactChangeListener(listener: Callback): void;
 
+  public registerActionHandlers(actions: ActionHandlerRecord, band?: number): void;
+
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  public __getLocalVars(): Record<string, unknown>;
+  public __getLocalVars?(): Record<string, unknown>;
 }
 
 interface ClearOptions {

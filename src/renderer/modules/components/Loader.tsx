@@ -1,7 +1,7 @@
 import type React from "react";
 import { filters, waitForModule } from "../webpack";
 
-const TYPES = {
+const Types = {
   WANDERING_CUBES: "wanderingCubes",
   CHASING_DOTS: "chasingDots",
   PULSING_ELLIPSIS: "pulsingEllipsis",
@@ -9,17 +9,22 @@ const TYPES = {
   LOW_MOTION: "lowMotion",
 } as const;
 
-interface LoaderProps {
-  type?: (typeof TYPES)[keyof typeof TYPES];
+interface GenericLoaderProps {
   animated?: boolean;
   className?: string;
   itemClassName?: string;
-  "aria-label"?: string;
   style?: React.CSSProperties;
 }
 
-export type LoaderType = React.ComponentType<LoaderProps> & {
-  Type: typeof TYPES;
+type LoaderProps = GenericLoaderProps & {
+  type?: (typeof Types)[keyof typeof Types];
+} & React.ComponentPropsWithoutRef<"span">;
+type SpinningCircleLoaderProps = GenericLoaderProps & {
+  type?: (typeof Types)["SPINNING_CIRCLE"];
+} & React.ComponentPropsWithoutRef<"div">;
+
+export type LoaderType = React.ComponentType<LoaderProps | SpinningCircleLoaderProps> & {
+  Type: typeof Types;
 };
 
 const Loader = (await waitForModule(filters.bySource('"wanderingCubes"')).then((mod) =>

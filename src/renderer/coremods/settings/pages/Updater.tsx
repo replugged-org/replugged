@@ -2,6 +2,7 @@ import { toast } from "@common";
 import i18n, { Messages } from "@common/i18n";
 import React from "@common/react";
 import { Button, Divider, Flex, Text, Tooltip } from "@components";
+import { Logger } from "@replugged";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import {
@@ -15,6 +16,8 @@ import {
 import { sleep } from "src/renderer/util";
 import Icons from "../icons";
 import "./Updater.css";
+
+const logger = Logger.coremod("Settings:Updater");
 
 export const Updater = (): React.ReactElement => {
   const [checking, setChecking] = React.useState(false);
@@ -43,7 +46,7 @@ export const Updater = (): React.ReactElement => {
         .catch((err) => {
           if (cancelled) return;
           toast.toast("Update failed.", toast.Kind.FAILURE);
-          console.error(err);
+          logger.error(err);
         });
     });
 
@@ -152,7 +155,7 @@ export const Updater = (): React.ReactElement => {
       </Flex>
       <Flex className="replugged-updater-items" direction={Flex.Direction.VERTICAL}>
         {updatesAvailable.map((update) => {
-          const isReplugged = update.id == "dev.replugged.Replugged";
+          const isReplugged = update.id === "dev.replugged.Replugged";
           const addon =
             plugins.get(update.id) ||
             themes.get(update.id) ||

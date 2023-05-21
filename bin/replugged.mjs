@@ -17,6 +17,7 @@ import updateNotifier from "update-notifier";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import chalk from "chalk";
+import WebSocket from "ws";
 import { fileURLToPath, pathToFileURL } from "url";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,6 +41,187 @@ function sendUpdateNotification() {
   });
 }
 
+const MIN_PORT = 6463;
+const MAX_PORT = 6472;
+
+function random() {
+  return Math.random().toString(16).slice(2);
+}
+
+/**
+ * @type {WebSocket | undefined}
+ */
+let ws;
+let failed = false;
+/**
+ * @type {Promise<WebSocket | undefined> | undefined}
+ */
+let connectingPromise;
+
+/**
+ * Try to connect to RPC on a specific port and handle the READY event as well as errors and close events
+ * @param {number} port
+ */
+function tryPort(port) {
+  ws = new WebSocket(`ws://127.0.0.1:${port}/?v=1&client_id=REPLUGGED-${random()}`);
+  return new Promise((resolve, reject) => {
+    let didFinish = false;
+    ws?.on("message", (data) => {
+      if (didFinish) {
+        return;
+      }
+
+      const message = JSON.parse(data.toString());
+      if (message.evt !== "READY") {
+        return;
+      }
+
+      didFinish = true;
+
+      resolve(ws);
+    });
+    ws?.on("error", () => {
+      if (didFinish) {
+        return;
+      }
+
+      didFinish = true;
+
+      reject(new Error("WebSocket error"));
+    });
+    ws?.on("close", () => {
+      ws = undefined;
+
+      if (didFinish) {
+        return;
+      }
+
+      didFinish = true;
+
+      reject(new Error("WebSocket closed"));
+    });
+  });
+}
+
+/**
+ * Get an active websocket connection to Discord. If one is already open, it will be returned. Otherwise, a new connection will be made.
+ * If a connection cannot be made or failed previously, none will be made and undefined will be returned.
+ */
+async function connectWebsocket() {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    return ws;
+  }
+  if (failed) return null;
+  if (connectingPromise) return await connectingPromise;
+
+  connectingPromise = (async () => {
+    for (let port = MIN_PORT; port <= MAX_PORT; port++) {
+      try {
+        ws = await tryPort(port);
+        return ws;
+      } catch {}
+    }
+    return undefined;
+  })();
+
+  const result = await connectingPromise;
+  connectingPromise = undefined;
+  if (result) {
+    return result;
+  }
+
+  console.error("Could not connect to Discord websocket");
+  failed = true;
+  return undefined;
+}
+
+let reloading = false;
+let reloadAgain = false;
+
+/**
+ * Send WS request to reload an addon
+ * @param {string} id
+ */
+async function reload(id) {
+  const ws = await connectWebsocket();
+  if (!ws) return;
+
+  if (reloading) {
+    reloadAgain = true;
+    return;
+  }
+
+  const nonce = random();
+
+  ws.send(
+    JSON.stringify({
+      cmd: "REPLUGGED_ADDON_WATCHER",
+      args: {
+        id,
+      },
+      nonce,
+    }),
+  );
+
+  reloading = true;
+
+  await new Promise((resolve) => {
+    /**
+     *
+     * @param {import('ws').RawData} data
+     * @returns
+     */
+    const onMessage = async (data) => {
+      const message = JSON.parse(data.toString());
+      if (message.nonce !== nonce) {
+        return;
+      }
+      ws.off("message", onMessage);
+
+      reloading = false;
+      if (reloadAgain) {
+        reloadAgain = false;
+        resolve(await reload(id));
+        return;
+      }
+
+      if (message.data.success) {
+        console.log("Reloaded addon");
+        resolve(undefined);
+      } else {
+        const errorCode = message.data.error;
+        let error = "Unknown error";
+        switch (errorCode) {
+          case "ADDON_NOT_FOUND":
+            error = "Addon not found";
+            break;
+          case "ADDON_DISABLED":
+            error = "Addon disabled";
+            break;
+          case "RELOAD_FAILED":
+            error = "Reload failed";
+            break;
+        }
+        console.error(`Failed to reload addon: ${error}`);
+        resolve(undefined);
+      }
+    };
+
+    ws.on("message", onMessage);
+  });
+}
+
+/**
+ * @typedef Args
+ * @property {boolean} [watch]
+ * @property {boolean} [noInstall]
+ * @property {boolean} [production]
+ * @property {boolean} [noReload]
+ */
+
+/**
+ * @param {(args: Args) => Promise<void>} buildFn
+ */
 async function bundleAddon(buildFn) {
   if (existsSync("dist")) {
     rmSync("dist", { recursive: true });
@@ -58,8 +240,12 @@ async function bundleAddon(buildFn) {
   console.log(`Bundled ${manifest.name}`);
 }
 
-async function buildPlugin({ watch, noInstall, production }) {
-  let manifest = await import(manifestPath, {
+/**
+ * @param {Args} args
+ */
+async function buildPlugin({ watch, noInstall, production, noReload }) {
+  // @ts-expect-error
+  let manifest = await import(manifestPath.toString(), {
     assert: { type: "json" },
   });
   if ("default" in manifest) manifest = manifest.default;
@@ -67,7 +253,9 @@ async function buildPlugin({ watch, noInstall, production }) {
   const REPLUGGED_FOLDER_NAME = "replugged";
   const globalModules = {
     name: "globalModules",
+    // @ts-expect-error
     setup: (build) => {
+      // @ts-expect-error
       build.onResolve({ filter: /^replugged.+$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
@@ -80,6 +268,7 @@ async function buildPlugin({ watch, noInstall, production }) {
         };
       });
 
+      // @ts-expect-error
       build.onResolve({ filter: /^replugged$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
@@ -124,13 +313,18 @@ async function buildPlugin({ watch, noInstall, production }) {
 
   const install = {
     name: "install",
+    // @ts-expect-error
     setup: (build) => {
-      build.onEnd(() => {
+      build.onEnd(async () => {
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "plugins", manifest.id);
-          if (existsSync(dest)) rmSync(dest, { recursive: true });
+          if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
           cpSync("dist", dest, { recursive: true });
           console.log("Installed updated version");
+
+          if (!noReload) {
+            await reload(manifest.id);
+          }
         }
       });
     },
@@ -153,6 +347,7 @@ async function buildPlugin({ watch, noInstall, production }) {
 
   if ("renderer" in manifest) {
     targets.push(
+      // @ts-expect-error
       esbuild.build({
         ...common,
         entryPoints: [manifest.renderer],
@@ -165,6 +360,7 @@ async function buildPlugin({ watch, noInstall, production }) {
 
   if ("plaintextPatches" in manifest) {
     targets.push(
+      // @ts-expect-error
       esbuild.build({
         ...common,
         entryPoints: [manifest.plaintextPatches],
@@ -179,10 +375,16 @@ async function buildPlugin({ watch, noInstall, production }) {
 
   writeFileSync("dist/manifest.json", JSON.stringify(manifest));
 
-  return Promise.all(targets);
+  await Promise.all(targets);
+
+  ws?.close();
 }
 
-async function buildTheme({ watch: shouldWatch, noInstall, production }) {
+/**
+ * @param {Args} args
+ */
+async function buildTheme({ watch: shouldWatch, noInstall, production, noReload }) {
+  // @ts-expect-error
   let manifest = await import(manifestPath, {
     assert: { type: "json" },
   });
@@ -237,17 +439,23 @@ async function buildTheme({ watch: shouldWatch, noInstall, production }) {
     }
   })();
 
-  function install() {
+  async function install() {
     if (!noInstall) {
       const dest = path.join(CONFIG_PATH, "themes", manifest.id);
       if (existsSync(dest)) {
-        rmSync(dest, { recursive: true });
+        rmSync(dest, { recursive: true, force: true });
       }
       cpSync("dist", dest, { recursive: true });
       console.log("Installed updated version");
+
+      if (!noReload) {
+        // @ts-expect-error
+        await reload(manifest.id, watch);
+      }
     }
   }
 
+  // @ts-expect-error
   async function build(bundler) {
     const { bundleGraph, buildTime } = await bundler.run();
     let bundles = bundleGraph.getBundles();
@@ -255,7 +463,9 @@ async function buildTheme({ watch: shouldWatch, noInstall, production }) {
     install();
   }
 
+  // @ts-expect-error
   async function watch(bundler) {
+    // @ts-expect-error
     await bundler.watch((err, event) => {
       if (err) {
         // fatal error
@@ -285,15 +495,17 @@ async function buildTheme({ watch: shouldWatch, noInstall, production }) {
 
   writeFileSync("dist/manifest.json", JSON.stringify(manifest));
 
-  return Promise.all(promises);
+  Promise.all(promises);
+
+  ws?.close();
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line no-unused-vars
 const { argv } = yargs(hideBin(process.argv))
   .scriptName("replugged")
   .usage("$0 <cmd> [args]")
   .command(
-    "build [addon] [--no-install] [--watch]",
+    "build <addon>",
     "Build an Addon",
     (yargs) => {
       yargs.positional("addon", {
@@ -315,11 +527,18 @@ const { argv } = yargs(hideBin(process.argv))
         describe: "Don't compile the source maps when building.",
         default: false,
       });
+      yargs.option("no-reload", {
+        type: "boolean",
+        describe: "Don't reload the addon in Discord after building.",
+        default: false,
+      });
     },
     (argv) => {
       if (argv.addon === "plugin") {
+        // @ts-expect-error
         buildPlugin(argv);
       } else if (argv.addon === "theme") {
+        // @ts-expect-error
         buildTheme(argv);
       } else {
         console.log("Invalid addon type.");
@@ -328,7 +547,7 @@ const { argv } = yargs(hideBin(process.argv))
     },
   )
   .command(
-    "bundle [addon]",
+    "bundle <addon>",
     "Bundle any Addon",
     (yargs) => {
       yargs.positional("addon", {

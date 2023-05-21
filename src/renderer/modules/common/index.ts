@@ -92,13 +92,13 @@ export let toast: Toast;
 importTimeout("toast", import("./toast"), (mod) => (toast = mod.default));
 
 /**
- * @see {@link https://reactjs.org/docs/react-api.html}
+ * @see {@link https://react.dev/}
  */
 export let React: typeof import("react");
 importTimeout("React", import("./react"), (mod) => (React = mod.default));
 
 /**
- * @see {@link https://reactjs.org/docs/react-dom.html}
+ * @see {@link https://react.dev/reference/react-dom}
  */
 export let ReactDOM: typeof import("react-dom");
 importTimeout("ReactDOM", import("./react-dom"), (mod) => (ReactDOM = mod.default));

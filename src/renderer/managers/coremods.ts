@@ -22,6 +22,8 @@ export namespace coremods {
   export let installer: Coremod;
   export let messagePopover: Coremod;
   export let language: Coremod;
+  export let rpc: Coremod;
+  export let watcher: Coremod;
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
@@ -39,6 +41,8 @@ export async function startAll(): Promise<void> {
   coremods.installer = await import("../coremods/installer");
   coremods.messagePopover = await import("../coremods/messagePopover");
   coremods.language = await import("../coremods/language");
+  coremods.rpc = await import("../coremods/rpc");
+  coremods.watcher = await import("../coremods/watcher");
   await Promise.allSettled(Object.values(coremods).map((c) => c.start?.()));
 }
 

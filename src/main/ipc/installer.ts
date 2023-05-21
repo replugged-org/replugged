@@ -8,7 +8,7 @@ import {
   RepluggedIpcChannels,
 } from "../../types";
 import { Octokit } from "@octokit/rest";
-import { CONFIG_PATH, CONFIG_PATHS } from "../../util";
+import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
 import { readFile, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
