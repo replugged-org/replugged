@@ -42,14 +42,14 @@ interface MenuItemProps {
 }
 
 interface MenuSubmenuListItemProps {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   childRowHeight: number;
   onChildrenScroll?: () => void;
   listClassName?: string;
 }
 
 interface MenuSubmenuItemProps {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   subMenuClassName?: string;
 }
 
@@ -103,7 +103,7 @@ interface MenuControlItemProps {
 
 interface MenuCompositeControlItemProps {
   id: string;
-  children?: React.ReactNode;
+  children: React.ReactNode;
   interactive?: boolean;
   color?: string;
   disabled?: boolean;
@@ -121,7 +121,7 @@ export type ContextMenuProps = Record<string, unknown> & {
 };
 
 export type ContextMenuType = {
-  [K in keyof ContextMenuProps]: ReactComponent<ContextMenuProps[K]>;
+  [K in keyof ContextMenuProps]: React.ComponentType<ContextMenuProps[K]>;
 };
 
 export type ContextMenuElements = {

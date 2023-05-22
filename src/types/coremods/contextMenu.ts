@@ -5,7 +5,7 @@ import type {
 import { ReactComponent } from "../util";
 
 export interface RawContextItem {
-  type: ReactComponent<unknown>;
+  type: React.ComponentType<unknown>;
   children?: Array<RawContextItem | ContextItem | undefined>;
   action?(): unknown;
 

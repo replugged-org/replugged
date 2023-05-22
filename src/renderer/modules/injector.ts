@@ -327,7 +327,7 @@ export class Injector {
      *
      * const injector = new Injector();
      *
-     * function start() {
+     * export function start() {
      *   injector.utils.addMenuItem(ContextMenuTypes.UserContext,  // Right-clicking a user
      *     (data, menu) => {
      *       return <MenuItem
@@ -339,7 +339,7 @@ export class Injector {
      *   )
      * }
      *
-     * function stop() {
+     * export function stop() {
      *   injector.uninjectAll();
      * }
      * ```
