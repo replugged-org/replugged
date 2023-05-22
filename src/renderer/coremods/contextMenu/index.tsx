@@ -14,7 +14,7 @@ const logger = Logger.api("ContextMenu");
 
 export const menuItems = {} as Record<
   ContextMenuTypes,
-  Array<{ getItem: GetContextItem; sectionId: number; sectionIndex: number }>
+  Array<{ getItem: GetContextItem; sectionId: number; indexInSection: number }>
 >;
 
 /**
@@ -51,18 +51,18 @@ function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | 
  * @param navId The id of the menu you want to insert to
  * @param getItem A function that creates and returns the menu item
  * @param sectionId The number of the section to add to. Defaults to replugged's section
- * @param sectionIndex The index in the section to add to. Defaults to the end position
+ * @param indexInSection The index in the section to add to. Defaults to the end position
  * @returns A callback to de-register the function
  */
 export function addContextMenuItem(
   navId: ContextMenuTypes,
   getItem: GetContextItem,
   sectionId: number,
-  sectionIndex: number,
+  indexInSection: number,
 ): () => void {
   if (!menuItems[navId]) menuItems[navId] = [];
 
-  menuItems[navId].push({ getItem, sectionId, sectionIndex });
+  menuItems[navId].push({ getItem, sectionId, indexInSection });
   return () => removeContextMenuItem(navId, getItem);
 }
 
@@ -82,7 +82,7 @@ type ContextMenuData = ContextMenuProps["ContextMenu"] & {
   children: ReactElement[];
   data: Array<Record<string, unknown>>;
   navId: ContextMenuTypes;
-  plugged?: boolean
+  plugged?: boolean;
 };
 
 /**
@@ -97,7 +97,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
 
   // Already inserted items
   // If this isn't here, another group of items is added every update
-  if (menu.plugged) return ;
+  if (menu.plugged) return;
 
   // We delay getting the items until now, as importing at the start of the file causes discord to hang
   // Using `await import(...)` is undesirable because the new items will only appear once the menu is interacted with
@@ -129,11 +129,11 @@ export function _insertMenuItems(menu: ContextMenuData): void {
           .substring(2)}`;
       }
 
-      menu.children.at(item.sectionId)?.props?.children?.splice(item.sectionIndex, 0, res);
+      menu.children.at(item.sectionId)?.props?.children?.splice(item.indexInSection, 0, res);
     } catch (err) {
       logger.error("Error while running GetContextItem function", err, item.getItem);
     }
   });
 
-  menu.plugged = true
+  menu.plugged = true;
 }

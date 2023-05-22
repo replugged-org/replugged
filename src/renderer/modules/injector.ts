@@ -312,11 +312,11 @@ export class Injector {
 
     /**
      * A utility function to add an item to any context menu.
-     * By default, items are placed in a group for custom items, though that can be customized with `sectionId` and `sectionIndex`
+     * By default, items are placed in a group for custom items, though that can be customized with `sectionId` and `indexInSection`
      * @param navId The id of the menu to add to
      * @param item The function that creates the item to add
      * @param sectionId — The number of the section to add to. Defaults to replugged's section
-     * @param sectionIndex — The index in the section to add to. Defaults to the end position
+     * @param indexInSection — The index in the section to add to. Defaults to the end position
      * @returns A callback to de-register the function
      *
      * @example
@@ -348,9 +348,14 @@ export class Injector {
       navId: ContextMenuTypes,
       item: GetContextItem<T>,
       sectionId = -2, // Replugged's group
-      sectionIndex = Infinity, // Last item
+      indexInSection = Infinity, // Last item
     ) => {
-      const uninjector = addContextMenuItem(navId, item as GetContextItem, sectionId, sectionIndex);
+      const uninjector = addContextMenuItem(
+        navId,
+        item as GetContextItem,
+        sectionId,
+        indexInSection,
+      );
       this.#uninjectors.add(uninjector);
       return uninjector;
     },
