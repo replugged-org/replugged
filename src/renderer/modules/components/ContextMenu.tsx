@@ -1,5 +1,5 @@
 import type React from "react";
-import type { ObjectExports } from "../../../types";
+import type { ObjectExports, ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack";
 
 interface MenuProps {
@@ -15,7 +15,7 @@ interface MenuProps {
 }
 
 interface MenuGroupProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   label?: string;
   className?: string;
   color?: string;
@@ -42,14 +42,14 @@ interface MenuItemProps {
 }
 
 interface MenuSubmenuListItemProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   childRowHeight: number;
   onChildrenScroll?: () => void;
   listClassName?: string;
 }
 
 interface MenuSubmenuItemProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   subMenuClassName?: string;
 }
 
@@ -103,7 +103,7 @@ interface MenuControlItemProps {
 
 interface MenuCompositeControlItemProps {
   id: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   interactive?: boolean;
   color?: string;
   disabled?: boolean;
