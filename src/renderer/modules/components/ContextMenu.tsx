@@ -1,10 +1,10 @@
 import type React from "react";
-import type { ObjectExports, ReactComponent } from "../../../types";
+import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack";
 
 interface MenuProps {
   navId: string;
-  children: React.ReactElement[];
+  children: React.ReactElement;
   onClose: () => void;
   variant?: string;
   className?: string;
