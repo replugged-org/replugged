@@ -22,18 +22,18 @@ export const menuItems = {} as Record<
  * @param raw The data to convert
  * @returns The converted item
  */
-function makeItem(raw: RawContextItem | ContextItem | undefined): ContextItem | undefined {
+function makeItem(raw: RawContextItem | ContextItem | undefined | void): ContextItem | undefined {
   // Occasionally React won't be loaded when this function is ran, so we don't return anything
   if (!React) return undefined;
 
   if (!raw) {
     // If something falsy is passed, let it through
     // Discord just skips over them too
-    return raw;
+    return raw as ContextItem | undefined;
   }
   if (React.isValidElement(raw)) {
     // We can't construct something that's already made
-    return raw as ContextItem;
+    return raw as ContextItem | undefined;
   }
 
   const { type, ...props } = raw;
