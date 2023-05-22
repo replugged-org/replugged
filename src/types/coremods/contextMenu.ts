@@ -17,7 +17,7 @@ export type ContextItem = ContextMenuElements[keyof ContextMenuElements];
 export type GetContextItem<T extends Record<string, unknown> = Record<string, unknown>> = (
   data: T,
   menu: ContextMenuProps["ContextMenu"],
-) => RawContextItem | ContextItem | undefined;
+) => RawContextItem | ContextItem | undefined | void;
 
 /**
  * An enum for the navIds of context menus across discord
