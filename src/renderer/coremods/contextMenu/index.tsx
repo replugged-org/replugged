@@ -82,6 +82,7 @@ type ContextMenuData = ContextMenuProps["ContextMenu"] & {
   children: ReactElement[];
   data: Array<Record<string, unknown>>;
   navId: ContextMenuTypes;
+  plugged?: boolean
 };
 
 /**
@@ -96,7 +97,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
 
   // Already inserted items
   // If this isn't here, another group of items is added every update
-  if (menu.children.at(-2)?.props?.name === "replugged") return;
+  if (menu.plugged) return ;
 
   // We delay getting the items until now, as importing at the start of the file causes discord to hang
   // Using `await import(...)` is undesirable because the new items will only appear once the menu is interacted with
@@ -110,7 +111,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
   const data = menu.data[0];
 
   const repluggedGroup = <MenuGroup></MenuGroup>;
-  repluggedGroup.props.name = "replugged";
+  repluggedGroup.props.id = "replugged";
   repluggedGroup.props.children = [];
 
   // Add in the new menu items right above the DevMode Copy ID
@@ -133,4 +134,6 @@ export function _insertMenuItems(menu: ContextMenuData): void {
       logger.error("Error while running GetContextItem function", err, item.getItem);
     }
   });
+
+  menu.plugged = true
 }
