@@ -65,7 +65,7 @@ function parseNode(node: Node): string | RegExp {
 }
 
 function parseFind(type: string, args: unknown[]): unknown {
-  console.log(`Received find parsing request of type ${type} with args: ${args}`);
+  devLogger.log(`Received find parsing request of type ${type} with args: ${args}`);
   switch (type.replace("get", "")) {
     case "Module":
       return getModule(args[0] as Filter, { all: true });
