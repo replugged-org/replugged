@@ -2,7 +2,6 @@ import type {
   ContextMenuElements,
   ContextMenuProps,
 } from "../../renderer/modules/components/ContextMenu";
-import { ReactComponent } from "../util";
 
 export interface RawContextItem {
   type: React.ComponentType<unknown>;

@@ -4,7 +4,7 @@ import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../w
 
 interface MenuProps {
   navId: string;
-  children: React.ReactElement;
+  children: React.ReactElement | React.ReactElement[];
   onClose: () => void;
   variant?: string;
   className?: string;

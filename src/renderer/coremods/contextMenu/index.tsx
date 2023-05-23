@@ -8,7 +8,6 @@ import { Logger } from "../../modules/logger";
 import { getByProps } from "../../modules/webpack";
 import { React } from "@common";
 import type { ContextMenuProps, ContextMenuType } from "@components/ContextMenu";
-import type { ReactElement } from "react";
 
 const logger = Logger.api("ContextMenu");
 
@@ -79,7 +78,7 @@ export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetConte
 }
 
 type ContextMenuData = ContextMenuProps["ContextMenu"] & {
-  children: ReactElement[];
+  children: React.ReactElement[];
   data: Array<Record<string, unknown>>;
   navId: ContextMenuTypes;
   plugged?: boolean;
