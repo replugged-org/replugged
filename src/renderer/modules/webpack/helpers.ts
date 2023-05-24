@@ -1,6 +1,7 @@
 import type { GetModuleOptions, RawModule, WaitForOptions } from "src/types";
 import { getExportsForProps, getModule } from "./get-modules";
 import * as filters from "./filters";
+import Flux, { Store } from "../common/flux";
 import { waitForModule } from "./lazy";
 
 // Get by source
@@ -243,4 +244,20 @@ export function getByValue<T>(
   },
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
   return getModule<T>(filters.byValue(match), options);
+}
+
+export function getByStoreName(name: string): (unknown & Store) | undefined {
+  const stores = Flux.Store.getAll();
+  let result;
+
+  for (const store of stores) {
+    const storeName = store.getName();
+    if (!storeName || storeName.length === 1) continue;
+    if (storeName === name) {
+      result = store;
+      break;
+    }
+  }
+
+  return result;
 }
