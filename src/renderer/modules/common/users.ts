@@ -7,8 +7,7 @@ interface PendingRoleUpdate {
   removed: Record<string, string[]>;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type UserStore = {
+export interface UserStore {
   filter: (callback: (user: User) => User | boolean, sort?: boolean) => User[];
   findByTag: (username: string, discriminator?: string) => User | undefined;
   forEach: (callback: (user: User) => void) => void;
@@ -16,10 +15,9 @@ export type UserStore = {
   getUser: (userId: string) => User | undefined;
   getUsers: () => Record<string, User>;
   getUserStoreVersion: () => number;
-};
+}
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type GuildMemberStore = {
+export interface GuildMemberStore {
   getCommunicationDisabledUserMap: () => Record<string, string>;
   getCommunicationDisabledVersion: () => number;
   getMember: (guildId: string, userId: string) => GuildMember | null;
@@ -37,15 +35,15 @@ export type GuildMemberStore = {
   isGuestOrLurker: (guildId?: string, userId?: string) => boolean;
   isMember: (guildId?: string, userId?: string) => boolean;
   memberOf: (userId: string) => string[];
-};
+}
 
 export type Users = UserStore & GuildMemberStore;
 
 export default virtualMerge(
-  await waitForProps<keyof UserStore, UserStore>(["getUser", "getCurrentUser"]).then(
+  (await waitForProps<UserStore>("getUser", "getCurrentUser").then(
     Object.getPrototypeOf,
-  ),
-  await waitForProps<keyof GuildMemberStore, GuildMemberStore>(["getTrueMember", "getMember"]).then(
+  )) as UserStore,
+  (await waitForProps<GuildMemberStore>("getTrueMember", "getMember").then(
     Object.getPrototypeOf,
-  ),
+  )) as GuildMemberStore,
 );

@@ -1,9 +1,8 @@
 import { waitForProps } from "../webpack";
-import EventEmitter from "events";
+import type EventEmitter from "events";
 
 import type SimpleMarkdown from "simple-markdown";
 import type { Primitive } from "type-fest";
-import { FullObjectExports } from "src/types";
 
 type LocaleCallback = (locale?: string) => void;
 type ProxyCallback = (context?: ProviderContext) => ProxyConstructor;
@@ -226,9 +225,7 @@ export interface I18n extends EventEmitter {
   _loadMessagesForLocale: (locale?: string) => Promise<void>;
 }
 
-const props = ["Messages", "getLanguages"];
-
-const i18n = await waitForProps<(typeof props)[number], FullObjectExports & I18n>(props);
+const i18n = await waitForProps<I18n>("Messages", "getLanguages");
 
 export const { Messages } = i18n;
 

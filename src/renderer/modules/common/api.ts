@@ -113,6 +113,4 @@ export type API = Record<
   V8APIError: typeof APIError;
 };
 
-const props = ["getAPIBaseURL", "get", "patch", "post", "put", "delete"];
-
-export default await waitForProps<(typeof props)[number], API>(props);
+export default await waitForProps<API>("getAPIBaseURL", "get", "patch", "post", "put", "delete");

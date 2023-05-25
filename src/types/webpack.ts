@@ -1,5 +1,4 @@
-export type ObjectExports = Record<string, unknown>;
-export type FullObjectExports = Record<PropertyKey, unknown>;
+export type ObjectExports = Record<PropertyKey, unknown>;
 
 export type ModuleExports =
   | ObjectExports
@@ -10,21 +9,15 @@ export type ModuleExports =
 export type ModuleExportsWithProps<P extends string> = Record<P, unknown> &
   Record<PropertyKey, unknown>;
 
-export interface RawModule {
+export interface RawModule<T = unknown> {
   id: number;
   loaded: boolean;
-  exports: ModuleExports;
+  exports: T;
 }
 
-export interface RawModuleWithProps<P extends string> extends RawModule {
-  exports: ModuleExportsWithProps<P>;
-}
-
-export type WebpackRequireCache = Record<string | number, RawModule>;
-
-export type WebpackRequire = ((e: number) => ModuleExports) & {
-  c: WebpackRequireCache;
-  d: (module: ModuleExports, exports: Record<string, () => unknown>) => void;
+export type WebpackRequire = ((e: number) => unknown) & {
+  c: Record<string | number, RawModule>;
+  d: (module: unknown, exports: Record<string, () => unknown>) => void;
   m: WebpackChunk;
 };
 
@@ -46,9 +39,8 @@ export type WebpackChunkGlobal = {
 
 export type Filter = (module: RawModule) => boolean | ModuleExports;
 
-export type RawLazyCallback<T extends RawModule = RawModule> = (module: T) => void;
-export type LazyCallback<T extends ModuleExports = ModuleExports> = (module: T) => void;
-export type LazyListener<T extends RawModule = RawModule> = [Filter, RawLazyCallback<T>];
+export type LazyCallback<T> = (module: T) => void;
+export type LazyListener<T = unknown> = [Filter, LazyCallback<RawModule<T>>];
 
 export interface RegexReplacement {
   match: RegExp | string;

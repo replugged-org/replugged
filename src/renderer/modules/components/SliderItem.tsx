@@ -1,4 +1,5 @@
 import type React from "react";
+import type { ReactComponent } from "src/types";
 import { FormItem } from ".";
 import { filters, waitForModule } from "../webpack";
 
@@ -39,13 +40,11 @@ interface SliderCompProps {
   getAriaValueText?: (value: number) => void;
 }
 
-type SliderCompType = React.ComponentType<React.PropsWithChildren<SliderCompProps>> & {
-  defaultProps: SliderCompProps;
-};
-
-const SliderComp = (await waitForModule(filters.bySource(".moveGrabber=")).then((mod) =>
-  Object.values(mod).find((x) => x?.defaultProps && "stickToMarkers" in x.defaultProps),
-)) as SliderCompType;
+const SliderComp = await waitForModule<Record<string, ReactComponent<SliderItemProps>>>(
+  filters.bySource(".moveGrabber="),
+).then(
+  (mod) => Object.values(mod).find((x) => x?.defaultProps && "stickToMarkers" in x.defaultProps)!,
+);
 
 interface SliderProps extends SliderCompProps {
   value?: number;

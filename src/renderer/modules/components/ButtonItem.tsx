@@ -95,9 +95,9 @@ export type ButtonType = React.ComponentType<React.PropsWithChildren<ButtonProps
   >;
 };
 
-export const Button = (await waitForModule(filters.bySource(".BorderColors=")).then((mod) =>
-  getFunctionBySource(mod as ObjectExports, "wrapperClassName"),
-)) as ButtonType;
+export const Button = await waitForModule(filters.bySource(".BorderColors=")).then(
+  (mod) => getFunctionBySource<ButtonType>(mod, "wrapperClassName")!,
+);
 
 const classes = await waitForModule<
   ObjectExports & Record<"labelRow" | "title" | "note" | "dividerDefault", string>

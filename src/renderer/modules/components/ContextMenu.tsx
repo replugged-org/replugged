@@ -1,6 +1,6 @@
 import type React from "react";
-import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack";
+import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import { sourceStrings } from "../webpack/patch-load";
 
 interface MenuProps {
   navId: string;
@@ -135,9 +135,11 @@ const componentMap: Record<string, keyof ContextMenuType> = {
   control: "MenuControlItem",
   groupstart: "MenuGroup",
   customitem: "MenuItem",
-};
+} as const;
 
-const menuMod = await waitForModule(filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"));
+const menuMod = await waitForModule<Record<string, React.ComponentType>>(
+  filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"),
+);
 
 const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
 const source = sourceStrings[rawMod?.id].matchAll(
@@ -146,16 +148,17 @@ const source = sourceStrings[rawMod?.id].matchAll(
 
 const menuComponents = Object.values(menuMod)
   .filter((m) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
-  .reduce((components, component) => {
+  .reduce<Record<string, React.ComponentType>>((components, component) => {
     components[component.name] = component;
     return components;
   }, {});
 
 const Menu = {
-  ContextMenu: getFunctionBySource(menuMod as ObjectExports, "getContainerProps"),
+  ContextMenu: getFunctionBySource(menuMod, "getContainerProps"),
 } as ContextMenuType;
 
 for (const [, identifier, type] of source) {
+  // @ts-expect-error Doesn't like that the generic changes
   Menu[componentMap[type]] = menuComponents[identifier];
 }
 

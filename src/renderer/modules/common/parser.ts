@@ -62,8 +62,7 @@ type ParseFn = (
   postProcess?: (tree: unknown, inline: boolean) => void,
 ) => React.ReactElement;
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type Parser = {
+export interface Parser {
   defaultRules: DefaultRules;
   guildEventRules: Omit<DefaultRules, "codeBlock" | "blockQuote" | "br">;
   parse: ParseFn;
@@ -82,8 +81,6 @@ export type Parser = {
   parseTopicToAST: ParseFn;
   reactParserFor(rules: SimpleMarkdown.ParserRules): ParseFn;
   astParserFor(rules: SimpleMarkdown.ParserRules): ParseFn;
-};
+}
 
-const props = ["parse", "parseTopic"];
-
-export default await waitForProps<(typeof props)[number], Parser>(props);
+export default await waitForProps<Parser>("parse", "parseTopic");

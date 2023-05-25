@@ -1,5 +1,5 @@
 import type { Promisable } from "type-fest";
-import { patchPlaintext } from "../modules/webpack";
+import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 
 import { default as experimentsPlaintext } from "../coremods/experiments/plaintextPatches";
 import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";

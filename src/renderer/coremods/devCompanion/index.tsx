@@ -1,12 +1,7 @@
 import { Logger } from "../../modules/logger";
-import {
-  getByProps,
-  getBySource,
-  getByValue,
-  getModule,
-  sourceStrings,
-} from "src/renderer/modules/webpack";
+import { getByProps, getBySource, getByValue, getModule } from "src/renderer/modules/webpack";
 import { Filter } from "src/types";
+import { sourceStrings } from "src/renderer/modules/webpack/patch-load";
 
 const PORT = 8485;
 

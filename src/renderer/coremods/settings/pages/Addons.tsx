@@ -16,16 +16,22 @@ import "./Addons.css";
 import Icons from "../icons";
 import { Logger, plugins, themes, webpack } from "@replugged";
 
-const logger = Logger.coremod("AddonSettings");
-const Breadcrumbs = webpack.getBySource("().breadcrumbFinalWrapper") as React.ComponentType<{
+interface Breadcrumb {
+  id: string;
+  label: string;
+}
+
+interface BreadcrumbProps {
   activeId: string;
-  breadcrumbs: Array<{ id: string; label: string }>;
-  onBreadcrumbClick: (breadcrumb: { id: string; label: string }) => void;
-  renderCustomBreadcrumb: (
-    breadcrumb: { id: string; label: string },
-    active: boolean,
-  ) => React.ReactElement;
-}>;
+  breadcrumbs: Breadcrumb[];
+  onBreadcrumbClick: (breadcrumb: Breadcrumb) => void;
+  renderCustomBreadcrumb: (breadcrumb: Breadcrumb, active: boolean) => React.ReactNode;
+}
+
+const logger = Logger.coremod("AddonSettings");
+const Breadcrumbs = webpack.getBySource<React.ComponentType<BreadcrumbProps>>(
+  "().breadcrumbFinalWrapper",
+)!;
 
 const BreadcrumbClasses: {
   spinner: string;

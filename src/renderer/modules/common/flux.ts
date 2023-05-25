@@ -142,8 +142,7 @@ export declare class PersistedStore extends Store {
 export type DeviceSettingsStore = typeof PersistedStore;
 export type OfflineCacheStore = typeof PersistedStore;
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type Flux = {
+export interface Flux {
   DeviceSettingsStore: DeviceSettingsStore;
   Emitter: Emitter;
   OfflineCacheStore: OfflineCacheStore;
@@ -158,8 +157,6 @@ export type Flux = {
   destroy(): void;
   initialize(): void;
   get initialized(): Promise<boolean | undefined>;
-};
+}
 
-const props = ["Store", "connectStores"];
-
-export default await waitForProps<(typeof props)[number], Flux>(props);
+export default await waitForProps<Flux>("Store", "connectStores");
