@@ -4,7 +4,7 @@ import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../w
 
 interface MenuProps {
   navId: string;
-  children: React.ReactNode;
+  children: React.ReactElement | React.ReactElement[];
   onClose: () => void;
   variant?: string;
   className?: string;
@@ -15,7 +15,7 @@ interface MenuProps {
 }
 
 interface MenuGroupProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   label?: string;
   className?: string;
   color?: string;
@@ -110,19 +110,25 @@ interface MenuCompositeControlItemProps {
   showDefaultFocus?: boolean;
 }
 
-export type ContextMenuType = Record<string, unknown> & {
-  ContextMenu: React.ComponentType<MenuProps>;
-  MenuSeparator: React.ComponentType;
-  MenuGroup: React.ComponentType<MenuGroupProps>;
-  MenuItem: React.ComponentType<
-    MenuItemProps | MenuCustomItemProps | MenuSubmenuListItemProps | MenuSubmenuItemProps
-  >;
-  MenuCheckboxItem: React.ComponentType<MenuCheckboxItemProps>;
-  MenuRadioItem: React.ComponentType<MenuRadioItemProps>;
-  MenuControlItem: React.ComponentType<MenuControlItemProps | MenuCompositeControlItemProps>;
+export type ContextMenuProps = Record<string, unknown> & {
+  ContextMenu: MenuProps;
+  MenuSeparator: unknown;
+  MenuGroup: MenuGroupProps;
+  MenuItem: MenuItemProps | MenuCustomItemProps | MenuSubmenuListItemProps | MenuSubmenuItemProps;
+  MenuCheckboxItem: MenuCheckboxItemProps;
+  MenuRadioItem: MenuRadioItemProps;
+  MenuControlItem: MenuControlItemProps | MenuCompositeControlItemProps;
 };
 
-const componentMap: Record<string, string> = {
+export type ContextMenuType = {
+  [K in keyof ContextMenuProps]: React.ComponentType<ContextMenuProps[K]>;
+};
+
+export type ContextMenuElements = {
+  [K in keyof ContextMenuProps]: React.ReactElement<ContextMenuProps[K]>;
+};
+
+const componentMap: Record<string, keyof ContextMenuType> = {
   separator: "MenuSeparator",
   checkbox: "MenuCheckboxItem",
   radio: "MenuRadioItem",

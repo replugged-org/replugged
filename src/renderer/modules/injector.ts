@@ -1,7 +1,9 @@
 import type { ObjectExports } from "../../types/webpack";
 import type { AnyFunction } from "../../types/util";
 import type { GetButtonItem } from "../../types/coremods/message";
+import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
+import { addContextMenuItem } from "../coremods/contextMenu";
 
 enum InjectionTypes {
   Before,
@@ -304,6 +306,56 @@ export class Injector {
      */
     addPopoverButton: (item: GetButtonItem) => {
       const uninjector = addButton(item);
+      this.#uninjectors.add(uninjector);
+      return uninjector;
+    },
+
+    /**
+     * A utility function to add an item to any context menu.
+     * By default, items are placed in a group for custom items, though that can be customized with `sectionId` and `indexInSection`
+     * @param navId The id of the menu to add to
+     * @param item The function that creates the item to add
+     * @param sectionId — The number of the section to add to. Defaults to replugged's section
+     * @param indexInSection — The index in the section to add to. Defaults to the end position
+     * @returns A callback to de-register the function
+     *
+     * @example
+     * ```
+     * import { Injector, components, types } from "replugged";
+     * const { ContextMenu: { MenuItem } } = components;
+     * const { ContextMenuTypes } = types;
+     *
+     * const injector = new Injector();
+     *
+     * export function start() {
+     *   injector.utils.addMenuItem(ContextMenuTypes.UserContext,  // Right-clicking a user
+     *     (data, menu) => {
+     *       return <MenuItem
+     *         id="my-item"
+     *         label="An Item!"
+     *         action={() => console.log(data)}
+     *       />
+     *     }
+     *   )
+     * }
+     *
+     * export function stop() {
+     *   injector.uninjectAll();
+     * }
+     * ```
+     */
+    addMenuItem: <T extends Record<string, unknown> = Record<string, unknown>>(
+      navId: ContextMenuTypes,
+      item: GetContextItem<T>,
+      sectionId = -2, // Replugged's group
+      indexInSection = Infinity, // Last item
+    ) => {
+      const uninjector = addContextMenuItem(
+        navId,
+        item as GetContextItem,
+        sectionId,
+        indexInSection,
+      );
       this.#uninjectors.add(uninjector);
       return uninjector;
     },
