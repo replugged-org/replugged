@@ -9,7 +9,7 @@ import { extname, join } from "path";
 import { ipcMain, shell } from "electron";
 import { RepluggedIpcChannels, type RepluggedTheme } from "../../types";
 import { theme } from "../../types/addon";
-import { CONFIG_PATHS } from "src/util";
+import { CONFIG_PATHS } from "src/util.mjs";
 import type { Dirent, Stats } from "fs";
 
 const THEMES_DIR = CONFIG_PATHS.themes;

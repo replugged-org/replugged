@@ -1,5 +1,6 @@
 import type React from "react";
 import { filters, waitForModule } from "../webpack";
+import type { Variant } from "./Text";
 
 const Types = {
   WARNING: 0,
@@ -12,7 +13,7 @@ interface NoticeProps {
   children: React.ReactNode;
   messageType: (typeof Types)[keyof typeof Types];
   textColor?: string;
-  textVariant?: string;
+  textVariant?: Variant;
   className?: string;
 }
 

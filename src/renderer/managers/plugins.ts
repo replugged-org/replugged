@@ -83,6 +83,11 @@ export async function start(id: string): Promise<void> {
     }
 
     if (plugin.hasCSS) {
+      if (styleElements.has(plugin.manifest.id)) {
+        // Remove old style element in case it wasn't removed properly
+        styleElements.get(plugin.manifest.id)?.remove();
+      }
+
       const el = loadStyleSheet(
         `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
       );

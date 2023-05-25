@@ -1,37 +1,36 @@
 import { waitForProps } from "../webpack";
-import { Channel } from "discord-types/general";
+import type { Channel } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
-export interface LastChannelFollowingDestination {
+interface LastChannelFollowingDestination {
   channelId: string;
   guildId: string;
 }
 
 export interface SelectedChannelStore {
-  getChannelId: (guildId?: string) => string | undefined;
+  getChannelId: (guildId: string, fallbackToDefault?: boolean) => string | undefined;
   getCurrentlySelectedChannelId: (guildId?: string) => string | undefined;
   getLastChannelFollowingDestination: () => LastChannelFollowingDestination;
   getLastSelectedChannelId: (guildId?: string) => string | undefined;
   getLastSelectedChannels: (guildId: string) => string | undefined;
-  getMostRecentSelectedTextChannelId: (guildId?: string) => string | undefined;
-  getVoiceChannelId: () => string | undefined;
+  getMostRecentSelectedTextChannelId: (guildId?: string) => string | null;
+  getVoiceChannelId: () => string | null;
 }
 
 export interface ChannelStore {
-  getAllThreadsForParent(channelId?: string): Channel[];
+  getAllThreadsForParent(channelId: string): Channel[];
   getBasicChannel(channelId: string): Channel | undefined;
   getChannel(channelId: string): Channel | undefined;
   getDMFromUserId(userId: string): string | undefined;
   getDMUserIds(): string[];
-  getGuildChannelsVersion(guildId?: string): number;
+  getGuildChannelsVersion(guildId: string): number;
   getInitialOverlayState(): Record<string, Channel>;
-  getMutableBasicGuildChannelsForGuild(guildId?: string): Record<string, Channel>;
-  getMutableGuildChannelsForGuild(guildId?: string): Record<string, Channel>;
+  getMutableBasicGuildChannelsForGuild(guildId: string): Record<string, Channel>;
+  getMutableGuildChannelsForGuild(guildId: string): Record<string, Channel>;
   getMutablePrivateChannels(): Record<string, Channel>;
   getPrivateChannelsVersion(): number;
   getSortedPrivateChannels(): Channel[];
   hasChannel(channelId: string): boolean;
-  hasRestoredGuild(guildId: string): boolean;
   loadAllGuildAndPrivateChannelsFromDisk(): Record<string, Channel>;
 }
 

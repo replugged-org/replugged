@@ -3,7 +3,12 @@ import type { ReactComponent } from "src/types";
 import { FormItem } from ".";
 import { filters, waitForModule } from "../webpack";
 
-export interface SliderCompProps {
+const MarkerPositions = {
+  ABOVE: 0,
+  BELOW: 1,
+} as const;
+
+interface SliderCompProps {
   disabled?: boolean;
   markers?: number[];
   stickToMarkers?: boolean;
@@ -15,21 +20,25 @@ export interface SliderCompProps {
   mini?: boolean;
   hideBubble?: boolean;
   keyboardStep?: number;
+  markerPosition?: (typeof MarkerPositions)[keyof typeof MarkerPositions];
+  orientation?: "vertical" | "horizontal";
+  "aria-hidden"?: boolean;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
   barStyles?: React.CSSProperties;
   fillStyles?: React.CSSProperties;
   grabberStyles?: React.CSSProperties;
   className?: string;
   barClassName?: string;
   grabberClassName?: string;
-  onValueChange?: (e: number) => void;
-  asValueChanges?: (e: number) => void;
-  onValueRender?: (e: number) => string;
-  onMarkerRender?: (e: number) => string;
+  onValueChange?: (value: number) => void;
+  asValueChanges?: (value: number) => void;
+  onValueRender?: (value: number) => string;
+  onMarkerRender?: (value: number) => string;
+  renderMarker?: (marker: number) => React.ReactElement;
+  getAriaValueText?: (value: number) => void;
 }
-
-export type SliderCompType = React.ComponentType<SliderCompProps> & {
-  defaultProps: SliderCompProps;
-};
 
 const SliderComp = await waitForModule<Record<string, ReactComponent<SliderItemProps>>>(
   filters.bySource(".moveGrabber="),
@@ -37,16 +46,19 @@ const SliderComp = await waitForModule<Record<string, ReactComponent<SliderItemP
   (mod) => Object.values(mod).find((x) => x?.defaultProps && "stickToMarkers" in x.defaultProps)!,
 );
 
-export interface SliderProps extends SliderCompProps {
+interface SliderProps extends SliderCompProps {
   value?: number;
-  onChange?: (e: number) => void;
+  onChange?: (value: number) => void;
 }
 
-export type SliderType = ReactComponent<SliderProps>;
+export type SliderType = React.FC<SliderProps> & {
+  MarkerPositions: typeof MarkerPositions;
+};
 
 export const Slider = ((props) => {
   return <SliderComp initialValue={props.value} onValueChange={props.onChange} {...props} />;
 }) as SliderType;
+Slider.MarkerPositions = MarkerPositions;
 
 interface SliderItemProps extends SliderProps {
   note?: string;

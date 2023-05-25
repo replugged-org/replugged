@@ -1,18 +1,45 @@
 import { waitForProps } from "../webpack";
+import type SimpleMarkdown from "simple-markdown";
 
-interface State {
-  prevCapture: RegExpExecArray | null;
-}
+type DefaultRules = Pick<
+  SimpleMarkdown.DefaultRules,
+  | "newline"
+  | "paragraph"
+  | "escape"
+  | "blockQuote"
+  | "link"
+  | "autolink"
+  | "url"
+  | "strong"
+  | "em"
+  | "u"
+  | "br"
+  | "text"
+  | "inlineCode"
+  | "codeBlock"
+  | "heading"
+  | "list"
+  | "looseEm"
+> & {
+  emoticon: SimpleMarkdown.DefaultInRule;
+  roleMention: SimpleMarkdown.DefaultInRule;
+  mention: SimpleMarkdown.DefaultInRule;
+  channelMention: SimpleMarkdown.DefaultInRule;
+  channelOrMessageUrl: SimpleMarkdown.DefaultInRule;
+  commandMention: SimpleMarkdown.DefaultInRule;
+  emoji: SimpleMarkdown.DefaultInRule;
+  customEmoji: SimpleMarkdown.DefaultInRule;
+  timestamp: SimpleMarkdown.DefaultInRule;
+  s: SimpleMarkdown.DefaultInRule;
+  spoiler: SimpleMarkdown.DefaultInRule;
+  staticRouteLink: SimpleMarkdown.DefaultInRule;
+  highlight: SimpleMarkdown.DefaultInRule;
+  guild: SimpleMarkdown.DefaultInRule;
+  channel: SimpleMarkdown.DefaultInRule;
+  message: SimpleMarkdown.DefaultInRule;
+};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface Rule<T = any> {
-  order: number;
-  match: (source: string, state: State) => RegExpExecArray | null;
-  parse: (match: RegExpExecArray) => T;
-  react: (props: T, ...rest: unknown[]) => React.ReactElement;
-}
-
-interface ParseOpts {
+interface ParseOptions {
   allowLinks?: boolean;
   channelId?: string;
   mentionChannels?: string[];
@@ -28,20 +55,32 @@ interface ParseOpts {
   returnMentionIds?: boolean;
 }
 
-type ParseFn = (text: string, inline?: boolean, opts?: ParseOpts) => React.ReactElement;
+type ParseFn = (
+  text?: string,
+  inline?: boolean,
+  opts?: ParseOptions,
+  postProcess?: (tree: unknown, inline: boolean) => void,
+) => React.ReactElement;
 
 export interface Parser {
+  defaultRules: DefaultRules;
+  guildEventRules: Omit<DefaultRules, "codeBlock" | "blockQuote" | "br">;
   parse: ParseFn;
-  parseTopic: ParseFn;
-  parseEmbedTitle: ParseFn;
-  parseInlineReply: ParseFn;
-  parseGuildVerificationFormRule: ParseFn;
-  parseGuildEventDescription: ParseFn;
   parseAutoModerationSystemMessage: ParseFn;
+  parseAutoModerationSystemMessageToAST: ParseFn;
+  parseEmbedTitle: ParseFn;
+  parseEmbedTitleToAST: ParseFn;
   parseForumPostGuidelines: ParseFn;
   parseForumPostMostRecentMessage: ParseFn;
-  reactParserFor(rules: Record<string, Rule>): ParseFn;
-  defaultRules: Record<string, Rule>;
+  parseGuildEventDescription: ParseFn;
+  parseGuildVerificationFormRule: ParseFn;
+  parseInlineReply: ParseFn;
+  parseInlineReplyToAST: ParseFn;
+  parseToAST: ParseFn;
+  parseTopic: ParseFn;
+  parseTopicToAST: ParseFn;
+  reactParserFor(rules: SimpleMarkdown.ParserRules): ParseFn;
+  astParserFor(rules: SimpleMarkdown.ParserRules): ParseFn;
 }
 
 export default await waitForProps<Parser>("parse", "parseTopic");

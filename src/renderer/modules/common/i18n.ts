@@ -1,8 +1,8 @@
 import { waitForProps } from "../webpack";
 import type EventEmitter from "events";
 
+import type SimpleMarkdown from "simple-markdown";
 import type { Primitive } from "type-fest";
-import type { Rule } from "./parser";
 
 type LocaleCallback = (locale?: string) => void;
 type ProxyCallback = (context?: ProviderContext) => ProxyConstructor;
@@ -208,7 +208,7 @@ export interface I18n extends EventEmitter {
   getLocale: () => string;
   getLocaleInfo: () => Language;
   setLocale: (locale?: string) => void;
-  setUpdateRules: (rules: Record<string, Rule>) => void;
+  setUpdateRules: (rules: SimpleMarkdown.ParserRules) => void;
   updateMessagesForExperiment: (
     locale: string,
     callback: (messages?: Messages) => Messages,

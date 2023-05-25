@@ -15,11 +15,12 @@ export interface ModalProps {
 
 export interface ModalOptions {
   modalKey?: string;
+  instant?: boolean;
   onCloseRequest?: () => void;
   onCloseCallback?: () => void;
 }
 
-export interface ModalClasses {
+interface ModalClasses {
   Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
   Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
   Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
@@ -51,20 +52,16 @@ const defaultConfirmProps: Partial<AlertProps> = {
   cancelText: "Cancel",
 };
 
-export interface Modal {
+export type Modal = {
   openModal: (
     render: (props: ModalProps) => React.ReactNode,
     options?: ModalOptions,
     contextKey?: string,
   ) => string;
   closeModal: (modalKey: string, contextKey?: string) => void;
-  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
-  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
-  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
-  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
   alert: (props: AlertProps) => void;
   confirm: (props: AlertProps) => Promise<boolean | null>;
-}
+} & ModalClasses;
 
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
 const alertMod = await waitForModule<AlertMod>(filters.byProps("show", "close"));

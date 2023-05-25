@@ -9,6 +9,9 @@ interface TextAreaProps {
   resizeable?: boolean;
   flex?: boolean;
   autosize?: boolean;
+  spellCheck?: boolean;
+  showCharacterCount?: boolean;
+  showRemainingCharacterCount?: boolean;
   minLength?: number;
   maxLength?: number;
   rows?: number;
@@ -16,12 +19,14 @@ interface TextAreaProps {
   placeholder?: string;
   error?: string;
   value?: string;
+  id?: string;
+  inputRef?: React.Ref<HTMLInputElement>;
   className?: string;
-  onChange?: (e: string) => void;
-  onInvalid?: (e: React.FormEvent<HTMLInputElement>) => void;
-  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange?: (value: string) => void;
+  onInvalid?: React.FormEventHandler<HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
 export type TextAreaType = React.ComponentType<TextAreaProps> & {

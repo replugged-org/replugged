@@ -11,20 +11,25 @@ interface RadioOptionType {
   color?: string;
   tooltipText?: string;
   tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
+  icon?: React.ReactNode;
+  collapsibleContent?: React.ReactNode;
 }
 
 interface RadioProps {
   options: RadioOptionType[];
   value?: string;
-  onChange: (e: RadioOptionType) => void;
+  onChange: (option: RadioOptionType) => void;
   disabled?: boolean;
   size?: string;
   radioPosition?: "left" | "right";
   withTransparentBackground?: boolean;
+  orientation?: "vertical" | "horizontal";
+  "aria-labelledby"?: string;
   className?: string;
   itemInfoClassName?: string;
   itemTitleClassName?: string;
   radioItemClassName?: string;
+  collapsibleClassName?: string;
 }
 
 export type RadioType = React.ComponentType<RadioProps> & {

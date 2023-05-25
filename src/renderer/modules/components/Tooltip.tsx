@@ -23,7 +23,7 @@ interface TooltipEnums {
   Aligns: typeof Aligns;
   Positions: typeof Positions;
   Colors: Record<
-    "PRIMARY" | "BLACK" | "GREY" | "BRAND" | "GREEN" | "YELLOW" | "RED" | "CUSTOM",
+    "PRIMARY" | "BLACK" | "GREY" | "BRAND" | "GREEN" | "YELLOW" | "RED" | "CUSTOM" | "PREMIUM",
     string
   >;
 }
@@ -31,8 +31,8 @@ interface TooltipEnums {
 interface BaseTooltipProps {
   text: string;
   color?: string;
-  position?: string;
-  align?: string;
+  position?: (typeof Positions)[keyof typeof Positions];
+  align?: (typeof Aligns)[keyof typeof Aligns];
   spacing?: number;
   delay?: number;
   allowOverflow?: boolean;
@@ -40,16 +40,19 @@ interface BaseTooltipProps {
   forceOpen?: boolean;
   hide?: boolean;
   hideOnClick?: boolean;
+  clickableOnMobile?: boolean;
   shouldShow?: boolean;
+  "aria-label"?: string;
+  className?: string;
   tooltipClassName?: string;
   tooltipContentClassName?: string;
-  className?: string;
   style?: React.CSSProperties;
-  onAnimationRest?: (e: object, t: object) => void;
+  onTooltipShow?: () => void;
+  onAnimationRest?: (result: unknown, spring: unknown, item?: unknown) => void;
 }
 
 interface TooltipFunctionChildren extends BaseTooltipProps {
-  children: (props: React.HTMLAttributes<HTMLSpanElement>) => React.ReactNode;
+  children: (props: React.ComponentPropsWithoutRef<"span">) => React.ReactNode;
 }
 
 interface TooltipCustom extends BaseTooltipProps {

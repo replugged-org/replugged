@@ -2,15 +2,15 @@ import type React from "react";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 interface ImageData {
-  height?: number;
-  width?: number;
-  src?: string;
+  height: number;
+  width: number;
+  src: string;
   position?: "left" | "right";
 }
 
 interface FormNoticeProps {
   title?: React.ReactNode;
-  body?: React.ReactNode;
+  body: React.ReactNode;
   type?: string;
   imageData?: ImageData;
   button?: React.ReactNode;

@@ -3,14 +3,14 @@ import { filters, getFunctionBySource, waitForModule } from "../webpack";
 export interface ContextMenu {
   close: () => void;
   open: (
-    event: React.UIEvent,
-    render?: ContextMenu,
+    event: React.MouseEvent,
+    render?: (props: Record<string, unknown>) => React.ReactNode,
     options?: { enableSpellCheck?: boolean },
     renderLazy?: Promise<ContextMenu>,
   ) => void;
   openLazy: (
-    event: React.UIEvent,
-    renderLazy?: Promise<ContextMenu>,
+    event: React.MouseEvent,
+    renderLazy?: () => Promise<(props: Record<string, unknown>) => React.ReactNode>,
     options?: { enableSpellCheck?: boolean },
   ) => void;
 }

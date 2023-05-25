@@ -107,3 +107,4 @@ export * from "./webpack";
 export * from "./installer";
 export * from "./coremods/message";
 export * from "./coremods/settings";
+export * from "./coremods/contextMenu";
