@@ -13,7 +13,7 @@ import { logError } from "./util";
 export function getExports<T>(m: RawModule): T | undefined {
   if (typeof m.exports === "object" && m.exports) {
     if (Object.keys(m.exports).length === 1) {
-      for (const key of ["Z", "default"] as const) {
+      for (const key of ["Z", "ZP", "default"] as const) {
         if (key in m.exports) return (m.exports as Record<typeof key, T>)[key];
       }
     }
