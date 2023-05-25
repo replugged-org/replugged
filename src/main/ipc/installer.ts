@@ -95,7 +95,7 @@ async function store(id: string): Promise<CheckResultSuccess | CheckResultFailur
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
   const asarUrl = `${manifestUrl}.asar`;
 
-  const res = await fetch(`${STORE_BASE_URL}/${id}`);
+  const res = await fetch(manifestUrl);
   if (!res.ok) {
     return {
       success: false,
