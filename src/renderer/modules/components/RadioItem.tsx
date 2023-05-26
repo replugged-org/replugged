@@ -32,7 +32,7 @@ interface RadioProps {
   collapsibleClassName?: string;
 }
 
-export type RadioType = React.ComponentType<RadioProps> & {
+export type RadioType = React.FC<RadioProps> & {
   Sizes: Record<"NOT_SET" | "NONE" | "SMALL" | "MEDIUM", string>;
 };
 

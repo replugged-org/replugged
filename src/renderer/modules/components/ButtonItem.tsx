@@ -46,8 +46,8 @@ interface ButtonLinkProps extends LinkProps {
   innerClassName?: string;
 }
 
-export type ButtonType = React.ComponentType<React.PropsWithChildren<ButtonProps>> & {
-  Link: React.ComponentType<React.PropsWithChildren<ButtonLinkProps>>;
+export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
+  Link: React.FC<React.PropsWithChildren<ButtonLinkProps>>;
   Looks: Record<"FILLED" | "INVERTED" | "OUTLINED" | "LINK" | "BLANK", string>;
   Colors: Record<
     | "BRAND"

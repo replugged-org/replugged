@@ -29,7 +29,7 @@ interface BreadcrumbProps {
 }
 
 const logger = Logger.coremod("AddonSettings");
-const Breadcrumbs = webpack.getBySource<React.ComponentType<BreadcrumbProps>>(
+const Breadcrumbs = webpack.getBySource<React.ComponentClass<BreadcrumbProps>>(
   "().breadcrumbFinalWrapper",
 )!;
 

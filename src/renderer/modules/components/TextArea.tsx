@@ -29,7 +29,7 @@ interface TextAreaProps {
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
-export type TextAreaType = React.ComponentType<TextAreaProps> & {
+export type TextAreaType = React.ComponentClass<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 

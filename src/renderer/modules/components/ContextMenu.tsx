@@ -121,7 +121,7 @@ export type ContextMenuProps = Record<string, unknown> & {
 };
 
 export type ContextMenuType = {
-  [K in keyof ContextMenuProps]: React.ComponentType<ContextMenuProps[K]>;
+  [K in keyof ContextMenuProps]: React.FC<ContextMenuProps[K]>;
 };
 
 export type ContextMenuElements = {

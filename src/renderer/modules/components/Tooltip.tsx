@@ -59,7 +59,7 @@ interface TooltipCustom extends BaseTooltipProps {
   children: React.ReactNode;
 }
 
-type OriginalTooltipType = React.FC<TooltipFunctionChildren> & TooltipEnums;
+type OriginalTooltipType = React.ComponentClass<TooltipFunctionChildren> & TooltipEnums;
 
 export type TooltipType = React.FC<TooltipCustom> & TooltipEnums;
 

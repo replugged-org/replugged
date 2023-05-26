@@ -18,12 +18,15 @@ interface FlexChildProps extends React.ComponentPropsWithoutRef<"div"> {
   wrap?: boolean;
 }
 
-export type FlexType = React.ComponentType<React.PropsWithChildren<FlexProps>> & {
+export type FlexType = React.FC<React.PropsWithChildren<FlexProps>> & {
+  defaultProps: FlexProps;
   Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
   Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
   Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
   Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
-  Child: React.ComponentType<React.PropsWithChildren<FlexChildProps>>;
+  Child: React.FC<React.PropsWithChildren<FlexChildProps>> & {
+    defaultProps: FlexChildProps;
+  };
 };
 
 export default await waitForModule<FlexType>(filters.bySource("HORIZONTAL_REVERSE:"));
