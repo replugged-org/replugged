@@ -19,11 +19,11 @@ export type GetContextItem<T extends Record<string, unknown> = Record<string, un
 ) => RawContextItem | ContextItem | undefined | void;
 
 /**
- * An enum for the navIds of context menus across discord
+ * An enum for the navIds of context menus across Discord
  * @enum {string}
  */
 export enum ContextMenuTypes {
-  /** Clicking the  user icon in the bottom left */
+  /** Click the user icon in the bottom left */
   Account = "account",
   AddQuestions = "add-questions",
   ApplicationDirectoryProfile = "application-directory-profile",
@@ -52,7 +52,7 @@ export enum ContextMenuTypes {
   /** Click the triple dots icon for a user in the home screen */
   FriendRow = "friend-row",
   GameContext = "game-context",
-  /** Right click a group chat */
+  /** Right-click a group chat */
   GdmContext = "gdm-context",
   /** Right-click "Browse Channels" */
   GuildBrowseChannelsContextMenu = "guild-browse-channels-context-menu",
@@ -74,7 +74,7 @@ export enum ContextMenuTypes {
   ManageStreams = "manage-streams",
   MemberApplicationContextMenu = "member-application-context-menu",
   MentionsFilter = "mentions-filter",
-  /** right-click message */
+  /** Right-click message */
   Message = "message",
   /** Click the triple dots on a message popover */
   MessageActions = "message-actions",

@@ -195,22 +195,23 @@ function after<
  * @example
  * ```
  * import { Injector, webpack } from "replugged";
- * const inject = new Injector();
  *
- * async function start() {
+ * const injector = new Injector();
+ *
+ * export async function start() {
  *   const typingMod = (await webpack.waitForModule<{
  *     startTyping: (channelId: string) => void;
  *   }>(
- *     webpack.filters.byProps('startTyping')
+ *     webpack.filters.byProps("startTyping")
  *   ));
  *
- *   inject.after(typingMod, 'startTyping', ([channel]) => {
+ *   injector.after(typingMod, "startTyping", ([channel]) => {
  *     console.log(`Typing in channel ID ${channel}`);
  *   });
  * }
  *
- * function stop() {
- *   inject.uninjectAll();
+ * export function stop() {
+ *   injector.uninjectAll();
  * }
  * ```
  */
@@ -282,9 +283,10 @@ export class Injector {
      * @example
      * ```
      * import { Injector, webpack } from "replugged";
-     * const inject = new Injector();
      *
-     * function start() {
+     * const injector = new Injector();
+     *
+     * export function start() {
      *   injector.utils.addPopoverButton((msg: Message, channel: Channel) => {
      *     return {
      *       label: "Click the button!",
@@ -299,7 +301,7 @@ export class Injector {
      *   });
      * }
      *
-     * function stop() {
+     * export function stop() {
      *   injector.uninjectAll();
      * }
      * ```
