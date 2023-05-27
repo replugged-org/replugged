@@ -9,13 +9,13 @@ interface ButtonPopoverProps extends React.ComponentPropsWithoutRef<"div"> {
 
 export interface IconButtonProps extends Omit<ButtonPopoverProps, "onClick"> {
   label: string;
-  channel: Channel;
-  message: Message;
+  channel?: Channel;
+  message?: Message;
   onClick: (channel: Channel, message: Message, event: React.MouseEvent<HTMLDivElement>) => void;
   ariaLabel?: string;
   tooltipText?: string;
   tooltipColor?: string;
-  icon?: React.ReactNode;
+  icon: React.ReactNode;
   iconProps?: Record<string, unknown>;
   key?: string;
   separator?: boolean;
