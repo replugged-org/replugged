@@ -4,7 +4,7 @@ import { waitForProps } from "../webpack";
 
 const classes = await waitForProps<
   Record<"labelRow" | "title" | "note" | "dividerDefault", string>
->("labelRow", "title", "note", "dividerDefault");
+>("dividerDefault");
 
 interface CategoryProps {
   title: string;

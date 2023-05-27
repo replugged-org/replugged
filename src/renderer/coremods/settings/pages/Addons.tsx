@@ -29,18 +29,14 @@ interface BreadcrumbProps {
 }
 
 const logger = Logger.coremod("AddonSettings");
+
 const Breadcrumbs = webpack.getBySource<React.ComponentClass<BreadcrumbProps>>(
   "().breadcrumbFinalWrapper",
 )!;
-
-const BreadcrumbClasses: {
-  spinner: string;
-  backButton: string;
-  backArrow: string;
-  breadcrumbs: string;
-  breadcrumbActive: string;
-  breadcrumbInactive: string;
-} = webpack.getBySource("breadcrumbActive")!;
+const BreadcrumbClasses =
+  webpack.getByProps<Record<"breadcrumbActive" | "breadcrumbInactive" | "breadcrumbs", string>>(
+    "breadcrumbActive",
+  )!;
 
 export enum AddonType {
   Plugin = "plugin",
