@@ -95,7 +95,7 @@ interface MenuControlItemProps {
       disabled: boolean;
       isFocused: boolean;
     },
-    ref?: React.RefObject<{ activate: () => boolean; blur: () => void; focus: () => void }>,
+    ref?: React.Ref<{ activate: () => boolean; blur: () => void; focus: () => void }>,
   ) => React.ReactElement;
   disabled?: boolean;
   showDefaultFocus?: boolean;

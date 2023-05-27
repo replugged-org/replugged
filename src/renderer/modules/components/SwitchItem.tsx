@@ -6,7 +6,7 @@ interface SwitchProps {
   onChange: (value: boolean) => void;
   disabled?: boolean;
   id?: string;
-  innerRef?: React.Ref<HTMLInputElement>;
+  innerRef?: React.Ref<unknown>;
   focusProps?: Record<string, unknown>;
   className?: string;
 }
