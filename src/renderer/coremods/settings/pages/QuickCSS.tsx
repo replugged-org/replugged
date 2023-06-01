@@ -24,7 +24,7 @@ type ThemeModule = {
 function useTheme(): "light" | "dark" {
   const [theme, setTheme] = React.useState<"light" | "dark">("dark");
 
-  const themeMod = webpack.getByProps<keyof ThemeModule, ThemeModule>(
+  const themeMod = webpack.getByProps<ThemeModule>(
     "theme",
     "addChangeListener",
     "removeChangeListener",

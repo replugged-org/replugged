@@ -46,9 +46,9 @@ type SelectCompType = React.ComponentType<SelectCompProps>;
 
 const selectRgx = /.\.options,.=.\.placeholder/;
 
-const SelectComp = (await waitForModule(filters.bySource(selectRgx)).then((mod) =>
-  getFunctionBySource(mod as ObjectExports, selectRgx),
-)) as SelectCompType;
+const SelectComp = await waitForModule(filters.bySource(selectRgx)).then(
+  (mod) => getFunctionBySource<SelectCompType>(mod as ObjectExports, selectRgx)!,
+);
 
 interface SelectProps extends SelectCompProps {
   onChange?: (value: string) => void;

@@ -116,8 +116,7 @@ declare class ActionHandlers {
   private _validateDependencies: (token: string) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type FluxDispatcher = {
+export interface FluxDispatcher {
   _actionHandlers: ActionHandlers;
   _currentDispatchActionType: string | null;
   _defaultBand: Band;
@@ -150,8 +149,9 @@ export type FluxDispatcher = {
     band: Band,
     token?: string,
   ) => string;
-};
+}
 
-const props = ["_currentDispatchActionType", "_processingWaitQueue"];
-
-export default await waitForProps<(typeof props)[number], FluxDispatcher>(props);
+export default await waitForProps<FluxDispatcher>(
+  "_currentDispatchActionType",
+  "_processingWaitQueue",
+);

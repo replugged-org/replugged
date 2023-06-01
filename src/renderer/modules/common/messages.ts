@@ -325,8 +325,7 @@ export declare class ChannelMessages {
   public update: (messageId: string, callback: (message: Message) => Message) => ChannelMessages;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type MessageStore = {
+export interface MessageStore {
   focusedMessageId: (channelId: string) => string | null | undefined;
   getLastCommandMessage: (channelId: string) => Message | undefined;
   getLastEditableMessage: (channelId: string) => Message | undefined;
@@ -337,12 +336,11 @@ export type MessageStore = {
   isLoadingMessages: (channelId: string) => boolean;
   jumpedMessageId: (channelId: string) => string | null | undefined;
   whenReady: (channelId: string, callback: () => void) => void;
-};
+}
 
 export type PartialMessageStore = Pick<MessageStore, "getMessage" | "getMessages">;
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type MessageActions = {
+export interface MessageActions {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => Promise<unknown | void>;
   deleteMessage: (
@@ -432,16 +430,14 @@ export type MessageActions = {
     options: OutgoingMessageOptions,
   ) => Promise<unknown | void>;
   _tryFetchMessagesCached: (options: FetchMessagesCachedOptions) => boolean;
-};
+}
 
 export type Messages = PartialMessageStore & MessageActions;
 
-const messageActionsProps = ["sendMessage", "editMessage", "deleteMessage"];
-
-const MessageStore: MessageStore = await waitForProps(["getMessage", "getMessages"]);
+const MessageStore = await waitForProps<MessageStore>("getMessage", "getMessages");
 
 export default virtualMerge(
-  await waitForProps<(typeof messageActionsProps)[number], MessageActions>(messageActionsProps),
+  await waitForProps<MessageActions>("sendMessage", "editMessage", "deleteMessage"),
   {
     getMessage: MessageStore.getMessage,
     getMessages: MessageStore.getMessages,

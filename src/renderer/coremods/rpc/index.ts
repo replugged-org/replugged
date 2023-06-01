@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 import { Injector, Logger } from "@replugged";
-import { filters, getFunctionKeyBySource, waitForModule } from "@webpack";
+import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { Jsonifiable } from "type-fest";
 
 const injector = new Injector();

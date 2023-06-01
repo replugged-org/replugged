@@ -19,6 +19,8 @@ export type TextInputType = React.ComponentType<TextInputProps> & {
   Sizes: Record<"DEFAULT" | "MINI", string>;
 };
 
-export default await waitForModule(filters.bySource(".getIsOverFlowing")).then((mod) =>
-  Object.values(mod).find((x) => "defaultProps" in x && "maxLength" in x.defaultProps),
+export default await waitForModule<Record<string, TextInputType>>(
+  filters.bySource(".getIsOverFlowing"),
+).then(
+  (mod) => Object.values(mod).find((x) => "defaultProps" in x && "maxLength" in x.defaultProps)!,
 );

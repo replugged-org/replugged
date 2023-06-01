@@ -1,10 +1,10 @@
 import type React from "react";
-import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, sourceStrings, waitForModule } from "../webpack";
+import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import { sourceStrings } from "../webpack/patch-load";
 
 interface MenuProps {
   navId: string;
-  children: React.ReactNode;
+  children: React.ReactElement | React.ReactElement[];
   onClose: () => void;
   variant?: string;
   className?: string;
@@ -15,7 +15,7 @@ interface MenuProps {
 }
 
 interface MenuGroupProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   label?: string;
   className?: string;
   color?: string;
@@ -110,28 +110,36 @@ interface MenuCompositeControlItemProps {
   showDefaultFocus?: boolean;
 }
 
-export type ContextMenuType = Record<string, unknown> & {
-  ContextMenu: React.ComponentType<MenuProps>;
-  MenuSeparator: React.ComponentType;
-  MenuGroup: React.ComponentType<MenuGroupProps>;
-  MenuItem: React.ComponentType<
-    MenuItemProps | MenuCustomItemProps | MenuSubmenuListItemProps | MenuSubmenuItemProps
-  >;
-  MenuCheckboxItem: React.ComponentType<MenuCheckboxItemProps>;
-  MenuRadioItem: React.ComponentType<MenuRadioItemProps>;
-  MenuControlItem: React.ComponentType<MenuControlItemProps | MenuCompositeControlItemProps>;
+export type ContextMenuProps = Record<string, unknown> & {
+  ContextMenu: MenuProps;
+  MenuSeparator: unknown;
+  MenuGroup: MenuGroupProps;
+  MenuItem: MenuItemProps | MenuCustomItemProps | MenuSubmenuListItemProps | MenuSubmenuItemProps;
+  MenuCheckboxItem: MenuCheckboxItemProps;
+  MenuRadioItem: MenuRadioItemProps;
+  MenuControlItem: MenuControlItemProps | MenuCompositeControlItemProps;
 };
 
-const componentMap: Record<string, string> = {
+export type ContextMenuType = {
+  [K in keyof ContextMenuProps]: React.ComponentType<ContextMenuProps[K]>;
+};
+
+export type ContextMenuElements = {
+  [K in keyof ContextMenuProps]: React.ReactElement<ContextMenuProps[K]>;
+};
+
+const componentMap: Record<string, keyof ContextMenuType> = {
   separator: "MenuSeparator",
   checkbox: "MenuCheckboxItem",
   radio: "MenuRadioItem",
   control: "MenuControlItem",
   groupstart: "MenuGroup",
   customitem: "MenuItem",
-};
+} as const;
 
-const menuMod = await waitForModule(filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"));
+const menuMod = await waitForModule<Record<string, React.ComponentType>>(
+  filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"),
+);
 
 const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
 const source = sourceStrings[rawMod?.id].matchAll(
@@ -140,16 +148,17 @@ const source = sourceStrings[rawMod?.id].matchAll(
 
 const menuComponents = Object.values(menuMod)
   .filter((m) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
-  .reduce((components, component) => {
+  .reduce<Record<string, React.ComponentType>>((components, component) => {
     components[component.name] = component;
     return components;
   }, {});
 
 const Menu = {
-  ContextMenu: getFunctionBySource(menuMod as ObjectExports, "getContainerProps"),
+  ContextMenu: getFunctionBySource(menuMod, "getContainerProps"),
 } as ContextMenuType;
 
 for (const [, identifier, type] of source) {
+  // @ts-expect-error Doesn't like that the generic changes
   Menu[componentMap[type]] = menuComponents[identifier];
 }
 

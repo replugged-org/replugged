@@ -27,8 +27,8 @@ export type LoaderType = React.ComponentType<LoaderProps | SpinningCircleLoaderP
   Type: typeof Types;
 };
 
-const Loader = (await waitForModule(filters.bySource('"wanderingCubes"')).then((mod) =>
-  Object.values(mod).find((x) => typeof x === "function"),
-)) as LoaderType;
+const Loader = await waitForModule<Record<string, LoaderType>>(
+  filters.bySource('"wanderingCubes"'),
+).then((mod) => Object.values(mod).find((x) => typeof x === "function")!);
 
 export default Loader;

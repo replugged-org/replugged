@@ -41,10 +41,9 @@ export async function start(): Promise<void> {
     throw new Error("Could not find badges function");
   }
 
-  const { containerWithContent } = getByProps<
+  const { containerWithContent } = getByProps<{ containerWithContent: "string" }>(
     "containerWithContent",
-    Record<"containerWithContent", string>
-  >("containerWithContent")!;
+  )!;
 
   injector.after(mod, fnPropName, ([props], res) => {
     let {

@@ -1,4 +1,4 @@
-import { signalStart, waitForReady } from "../modules/webpack";
+import { signalStart, waitForReady } from "../modules/webpack/patch-load";
 import { log } from "../modules/logger";
 
 import { ready as commonReady } from "@common";
@@ -20,9 +20,7 @@ export async function start(): Promise<void> {
   await Promise.all([
     coremods.startAll(),
     plugins.startAll(),
-    themes.loadMissing().then(() => {
-      themes.loadAll();
-    }),
+    themes.loadMissing().then(themes.loadAll),
   ]);
 
   log(

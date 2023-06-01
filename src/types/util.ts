@@ -6,3 +6,5 @@ export type ObjectKey<O, T> = { [K in keyof O]: O[K] extends T ? K : never }[key
 export type ReactComponent<P> = React.ComponentType<
   React.PropsWithChildren<P & Record<string, unknown>>
 >;
+
+export type ObjectWithProps<P extends PropertyKey> = Record<P, unknown>;

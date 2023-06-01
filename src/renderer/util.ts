@@ -124,14 +124,12 @@ let transitionTo: ((route: string) => void | undefined) | undefined;
  */
 export async function goToOrJoinServer(invite: string): Promise<void> {
   if (!getInvite || !resolveInvite || !transitionTo) {
-    getInvite = getByProps<keyof GetInviteMod, GetInviteMod>("getInvite")?.getInvite;
+    getInvite = getByProps<GetInviteMod>("getInvite")?.getInvite;
     if (!getInvite) {
       throw new Error("Could not find getInvite");
     }
 
-    resolveInvite = getByProps<keyof ResolveInviteMod, ResolveInviteMod>(
-      "resolveInvite",
-    )?.resolveInvite;
+    resolveInvite = getByProps<ResolveInviteMod>("resolveInvite")?.resolveInvite;
     if (!resolveInvite) {
       throw new Error("Could not find resolveInvite");
     }
@@ -172,6 +170,11 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
   });
 }
 
+type ValType<T> =
+  | T
+  | React.ChangeEvent<HTMLInputElement>
+  | (Record<string, unknown> & { value?: T; checked?: T });
+
 export function useSetting<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
@@ -187,23 +190,28 @@ export function useSetting<
     : F extends null | undefined
     ? T[K] | undefined
     : NonNullable<T[K]> | F;
-  onChange: (newValue: T[K] | (Record<string, unknown> & { value: T[K] })) => void;
+  onChange: (newValue: ValType<T[K]>) => void;
 } {
   const initial = settings.get(key, fallback);
   const [value, setValue] = React.useState(initial);
 
   return {
     value,
-    onChange: (newValue: T[K] | (Record<string, unknown> & { value: T[K] })) => {
-      if (newValue && typeof newValue === "object" && "value" in newValue) {
-        // @ts-expect-error It doesn't understand ig
-        setValue(newValue.value as T[K]);
-        settings.set(key, newValue.value as T[K]);
-      } else {
-        // @ts-expect-error It doesn't understand ig
-        setValue(newValue);
-        settings.set(key, newValue);
-      }
+    onChange: (newValue: ValType<T[K]>) => {
+      const isObj = newValue && typeof newValue === "object";
+      const value = isObj && "value" in newValue ? newValue.value : newValue;
+      const checked = isObj && "checked" in newValue ? newValue.checked : undefined;
+      const target =
+        isObj && "target" in newValue && newValue.target && typeof newValue.target === "object"
+          ? newValue.target
+          : undefined;
+      const targetValue = target && "value" in target ? target.value : undefined;
+      const targetChecked = target && "checked" in target ? target.checked : undefined;
+      const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
+
+      // @ts-expect-error dumb
+      setValue(finalValue);
+      settings.set(key, finalValue);
     },
   };
 }
@@ -216,7 +224,7 @@ type UnionToIntersection<U> = (U extends never ? never : (k: U) => void) extends
   ? I & { all: () => I }
   : never;
 
-type ObjectType = Record<string, unknown>;
+type ObjectType = Record<never, never>;
 
 type ExtractObjectType<O extends ObjectType[]> = O extends Array<infer T>
   ? UnionToIntersection<T>
