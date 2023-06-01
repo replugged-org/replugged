@@ -56,7 +56,12 @@ function Announcement({
   return (
     <div className={classes}>
       {message}
-      <Clickable className={noticeClassMod.closeButton} onClick={() => onClose?.()}>
+      <Clickable
+        className={noticeClassMod.closeButton}
+        onClick={() => {
+          onClose?.();
+          notices.closeActiveAnnouncement();
+        }}>
         <CloseButton width={18} height={18} className={noticeClassMod.closeIcon} />
       </Clickable>
       {button ? (
