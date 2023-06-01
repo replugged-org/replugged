@@ -15,7 +15,7 @@ interface MenuProps {
   navId: string;
   children: React.ReactElement | React.ReactElement[];
   onClose: () => void;
-  variant?: string;
+  variant?: "fixed" | "flexible";
   className?: string;
   style?: React.CSSProperties;
   hideScroller?: boolean;
