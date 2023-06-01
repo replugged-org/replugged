@@ -271,9 +271,7 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
   return new Proxy(fallback, handler) as ExtractObjectType<O>;
 }
 
-interface Tree {
-  [key: string]: Tree;
-}
+export type Tree = Record<string, unknown>;
 type TreeFilter = string | ((tree: Tree) => boolean);
 
 /**
@@ -293,7 +291,7 @@ export function findInTree(
   if (maxRecursion <= 0) return undefined;
 
   if (typeof searchFilter === "string") {
-    if (Object.prototype.hasOwnProperty.call(tree, searchFilter)) return tree[searchFilter];
+    if (Object.prototype.hasOwnProperty.call(tree, searchFilter)) return tree[searchFilter] as Tree;
   } else if (searchFilter(tree)) {
     return tree;
   }
@@ -314,7 +312,7 @@ export function findInTree(
     const toWalk = walkable == null ? Object.keys(tree) : walkable;
     for (const key of toWalk) {
       if (!Object.prototype.hasOwnProperty.call(tree, key) || ignore?.includes(key)) continue;
-      tempReturn = findInTree(tree[key], searchFilter, {
+      tempReturn = findInTree(tree[key] as Tree, searchFilter, {
         walkable,
         ignore,
         maxRecursion: maxRecursion - 1,

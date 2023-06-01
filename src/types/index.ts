@@ -34,9 +34,28 @@ export enum RepluggedIpcChannels {
   GET_REPLUGGED_VERSION = "REPLUGGED_GET_REPLUGGED_VERSION",
 }
 
+export enum RepluggedAnnouncementColors {
+  Default = "colorDefault",
+  Neutral = "colorNeutral",
+  Premium = "colorPremium",
+  PremiumTier0 = "colorPremiumTier0",
+  PremiumTier1 = "colorPremiumTier1",
+  PremiumTier2 = "colorPremiumTier2",
+  Info = "colorInfo",
+  Success = "colorSuccess",
+  Warning = "colorWarning",
+  Danger = "colorDanger",
+  StreamerMode = "colorStreamerMode",
+  Spotify = "colorSpotify",
+  PlayStation = "colorPlayStation",
+  Brand = "colorBrand",
+  Custom = "colorCustom",
+}
+
 export interface RepluggedAnnouncement {
+  _dismissed?: boolean;
   message: string;
-  color?: string;
+  color?: RepluggedAnnouncementColors;
   onClose?: () => void;
   button?: {
     text: string;
