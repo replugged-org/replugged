@@ -50,7 +50,7 @@ function Announcement({
   const classes = [
     "replugged-notice",
     noticeClassMod.notice,
-    noticeClassMod[color ?? RepluggedAnnouncementColors.Brand],
+    noticeClassMod[color ?? RepluggedAnnouncementColors.Default],
   ].join(" ");
 
   return (
