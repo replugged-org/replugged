@@ -50,21 +50,25 @@ interface MenuItemProps {
   sparkle?: boolean;
 }
 
-interface MenuSubmenuListItemProps {
+interface MenuSubmenuListItemProps extends MenuItemProps {
   children: React.ReactNode;
   childRowHeight: number;
   onChildrenScroll?: () => void;
   listClassName?: string;
 }
 
-interface MenuSubmenuItemProps {
+interface MenuSubmenuItemProps extends MenuItemProps {
   children: React.ReactNode;
   subMenuClassName?: string;
 }
 
 interface MenuCustomItemProps {
   id: string;
-  render: (data: { color: string; disabled: boolean; isFocused: boolean }) => React.ReactNode;
+  render: (data: {
+    color: (typeof ItemColors)[keyof typeof ItemColors];
+    disabled: boolean;
+    isFocused: boolean;
+  }) => React.ReactNode;
   color?: (typeof ItemColors)[keyof typeof ItemColors];
   disabled?: boolean;
   keepItemStyles?: boolean;
