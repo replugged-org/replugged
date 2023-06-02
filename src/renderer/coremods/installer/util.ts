@@ -28,13 +28,6 @@ export async function getInfo(
   id?: string,
 ): Promise<CheckResultSuccess | null> {
   source ??= INSTALLER_SOURCES[0];
-  // TODO: remove this once store is supported
-  // Need to make sure GitHub install links will have the type specified
-  // so they won't break once store is available (since that will be the default)
-  if (source === "store") {
-    logger.error('Store installers are not supported yet. Please specify "github" as the type.');
-    return null;
-  }
 
   const cacheIdentifier = `${source}:${identifier}:${id ?? ""}`;
   const cached = cache.get(cacheIdentifier);

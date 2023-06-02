@@ -3,7 +3,7 @@ import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 import { Logger } from "../modules/logger";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
-import type { RepluggedManifest } from "src/types/addon";
+import { RepluggedEntity } from "src/types/addon";
 
 const logger = Logger.coremod("Updater");
 
@@ -16,10 +16,27 @@ export type UpdateSettings = {
   lastChecked: number;
 };
 
-interface RepluggedEntity {
-  manifest: RepluggedManifest;
-  path: string;
-}
+const REPLUGGED_ID = "dev.replugged.Replugged";
+const REPLUGGED_ENTITY: RepluggedEntity = {
+  manifest: {
+    id: REPLUGGED_ID,
+    name: "Replugged",
+    description: "Replugged itself",
+    author: {
+      name: "replugged",
+      discordID: "1000992611840049192",
+      github: "replugged-org",
+    },
+    type: "replugged",
+    updater: {
+      type: "store",
+      id: REPLUGGED_ID,
+    },
+    version: window.RepluggedNative.getVersion(),
+    license: "MIT",
+  },
+  path: "replugged.asar",
+};
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type MainUpdaterSettings = {
@@ -27,8 +44,6 @@ type MainUpdaterSettings = {
   checkInterval?: number;
   lastChecked?: number;
 };
-
-const REPLUGGED_ID = "dev.replugged.Replugged";
 
 const mainUpdaterDefaultSettings: Partial<MainUpdaterSettings> = {
   checkInterval: 1000 * 60 * 60,
@@ -78,17 +93,7 @@ async function getAddonFromManager(
   if (id === REPLUGGED_ID) {
     const version = window.RepluggedNative.getVersion();
     if (version === "dev") return undefined;
-    return {
-      manifest: {
-        version,
-        updater: {
-          type: "github",
-          id: "replugged-org/replugged",
-        },
-        type: "replugged",
-      },
-      path: "replugged.asar",
-    };
+    return REPLUGGED_ENTITY;
   }
 
   return pluginManager.plugins.get(id) || (await themeManager.get(id));

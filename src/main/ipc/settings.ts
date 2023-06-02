@@ -39,7 +39,7 @@ async function transaction<T>(namespace: string, handler: TransactionHandler<T>)
   return result;
 }
 
-async function readTransaction<T>(
+export async function readTransaction<T>(
   namespace: string,
   handler: SettingsTransactionHandler<T>,
 ): Promise<T> {
@@ -49,7 +49,7 @@ async function readTransaction<T>(
   });
 }
 
-async function writeTransaction<T>(
+export async function writeTransaction<T>(
   namespace: string,
   handler: SettingsTransactionHandler<T>,
 ): Promise<T> {

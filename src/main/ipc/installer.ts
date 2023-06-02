@@ -1,6 +1,5 @@
 import { ipcMain } from "electron";
 import {
-  AnyAddonManifest,
   CheckResultFailure,
   CheckResultSuccess,
   InstallResultFailure,
@@ -13,7 +12,8 @@ import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
 import { readFile, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
-import { RepluggedManifest, anyAddon } from "src/types/addon";
+import { AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
+import { readTransaction } from "./settings";
 
 const octokit = new Octokit();
 
@@ -59,33 +59,21 @@ async function github(
     (manifestAsset) => manifestAsset.name === asset.name.replace(/\.asar$/, ".json"),
   );
 
-  if (!manifestAsset && identifier !== "replugged-org/replugged") {
+  if (!manifestAsset) {
     return {
       success: false,
       error: "No manifest asset found",
     };
   }
 
-  let manifest: AnyAddonManifest | RepluggedManifest;
-  if (manifestAsset) {
-    try {
-      const json = await fetch(manifestAsset.browser_download_url).then((res) => res.json());
-      manifest = anyAddon.parse(json);
-    } catch {
-      return {
-        success: false,
-        error: "Failed to parse manifest",
-      };
-    }
-  } else {
-    // For Replugged itself
-    manifest = {
-      version: res.data.tag_name.replace(/^v/, ""),
-      updater: {
-        id: identifier,
-        type: "github",
-      },
-      type: "replugged",
+  let manifest: AnyAddonManifestOrReplugged;
+  try {
+    const json = await fetch(manifestAsset.browser_download_url).then((res) => res.json());
+    manifest = anyAddonOrReplugged.parse(json);
+  } catch {
+    return {
+      success: false,
+      error: "Failed to parse manifest",
     };
   }
 
@@ -98,11 +86,47 @@ async function github(
   };
 }
 
+async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
+  const apiUrl =
+    ((await readTransaction("dev.replugged.Settings", (settings) => settings.get("apiUrl"))) as
+      | string
+      | undefined) ?? "https://replugged.dev";
+  const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
+  const manifestUrl = `${STORE_BASE_URL}/${id}`;
+  const asarUrl = `${manifestUrl}.asar`;
+
+  const res = await fetch(manifestUrl);
+  if (!res.ok) {
+    return {
+      success: false,
+      error: "Failed to fetch manifest",
+    };
+  }
+
+  let manifest;
+  try {
+    manifest = anyAddonOrReplugged.parse(await res.json());
+  } catch {
+    return {
+      success: false,
+      error: "Failed to parse manifest",
+    };
+  }
+
+  return {
+    success: true,
+    manifest,
+    name: `${id}.asar`,
+    url: asarUrl,
+  };
+}
+
 const handlers: Record<
   string,
   (identifier: string, id?: string) => Promise<CheckResultSuccess | CheckResultFailure>
 > = {
   github,
+  store,
 };
 
 ipcMain.handle(
