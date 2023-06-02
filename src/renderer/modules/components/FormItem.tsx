@@ -1,6 +1,6 @@
 import type React from "react";
 import { Divider, FormText } from ".";
-import { filters, waitForModule } from "../webpack";
+import { filters, waitForModule, waitForProps } from "../webpack";
 
 interface FormItemCompProps extends Omit<React.ComponentPropsWithoutRef<"div">, "title"> {
   children: React.ReactNode;
@@ -26,7 +26,7 @@ const FormItemComp = await waitForModule<
   (mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!,
 );
 
-const classes = await waitForModule<Record<"dividerDefault", string>>(filters.byProps("labelRow"));
+const classes = await waitForProps<Record<"dividerDefault", string>>("dividerDefault");
 
 interface FormItemProps extends FormItemCompProps {
   note?: string;

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ReactComponent } from "../../../types";
 import type { FluxDispatcher as Dispatcher } from "./fluxDispatcher";
 import { waitForProps } from "../webpack";
 
@@ -152,7 +151,7 @@ export interface Flux {
     stores: Store[],
     callback: (props: OuterProps) => InnerProps,
     options?: { forwardRef: boolean },
-  ): (component: ReactComponent<InnerProps & OuterProps>) => React.ReactElement<OuterProps>;
+  ): (component: React.ComponentType<InnerProps & OuterProps>) => React.ComponentClass<OuterProps>;
 
   destroy(): void;
   initialize(): void;

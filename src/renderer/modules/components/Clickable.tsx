@@ -7,11 +7,15 @@ type ClickableProps = React.ComponentPropsWithoutRef<"div"> & {
   ignoreKeyPress?: boolean;
 };
 
-export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
+type ClickableCompType = React.ComponentClass<React.PropsWithChildren<ClickableProps>> & {
+  defaultProps: ClickableProps;
+};
 
-const Clickable = await waitForModule<Record<string, ClickableType>>(
+const Clickable = await waitForModule<Record<string, ClickableCompType>>(
   filters.bySource("renderNonInteractive"),
 ).then((mod) => Object.values(mod).find((x) => x.prototype?.renderNonInteractive)!);
+
+export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
 
 export default (props: React.PropsWithChildren<ClickableProps>): React.ReactElement => {
   const style = props.style || {};

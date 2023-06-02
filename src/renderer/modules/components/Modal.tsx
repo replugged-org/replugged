@@ -1,5 +1,4 @@
 import type React from "react";
-import type { ReactComponent } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 enum ModalTransitionState {
@@ -10,41 +9,47 @@ enum ModalTransitionState {
   HIDDEN,
 }
 
-export interface ModalCompProps {
+interface ModalRootProps extends Omit<React.ComponentPropsWithoutRef<"div">, "children"> {
   children: React.ReactNode;
-}
-
-export interface ModalRootProps extends ModalCompProps {
   transitionState?: ModalTransitionState;
   size?: "small" | "medium" | "large" | "dynamic";
   role?: "alertdialog" | "dialog";
-  className?: string;
+  fullscreenOnMobile?: boolean;
+  hideShadow?: boolean;
   onAnimationEnd?(): string;
 }
 
-export interface ModalHeaderProps extends ModalCompProps {
+interface ModalHeaderProps {
+  children: React.ReactNode;
   direction?: string;
   justify?: string;
   align?: string;
   wrap?: string;
+  separator?: boolean;
   className?: string;
 }
 
-export interface ModalFooterProps extends ModalHeaderProps {}
+interface ModalContentProps extends React.ComponentPropsWithoutRef<"div"> {
+  children: React.ReactNode;
+  scrollerRef?: React.Ref<unknown>;
+}
 
-export interface ModalCloseProps {
+interface ModalFooterProps extends ModalHeaderProps {}
+
+interface ModalCloseButtonProps {
   onClick(): void;
   withCircleBackground?: boolean;
   hideOnFullscreen?: boolean;
+  focusProps?: Record<string, unknown>;
   className?: string;
 }
 
 export interface ModalType {
-  ModalRoot: ReactComponent<ModalRootProps>;
-  ModalHeader: ReactComponent<ModalHeaderProps>;
-  ModalContent: ReactComponent<ModalCompProps>;
-  ModalFooter: ReactComponent<ModalFooterProps>;
-  ModalCloseButton: ReactComponent<ModalCloseProps>;
+  ModalRoot: React.FC<ModalRootProps>;
+  ModalHeader: React.FC<ModalHeaderProps>;
+  ModalContent: React.FC<ModalContentProps>;
+  ModalFooter: React.FC<ModalFooterProps>;
+  ModalCloseButton: React.FC<ModalCloseButtonProps>;
 }
 
 const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"));

@@ -145,13 +145,13 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * @returns A tuple containing the current value of the setting, and a function to set the value. Works like `useState`.
    * @example
    * ```tsx
-   * import { settings, components } from 'replugged';
-   * const { Input } = components;
+   * import { components, settings } from "replugged";
+   * const { TextInput } = components;
    *
-   * const cfg = settings.init<{ hello: string }>('dev.replugged.Example');
+   * const cfg = settings.init<{ hello: string }>("dev.replugged.Example");
    *
    * export function Settings() {
-   *  return <Input {...cfg.useSetting('hello', 'world')} />;
+   *  return <TextInput {...cfg.useSetting("hello", "world")} />;
    * }
    * ```
    */

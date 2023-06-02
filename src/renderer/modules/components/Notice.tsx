@@ -17,7 +17,7 @@ interface NoticeProps {
   className?: string;
 }
 
-export type NoticeType = React.ComponentType<NoticeProps> & {
+export type NoticeType = React.FC<NoticeProps> & {
   Types: typeof Types;
 };
 

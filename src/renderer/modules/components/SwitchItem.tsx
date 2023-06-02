@@ -6,12 +6,12 @@ interface SwitchProps {
   onChange: (value: boolean) => void;
   disabled?: boolean;
   id?: string;
-  innerRef?: React.Ref<HTMLInputElement>;
+  innerRef?: React.Ref<unknown>;
   focusProps?: Record<string, unknown>;
   className?: string;
 }
 
-export type SwitchType = React.ComponentType<React.PropsWithChildren<SwitchProps>>;
+export type SwitchType = React.FC<React.PropsWithChildren<SwitchProps>>;
 
 interface SwitchItemProps {
   value: boolean;
@@ -24,7 +24,7 @@ interface SwitchItemProps {
   className?: string;
 }
 
-export type SwitchItemType = React.ComponentType<React.PropsWithChildren<SwitchItemProps>>;
+export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;
 
 const switchModStr = "xMinYMid meet";
 const switchItemStr = ").dividerDefault";

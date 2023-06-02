@@ -1,5 +1,4 @@
 import type React from "react";
-import type { ReactComponent } from "../../../types";
 import { filters, getExportsForProps, getFunctionBySource, waitForModule } from "../webpack";
 
 type FormTextTypeKey =
@@ -13,23 +12,25 @@ type FormTextTypeKey =
   | "SUCCESS"
   | string;
 
+interface FormTextProps {
+  type?: string;
+  disabled?: boolean;
+  selectable?: boolean;
+  style?: React.CSSProperties;
+  className?: string;
+}
+
+type FormTextCompType = React.FC<React.PropsWithChildren<FormTextProps>>;
+
+export type FormTextType = Record<FormTextTypeKey, FormTextCompType>;
+
 const mod = await waitForModule(filters.bySource("LABEL_SELECTED"));
-const FormTextComp = getFunctionBySource<ReactComponent<{ type: string }>>(
+const FormTextComp = getFunctionBySource<FormTextCompType>(
   mod,
   '"type","className","disabled","selectable","children","style"',
 )!;
 const types = getExportsForProps<Record<FormTextTypeKey, string>>(mod, ["LABEL_SELECTED"])!;
 
-export type FormTextType = Record<
-  FormTextTypeKey,
-  ReactComponent<{
-    children?: React.ReactNode;
-    disabled?: boolean;
-    selectable?: boolean;
-    style?: React.CSSProperties;
-    className?: string;
-  }>
->;
 export const FormText: FormTextType = {
   DEFAULT: () => null,
   DESCRIPTION: () => null,
@@ -43,7 +44,7 @@ export const FormText: FormTextType = {
 
 if (typeof types === "object" && types !== null)
   Object.keys(types).forEach((key) => {
-    FormText[key] = (props: React.PropsWithChildren<Record<string, unknown>>) => (
+    FormText[key] = (props: React.PropsWithChildren<FormTextProps>) => (
       <FormTextComp type={types[key]} {...props}>
         {props.children}
       </FormTextComp>

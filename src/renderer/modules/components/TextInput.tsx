@@ -14,7 +14,7 @@ interface TextInputProps
   onChange?: (value: string) => void;
 }
 
-export type TextInputType = React.ComponentType<TextInputProps> & {
+export type TextInputType = React.ComponentClass<TextInputProps> & {
   defaultProps: TextInputProps;
   Sizes: Record<"DEFAULT" | "MINI", string>;
 };

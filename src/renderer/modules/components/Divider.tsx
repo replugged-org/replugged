@@ -6,7 +6,7 @@ interface DividerProps {
   style?: React.CSSProperties;
 }
 
-export type DividerType = React.ComponentType<DividerProps>;
+export type DividerType = React.FC<DividerProps>;
 
 const rgx = /\.divider,.\),style:./;
 

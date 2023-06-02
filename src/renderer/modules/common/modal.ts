@@ -1,4 +1,4 @@
-import { filters, getBySource, getFunctionBySource, waitForModule } from "../webpack";
+import { filters, getBySource, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
 
 enum ModalTransitionState {
   ENTERING,
@@ -64,7 +64,7 @@ export type Modal = {
 } & ModalClasses;
 
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
-const alertMod = await waitForModule<AlertMod>(filters.byProps("show", "close"));
+const alertMod = await waitForProps<AlertMod>("show", "close");
 
 const classes = getBySource<ModalClasses>("().justifyStart")!;
 
