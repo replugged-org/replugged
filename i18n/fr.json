@@ -39,8 +39,8 @@
     "REPLUGGED_UPDATES_FORCE": "Forcer la mise à jour",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Dernière vérification : {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Ouvrir l'assistant de mises à jour",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Mettre à jour automatiquement en arrière-plan",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged peut télécharger et installer les mises à jour en arrière-plan sans vous déranger. Notez que certaines mises à jour peuvent nécessiter votre attention si un redémarrage de Discord est requis, ou s'il y a un conflit.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Mettre à jour automatiquement",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged vérifiera automatiquement les mises à jour et vous enverra une alerte lorsqu'une mise à jour est disponible. Notez que les mises à jour ne seront pas installées tant que vous n'aurez pas accepté de vous même. Seuls les addons officiels seront vérifiés automatiquement.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Ouvrir les notes de mises à jour",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Si vous avez raté le dernier changelog, voulez-vous le revoir ?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Limite de mise à jour simultanées",
@@ -208,5 +208,6 @@
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[MODE DEV]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Activer les badges Replugged",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Afficher les badges Replugged sur le profil des utilisateurs",
-    "REPLUGGED_I18N": "Traductions Replugged"
+    "REPLUGGED_I18N": "Traductions Replugged",
+    "REPLUGGED_VIEW_UPDATES": "Vue {count, plural, =1 {# Miise à jour} other {# Mises à jour}}"
 }

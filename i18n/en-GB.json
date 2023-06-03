@@ -39,7 +39,7 @@
     "REPLUGGED_UPDATES_LAST_CHECKED": "Last checked: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Open Updater",
     "REPLUGGED_UPDATES_OPTS_AUTO": "Check for updates automatically",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged will automatiallly check for updates and show you an alert when one is available. Updates will not be installed until you choose to update it. Only official addons will be checked automatically.",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged will automatically check for updates and show you an alert when one is available. Updates will not be installed until you choose to update it. Only official addons will be checked automatically.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Open Change Log",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Update Concurrency Limit",
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Debugging Information",
