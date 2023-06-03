@@ -39,8 +39,8 @@
     "REPLUGGED_UPDATES_FORCE": "Принудительное Обновление",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Последняя проверка: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Открыть Обновления",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Обновляться автоматически в фоне",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged сможет скачивать и устанавливать обновления в фоне. Обратите внимание, что обновления потребуют действий пользователя, если требуется перезагрузка, или если есть проблема.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Проверять обновления автоматически",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged будет автоматически проверять наличие обновлений и покажет предупреждение, если такие найдены. Обновления не будут установлены без вашего разрешения. Только официальные расширения будут проверяться автоматически.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Открыть Список Изменений",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Пропустили список изменений или хотите увидеть его снова?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Лимит Одновременных Обновлений",
@@ -48,7 +48,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Отладочная Информация",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Вещи, которые вы можете найти полезными для устранения неполадок или выпендривания некоторыми статистиками.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Интервал Проверки Обновлений",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Как часто Replugged будет проверять на обновления (в минутах). Минимум 10 минут.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Как часто Replugged будет проверять наличие обновлений. Минимальное значение - 10 минут.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Изменить Канал Версии",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Вы можете выбрать между стабильной версией, или же версией разработки. Стабильная версия будет получать только важные, критические обновления и обновления безопасности. Если не уверены, оставайтесь на стабильной.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "Переключиться на версию разработки",
@@ -208,5 +208,6 @@
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[РЕЖИМ РАЗРАБОТЧИКА]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Включить Значки Replugged",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Показывать значки Replugged на профилях пользователей",
-    "REPLUGGED_I18N": "Перевод Replugged"
+    "REPLUGGED_I18N": "Перевод Replugged",
+    "REPLUGGED_VIEW_UPDATES": "Посмотреть {count, plural, =1 {# Обновление} other {# Обновления}}"
 }
