@@ -39,8 +39,8 @@
     "REPLUGGED_UPDATES_FORCE": "Forza Aggiornamento",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Controllato l'ultima volta: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Apri il programma di aggiornamento",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Aggiorna automaticamente in background",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged può scaricare e installare aggiornamenti in background senza infastidirti troppo. Nota bene che gli aggiornamenti avranno bisogno di un azione dell'utente se il riavvio è necessario, o se è presente un conflitto.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Controlla automaticamente gli aggiornamenti",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged controllerà automaticamente la presenza di aggiornamenti e ti mostrerà un avviso quando ne sarà disponibile uno. Gli aggiornamenti non verranno installati fino a quando non scegli di aggiornarli. Solo gli addon ufficiali verranno controllati automaticamente.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Apri il Log dei Cambiamenti",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Ti sei perso il log dei cambiamenti oppure vuoi vederlo di nuovo?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Aggiorna il limite di concorrenza",
@@ -48,7 +48,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Informazioni di Debug",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Cose che puoi trovare utili per la risoluzione dei problemi o per vantarsi di alcune statistiche.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Intervallo tra i controlli di nuovi aggiornamenti",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Quanto frequentemente Replugged controllerà se ci sono nuovi aggiornamenti (in minuti). Minimo: 10 minuti.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Quanto frequentemente Replugged controllerà se ci sono nuovi aggiornamenti. Minimo: 10 minuti.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Cambia Canale di Pubblicazione",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Puoi scegliere tra il ramo stabile, o il ramo di sviluppo. Il ramo stabile otterrà solo aggiornamenti maggiori, di sicurezza e update critici. Se sei insicuro, stai su stabile.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "Cambia a ramo di sviluppo",
@@ -208,5 +208,6 @@
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[MODALITÀ DEV]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Abilita i Badge Replugged",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Mostra i badge personalizzati di Replugged sui profili utente",
-    "REPLUGGED_I18N": "Traduzioni di Replugged"
+    "REPLUGGED_I18N": "Traduzioni di Replugged",
+    "REPLUGGED_VIEW_UPDATES": "Mostra {count, plural, =1 {# Aggiornamento} other {# Aggiornamenti}}"
 }

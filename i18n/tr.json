@@ -39,8 +39,8 @@
     "REPLUGGED_UPDATES_FORCE": "Güncellemeyi Zorla",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Son kontrol tarihi: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Güncelleyiciyi Aç",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Arka planda otomatik güncelle",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged, sizi çok fazla rahatsız etmeden güncellemeleri arka planda indirip yükleyebilir. Yeniden yükleme gerekiyorsa veya bir çakışma varsa güncellemelerin kullanıcı tarafından gerçekleştirilmesi gerektiğini unutmayın.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Güncellemeleri otomatik kontrol et",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged, otomatik olarak güncellemeleri kontrol eder ve bir güncelleme olduğunda size bildirir. Güncellemeler siz seçene kadar kurulmaz. Yalnız resmi eklentiler otomatik olarak kontrol edilir.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Güncelleme Kayıtlarını Aç",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Güncelleme kayıtlarını kaçırdınız veya yeniden görmek mi istiyorsunuz?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Eşzamanlılık Sınırını Güncelle",
@@ -48,7 +48,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Hata Ayıklama Bilgileri",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Bazı istatistiklerde sorun giderme veya hava atmak için yararlı bulabileceğiniz şeyler.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Güncelleme Kontrolü Aralığı",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Replugged'un güncellemeleri ne sıklıkta kontrol etmeli (dakika olarak). Minimum 10 dakika.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Replugged güncellemeleri ne sıklıkla kontrol edecek. En az 10 dakika.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Yayın Kanalını Değiştir",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Kararlı veya geliştirme dalları arasında seçim yapabilirsiniz. Kararlı dal yalnızca büyük güncellemeleri, güvenlik ve kritik güncellemeleri alır. Emin değilseniz, kararlıda kalın.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "Geliştirme dalına geç",
@@ -208,5 +208,6 @@
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[GELİŞTİRİCİ MODU]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Replugged Rozetlerini Etkinleştir",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Kullanıcı profillerinde özel Replugged rozetlerini göster",
-    "REPLUGGED_I18N": "Replugged Çevirileri"
+    "REPLUGGED_I18N": "Replugged Çevirileri",
+    "REPLUGGED_VIEW_UPDATES": "{count, plural, =1 {# Güncellemeyi} other {# Güncellemeleri}} görüntüle"
 }

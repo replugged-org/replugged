@@ -38,14 +38,14 @@
     "REPLUGGED_UPDATES_FORCE": "Force Update",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Last checked: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Open Updater",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Update automatically in background",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged can download and install updates in the background without annoying you too much. Note that updates will require user action if reload is required, or if there is a conflict.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Check for updates automatically",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged will automatically check for updates and show you an alert when one is available. Updates will not be installed until you choose to update it. Only official addons will be checked automatically.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Open Change Log",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Update Concurrency Limit",
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Debugging Information",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Things that you may find useful for troubleshooting or flexing on some stats.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Update Check Interval",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "How frequently Replugged will check for updates (in minutes). Minimum 10 minutes.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "How frequently Replugged will check for updates. Minimum 10 minutes.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Change Release Channel",
     "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL_HEADER": "Change release channel",
     "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL": "Are you sure you want to change your release channel? Replugged will reload your Discord client.",
@@ -208,5 +208,6 @@
     "REPLUGGED_RELOAD": "Reload",
     "REPLUGGED_SETTINGS_BADGES": "Enable Replugged Badges",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles",
-    "REPLUGGED_I18N": "Replugged Translations"
+    "REPLUGGED_I18N": "Replugged Translations",
+    "REPLUGGED_VIEW_UPDATES": "View {count, plural, =1 {# Update} other {#Updates}}"
 }

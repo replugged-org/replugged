@@ -39,8 +39,8 @@
     "REPLUGGED_UPDATES_FORCE": "Примусове оновлення",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Остання перевірка: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Відкрити оновлювач",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Автоматично оновлятись в задньому фоні",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged може завантажувати та встановлювати оновлення в задньому фоні, не нервуючи вас надто. Зверніть увагу, що оновлення зажадають дій користувача, якщо потрібне перезавантаження, або якщо є проблема.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Автоматично перевіряти наявність оновлень",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged буде автоматично перевіряти наявність оновлень і покаже вам сповіщення, коли воно буде доступне. Оновлення не буде встановлено, доки ви не вирішите оновити його. Автоматично перевірятимуться лише офіційні аддони.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Відкрити список змін",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Пропустили список змін, або хочете побачити його знову?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Ліміт одночасних оновлень",
@@ -48,7 +48,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Діагностична інформація",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Речі, які ви можете знайти корисними для усунення неполадок або щоб похвастатися статистикою.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Інтервал перевірки оновлень",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Як часто Replugged перевірятиме наявність оновлень (в хвилинах). Мінімум 10 хвилин.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Як часто Replugged перевірятиме наявність оновлень. Мінімум 10 хвилин.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Змінити Release канал",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Ви можете вибрати між гілками stable або development. Stable версія буде отримувати тільки оновлення безпеки і значні/критичні оновлення. Якщо не впевнені, залишайтеся на stable.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "Переключитися на гілку development",
@@ -208,5 +208,6 @@
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Ввімкнути значки Replugged",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Показує спеціальні значки Replugged на профілях користувачів",
-    "REPLUGGED_I18N": "Переклади Replugged"
+    "REPLUGGED_I18N": "Переклади Replugged",
+    "REPLUGGED_VIEW_UPDATES": "Перегляньте {count, plural, =1 {# оновлення} other {# оновлення}}"
 }
