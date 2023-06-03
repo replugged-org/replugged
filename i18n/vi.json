@@ -40,8 +40,8 @@
     "REPLUGGED_UPDATES_FORCE": "Cập nhật bắt buộc",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Lần kiểm tra trước: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Mở Trình cập nhật",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Tự động cập nhật trong nền",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged có thể tải và cài đặt cập nhật trong nền mà không làm phiền bạn quá nhiều. Lưu ý rằng cập nhật sẽ cần tương tác của người dùng nếu cần khởi động lại hay có một sự xung đột.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Tự động kiểm tra cập nhật",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged sẽ tự động kiểm tra cập nhật và hiện thị thông báo khi có cập nhật. Các cập nhật sẽ không được cài đặt cho tới khi bạn cho phép cập nhật. Chỉ các addon chính thức mới được tự động kiểm tra cập nhật.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Mở nhật ký thay đổi",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Bỏ lỡ nhật ký thay đổi hay muốn xem lại?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Cập nhật giới hạn đồng thời",
@@ -49,7 +49,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Thông tin gỡ lỗi",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Các thứ mà bạn sẽ thấy hữu dụng khi xử lý sự cố hoặc khoe khoang về một số thông số.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Khoảng thời gian kiểm tra cập nhật",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Quyết định độ thường xuyên mà Replugged sẽ kiểm tra cập nhật (số phút). Nhỏ nhất là 10 phút.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Quyết định độ thường xuyên mà Replugged sẽ kiểm tra cập nhật. Nhỏ nhất là 10 phút.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Đổi kênh phát hành",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Bạn có thể chọn giữa nhánh Stable hoặc nhánh Development. Nhánh Stable sẽ chỉ nhận được các cập nhật chính, an ninh và các cập nhật quan trọng. Nếu bạn chưa chắc, chọn Stable.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "Chuyển sang nhánh Development",
@@ -208,5 +208,6 @@
     "REPLUGGED_SETTINGS_BADGES": "Bật huy hiệu Replugged",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Hiện huy hiệu Replugged tùy chỉnh trên hồ sơ người dùng",
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Cập nhật",
-    "REPLUGGED_VERSION": "Replugged {version, select, dev {[CHẾ ĐỘ NHÀ PHÁT TRIỂN]} other {v{version}}}"
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[CHẾ ĐỘ NHÀ PHÁT TRIỂN]} other {v{version}}}",
+    "REPLUGGED_VIEW_UPDATES": "Xem {count, plural, =1 {# cập nhật} other {# cập nhật}}"
 }

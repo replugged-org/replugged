@@ -40,8 +40,8 @@
     "REPLUGGED_UPDATES_FORCE": "强制更新",
     "REPLUGGED_UPDATES_LAST_CHECKED": "最後檢查：{date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "打開更新器",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "自動在後台進行更新",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged 可以在後台下載和安裝更新，而不會煩擾到你。請注意，如果需要重新啟動或存在衝突，更新將需要用戶操作。",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "自動檢查更新",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged 將自動檢查更新並在有更新時提示。在您選擇更新之前，更新都不會自動安裝。只有官方插件會自動檢查更新。",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "打開更新日誌",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "錯過了更新日誌，還是想再次查看？",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "更新並行限制",
@@ -49,7 +49,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Debug 訊息",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "您可能會發現對故障排除或炫耀某些統計數據有用的東西。",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "更新檢查間隔",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Replugged檢查更新的頻率(以分鐘為單位)。最少10分鐘。",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Replugged 將會多久檢查一次更新。最短時間為 10 分鐘。",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "變更版本",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "您可以在穩定分支或開發分支之間進行選擇。穩定分支只會獲得重大更新、安全和關鍵更新。如果不確定，請選擇穩定。",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "切換到開發分支",
@@ -208,5 +208,6 @@
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[開發模式]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "啟用 Replugged 徽章",
     "REPLUGGED_SETTINGS_BADGES_DESC": "在用戶個人資料上顯示 Replugged 的徽章",
-    "REPLUGGED_I18N": "Replugged 翻譯"
+    "REPLUGGED_I18N": "Replugged 翻譯",
+    "REPLUGGED_VIEW_UPDATES": "查看 {count, plural, =1 {# 個更新} other {# 個更新}}"
 }
