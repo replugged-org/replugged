@@ -1,3 +1,5 @@
+import { React } from "@common";
+import type { ContextMenuProps } from "@components/ContextMenu";
 import type {
   ContextItem,
   ContextMenuTypes,
@@ -6,8 +8,6 @@ import type {
 } from "../../../types/coremods/contextMenu";
 import { Logger } from "../../modules/logger";
 import { getByProps } from "../../modules/webpack";
-import { React } from "@common";
-import type { ContextMenuProps } from "@components/ContextMenu";
 
 const logger = Logger.api("ContextMenu");
 
@@ -17,7 +17,7 @@ export const menuItems = {} as Record<
 >;
 
 /**
- * Converts data into a react element. Any elements or falsy value will be returned as is
+ * Converts data into a React element. Any elements or falsy value will be returned as is
  * @param raw The data to convert
  * @returns The converted item
  */
@@ -98,7 +98,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
   // If this isn't here, another group of items is added every update
   if (menu.plugged) return;
 
-  // We delay getting the items until now, as importing at the start of the file causes discord to hang
+  // We delay getting the items until now, as importing at the start of the file causes Discord to hang
   // Using `await import(...)` is undesirable because the new items will only appear once the menu is interacted with
   const { MenuGroup } = getByProps<Record<string, React.ComponentType>>([
     "Menu",
@@ -111,7 +111,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
   const data = menu.data[0];
 
-  const repluggedGroup = <MenuGroup></MenuGroup>;
+  const repluggedGroup = <MenuGroup />;
   repluggedGroup.props.id = "replugged";
   repluggedGroup.props.children = [];
 

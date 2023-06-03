@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import type React from "react";
 
 export type LabelCallback = () => string;
 
@@ -7,7 +7,7 @@ export interface Section {
   _id?: string;
   label?: string | LabelCallback;
   color?: string;
-  element?: FC;
+  element?: React.FC;
   pos: number;
   fromEnd?: boolean;
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -22,7 +22,7 @@ export interface SettingsTools {
     _id?: string;
     label?: string | LabelCallback;
     color?: string;
-    elem: FC;
+    elem: React.FC;
     pos?: number;
     fromEnd?: boolean;
   }) => Section;

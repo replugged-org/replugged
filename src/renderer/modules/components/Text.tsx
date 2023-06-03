@@ -61,16 +61,13 @@ export type Variant =
   | "display-lg"
   | "code";
 
-interface TextProps {
+// TODO: generic type for tags?
+interface TextProps extends React.ComponentPropsWithoutRef<"div"> {
   variant?: Variant;
-  tag?: string;
+  tag?: keyof JSX.IntrinsicElements;
   selectable?: boolean;
   tabularNumbers?: boolean;
-  className?: string;
   lineClamp?: number;
-  color?: string;
-  children?: React.ReactNode;
-  style?: React.CSSProperties;
 }
 
 interface CustomTextProps extends TextProps {
@@ -80,7 +77,7 @@ interface CustomTextProps extends TextProps {
   allowMarkdownList?: boolean;
 }
 
-type OriginalTextType = React.ComponentType<CustomTextProps>;
+type OriginalTextType = React.FC<CustomTextProps>;
 
 export type TextType = OriginalTextType &
   Record<"Normal" | "H1" | "H2" | "H3" | "H4" | "Eyebrow", OriginalTextType>;

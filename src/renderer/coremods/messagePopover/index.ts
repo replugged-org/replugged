@@ -1,6 +1,6 @@
 import type { Channel, Message } from "discord-types/general";
+import type { GetButtonItem, IconButtonProps } from "../../../types/coremods/message";
 import { Logger } from "../../modules/logger";
-import type { ButtonItem, GetButtonItem } from "../../../types/coremods/message";
 
 const logger = Logger.api("MessagePopover");
 
@@ -34,7 +34,7 @@ export function removeButton(item: GetButtonItem): void {
 export function _buildPopoverElements(
   msg: Message,
   channel: Channel,
-  makeButton: (item: ButtonItem) => React.ComponentType,
+  makeButton: (item: IconButtonProps) => React.ComponentType,
 ): React.ComponentType[] {
   const items = [] as React.ComponentType[];
 

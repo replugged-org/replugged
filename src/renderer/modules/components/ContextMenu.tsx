@@ -2,11 +2,20 @@ import type React from "react";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 import { sourceStrings } from "../webpack/patch-load";
 
+const ItemColors = {
+  DEFAULT: "default",
+  BRAND: "brand",
+  DANGER: "danger",
+  PREMIUM: "premium",
+  PREMIUM_GRADIENT: "premium-gradient",
+  SUCCESS: "success",
+} as const;
+
 interface MenuProps {
   navId: string;
   children: React.ReactElement | React.ReactElement[];
   onClose: () => void;
-  variant?: string;
+  variant?: "fixed" | "flexible";
   className?: string;
   style?: React.CSSProperties;
   hideScroller?: boolean;
@@ -18,12 +27,12 @@ interface MenuGroupProps {
   children?: React.ReactNode;
   label?: string;
   className?: string;
-  color?: string;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
 }
 
 interface MenuItemProps {
   id: string;
-  color?: string;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
   label?: string;
   icon?: React.ReactNode;
   showIconFirst?: boolean;
@@ -41,22 +50,26 @@ interface MenuItemProps {
   sparkle?: boolean;
 }
 
-interface MenuSubmenuListItemProps {
+interface MenuSubmenuListItemProps extends MenuItemProps {
   children: React.ReactNode;
   childRowHeight: number;
   onChildrenScroll?: () => void;
   listClassName?: string;
 }
 
-interface MenuSubmenuItemProps {
+interface MenuSubmenuItemProps extends MenuItemProps {
   children: React.ReactNode;
   subMenuClassName?: string;
 }
 
 interface MenuCustomItemProps {
   id: string;
-  render: (data: { color: string; disabled: boolean; isFocused: boolean }) => React.ReactNode;
-  color?: string;
+  render: (data: {
+    color: (typeof ItemColors)[keyof typeof ItemColors];
+    disabled: boolean;
+    isFocused: boolean;
+  }) => React.ReactNode;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
   disabled?: boolean;
   keepItemStyles?: boolean;
   action?: React.MouseEventHandler<HTMLDivElement>;
@@ -65,7 +78,7 @@ interface MenuCustomItemProps {
 
 interface MenuCheckboxItemProps {
   id: string;
-  color?: string;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
   label?: string;
   checked?: boolean;
   subtext?: string;
@@ -77,7 +90,7 @@ interface MenuCheckboxItemProps {
 
 interface MenuRadioItemProps {
   id: string;
-  color?: string;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
   label?: string;
   checked?: boolean;
   subtext?: string;
@@ -87,7 +100,7 @@ interface MenuRadioItemProps {
 
 interface MenuControlItemProps {
   id: string;
-  color?: string;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
   label?: string;
   control: (
     data: {
@@ -95,7 +108,7 @@ interface MenuControlItemProps {
       disabled: boolean;
       isFocused: boolean;
     },
-    ref?: React.RefObject<{ activate: () => boolean; blur: () => void; focus: () => void }>,
+    ref?: React.Ref<{ activate: () => boolean; blur: () => void; focus: () => void }>,
   ) => React.ReactElement;
   disabled?: boolean;
   showDefaultFocus?: boolean;
@@ -105,7 +118,7 @@ interface MenuCompositeControlItemProps {
   id: string;
   children: React.ReactNode;
   interactive?: boolean;
-  color?: string;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
   disabled?: boolean;
   showDefaultFocus?: boolean;
 }
@@ -121,7 +134,9 @@ export type ContextMenuProps = Record<string, unknown> & {
 };
 
 export type ContextMenuType = {
-  [K in keyof ContextMenuProps]: React.ComponentType<ContextMenuProps[K]>;
+  [K in keyof ContextMenuProps]: React.FC<ContextMenuProps[K]>;
+} & {
+  ItemColors: typeof ItemColors;
 };
 
 export type ContextMenuElements = {
@@ -154,6 +169,7 @@ const menuComponents = Object.values(menuMod)
   }, {});
 
 const Menu = {
+  ItemColors,
   ContextMenu: getFunctionBySource(menuMod, "getContainerProps"),
 } as ContextMenuType;
 

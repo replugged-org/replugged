@@ -29,7 +29,7 @@ export type Guilds = SelectedGuildStore & GuildStore;
 
 const guilds: Guilds = {
   ...(await waitForProps<GuildStore>("getGuild", "getGuilds").then(Object.getPrototypeOf)),
-  ...(await waitForProps<SelectedGuildStore>(["getGuildId", "getLastSelectedGuildId"]).then(
+  ...(await waitForProps<SelectedGuildStore>("getGuildId", "getLastSelectedGuildId").then(
     Object.getPrototypeOf,
   )),
 };

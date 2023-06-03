@@ -20,7 +20,7 @@ interface FormNoticeProps {
   iconClassName?: string;
 }
 
-export type FormNoticeType = React.ComponentType<FormNoticeProps> & {
+export type FormNoticeType = React.FC<FormNoticeProps> & {
   Types: Record<"PRIMARY" | "DANGER" | "WARNING" | "SUCCESS" | "BRAND" | "CUSTOM", string>;
 };
 

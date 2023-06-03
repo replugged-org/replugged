@@ -37,11 +37,11 @@ export interface ChannelStore {
 export type Channels = SelectedChannelStore & ChannelStore;
 
 export default virtualMerge(
-  (await waitForProps<SelectedChannelStore>([
+  (await waitForProps<SelectedChannelStore>(
     "getChannelId",
     "getLastSelectedChannelId",
     "getVoiceChannelId",
-  ]).then(Object.getPrototypeOf)) as SelectedChannelStore,
+  ).then(Object.getPrototypeOf)) as SelectedChannelStore,
   (await waitForProps<ChannelStore>("getChannel", "hasChannel").then(
     Object.getPrototypeOf,
   )) as ChannelStore,

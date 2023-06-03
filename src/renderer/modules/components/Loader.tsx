@@ -23,7 +23,7 @@ type SpinningCircleLoaderProps = GenericLoaderProps & {
   type?: (typeof Types)["SPINNING_CIRCLE"];
 } & React.ComponentPropsWithoutRef<"div">;
 
-export type LoaderType = React.ComponentType<LoaderProps | SpinningCircleLoaderProps> & {
+export type LoaderType = React.FC<LoaderProps | SpinningCircleLoaderProps> & {
   Type: typeof Types;
 };
 

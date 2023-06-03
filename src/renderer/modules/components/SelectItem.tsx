@@ -42,7 +42,7 @@ interface SelectCompProps {
   optionClassName?: string;
 }
 
-type SelectCompType = React.ComponentType<SelectCompProps>;
+type SelectCompType = React.FC<SelectCompProps>;
 
 const selectRgx = /.\.options,.=.\.placeholder/;
 
