@@ -302,7 +302,9 @@ async function autoUpdateCheck(): Promise<void> {
         count: newUpdateCount,
       }),
       button: {
-        text: Messages.REPLUGGED_VIEW_UPDATES,
+        text: Messages.REPLUGGED_VIEW_UPDATES.format({
+          count: newUpdateCount,
+        }),
         onClick: () => open("rp-updater"),
       },
     });
