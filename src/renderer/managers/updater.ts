@@ -301,7 +301,7 @@ async function autoUpdateCheck(): Promise<void> {
         count: newUpdateCount,
       }),
       button: {
-        text: Messages.REPLUGGED_UPDATES_UPDATE,
+        text: Messages.REPLUGGED_VIEW_UPDATES,
         onClick: () => open("rp-updater"),
       },
     });
