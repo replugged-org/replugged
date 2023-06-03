@@ -51,7 +51,7 @@ type MainUpdaterSettings = {
 
 const mainUpdaterDefaultSettings = {
   autoCheck: true,
-  checkIntervalMinutes: 60,
+  checkIntervalMinutes: 10,
   lastChecked: 0,
 } satisfies Partial<MainUpdaterSettings>;
 
