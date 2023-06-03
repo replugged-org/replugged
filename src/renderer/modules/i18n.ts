@@ -10,10 +10,8 @@ export function load(): void {
   loadAllStrings(strings);
 
   locale = i18n._chosenLocale;
-  console.log("DEBUG: locale", locale);
 
   i18n.on("locale", (newLocale: string) => {
-    console.log("DEBUG: locale event");
     locale = newLocale;
     i18n.loadPromise.then(addRepluggedStrings)!;
   });
@@ -24,7 +22,6 @@ export function load(): void {
 }
 
 export function addRepluggedStrings(): void {
-  console.log("DEBUG: locale event", locale);
   const { messages: DiscordMessages, defaultMessages } = i18n._provider._context;
 
   i18n._applyMessagesForLocale(
