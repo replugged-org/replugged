@@ -9,6 +9,7 @@ import * as plugins from "./plugins";
 import * as themes from "./themes";
 import * as quickCSS from "./quick-css";
 import { loadStyleSheet } from "../util";
+import { startAutoUpdateChecking } from "./updater";
 
 export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");
@@ -22,6 +23,9 @@ export async function start(): Promise<void> {
     plugins.startAll(),
     themes.loadMissing().then(themes.loadAll),
   ]);
+
+  // Want to make sure all addons are initialized before starting auto-update checking
+  startAutoUpdateChecking();
 
   log(
     "Ignition",

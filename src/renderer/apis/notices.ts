@@ -9,6 +9,7 @@ class NoticesAPI extends EventTarget {
     this.dispatchEvent(new CustomEvent("rpAnnouncementUpdate"));
     return () => {
       props._dismissed = true;
+      this.dispatchEvent(new CustomEvent("rpAnnouncementUpdate"));
     };
   }
 

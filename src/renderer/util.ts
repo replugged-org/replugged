@@ -215,6 +215,27 @@ export function useSetting<
     },
   };
 }
+export function useSettingArray<
+  T extends Record<string, Jsonifiable>,
+  D extends keyof T,
+  K extends Extract<keyof T, string>,
+  F extends T[K] | undefined,
+>(
+  settings: SettingsManager<T, D>,
+  key: K,
+  fallback?: F,
+): [
+  K extends D
+    ? NonNullable<T[K]>
+    : F extends null | undefined
+    ? T[K] | undefined
+    : NonNullable<T[K]> | F,
+  (newValue: ValType<T[K]>) => void,
+] {
+  const { value, onChange } = useSetting(settings, key, fallback);
+
+  return [value, onChange];
+}
 
 // Credit to @Vendicated - https://github.com/Vendicated/virtual-merge
 
