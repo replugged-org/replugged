@@ -49,10 +49,11 @@ type MainUpdaterSettings = {
   lastChecked?: number;
 };
 
-const mainUpdaterDefaultSettings: Partial<MainUpdaterSettings> = {
+const mainUpdaterDefaultSettings = {
   autoCheck: true,
   checkIntervalMinutes: 60,
-};
+  lastChecked: 0,
+} satisfies Partial<MainUpdaterSettings>;
 
 export const updaterSettings = await init<
   MainUpdaterSettings,
