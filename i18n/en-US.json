@@ -90,8 +90,8 @@
     "REPLUGGED_UPDATES_FORCE": "Force Update",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Last checked: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Open Updater",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Update automatically in background",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged can download and install updates in background without annoying you too much. Note that updates will require user action if reload is required, or if there is a conflict.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Check for updates automatically",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged will automatically check for updates and show you an alert when one is available. Updates will not be installed until you choose to update it.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Open Change Log",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Missed the change log, or want to see it again?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Update Concurrency Limit",
@@ -133,7 +133,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH": "Replugged Path",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Discord Path",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Update Check Interval",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "How frequently Replugged will check for updates (in minutes). Minimum 10 minutes.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "How frequently Replugged will check for updates. Minimum 10 minutes.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Change Release Channel",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "You can choose between the stable branch, or the development branch. Stable branch will only get major updates, security and critical updates. If unsure, stay on stable.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "Switch to development branch",
@@ -208,5 +208,6 @@
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Enable Replugged Badges",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles",
-    "REPLUGGED_I18N": "Replugged Translations"
+    "REPLUGGED_I18N": "Replugged Translations",
+    "REPLUGGED_VIEW_UPDATES": "View {count, plural, =1 {# Update} other {# Updates}}"
 }
