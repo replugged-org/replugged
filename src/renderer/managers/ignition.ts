@@ -16,12 +16,13 @@ export async function start(): Promise<void> {
 
   loadStyleSheet("replugged://renderer.css");
   i18n.load();
-  quickCSS.load();
   await Promise.all([
     coremods.startAll(),
     plugins.startAll(),
     themes.loadMissing().then(themes.loadAll),
   ]);
+  // Quick CSS needs to be called after themes are loaded so that it will override the theme's CSS
+  quickCSS.load();
 
   log(
     "Ignition",
