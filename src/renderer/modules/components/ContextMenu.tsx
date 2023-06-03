@@ -34,7 +34,7 @@ interface MenuItemProps {
   id: string;
   color?: (typeof ItemColors)[keyof typeof ItemColors];
   label?: string;
-  icon?: React.ReactNode;
+  icon?: React.ComponentType<unknown>;
   showIconFirst?: boolean;
   imageUrl?: string;
   hint?: React.ReactNode;
