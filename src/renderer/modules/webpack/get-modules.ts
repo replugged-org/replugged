@@ -115,7 +115,7 @@ export function getFunctionForPrototypes<
   // Loop over the module and its exports at the top level
   // Return the first thing that has all the indicated props
   for (const exported of iterateModuleFunctions(m)) {
-    if (prototypes.every((p) => p in (exported.prototype as Record<P, AnyFunction>))) {
+    if (prototypes.every((p) => exported?.prototype?.[p])) {
       return exported as T;
     }
   }
