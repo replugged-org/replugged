@@ -37,7 +37,6 @@ export enum RepluggedIpcChannels {
 export enum RepluggedAnnouncementColors {
   Default = "colorDefault",
   Neutral = "colorNeutral",
-  Premium = "colorPremium",
   PremiumTier0 = "colorPremiumTier0",
   PremiumTier1 = "colorPremiumTier1",
   PremiumTier2 = "colorPremiumTier2",
