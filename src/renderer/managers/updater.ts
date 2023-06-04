@@ -43,7 +43,6 @@ const REPLUGGED_ENTITY: RepluggedEntity = {
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type MainUpdaterSettings = {
-  // Todo: implement
   autoCheck?: boolean;
   checkIntervalMinutes?: number;
   lastChecked?: number;
