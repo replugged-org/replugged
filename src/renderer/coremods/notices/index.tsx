@@ -1,45 +1,14 @@
-import { Injector, Logger, notices } from "@replugged";
 import { React } from "@common";
-import { filters, waitForModule, waitForProps } from "src/renderer/modules/webpack";
+import { Injector, Logger, notices } from "@replugged";
+import { waitForProps } from "src/renderer/modules/webpack";
 import { Tree, findInReactTree, getOwnerInstance, waitFor } from "src/renderer/util";
-import { RepluggedAnnouncement, RepluggedAnnouncementColors } from "src/types";
-import { Clickable } from "@components";
+import { RepluggedAnnouncement } from "src/types";
+import NoticeMod from "./noticeMod";
+
+const { Notice, NoticeButton, NoticeButtonAnchor, NoticeCloseButton } = NoticeMod;
 
 const injector = new Injector();
 const logger = Logger.coremod("Notices");
-
-type NoticeColorKeys =
-  | "notice"
-  | "isMobile"
-  | "colorDefault"
-  | "button"
-  | "colorNeutral"
-  | "colorPremium"
-  | "colorPremiumTier0"
-  | "colorPremiumTier1"
-  | "colorPremiumTier2"
-  | "colorInfo"
-  | "colorSuccess"
-  | "colorWarning"
-  | "closeIcon"
-  | "colorDanger"
-  | "colorStreamerMode"
-  | "colorSpotify"
-  | "platformIcon"
-  | "colorPlayStation"
-  | "colorBrand"
-  | "colorCustom"
-  | "closeButton"
-  | "buttonMinor";
-
-type NoticeColorsMod = Record<NoticeColorKeys, string>;
-
-let noticeClassMod: NoticeColorsMod;
-let CloseButton: React.ComponentType<{
-  width?: number;
-  height?: number;
-  className?: string;
-}>;
 
 function Announcement({
   message,
@@ -47,34 +16,29 @@ function Announcement({
   color,
   onClose,
 }: RepluggedAnnouncement): React.ReactElement {
-  const classes = [
-    "replugged-notice",
-    noticeClassMod.notice,
-    noticeClassMod[color ?? RepluggedAnnouncementColors.Default],
-  ].join(" ");
-
   return (
-    <div className={classes}>
-      {message}
-      <Clickable
-        className={noticeClassMod.closeButton}
+    <Notice className="replugged-notice" color={color}>
+      <NoticeCloseButton
         onClick={() => {
           onClose?.();
           notices.closeActiveAnnouncement();
-        }}>
-        <CloseButton width={18} height={18} className={noticeClassMod.closeIcon} />
-      </Clickable>
+        }}
+      />
+      {message}
       {button ? (
-        <button
-          className={noticeClassMod.button}
-          onClick={() => {
-            button.onClick?.();
-            notices.closeActiveAnnouncement();
-          }}>
-          {button.text}
-        </button>
+        button.href ? (
+          <NoticeButtonAnchor href={button.href}>{button.text}</NoticeButtonAnchor>
+        ) : (
+          <NoticeButton
+            onClick={() => {
+              button.onClick?.();
+              notices.closeActiveAnnouncement();
+            }}>
+            {button.text}
+          </NoticeButton>
+        )
       ) : null}
-    </div>
+    </Notice>
   );
 }
 
@@ -102,8 +66,6 @@ function AnnouncementContainer({
 }
 
 export async function init(): Promise<void> {
-  noticeClassMod = await waitForProps<NoticeColorsMod>("colorPremiumTier1");
-  CloseButton = await waitForModule(filters.bySource("M18.4 4L12"));
   const { base } = await waitForProps<Record<"base" | "container", string>>("base", "container");
 
   const baseEl = await waitFor(`.${base}`);
