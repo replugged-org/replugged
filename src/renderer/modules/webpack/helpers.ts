@@ -1,5 +1,11 @@
-import type { GetModuleOptions, RawModule, WaitForOptions } from "src/types";
-import { getExportsForProps, getModule } from "./get-modules";
+import type {
+  AnyFunction,
+  GetModuleOptions,
+  RawModule,
+  WaitForOptions,
+  WithPrototype,
+} from "src/types";
+import { getExportsForProps, getFunctionForPrototypes, getModule } from "./get-modules";
 import * as filters from "./filters";
 import Flux, { Store } from "../common/flux";
 import { waitForModule } from "./lazy";
@@ -163,6 +169,131 @@ export async function waitForProps<T, P extends PropertyKey = keyof T>(
 
   // We know this will always exist since filters.byProps will always return a module that has the props
   return getExportsForProps<T, P>(result as T, props)!;
+}
+
+// Get by prototypes
+
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P[], options?: { all?: false; raw?: false }): T | undefined;
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P[], options: { all: true; raw?: false }): T[];
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P[], options: { all?: false; raw: true }): RawModule<T> | undefined;
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P[], options: { all: true; raw: true }): Array<RawModule<T>>;
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P[], options?: { all: true; raw?: boolean }): T[] | Array<RawModule<T>>;
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P[], options: { all?: false; raw?: boolean }): T | RawModule<T> | undefined;
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(
+  prototypes: P[],
+  options: { all?: boolean; raw: true },
+): RawModule<T> | Array<RawModule<T>> | undefined;
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P, options: { all?: boolean; raw?: false }): T | T[] | undefined;
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(
+  prototypes: P[],
+  options?: { all?: boolean; raw?: boolean },
+): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined;
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey[] = Array<keyof WithPrototype<T>>,
+>(...prototypes: P): T | undefined;
+
+/**
+ * Equivalent to `getModule(filters.byPrototypes(...props), options)`
+ *
+ * @see {@link filters.byPrototypes}
+ * @see {@link getModule}
+ */
+export function getByPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(
+  ...args: [P[], GetModuleOptions] | P[]
+): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
+  const prototypes = (typeof args[0] === "string" ? args : args[0]) as P[];
+  const raw = typeof args[0] === "string" ? false : (args[1] as GetModuleOptions)?.raw;
+
+  const result =
+    typeof args.at(-1) === "object"
+      ? getModule<T>(filters.byPrototypes(...prototypes), args.at(-1) as GetModuleOptions)
+      : getModule<T>(filters.byPrototypes(...prototypes));
+
+  if (raw || typeof result === "undefined") {
+    return result as RawModule<T> | undefined;
+  }
+
+  if (result instanceof Array) {
+    // @ts-expect-error TypeScript isn't going to infer types based on the raw variable, so this is fine
+    return result.map((m) => getFunctionForPrototypes(m, prototypes));
+  }
+
+  return getFunctionForPrototypes<T, P>(result, prototypes);
+}
+
+// Wait for prototypes
+
+export function waitForPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P[], options: WaitForOptions & { raw?: false }): Promise<T>;
+export function waitForPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P[], options: WaitForOptions & { raw: true }): Promise<RawModule<T>>;
+export function waitForPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(prototypes: P[], options?: WaitForOptions): Promise<T | RawModule<T>>;
+export function waitForPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(...prototypes: P[]): Promise<T>;
+
+/**
+ * Like {@link getByPrototypes} but waits for the module to be loaded.
+ *
+ * @see {@link getByPrototypes}
+ * @see {@link waitForModule}
+ */
+export async function waitForPrototypes<
+  T extends AnyFunction,
+  P extends PropertyKey = keyof WithPrototype<T>,
+>(...args: [P[], WaitForOptions] | P[]): Promise<T | RawModule<T>> {
+  const prototypes = (typeof args[0] === "string" ? args : args[0]) as P[];
+  const raw = typeof args[0] === "string" ? false : (args[1] as WaitForOptions)?.raw;
+
+  const result = await (typeof args.at(-1) === "object"
+    ? waitForModule<T>(filters.byPrototypes(...prototypes), args.at(-1) as WaitForOptions)
+    : waitForModule<T>(filters.byPrototypes(...prototypes)));
+
+  if (raw) {
+    return result as RawModule<T>;
+  }
+
+  // We know this will always exist since filters.byPrototypes will always return a module that has the function with prototypes
+  return getFunctionForPrototypes<T, P>(result as T, prototypes)!;
 }
 
 // Get by value
