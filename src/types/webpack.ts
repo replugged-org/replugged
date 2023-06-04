@@ -9,6 +9,8 @@ export type ModuleExports =
 export type ModuleExportsWithProps<P extends string> = Record<P, unknown> &
   Record<PropertyKey, unknown>;
 
+export type WithPrototype<T> = T extends { prototype: infer P } ? P : never;
+
 export interface RawModule<T = unknown> {
   id: number;
   loaded: boolean;
