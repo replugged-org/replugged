@@ -86,8 +86,8 @@ function* iterateModuleFunctions(m: unknown): IterableIterator<AnyFunction> {
             continue;
           }
           if (typeof val === "object") {
-            for (const subkey in val) {
-              const subVal = (val as Record<PropertyKey, unknown>)[subkey];
+            for (const subKey in val) {
+              const subVal = (val as Record<PropertyKey, unknown>)[subKey];
               if (subVal && typeof subVal === "function") {
                 yield subVal as AnyFunction;
                 continue;
