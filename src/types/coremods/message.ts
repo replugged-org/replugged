@@ -15,7 +15,7 @@ export interface IconButtonProps extends Omit<ButtonPopoverProps, "onClick"> {
   ariaLabel?: string;
   tooltipText?: string;
   tooltipColor?: string;
-  icon: React.ReactNode;
+  icon: React.ComponentType<unknown>;
   iconProps?: Record<string, unknown>;
   key?: string;
   separator?: boolean;
