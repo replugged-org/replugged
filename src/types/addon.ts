@@ -17,6 +17,8 @@ export const author = z.object({
 
 export type Author = z.infer<typeof author>;
 
+const urlType = z.string().url();
+
 export const common = z.object({
   // Should be in RDNN format
   id,
@@ -31,6 +33,8 @@ export const common = z.object({
     })
     .optional(),
   license: z.string(),
+  image: z.union([urlType, urlType.array().nonempty()]).optional(),
+  source: urlType.optional(),
 });
 
 export type Common = z.infer<typeof common>;
