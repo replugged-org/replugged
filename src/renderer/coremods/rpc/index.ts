@@ -60,7 +60,7 @@ async function injectRpc(): Promise<void> {
     }
 
     // From localhost but for Replugged
-    if (!origin && isRepluggedClient) {
+    if (isRepluggedClient && (!origin || new URL(origin).hostname === "localhost")) {
       args[0].authorization.scopes = ["REPLUGGED_LOCAL"];
       return Promise.resolve();
     }

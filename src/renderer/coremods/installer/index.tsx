@@ -46,9 +46,16 @@ let uninjectFns: Array<() => void> = [];
 
 const modalFlows = new Map<string, Promise<InstallResponse>>();
 
+const scopes = ["REPLUGGED"];
+if (window.RepluggedNative.getVersion() === "dev") {
+  scopes.push("REPLUGGED_LOCAL");
+}
+
 function injectRpc(): void {
   const uninjectRpc = registerRPCCommand("REPLUGGED_INSTALL", {
-    scope: "REPLUGGED",
+    scope: {
+      $any: scopes,
+    },
     handler: async (data) => {
       const { identifier, source, id } = data.args;
       if (typeof identifier !== "string") throw new Error("Invalid or missing identifier.");

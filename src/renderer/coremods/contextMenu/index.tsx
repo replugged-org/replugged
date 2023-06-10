@@ -42,7 +42,7 @@ function makeItem(raw: RawContextItem | ContextItem | undefined | void): Context
     );
   }
 
-  return React.createElement(type, props as Record<string, unknown>) as ContextItem;
+  return React.createElement(type as React.FC, props as Record<string, unknown>);
 }
 
 /**
