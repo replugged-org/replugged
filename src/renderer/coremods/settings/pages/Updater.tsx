@@ -1,7 +1,7 @@
 import { toast } from "@common";
 import i18n, { Messages } from "@common/i18n";
 import React from "@common/react";
-import { Button, Divider, Flex, SliderItem, SwitchItem, Text, Tooltip } from "@components";
+import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
@@ -60,6 +60,7 @@ export const Updater = (): React.ReactElement => {
   const isAnyUpdating = hasAnyUpdates && updatesAvailable.some((u) => u.id in updatePromises);
   const isAllComplete = hasAnyUpdates && updatesAvailable.every((u) => !u.available);
   const isAnyComplete = hasAnyUpdates && updatesAvailable.some((u) => !u.available);
+  const isRepluggedDev = window.RepluggedNative.getVersion() === "dev";
 
   const checkForUpdates = async (): Promise<void> => {
     const previousUpdates = getAvailableUpdates();
@@ -137,6 +138,15 @@ export const Updater = (): React.ReactElement => {
         stickToMarkers={true}>
         {Messages.REPLUGGED_UPDATES_OPTS_INTERVAL}
       </SliderItem>
+      {isRepluggedDev && (
+        <div style={{ marginBottom: "16px" }}>
+          <Notice messageType={Notice.Types.WARNING}>
+            {Messages.REPLUGGED_DEVELOPER_MODE_WARNING.format({
+              url: "https://replugged.dev/download",
+            })}
+          </Notice>
+        </div>
+      )}
       <Flex
         justify={Flex.Justify.BETWEEN}
         align={Flex.Align.CENTER}
