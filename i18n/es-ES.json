@@ -40,7 +40,7 @@
     "REPLUGGED_UPDATES_LAST_CHECKED": "Última comprobación: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Abrir Actualizador",
     "REPLUGGED_UPDATES_OPTS_AUTO": "Actualizar automáticamente en segundo plano",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged puede descargar e instalar actualizaciones en segundo plano sin molestarlo demasiado. Tenga en cuenta que las actualizaciones requerirán la acción del usuario si es necesario volver a cargar o si hay un conflicto.",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged puede buscar actualizaciones en segundo plano y luego avisarle cuando haya alguna actualización. Tenga en cuenta que las actualizaciones requerirán la acción del usuario si es necesario volver a cargar o si hay un conflicto.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Abrir registro de cambios",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "¿Perdió el registro de cambios o desea verlo nuevamente?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Actualizar límite de concurrencia",
@@ -208,5 +208,6 @@
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[MODO DESARROLLADOR]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Habilitar insignias de Replugged",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Mostrar insignias personalizadas de Replugged en los perfiles de usuario",
-    "REPLUGGED_I18N": "Traducciones de Replugged"
+    "REPLUGGED_I18N": "Traducciones de Replugged",
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Estas ejecutando el modo desarrollador de Replugged, no habrá actualizaciones automaticas. [Cambiar al modo de producción]({url})."
 }

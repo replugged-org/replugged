@@ -209,5 +209,6 @@
     "REPLUGGED_SETTINGS_BADGES": "Abilita i Badge Replugged",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Mostra i badge personalizzati di Replugged sui profili utente",
     "REPLUGGED_I18N": "Traduzioni di Replugged",
-    "REPLUGGED_VIEW_UPDATES": "Mostra {count, plural, =1 {# Aggiornamento} other {# Aggiornamenti}}"
+    "REPLUGGED_VIEW_UPDATES": "Mostra {count, plural, =1 {# Aggiornamento} other {# Aggiornamenti}}",
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "In questo momento stai eseguendo Replugged in modalità sviluppatore e Replugged non sarà in grado di aggiornarsi da solo. [Passa alla modalità produzione]({url})."
 }
