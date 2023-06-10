@@ -1,28 +1,60 @@
+import { virtualMerge } from "src/renderer/util";
 import { filters, getExportsForProps, waitForModule, waitForProps } from "../webpack";
 
-export const raw = await waitForModule(filters.bySource("BASE_URL:"));
+const ConstantsCommon = await waitForModule<Record<string, unknown>>(filters.bySource("BASE_URL:"));
+const Constants = await waitForModule<Record<string, unknown>>(filters.bySource("USER_PROFILE:"));
+export const raw = virtualMerge(ConstantsCommon, Constants);
 
-export const Permissions = getExportsForProps<Record<string, bigint>>(raw, [
+export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsCommon, [
   "ADMINISTRATOR",
   "MANAGE_GUILD",
 ]);
-export const Scopes = getExportsForProps<Record<string, string>>(raw, ["BOT", "GUILDS"])!;
-export const RPCErrors = getExportsForProps<Record<string, string | number>>(raw, [
+// OAuth2Scopes
+export const Scopes = getExportsForProps<Record<string, string>>(ConstantsCommon, [
+  "BOT",
+  "GUILDS",
+])!;
+// RPCCloseCodes
+export const RPCErrors = getExportsForProps<Record<string, string | number>>(ConstantsCommon, [
   "RATELIMITED",
   "TOKEN_REVOKED",
 ])!;
-export const RPCCommands = getExportsForProps<Record<string, string>>(raw, [
+export const RPCCommands = getExportsForProps<Record<string, string>>(ConstantsCommon, [
   "AUTHENTICATE",
   "AUTHORIZE",
 ])!;
-export const RPCEvents = getExportsForProps<Record<string, string>>(raw, [
+export const RPCEvents = getExportsForProps<Record<string, string>>(ConstantsCommon, [
   "GUILD_CREATE",
   "ERROR",
 ])!;
-/** @deprecated Use {@link ColorGenerator} instead */
-export const Colors = getExportsForProps<Record<string, string>>(raw, ["GREY1", "GREY2"])!;
-export const Status = getExportsForProps<Record<string, string>>(raw, ["ONLINE", "IDLE"])!;
-export const Paths = getExportsForProps<Record<string, string>>(raw, ["INDEX", "DOWNLOADS"])!;
+// StatusTypes
+export const Status = getExportsForProps<Record<string, string>>(ConstantsCommon, [
+  "ONLINE",
+  "IDLE",
+])!;
+// WebRoutes
+export const Paths = getExportsForProps<Record<string, string>>(ConstantsCommon, [
+  "INDEX",
+  "DOWNLOADS",
+])!;
+
+export const ChannelTypes = getExportsForProps<Record<string, string | number>>(Constants, [
+  "DM",
+  "GUILD_FORUM",
+])!;
+export const Endpoints = getExportsForProps<Record<string, unknown>>(Constants, [
+  "USERS",
+  "INTEGRATIONS",
+])!;
+export const GuildFeatures = getExportsForProps<Record<string, string>>(Constants, [
+  "VERIFIED",
+  "ANIMATED_BANNER",
+])!;
+export const Routes = getExportsForProps<Record<string, unknown>>(Constants, ["INDEX", "LOGIN"])!;
+export const UserFlags = getExportsForProps<Record<string, number>>(Constants, [
+  "STAFF",
+  "SPAMMER",
+])!;
 
 export const CSSVariables = await waitForProps<Record<string, string>>(
   "TEXT_NORMAL",
