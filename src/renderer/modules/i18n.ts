@@ -10,10 +10,13 @@ export function load(): void {
   loadAllStrings(strings);
 
   locale = i18n._chosenLocale;
+
   i18n.on("locale", (newLocale: string) => {
     locale = newLocale;
     i18n.loadPromise.then(addRepluggedStrings)!;
   });
+
+  i18n.loadPromise.then(addRepluggedStrings)!;
 
   addRepluggedStrings();
 }
