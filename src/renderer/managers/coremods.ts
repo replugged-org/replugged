@@ -8,6 +8,9 @@ import { default as noDevtoolsWarningPlaintext } from "../coremods/noDevtoolsWar
 import { default as messagePopover } from "../coremods/messagePopover/plaintextPatches";
 import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches";
 import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
+import { Logger } from "../modules/logger";
+
+const logger = Logger.api("Coremods");
 
 interface Coremod {
   start?: () => Promisable<void>;
@@ -22,6 +25,7 @@ export namespace coremods {
   export let notrack: Coremod;
   export let installer: Coremod;
   export let messagePopover: Coremod;
+  export let notices: Coremod;
   export let contextMenu: Coremod;
   export let language: Coremod;
   export let rpc: Coremod;
@@ -42,11 +46,20 @@ export async function startAll(): Promise<void> {
   coremods.badges = await import("../coremods/badges");
   coremods.installer = await import("../coremods/installer");
   coremods.messagePopover = await import("../coremods/messagePopover");
+  coremods.notices = await import("../coremods/notices");
   coremods.contextMenu = await import("../coremods/contextMenu");
   coremods.language = await import("../coremods/language");
   coremods.rpc = await import("../coremods/rpc");
   coremods.watcher = await import("../coremods/watcher");
-  await Promise.allSettled(Object.values(coremods).map((c) => c.start?.()));
+  await Promise.all(
+    Object.entries(coremods).map(async ([name, mod]) => {
+      try {
+        await mod.start?.();
+      } catch (e) {
+        logger.error(`Failed to start coremod ${name}`, e);
+      }
+    }),
+  );
 }
 
 export async function stopAll(): Promise<void> {

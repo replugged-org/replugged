@@ -35,29 +35,15 @@ export enum RepluggedIpcChannels {
 }
 
 export interface RepluggedAnnouncement {
+  _dismissed?: boolean;
   message: string;
   color?: string;
   onClose?: () => void;
   button?: {
     text: string;
     onClick: () => void;
+    href?: string;
   };
-}
-
-export interface RepluggedToastButton {
-  size?: string;
-  look?: string;
-  color?: string;
-  onClick: () => void;
-  text: string;
-}
-
-export interface RepluggedToast {
-  header: string;
-  content: string;
-  timeout?: number;
-  className?: string;
-  buttons?: RepluggedToastButton[];
 }
 
 export interface RepluggedCommand {

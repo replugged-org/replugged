@@ -3,7 +3,10 @@ import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 import { Logger } from "../modules/logger";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
-import { RepluggedEntity } from "src/types/addon";
+import { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
+import notices from "../apis/notices";
+import * as common from "@common";
+import { waitForProps } from "../modules/webpack";
 
 const logger = Logger.coremod("Updater");
 
@@ -40,19 +43,21 @@ const REPLUGGED_ENTITY: RepluggedEntity = {
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type MainUpdaterSettings = {
-  // Todo: implement
-  checkInterval?: number;
+  autoCheck?: boolean;
+  checkIntervalMinutes?: number;
   lastChecked?: number;
 };
 
-const mainUpdaterDefaultSettings: Partial<MainUpdaterSettings> = {
-  checkInterval: 1000 * 60 * 60,
-};
+const mainUpdaterDefaultSettings = {
+  autoCheck: true,
+  checkIntervalMinutes: 10,
+  lastChecked: 0,
+} satisfies Partial<MainUpdaterSettings>;
 
-const updaterSettings = await init<MainUpdaterSettings, keyof typeof mainUpdaterDefaultSettings>(
-  "dev.replugged.Updater",
-  mainUpdaterDefaultSettings,
-);
+export const updaterSettings = await init<
+  MainUpdaterSettings,
+  keyof typeof mainUpdaterDefaultSettings
+>("dev.replugged.Updater", mainUpdaterDefaultSettings);
 
 const updaterState = await init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
 
@@ -77,10 +82,6 @@ export function getUpdateState(id: string): UpdateSettings | null {
   )
     return null;
   return setting;
-}
-
-export function getMainUpdaterSettings(): MainUpdaterSettings {
-  return updaterSettings.all();
 }
 
 export function setUpdaterState(id: string, state: UpdateSettings): void {
@@ -204,16 +205,22 @@ export async function installUpdate(id: string, force = false, verbose = true): 
   return true;
 }
 
-export async function checkAllUpdates(verbose = false): Promise<void> {
+export async function checkAllUpdates(autoCheck = false, verbose = false): Promise<void> {
   const plugins = Array.from(pluginManager.plugins.values());
   const themes = await themeManager.list();
+
+  // For auto checking, only check for store updates since GitHub has a higher rate limit
+  const filterFn = autoCheck
+    ? (addon: { manifest: AnyAddonManifest }) => addon.manifest.updater?.type === "store"
+    : () => true;
+
+  const addons = [...plugins, ...themes].filter(filterFn);
 
   logger.log("Checking for updates");
 
   await Promise.all([
     checkUpdate(REPLUGGED_ID, verbose),
-    ...plugins.map((plugin) => checkUpdate(plugin.manifest.id, verbose)),
-    ...themes.map((theme) => checkUpdate(theme.manifest.id, verbose)),
+    ...addons.map((addon) => checkUpdate(addon.manifest.id, verbose)),
   ]);
 
   logger.log("All updates checked");
@@ -241,4 +248,72 @@ export function installAllUpdates(
   return Object.fromEntries(
     available.map((update) => [update.id, installUpdate(update.id, force, verbose)]),
   );
+}
+
+let clearActiveNotification: (() => void) | null = null;
+let didRun = false;
+const openSettingsModPromise = waitForProps<{
+  open: (id: string) => void;
+  updateAccount: unknown;
+}>("open", "updateAccount");
+
+async function autoUpdateCheck(): Promise<void> {
+  if (!updaterSettings.get("autoCheck")) return;
+
+  const initialUpdateCount = getAvailableUpdates().length;
+  const lastChecked = updaterSettings.get("lastChecked");
+  const checkMs = updaterSettings.get("checkIntervalMinutes") * 60 * 1000;
+  const lastCheckedAgo = Date.now() - lastChecked;
+  // If it's not been long enough to check again, don't check
+  // But we still want to try and show existing updates if they exist
+  if (lastCheckedAgo >= checkMs) {
+    logger.log("Checking for updates (auto)");
+    await checkAllUpdates(true);
+    updaterSettings.set("lastChecked", Date.now());
+  } else {
+    logger.log("Skipping update check since it's too soon since the last check");
+  }
+
+  // We only want to show a notification if:
+  // - There is at least one update available
+  // - There are new updates available since the last check, or this is the first run
+  // This is to prevent spamming the user with notifications if they choose to ignore the update
+
+  const newUpdateCount = getAvailableUpdates().length;
+  const isAnUpdate = newUpdateCount > 0;
+  const areNewUpdates = newUpdateCount > initialUpdateCount;
+  const isFirstRun = !didRun;
+  didRun = true;
+  if (isAnUpdate && (areNewUpdates || isFirstRun)) {
+    logger.log("Showing update notification");
+
+    const Messages = common.i18n?.Messages; // Weird hack due to circular dependency
+    const { open } = await openSettingsModPromise;
+
+    if (!Messages) {
+      logger.error("Messages missing, cannot show update notification");
+      return;
+    }
+
+    clearActiveNotification?.();
+    clearActiveNotification = notices.sendAnnouncement({
+      message: Messages.REPLUGGED_UPDATES_AVAILABLE.format({
+        count: newUpdateCount,
+      }),
+      button: {
+        text: Messages.REPLUGGED_VIEW_UPDATES.format({
+          count: newUpdateCount,
+        }),
+        onClick: () => open("rp-updater"),
+      },
+    });
+  }
+}
+
+// Check if updates need to be checked every minute
+export function startAutoUpdateChecking(): void {
+  setInterval(() => {
+    autoUpdateCheck().catch((err) => logger.error("Error in update checking (loop)", err));
+  }, 60 * 1000);
+  autoUpdateCheck().catch((err) => logger.error("Error in update checking (initial)", err));
 }
