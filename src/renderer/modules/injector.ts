@@ -290,7 +290,7 @@ export class Injector {
      *   injector.utils.addPopoverButton((msg: Message, channel: Channel) => {
      *     return {
      *       label: "Click the button!",
-     *       icon: <svg></svg>, // Cool icon
+     *       icon: myVeryCoolIcon(), // Cool icon
      *       onClick: () => {
      *         // do stuff here when someone left clicks the button
      *       },

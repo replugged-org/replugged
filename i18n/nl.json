@@ -34,15 +34,15 @@
     "REPLUGGED_UPDATES_FORCE": "Forceer Update",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Laatst gechecked: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Open Updater",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Update automatisch op de achtergrond",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged kan updates in de achtergrond downloaden en installeren zonder je te veel te irriteren. Houd er rekening mee dat updates gebruikersactie vereisen als herladen vereist is of als een conflict zich voordoet.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Check automatisch voor updates",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged zal automatisch voor updates checken en je een waarschuwing tonen als er een beschikbaar is. Updates zullen niet geïnstalleerd worden totdat jij hiervoor kiest. Alleen officiele addons zullen automatisch gecheckt worden.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Open Changelog",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "De changelog gemist, of wil je hem nog eens bekijken?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Update Gelijktijdigheidslimiet",
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Debugging Informatie",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Dingen die misschien handig zijn tijdens het probleemoplossen of het flexen van stats.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Update Check Interval",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Hoe frequent Replugged zal checken voor updates (in minuten). Minimaal 10 minuten.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Hoe frequent Replugged zal checken voor updates. Minimaal 10 minuten.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Verander Releasekanaal",
     "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL": "Weet je zeker dat je het releasekanaal wilt veranderen? Replugged zal je Discord client herladen.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_MODAL_HEADER": "Verander releasekanaal",
@@ -208,5 +208,6 @@
     "REPLUGGED_I18N": "Replugged Vertalingen",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Toon aangepaste Replugged profielbadges op gebruikersprofielen",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other{v{version}}}",
-    "REPLUGGED_SETTINGS_BADGES": "Toon Replugged-badges"
+    "REPLUGGED_SETTINGS_BADGES": "Toon Replugged-badges",
+    "REPLUGGED_VIEW_UPDATES": "Bekijk {count, plural, =1 {# Update} other {# Updates}}"
 }
