@@ -210,5 +210,5 @@
     "REPLUGGED_RELOAD": "Přenačíst",
     "REPLUGGED_I18N": "Překlady Replugged",
     "REPLUGGED_DEVELOPER_MODE_WARNING": "Momentálně máš Replugged spuštěný ve vývojářském režimu, ve kterém se není schopný sám aktualizovat. [Přepnutí do běžného režimu]({url}).",
-    "REPLUGGED_VIEW_UPDATES": "Byl nalezen následující počet aktualizací: {count}"
+    "REPLUGGED_VIEW_UPDATES": "Zobrazuji {count, plural, =1 {# aktualizaci} =2 {# aktualizace} =3 {# aktualizace} =4 {# aktualizace} other {# aktualizací}}"
 }
