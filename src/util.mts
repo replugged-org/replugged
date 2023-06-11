@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
 import { join } from "path";
 
 const REPLUGGED_FOLDER_NAME = "replugged";
@@ -58,6 +58,12 @@ export const CONFIG_PATHS = Object.fromEntries(
     return [name, path];
   }),
 ) as Record<(typeof CONFIG_FOLDER_NAMES)[number], string>;
+
+if (process.platform === "linux") {
+  const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
+  chownSync(CONFIG_PATH, REAL_UID, REAL_GID);
+  CONFIG_FOLDER_NAMES.forEach((folder) => chownSync(join(CONFIG_PATH, folder), REAL_UID, REAL_GID));
+}
 
 const QUICK_CSS_FILE = join(CONFIG_PATHS.quickcss, "main.css");
 if (!existsSync(QUICK_CSS_FILE)) {
