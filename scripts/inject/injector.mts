@@ -5,7 +5,7 @@ import { AnsiEscapes, getCommand } from "./util.mjs";
 import readline from "readline";
 import { exec } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
-import { configPathFn } from "../../src/util.mjs";
+import { CONFIG_PATH } from "../../src/util.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -68,7 +68,6 @@ export const inject = async (
   platform: DiscordPlatform,
   prod: boolean,
 ): Promise<boolean> => {
-  const CONFIG_PATH = configPathFn();
   const appDir = await getAppDir(platform);
   if (!(await correctMissingMainAsar(appDir))) return false;
   if (!(await isDiscordInstalled(appDir))) return false;
@@ -186,7 +185,6 @@ export const inject = async (
         // Adjust ownership of config folder and asar file to match the parent config folder
         // We want to make sure all Replugged files are owned by the user
         const { uid, gid } = await stat(join(CONFIG_PATH, ".."));
-        await chown(CONFIG_PATH, uid, gid);
         await chown(entryPoint, uid, gid);
       } catch {}
     }
