@@ -209,5 +209,6 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Atualização completada com sucesso.",
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# nova atualização} other {# novas atualizações}} disponíveis!",
     "REPLUGGED_I18N": "Traduções do Replugged",
-    "REPLUGGED_VIEW_UPDATES": "Ver {count, plural, =1 {# Atualização} other {# Atualizações}}"
+    "REPLUGGED_VIEW_UPDATES": "Ver {count, plural, =1 {# Atualização} other {# Atualizações}}",
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Você está em modo de desenvolvedor e o Replugged não conseguirá se atualizar. [Voltar ao modo normal]({url})."
 }
