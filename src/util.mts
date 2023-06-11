@@ -45,10 +45,6 @@ export const CONFIG_PATH = configPathFn();
 
 if (!existsSync(CONFIG_PATH)) {
   mkdirSync(CONFIG_PATH, { recursive: true });
-  if (process.platform === "linux") {
-    const { uid, gid } = statSync(CONFIG_PATH.split("/").slice(0, -1).join("/"));
-    chownSync(CONFIG_PATH, uid, gid);
-  }
 }
 
 const CONFIG_FOLDER_NAMES = ["plugins", "themes", "settings", "quickcss"] as const;
@@ -62,6 +58,12 @@ export const CONFIG_PATHS = Object.fromEntries(
     return [name, path];
   }),
 ) as Record<(typeof CONFIG_FOLDER_NAMES)[number], string>;
+
+if (process.platform === "linux") {
+  const { uid: REAL_UID, gid: REAL_GID } = statSync(CONFIG_PATH.split("/").slice(0, -1).join("/"));
+  chownSync(CONFIG_PATH, REAL_UID, REAL_GID);
+  CONFIG_FOLDER_NAMES.forEach((folder) => chownSync(join(CONFIG_PATH, folder), REAL_UID, REAL_GID));
+}
 
 const QUICK_CSS_FILE = join(CONFIG_PATHS.quickcss, "main.css");
 if (!existsSync(QUICK_CSS_FILE)) {
