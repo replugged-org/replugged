@@ -6,6 +6,7 @@ import { default as settingsPlaintext } from "../coremods/settings/plaintextPatc
 import { default as notrackPlaintext } from "../coremods/notrack/plaintextPatches";
 import { default as noDevtoolsWarningPlaintext } from "../coremods/noDevtoolsWarning/plaintextPatches";
 import { default as messagePopover } from "../coremods/messagePopover/plaintextPatches";
+import { default as notices } from "../coremods/notices/plaintextPatches";
 import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches";
 import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
 import { Logger } from "../modules/logger";
@@ -73,6 +74,7 @@ export function runPlaintextPatches(): void {
     notrackPlaintext,
     noDevtoolsWarningPlaintext,
     messagePopover,
+    notices,
     contextMenu,
     languagePlaintext,
   ].forEach(patchPlaintext);
