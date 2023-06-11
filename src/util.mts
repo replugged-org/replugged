@@ -60,7 +60,7 @@ export const CONFIG_PATHS = Object.fromEntries(
 ) as Record<(typeof CONFIG_FOLDER_NAMES)[number], string>;
 
 if (process.platform === "linux") {
-  const { uid: REAL_UID, gid: REAL_GID } = statSync(CONFIG_PATH.split("/").slice(0, -1).join("/"));
+  const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
   chownSync(CONFIG_PATH, REAL_UID, REAL_GID);
   CONFIG_FOLDER_NAMES.forEach((folder) => chownSync(join(CONFIG_PATH, folder), REAL_UID, REAL_GID));
 }
