@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
 import { join } from "path";
 
 const REPLUGGED_FOLDER_NAME = "replugged";
@@ -45,6 +45,10 @@ export const CONFIG_PATH = configPathFn();
 
 if (!existsSync(CONFIG_PATH)) {
   mkdirSync(CONFIG_PATH, { recursive: true });
+  if (process.platform === "linux") {
+    const { uid, gid } = statSync(CONFIG_PATH.split("/").slice(0, -1).join("/"));
+    chownSync(CONFIG_PATH, uid, gid);
+  }
 }
 
 const CONFIG_FOLDER_NAMES = ["plugins", "themes", "settings", "quickcss"] as const;
