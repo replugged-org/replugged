@@ -48,7 +48,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Debug Informationen",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Dinge, die bei der Fehlersuche helfen können, oder einfach zum flexen genutzt werden können.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Update-Prüfintervall",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Wie oft Replugged nach neuen Updates sucht (in Minuten). Minimum 10 Minuten.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Wie oft Replugged nach neuen Updates sucht. Minimum 10 Minuten.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Update-Branch ändern",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Du kannst zwischen dem Stable-Branch, oder dem Entwicklungs-Branch wählen. Der Stable-Branch bringt dir nur wichtige, kritische, sowie sicherheitsrelevante Updates. Wenn du dir unsicher bist, bleib lieber beim Stable-Branch.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "Zum Entwicklungs-Branch wechseln",
@@ -208,5 +208,7 @@
     "REPLUGGED_ADDONS_LOAD_MISSING": "Lade fehlendes {type}",
     "REPLUGGED_TOAST_ADDON_TOGGLE_FAILED": "Fehler beim Umschalten von {name}",
     "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# Treffer} other {# Treffer}}",
-    "REPLUGGED_I18N": "Replugged Übersetzungen"
+    "REPLUGGED_I18N": "Replugged Übersetzungen",
+    "REPLUGGED_VIEW_UPDATES": "{count, plural, =1 {# Update} other {# Updates}} anzeigen",
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Replugged läuft derzeit im Entwicklermodus und wird sich nicht selbst updaten.  [Zur Release-Version wechseln]({url})."
 }
