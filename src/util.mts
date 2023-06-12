@@ -59,7 +59,7 @@ export const CONFIG_PATHS = Object.fromEntries(
   }),
 ) as Record<(typeof CONFIG_FOLDER_NAMES)[number], string>;
 
-if (process.platform === "linux") {
+if (["darwin", "linux"].includes(process.platform)) {
   const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
   chownSync(CONFIG_PATH, REAL_UID, REAL_GID);
   CONFIG_FOLDER_NAMES.forEach((folder) => chownSync(join(CONFIG_PATH, folder), REAL_UID, REAL_GID));
