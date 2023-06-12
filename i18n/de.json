@@ -210,5 +210,5 @@
     "REPLUGGED_LIST_RESULTS": "{count, plural, =1 {# Treffer} other {# Treffer}}",
     "REPLUGGED_I18N": "Replugged Übersetzungen",
     "REPLUGGED_VIEW_UPDATES": "{count, plural, =1 {# Update} other {# Updates}} anzeigen",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "Replugged läuft derzeit im Entwicklermodus und wird sich nicht selbst updaten.  [Zur Release-Version wechseln]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Replugged läuft derzeit im Entwicklermodus und wird sich nicht selbst updaten. [Zur Release-Version wechseln]({url})."
 }
