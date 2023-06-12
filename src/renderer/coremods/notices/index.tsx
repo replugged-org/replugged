@@ -1,14 +1,9 @@
 import { React } from "@common";
-import { Injector, Logger, notices } from "@replugged";
-import { waitForProps } from "src/renderer/modules/webpack";
-import { Tree, findInReactTree, getOwnerInstance, waitFor } from "src/renderer/util";
+import { notices } from "@replugged";
 import { RepluggedAnnouncement } from "src/types";
 import NoticeMod from "./noticeMod";
 
 const { Notice, NoticeButton, NoticeButtonAnchor, NoticeCloseButton } = NoticeMod;
-
-const injector = new Injector();
-const logger = Logger.coremod("Notices");
 
 function Announcement({
   message,
@@ -42,7 +37,7 @@ function Announcement({
   );
 }
 
-function AnnouncementContainer({
+export function AnnouncementContainer({
   originalRes,
 }: {
   originalRes: React.ReactElement;
@@ -63,39 +58,4 @@ function AnnouncementContainer({
   }, []);
 
   return announcement ? <Announcement {...announcement} /> : originalRes;
-}
-
-export async function init(): Promise<void> {
-  const { base } = await waitForProps<Record<"base" | "container", string>>("base", "container");
-
-  const baseEl = await waitFor(`.${base}`);
-  const instance = getOwnerInstance(baseEl) as unknown as {
-    render: () => {
-      props: {
-        children: {
-          type: () => Tree;
-        };
-      };
-    };
-  };
-  let uninjectLastBase: () => void;
-  injector.after(instance, "render", (_, res) => {
-    if (!res) return;
-    uninjectLastBase?.();
-    uninjectLastBase = injector.after(res.props.children, "type", (_, res) => {
-      const baseObj = findInReactTree(res, (c) => c?.className === base) as {
-        children: React.ReactElement[];
-      };
-      baseObj.children[0] = <AnnouncementContainer originalRes={baseObj.children[0]} />;
-      logger.log("Injected announcement container");
-    });
-  });
-}
-
-export async function start(): Promise<void> {
-  await init();
-}
-
-export function stop(): void {
-  injector.uninjectAll();
 }
