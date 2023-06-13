@@ -18,10 +18,34 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
   );
 }
 
+// Stores
+
 import type { Channels } from "./channels";
 export type { Channels };
 export let channels: Channels;
 importTimeout("channels", import("./channels"), (mod) => (channels = mod.default));
+
+import type { Guilds } from "./guilds";
+export type { Guilds };
+export let guilds: Guilds;
+importTimeout("guilds", import("./guilds"), (mod) => (guilds = mod.default));
+
+import type { Messages } from "./messages";
+export type { Messages };
+export let messages: Messages;
+importTimeout("messages", import("./messages"), (mod) => (messages = mod.default));
+
+import type { Users } from "./users";
+export type { Users };
+export let users: Users;
+importTimeout("users", import("./users"), (mod) => (users = mod.default));
+
+// Utilities
+
+import type { API } from "./api";
+export type { API };
+export let api: API;
+importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
 import * as Constants from "./constants";
 export type { Constants };
@@ -47,23 +71,38 @@ importTimeout(
   (mod) => (fluxDispatcher = mod.default),
 );
 
-import type { Guilds } from "./guilds";
-export type { Guilds };
-export let guilds: Guilds;
-importTimeout("guilds", import("./guilds"), (mod) => (guilds = mod.default));
-
-import type HighlightJS from "highlightjs";
-export type { HighlightJS };
-/**
- * @see {@link https://highlightjs.org/usage/}
- */
-export let hljs: typeof HighlightJS;
-importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
-
 import type { I18n } from "./i18n";
 export type { I18n };
 export let i18n: I18n;
 importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod.default));
+
+import type { Modal } from "./modal";
+export type { Modal };
+export let modal: Modal;
+importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
+
+import type { Parser } from "./parser";
+export type { Parser };
+export let parser: Parser;
+importTimeout("parser", import("./parser"), (mod) => (parser = mod.default));
+
+import type { Toast } from "./toast";
+export type { Toast };
+export let toast: Toast;
+importTimeout("toast", import("./toast"), (mod) => (toast = mod.default));
+
+import type { Typing } from "./typing";
+export type { Typing };
+export let typing: Typing;
+importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
+
+// External Libraries
+
+/**
+ * @see {@link https://highlightjs.org/usage/}
+ */
+export let hljs: typeof import("highlightjs");
+importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
 /**
  * @see {@link https://lodash.com/docs}
@@ -71,20 +110,11 @@ importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod.default));
 export let lodash: typeof window._;
 importTimeout("lodash", import("./lodash"), (mod) => (lodash = mod.default));
 
-import type { Messages } from "./messages";
-export type { Messages };
-export let messages: Messages;
-importTimeout("messages", import("./messages"), (mod) => (messages = mod.default));
-
-import type { Modal } from "./modal";
-export type { Modal };
-export let modal: Modal;
-importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
-
-import type { Toast } from "./toast";
-export type { Toast };
-export let toast: Toast;
-importTimeout("toast", import("./toast"), (mod) => (toast = mod.default));
+/**
+ * @see {@link https://momentjs.com/docs/}
+ */
+export let moment: typeof import("moment");
+importTimeout("moment", import("./moment"), (mod) => (moment = mod.default));
 
 /**
  * @see {@link https://react.dev/}
@@ -97,26 +127,6 @@ importTimeout("React", import("./react"), (mod) => (React = mod.default));
  */
 export let ReactDOM: typeof import("react-dom");
 importTimeout("ReactDOM", import("./react-dom"), (mod) => (ReactDOM = mod.default));
-
-import type { Typing } from "./typing";
-export type { Typing };
-export let typing: Typing;
-importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
-
-import type { Users } from "./users";
-export type { Users };
-export let users: Users;
-importTimeout("users", import("./users"), (mod) => (users = mod.default));
-
-import type { API } from "./api";
-export type { API };
-export let api: API;
-importTimeout("api", import("./api"), (mod) => (api = mod.default));
-
-import type { Parser } from "./parser";
-export type { Parser };
-export let parser: Parser;
-importTimeout("parser", import("./parser"), (mod) => (parser = mod.default));
 
 /**
  * @internal
