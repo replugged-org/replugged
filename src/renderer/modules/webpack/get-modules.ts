@@ -22,27 +22,40 @@ export function getExports<T>(m: RawModule): T | undefined {
 }
 
 /**
- * Iterates over an object and its top-level children that could have properties
+ * Iterates over an object and its top-level and second-level (if specified) children that could have properties
  * @param m Object (module exports) to iterate over
+ * @param secondLevel Boolean on wheather to iterate over second level children in object
  */
-function* iterateModuleExports(m: unknown): IterableIterator<Record<PropertyKey, unknown>> {
+function* iterateModuleExports(
+  m: unknown,
+  secondLevel?: boolean,
+): IterableIterator<Record<PropertyKey, unknown> | AnyFunction> {
   // if m is null or not an object/function, then it will obviously not have the props
   // if it has no props, then it definitely has no children either
-  if (m && (typeof m === "object" || typeof m === "function")) {
-    yield m as Record<PropertyKey, unknown>;
-    for (const key in m) {
-      try {
+  try {
+    if (m && (typeof m === "object" || typeof m === "function")) {
+      yield m as Record<PropertyKey, unknown>;
+      for (const key in m) {
         // This could throw an error ("illegal invocation") if val === DOMTokenList.prototype
         // and key === "length"
         // There could be other cases too, hence this try-catch instead of a specific exclusion
         const val = (m as Record<PropertyKey, unknown>)[key];
         if (val && (typeof val === "object" || typeof val === "function")) {
-          yield val as Record<PropertyKey, unknown>;
+          yield val as Record<PropertyKey, unknown> | AnyFunction;
+          if (secondLevel && typeof val === "object") {
+            for (const subKey in val) {
+              const subVal = (val as Record<PropertyKey, unknown>)[subKey];
+              if (subVal && (typeof val === "object" || typeof val === "function")) {
+                yield subVal as Record<PropertyKey, unknown> | AnyFunction;
+                continue;
+              }
+            }
+          }
         }
-      } catch {
-        // ignore this export
       }
     }
+  } catch {
+    // ignore this export
   }
 }
 
@@ -66,43 +79,6 @@ export function getExportsForProps<T, P extends PropertyKey = keyof T>(
 }
 
 /**
- * Iterates over an object and its top-level/second-level children that could have functions
- * @param m Object (module exports) to iterate over
- */
-function* iterateModuleFunctions(m: unknown): IterableIterator<AnyFunction> {
-  // if m is null or not an object/function, then it will obviously not be a function/object
-  // if it have no function then how would it have prototypes XD
-  if (m && (typeof m === "object" || typeof m === "function")) {
-    if (typeof m === "function") yield m as AnyFunction;
-    try {
-      // This could throw an error ("illegal invocation") if val === DOMTokenList.prototype
-      // and key === "length"
-      // There could be other cases too, hence this try-catch instead of a specific exclusion
-      if (typeof m === "object") {
-        for (const key in m) {
-          const val = (m as Record<PropertyKey, unknown>)[key];
-          if (val && typeof val === "function") {
-            yield val as AnyFunction;
-            continue;
-          }
-          if (typeof val === "object") {
-            for (const subKey in val) {
-              const subVal = (val as Record<PropertyKey, unknown>)[subKey];
-              if (subVal && typeof subVal === "function") {
-                yield subVal as AnyFunction;
-                continue;
-              }
-            }
-          }
-        }
-      }
-    } catch {
-      // ignore this export
-    }
-  }
-}
-
-/**
  * Find an object in a module that has all the given properties. You will usually not need this function.
  * @param m Module to search
  * @param props Array of prototype names
@@ -114,8 +90,8 @@ export function getFunctionForPrototypes<
 >(m: unknown, prototypes: P[]): T | undefined {
   // Loop over the module and its exports at the top level
   // Return the first thing that has all the indicated props
-  for (const exported of iterateModuleFunctions(m)) {
-    if (prototypes.every((p) => exported?.prototype?.[p])) {
+  for (const exported of iterateModuleExports(m, true)) {
+    if (prototypes.every((p) => (exported as AnyFunction)?.prototype?.[p])) {
       return exported as T;
     }
   }
