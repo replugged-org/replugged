@@ -24,7 +24,7 @@ export function getExports<T>(m: RawModule): T | undefined {
 /**
  * Iterates over an object and its top-level and second-level (if specified) children that could have properties
  * @param m Object (module exports) to iterate over
- * @param secondLevel Boolean on wheather to iterate over second level children in object
+ * @param secondLevel Boolean on whether to iterate over second level children in object
  */
 function* iterateModuleExports(
   m: unknown,
