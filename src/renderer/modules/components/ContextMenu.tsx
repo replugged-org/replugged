@@ -34,7 +34,7 @@ interface MenuItemProps {
   id: string;
   color?: (typeof ItemColors)[keyof typeof ItemColors];
   label?: string;
-  icon?: React.ReactNode;
+  icon?: React.ComponentType<unknown>;
   showIconFirst?: boolean;
   imageUrl?: string;
   hint?: React.ReactNode;
@@ -123,7 +123,7 @@ interface MenuCompositeControlItemProps {
   showDefaultFocus?: boolean;
 }
 
-export type ContextMenuProps = Record<string, unknown> & {
+export interface ContextMenuProps {
   ContextMenu: MenuProps;
   MenuSeparator: unknown;
   MenuGroup: MenuGroupProps;
@@ -131,19 +131,21 @@ export type ContextMenuProps = Record<string, unknown> & {
   MenuCheckboxItem: MenuCheckboxItemProps;
   MenuRadioItem: MenuRadioItemProps;
   MenuControlItem: MenuControlItemProps | MenuCompositeControlItemProps;
-};
+}
 
-export type ContextMenuType = {
+export type ContextMenuComponents = {
   [K in keyof ContextMenuProps]: React.FC<ContextMenuProps[K]>;
-} & {
-  ItemColors: typeof ItemColors;
 };
 
 export type ContextMenuElements = {
   [K in keyof ContextMenuProps]: React.ReactElement<ContextMenuProps[K]>;
 };
 
-const componentMap: Record<string, keyof ContextMenuType> = {
+export type ContextMenuType = ContextMenuComponents & {
+  ItemColors: typeof ItemColors;
+};
+
+const componentMap: Record<string, keyof ContextMenuComponents> = {
   separator: "MenuSeparator",
   checkbox: "MenuCheckboxItem",
   radio: "MenuRadioItem",

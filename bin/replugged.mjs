@@ -495,7 +495,7 @@ async function buildTheme({ watch: shouldWatch, noInstall, production, noReload 
 
   writeFileSync("dist/manifest.json", JSON.stringify(manifest));
 
-  Promise.all(promises);
+  await Promise.all(promises);
 
   ws?.close();
 }

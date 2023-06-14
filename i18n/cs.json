@@ -39,8 +39,8 @@
     "REPLUGGED_UPDATES_FORCE": "Vynutit aktualizaci",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Naposledy zkontrolováno: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Otevřít Updater",
-    "REPLUGGED_UPDATES_OPTS_AUTO": "Aktualizovat automaticky v pozadí",
-    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged může stáhnout a instalovat aktualizace v pozadí bez zbytečného obtěžování. Ber na vědomí, že aktualizace vyžadují akci uživatele, pokud je vyžadován restart, popřípadě při konfliktu.",
+    "REPLUGGED_UPDATES_OPTS_AUTO": "Aktualizovat automaticky",
+    "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged bude automaticky kontrolovat aktualizace a ukazovat vám upozornění, pokud je nějaká dostupná. Aktualizace nebudou nainstalovány, dokud se nerozhodnete je instalovat. Pouze oficiální doplňky budou automaticky kontrolovány.",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS": "Otevřít seznam změn",
     "REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC": "Propásl si seznam změn, nebo ho chceš vidět znovu?",
     "REPLUGGED_UPDATES_OPTS_CONCURRENCY": "Limit procesů aktualizací",
@@ -48,7 +48,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG": "Debugovací informace",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DESC": "Informace užitečné pro řešení problémů nebo na vytahování se nad některými statistikami.",
     "REPLUGGED_UPDATES_OPTS_INTERVAL": "Interval kontroly aktualizací",
-    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Jak často bude Replugged kontrolovat aktualizace (v minutách). Minimum je 10 minut.",
+    "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Jak často bude Replugged kontrolovat aktualizace. Minimum je 10 minut.",
     "REPLUGGED_UPDATES_OPTS_RELEASE": "Změnit kanál vydání",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Můžeš si vybrat mezi stabilní nebo vývojovou větví. Stabilní větev dostane jen velké, bezpečnostní a kritické aktualizace. Pokud si nejsi jistý, zůstaň na stabilní větvi.",
     "REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN": "Změnit na vývojovou větev",
@@ -115,7 +115,7 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH": "Složka instalace Replugged",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Složka Discordu",
     "REPLUGGED_UPDATES_OPTS_DEBUG_CACHED_FILES": "Soubory v cache:",
-    "REPLUGGED_UPDATES_UPDATER": "Updater",
+    "REPLUGGED_UPDATES_UPDATER": "Aktualizátor",
     "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id}\" byl znovu načten!",
     "REPLUGGED_NOTICES_WELCOME_NEW_USER": "Vítej! Replugged byl úspěšně nainstalován do tvého Discord klienta. Přijď na náš Discord server pro novinky, podporu a více!",
     "REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_MORE": "Ukázat více",
@@ -208,5 +208,7 @@
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, one {Nalezena # aktualizace!} few {Nalezeno # aktualizací} other {Nalezeno # aktualizací}}!",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} potřebuje přenačtení pro jeho správné fungování. Přenačíst nyní?",
     "REPLUGGED_RELOAD": "Přenačíst",
-    "REPLUGGED_I18N": "Překlady Replugged"
+    "REPLUGGED_I18N": "Překlady Replugged",
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Momentálně máš Replugged spuštěný ve vývojářském režimu, ve kterém se není schopný sám aktualizovat. [Přepnutí do běžného režimu]({url}).",
+    "REPLUGGED_VIEW_UPDATES": "Zobrazuji {count, plural, =1 {# aktualizaci} =2 {# aktualizace} =3 {# aktualizace} =4 {# aktualizace} other {# aktualizací}}"
 }

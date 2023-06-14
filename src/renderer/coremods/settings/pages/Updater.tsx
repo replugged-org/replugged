@@ -1,7 +1,7 @@
 import { toast } from "@common";
 import i18n, { Messages } from "@common/i18n";
 import React from "@common/react";
-import { Button, Divider, Flex, Text, Tooltip } from "@components";
+import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
@@ -9,11 +9,11 @@ import {
   type UpdateSettings,
   checkAllUpdates,
   getAvailableUpdates,
-  getMainUpdaterSettings,
   installAllUpdates,
   installUpdate,
+  updaterSettings,
 } from "src/renderer/managers/updater";
-import { sleep } from "src/renderer/util";
+import { sleep, useSetting, useSettingArray } from "src/renderer/util";
 import Icons from "../icons";
 import "./Updater.css";
 
@@ -26,7 +26,7 @@ export const Updater = (): React.ReactElement => {
   >(getAvailableUpdates());
   const [updatePromises, setUpdatePromises] = React.useState<Record<string, Promise<boolean>>>({});
   const [didInstallAll, setDidInstallAll] = React.useState(false);
-  const [lastChecked, setLastChecked] = React.useState(getMainUpdaterSettings().lastChecked);
+  const [lastChecked, setLastChecked] = useSettingArray(updaterSettings, "lastChecked");
 
   React.useEffect(() => {
     const promises = Object.entries(updatePromises);
@@ -60,13 +60,14 @@ export const Updater = (): React.ReactElement => {
   const isAnyUpdating = hasAnyUpdates && updatesAvailable.some((u) => u.id in updatePromises);
   const isAllComplete = hasAnyUpdates && updatesAvailable.every((u) => !u.available);
   const isAnyComplete = hasAnyUpdates && updatesAvailable.some((u) => !u.available);
+  const isRepluggedDev = window.RepluggedNative.getVersion() === "dev";
 
   const checkForUpdates = async (): Promise<void> => {
     const previousUpdates = getAvailableUpdates();
     setChecking(true);
-    await Promise.all([checkAllUpdates(true), sleep(1000)]);
+    await Promise.all([checkAllUpdates(false, true), sleep(1000)]);
     setChecking(false);
-    setLastChecked(getMainUpdaterSettings().lastChecked);
+    setLastChecked(lastChecked);
     const newUpdates = getAvailableUpdates();
     setUpdatesAvailable(newUpdates);
     if (newUpdates.length > previousUpdates.length) {
@@ -112,10 +113,44 @@ export const Updater = (): React.ReactElement => {
         <Text.H2>{Messages.REPLUGGED_UPDATES_UPDATER}</Text.H2>
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
+      <SwitchItem
+        {...useSetting(updaterSettings, "autoCheck")}
+        note={Messages.REPLUGGED_UPDATES_OPTS_AUTO_DESC}>
+        {Messages.REPLUGGED_UPDATES_OPTS_AUTO}
+      </SwitchItem>
+      <SliderItem
+        {...useSetting(updaterSettings, "checkIntervalMinutes")}
+        disabled={!updaterSettings.get("autoCheck")}
+        note={Messages.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC}
+        markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
+        equidistant={true}
+        onMarkerRender={(value) => {
+          // Format as xh and/or xm
+          const hours = Math.floor(value / 60);
+          const minutes = value % 60;
+
+          const hourString = hours > 0 ? `${hours}h` : "";
+          const minuteString = minutes > 0 ? `${minutes}m` : "";
+
+          const label = [hourString, minuteString].filter(Boolean).join(" ");
+          return label;
+        }}
+        stickToMarkers={true}>
+        {Messages.REPLUGGED_UPDATES_OPTS_INTERVAL}
+      </SliderItem>
+      {isRepluggedDev && (
+        <div style={{ marginBottom: "16px" }}>
+          <Notice messageType={Notice.Types.WARNING}>
+            {Messages.REPLUGGED_DEVELOPER_MODE_WARNING.format({
+              url: "https://replugged.dev/download",
+            })}
+          </Notice>
+        </div>
+      )}
       <Flex
-        className="replugged-updater-header"
         justify={Flex.Justify.BETWEEN}
-        align={Flex.Align.CENTER}>
+        align={Flex.Align.CENTER}
+        className="replugged-updater-header">
         <Flex justify={Flex.Justify.CENTER} direction={Flex.Direction.VERTICAL}>
           <Text variant="heading-md/bold" color="header-primary">
             {updatesAvailable.length

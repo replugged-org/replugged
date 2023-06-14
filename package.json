@@ -1,6 +1,6 @@
 {
   "name": "replugged",
-  "version": "4.3.0",
+  "version": "4.4.2",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "dist/main.mjs",
@@ -9,7 +9,7 @@
     "node": ">=18.0.0",
     "pnpm": ">=8.0.0"
   },
-  "packageManager": "pnpm@8.0.0",
+  "packageManager": "pnpm@8.6.1",
   "scripts": {
     "build": "tsx scripts/build.mts",
     "bundle": "tsx scripts/build.mts --production",
@@ -42,10 +42,10 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.10",
     "@types/react-reconciler": "^0.28.1",
+    "@types/superagent": "^4.1.17",
     "@types/update-notifier": "^6.0.2",
     "@types/ws": "^8.5.4",
     "@types/yargs": "^17.0.23",
-    "@types/superagent": "^4.1.17",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "cspell": "^6.19.2",
@@ -55,7 +55,7 @@
     "eslint-config-dmitmel": "github:dmitmel/eslint-config-dmitmel",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.31.8",
-    "np": "^7.6.2",
+    "np": "^8.0.2",
     "parcel": "^2.8.3",
     "prettier": "^2.8.4",
     "simple-markdown": "^0.7.3",

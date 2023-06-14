@@ -1,10 +1,11 @@
 import type {
+  ContextMenuComponents,
   ContextMenuElements,
   ContextMenuProps,
 } from "../../renderer/modules/components/ContextMenu";
 
 export interface RawContextItem {
-  type: React.ComponentType<unknown>;
+  type: ContextMenuComponents[keyof ContextMenuComponents];
   children?: Array<RawContextItem | ContextItem | undefined>;
   action?(): unknown;
 

@@ -11,7 +11,7 @@ interface RadioOptionType {
   color?: string;
   tooltipText?: string;
   tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
-  icon?: React.ReactNode;
+  icon?: React.ComponentType<unknown>;
   collapsibleContent?: React.ReactNode;
 }
 
