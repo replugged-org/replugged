@@ -1,5 +1,6 @@
-import { React, channels, fluxDispatcher, guilds } from "@common";
+import { React, channels, fluxDispatcher, guilds, lodash } from "@common";
 import type { Fiber } from "react-reconciler";
+import type { ReactElement } from "react";
 import type { Jsonifiable } from "type-fest";
 import type { ObjectExports } from "../types";
 import { SettingsManager } from "./apis/settings";
@@ -182,7 +183,7 @@ export function useSetting<
   F extends T[K] | undefined,
 >(
   settings: SettingsManager<T, D>,
-  key: K,
+  key: keyof T & string extends K ? string : K,
   fallback?: F,
 ): {
   value: K extends D
@@ -192,8 +193,10 @@ export function useSetting<
     : NonNullable<T[K]> | F;
   onChange: (newValue: ValType<T[K]>) => void;
 } {
-  const initial = settings.get(key, fallback);
-  const [value, setValue] = React.useState(initial);
+  const [initialKey, ...pathArray] = key.split(".") as K[];
+  const path = pathArray.join(".");
+  const initial = settings.get(initialKey, fallback);
+  const [value, setValue] = React.useState(path.length ? lodash.get(initial, path) : initial);
 
   return {
     value,
@@ -209,9 +212,11 @@ export function useSetting<
       const targetChecked = target && "checked" in target ? target.checked : undefined;
       const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
 
-      // @ts-expect-error dumb
       setValue(finalValue);
-      settings.set(key, finalValue);
+      settings.set(
+        key as K,
+        path.length ? (lodash.set(initial as object, path, finalValue) as T[K]) : finalValue,
+      );
     },
   };
 }
@@ -353,11 +358,11 @@ export function findInTree(
  * @returns The component you are looking for
  */
 export function findInReactTree(
-  tree: Tree,
+  tree: Tree | ReactElement,
   searchFilter: TreeFilter,
   maxRecursion = 100,
-): Tree | null | undefined {
-  return findInTree(tree, searchFilter, {
+): Tree | ReactElement | null | undefined {
+  return findInTree(tree as Tree, searchFilter, {
     walkable: ["props", "children", "child", "sibling"],
     maxRecursion,
   });
