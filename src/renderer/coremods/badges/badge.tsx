@@ -1,9 +1,8 @@
 import { Messages } from "@common/i18n";
 import React from "@common/react";
 import { Clickable, Tooltip } from "@components";
-import { RawModule } from "src/types";
-import { filters, getByProps, waitForModule } from "../../modules/webpack";
-import { goToOrJoinServer } from "../../util";
+import { getByProps } from "../../modules/webpack";
+import { goToOrJoinServer, openExternal } from "../../util";
 import { generalSettings } from "../settings/pages";
 import "./badge.css";
 import Badges from "./badges";
@@ -103,12 +102,6 @@ export type BadgeComponent = (args: BadgeArgs) => React.ReactElement<{
   children: React.ReactElement[];
   className: string;
 }>;
-
-// todo: move to common modules
-const openExternal = (url: string): Promise<void> =>
-  waitForModule<RawModule & ((url: string) => Promise<void>)>(
-    filters.bySource('.target="_blank";'),
-  ).then((module) => module(url));
 
 // todo: make global (configurable?) variables for these
 const openContributorsPage = (): Promise<void> =>
