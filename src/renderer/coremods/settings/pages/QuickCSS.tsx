@@ -7,6 +7,7 @@ import { githubDark, githubLight } from "./codemirror-github";
 import { webpack } from "@replugged";
 import { Button, Divider, Flex, Text } from "@components";
 import "./QuickCSS.css";
+import { generalSettings } from "./General";
 
 interface UseCodeMirrorOptions {
   value?: string;
@@ -118,16 +119,57 @@ export const QuickCSS = (): React.ReactElement => {
   });
   const [ready, setReady] = React.useState(false);
 
+  const autoApply = generalSettings.get("autoApplyQuickCss");
+
   React.useEffect(() => {
     void window.RepluggedNative.quickCSS.get().then((val) => {
       setValue(val);
       setReady(true);
     });
+
+    // Save on CTRL + S / CMD + S
+    const listener = (e: KeyboardEvent) => {
+      // XOR gate for CTRL / CMD (one of them must be pressed but not both)
+      if (e.key === "s" && e.ctrlKey !== e.metaKey) {
+        e.preventDefault();
+        reloadAndToast();
+      }
+    };
+
+    window.addEventListener("keydown", listener);
+
+    // This is the best way I could come up with to not show the sticker picker when CTRL + S is pressed
+    // We want it to only be active when this tab is active
+    const hideStickerPickerCss = `
+    [class*="positionLayer-"] {
+      display: none;
+    }
+    `;
+    const style = document.createElement("style");
+    style.innerText = hideStickerPickerCss;
+    document.head.appendChild(style);
+
+    return () => {
+      window.removeEventListener("keydown", listener);
+      document.head.removeChild(style);
+    };
   }, []);
+
+  const reload = () => window.replugged.quickCSS.reload();
+  const reloadAndToast = () => {
+    reload();
+    toast.toast(Messages.REPLUGGED_TOAST_QUICKCSS_RELOAD);
+  };
+
+  const [reloadTimer, setReloadTimer] = React.useState<NodeJS.Timeout | undefined>(undefined);
 
   React.useEffect(() => {
     if (!ready) return;
     window.RepluggedNative.quickCSS.save(value);
+
+    // Debounce the auto reloading
+    if (reloadTimer) clearTimeout(reloadTimer);
+    if (autoApply) setReloadTimer(setTimeout(reload, 500));
   }, [value]);
 
   return (
@@ -135,13 +177,9 @@ export const QuickCSS = (): React.ReactElement => {
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
         <Text.H2>{Messages.REPLUGGED_QUICKCSS}</Text.H2>
         <div style={{ display: "flex" }}>
-          <Button
-            onClick={() => {
-              window.replugged.quickCSS.reload();
-              toast.toast(Messages.REPLUGGED_TOAST_QUICKCSS_RELOAD);
-            }}>
-            {Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}
-          </Button>
+          {autoApply ? null : (
+            <Button onClick={reloadAndToast}>{Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}</Button>
+          )}
           <Button
             onClick={() => window.RepluggedNative.quickCSS.openFolder()}
             color={Button.Colors.PRIMARY}

@@ -107,6 +107,12 @@ export const General = (): React.ReactElement => {
         {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
       </SwitchItem>
 
+      <SwitchItem
+        {...util.useSetting(generalSettings, "autoApplyQuickCss")}
+        note={Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC}>
+        {Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY}
+      </SwitchItem>
+
       <ButtonItem
         button="Reconnect"
         note="Reconnects the Dev Companion coremod to the VSCode extension."
