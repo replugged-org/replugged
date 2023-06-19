@@ -207,7 +207,7 @@
     "REPLUGGED_RELOAD": "Перезавантажити",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Ввімкнути значки Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Показує спеціальні значки Replugged на профілях користувачів",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Показує спеціальні значки Replugged на профілях користувачів.",
     "REPLUGGED_I18N": "Переклади Replugged",
     "REPLUGGED_VIEW_UPDATES": "Перегляньте {count, plural, =1 {# оновлення} other {# оновлення}}",
     "REPLUGGED_DEVELOPER_MODE_WARNING": "Replugged запущений в режимі розробника і не може оновити себе. [Перейти в звичайний режим]({url})."

@@ -207,7 +207,7 @@
     "REPLUGGED_ADDON_AUTHORS_MANY": "作者：{author1}、{author2}、{author3} 和另外 {count, number} 個人",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[開發模式]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "啟用 Replugged 徽章",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "在用戶個人資料上顯示 Replugged 的徽章",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "在用戶個人資料上顯示 Replugged 的徽章。",
     "REPLUGGED_I18N": "Replugged 翻譯",
     "REPLUGGED_VIEW_UPDATES": "查看 {count, plural, =1 {# 個更新} other {# 個更新}}"
 }

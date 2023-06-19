@@ -207,7 +207,7 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Mise à jour",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[MODE DEV]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Activer les badges Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Afficher les badges Replugged sur le profil des utilisateurs",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Afficher les badges Replugged sur le profil des utilisateurs.",
     "REPLUGGED_I18N": "Traductions Replugged",
     "REPLUGGED_VIEW_UPDATES": "Voir {count, plural, =1 {# mise à jour} other {# mises à jour}}",
     "REPLUGGED_DEVELOPER_MODE_WARNING": "Vous exécutez actuellement Replugged en mode développeur, Replugged ne sera donc pas en mesure de se mettre à jour. [Passer en mode production]({url})."

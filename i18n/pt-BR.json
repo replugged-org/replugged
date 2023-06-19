@@ -160,7 +160,7 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Atualização",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[MODO DE DESENVOLVEDOR]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Habilitar as badges do Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Mostrar as badges personalizadas do Replugged nos perfis de usuários",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Mostrar as badges personalizadas do Replugged nos perfis de usuários.",
     "REPLUGGED_ADDON_DELETE": "Apague {type}",
     "REPLUGGED_ADDON_RELOAD": "Recarregar {type}",
     "REPLUGGED_ADDON_SETTINGS": "Abrir configurações de {type}",

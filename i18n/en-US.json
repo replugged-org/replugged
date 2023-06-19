@@ -207,7 +207,7 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Update",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Enable Replugged Badges",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles.",
     "REPLUGGED_I18N": "Replugged Translations",
     "REPLUGGED_VIEW_UPDATES": "View {count, plural, =1 {# Update} other {# Updates}}",
     "REPLUGGED_DEVELOPER_MODE_WARNING": "You are currently running Replugged in developer mode and Replugged will not be able to update itself. [Switch to production mode]({url}).",

@@ -206,7 +206,7 @@
     "REPLUGGED_RELOAD": "Khởi động lại",
     "REPLUGGED_I18N": "Các bản dịch Replugged",
     "REPLUGGED_SETTINGS_BADGES": "Bật huy hiệu Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Hiện huy hiệu Replugged tùy chỉnh trên hồ sơ người dùng",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Hiện huy hiệu Replugged tùy chỉnh trên hồ sơ người dùng.",
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Cập nhật",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[CHẾ ĐỘ NHÀ PHÁT TRIỂN]} other {v{version}}}",
     "REPLUGGED_VIEW_UPDATES": "Xem {count, plural, =1 {# cập nhật} other {# cập nhật}}"

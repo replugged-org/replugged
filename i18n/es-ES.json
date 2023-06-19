@@ -207,7 +207,7 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Actualización",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[MODO DESARROLLADOR]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Habilitar insignias de Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Mostrar insignias personalizadas de Replugged en los perfiles de usuario",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Mostrar insignias personalizadas de Replugged en los perfiles de usuario.",
     "REPLUGGED_I18N": "Traducciones de Replugged",
     "REPLUGGED_DEVELOPER_MODE_WARNING": "Estas ejecutando el modo desarrollador de Replugged, no habrá actualizaciones automaticas. [Cambiar al modo de producción]({url})."
 }

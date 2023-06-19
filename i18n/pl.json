@@ -194,7 +194,7 @@
     "REPLUGGED_ADDON_AUTHORS_TWO": "autorstwa {author1} i {author2}",
     "REPLUGGED_ADDON_AUTHORS_THREE": "autorstwa {author1}, {author2} i {author3}",
     "REPLUGGED_SETTINGS_BADGES": "Włącz Odznaki Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Pokaż odznaki Replugged na profilach użytkowników",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Pokaż odznaki Replugged na profilach użytkowników.",
     "REPLUGGED_CONFIRM_INSTALL": "Instaluj",
     "REPLUGGED_ADDON_AUTHORS_MANY": "autorstwa {author1}, {author2}, {author3} oraz {count, plural, =1 {# innej osoby} other {# innych osób}}",
     "REPLUGGED_UPDATES_UPDATE_ALL": "Zaktualizuj wszystko",
