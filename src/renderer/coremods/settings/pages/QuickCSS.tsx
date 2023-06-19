@@ -121,6 +121,12 @@ export const QuickCSS = (): React.ReactElement => {
 
   const autoApply = generalSettings.get("autoApplyQuickCss");
 
+  const reload = (): void => window.replugged.quickCSS.reload();
+  const reloadAndToast = (): void => {
+    reload();
+    toast.toast(Messages.REPLUGGED_TOAST_QUICKCSS_RELOAD);
+  };
+
   React.useEffect(() => {
     void window.RepluggedNative.quickCSS.get().then((val) => {
       setValue(val);
@@ -128,7 +134,7 @@ export const QuickCSS = (): React.ReactElement => {
     });
 
     // Save on CTRL + S / CMD + S
-    const listener = (e: KeyboardEvent) => {
+    const listener = (e: KeyboardEvent): void => {
       // XOR gate for CTRL / CMD (one of them must be pressed but not both)
       if (e.key === "s" && e.ctrlKey !== e.metaKey) {
         e.preventDefault();
@@ -154,12 +160,6 @@ export const QuickCSS = (): React.ReactElement => {
       document.head.removeChild(style);
     };
   }, []);
-
-  const reload = () => window.replugged.quickCSS.reload();
-  const reloadAndToast = () => {
-    reload();
-    toast.toast(Messages.REPLUGGED_TOAST_QUICKCSS_RELOAD);
-  };
 
   const [reloadTimer, setReloadTimer] = React.useState<NodeJS.Timeout | undefined>(undefined);
 
