@@ -214,5 +214,6 @@
     "REPLUGGED_ADDON_BROWSE": "Browse {type}",
     "REPLUGGED_ADDON_NOT_REVIEWED": "Unreviewed {type}",
     "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "This {type} has not been reviewed by the Replugged team and could harm your computer. Use at your own risk.",
-    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatically Apply Quick CSS"
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatically Apply Quick CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automatically apply changes to Quick CSS as you type."
 }
