@@ -57,6 +57,14 @@ interface ObjectInjections {
       after: Set<AfterCallback>;
     }
   >;
+  injectionsNamespaces: Map<
+    string,
+    {
+      before: Set<string>;
+      instead: Set<string>;
+      after: Set<string>;
+    }
+  >;
   original: Map<string, AnyFunction>;
 }
 
@@ -76,6 +84,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
   } else {
     objInjections = {
       injections: new Map(),
+      injectionsNamespaces: new Map(),
       original: new Map(),
     };
     injections.set(obj, objInjections);
@@ -83,6 +92,14 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
 
   if (!objInjections.injections.has(funcName)) {
     objInjections.injections.set(funcName, {
+      before: new Set(),
+      instead: new Set(),
+      after: new Set(),
+    });
+  }
+
+  if (!objInjections.injectionsNamespaces.has(funcName)) {
+    objInjections.injectionsNamespaces.set(funcName, {
       before: new Set(),
       instead: new Set(),
       after: new Set(),
@@ -127,13 +144,25 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
 
       return res;
     };
-
-    Object.defineProperties(obj[funcName], Object.getOwnPropertyDescriptors(originalFunc));
-    obj[funcName].toString = originalFunc.toString.bind(originalFunc);
+    const changedFunc = obj[funcName] as T[U] & {
+      originalFunction: AnyFunction;
+      injectionList:
+        | {
+            before: Set<string>;
+            instead: Set<string>;
+            after: Set<string>;
+          }
+        | undefined;
+    };
+    Object.defineProperties(changedFunc, Object.getOwnPropertyDescriptors(originalFunc));
+    changedFunc.toString = originalFunc.toString.bind(originalFunc);
+    changedFunc.originalFunction = originalFunc;
+    changedFunc.injectionList = objInjections.injectionsNamespaces.get(funcName);
   }
 }
 
 function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
+  namespace: string,
   obj: T,
   funcName: U,
   cb: BeforeCallback | InsteadCallback | AfterCallback,
@@ -141,32 +170,42 @@ function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
 ): () => void {
   replaceMethod(obj, funcName);
   const methodInjections = injections.get(obj)!.injections.get(funcName)!;
-  let set: Set<BeforeCallback | InsteadCallback | AfterCallback>;
+  const methodNamespaces = injections.get(obj)!.injectionsNamespaces.get(funcName)!;
+  let injectionsSet: Set<BeforeCallback | InsteadCallback | AfterCallback>;
+  let namespacesSet: Set<string>;
   switch (type) {
     case InjectionTypes.Before:
-      set = methodInjections.before;
+      namespacesSet = methodNamespaces.before;
+      injectionsSet = methodInjections.before;
       break;
     case InjectionTypes.Instead:
-      set = methodInjections.instead;
+      namespacesSet = methodNamespaces.instead;
+      injectionsSet = methodInjections.instead;
       break;
     case InjectionTypes.After:
-      set = methodInjections.after;
+      namespacesSet = methodNamespaces.after;
+      injectionsSet = methodInjections.after;
       break;
     default:
       throw new Error(`Invalid injection type: ${type}`);
   }
-  set.add(cb);
-  const setRef = new WeakRef(set);
-  return () => void setRef.deref()?.delete(cb);
+  injectionsSet.add(cb);
+  namespacesSet.add(namespace);
+  const injectionsSetRef = new WeakRef(injectionsSet);
+  const namespacesSetRef = new WeakRef(namespacesSet);
+  return () => {
+    void injectionsSetRef.deref()?.delete(cb);
+    void namespacesSetRef.deref()?.delete(namespace);
+  };
 }
 
 function before<
   T extends Record<U, AnyFunction>,
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
->(obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
+>(namespace: string, obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
-  return inject(obj, funcName, cb as BeforeCallback, InjectionTypes.Before);
+  return inject(namespace, obj, funcName, cb as BeforeCallback, InjectionTypes.Before);
 }
 
 function instead<
@@ -174,9 +213,9 @@ function instead<
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
->(obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
+>(namespace: string, obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
-  return inject(obj, funcName, cb, InjectionTypes.Instead);
+  return inject(namespace, obj, funcName, cb, InjectionTypes.Instead);
 }
 
 function after<
@@ -184,9 +223,9 @@ function after<
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
->(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
+>(namespace: string, obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
-  return inject(obj, funcName, cb, InjectionTypes.After);
+  return inject(namespace, obj, funcName, cb, InjectionTypes.After);
 }
 
 /**
@@ -196,7 +235,7 @@ function after<
  * ```
  * import { Injector, webpack } from "replugged";
  *
- * const injector = new Injector();
+ * const injector = new Injector("namespace");
  *
  * export async function start() {
  *   const typingMod = (await webpack.waitForModule<{
@@ -216,7 +255,12 @@ function after<
  * ```
  */
 export class Injector {
-  #uninjectors = new Set<() => void>();
+  public namespace: string;
+  #uninjectors: Set<() => void>;
+  public constructor(props: string) {
+    this.namespace = typeof props === "string" ? props : "no-namespace";
+    this.#uninjectors = new Set<() => void>();
+  }
 
   /**
    * Run code before a native module
@@ -230,7 +274,7 @@ export class Injector {
     U extends keyof T & string,
     A extends unknown[] = Parameters<T[U]>,
   >(obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
-    const uninjector = before(obj, funcName, cb);
+    const uninjector = before(this.namespace, obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
   }
@@ -248,7 +292,7 @@ export class Injector {
     A extends unknown[] = Parameters<T[U]>,
     R = ReturnType<T[U]>,
   >(obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
-    const uninjector = instead(obj, funcName, cb);
+    const uninjector = instead(this.namespace, obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
   }
@@ -266,7 +310,7 @@ export class Injector {
     A extends unknown[] = Parameters<T[U]>,
     R = ReturnType<T[U]>,
   >(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
-    const uninjector = after(obj, funcName, cb);
+    const uninjector = after(this.namespace, obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
   }
