@@ -162,7 +162,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
 }
 
 function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
-  namespace: string,
+  ns: string,
   obj: T,
   funcName: U,
   cb: BeforeCallback | InsteadCallback | AfterCallback,
@@ -190,12 +190,12 @@ function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
       throw new Error(`Invalid injection type: ${type}`);
   }
   injectionsSet.add(cb);
-  namespacesSet.add(namespace);
+  namespacesSet.add(ns);
   const injectionsSetRef = new WeakRef(injectionsSet);
   const namespacesSetRef = new WeakRef(namespacesSet);
   return () => {
     void injectionsSetRef.deref()?.delete(cb);
-    void namespacesSetRef.deref()?.delete(namespace);
+    void namespacesSetRef.deref()?.delete(ns);
   };
 }
 
@@ -203,9 +203,9 @@ function before<
   T extends Record<U, AnyFunction>,
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
->(namespace: string, obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
+>(ns: string, obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
-  return inject(namespace, obj, funcName, cb as BeforeCallback, InjectionTypes.Before);
+  return inject(ns, obj, funcName, cb as BeforeCallback, InjectionTypes.Before);
 }
 
 function instead<
@@ -213,9 +213,9 @@ function instead<
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
->(namespace: string, obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
+>(ns: string, obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
-  return inject(namespace, obj, funcName, cb, InjectionTypes.Instead);
+  return inject(ns, obj, funcName, cb, InjectionTypes.Instead);
 }
 
 function after<
@@ -223,9 +223,9 @@ function after<
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
->(namespace: string, obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
+>(ns: string, obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
-  return inject(namespace, obj, funcName, cb, InjectionTypes.After);
+  return inject(ns, obj, funcName, cb, InjectionTypes.After);
 }
 
 /**
@@ -255,10 +255,10 @@ function after<
  * ```
  */
 export class Injector {
-  public namespace: string;
+  #namespace: string;
   #uninjectors: Set<() => void>;
   public constructor(props: string) {
-    this.namespace = typeof props === "string" ? props : "no-namespace";
+    this.#namespace = typeof props === "string" ? props : "no-namespace";
     this.#uninjectors = new Set<() => void>();
   }
 
@@ -274,7 +274,7 @@ export class Injector {
     U extends keyof T & string,
     A extends unknown[] = Parameters<T[U]>,
   >(obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
-    const uninjector = before(this.namespace, obj, funcName, cb);
+    const uninjector = before(this.#namespace, obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
   }
@@ -292,7 +292,7 @@ export class Injector {
     A extends unknown[] = Parameters<T[U]>,
     R = ReturnType<T[U]>,
   >(obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
-    const uninjector = instead(this.namespace, obj, funcName, cb);
+    const uninjector = instead(this.#namespace, obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
   }
@@ -310,7 +310,7 @@ export class Injector {
     A extends unknown[] = Parameters<T[U]>,
     R = ReturnType<T[U]>,
   >(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
-    const uninjector = after(this.namespace, obj, funcName, cb);
+    const uninjector = after(this.#namespace, obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
   }
