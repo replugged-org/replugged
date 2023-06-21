@@ -4,7 +4,7 @@ import { ObjectExports } from "src/types";
 import { registerRPCCommand } from "../rpc";
 import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./util";
 
-const injector = new Injector();
+const injector = new Injector("Replugged.Coremod.Installer");
 const logger = Logger.coremod("Installer");
 
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {

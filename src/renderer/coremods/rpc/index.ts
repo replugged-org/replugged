@@ -3,7 +3,7 @@ import { Injector, Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { Jsonifiable } from "type-fest";
 
-const injector = new Injector();
+const injector = new Injector("Replugged.Coremod.RPC");
 
 const logger = Logger.coremod("RPC");
 

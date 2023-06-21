@@ -6,7 +6,7 @@ import { filters, getByProps, waitForModule } from "../../modules/webpack";
 import { generalSettings } from "../settings/pages/General";
 import { APIBadges, BadgeSizes, Custom, badgeElements, getBadgeSizeClass } from "./badge";
 
-const injector = new Injector();
+const injector = new Injector("Replugged.Coremod.Badges");
 
 const logger = Logger.coremod("Badges");
 

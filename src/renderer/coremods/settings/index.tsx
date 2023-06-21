@@ -6,7 +6,7 @@ import type { Section as SectionType } from "src/types/coremods/settings";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
-const injector = new Injector();
+const injector = new Injector("Replugged.Coremod.Settings");
 
 export { insertSections };
 
