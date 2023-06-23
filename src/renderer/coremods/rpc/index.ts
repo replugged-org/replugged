@@ -54,7 +54,7 @@ async function injectRpc(): Promise<void> {
     const isRepluggedClient = clientId.startsWith("REPLUGGED-");
 
     // From Replugged site
-    if (origin === "https://replugged.dev") {
+    if (origin === "https://replugged.dev" || origin === "https://beta.replugged.dev") {
       args[0].authorization.scopes = ["REPLUGGED"];
       return Promise.resolve();
     }
