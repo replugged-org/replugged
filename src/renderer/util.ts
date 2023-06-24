@@ -170,6 +170,14 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
   });
 }
 
+export async function openExternal(url: string): Promise<void> {
+  const mod = getBySource<(url: string) => Promise<void>>('.target="_blank"');
+  if (!mod) {
+    throw new Error("Could not find openExternal");
+  }
+  return await mod(url);
+}
+
 type ValType<T> =
   | T
   | React.ChangeEvent<HTMLInputElement>
