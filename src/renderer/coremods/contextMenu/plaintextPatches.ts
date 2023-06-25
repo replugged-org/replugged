@@ -6,7 +6,8 @@ export default [
     replacements: [
       {
         match: /var \w,\w=(.)\.navId/,
-        replace: `replugged.coremods.coremods.contextMenu._insertMenuItems($1);$&`,
+        replace: (vars, menu) =>
+          `replugged.coremods.coremods.contextMenu._insertMenuItems(${menu});${vars}`,
       },
     ],
   },
@@ -15,7 +16,7 @@ export default [
     replacements: [
       {
         match: /navId:[\w"-]+,/g,
-        replace: `$&data:arguments,`,
+        replace: (navId) => `${navId}data:arguments,`,
       },
     ],
   },
