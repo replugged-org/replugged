@@ -210,5 +210,10 @@
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# nova atualização} other {# novas atualizações}} disponíveis!",
     "REPLUGGED_I18N": "Traduções do Replugged",
     "REPLUGGED_VIEW_UPDATES": "Ver {count, plural, =1 {# Atualização} other {# Atualizações}}",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "Você está em modo de desenvolvedor e o Replugged não conseguirá se atualizar. [Voltar ao modo normal]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Você está em modo de desenvolvedor e o Replugged não conseguirá se atualizar. [Voltar ao modo normal]({url}).",
+    "REPLUGGED_ADDON_BROWSE": "Explorar {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED": "{type} não revisado",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automaticamente aplicar Quick CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automaticamente aplicar mudanças ao Quick CSS conforme você escreve.",
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Este {type} não foi revisado pelo time Replugged e pode causar danos ao seu computador. Use por sua conta e risco."
 }
