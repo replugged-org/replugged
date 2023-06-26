@@ -8,7 +8,7 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
       const timeout = setTimeout(() => {
         error("CommonModules", name, void 0, `Could not find module "${name}"`);
         rej(new Error(`Module not found: "${name}`));
-      }, 5_000);
+      }, 10_000);
       void moduleImport.then((mod) => {
         clearTimeout(timeout);
         cb(mod);
