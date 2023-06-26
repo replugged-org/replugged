@@ -8,7 +8,7 @@ import * as coremods from "./coremods";
 import * as plugins from "./plugins";
 import * as themes from "./themes";
 import * as quickCSS from "./quick-css";
-import { loadStyleSheet } from "../util";
+import { loadStyleSheet, waitFor } from "../util";
 import { startAutoUpdateChecking } from "./updater";
 
 export async function start(): Promise<void> {
@@ -71,7 +71,10 @@ export async function ignite(): Promise<void> {
   await plugins.runPlaintextPatches();
   await waitForReady;
   signalStart();
-  await commonReady;
-  await componentsReady;
+  // if you uncomment the waitFor function underneath, it will make it so common/components/coremods/plugins gets loaded after most of the elements in window are loaded
+  // you will need to make the plain text patches have fail safe for before plugin/coremods gets loaded
+  //await waitFor("[class^=wrapper-]");
+  await commonReady();
+  await componentsReady();
   await start();
 }
