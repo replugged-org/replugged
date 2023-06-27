@@ -84,7 +84,7 @@ export function getExportsForProps<T, P extends PropertyKey = keyof T>(
  * @param props Array of prototype names
  * @returns Function that contains all the given prototypes (and any others), or undefined if not found
  */
-export function getFunctionForPrototypes<
+export function getFunctionForPrototype<
   T extends AnyFunction,
   P extends PropertyKey = keyof WithPrototype<T>,
 >(m: unknown, prototypes: P[]): T | undefined {

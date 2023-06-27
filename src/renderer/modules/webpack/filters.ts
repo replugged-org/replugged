@@ -1,4 +1,4 @@
-import { getExportsForProps, getFunctionForPrototypes } from "./get-modules";
+import { getExportsForProps, getFunctionForPrototype } from "./get-modules";
 import { sourceStrings } from "./patch-load";
 import type { RawModule } from "../../../types";
 
@@ -14,8 +14,8 @@ export const byProps = <P extends PropertyKey = PropertyKey>(...props: P[]) => {
  * Get a module that has all the given prototypes on one of its functions
  * @param prototypes List of prototype names
  */
-export const byPrototypes = <P extends PropertyKey = PropertyKey>(...prototypes: P[]) => {
-  return (m: RawModule) => typeof getFunctionForPrototypes(m.exports, prototypes) !== "undefined";
+export const byPrototype = <P extends PropertyKey = PropertyKey>(...prototypes: P[]) => {
+  return (m: RawModule) => typeof getFunctionForPrototype(m.exports, prototypes) !== "undefined";
 };
 
 /**
