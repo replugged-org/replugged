@@ -1,7 +1,7 @@
 import type { ModuleExports } from "../../../types";
 import { error } from "../logger";
 
-const modulePromises: Array<Promise<void>> = [];
+const modulePromises: Array<() => Promise<void>> = [];
 
 function importTimeout<T extends ModuleExports>(
   name: string,
@@ -9,17 +9,18 @@ function importTimeout<T extends ModuleExports>(
   cb: (mod: T) => void,
 ): void {
   modulePromises.push(
-    new Promise<void>((res, rej) => {
-      const timeout = setTimeout(() => {
-        error("Components", name, void 0, `Could not find component "${name}"`);
-        rej(new Error(`Module not found: "${name}`));
-      }, 10_000);
-      void moduleImport.then((mod) => {
-        clearTimeout(timeout);
-        cb(mod);
-        res();
-      });
-    }),
+    () =>
+      new Promise<void>((res, rej) => {
+        const timeout = setTimeout(() => {
+          error("Components", name, void 0, `Could not find component "${name}"`);
+          rej(new Error(`Module not found: "${name}`));
+        }, 10_000);
+        void moduleImport.then((mod) => {
+          clearTimeout(timeout);
+          cb(mod);
+          res();
+        });
+      }),
   );
 }
 
@@ -161,6 +162,7 @@ importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));
  * @internal
  * @hidden
  */
-export const ready = new Promise<void>((resolve) =>
-  Promise.allSettled(modulePromises).then(() => resolve()),
-);
+export const ready = (): Promise<void> =>
+  new Promise<void>((resolve) =>
+    Promise.allSettled(modulePromises.map((promiseFn) => promiseFn())).then(() => resolve()),
+  );
