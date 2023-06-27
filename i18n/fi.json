@@ -206,7 +206,7 @@
     "REPLUGGED_ADDON_AUTHORS_TWO": "tekijöiltä {author1} ja {author2}",
     "REPLUGGED_ADDON_AUTHORS_THREE": "tekijöiltä {author1}, {author2} ja {author3}",
     "REPLUGGED_TOAST_ADDON_TOGGLE_FAILED": "{name}:n käyttöönotto/käytöstä pois ottaminen epäonnistui",
-    "REPLUGGED_ADDON_AUTHORS_MANY": "tekijöiltä {author1}, {author2}, {author3} ja {count, plural, =1 {# other} other {# others}}",
+    "REPLUGGED_ADDON_AUTHORS_MANY": "tekijöiltä {author1}, {author2}, {author3} ja {count, plural, =1 {# muulta} other {# muulta}}",
     "REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY": "Haluatko asentaa {name} {authors}?",
     "REPLUGGED_UPDATES_UPDATE_ALL": "Päivitä kaikki",
     "REPLUGGED_ADDON_NOT_REVIEWED": "Tarkistamaton {type}",
