@@ -3,6 +3,8 @@ import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/mod
 import { ObjectExports } from "src/types";
 import { registerRPCCommand } from "../rpc";
 import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./util";
+import { plugins } from "src/renderer/managers/plugins";
+import { themes } from "src/renderer/managers/themes";
 
 const injector = new Injector();
 const logger = Logger.coremod("Installer");
@@ -52,7 +54,7 @@ if (window.RepluggedNative.getVersion() === "dev") {
 }
 
 function injectRpc(): void {
-  const uninjectRpc = registerRPCCommand("REPLUGGED_INSTALL", {
+  const uninjectInstall = registerRPCCommand("REPLUGGED_INSTALL", {
     scope: {
       $any: scopes,
     },
@@ -76,7 +78,21 @@ function injectRpc(): void {
     },
   });
 
-  uninjectFns.push(uninjectRpc);
+  const uninjectList = registerRPCCommand("REPLUGGED_LIST_ADDONS", {
+    scope: {
+      $any: scopes,
+    },
+    handler: () => {
+      const pluginIds = [...plugins.keys()];
+      const themeIds = [...themes.keys()];
+      return {
+        plugins: pluginIds,
+        themes: themeIds,
+      };
+    },
+  });
+
+  uninjectFns.push(uninjectInstall, uninjectList);
 }
 
 async function injectLinks(): Promise<void> {

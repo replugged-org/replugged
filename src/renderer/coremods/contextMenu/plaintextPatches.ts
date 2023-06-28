@@ -2,18 +2,21 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
+    find: 'Error("Menu',
     replacements: [
       {
-        match: /(function [\w$]+\((\w)\){)(var \w,\w=.\.navId)/,
-        replace: `$1replugged.coremods.coremods.contextMenu._insertMenuItems($2);$3`,
+        match: /var \w,\w=(.)\.navId/,
+        replace: (vars, menu) =>
+          `replugged.coremods.coremods.contextMenu._insertMenuItems(${menu});${vars}`,
       },
     ],
   },
   {
+    find: "navId:",
     replacements: [
       {
-        match: /(navId:[\w"-]+,)/g,
-        replace: `$1data:arguments,`,
+        match: /navId:[\w"-]+,/g,
+        replace: (navId) => `${navId}data:arguments,`,
       },
     ],
   },

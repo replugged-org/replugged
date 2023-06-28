@@ -13,12 +13,6 @@ export enum ActivityActionTypes {
 
 type Properties = Record<string, unknown>;
 
-interface CaptchaPayload {
-  captcha_key: string;
-  // cspell:ignore rqtoken
-  captcha_rqtoken: string;
-}
-
 interface MessageReference {
   guild_id?: string;
   channel_id?: string;
@@ -118,7 +112,6 @@ interface OutgoingMessageOptions {
   stickerIds?: string[];
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
-  captchaPayload?: CaptchaPayload;
 }
 
 interface TrackInviteOptions {
@@ -133,7 +126,6 @@ interface TrackInviteOptions {
 interface MessageGreetOptions {
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
-  captchaPayload?: CaptchaPayload;
 }
 
 declare class LocalFetchComplete {

@@ -113,13 +113,18 @@ function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
 // https://github.com/Vendicated/Vencord/blob/ef353f1d66dbf1d14e528830d267aac518ed1beb/src/webpack/patchWebpack.ts
 let webpackChunk: WebpackChunkGlobal | undefined;
 
-Object.defineProperty(window, "webpackChunkdiscord_app", {
-  get: () => webpackChunk,
-  set: (v) => {
-    if (!ready && v?.push !== Array.prototype.push) {
-      loadWebpackModules(v);
-    }
-    webpackChunk = v;
-  },
-  configurable: true,
-});
+if (window.webpackChunkdiscord_app) {
+  webpackChunk = window.webpackChunkdiscord_app;
+  loadWebpackModules(webpackChunk!);
+} else {
+  Object.defineProperty(window, "webpackChunkdiscord_app", {
+    get: () => webpackChunk,
+    set: (v) => {
+      if (!ready && v?.push !== Array.prototype.push) {
+        loadWebpackModules(v);
+      }
+      webpackChunk = v;
+    },
+    configurable: true,
+  });
+}
