@@ -279,7 +279,7 @@ const commands: RepluggedCommand[] = [
     ],
     executor: (options) => {
       try {
-        const send = options.find((o) => o.name === "send")?.value ?? false;
+        const send = (options.find((o) => o.name === "send")?.value as boolean) ?? false;
         const addonType = options.find((o) => o.name === "addon type")?.value;
         const version = options.find((o) => o.name === "version")?.value;
         const listType = options.find((o) => o.name === "type")?.value;
@@ -297,19 +297,19 @@ const commands: RepluggedCommand[] = [
             switch (listType) {
               case "enabled":
                 return {
-                  send: send as boolean,
-                  result: `**Enabled Plugins (${enablePlugins.length}):** \n ${enabledString}`,
+                  send,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n ${enabledString}\n\`\`\``,
                 };
               case "disabled":
                 return {
-                  send: send as boolean,
-                  result: `**Disabled Plugins (${disabledPlugins.length}):** \n ${disabledString}`,
+                  send,
+                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
                 };
 
               default:
                 return {
-                  send: send as boolean,
-                  result: `**Enabled Plugins (${enablePlugins.length}):** \n ${enabledString} \n\n **Disabled Plugins (${disabledPlugins.length}):** \n ${disabledString}`,
+                  send,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n ${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
                 };
             }
             break;
@@ -327,19 +327,19 @@ const commands: RepluggedCommand[] = [
             switch (listType) {
               case "enabled":
                 return {
-                  send: send as boolean,
-                  result: `**Enabled Themes (${enableThemes.length}):** \n ${enabledString}`,
+                  send,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n ${enabledString}\n\`\`\``,
                 };
               case "disabled":
                 return {
-                  send: send as boolean,
-                  result: `**Disabled Themes (${disabledThemes.length}):** \n ${disabledString}`,
+                  send,
+                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Themes (${disabledThemes.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
                 };
 
               default:
                 return {
-                  send: send as boolean,
-                  result: `**Enabled Themes (${enableThemes.length}):** \n ${enabledString} \n\n **Disabled Themes (${disabledThemes.length}):** \n ${disabledString}`,
+                  send,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n ${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledThemes.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
                 };
             }
             break;
