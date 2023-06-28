@@ -1,20 +1,21 @@
 import { error } from "../logger";
 
-const modulePromises: Array<Promise<void>> = [];
+const modulePromises: Array<() => Promise<void>> = [];
 
 function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) => void): void {
   modulePromises.push(
-    new Promise<void>((res, rej) => {
-      const timeout = setTimeout(() => {
-        error("CommonModules", name, void 0, `Could not find module "${name}"`);
-        rej(new Error(`Module not found: "${name}`));
-      }, 5_000);
-      void moduleImport.then((mod) => {
-        clearTimeout(timeout);
-        cb(mod);
-        res();
-      });
-    }),
+    () =>
+      new Promise<void>((res, rej) => {
+        const timeout = setTimeout(() => {
+          error("CommonModules", name, void 0, `Could not find module "${name}"`);
+          rej(new Error(`Module not found: "${name}`));
+        }, 10_000);
+        void moduleImport.then((mod) => {
+          clearTimeout(timeout);
+          cb(mod);
+          res();
+        });
+      }),
   );
 }
 
@@ -122,6 +123,7 @@ importTimeout("parser", import("./parser"), (mod) => (parser = mod.default));
  * @internal
  * @hidden
  */
-export const ready = new Promise<void>((resolve) =>
-  Promise.allSettled(modulePromises).then(() => resolve()),
-);
+export const ready = (): Promise<void> =>
+  new Promise<void>((resolve) =>
+    Promise.allSettled(modulePromises.map((promiseFn) => promiseFn())).then(() => resolve()),
+  );
