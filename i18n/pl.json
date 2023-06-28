@@ -101,7 +101,7 @@
     "REPLUGGED_COMMAND_THEMES_DESC": "Wypisuje listę aktualnie zainstalowanych motywów.",
     "REPLUGGED_COMMAND_UNINSTALL_DESC": "Odinstaluj wtyczkę/motyw",
     "REPLUGGED_COMMAND_UNINSTALL_MODAL_HEADER": "Odinstalowano {id}",
-    "REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER": "{type} Odinstalowany",
+    "REPLUGGED_COMMAND_UNINSTALL_TOAST_HEADER": "{type} odinstalowany",
     "REPLUGGED_COMMAND_UNINSTALL_TOAST_CONTENT": "{id} odinstalowany i usunięty",
     "REPLUGGED_ERROR_ALREADY_INSTALLED": "{name} jest już zainstalowany.",
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "Podczas wykonywania polecenia wystąpił błąd:",
@@ -161,7 +161,7 @@
     "REPLUGGED_ADDON_PAGE_OPEN": "Otwórz stronę {type}",
     "REPLUGGED_ADDON_PROFILE_OPEN": "Otwórz profil {type}",
     "REPLUGGED_ADDON_RELOAD": "Przeładuj {type}",
-    "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Na pewno chcesz odinstalować {type}? Nie da się tego cofnąć.",
+    "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Czy na pewno chcesz odinstalować {type}? Tej czynności nie można cofnąć.",
     "REPLUGGED_ADDON_UNINSTALL": "Odinstaluj {name}",
     "REPLUGGED_ADDONS_FOLDER_OPEN": "Otwórz folder {type}",
     "REPLUGGED_ADDONS_LOAD_MISSING": "Załaduj brakujące {type}",
@@ -215,5 +215,5 @@
     "REPLUGGED_ADDON_NOT_REVIEWED": "Nieprzetestowane {type}",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatycznie zastosuj Szybki CSS",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automatycznie zastosuj zmiany w Szybkim CSS podczas pisania.",
-    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "{type} nie został przetestowany przez zespół Replugged i może być szkodliwy dla twojego komputera. Używasz na własne ryzyko."
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Ten {type} nie został przetestowany przez zespół Replugged i może być szkodliwy dla twojego komputera. Używasz na własne ryzyko."
 }

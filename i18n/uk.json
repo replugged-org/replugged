@@ -210,5 +210,10 @@
     "REPLUGGED_SETTINGS_BADGES_DESC": "Показує спеціальні значки Replugged на профілях користувачів.",
     "REPLUGGED_I18N": "Переклади Replugged",
     "REPLUGGED_VIEW_UPDATES": "Перегляньте {count, plural, =1 {# оновлення} other {# оновлення}}",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "Replugged запущений в режимі розробника і не може оновити себе. [Перейти в звичайний режим]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Replugged запущений в режимі розробника і не може оновити себе. [Перейти в звичайний режим]({url}).",
+    "REPLUGGED_ADDON_BROWSE": "Шукати {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED": "Неоглянуті {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Цей/ця {type} не було оглянуто командою Replugged і може завдати шкоди вашому комп'ютеру. Використовуйте на власний ризик.",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Автоматично застосовувати Швидкий CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Автоматично застосовувати зміни в Швидкий CSS поки ви друкуєте."
 }
