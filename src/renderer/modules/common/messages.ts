@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
-import type { AnyFunction, RepluggedCommandEmbed } from "../../../types";
-import type { Channel, Message, MessageAttachment, User } from "discord-types/general";
+import { waitForProps } from "../webpack";
+
+import type { Channel, Message, MessageAttachment } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
 export enum ActivityActionTypes {
@@ -12,12 +12,6 @@ export enum ActivityActionTypes {
 }
 
 type Properties = Record<string, unknown>;
-
-interface CaptchaPayload {
-  captcha_key: string;
-  // cspell:ignore rqtoken
-  captcha_rqtoken: string;
-}
 
 interface MessageReference {
   guild_id?: string;
@@ -118,7 +112,6 @@ interface OutgoingMessageOptions {
   stickerIds?: string[];
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
-  captchaPayload?: CaptchaPayload;
 }
 
 interface TrackInviteOptions {
@@ -133,7 +126,6 @@ interface TrackInviteOptions {
 interface MessageGreetOptions {
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
-  captchaPayload?: CaptchaPayload;
 }
 
 declare class LocalFetchComplete {
@@ -432,45 +424,14 @@ export interface MessageActions {
   _tryFetchMessagesCached: (options: FetchMessagesCachedOptions) => boolean;
 }
 
-interface CreateMessages {
-  createBotMessage: (args: {
-    channelId: string;
-    content: string;
-    embeds?: RepluggedCommandEmbed[];
-    loggingName?: string;
-  }) => Message;
-  createMessage: (args: {
-    channelId: string;
-    content: string;
-    tts?: boolean;
-    type?: string;
-    messageReference?: Message;
-    allowedMentions?: { parse?: string[]; replied_user?: boolean };
-    author: User;
-    flags?: number;
-  }) => Message;
-  createSnowflake: () => string;
-}
-
-export type Messages = PartialMessageStore & MessageActions & CreateMessages;
+export type Messages = PartialMessageStore & MessageActions;
 
 const MessageStore = await waitForProps<MessageStore>("getMessage", "getMessages");
-const createMessages = await waitForModule<Record<string, AnyFunction>>(
-  filters.bySource('username:"Clyde"'),
-);
+
 export default virtualMerge(
   await waitForProps<MessageActions>("sendMessage", "editMessage", "deleteMessage"),
   {
     getMessage: MessageStore.getMessage,
     getMessages: MessageStore.getMessages,
-    createBotMessage: getFunctionBySource<CreateMessages["createBotMessage"]>(
-      createMessages,
-      'username:"Clyde"',
-    )!,
-    createMessage: getFunctionBySource<CreateMessages["createMessage"]>(
-      createMessages,
-      "createMessage",
-    )!,
-    createSnowflake: getFunctionBySource<CreateMessages["createSnowflake"]>(createMessages, "now")!,
   },
 );

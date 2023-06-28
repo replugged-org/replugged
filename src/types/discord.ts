@@ -1,19 +1,5 @@
-export enum ApplicationCommandOptionType {
-  Subcommand = 1,
-  SubcommandGroup,
-  String,
-  Integer,
-  Boolean,
-  User,
-  Channel,
-  Role,
-  Mentionable,
-  Number,
-  Attachment,
-}
-
 export interface CommandOptions {
-  type: ApplicationCommandOptionType;
+  type: number;
   name: string;
   displayName?: string;
   description: string;
@@ -21,8 +7,7 @@ export interface CommandOptions {
   required?: boolean;
   choices?: Array<{
     name: string;
-    displayName: string;
-    value: string | number;
+    values: string | number;
   }>;
   options?: CommandOptions[];
   /* eslint-disable @typescript-eslint/naming-convention */
@@ -31,13 +16,6 @@ export interface CommandOptions {
   max_value?: number;
   /* eslint-enable @typescript-eslint/naming-convention */
   autocomplete?: boolean;
-}
-
-export interface CommandOptionReturn {
-  focused: unknown; // literally no clue what it is for...
-  name: string;
-  type: ApplicationCommandOptionType;
-  value: string | boolean | string;
 }
 
 export interface ConnectedAccount {
