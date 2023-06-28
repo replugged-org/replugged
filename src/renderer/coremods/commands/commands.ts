@@ -2,6 +2,7 @@ import CommandManager from "../../apis/commands";
 import { ApplicationCommandOptionType, RepluggedCommand } from "../../../types";
 import { plugins, themes } from "@replugged";
 const command = new CommandManager();
+
 const commands: RepluggedCommand[] = [
   {
     name: "enable",
@@ -278,42 +279,71 @@ const commands: RepluggedCommand[] = [
     ],
     executor: ([send, addonType, version, listType]) => {
       try {
-        const allAddons =
-          addonType.value === "plugin"
-            ? Array.from(plugins.plugins.values()).map((a) => a.manifest)
-            : Array.from(themes.themes.values()).map((a) => a.manifest);
-        const enabledAddons = allAddons.filter((a) =>
-          addonType.value === "plugin"
-            ? !plugins.getDisabled().includes(a.id)
-            : !themes.getDisabled().includes(a.id),
-        );
-        const disabledAddons = allAddons.filter((a) =>
-          addonType.value === "plugin"
-            ? plugins.getDisabled().includes(a.id)
-            : themes.getDisabled().includes(a.id),
-        );
-        const enabledString = enabledAddons
-          .map((p) => (version.value ? `${p.name} (${p.version})` : p.name))
-          .join(", ");
-        const disabledString = disabledAddons
-          .map((p) => (version.value ? `${p.name} (${p.version})` : p.name))
-          .join(", ");
-        switch (listType.value) {
-          case "enabled":
-            return {
-              send: send.value as boolean,
-              result: `**Enabled ${addonType.name}s (${enabledAddons.length}):** \n ${enabledString}`,
-            };
-          case "disabled":
-            return {
-              send: send.value as boolean,
-              result: `**Disabled ${addonType.name}s (${disabledAddons.length}):** \n ${disabledString}`,
-            };
+        switch (addonType.value) {
+          case "plugin": {
+            const allPlugins = Array.from(plugins.plugins.values()).map((p) => p.manifest);
+            const enablePlugins = allPlugins?.filter((p) => !plugins.getDisabled().includes(p.id));
+            const disabledPlugins = allPlugins?.filter((p) => plugins.getDisabled().includes(p.id));
+            const enabledString = enablePlugins
+              .map((p) => (version.value ? `${p.name} (${p.version})` : p.name))
+              .join(", ");
+            const disabledString = disabledPlugins
+              .map((p) => (version.value ? `${p.name} (${p.version})` : p.name))
+              .join(", ");
+            switch (listType.value) {
+              case "enabled":
+                return {
+                  send: send.value as boolean,
+                  result: `**Enabled ${addonType.name}s (${enablePlugins.length}):** \n ${enabledString}`,
+                };
+              case "disabled":
+                return {
+                  send: send.value as boolean,
+                  result: `**Disabled ${addonType.name}s (${disabledPlugins.length}):** \n ${disabledString}`,
+                };
 
+              default:
+                return {
+                  send: send.value as boolean,
+                  result: `**Enabled ${addonType.name}s (${enablePlugins.length}):** \n ${enabledString} \n\n **Disabled ${addonType.name}s (${disabledPlugins.length}):** \n ${disabledString}`,
+                };
+            }
+            break;
+          }
+          case "theme": {
+            const allThemes = Array.from(themes.themes.values()).map((t) => t.manifest);
+            const enableThemes = allThemes?.filter((t) => !plugins.getDisabled().includes(t.id));
+            const disabledThemes = allThemes?.filter((t) => plugins.getDisabled().includes(t.id));
+            const enabledString = enableThemes
+              .map((t) => (version.value ? `${t.name} (${t.version})` : t.name))
+              .join(", ");
+            const disabledString = disabledThemes
+              .map((t) => (version.value ? `${t.name} (${t.version})` : t.name))
+              .join(", ");
+            switch (listType.value) {
+              case "enabled":
+                return {
+                  send: send.value as boolean,
+                  result: `**Enabled ${addonType.name}s (${enableThemes.length}):** \n ${enabledString}`,
+                };
+              case "disabled":
+                return {
+                  send: send.value as boolean,
+                  result: `**Disabled ${addonType.name}s (${disabledThemes.length}):** \n ${disabledString}`,
+                };
+
+              default:
+                return {
+                  send: send.value as boolean,
+                  result: `**Enabled ${addonType.name}s (${enableThemes.length}):** \n ${enabledString} \n\n **Disabled ${addonType.name}s (${disabledThemes.length}):** \n ${disabledString}`,
+                };
+            }
+            break;
+          }
           default:
             return {
-              send: send.value as boolean,
-              result: `**Enabled ${addonType.name}s (${enabledAddons.length}):** \n ${enabledString} \n\n **Disabled ${addonType.name}s (${disabledAddons.length}):** \n ${disabledString}`,
+              send: false,
+              result: `You need to specify weather to send plugin or theme list`,
             };
         }
       } catch (err) {
