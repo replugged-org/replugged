@@ -277,35 +277,39 @@ const commands: RepluggedCommand[] = [
         ],
       },
     ],
-    executor: ([send, addonType, version, listType]) => {
+    executor: (options) => {
       try {
-        switch (addonType.value) {
+        const send = options.find((o) => o.name === "send")?.value ?? false;
+        const addonType = options.find((o) => o.name === "addon type")?.value;
+        const version = options.find((o) => o.name === "version")?.value;
+        const listType = options.find((o) => o.name === "type")?.value;
+        switch (addonType) {
           case "plugin": {
             const allPlugins = Array.from(plugins.plugins.values()).map((p) => p.manifest);
             const enablePlugins = allPlugins?.filter((p) => !plugins.getDisabled().includes(p.id));
             const disabledPlugins = allPlugins?.filter((p) => plugins.getDisabled().includes(p.id));
             const enabledString = enablePlugins
-              .map((p) => (version.value ? `${p.name} (${p.version})` : p.name))
+              .map((p) => (version ? `${p.name} (${p.version})` : p.name))
               .join(", ");
             const disabledString = disabledPlugins
-              .map((p) => (version.value ? `${p.name} (${p.version})` : p.name))
+              .map((p) => (version ? `${p.name} (${p.version})` : p.name))
               .join(", ");
-            switch (listType.value) {
+            switch (listType) {
               case "enabled":
                 return {
-                  send: send.value as boolean,
-                  result: `**Enabled ${addonType.name}s (${enablePlugins.length}):** \n ${enabledString}`,
+                  send: send as boolean,
+                  result: `**Enabled Plugins (${enablePlugins.length}):** \n ${enabledString}`,
                 };
               case "disabled":
                 return {
-                  send: send.value as boolean,
-                  result: `**Disabled ${addonType.name}s (${disabledPlugins.length}):** \n ${disabledString}`,
+                  send: send as boolean,
+                  result: `**Disabled Plugins (${disabledPlugins.length}):** \n ${disabledString}`,
                 };
 
               default:
                 return {
-                  send: send.value as boolean,
-                  result: `**Enabled ${addonType.name}s (${enablePlugins.length}):** \n ${enabledString} \n\n **Disabled ${addonType.name}s (${disabledPlugins.length}):** \n ${disabledString}`,
+                  send: send as boolean,
+                  result: `**Enabled Plugins (${enablePlugins.length}):** \n ${enabledString} \n\n **Disabled Plugins (${disabledPlugins.length}):** \n ${disabledString}`,
                 };
             }
             break;
@@ -315,27 +319,27 @@ const commands: RepluggedCommand[] = [
             const enableThemes = allThemes?.filter((t) => !plugins.getDisabled().includes(t.id));
             const disabledThemes = allThemes?.filter((t) => plugins.getDisabled().includes(t.id));
             const enabledString = enableThemes
-              .map((t) => (version.value ? `${t.name} (${t.version})` : t.name))
+              .map((t) => (version ? `${t.name} (${t.version})` : t.name))
               .join(", ");
             const disabledString = disabledThemes
-              .map((t) => (version.value ? `${t.name} (${t.version})` : t.name))
+              .map((t) => (version ? `${t.name} (${t.version})` : t.name))
               .join(", ");
-            switch (listType.value) {
+            switch (listType) {
               case "enabled":
                 return {
-                  send: send.value as boolean,
-                  result: `**Enabled ${addonType.name}s (${enableThemes.length}):** \n ${enabledString}`,
+                  send: send as boolean,
+                  result: `**Enabled Themes (${enableThemes.length}):** \n ${enabledString}`,
                 };
               case "disabled":
                 return {
-                  send: send.value as boolean,
-                  result: `**Disabled ${addonType.name}s (${disabledThemes.length}):** \n ${disabledString}`,
+                  send: send as boolean,
+                  result: `**Disabled Themes (${disabledThemes.length}):** \n ${disabledString}`,
                 };
 
               default:
                 return {
-                  send: send.value as boolean,
-                  result: `**Enabled ${addonType.name}s (${enableThemes.length}):** \n ${enabledString} \n\n **Disabled ${addonType.name}s (${disabledThemes.length}):** \n ${disabledString}`,
+                  send: send as boolean,
+                  result: `**Enabled Themes (${enableThemes.length}):** \n ${enabledString} \n\n **Disabled Themes (${disabledThemes.length}):** \n ${disabledString}`,
                 };
             }
             break;
