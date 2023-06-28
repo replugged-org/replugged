@@ -76,7 +76,7 @@ async function executeCommand(
   }
 }
 
-export default class CommandManager {
+export class CommandManager {
   #section: RepluggedCommandSection;
   #unregister: Array<() => void>;
   public constructor(props?: RepluggedCommandSection) {

@@ -1,4 +1,4 @@
-import CommandManager from "../../apis/commands";
+import { CommandManager } from "../../apis/commands";
 import { ApplicationCommandOptionType, RepluggedCommand } from "../../../types";
 import { plugins, themes } from "@replugged";
 const command = new CommandManager();
