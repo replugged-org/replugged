@@ -1,5 +1,5 @@
 import type { WebContents } from "electron";
-import type { CommandOptions, ConnectedAccount } from "./discord";
+import type { CommandOptionReturn, CommandOptions, ConnectedAccount } from "./discord";
 import type { PluginManifest, ThemeManifest } from "./addon";
 
 export type RepluggedWebContents = WebContents & {
@@ -47,11 +47,72 @@ export interface RepluggedAnnouncement {
 }
 
 export interface RepluggedCommand {
+  applicationId?: string;
+  type?: number;
+  id?: string;
   name: string;
+  displayName?: string;
   description: string;
+  displayDescription?: string;
   usage: string;
-  executor: (args: unknown) => void;
-  options: CommandOptions;
+  executor?: (
+    args: CommandOptionReturn[],
+  ) => Promise<RepluggedCommandResult> | RepluggedCommandResult;
+  execute?: (args: CommandOptionReturn[]) => Promise<void> | void;
+  options?: CommandOptions[];
+}
+export interface RepluggedCommandEmbed {
+  type: "rich" | "image" | "video" | "gifv" | "article" | "link";
+  title: string;
+  description: string;
+  color?: string | number;
+  thumbnail?: {
+    url: string;
+    proxyURL: string;
+    width: number;
+    height: number;
+  };
+  image?: {
+    url: string;
+    proxyURL: string;
+    width: number;
+    height: number;
+  };
+  video?: {
+    url: string;
+    proxyURL: string;
+    width: number;
+    height: number;
+  };
+  fields?: Array<{
+    name: string;
+    value: string;
+    inline: boolean;
+  }>;
+  author?: {
+    iconProxyURL: string;
+    iconURL: string;
+    name: string;
+    url?: string;
+  };
+  footer?: {
+    text: string;
+    iconProxyURL: string;
+    iconURL: string;
+  };
+  provider?: { name: string; url: string };
+  timestamp?: string;
+}
+export interface RepluggedCommandResult {
+  send: boolean;
+  result?: string;
+  embeds?: RepluggedCommandEmbed[];
+}
+export interface RepluggedCommandSection {
+  id: string;
+  name: string;
+  type?: 1;
+  icon: string;
 }
 
 export interface RepluggedConnection {
