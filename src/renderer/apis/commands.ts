@@ -78,11 +78,11 @@ async function executeCommand(
 
 export default class CommandManager {
   #section: RepluggedCommandSection;
-  #unregistors: Array<() => void>;
+  #unregister: Array<() => void>;
   public constructor(props?: RepluggedCommandSection) {
     this.#section = props ?? defaultSection;
     this.#section.type ??= 1;
-    this.#unregistors = [];
+    this.#unregister = [];
   }
   public registerCommand(command: RepluggedCommand): () => void {
     if (!commandAndSections.has(this.#section.id)) {
@@ -110,10 +110,10 @@ export default class CommandManager {
 
     currentSection?.commands.set(command.id, command);
     const uninject = (): void => void currentSection?.commands.delete(command.id!);
-    this.#unregistors.push(uninject);
+    this.#unregister.push(uninject);
     return uninject;
   }
   public unregisterAllCommands(): void {
-    for (const unregister of this.#unregistors) unregister();
+    for (const unregister of this.#unregister) unregister();
   }
 }

@@ -62,7 +62,7 @@ export interface RepluggedCommand {
   options?: CommandOptions[];
 }
 export interface RepluggedCommandEmbed {
-  type: "rich" | "image" | "video" | "gifv" | "article" | "link";
+  type: "rich" | "image" | "video" | "article";
   title: string;
   description: string;
   color?: string | number;

@@ -48,11 +48,11 @@ async function injectRepluggedBotIcon(): Promise<void> {
   }
 }
 
-async function injectRepluggedSectinIcon(): Promise<void> {
-  const AssestUtils = await waitForProps<{
+async function injectRepluggedSectionIcon(): Promise<void> {
+  const AssetsUtils = await waitForProps<{
     getApplicationIconURL: (args: { id: string; icon: string }) => string;
   }>("getApplicationIconURL");
-  injector.after(AssestUtils, "getApplicationIconURL", ([section], res) =>
+  injector.after(AssetsUtils, "getApplicationIconURL", ([section], res) =>
     commandAndSections.has(section.id) ? commandAndSections.get(section.id)?.section.icon : res,
   );
 }
@@ -246,7 +246,7 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
 
 export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
-  await injectRepluggedSectinIcon();
+  await injectRepluggedSectionIcon();
   await injectApplicationCommandSearchStore();
   loadCommands();
 }

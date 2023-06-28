@@ -2,7 +2,7 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
-    //disables api request to find commands if its addeed by replugged
+    //disables api request to find commands if its added by replugged
     find: "filteredSectionId:null",
     replacements: [
       {
