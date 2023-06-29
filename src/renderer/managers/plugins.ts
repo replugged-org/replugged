@@ -82,7 +82,7 @@ export async function start(id: string): Promise<void> {
 
       await Promise.race([
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Plugin took too long to start")), 5000),
+          setTimeout(() => reject(new Error("Plugin took too long to start")), 5_000),
         ),
         plugin.exports!.start?.(),
       ]);
