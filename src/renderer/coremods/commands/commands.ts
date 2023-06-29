@@ -227,7 +227,7 @@ const commands: RepluggedCommand[] = [
         name: "send",
         description: "Whether you want to send this or not.",
         type: ApplicationCommandOptionType.Boolean,
-        required: true,
+        required: false,
       },
       {
         name: "addon type",
