@@ -69,6 +69,7 @@ interface MenuCustomItemProps {
     disabled: boolean;
     isFocused: boolean;
   }) => React.ReactNode;
+  navigable?: boolean;
   color?: (typeof ItemColors)[keyof typeof ItemColors];
   disabled?: boolean;
   keepItemStyles?: boolean;
