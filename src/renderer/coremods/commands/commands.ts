@@ -298,18 +298,18 @@ const commands: RepluggedCommand[] = [
               case "enabled":
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n ${enabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n ${enabledString}\n\`\`\``,
                 };
               case "disabled":
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
                 };
 
               default:
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n ${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n ${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
                 };
             }
             break;
@@ -328,18 +328,18 @@ const commands: RepluggedCommand[] = [
               case "enabled":
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n ${enabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n ${enabledString}\n\`\`\``,
                 };
               case "disabled":
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Themes (${disabledThemes.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Themes (${disabledThemes.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
                 };
 
               default:
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n ${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledThemes.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n ${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledThemes.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
                 };
             }
             break;
