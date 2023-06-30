@@ -19,7 +19,7 @@ const platformModules = {
 };
 
 const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1;
-const production = !process.argv.includes("--development");
+const production = process.argv.includes("--production");
 const processArgs = process.argv.filter((v) => !v.startsWith("-"));
 
 if (!(process.platform in platformModules)) {
