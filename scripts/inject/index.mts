@@ -19,7 +19,7 @@ const platformModules = {
 };
 
 const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1;
-const prod = process.argv.includes("--production");
+const production = !process.argv.includes("--development");
 const processArgs = process.argv.filter((v) => !v.startsWith("-"));
 
 if (!(process.platform in platformModules)) {
@@ -94,7 +94,7 @@ const run = async (cmd = processArgs[2], replug = false): Promise<void> => {
 
   if (cmd === "inject") {
     try {
-      result = await inject(platformModule, platform, prod);
+      result = await inject(platformModule, platform, production);
     } catch (e) {
       console.error(
         `${AnsiEscapes.RED}An error occurred while trying to inject into Discord!${AnsiEscapes.RESET}`,
@@ -114,7 +114,9 @@ const run = async (cmd = processArgs[2], replug = false): Promise<void> => {
         `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
           AnsiEscapes.GREEN
-        }${getCommand({ action: replug ? "replug" : "plug", prod })}${AnsiEscapes.RESET}`,
+        }${getCommand({ action: replug ? "replug" : "plug", prod: production })}${
+          AnsiEscapes.RESET
+        }`,
       );
     } else {
       process.exit(exitCode);
@@ -142,7 +144,7 @@ To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}
           `You now have to completely close the Discord client, from the system tray or through the task manager.\n
 To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
             AnsiEscapes.GREEN
-          }${getCommand({ action: "unplug", prod })}${AnsiEscapes.RESET}`,
+          }${getCommand({ action: "unplug", prod: production })}${AnsiEscapes.RESET}`,
         );
       }
     }

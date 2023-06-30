@@ -16,7 +16,7 @@ const NODE_VERSION = "14";
 const CHROME_VERSION = "91";
 
 const watch = process.argv.includes("--watch");
-const production = process.argv.includes("--production");
+const production = !process.argv.includes("--development");
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
