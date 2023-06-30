@@ -25,7 +25,7 @@ export const getCommand = ({
   prod: boolean;
 }): string => {
   let cmd = `pnpm run ${action}`;
-  if (prod) cmd += " --production";
+  if (!prod) cmd += ":dev";
   cmd += ` ${platform || `[${Object.keys(PlatformNames).join("|")}]`}`;
   return cmd;
 };
