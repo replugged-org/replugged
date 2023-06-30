@@ -205,7 +205,7 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Оновлення",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "{name} потребує перезавантаження, щоб працювати. Перезавантажити зараз?",
     "REPLUGGED_RELOAD": "Перезавантажити",
-    "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other {v{version}}}",
+    "REPLUGGED_VERSION": "Replugged {version, select, dev {[РЕЖИМ РОЗРОБНИКА]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Ввімкнути значки Replugged",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Показує спеціальні значки Replugged на профілях користувачів.",
     "REPLUGGED_I18N": "Переклади Replugged",
