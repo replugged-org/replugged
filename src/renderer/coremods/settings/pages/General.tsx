@@ -113,6 +113,10 @@ export const General = (): React.ReactElement => {
         {Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY}
       </SwitchItem>
 
+      <SwitchItem {...util.useSetting(generalSettings, "showWelcomeNoticeOnOpen")}>
+        {Messages.REPLUGGED_SETTINGS_WELCOME_NOTICE}
+      </SwitchItem>
+
       <ButtonItem
         button="Reconnect"
         note="Reconnects the Dev Companion coremod to the VSCode extension."
