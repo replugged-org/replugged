@@ -31,6 +31,7 @@ export namespace coremods {
   export let language: Coremod;
   export let rpc: Coremod;
   export let watcher: Coremod;
+  export let welcome: Coremod;
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
@@ -52,6 +53,7 @@ export async function startAll(): Promise<void> {
   coremods.language = await import("../coremods/language");
   coremods.rpc = await import("../coremods/rpc");
   coremods.watcher = await import("../coremods/watcher");
+  coremods.welcome = await import("../coremods/welcome");
   await Promise.all(
     Object.entries(coremods).map(async ([name, mod]) => {
       try {
