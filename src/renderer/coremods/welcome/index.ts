@@ -9,7 +9,7 @@ export function start(): void {
     button: {
       text: Messages.REPLUGGED_NOTICES_JOIN_SERVER_BUTTON,
       onClick: () => {
-        util.goToOrJoinServer("replugged");
+        void util.goToOrJoinServer("replugged");
         generalSettings.set("showWelcomeNoticeOnOpen", false);
       },
     },
