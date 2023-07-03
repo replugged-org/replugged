@@ -34,7 +34,6 @@ export namespace coremods {
   export let watcher: Coremod;
   export let commands: Coremod;
   export let welcome: Coremod;
-
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
