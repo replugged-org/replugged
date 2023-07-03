@@ -73,7 +73,7 @@ export function getExportsForProps<T, P extends PropertyKey = keyof T>(
 ): T | undefined {
   // Loop over the module and its exports at the top level
   // Return the first thing that has all the indicated props
-  // Checkes only in prototypes if specified, usually to look for functions
+  // Checks only in prototypes if specified, usually to look for functions
   for (const exported of iterateModuleExports(m, options?.byPrototype)) {
     if (
       props.every((p) =>
