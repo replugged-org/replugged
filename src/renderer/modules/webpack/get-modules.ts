@@ -63,6 +63,7 @@ function* iterateModuleExports(
  * Find an object in a module that has all the given properties. You will usually not need this function.
  * @param m Module to search
  * @param props Array of prop names
+ * @param options object containing option on wheater to look in prototype or not
  * @returns Object that contains all the given properties (and any others), or undefined if not found
  */
 export function getExportsForProps<T, P extends PropertyKey = keyof T>(
