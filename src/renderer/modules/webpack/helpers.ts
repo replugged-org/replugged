@@ -60,39 +60,39 @@ export function getBySource<T>(
 
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options?: { byPrototype: boolean; all?: false; raw?: false },
+  options?: { byPrototype?: boolean; all?: false; raw?: false },
 ): T | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { byPrototype: boolean; all: true; raw?: false },
+  options: { byPrototype?: boolean; all: true; raw?: false },
 ): T[];
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { byPrototype: boolean; all?: false; raw: true },
+  options: { byPrototype?: boolean; all?: false; raw: true },
 ): RawModule<T> | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { byPrototype: boolean; all: true; raw: true },
+  options: { byPrototype?: boolean; all: true; raw: true },
 ): Array<RawModule<T>>;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options?: { byPrototype: boolean; all: true; raw?: boolean },
+  options?: { byPrototype?: boolean; all: true; raw?: boolean },
 ): T[] | Array<RawModule<T>>;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { byPrototype: boolean; all?: false; raw?: boolean },
+  options: { byPrototype?: boolean; all?: false; raw?: boolean },
 ): T | RawModule<T> | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { byPrototype: boolean; all?: boolean; raw: true },
+  options: { byPrototype?: boolean; all?: boolean; raw: true },
 ): RawModule<T> | Array<RawModule<T>> | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P,
-  options: { byPrototype: boolean; all?: boolean; raw?: false },
+  options: { byPrototype?: boolean; all?: boolean; raw?: false },
 ): T | T[] | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options?: { byPrototype: boolean; all?: boolean; raw?: boolean },
+  options?: { byPrototype?: boolean; all?: boolean; raw?: boolean },
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined;
 export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(...props: P): T | undefined;
 
