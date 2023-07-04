@@ -13,7 +13,7 @@
     "REPLUGGED_CONFIRM": "Apstiprināt",
     "REPLUGGED_OK": "LABI",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tēma - {description}",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Nosūta ierīces, discorda, un replugged atkļūdošanas informāciju čatā.",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Nosūta ierīces, Discorda, un Replugged atkļūdošanas informāciju čatā.",
     "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" ieslēkts!",
     "REPLUGGED_COMMAND_ECHO_DESC": "Atgriež norādītos argumentus.",
     "REPLUGGED_COMMAND_HELP_DESC": "Sniedz komandu sarakstu vai informāciju par konkrētu komandu.",

@@ -71,7 +71,7 @@
     "REPLUGGED_BUTTON_GOT_IT": "Entendi",
     "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} instalado(s)",
     "REPLUGGED_COMMAND_ENABLE_DESC": "Ativa um plugin ou tema",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Envia no chat informações de depuração do dispositivo, do discord e do replugged.",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Envia no chat informações de depuração do dispositivo, do Discord e do Replugged.",
     "REPLUGGED_COMMAND_HELP_COMMAND_NOT_FOUND": "Comando `{commandName}` não encontrado.",
     "REPLUGGED_COMMAND_HELP_LIST_FOOTER": "Use {prefix}help <nome do comando> para mais informações sobre um comando específico.",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Baixar {type}",
