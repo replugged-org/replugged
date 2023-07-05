@@ -32,7 +32,7 @@ interface InviteSuggestion {
   isFiltered: boolean;
 }
 
-interface FetchMessageOptions {
+interface FetchMessagesOptions {
   channelId: string;
   /** Snowflake */
   before?: string;
@@ -53,7 +53,7 @@ interface FetchMessageOptions {
   truncate?: boolean;
 }
 
-type FetchMessagesCachedOptions = Omit<FetchMessageOptions, "isPreload" | "skipLocalFetch">;
+type FetchMessagesCachedOptions = Omit<FetchMessagesOptions, "isPreload" | "skipLocalFetch">;
 
 interface FocusMessageOptions {
   channelId: string;
@@ -354,7 +354,8 @@ export interface MessageActions {
     limit: number,
     localFetchComplete: LocalFetchComplete,
   ) => Promise<void>;
-  fetchMessages: (options: FetchMessageOptions) => Promise<boolean>;
+  fetchMessages: (options: FetchMessagesOptions) => Promise<boolean>;
+  fetchNewLocalMessages: (channelId: string, limit: number) => Promise<void>;
   focusMessage: (options: FocusMessageOptions) => void;
   getSendMessageOptionsForReply: (
     options: SendMessageForReplyOptions,
