@@ -114,13 +114,13 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       <ButtonItem
-        button="Reconnect"
-        note="Reconnects the Dev Companion coremod to the VSCode extension."
+        button={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT}
+        note={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_DESC}
         onClick={() => {
           socket?.close(1000, "Reconnecting");
           initWs(true);
         }}>
-        Reconnect Dev Companion
+        {Messages.REPLUGGED_SETTINGS_DEV_COMPANION}
       </ButtonItem>
 
       {/* Sleeping? Wake up. */}

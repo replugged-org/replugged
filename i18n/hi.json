@@ -10,7 +10,7 @@
     "REPLUGGED_OK": "ठीक",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Theme - {description}",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Device का Discord और replugged का debug जानकारी chat मैं भेजती है",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Device का Discord और Replugged का debug जानकारी chat मैं भेजती है.",
     "REPLUGGED_COMMAND_DISABLE_DESC": "plugin/theme को अक्षम करें",
     "REPLUGGED_BADGES_DEVELOPER": "Replugged डेवलपर",
     "REPLUGGED_BADGES_STAFF": "Replugged स्टाफ़",
