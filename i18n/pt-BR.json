@@ -71,7 +71,7 @@
     "REPLUGGED_BUTTON_GOT_IT": "Entendi",
     "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} instalado(s)",
     "REPLUGGED_COMMAND_ENABLE_DESC": "Ativa um plugin ou tema",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Envia no chat informações de depuração do dispositivo, do discord e do replugged.",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Envia no chat informações de depuração do dispositivo, do Discord e do Replugged.",
     "REPLUGGED_COMMAND_HELP_COMMAND_NOT_FOUND": "Comando `{commandName}` não encontrado.",
     "REPLUGGED_COMMAND_HELP_LIST_FOOTER": "Use {prefix}help <nome do comando> para mais informações sobre um comando específico.",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Baixar {type}",
@@ -210,5 +210,10 @@
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# nova atualização} other {# novas atualizações}} disponíveis!",
     "REPLUGGED_I18N": "Traduções do Replugged",
     "REPLUGGED_VIEW_UPDATES": "Ver {count, plural, =1 {# Atualização} other {# Atualizações}}",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "Você está em modo de desenvolvedor e o Replugged não conseguirá se atualizar. [Voltar ao modo normal]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Você está em modo de desenvolvedor e o Replugged não conseguirá se atualizar. [Voltar ao modo normal]({url}).",
+    "REPLUGGED_ADDON_BROWSE": "Explorar {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED": "{type} não revisado",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automaticamente aplicar Quick CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automaticamente aplicar mudanças ao Quick CSS conforme você escreve.",
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Este {type} não foi revisado pelo time Replugged e pode causar danos ao seu computador. Use por sua conta e risco."
 }

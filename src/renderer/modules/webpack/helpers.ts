@@ -246,18 +246,7 @@ export function getByValue<T>(
   return getModule<T>(filters.byValue(match), options);
 }
 
-export function getByStoreName(name: string): (unknown & Store) | undefined {
+export function getByStoreName<T extends Store>(name: string): T | undefined {
   const stores = Flux.Store.getAll();
-  let result;
-
-  for (const store of stores) {
-    const storeName = store.getName();
-    if (!storeName || storeName.length === 1) continue;
-    if (storeName === name) {
-      result = store;
-      break;
-    }
-  }
-
-  return result;
+  return stores.find((store) => store.getName() === name) as T | undefined;
 }

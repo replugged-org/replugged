@@ -69,7 +69,7 @@
     "REPLUGGED_CANCEL": "Batal",
     "REPLUGGED_CONFIRM": "Ya",
     "REPLUGGED_OK": "OK",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Mengirim informasi debug perangkat, discord, dan replugged ke obrolan",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Mengirim informasi debug perangkat, Discord, dan Replugged ke obrolan.",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Matikan sebuah plugin/tema",
     "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" mati!",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Plugin dan Tema yang Terpasang",

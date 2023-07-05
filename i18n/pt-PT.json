@@ -79,7 +79,7 @@
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Desabilitar um plugin/tema",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Envia as informações de depuração do dispositivo, discord e do replugged no chat.",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Envia as informações de depuração do dispositivo, Discord e do Replugged no chat.",
     "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" desativado!",
     "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" ativado!",
     "REPLUGGED_COMMAND_ECHO_DESC": "Retorna os argumentos especificados.",

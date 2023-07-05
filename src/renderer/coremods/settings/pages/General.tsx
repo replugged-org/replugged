@@ -107,14 +107,20 @@ export const General = (): React.ReactElement => {
         {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
       </SwitchItem>
 
+      <SwitchItem
+        {...util.useSetting(generalSettings, "autoApplyQuickCss")}
+        note={Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC}>
+        {Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY}
+      </SwitchItem>
+
       <ButtonItem
-        button="Reconnect"
-        note="Reconnects the Dev Companion coremod to the VSCode extension."
+        button={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT}
+        note={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_DESC}
         onClick={() => {
           socket?.close(1000, "Reconnecting");
           initWs(true);
         }}>
-        Reconnect Dev Companion
+        {Messages.REPLUGGED_SETTINGS_DEV_COMPANION}
       </ButtonItem>
 
       {/* Sleeping? Wake up. */}

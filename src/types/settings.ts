@@ -10,6 +10,8 @@ export type GeneralSettings = {
   // pluginEmbeds: boolean;
   experiments: boolean;
   badges: boolean;
+  autoApplyQuickCss: boolean;
+  showWelcomeNoticeOnOpen: boolean;
 };
 
 export const defaultSettings: Partial<GeneralSettings> = {
@@ -17,4 +19,6 @@ export const defaultSettings: Partial<GeneralSettings> = {
   // pluginEmbeds: false,
   experiments: false,
   badges: true,
+  autoApplyQuickCss: false,
+  showWelcomeNoticeOnOpen: true,
 };

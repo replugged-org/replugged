@@ -15,6 +15,7 @@ import {
 } from "src/renderer/managers/updater";
 import { sleep, useSetting, useSettingArray } from "src/renderer/util";
 import Icons from "../icons";
+import { getAddonType, label } from "./Addons";
 import "./Updater.css";
 
 const logger = Logger.coremod("Settings:Updater");
@@ -208,11 +209,8 @@ export const Updater = (): React.ReactElement => {
           const { manifest } = addon;
           const sourceLink = update.webUrl;
           return (
-            <>
-              <Flex
-                className="replugged-updater-item"
-                justify={Flex.Justify.BETWEEN}
-                align={Flex.Align.CENTER}>
+            <div className="replugged-updater-item">
+              <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
                 <div>
                   <Flex align={Flex.Align.CENTER} style={{ gap: "5px", marginBottom: "5px" }}>
                     <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
@@ -250,7 +248,16 @@ export const Updater = (): React.ReactElement => {
                   </Button>
                 )}
               </Flex>
-            </>
+              {manifest.type !== "replugged" && manifest.updater?.type !== "store" ? (
+                <div style={{ marginTop: "8px" }}>
+                  <Notice messageType={Notice.Types.ERROR}>
+                    {Messages.REPLUGGED_ADDON_NOT_REVIEWED_DESC.format({
+                      type: label(getAddonType(manifest.type)),
+                    })}
+                  </Notice>
+                </div>
+              ) : null}
+            </div>
           );
         })}
       </Flex>

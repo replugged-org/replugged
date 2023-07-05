@@ -13,12 +13,6 @@ export enum ActivityActionTypes {
 
 type Properties = Record<string, unknown>;
 
-interface CaptchaPayload {
-  captcha_key: string;
-  // cspell:ignore rqtoken
-  captcha_rqtoken: string;
-}
-
 interface MessageReference {
   guild_id?: string;
   channel_id?: string;
@@ -38,7 +32,7 @@ interface InviteSuggestion {
   isFiltered: boolean;
 }
 
-interface FetchMessageOptions {
+interface FetchMessagesOptions {
   channelId: string;
   /** Snowflake */
   before?: string;
@@ -59,7 +53,7 @@ interface FetchMessageOptions {
   truncate?: boolean;
 }
 
-type FetchMessagesCachedOptions = Omit<FetchMessageOptions, "isPreload" | "skipLocalFetch">;
+type FetchMessagesCachedOptions = Omit<FetchMessagesOptions, "isPreload" | "skipLocalFetch">;
 
 interface FocusMessageOptions {
   channelId: string;
@@ -118,7 +112,6 @@ interface OutgoingMessageOptions {
   stickerIds?: string[];
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
-  captchaPayload?: CaptchaPayload;
 }
 
 interface TrackInviteOptions {
@@ -133,7 +126,6 @@ interface TrackInviteOptions {
 interface MessageGreetOptions {
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
-  captchaPayload?: CaptchaPayload;
 }
 
 declare class LocalFetchComplete {
@@ -362,7 +354,8 @@ export interface MessageActions {
     limit: number,
     localFetchComplete: LocalFetchComplete,
   ) => Promise<void>;
-  fetchMessages: (options: FetchMessageOptions) => Promise<boolean>;
+  fetchMessages: (options: FetchMessagesOptions) => Promise<boolean>;
+  fetchNewLocalMessages: (channelId: string, limit: number) => Promise<void>;
   focusMessage: (options: FocusMessageOptions) => void;
   getSendMessageOptionsForReply: (
     options: SendMessageForReplyOptions,

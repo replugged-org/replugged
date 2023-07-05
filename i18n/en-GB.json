@@ -128,7 +128,7 @@
     "REPLUGGED_CANCEL": "Cancel",
     "REPLUGGED_CONFIRM": "Confirm",
     "REPLUGGED_OK": "OK",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Sends the device's, discord's, and replugged's debug info in chat.",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Sends the device's, Discord's, and Replugged's debug info in chat.",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Disable a plugin/theme",
     "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" disabled!",
     "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" enabled!",
@@ -210,5 +210,10 @@
     "REPLUGGED_SETTINGS_BADGES_DESC": "Show custom Replugged badges on user profiles.",
     "REPLUGGED_I18N": "Replugged Translations",
     "REPLUGGED_VIEW_UPDATES": "View {count, plural, =1 {# Update} other {#Updates}}",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "You are currently running Replugged in developer mode and Replugged will not be able to update itself. [Switch to production mode]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "You are currently running Replugged in developer mode and Replugged will not be able to update itself. [Switch to production mode]({url}).",
+    "REPLUGGED_ADDON_BROWSE": "Browse {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED": "Unreviewed {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "This {type} has not been reviewed by the Replugged team and could harm your computer. Use at your own risk.",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatically Apply Quick CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automatically apply changes to Quick CSS as you type."
 }

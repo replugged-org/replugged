@@ -210,5 +210,10 @@
     "REPLUGGED_SETTINGS_BADGES_DESC": "Показывать значки Replugged на профилях пользователей.",
     "REPLUGGED_I18N": "Перевод Replugged",
     "REPLUGGED_VIEW_UPDATES": "Посмотреть {count, plural, =1 {# Обновление} other {# Обновления}}",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "Replugged запущен в режиме разработчика и не может быть автоматически обновлён. [Перейти в обычный режим]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Replugged запущен в режиме разработчика и не может быть автоматически обновлён. [Перейти в обычный режим]({url}).",
+    "REPLUGGED_ADDON_BROWSE": "Исследовать {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED": "Непроверенный {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Этот {type} не был проверен командой Replugged и может быть опасным для вашей системы. Используйте на свой страх и риск.",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Автоматическое Применение Быстрой настройки CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Автоматически применять изменения в Быстрой настройке CSS пока вы печатете."
 }

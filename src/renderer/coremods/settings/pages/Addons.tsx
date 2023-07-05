@@ -5,6 +5,7 @@ import {
   Divider,
   ErrorBoundary,
   Flex,
+  Notice,
   Switch,
   Text,
   TextInput,
@@ -15,6 +16,8 @@ import type { Author } from "src/types/addon";
 import "./Addons.css";
 import Icons from "../icons";
 import { Logger, plugins, themes, webpack } from "@replugged";
+import { generalSettings } from "./General";
+import { openExternal } from "src/renderer/util";
 
 interface Breadcrumb {
   id: string;
@@ -41,6 +44,16 @@ const BreadcrumbClasses =
 export enum AddonType {
   Plugin = "plugin",
   Theme = "theme",
+}
+
+export function getAddonType(type: "replugged-plugin" | "replugged-theme"): AddonType {
+  if (type === "replugged-plugin") {
+    return AddonType.Plugin;
+  }
+  if (type === "replugged-theme") {
+    return AddonType.Theme;
+  }
+  throw new Error("Invalid addon type");
 }
 
 function getRepluggedNative(
@@ -125,12 +138,14 @@ function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
 }
 
 function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefined {
-  const { updater } = addon.manifest;
+  const { id: addonId, updater } = addon.manifest;
   if (!updater) return undefined;
-  const { type, id } = updater;
+  const { type, id: updaterId } = updater;
   switch (type) {
     case "github":
-      return `https://github.com/${id}`;
+      return `https://github.com/${updaterId}`;
+    case "store":
+      return `${generalSettings.get("apiUrl")}/store/${addonId}`;
   }
   return undefined;
 }
@@ -364,6 +379,15 @@ function Card({
       <Text.Normal style={{ margin: "5px 0" }} markdown={true} allowMarkdownLinks={true}>
         {addon.manifest.description}
       </Text.Normal>
+      {addon.manifest.updater?.type !== "store" ? (
+        <div style={{ marginTop: "8px" }}>
+          <Notice messageType={Notice.Types.ERROR}>
+            {Messages.REPLUGGED_ADDON_NOT_REVIEWED_DESC.format({
+              type: label(type),
+            })}
+          </Notice>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -603,6 +627,14 @@ export const Addons = (type: AddonType): React.ReactElement => {
               color={Button.Colors.PRIMARY}
               look={Button.Looks.LINK}>
               {Messages.REPLUGGED_ADDONS_LOAD_MISSING.format({
+                type: label(type, { caps: "title", plural: true }),
+              })}
+            </Button>
+            <Button
+              onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
+              color={Button.Colors.PRIMARY}
+              look={Button.Looks.LINK}>
+              {Messages.REPLUGGED_ADDON_BROWSE.format({
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>

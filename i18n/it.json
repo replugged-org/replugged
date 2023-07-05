@@ -210,5 +210,10 @@
     "REPLUGGED_SETTINGS_BADGES_DESC": "Mostra i badge personalizzati di Replugged sui profili utente.",
     "REPLUGGED_I18N": "Traduzioni di Replugged",
     "REPLUGGED_VIEW_UPDATES": "Mostra {count, plural, =1 {# Aggiornamento} other {# Aggiornamenti}}",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "In questo momento stai eseguendo Replugged in modalità sviluppatore e Replugged non sarà in grado di aggiornarsi da solo. [Passa alla modalità produzione]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "In questo momento stai eseguendo Replugged in modalità sviluppatore e Replugged non sarà in grado di aggiornarsi da solo. [Passa alla modalità produzione]({url}).",
+    "REPLUGGED_ADDON_BROWSE": "Esplora {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED": "{type} non revisionato",
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Questo {type} non è stato revisionato dal team di Replugged e potrebbe danneggiare il tuo computer. Utilizzalo a proprio rischio.",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Applica Automaticamente Quick CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Applica automaticamente le modifiche di Quick CSS mentre scrivi."
 }

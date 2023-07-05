@@ -1,11 +1,12 @@
 import { modal, toast } from "@common";
 import { Messages } from "@common/i18n";
-import { Button } from "@components";
+import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
+import { getAddonType, label } from "../settings/pages";
 
 const logger = Logger.coremod("Installer");
 
@@ -176,14 +177,27 @@ async function showInstallPrompt(manifest: AnyAddonManifest): Promise<boolean> {
   const authors = authorList([manifest.author].flat().map((a) => a.name));
 
   const title = Messages.REPLUGGED_INSTALL_MODAL_HEADER.format({ type });
-  const body = Messages.REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY.format({
+  const text = Messages.REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY.format({
     name: manifest.name,
     authors,
   });
 
   const res = await modal.confirm({
     title,
-    body,
+    body: (
+      <>
+        {text}
+        {manifest.updater?.type !== "store" ? (
+          <div style={{ marginTop: "16px" }}>
+            <Notice messageType={Notice.Types.ERROR}>
+              {Messages.REPLUGGED_ADDON_NOT_REVIEWED_DESC.format({
+                type: label(getAddonType(manifest.type)),
+              })}
+            </Notice>
+          </div>
+        ) : null}
+      </>
+    ),
     confirmText: Messages.REPLUGGED_CONFIRM,
     cancelText: Messages.REPLUGGED_CANCEL,
   });
