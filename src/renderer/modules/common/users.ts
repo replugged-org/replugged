@@ -24,6 +24,7 @@ export interface GuildMemberStore {
   getMemberIds: (guildId?: string) => string[];
   getMemberRoleWithPendingUpdates: (guildId: string, userId: string) => string[];
   getMembers: (guildId?: string) => GuildMember[];
+  getMemberVersion: () => number;
   getMutableAllGuildsAndMembers: () => Record<string, Record<string, GuildMember>>;
   getNick: (guildId?: string, userId?: string) => string | null;
   getNicknameGuildsMapping: (userId: string) => Record<string, string[]>;
