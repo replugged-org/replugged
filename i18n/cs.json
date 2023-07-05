@@ -182,7 +182,7 @@
     "REPLUGGED_UPDATES_UPDATE_NOUN": "Aktualizace",
     "REPLUGGED_VERSION": "Replugged {version, select, dev {[VÝVOJÁŘSKÝ REŽIM]} other {v{version}}}",
     "REPLUGGED_SETTINGS_BADGES": "Povolit odznaky Replugged",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Ukáže vlastní odznaky Replugged na uživatelských profilech",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Ukáže vlastní odznaky Replugged na uživatelských profilech.",
     "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Načtení uživatelského profilu selhalo",
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Formátování kódu selhalo",
     "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Kód byl zformátován",
@@ -210,5 +210,10 @@
     "REPLUGGED_RELOAD": "Přenačíst",
     "REPLUGGED_I18N": "Překlady Replugged",
     "REPLUGGED_DEVELOPER_MODE_WARNING": "Momentálně máš Replugged spuštěný ve vývojářském režimu, ve kterém se není schopný sám aktualizovat. [Přepnutí do běžného režimu]({url}).",
-    "REPLUGGED_VIEW_UPDATES": "Zobrazuji {count, plural, =1 {# aktualizaci} =2 {# aktualizace} =3 {# aktualizace} =4 {# aktualizace} other {# aktualizací}}"
+    "REPLUGGED_VIEW_UPDATES": "Zobrazuji {count, plural, =1 {# aktualizaci} =2 {# aktualizace} =3 {# aktualizace} =4 {# aktualizace} other {# aktualizací}}",
+    "REPLUGGED_ADDON_BROWSE": "Procházet {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED": "Nerecenzovaný {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Tento {type} nebyl zkontrolován týmem Replugged a mohl by poškodit váš počítač. Používáte jej na vlastní nebezpečí.",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatické použití Quick CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automatické použití změn Quick CSS při psaní."
 }

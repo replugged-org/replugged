@@ -119,6 +119,7 @@ electron.app.once("ready", () => {
       return done({});
     }
 
+    const hasFrameOptions = Object.keys(responseHeaders).find((e) => /x-frame-options/i.test(e));
     const hasAllowCredentials = Object.keys(responseHeaders).find((e) =>
       /access-control-allow-credentials/i.test(e),
     );
@@ -134,8 +135,11 @@ electron.app.once("ready", () => {
 
     if (!hasAllowCredentials) {
       headersWithoutCSP["Access-Control-Allow-Origin"] = ["*"];
+    }
+
+    if (hasFrameOptions) {
       headersWithoutCSP["Content-Security-Policy"] = [
-        "frame-ancestors 'self' https://discord.com https://*.discord.com;",
+        "frame-ancestors 'self' https://discord.com https://*.discord.com https://*.discordsays.com;",
       ];
     }
 

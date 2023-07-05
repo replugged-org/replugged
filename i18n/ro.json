@@ -76,7 +76,7 @@
     "REPLUGGED_CANCEL": "Anulare",
     "REPLUGGED_CONFIRM": "Confirmă",
     "REPLUGGED_OK": "OK",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Trimite informația de depanare a discordului, dispozitivului și replugged în chat.",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Trimite informația de depanare a Discordului, dispozitivului și Replugged în chat.",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Dezactivează un plugin sau o temă",
     "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" dezactivat!",
     "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" activat!",

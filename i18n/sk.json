@@ -157,7 +157,7 @@
     "REPLUGGED_ADDON_AUTHORS_ONE": "od {author1}",
     "REPLUGGED_ADDON_AUTHORS_THREE": "od {author1}, {author2} a {author3}",
     "REPLUGGED_SETTINGS_BADGES": "Zapnúť Replugged Odznaky",
-    "REPLUGGED_SETTINGS_BADGES_DESC": "Zobrazenie odznakov Replugged v profiloch používateľov",
+    "REPLUGGED_SETTINGS_BADGES_DESC": "Zobrazenie odznakov Replugged v profiloch používateľov.",
     "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Ste si istí, že chcete odinštalovať tento {type}? Toto sa nedá vrátiť späť.",
     "REPLUGGED_NO_ADDONS_INSTALLED": "Nie je nainštalovaný žiadny {type}.",
     "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "Odinštalovaný {name}",

@@ -71,7 +71,7 @@ export async function ignite(): Promise<void> {
   await plugins.runPlaintextPatches();
   await waitForReady;
   signalStart();
-  await commonReady;
-  await componentsReady;
+  await commonReady();
+  await componentsReady();
   await start();
 }
