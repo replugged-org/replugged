@@ -65,6 +65,20 @@ type ParseFn = (
 export interface Parser {
   defaultRules: DefaultRules;
   guildEventRules: Omit<DefaultRules, "codeBlock" | "blockQuote" | "br">;
+  notifCenterV2MessagePreviewRules: Omit<
+    DefaultRules,
+    | "paragraph"
+    | "newline"
+    | "strong"
+    | "codeBlock"
+    | "inlineCode"
+    | "u"
+    | "link"
+    | "url"
+    | "autolink"
+    | "list"
+    | "heading"
+  >;
   parse: ParseFn;
   parseAutoModerationSystemMessage: ParseFn;
   parseAutoModerationSystemMessageToAST: ParseFn;

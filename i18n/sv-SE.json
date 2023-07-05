@@ -80,7 +80,7 @@
     "REPLUGGED_CANCEL": "Avbryt",
     "REPLUGGED_CONFIRM": "Bekräfta",
     "REPLUGGED_OK": "OK",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Skickar enhetens, discords och repluggeds felsökningsinformation i chatten.",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Skickar enhetens, Discords och Repluggeds felsökningsinformation i chatten.",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Inaktivera ett plugin/tema",
     "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" inaktiverat!",
     "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" aktiverat!",

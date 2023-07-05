@@ -56,6 +56,7 @@ export const UserFlags = getExportsForProps<Record<string, number>>(Constants, [
   "SPAMMER",
 ])!;
 
+// ThemeColor
 export const CSSVariables = await waitForProps<Record<string, string>>(
   "TEXT_NORMAL",
   "BACKGROUND_PRIMARY",

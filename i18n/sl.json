@@ -12,7 +12,7 @@
     "REPLUGGED_OK": "OK",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "Plugin - {description}",
     "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "Tema - {description}",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Pošlje informacije o odpravljanju napak naprave, discorda in replugged v klepet.",
+    "REPLUGGED_COMMAND_DEBUG_DESC": "Pošlje informacije o odpravljanju napak naprave, Discorda in Replugged v klepet.",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Onemogoči plugin/temo",
     "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" omogočen!",
     "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" onemogočen!",
