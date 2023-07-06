@@ -15,7 +15,7 @@ export type GeneralSettings = {
   reactDevTools: boolean;
 };
 
-export const defaultSettings: Partial<GeneralSettings> = {
+export const defaultSettings = {
   apiUrl: "https://replugged.dev",
   // pluginEmbeds: false,
   experiments: false,
@@ -23,4 +23,4 @@ export const defaultSettings: Partial<GeneralSettings> = {
   autoApplyQuickCss: false,
   showWelcomeNoticeOnOpen: true,
   reactDevTools: false,
-};
+} satisfies Partial<GeneralSettings>;

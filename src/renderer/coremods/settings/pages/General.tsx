@@ -1,4 +1,4 @@
-import { modal } from "@common";
+import { modal, toast } from "@common";
 import React from "@common/react";
 import {
   Button,
@@ -23,6 +23,14 @@ export const generalSettings = await settings.init<GeneralSettings, keyof typeof
 );
 
 const konamiCode = ["38", "38", "40", "40", "37", "39", "37", "39", "66", "65"];
+
+function reload(): void {
+  setTimeout(() => window.location.reload(), 250);
+}
+
+function relaunch(): void {
+  setTimeout(() => window.DiscordNative.app.relaunch(), 250);
+}
 
 export const General = (): React.ReactElement => {
   const { value: expValue, onChange: expOnChange } = util.useSetting(
@@ -113,7 +121,7 @@ export const General = (): React.ReactElement => {
               .then((answer) => {
                 if (answer) {
                   expOnChange(value);
-                  setTimeout(() => window.location.reload(), 250);
+                  reload();
                 }
               });
           }}
@@ -134,12 +142,20 @@ export const General = (): React.ReactElement => {
               .then((answer) => {
                 if (answer) {
                   if (value) {
-                    void RepluggedNative.reactDevTools.downloadExtension().then(() => {
-                      rdtOnChange(value);
-                      setTimeout(() => window.DiscordNative.app.relaunch(), 250);
-                    });
+                    void RepluggedNative.reactDevTools
+                      .downloadExtension()
+                      .then(() => {
+                        rdtOnChange(value);
+                        relaunch();
+                      })
+                      .catch(
+                        void toast.toast(
+                          Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED,
+                          toast.Kind.FAILURE,
+                        ),
+                      );
                   } else {
-                    setTimeout(() => window.DiscordNative.app.relaunch(), 250);
+                    relaunch();
                   }
                 }
               });
