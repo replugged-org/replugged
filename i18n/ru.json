@@ -221,5 +221,6 @@
     "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Переподключить",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Включить React DevTools",
     "REPLUGGED_SETTINGS_ADVANCED": "Расширенные Настройки",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Загружает расширение React DevTools, упрощая просмотр дерева React и отладку. **Требует перезагрузки**."
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Загружает расширение React DevTools, упрощая просмотр дерева React и отладку. **Требует перезагрузки**.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Ошибка установки React DevTools."
 }
