@@ -50,7 +50,6 @@
     "@typescript-eslint/parser": "^5.60.1",
     "cspell": "^6.31.1",
     "discord-types": "^1.3.26",
-    "electron-devtools-installer": "^3.2.0",
     "eslint": "^8.43.0",
     "eslint-config-dmitmel": "github:dmitmel/eslint-config-dmitmel",
     "eslint-plugin-node": "^11.1.0",
