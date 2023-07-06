@@ -209,5 +209,17 @@
     "REPLUGGED_SETTINGS_BADGES": "Replugged Rozetlerini Etkinleştir",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Kullanıcı profillerinde özel Replugged rozetlerini göster.",
     "REPLUGGED_I18N": "Replugged Çevirileri",
-    "REPLUGGED_VIEW_UPDATES": "{count, plural, =1 {# Güncellemeyi} other {# Güncellemeleri}} görüntüle"
+    "REPLUGGED_VIEW_UPDATES": "{count, plural, =1 {# Güncellemeyi} other {# Güncellemeleri}} görüntüle",
+    "REPLUGGED_ADDON_BROWSE": "{type}'e göz at",
+    "REPLUGGED_ADDON_NOT_REVIEWED": "İncelenmemiş {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Bu {type} Replugged ekibi tarafından incelenmemiştir ve bilgisayarınıza zarar verebilir. Kullanmak kendi sorumluluğunuzdadır.",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Quick CSS'i Otomatik Uygula",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Quick CSS'te değişiklikleri siz yazdıkça otomatik olarak uygula.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION": "Dev Companion'a Yeniden Bağlan",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Dev Companion coremod'unu VSCode eklentisine yeniden bağlar.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Yeniden Bağlan",
+    "REPLUGGED_SETTINGS_ADVANCED": "Gelişmiş Seçenekler",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "React DevTools'u Etkinleştir",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "React DevTools eklentisini yükler, React ağacını inceleyebilmenizi ve daha rahat hata ayıklayabilmenizi sağlar. **Yeniden başlatma gereklidir**.",
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Şu an Replugged'ı geliştirici modunda kullanıyorsunuz, Replugged kendini güncelleyemeyecektir. [Üretim sürümüne geçin]({url})."
 }

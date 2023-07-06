@@ -33,7 +33,6 @@
     "REPLUGGED_SNIPPET_LINE1": "Το απόσπασμα από το #css-snippets εφαρμόστηκε την {date, date, medium} στις {date, time, medium}",
     "REPLUGGED_SNIPPET_LINE2": "Δημιουργήθηκε από τον {authorTag} ({authorId})",
     "REPLUGGED_THEMES": "Θέματα",
-    "REPLUGGED_UPDATES_AVAILABLE": "",
     "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "Απαιτείται επαναφόρτωση",
     "REPLUGGED_UPDATES_CHECK": "Έλεγχος για Ενημερώσεις",
     "REPLUGGED_UPDATES_ENABLE": "Ενεργοποίηση Ενημερώσεων",
