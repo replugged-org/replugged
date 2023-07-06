@@ -133,8 +133,14 @@ export const General = (): React.ReactElement => {
               })
               .then((answer) => {
                 if (answer) {
-                  rdtOnChange(value);
-                  setTimeout(() => window.location.reload(), 250);
+                  if (value) {
+                    void RepluggedNative.reactDevTools.downloadExtension().then(() => {
+                      rdtOnChange(value);
+                      setTimeout(() => window.DiscordNative.app.relaunch(), 250);
+                    });
+                  } else {
+                    setTimeout(() => window.DiscordNative.app.relaunch(), 250);
+                  }
                 }
               });
           }}

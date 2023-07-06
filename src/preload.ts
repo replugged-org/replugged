@@ -99,6 +99,12 @@ const RepluggedNative = {
     getStrings: (): Promise<RepluggedTranslations> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_STRINGS),
   },
+
+  reactDevTools: {
+    downloadExtension: (): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
+  },
+
   getVersion: () => version,
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
