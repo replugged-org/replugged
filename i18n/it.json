@@ -221,5 +221,6 @@
     "REPLUGGED_SETTINGS_ADVANCED": "Impostazioni Avanzate",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Abilita React DevTools",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Carica l'estensione React DevTools, permettendoti di ispezionare l'albero di React ed eseguire il debug più facilmente. **Necessita di un riavvio**.",
-    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Riconnette il coremod Dev Companion all'estensione di VSCode."
+    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Riconnette il coremod Dev Companion all'estensione di VSCode.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Impossibile scaricare React DevTools."
 }
