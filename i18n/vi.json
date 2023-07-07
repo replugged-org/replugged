@@ -215,5 +215,12 @@
     "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Các {type} này chưa được kiểm duyệt bởi đội ngũ Replugged và có thể gây hại cho máy tính của bạn. Bạn sẽ tự chịu trách nhiệm cho những hậu quả gây ra.",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Tự động áp dụng CSS Nhanh",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Tự động áp dụng CSS Nhanh trong khi bạn gõ.",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "Bạn đang sử dụng Replugged trong chế độ phát triển và Replugged sẽ không thể tự cập nhật chính nó. [Chuyển sang chế độ phát hành]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Bạn đang sử dụng Replugged trong chế độ phát triển và Replugged sẽ không thể tự cập nhật chính nó. [Chuyển sang chế độ phát hành]({url}).",
+    "REPLUGGED_SETTINGS_DEV_COMPANION": "Tái kết nối công cụ Đồng hành cho Nhà phát triển",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Tái kết nối công cụ Đồng hành cho Nhà phát triển với phần mở rộng trong VSCode.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Tái kết nối",
+    "REPLUGGED_SETTINGS_ADVANCED": "Cài đặt nâng cao",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Kích hoạt React DevTools",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Kích hoạt phần mở rộng của React DevTools, từ đó cho phép bạn quan sát cây React và gỡ lỗi dễ dàng hơn. **Cần khởi động lại**.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Đã có lỗi xảy ra khi tải về React DevTools."
 }
