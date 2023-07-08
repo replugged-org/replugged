@@ -220,7 +220,7 @@
     "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "重新連接開發者夥伴核心模塊至 VSCode 插件。",
     "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "重新連接",
     "REPLUGGED_SETTINGS_ADVANCED": "進階設置",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "開啓反應開發工具",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "加載 React 開發工具插件，它允許你檢查 React 代碼樹并且更加容易地調試代碼。**需要重啓**。",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "開啟 React 開發工具",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "加載 React 開發工具插件，它允許你檢查 React 代碼樹并且更加容易地 debug 代碼。**需要重啟**。",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "下載 React 開發工具失敗。"
 }
