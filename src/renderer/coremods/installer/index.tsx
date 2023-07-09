@@ -6,6 +6,7 @@ import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import AddonEmbed from "./AddonEmbed";
+import { generalSettings } from "../settings/pages";
 
 const injector = new Injector();
 const logger = Logger.coremod("Installer");
@@ -128,8 +129,10 @@ async function injectLinks(): Promise<void> {
     const installLink = parseInstallLink(href);
     if (!installLink) return fn(...args);
 
-    const embed = AddonEmbed({ addon: installLink });
-    if (embed && title === href) return embed; // Do not show plugin embed for named links
+    if (generalSettings.get("addonEmbeds")) {
+      const embed = AddonEmbed({ addon: installLink });
+      if (embed && title === href) return embed; // Do not show plugin embed for named links
+    }
 
     args[0].onClick = (e) => {
       // If control/cmd is pressed, do not trigger the install modal
