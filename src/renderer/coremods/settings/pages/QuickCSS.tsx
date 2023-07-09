@@ -80,9 +80,8 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
           css(),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
-               
               setValue(update.state.doc.toString());
-               
+
               onChange?.(update.state.doc.toString());
             }
           }),
