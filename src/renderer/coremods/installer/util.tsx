@@ -137,7 +137,7 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
   return true;
 }
 
-function authorList(authors: string[]): string {
+export function authorList(authors: string[]): string {
   if (authors.length === 1) {
     return Messages.REPLUGGED_ADDON_AUTHORS_ONE.format({
       author1: authors[0],

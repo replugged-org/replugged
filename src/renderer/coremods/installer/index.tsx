@@ -5,6 +5,7 @@ import { registerRPCCommand } from "../rpc";
 import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./util";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
+import AddonEmbed from "./AddonEmbed";
 
 const injector = new Injector();
 const logger = Logger.coremod("Installer");
@@ -14,7 +15,7 @@ interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   focusProps?: Record<string, unknown>;
 }
 
-interface InstallLinkProps {
+export interface InstallLinkProps {
   /** Identifier for the addon in the source */
   identifier: string;
   /** Updater source type */
@@ -121,13 +122,16 @@ async function injectLinks(): Promise<void> {
     return;
   }
 
-  injector.before(exports, key, ([args]) => {
-    const { href } = args;
+  injector.instead(exports, key, (args, fn) => {
+    const { title, href } = args[0];
     if (!href) return undefined;
     const installLink = parseInstallLink(href);
     if (!installLink) return undefined;
 
-    args.onClick = (e) => {
+    const embed = <AddonEmbed addon={installLink} />;
+    if (embed && title === href) return embed; // Do not show plugin embed for named links
+
+    args[0].onClick = (e) => {
       // If control/cmd is pressed, do not trigger the install modal
       if (e.ctrlKey || e.metaKey) return;
 
@@ -135,7 +139,9 @@ async function injectLinks(): Promise<void> {
       void installFlow(installLink.identifier, installLink.source, installLink.id, true, true);
     };
 
-    return [args] as [AnchorProps];
+    const res = fn(...args);
+
+    return res;
   });
 }
 
