@@ -32,10 +32,10 @@ function parseInstallLink(href: string): InstallLinkProps | null {
     if (url.pathname === "/install") {
       const params = url.searchParams;
       const identifier = params.get("identifier");
-      const source = params.get("source") ?? undefined;
+      const source = params.get("source") ?? "store";
       const id = params.get("id") ?? undefined;
       if (!identifier) return null;
-      if (source !== undefined && !isValidSource(source)) return null;
+      if (!isValidSource(source)) return null;
       return {
         identifier,
         source,
@@ -124,11 +124,11 @@ async function injectLinks(): Promise<void> {
 
   injector.instead(exports, key, (args, fn) => {
     const { title, href } = args[0];
-    if (!href) return undefined;
+    if (!href) return fn(...args);
     const installLink = parseInstallLink(href);
-    if (!installLink) return undefined;
+    if (!installLink) return fn(...args);
 
-    const embed = <AddonEmbed addon={installLink} />;
+    const embed = AddonEmbed({ addon: installLink });
     if (embed && title === href) return embed; // Do not show plugin embed for named links
 
     args[0].onClick = (e) => {
