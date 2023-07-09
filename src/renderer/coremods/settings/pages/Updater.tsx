@@ -68,7 +68,7 @@ export const Updater = (): React.ReactElement => {
     setChecking(true);
     await Promise.all([checkAllUpdates(false, true), sleep(1000)]);
     setChecking(false);
-    setLastChecked(lastChecked);
+    setLastChecked(Date.now());
     const newUpdates = getAvailableUpdates();
     setUpdatesAvailable(newUpdates);
     if (newUpdates.length > previousUpdates.length) {
