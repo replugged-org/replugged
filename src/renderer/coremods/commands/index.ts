@@ -151,7 +151,6 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
         ? [...res.commands.filter((command) => !commandsToAdd.includes(command)), ...commandsToAdd]
         : commandsToAdd;
     }
-    logger.log(res);
     return res;
   });
 
