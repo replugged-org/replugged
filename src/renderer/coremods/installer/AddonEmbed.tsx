@@ -38,7 +38,7 @@ type SvgMod = Record<
   string
 >;
 
-function Link({ className }: { className?: string }) {
+function Link({ className }: { className?: string }): React.ReactElement {
   return (
     <svg
       className={className}
@@ -57,7 +57,7 @@ function Link({ className }: { className?: string }) {
   );
 }
 
-function Icon({ className }: { className?: string }) {
+function Icon({ className }: { className?: string }): React.ReactElement | null {
   const svgMod = getByProps<SvgMod>("svgContentRight");
   if (!svgMod) {
     logger.error("Failed to get svgMod");
@@ -149,7 +149,7 @@ export default function AddonEmbed({
   const isInstalled = checkIsInstalled(data);
   const isDisabled = isInstalled || isInstalling;
 
-  const copyUrl = () => {
+  const copyUrl = (): void => {
     window.DiscordNative.clipboard.copy(url);
     setOnCooldown(true);
     if (cooldownTimeout) clearTimeout(cooldownTimeout);
