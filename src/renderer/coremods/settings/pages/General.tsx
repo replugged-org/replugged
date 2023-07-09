@@ -148,13 +148,14 @@ export const General = (): React.ReactElement => {
                         rdtOnChange(value);
                         relaunch();
                       })
-                      .catch(
+                      .catch(() => {
                         void toast.toast(
                           Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED,
                           toast.Kind.FAILURE,
-                        ),
-                      );
+                        );
+                      });
                   } else {
+                    rdtOnChange(value);
                     relaunch();
                   }
                 }
