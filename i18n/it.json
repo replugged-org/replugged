@@ -215,5 +215,12 @@
     "REPLUGGED_ADDON_NOT_REVIEWED": "{type} non revisionato",
     "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Questo {type} non è stato revisionato dal team di Replugged e potrebbe danneggiare il tuo computer. Utilizzalo a proprio rischio.",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Applica Automaticamente Quick CSS",
-    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Applica automaticamente le modifiche di Quick CSS mentre scrivi."
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Applica automaticamente le modifiche di Quick CSS mentre scrivi.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION": "Riconnetti Dev Companion",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Riconnetti",
+    "REPLUGGED_SETTINGS_ADVANCED": "Impostazioni Avanzate",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Abilita React DevTools",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Carica l'estensione React DevTools, permettendoti di ispezionare l'albero di React ed eseguire il debug più facilmente. **Necessita di un riavvio**.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Riconnette il coremod Dev Companion all'estensione di VSCode.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Impossibile scaricare React DevTools."
 }

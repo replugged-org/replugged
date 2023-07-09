@@ -214,6 +214,13 @@
     "REPLUGGED_ADDON_BROWSE": "Исследовать {type}",
     "REPLUGGED_ADDON_NOT_REVIEWED": "Непроверенный {type}",
     "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Этот {type} не был проверен командой Replugged и может быть опасным для вашей системы. Используйте на свой страх и риск.",
-    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Автоматическое Применение Быстрой настройки CSS",
-    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Автоматически применять изменения в Быстрой настройке CSS пока вы печатете."
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Автоматическое применение Быстрой настройки CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Автоматически применять изменения Быстрой настройки CSS, когда вы печатаете.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION": "Переподключение Dev Companion",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Переподключает Dev Companion к расширению VSCode.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Переподключить",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Включить React DevTools",
+    "REPLUGGED_SETTINGS_ADVANCED": "Расширенные Настройки",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Загружает расширение React DevTools, упрощая просмотр дерева React и отладку. **Требует перезагрузки**.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Ошибка установки React DevTools."
 }
