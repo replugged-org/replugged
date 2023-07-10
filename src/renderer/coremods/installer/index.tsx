@@ -27,18 +27,31 @@ function parseInstallLink(href: string): InstallLinkProps | null {
   try {
     const url = new URL(href);
     if (url.hostname !== "replugged.dev") return null;
-    if (url.pathname !== "/install") return null;
-    const params = url.searchParams;
-    const identifier = params.get("identifier");
-    const source = params.get("source") ?? undefined;
-    const id = params.get("id") ?? undefined;
-    if (!identifier) return null;
-    if (source !== undefined && !isValidSource(source)) return null;
-    return {
-      identifier,
-      source,
-      id,
-    };
+
+    if (url.pathname === "/install") {
+      const params = url.searchParams;
+      const identifier = params.get("identifier");
+      const source = params.get("source") ?? undefined;
+      const id = params.get("id") ?? undefined;
+      if (!identifier) return null;
+      if (source !== undefined && !isValidSource(source)) return null;
+      return {
+        identifier,
+        source,
+        id,
+      };
+    }
+
+    const storeMatch = url.pathname.match(/^\/store\/([^/]+)$/);
+    if (storeMatch) {
+      const identifier = storeMatch[1];
+      return {
+        identifier,
+        source: "store",
+      };
+    }
+
+    return null;
   } catch {
     return null;
   }
@@ -69,7 +82,7 @@ function injectRpc(): void {
         return await modalFlows.get(cacheIdentifier)!;
       }
 
-      const res = installFlow(identifier, source as InstallerSource, id, false);
+      const res = installFlow(identifier, source as InstallerSource, id, false, false);
 
       modalFlows.set(cacheIdentifier, res);
       const ret = await res;
@@ -115,8 +128,11 @@ async function injectLinks(): Promise<void> {
     if (!installLink) return undefined;
 
     args.onClick = (e) => {
+      // If control/cmd is pressed, do not trigger the install modal
+      if (e.ctrlKey || e.metaKey) return;
+
       e.preventDefault();
-      void installFlow(installLink.identifier, installLink.source, installLink.id);
+      void installFlow(installLink.identifier, installLink.source, installLink.id, true, true);
     };
 
     return [args] as [AnchorProps];
