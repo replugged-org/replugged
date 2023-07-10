@@ -5,21 +5,24 @@ import fetch from "node-fetch";
 import { join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels } from "../../types";
+import { readTransaction } from "./settings";
 
 const OUTPUT_PATH = join(CONFIG_PATHS["react-devtools"]);
 const ZIP_PATH = join(OUTPUT_PATH, "extension.zip");
 
-// https://github.com/facebook/react/issues/25843#issuecomment-1406766561
-const EXTENSION_URL =
-  "https://github.com/mondaychen/react/raw/017f120369d80a21c0e122106bd7ca1faa48b8ee/packages/react-devtools-extensions/ReactDevTools.zip";
-
 ipcMain.handle(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS, async () => {
+  const apiUrl =
+    ((await readTransaction("dev.replugged.Settings", (settings) => settings.get("apiUrl"))) as
+      | string
+      | undefined) ?? "https://replugged.dev";
+  const REACT_DEVTOOLS_URL = `${apiUrl}/api/v1/react-devtools`;
+
   let buffer;
 
   if (existsSync(ZIP_PATH)) {
     buffer = readFileSync(ZIP_PATH);
   } else {
-    const arrayBuffer = await fetch(EXTENSION_URL)
+    const arrayBuffer = await fetch(REACT_DEVTOOLS_URL)
       .then((res) => res.arrayBuffer())
       .catch(() => {
         throw new Error("Could not download React DevTools");
