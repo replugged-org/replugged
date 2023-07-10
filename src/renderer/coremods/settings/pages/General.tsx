@@ -132,33 +132,21 @@ export const General = (): React.ReactElement => {
         <SwitchItem
           value={rdtValue}
           onChange={(value) => {
-            void modal
-              .confirm({
-                title: Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS,
-                body: Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC.format(),
-                confirmText: Messages.REPLUGGED_RELOAD,
-                confirmColor: Button.Colors.RED,
+            void RepluggedNative.reactDevTools
+              .downloadExtension()
+              .then(() => {
+                rdtOnChange(value);
+                void modal
+                  .confirm({
+                    title: Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS,
+                    body: Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC.format(),
+                    confirmText: Messages.REPLUGGED_RELOAD,
+                    confirmColor: Button.Colors.RED,
+                  })
+                  .then(relaunch);
               })
-              .then((answer) => {
-                if (answer) {
-                  if (value) {
-                    void RepluggedNative.reactDevTools
-                      .downloadExtension()
-                      .then(() => {
-                        rdtOnChange(value);
-                        relaunch();
-                      })
-                      .catch(() => {
-                        void toast.toast(
-                          Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED,
-                          toast.Kind.FAILURE,
-                        );
-                      });
-                  } else {
-                    rdtOnChange(value);
-                    relaunch();
-                  }
-                }
+              .catch(() => {
+                toast.toast(Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED, toast.Kind.FAILURE);
               });
           }}
           note={Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC.format()}>

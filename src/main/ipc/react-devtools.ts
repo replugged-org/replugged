@@ -5,16 +5,13 @@ import fetch from "node-fetch";
 import { join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels } from "../../types";
-import { readTransaction } from "./settings";
+import { getSetting } from "./settings";
 
 const OUTPUT_PATH = join(CONFIG_PATHS["react-devtools"]);
 const ZIP_PATH = join(OUTPUT_PATH, "extension.zip");
 
 ipcMain.handle(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS, async () => {
-  const apiUrl =
-    ((await readTransaction("dev.replugged.Settings", (settings) => settings.get("apiUrl"))) as
-      | string
-      | undefined) ?? "https://replugged.dev";
+  const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", "https://replugged.dev");
   const REACT_DEVTOOLS_URL = `${apiUrl}/api/v1/react-devtools`;
 
   let buffer;

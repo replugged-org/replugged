@@ -1,9 +1,9 @@
 import { dirname, join } from "path";
 
 import electron from "electron";
-import type { RepluggedWebContents } from "../types";
 import { CONFIG_PATHS } from "src/util.mjs";
-import { readTransaction } from "./ipc/settings";
+import type { RepluggedWebContents } from "../types";
+import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
@@ -105,10 +105,7 @@ electron.protocol.registerSchemesAsPrivileged([
 ]);
 
 async function loadReactDevTools(): Promise<void> {
-  const rdtSetting =
-    ((await readTransaction("dev.replugged.Settings", (settings) =>
-      settings.get("reactDevTools"),
-    )) as boolean) ?? false;
+  const rdtSetting = await getSetting("dev.replugged.Settings", "reactDevTools", false);
 
   if (rdtSetting) {
     void electron.session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
