@@ -32,6 +32,20 @@ function relaunch(): void {
   setTimeout(() => window.DiscordNative.app.relaunch(), 250);
 }
 
+function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () => void): void {
+  const restart = doRelaunch ? relaunch : reload;
+  void modal
+    .confirm({
+      title: Messages.REPLUGGED_SETTINGS_RESTART_TITLE,
+      body: Messages.REPLUGGED_SETTINGS_RESTART,
+      confirmText: Messages.REPLUGGED_RESTART,
+      confirmColor: Button.Colors.RED,
+      onConfirm,
+      onCancel,
+    })
+    .then((answer) => answer && restart());
+}
+
 export const General = (): React.ReactElement => {
   const { value: expValue, onChange: expOnChange } = util.useSetting(
     generalSettings,
@@ -110,21 +124,7 @@ export const General = (): React.ReactElement => {
 
         <SwitchItem
           value={expValue}
-          onChange={(value) => {
-            void modal
-              .confirm({
-                title: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS,
-                body: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format(),
-                confirmText: Messages.REPLUGGED_RELOAD,
-                confirmColor: Button.Colors.RED,
-              })
-              .then((answer) => {
-                if (answer) {
-                  expOnChange(value);
-                  reload();
-                }
-              });
-          }}
+          onChange={(value) => restartModal(false, () => expOnChange(value))}
           note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}>
           {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
         </SwitchItem>
@@ -132,22 +132,23 @@ export const General = (): React.ReactElement => {
         <SwitchItem
           value={rdtValue}
           onChange={(value) => {
-            void RepluggedNative.reactDevTools
-              .downloadExtension()
-              .then(() => {
-                rdtOnChange(value);
-                void modal
-                  .confirm({
-                    title: Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS,
-                    body: Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC.format(),
-                    confirmText: Messages.REPLUGGED_RELOAD,
-                    confirmColor: Button.Colors.RED,
-                  })
-                  .then(relaunch);
-              })
-              .catch(() => {
-                toast.toast(Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED, toast.Kind.FAILURE);
-              });
+            if (value) {
+              void RepluggedNative.reactDevTools
+                .downloadExtension()
+                .then(() => {
+                  rdtOnChange(value);
+                  restartModal(true);
+                })
+                .catch(() => {
+                  toast.toast(
+                    Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED,
+                    toast.Kind.FAILURE,
+                  );
+                });
+            } else {
+              rdtOnChange(value);
+              restartModal(true);
+            }
           }}
           note={Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC.format()}>
           {Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS}
