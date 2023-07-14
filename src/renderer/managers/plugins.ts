@@ -79,7 +79,13 @@ export async function start(id: string): Promise<void> {
       plugin.exports = await import(
         `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
       );
-      await plugin.exports!.start?.();
+
+      await Promise.race([
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Plugin took too long to start")), 5_000),
+        ),
+        plugin.exports!.start?.(),
+      ]);
     }
 
     if (plugin.hasCSS) {

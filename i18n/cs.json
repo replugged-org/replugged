@@ -214,6 +214,16 @@
     "REPLUGGED_ADDON_BROWSE": "Procházet {type}",
     "REPLUGGED_ADDON_NOT_REVIEWED": "Nerecenzovaný {type}",
     "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Tento {type} nebyl zkontrolován týmem Replugged a mohl by poškodit váš počítač. Používáte jej na vlastní nebezpečí.",
-    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatické použití Quick CSS",
-    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automatické použití změn Quick CSS při psaní."
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatické použití Rychlé CSS",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automatické použití změn Rychlého CSS při psaní.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION": "Znovu připojit Vývojářského Pomocníka",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Znovu připojí coremod Vývojářský Pomocník k rozšíření pro VSCode.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Znovu Připojit",
+    "REPLUGGED_SETTINGS_ADVANCED": "Pokročilé Nastavení",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Načte rozšíření React DevTools, které vám dovolí prohlédnout strom React a jednoduššeji debugovat. **Vyžaduje restart**.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Nepodařilo se stáhnout React DevTools.",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "Zobrazit v Obchodě",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Zobrazit vložený obsash přídavných modulů",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Zobrazit kartu s informacemi pro přídavný modul když je v chatu sdílen instalační odkaz.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Povolit React DevTools"
 }
