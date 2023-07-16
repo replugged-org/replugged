@@ -1,7 +1,14 @@
 import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
-import { AnsiEscapes, getCommand } from "./util.mjs";
+import {
+  AnsiEscapes,
+  PlatformNames,
+  getCommand,
+  getProcessInfoByName,
+  killProcessByPID,
+  openProcess,
+} from "./util.mjs";
 import readline from "readline";
 import { exec } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
@@ -229,4 +236,54 @@ export const uninject = async (
   await rm(appDir, { recursive: true, force: true });
   await rename(join(appDir, "..", "app.orig.asar"), appDir);
   return true;
+};
+
+export const smartInject = async (
+  cmd: "uninject" | "inject",
+  replug: boolean,
+  platformModule: PlatformModule,
+  platform: DiscordPlatform,
+  production: boolean,
+  noRelaunch: boolean,
+): Promise<boolean> => {
+  let result;
+  if (noRelaunch) {
+    result =
+      cmd === "uninject"
+        ? await uninject(platformModule, platform)
+        : inject(platformModule, platform, production);
+  } else {
+    const processName = PlatformNames[platform].replace(" ", "");
+    const processInfo = getProcessInfoByName(processName)!;
+    await killProcessByPID(processInfo?.pid);
+    result =
+      cmd === "uninject"
+        ? await uninject(platformModule, platform)
+        : inject(platformModule, platform, production);
+    if ((replug && cmd === "inject") || !replug) {
+      const appDir = await platformModule.getAppDir(platform);
+      switch (process.platform) {
+        case "win32":
+          openProcess(
+            join(appDir, "..", "..", "..", "Update"),
+            ["--processStart", `${processName}.exe`],
+            { detached: true, stdio: "ignore" },
+          );
+          break;
+        case "linux":
+          openProcess(join(appDir, "..", "..", processName), [], {
+            detached: true,
+            stdio: "ignore",
+          });
+          break;
+        case "darwin":
+          openProcess(join(appDir, "..", "..", "MacOS", processName), [], {
+            detached: true,
+            stdio: "ignore",
+          });
+          break;
+      }
+    }
+  }
+  return result;
 };
