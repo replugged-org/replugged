@@ -3,15 +3,8 @@ import "./checks/elevate.mjs";
 import "./checks/env.mjs";
 
 import { join } from "path";
-import {
-  AnsiEscapes,
-  PlatformNames,
-  getCommand,
-  getProcessInfoByName,
-  killProcessByPID,
-  openProcess,
-} from "./util.mjs";
-import { inject, uninject } from "./injector.mjs";
+import { AnsiEscapes, getCommand } from "./util.mjs";
+import { smartInject } from "./injector.mjs";
 
 import * as darwin from "./platforms/darwin.mjs";
 import * as linux from "./platforms/linux.mjs";
@@ -102,20 +95,7 @@ const run = async (cmd = processArgs[2], replug = false): Promise<void> => {
 
   if (cmd === "inject") {
     try {
-      if (noRelaunch) {
-        result = await inject(platformModule, platform, prod);
-      } else {
-        const processName = PlatformNames[platform].replace(" ", "");
-        const processInfo = getProcessInfoByName(processName)!;
-        await killProcessByPID(processInfo?.pid);
-        result = await inject(platformModule, platform, prod);
-        const appDir = await platformModule.getAppDir(platform);
-        openProcess(
-          join(appDir, "..", "..", "..", "Update"),
-          process.platform === "win32" ? ["--processStart", `${processName}.exe`] : [],
-          { detached: true, stdio: "ignore" },
-        );
-      }
+      result = await smartInject(cmd, replug, platformModule, platform, prod, noRelaunch);
     } catch (e) {
       console.error(
         `${AnsiEscapes.RED}An error occurred while trying to inject into Discord!${AnsiEscapes.RESET}`,
@@ -142,22 +122,7 @@ To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}
     }
   } else if (cmd === "uninject") {
     try {
-      if (noRelaunch) {
-        result = await uninject(platformModule, platform);
-      } else {
-        const processName = PlatformNames[platform].replace(" ", "");
-        const processInfo = getProcessInfoByName(processName)!;
-        await killProcessByPID(processInfo?.pid);
-        result = await uninject(platformModule, platform);
-        if (!replug) {
-          const appDir = await platformModule.getAppDir(platform);
-          openProcess(
-            join(appDir, "..", "..", "..", "Update"),
-            process.platform === "win32" ? ["--processStart", "Discord.exe"] : [],
-            { detached: true, stdio: "ignore" },
-          );
-        }
-      }
+      result = await smartInject(cmd, replug, platformModule, platform, prod, noRelaunch);
     } catch (e) {
       console.error(
         `${AnsiEscapes.RED}An error occurred while trying to uninject from Discord!${AnsiEscapes.RESET}`,
