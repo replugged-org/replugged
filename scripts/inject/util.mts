@@ -77,6 +77,10 @@ export const killProcessByPID = (pid: number): Promise<void> => {
         resolve();
       }
     }, 1000);
+    setTimeout(() => {
+      clearInterval(checkInterval);
+      resolve();
+    }, 6000);
   });
 };
 
