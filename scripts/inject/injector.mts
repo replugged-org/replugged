@@ -256,11 +256,11 @@ export const smartInject = async (
   } else {
     const processName = PlatformNames[platform].replace(" ", "");
     try {
-      if ((replug && cmd === "uninject") || !replug){
+      if ((replug && cmd === "uninject") || !replug) {
         const processInfo = getProcessInfoByName(processName)!;
         await killProcessByPID(processInfo?.pid);
-      }    
-    } catch {}    
+      }
+    } catch {}
     result =
       cmd === "uninject"
         ? await uninject(platformModule, platform)
