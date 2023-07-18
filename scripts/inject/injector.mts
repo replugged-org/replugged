@@ -3,6 +3,7 @@ import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
 import {
   AnsiEscapes,
+  GetUserData,
   PlatformNames,
   getCommand,
   getProcessInfoByName,
@@ -254,8 +255,12 @@ export const smartInject = async (
         : inject(platformModule, platform, production);
   } else {
     const processName = PlatformNames[platform].replace(" ", "");
-    const processInfo = getProcessInfoByName(processName)!;
-    await killProcessByPID(processInfo?.pid);
+    try {
+      if ((replug && cmd === "uninject") || !replug){
+        const processInfo = getProcessInfoByName(processName)!;
+        await killProcessByPID(processInfo?.pid);
+      }    
+    } catch {}    
     result =
       cmd === "uninject"
         ? await uninject(platformModule, platform)
@@ -272,6 +277,7 @@ export const smartInject = async (
           break;
         case "linux":
           openProcess(join(appDir, "..", "..", processName), [], {
+            ...GetUserData(),
             detached: true,
             stdio: "ignore",
           });

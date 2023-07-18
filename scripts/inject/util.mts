@@ -1,5 +1,5 @@
 import { SpawnOptions, execSync, spawn } from "child_process";
-import { DiscordPlatform, ProcessInfo } from "./types.mjs";
+import { DiscordPlatform, ProcessInfo, UserData } from "./types.mjs";
 
 export const AnsiEscapes = {
   RESET: "\x1b[0m",
@@ -47,6 +47,7 @@ export const getProcessInfoByName = (processName: string): ProcessInfo | null =>
     return { pid: Number(pid), cmd: name.substring(1).split(/\s+/) };
   }
   const command = `ps -eo pid,command | grep -E "(^|/)${processName}(\\s|$)" | grep -v grep`;
+
   const output = execSync(command).toString().trim();
 
   if (output.length === 0) {
@@ -86,4 +87,12 @@ export const killProcessByPID = (pid: number): Promise<void> => {
 
 export const openProcess = (command: string, args: string[], options: SpawnOptions): void => {
   spawn(command, args, options).unref();
+};
+
+export const GetUserData = (): UserData => {
+  const name = execSync("logname", { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
+  const env = Object.assign({}, process.env, { HOME: `/home/${name}` });
+  const uid = execSync(`id -u ${name}`, { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
+  const gid = execSync(`id -g ${name}`, { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
+  return { env, uid: Number(uid), gid: Number(gid) };
 };

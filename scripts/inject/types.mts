@@ -10,3 +10,9 @@ export interface ProcessInfo {
   pid: number;
   cmd: string[];
 }
+
+export interface UserData {
+  env: NodeJS.ProcessEnv;
+  uid: number;
+  gid: number;
+}
