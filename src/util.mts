@@ -1,6 +1,7 @@
 import { execSync } from "child_process";
 import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
 import { join } from "path";
+import { AnsiEscapes } from "../scripts/inject/util.mjs";
 
 const REPLUGGED_FOLDER_NAME = "replugged";
 export const configPathFn = (): string => {
@@ -68,4 +69,14 @@ if (process.platform === "linux") {
 const QUICK_CSS_FILE = join(CONFIG_PATHS.quickcss, "main.css");
 if (!existsSync(QUICK_CSS_FILE)) {
   writeFileSync(QUICK_CSS_FILE, "");
+}
+
+const QUICK_CSS_PERMS = statSync(QUICK_CSS_FILE);
+if (QUICK_CSS_PERMS.gid === 0 && QUICK_CSS_PERMS.uid === 0) {
+  console.warn(
+    `${AnsiEscapes.YELLOW}Detected quickcss/main.css owned by root, attempting to fix...${AnsiEscapes.RESET}`,
+  );
+
+  const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
+  chownSync(QUICK_CSS_FILE, REAL_UID, REAL_GID);
 }
