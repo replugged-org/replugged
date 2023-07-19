@@ -1,9 +1,9 @@
-import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
+import { chown, copyFile, stat } from "fs/promises";
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
-import { AnsiEscapes, getCommand } from "./util.mjs";
+import { AnsiEscapes, PRIV_CMD_EXEC, getCommand } from "./util.mjs";
 import readline from "readline";
-import { exec } from "child_process";
+import { execSync } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
 import { CONFIG_PATH } from "../../src/util.mjs";
 
@@ -35,7 +35,13 @@ export const correctMissingMainAsar = async (appDir: string): Promise<boolean> =
         `${AnsiEscapes.YELLOW}Your Discord installation was not properly unplugged, attempting to fix...${AnsiEscapes.RESET}`,
       );
       try {
-        await rename(join(appDir, "..", "app.orig.asar"), join(appDir, "..", "app.asar"));
+        execSync(
+          `${PRIV_CMD_EXEC} mv ${join(appDir, "..", "app.orig.asar")} ${join(
+            appDir,
+            "..",
+            "app.asar",
+          )}`,
+        );
         console.log(
           `${AnsiEscapes.GREEN}Fixed your Discord installation successfully! Continuing with Replugged installation...${AnsiEscapes.RESET}`,
           "\n",
@@ -111,7 +117,7 @@ export const inject = async (
   if (appDir.includes("flatpak")) {
     const discordName = platform === "canary" ? "DiscordCanary" : "Discord";
     const overrideCommand = `${
-      appDir.startsWith("/var") ? "sudo flatpak override" : "flatpak override --user"
+      appDir.startsWith("/var") ? `${PRIV_CMD_EXEC} flatpak override` : "flatpak override --user"
     } com.discordapp.${discordName} --filesystem=${join(dirname, "..")}`;
     const updateScript = `
     #!/bin/bash
@@ -153,7 +159,7 @@ export const inject = async (
 
     if (doCmd === "y" || doCmd === "yes") {
       console.log("Running...");
-      exec(overrideCommand);
+      execSync(overrideCommand);
     } else {
       console.log("OK. The command will not be executed.", "\n");
     }
@@ -166,7 +172,7 @@ export const inject = async (
   }
 
   try {
-    await rename(appDir, join(appDir, "..", "app.orig.asar"));
+    execSync(`${PRIV_CMD_EXEC} mv ${appDir} ${join(appDir, "..", "app.orig.asar")}`);
   } catch {
     console.error(
       `${AnsiEscapes.RED}Failed to rename app.asar while plugging. If Discord is open, make sure it is closed.${AnsiEscapes.RESET}`,
@@ -180,6 +186,7 @@ export const inject = async (
 
   if (prod) {
     await copyFile(join(dirname, "..", "..", "replugged.asar"), entryPoint);
+    // ? Is this still necessary even with though the script is no longer elevated?
     if (["linux", "darwin"].includes(process.platform)) {
       try {
         // Adjust ownership of config folder and asar file to match the parent config folder
@@ -190,20 +197,19 @@ export const inject = async (
     }
   }
 
-  await mkdir(appDir);
-  await Promise.all([
-    writeFile(
-      join(appDir, "index.js"),
-      `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}")`,
-    ),
-    writeFile(
-      join(appDir, "package.json"),
-      JSON.stringify({
-        main: "index.js",
-        name: "discord",
-      }),
-    ),
-  ]);
+  execSync(`${PRIV_CMD_EXEC} mkdir ${appDir}`);
+  execSync(
+    `echo "${`require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}"`.replaceAll(
+      '"',
+      '\\"',
+    )})" | ${PRIV_CMD_EXEC} tee ${join(appDir, "index.js")}`,
+  );
+  execSync(
+    `echo "${JSON.stringify({
+      main: "index.js",
+      name: "discord",
+    }).replaceAll('"', '\\"')}" | ${PRIV_CMD_EXEC} tee ${join(appDir, "package.json")}`,
+  );
 
   return true;
 };
@@ -226,7 +232,7 @@ export const uninject = async (
     return false;
   }
 
-  await rm(appDir, { recursive: true, force: true });
-  await rename(join(appDir, "..", "app.orig.asar"), appDir);
+  execSync(`${PRIV_CMD_EXEC} rm -rf ${appDir}`);
+  execSync(`${PRIV_CMD_EXEC} mv ${join(appDir, "..", "app.orig.asar")} ${appDir}`);
   return true;
 };

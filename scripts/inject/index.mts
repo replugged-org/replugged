@@ -1,5 +1,4 @@
 // Pre-inject checks
-import "./checks/elevate.mjs";
 import "./checks/env.mjs";
 
 import { join } from "path";

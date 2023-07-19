@@ -1,4 +1,5 @@
 import { DiscordPlatform } from "./types.mjs";
+import { execSync } from "child_process";
 
 export const AnsiEscapes = {
   RESET: "\x1b[0m",
@@ -29,3 +30,23 @@ export const getCommand = ({
   cmd += ` ${platform || `[${Object.keys(PlatformNames).join("|")}]`}`;
   return cmd;
 };
+
+function isCommandInstalled(command: string): boolean {
+  try {
+    execSync(`command -v ${command}`);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+const ELEVATION_TOOLS = ["doas", "sudo", "su -c"];
+const DETECTED_TOOLS = ELEVATION_TOOLS.filter((x) => isCommandInstalled(x));
+
+if (DETECTED_TOOLS.length === 0) {
+  console.error(
+    `${AnsiEscapes.RED}Failed to detect any tool for elevation. Assuming no tools are is required.${AnsiEscapes.RESET}`,
+  );
+}
+
+export const PRIV_CMD_EXEC = DETECTED_TOOLS[0];
