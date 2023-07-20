@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
-import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, statSync, writeFileSync } from "fs";
 import { join } from "path";
-import { AnsiEscapes } from "../scripts/inject/util.mjs";
+import { AnsiEscapes, PRIV_CMD_EXEC } from "../scripts/inject/util.mjs";
 
 const REPLUGGED_FOLDER_NAME = "replugged";
 export const configPathFn = (): string => {
@@ -62,8 +62,11 @@ export const CONFIG_PATHS = Object.fromEntries(
 
 if (process.platform === "linux") {
   const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
-  chownSync(CONFIG_PATH, REAL_UID, REAL_GID);
-  CONFIG_FOLDER_NAMES.forEach((folder) => chownSync(join(CONFIG_PATH, folder), REAL_UID, REAL_GID));
+  execSync(`${PRIV_CMD_EXEC} chown ${REAL_UID}:${REAL_GID} ${CONFIG_PATH}`);
+
+  CONFIG_FOLDER_NAMES.forEach((folder) =>
+    execSync(`${PRIV_CMD_EXEC} chown ${REAL_UID}:${REAL_GID} ${join(CONFIG_PATH, folder)}`),
+  );
 }
 
 const QUICK_CSS_FILE = join(CONFIG_PATHS.quickcss, "main.css");
@@ -78,5 +81,5 @@ if (QUICK_CSS_PERMS.gid === 0 && QUICK_CSS_PERMS.uid === 0) {
   );
 
   const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
-  chownSync(QUICK_CSS_FILE, REAL_UID, REAL_GID);
+  execSync(`${PRIV_CMD_EXEC} chown ${REAL_UID}:${REAL_GID} ${QUICK_CSS_FILE}`);
 }
