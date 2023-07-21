@@ -34,7 +34,6 @@ function makeItem(raw: RawContextItem | ContextItem | undefined | void): Context
     return raw as ContextItem | undefined;
   }
   if (React.isValidElement(raw)) {
-    logger.log("huh");
     // We can't construct something that's already made
     return raw as ContextItem | undefined;
   }
