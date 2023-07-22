@@ -13,6 +13,7 @@ export type GeneralSettings = {
   showWelcomeNoticeOnOpen?: boolean;
   addonEmbeds?: boolean;
   reactDevTools?: boolean;
+  transparentWindow?: boolean;
 };
 
 export const defaultSettings = {
@@ -23,4 +24,5 @@ export const defaultSettings = {
   showWelcomeNoticeOnOpen: true,
   reactDevTools: false,
   addonEmbeds: true,
+  transparentWindow: false,
 } satisfies Partial<GeneralSettings>;

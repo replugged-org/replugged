@@ -1,10 +1,10 @@
 import { dirname, join } from "path";
-
 import electron from "electron";
-import { CONFIG_PATHS } from "src/util.mjs";
+import { CONFIG_PATHS, readSettingsSync } from "src/util.mjs";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
+const settings = readSettingsSync("dev.replugged.Settings");
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 // require.main!.filename = discordMain;
@@ -22,6 +22,37 @@ Object.defineProperty(global, "appSettings", {
   configurable: true,
 });
 
+enum DiscordWindowType {
+  POP_OUT,
+  SPLASH_SCREEN,
+  OVERLAY,
+  DISCORD_CLIENT,
+}
+
+function windowTypeFromOpts(
+  opts: electron.BrowserWindowConstructorOptions & {
+    webContents: electron.WebContents;
+    webPreferences: {
+      nativeWindowOpen: boolean;
+    };
+  },
+): DiscordWindowType {
+  if (opts.webContents) {
+    return DiscordWindowType.POP_OUT;
+  } else if (opts.webPreferences?.nodeIntegration) {
+    return DiscordWindowType.SPLASH_SCREEN;
+  } else if (opts.webPreferences?.offscreen) {
+    return DiscordWindowType.OVERLAY;
+  } else if (opts.webPreferences?.preload) {
+    if (opts.webPreferences.nativeWindowOpen) {
+      return DiscordWindowType.DISCORD_CLIENT;
+    } else {
+      return DiscordWindowType.SPLASH_SCREEN;
+    }
+  }
+  return opts.webContents;
+}
+
 // This class has to be named "BrowserWindow" exactly
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
@@ -36,28 +67,45 @@ class BrowserWindow extends electron.BrowserWindow {
   ) {
     const originalPreload = opts.webPreferences?.preload;
 
-    if (opts.webContents) {
-      // General purpose pop-outs used by Discord
-    } else if (opts.webPreferences?.nodeIntegration) {
-      // Splash Screen
-      // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-    } else if (opts.webPreferences?.offscreen) {
-      // Overlay
-      //      originalPreload = opts.webPreferences.preload;
-      // opts.webPreferences.preload = join(__dirname, './preload.js');
-    } else if (opts.webPreferences?.preload) {
-      // originalPreload = opts.webPreferences.preload;
-      if (opts.webPreferences.nativeWindowOpen) {
-        // Discord Client
+    const currentWindow = windowTypeFromOpts(opts);
+
+    switch (currentWindow) {
+      case DiscordWindowType.DISCORD_CLIENT: {
         opts.webPreferences.preload = join(__dirname, "./preload.js");
-        // opts.webPreferences.contextIsolation = false; // shrug
-      } else {
-        // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
+
+        if (settings.get("transparentWindow")) {
+          opts.transparent = true;
+          opts.frame = process.platform === "win32" ? false : opts.frame;
+          // TODO: Figure out what background color each OS needs.
+          opts.backgroundColor = "#00000000";
+        }
+        break;
+      }
+      case DiscordWindowType.SPLASH_SCREEN: {
+        // opts.webPreferences.preload = join(__dirname, "./preloadSplash.js");
+        break;
+      }
+      case DiscordWindowType.OVERLAY: {
+        // opts.webPreferences.preload = join(__dirname, "./preload.js");
+        break;
       }
     }
 
     super(opts);
+
+    if (
+      currentWindow === DiscordWindowType.DISCORD_CLIENT &&
+      settings.get("transparentWindow") &&
+      process.platform === "darwin"
+    ) {
+      this.on("ready-to-show", () => {
+        // TODO: As far as I know, this is only needed on some macOS versions.
+        // This automatically maximizes the window on all displays the window is dragged to
+        this.maximize();
+        this.setResizable(false);
+      });
+    }
+
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
   }
 }
