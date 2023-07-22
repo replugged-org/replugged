@@ -160,7 +160,12 @@ export interface FluxMod {
 
 const FluxMod = await waitForProps<FluxMod>("Store", "connectStores");
 
-export declare class SnapshotStore<Snapshot = Record<string, unknown>> extends Store {
+interface Snapshot<Data> {
+  data: Data;
+  version: number;
+}
+
+export declare class SnapshotStore<Data = Record<string, unknown>> extends Store {
   public static allStores: SnapshotStore[];
 
   public static clearAll: () => void;
@@ -168,8 +173,8 @@ export declare class SnapshotStore<Snapshot = Record<string, unknown>> extends S
   public get persistKey(): string;
 
   public clear: () => void;
-  public getClass: () => typeof SnapshotStore;
-  public readSnapshot: (version: number) => Snapshot | null;
+  public getClass: () => any;
+  public readSnapshot: (version: number) => Snapshot<Data>["data"] | null;
   public registerActionHandlers: (actions: ActionHandlerRecord) => void;
   public save: () => void;
 }
