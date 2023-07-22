@@ -52,7 +52,7 @@ class BrowserWindow extends electron.BrowserWindow {
         // opts.webPreferences.contextIsolation = false; // shrug
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
+        opts.webPreferences.preload = join(__dirname, "./preloadSplash.js");
       }
     }
 
@@ -152,6 +152,9 @@ electron.app.once("ready", () => {
     switch (reqUrl.hostname) {
       case "renderer":
         filePath = join(__dirname, "./renderer.js");
+        break;
+      case "splashrenderer":
+        filePath = join(__dirname, "./splashrenderer.js");
         break;
       case "renderer.css":
         filePath = join(__dirname, "./renderer.css");
