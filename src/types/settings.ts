@@ -12,6 +12,7 @@ export type GeneralSettings = {
   badges: boolean;
   autoApplyQuickCss: boolean;
   showWelcomeNoticeOnOpen: boolean;
+  transparentWindow: boolean;
 };
 
 export const defaultSettings: Partial<GeneralSettings> = {
@@ -21,4 +22,5 @@ export const defaultSettings: Partial<GeneralSettings> = {
   badges: true,
   autoApplyQuickCss: false,
   showWelcomeNoticeOnOpen: true,
+  transparentWindow: false,
 };

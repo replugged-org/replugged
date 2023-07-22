@@ -1,8 +1,23 @@
+import { readFileSync } from "fs";
 import { dirname, join } from "path";
-
 import electron from "electron";
 import type { RepluggedWebContents } from "../types";
 import { CONFIG_PATHS } from "src/util.mjs";
+
+// TODO: This shouldn't be here, it should be in it's own module
+// like src/main/ipc/settings.ts, except that's specifically for
+// ipc transactions(which are async); So not there. Perhaps
+// it should be in util?
+const SETTINGS_DIR = CONFIG_PATHS.settings;
+function readSettingsSync(namespace: string): Map<string, unknown> {
+  try {
+    const data = readFileSync(join(SETTINGS_DIR, `${namespace}.json`), "utf8");
+    return new Map(Object.entries(JSON.parse(data)));
+  } catch {
+    return new Map();
+  }
+}
+const settings = readSettingsSync("dev.replugged.Settings");
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
@@ -50,6 +65,12 @@ class BrowserWindow extends electron.BrowserWindow {
         // Discord Client
         opts.webPreferences.preload = join(__dirname, "./preload.js");
         // opts.webPreferences.contextIsolation = false; // shrug
+
+        if (settings.get("transparentWindow")) {
+          opts.transparent = true;
+          opts.frame = process.platform === "win32" ? false : opts.frame;
+          delete opts.backgroundColor;
+        }
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
         // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
