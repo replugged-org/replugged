@@ -65,7 +65,8 @@
     "Vendicated",
     "Webauthn",
     "weblate",
-    "XLARGE"
+    "XLARGE",
+    "splashrenderer"
   ],
   "ignoreWords": [],
   "import": [],
