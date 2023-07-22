@@ -2,14 +2,16 @@
 import "./checks/env.mjs";
 
 import { join } from "path";
-import { AnsiEscapes, getCommand } from "./util.mjs";
+import { existsSync } from "fs";
+import { getCommand } from "./util.mjs";
 import { inject, uninject } from "./injector.mjs";
+import { DiscordPlatform } from "./types.mjs";
 
 import * as darwin from "./platforms/darwin.mjs";
 import * as linux from "./platforms/linux.mjs";
 import * as win32 from "./platforms/win32.mjs";
-import { DiscordPlatform } from "./types.mjs";
-import { existsSync } from "fs";
+
+import { AnsiEscapes } from "../../src/util.mjs";
 
 const platformModules = {
   darwin,

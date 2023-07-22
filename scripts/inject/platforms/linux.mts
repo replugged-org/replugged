@@ -4,7 +4,8 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
 import readline from "readline";
 import { DiscordPlatform } from "../types.mjs";
-import { AnsiEscapes, PlatformNames } from "../util.mjs";
+import { PlatformNames } from "../util.mjs";
+import { AnsiEscapes } from "../../../src/util.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 

@@ -2,7 +2,7 @@ import path, { join } from "path";
 import { fileURLToPath } from "url";
 import { existsSync, readFileSync } from "fs";
 import { execSync } from "child_process";
-import { AnsiEscapes } from "../util.mjs";
+import { AnsiEscapes } from "../../../src/util.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 

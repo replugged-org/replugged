@@ -1,11 +1,11 @@
 import { chown, copyFile, stat } from "fs/promises";
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
-import { AnsiEscapes, PRIV_CMD_EXEC, getCommand } from "./util.mjs";
 import readline from "readline";
 import { execSync } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
-import { CONFIG_PATH } from "../../src/util.mjs";
+import { getCommand } from "./util.mjs";
+import { AnsiEscapes, CONFIG_PATH, PRIV_CMD_EXEC } from "../../src/util.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 

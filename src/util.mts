@@ -1,7 +1,35 @@
 import { execSync } from "child_process";
 import { existsSync, mkdirSync, statSync, writeFileSync } from "fs";
 import { join } from "path";
-import { AnsiEscapes, PRIV_CMD_EXEC } from "../scripts/inject/util.mjs";
+
+export const AnsiEscapes = {
+  RESET: "\x1b[0m",
+  BOLD: "\x1b[1m",
+  GREEN: "\x1b[32m",
+  YELLOW: "\x1b[33m",
+  RED: "\x1b[31m",
+};
+
+function isCommandInstalled(command: string): boolean {
+  try {
+    execSync(`command -v ${command}`);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+const ELEVATION_TOOLS = ["doas", "sudo", "su -c"];
+const DETECTED_TOOLS = ELEVATION_TOOLS.filter((x) => isCommandInstalled(x));
+
+if (DETECTED_TOOLS.length === 0) {
+  console.error(
+    `${AnsiEscapes.RED}Failed to detect any tool for elevation. Assuming no tools are is required.${AnsiEscapes.RESET}`,
+  );
+  DETECTED_TOOLS[0] = "";
+}
+
+export const PRIV_CMD_EXEC = DETECTED_TOOLS[0];
 
 const REPLUGGED_FOLDER_NAME = "replugged";
 export const configPathFn = (): string => {
