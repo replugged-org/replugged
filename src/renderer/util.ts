@@ -191,7 +191,7 @@ export function useSetting<
   F extends T[K] | undefined,
 >(
   settings: SettingsManager<T, D>,
-  key: `${K}.${string}` extends K ? `${K}.${string}` : K,
+  key: `${K}.${string}` | K,
   fallback?: F,
 ): {
   value: K extends D
@@ -203,7 +203,7 @@ export function useSetting<
 } {
   const [initialKey, ...pathArray] = Object.keys(settings.all()).includes(key)
     ? ([key] as [K])
-    : (key.split(".") as `${K}.${string}` extends K ? [K, ...string[]] : [K]);
+    : (key.split(".") as [K, ...string[]]);
   const path = pathArray.join(".");
   const initial = settings.get(
     initialKey,
