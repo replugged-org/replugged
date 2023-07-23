@@ -10,7 +10,7 @@ export default [
           `if (!${menu}.plugged){` +
           `const patchedMenu=replugged.coremods.coremods.contextMenu._buildPatchedMenu(${menu});` +
           `if (patchedMenu!==null){return patchedMenu}` +
-          `};${vars}`,
+          `}${vars}`,
       },
     ],
   },
