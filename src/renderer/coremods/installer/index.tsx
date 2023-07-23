@@ -130,7 +130,7 @@ async function injectLinks(): Promise<void> {
     if (!installLink) return fn(...args);
 
     if (generalSettings.get("addonEmbeds") && title === href) {
-      return <AddonEmbed addon={installLink} fallback={fn(...args)} />;
+      return <AddonEmbed key={installLink.identifier} addon={installLink} fallback={fn(...args)} />;
     }
 
     args[0].onClick = (e) => {
