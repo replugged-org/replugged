@@ -64,7 +64,7 @@
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Wyświetlaj okienko aktualizatora",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Wyświetla okienko z informacją, że sprawdzane są aktualizacje. Jeśli będą one dostępne, wyświetli się zapytanie o ich aktualizację. Działa tylko gdy automatyczne sprawdzanie aktualizacji jest wyłączone.",
     "REPLUGGED_PLUGIN_EMBED_COPY": "Kopiuj link",
-    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "To jest funkcja Replugged. Umożliwia ona instalowanie wtyczek lub motywów bezpośrednio z czatu.\nPo prostu wciśnij przycisk \"Zainstaluj\" w wiadomości.",
+    "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "To jest funkcja Replugged. Pozwala ci ona na instalowanie wtyczek lub motywów bezpośrednio z czatu.\nPo prostu wciśnij przycisk \"Zainstaluj\" w osadzonej karcie.",
     "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "Wyświetl repozytorium",
     "REPLUGGED_PLUGIN_EMBED_COPIED": "Skopiowano!",
     "REPLUGGED_PLUGIN_EMBED_WHATISTHIS": "Co to jest?",
@@ -199,7 +199,7 @@
     "REPLUGGED_ADDON_AUTHORS_MANY": "autorstwa {author1}, {author2}, {author3} oraz {count, plural, =1 {# innej osoby} other {# innych osób}}",
     "REPLUGGED_UPDATES_UPDATE_ALL": "Zaktualizuj wszystko",
     "REPLUGGED_UPDATES_TOAST_NO_NEW": "Brak nowych aktualizacji.",
-    "REPLUGGED_UPDATES_TOAST_FAILED_ONE": "Aktualizacja nie powiodła się!",
+    "REPLUGGED_UPDATES_TOAST_FAILED_ONE": "Aktualizacja się nie powiodła!",
     "REPLUGGED_UPDATES_TOAST_FAILED_ALL": "Niektóre aktualizacje się nie powiodły!",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Wszystkie aktualizacje zakończyły się pomyślnie.",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "Aktualizacja zakończona pomyślnie.",
@@ -221,5 +221,11 @@
     "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Połącz ponownie",
     "REPLUGGED_SETTINGS_ADVANCED": "Ustawienia zaawansowane",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Włącz React DevTools",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Ładuje rozszerzenie React DevTools, co umożliwia sprawdzanie drzewa React oraz ułatwia debugowanie. **Wymaga ponownego uruchomienia**."
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Ładuje rozszerzenie React DevTools, co umożliwia sprawdzanie drzewa React oraz ułatwia debugowanie. **Wymaga ponownego uruchomienia**.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Nie udało się pobrać React DevTools.",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "Zobacz w Sklepie",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Włącz osadzone karty dodatków",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Pokaż kartę z informacjami o dodatku, gdy link do sklepu lub instalacji jest udostępniany na czacie.",
+    "REPLUGGED_RESTART": "Uruchom ponownie",
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "Ponowne uruchomienie wymagane"
 }
