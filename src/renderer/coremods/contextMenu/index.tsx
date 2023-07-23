@@ -1,6 +1,3 @@
-import { Injector } from "src/renderer/modules/injector";
-import { Logger } from "src/renderer/modules/logger";
-import { filters, waitForModule } from "src/renderer/modules/webpack";
 import { React } from "@common";
 import type { ContextMenuProps } from "@components/ContextMenu";
 import type {
@@ -9,9 +6,9 @@ import type {
   GetContextItem,
   RawContextItem,
 } from "../../../types/coremods/contextMenu";
-import { AnyFunction } from "src/types";
+import { Logger } from "../../modules/logger";
+import { getByProps } from "../../modules/webpack";
 
-let injector: Injector;
 const logger = Logger.api("ContextMenu");
 
 export const menuItems = {} as Record<
@@ -92,68 +89,70 @@ type ContextMenuData = ContextMenuProps["ContextMenu"] & {
  * @hidden
  */
 
-async function injectMenu(): Promise<void> {
-  const RepluggedComponents = await waitForModule(filters.byProps("Menu", "MenuGroup", "MenuItem"));
-  injector.instead(
-    RepluggedComponents as Record<string, AnyFunction>,
-    "Menu",
-    ([menu]: [ContextMenuData], res) => {
-      const ContextMenu = res as React.FunctionComponent<ContextMenuData>;
-      const { navId } = menu;
-      const { MenuGroup } = RepluggedComponents as Record<string, React.ComponentType>;
+export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | null {
+  const { navId } = menu;
+  const { MenuGroup, Menu: ContextMenu } = getByProps<
+    Record<string, React.ComponentType> & { Menu: React.FunctionComponent<ContextMenuData> }
+  >(["Menu", "MenuItem", "MenuGroup"])!;
+  //return nothing as we werent able to get ContextMenu component, gets handled in plain text patch
+  if (!ContextMenu) return null;
 
-      // No items to insert
-      // Or MenuGroup Component is not available
-      if (!menuItems[navId] || !MenuGroup) {
-        return <ContextMenu {...menu} />;
+  // No items to insert
+  // Or MenuGroup Component is not available
+  if (!menuItems[navId] || !MenuGroup) return <ContextMenu {...menu} plugged={true} />;
+
+  // The data as passed as Arguments from the calling function, so we just grab what we want from it
+  const data = menu.data[0];
+
+  //Add group only if it doesnt exist
+  if (!menu.children.some((child) => child.props.id === "replugged")) {
+    const repluggedGroup = <MenuGroup />;
+    repluggedGroup.props.id = "replugged";
+    repluggedGroup.props.children = [];
+
+    // Add in the new menu items right above the DevMode Copy ID
+    // If the user doesn't have DevMode enabled, the new items will be at the bottom
+    menu.children.splice(-1, 0, repluggedGroup);
+  }
+
+  //get sections from where to clean items
+  const usedSectionIds = menuItems[navId]
+    .map((item) => item.sectionId)
+    .filter((item, index, array) => array.indexOf(item) === index);
+
+  //cleaning old items before adding new ones
+  usedSectionIds.forEach((sectionId) => {
+    try {
+      if (menu.children.at(sectionId)?.props?.children) {
+        menu.children.at(sectionId)!.props.children = menu.children
+          .at(sectionId)
+          ?.props.children.filter((child: React.ReactElement) => child.props.plugged);
+      }
+    } catch (err) {
+      logger.error("Error while removing old menu items", err, menu.children.at(sectionId));
+    }
+  });
+
+  //adding new items
+  menuItems[navId].forEach((item) => {
+    try {
+      const itemRet = makeItem(item.getItem(data, menu)) as ContextItem & {
+        props: { replug?: boolean };
+      };
+
+      // removed the code to add unique id everytime because it made experience bad while hovering over item and it getting updated
+      // should be fine because we actively keep removing old items ig
+
+      if (itemRet?.props) {
+        // add in prop  for cleanup
+        itemRet.props.replug = true;
       }
 
-      // The data as passed as Arguments from the calling function, so we just grab what we want from it
-      const data = menu.data[0];
+      menu.children.at(item.sectionId)?.props.children?.splice(item.indexInSection, 0, itemRet);
+    } catch (err) {
+      logger.error("Error while running GetContextItem function", err, item.getItem);
+    }
+  });
 
-      const repluggedGroup = <MenuGroup />;
-      repluggedGroup.props.id = "replugged";
-      repluggedGroup.props.children = [];
-
-      // Add in the new menu items right above the DevMode Copy ID
-      // If the user doesn't have DevMode enabled, the new items will be at the bottom
-      menu.children.splice(-1, 0, repluggedGroup);
-      menuItems[navId].forEach((item) => {
-        try {
-          const itemRet = makeItem(item.getItem(data, menu)) as ContextItem & {
-            props: { id?: string };
-          };
-
-          if (itemRet?.props) {
-            // add in unique ids
-            itemRet.props.id = `${itemRet.props.id || "repluggedItem"}-${Math.random()
-              .toString(36)
-              .substring(2)}`;
-          }
-
-          if (!menu.children.at(item.sectionId)?.props?.plugged) {
-            // menu props can stay same while having different children
-            // so we check children props if its plugged or not
-            menu.children
-              .at(item.sectionId)
-              ?.props.children?.splice(item.indexInSection, 0, itemRet);
-            if (menu.children.at(item.sectionId)?.props)
-              menu.children.at(item.sectionId)!.props.plugged = true;
-          }
-        } catch (err) {
-          logger.error("Error while running GetContextItem function", err, item.getItem);
-        }
-      });
-
-      return <ContextMenu {...menu} />;
-    },
-  );
-}
-export function start(): void {
-  injector = new Injector();
-  void injectMenu();
-}
-
-export function stop(): void {
-  injector.uninjectAll();
+  return <ContextMenu {...menu} plugged={true} />;
 }
