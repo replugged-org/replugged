@@ -239,18 +239,18 @@ const AddonEmbed = React.memo(
     if (addon.source !== "store") return fallback;
     if (["plugins", "themes"].includes(addon.identifier.toLowerCase())) return fallback;
 
-    const [data, setData] = React.useState<CheckResultSuccess | null>(null);
+    const [data, setData] = React.useState<CheckResultSuccess | undefined | null>(undefined);
     React.useEffect(() => {
       (async () => {
         const info = await getInfo(addon.identifier, addon.source, addon.id);
-        if (!info) return;
         setData(info);
       })();
     }, []);
     const [onCooldown, setOnCooldown] = React.useState(false);
     const [cooldownTimeout, setCooldownTimeout] = React.useState<NodeJS.Timeout | null>(null);
     const [isInstalling, setIsInstalling] = React.useState(false);
-    if (!data) return <Embed loading />;
+    if (data === undefined) return <Embed loading />;
+    if (data === null) return fallback;
 
     const { manifest } = data;
     if (manifest.type === "replugged") return fallback;
