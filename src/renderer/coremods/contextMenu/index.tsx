@@ -100,7 +100,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   const data = menu.data[0];
 
   //Add group only if it doesn't exist
-  if (!menu.children.some((child) => child.props.id === "replugged")) {
+  if (!menu.children.some((child) => child?.props?.id === "replugged")) {
     const repluggedGroup = <MenuGroup />;
     repluggedGroup.props.id = "replugged";
     repluggedGroup.props.children = [];
