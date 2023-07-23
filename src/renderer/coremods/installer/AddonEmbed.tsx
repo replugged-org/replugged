@@ -14,6 +14,9 @@ import "./addonEmbed.css";
 const logger = Logger.coremod("AddonEmbed");
 
 type ClassMod = Record<
+  | "barLoader"
+  | "barTitle"
+  | "buttonLoader"
   | "wrapper"
   | "content"
   | "title"
@@ -99,6 +102,132 @@ const Icon = React.memo(({ className }: { className?: string }): React.ReactElem
   );
 });
 
+const Embed = React.memo(
+  (
+    props:
+      | { loading: true }
+      | {
+          loading?: false;
+          authors: string;
+          url: string;
+          onCooldown: boolean;
+          copyUrl: () => void;
+          name: string;
+          description: string;
+          isInstalled: boolean;
+          isInstalling: boolean;
+          installClick: () => void;
+        },
+  ): React.ReactElement | null => {
+    const classMod = getByProps<ClassMod>("titleRegion");
+    if (!classMod) {
+      logger.error("Failed to find classMod");
+      return null;
+    }
+
+    const {
+      barLoader,
+      barTitle,
+      buttonLoader,
+      wrapper,
+      content,
+      title,
+      titleRegion,
+      button,
+      buttonSize,
+      icon,
+      buildInfo,
+      buildDetails,
+      subHead,
+      copyLink,
+      copyLinkIcon,
+      copied,
+    } = classMod;
+
+    return (
+      <div className={wrapper}>
+        <Text.Eyebrow className={titleRegion}>
+          {props.loading ? (
+            <div className={barLoader} />
+          ) : (
+            <>
+              <strong className={title}>{props.authors}</strong>
+              <Clickable
+                className={`${copyLink}`}
+                style={{
+                  paddingRight: "0px",
+                }}
+                onClick={() => openExternal(props.url)}>
+                {Messages.REPLUGGED_INSTALLER_OPEN_STORE}
+              </Clickable>
+              <Clickable
+                className={`${copyLink}${props.onCooldown ? ` ${copied} addon-embed-copied` : ""}`}
+                onClick={props.copyUrl}>
+                <Link className={copyLinkIcon} />
+                {props.onCooldown
+                  ? Messages.REPLUGGED_PLUGIN_EMBED_COPIED
+                  : Messages.REPLUGGED_PLUGIN_EMBED_COPY}
+              </Clickable>
+            </>
+          )}
+        </Text.Eyebrow>
+        <div className={content}>
+          <div className="addon-embed-main-content">
+            <Icon className={icon} />
+            <div className={`${buildInfo} addon-embed-build-info`}>
+              {props.loading ? (
+                <div className={subHead}>
+                  <div className={`${barLoader} ${barTitle}`} />
+                </div>
+              ) : (
+                <Text className={subHead} variant={"text-sm/semibold"}>
+                  {props.name}
+                </Text>
+              )}
+              {props.loading ? (
+                <div className={buildDetails}>
+                  <div className={barLoader} />
+                </div>
+              ) : (
+                <Tooltip text={props.description}>
+                  <div style={{ minWidth: "0px" }}>
+                    <Text className={buildDetails} variant={"text-md/semibold"}>
+                      {props.description}
+                    </Text>
+                  </div>
+                </Tooltip>
+              )}
+            </div>
+          </div>
+          {props.loading ? (
+            <div className={buttonLoader} />
+          ) : (
+            <Tooltip
+              text={Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: props.name })}
+              shouldShow={props.isInstalled ? undefined : false}
+              hideOnClick={false}>
+              <Button
+                className={`${button} ${buttonSize}`}
+                style={{
+                  minWidth: "auto",
+                  maxWidth: "auto",
+                }}
+                // Workaround because the disabled attribute causes issues with the styles
+                aria-disabled={props.isInstalled || props.isInstalling}
+                color={
+                  props.isInstalled || props.isInstalling ? Button.Colors.TRANSPARENT : undefined
+                }
+                onClick={props.installClick}>
+                {Messages.REPLUGGED_CONFIRM_INSTALL}
+              </Button>
+            </Tooltip>
+          )}
+        </div>
+      </div>
+    );
+  },
+);
+
 const AddonEmbed = React.memo(
   ({
     addon,
@@ -120,37 +249,14 @@ const AddonEmbed = React.memo(
     const [onCooldown, setOnCooldown] = React.useState(false);
     const [cooldownTimeout, setCooldownTimeout] = React.useState<NodeJS.Timeout | null>(null);
     const [isInstalling, setIsInstalling] = React.useState(false);
+    if (!data) return <Embed loading />;
 
-    if (!data) return fallback;
     const { manifest } = data;
     if (manifest.type === "replugged") return fallback;
-
-    const classMod = getByProps<ClassMod>("titleRegion");
-    if (!classMod) {
-      logger.error("Failed to find classMod");
-      return fallback;
-    }
-
-    const {
-      wrapper,
-      content,
-      title,
-      titleRegion,
-      button,
-      buttonSize,
-      icon,
-      buildInfo,
-      buildDetails,
-      subHead,
-      copyLink,
-      copyLinkIcon,
-      copied,
-    } = classMod;
 
     const authors = authorList([manifest.author].flat().map((x) => x.name));
     const url = getSourceLink(manifest)!; // URL should always exist since it's from store
     const isInstalled = checkIsInstalled(data);
-    const isDisabled = isInstalled || isInstalling;
 
     const copyUrl = (): void => {
       window.DiscordNative.clipboard.copy(url);
@@ -163,63 +269,26 @@ const AddonEmbed = React.memo(
       );
     };
 
+    const installClick = async (): Promise<void> => {
+      // Since we're not actually disabling the button, check if it's disabled before running
+      if (isInstalled || isInstalling) return;
+      setIsInstalling(true);
+      await install(data);
+    };
+
     return (
-      <div className={wrapper}>
-        <Text.Eyebrow className={titleRegion}>
-          <strong className={title}>{authors}</strong>
-          <Clickable
-            className={`${copyLink}`}
-            style={{
-              paddingRight: "0px",
-            }}
-            onClick={() => openExternal(url)}>
-            {Messages.REPLUGGED_INSTALLER_OPEN_STORE}
-          </Clickable>
-          <Clickable
-            className={`${copyLink}${onCooldown ? ` ${copied} addon-embed-copied` : ""}`}
-            onClick={copyUrl}>
-            <Link className={copyLinkIcon} />
-            {onCooldown
-              ? Messages.REPLUGGED_PLUGIN_EMBED_COPIED
-              : Messages.REPLUGGED_PLUGIN_EMBED_COPY}
-          </Clickable>
-        </Text.Eyebrow>
-        <div className={content}>
-          <Icon className={icon} />
-          <div className={buildInfo} style={{ width: "230px" }}>
-            <Text className={subHead} variant={"text-sm/semibold"}>
-              {manifest.name}
-            </Text>
-            <Tooltip text={manifest.description}>
-              <Text className={buildDetails} variant={"text-md/semibold"}>
-                {manifest.description}
-              </Text>
-            </Tooltip>
-          </div>
-          <Tooltip
-            text={Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: manifest.name })}
-            shouldShow={isInstalled ? undefined : false}
-            hideOnClick={false}>
-            <Button
-              className={`${button} ${buttonSize}`}
-              style={{
-                minWidth: "auto",
-                maxWidth: "auto",
-              }}
-              // Workaround because the disabled attribute causes issues with the styles
-              aria-disabled={isDisabled}
-              color={isDisabled ? Button.Colors.TRANSPARENT : undefined}
-              onClick={async () => {
-                // Since we're not actually disabling the button, check if it's disabled before running
-                if (isDisabled) return;
-                setIsInstalling(true);
-                await install(data);
-              }}>
-              {Messages.REPLUGGED_CONFIRM_INSTALL}
-            </Button>
-          </Tooltip>
-        </div>
-      </div>
+      <Embed
+        loading={false}
+        authors={authors}
+        url={url}
+        onCooldown={onCooldown}
+        copyUrl={copyUrl}
+        name={manifest.name}
+        description={manifest.description}
+        isInstalled={isInstalled}
+        isInstalling={isInstalling}
+        installClick={installClick}
+      />
     );
   },
 );
