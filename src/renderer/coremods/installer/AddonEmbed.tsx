@@ -204,10 +204,11 @@ const Embed = React.memo(
           ) : (
             <Tooltip
               text={Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: props.name })}
+              className="replugged-addon-embed-button-tooltip"
               shouldShow={props.isInstalled ? undefined : false}
               hideOnClick={false}>
               <Button
-                className={`${button} ${buttonSize}`}
+                className={`${button} ${buttonSize} replugged-addon-embed-button`}
                 style={{
                   minWidth: "auto",
                   maxWidth: "auto",
