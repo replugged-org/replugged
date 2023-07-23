@@ -84,7 +84,6 @@ type ContextMenuData = ContextMenuProps["ContextMenu"] & {
   plugged?: boolean;
 };
 
-
 export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | null {
   const { navId } = menu;
   const { MenuGroup, Menu: ContextMenu } = getByProps<
