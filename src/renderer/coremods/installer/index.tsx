@@ -129,9 +129,8 @@ async function injectLinks(): Promise<void> {
     const installLink = parseInstallLink(href);
     if (!installLink) return fn(...args);
 
-    if (generalSettings.get("addonEmbeds")) {
-      const embed = AddonEmbed({ addon: installLink });
-      if (embed && title === href) return embed; // Do not show plugin embed for named links
+    if (generalSettings.get("addonEmbeds") && title === href) {
+      return <AddonEmbed addon={installLink} fallback={fn(...args)} />;
     }
 
     args[0].onClick = (e) => {

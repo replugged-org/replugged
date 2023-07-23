@@ -1,5 +1,5 @@
 import { Messages } from "@common/i18n";
-import React from "@common/react";
+import { React } from "@common";
 import { Button, Clickable, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { getByProps } from "@webpack";
@@ -57,7 +57,7 @@ function Link({ className }: { className?: string }): React.ReactElement {
   );
 }
 
-function Icon({ className }: { className?: string }): React.ReactElement | null {
+const Icon = React.memo(({ className }: { className?: string }): React.ReactElement | null => {
   const svgMod = getByProps<SvgMod>("svgContentRight");
   if (!svgMod) {
     logger.error("Failed to get svgMod");
@@ -97,125 +97,131 @@ function Icon({ className }: { className?: string }): React.ReactElement | null 
       />
     </svg>
   );
-}
+});
 
-export default function AddonEmbed({
-  addon,
-}: {
-  addon: InstallLinkProps;
-}): React.ReactElement | null {
-  if (addon.source !== "store") return null;
+const AddonEmbed = React.memo(
+  ({
+    addon,
+    fallback,
+  }: {
+    addon: InstallLinkProps;
+    fallback: React.ReactElement | null;
+  }): React.ReactElement | null => {
+    if (addon.source !== "store") return fallback;
 
-  const [data, setData] = React.useState<CheckResultSuccess | null>(null);
-  React.useEffect(() => {
-    (async () => {
-      const info = await getInfo(addon.identifier, addon.source, addon.id);
-      if (!info) return;
-      setData(info);
-    })();
-  }, []);
-  const [onCooldown, setOnCooldown] = React.useState(false);
-  const [cooldownTimeout, setCooldownTimeout] = React.useState<NodeJS.Timeout | null>(null);
-  const [isInstalling, setIsInstalling] = React.useState(false);
+    const [data, setData] = React.useState<CheckResultSuccess | null>(null);
+    React.useEffect(() => {
+      (async () => {
+        const info = await getInfo(addon.identifier, addon.source, addon.id);
+        if (!info) return;
+        setData(info);
+      })();
+    }, []);
+    const [onCooldown, setOnCooldown] = React.useState(false);
+    const [cooldownTimeout, setCooldownTimeout] = React.useState<NodeJS.Timeout | null>(null);
+    const [isInstalling, setIsInstalling] = React.useState(false);
 
-  if (!data) return null;
-  const { manifest } = data;
-  if (manifest.type === "replugged") return null;
+    if (!data) return fallback;
+    const { manifest } = data;
+    if (manifest.type === "replugged") return fallback;
 
-  const classMod = getByProps<ClassMod>("titleRegion");
-  if (!classMod) {
-    logger.error("Failed to find classMod");
-    return null;
-  }
+    const classMod = getByProps<ClassMod>("titleRegion");
+    if (!classMod) {
+      logger.error("Failed to find classMod");
+      return fallback;
+    }
 
-  const {
-    wrapper,
-    content,
-    title,
-    titleRegion,
-    button,
-    buttonSize,
-    icon,
-    buildInfo,
-    buildDetails,
-    subHead,
-    copyLink,
-    copyLinkIcon,
-    copied,
-  } = classMod;
+    const {
+      wrapper,
+      content,
+      title,
+      titleRegion,
+      button,
+      buttonSize,
+      icon,
+      buildInfo,
+      buildDetails,
+      subHead,
+      copyLink,
+      copyLinkIcon,
+      copied,
+    } = classMod;
 
-  const authors = authorList([manifest.author].flat().map((x) => x.name));
-  const url = getSourceLink(manifest)!; // URL should always exist since it's from store
-  const isInstalled = checkIsInstalled(data);
-  const isDisabled = isInstalled || isInstalling;
+    const authors = authorList([manifest.author].flat().map((x) => x.name));
+    const url = getSourceLink(manifest)!; // URL should always exist since it's from store
+    const isInstalled = checkIsInstalled(data);
+    const isDisabled = isInstalled || isInstalling;
 
-  const copyUrl = (): void => {
-    window.DiscordNative.clipboard.copy(url);
-    setOnCooldown(true);
-    if (cooldownTimeout) clearTimeout(cooldownTimeout);
-    setCooldownTimeout(
-      setTimeout(() => {
-        setOnCooldown(false);
-      }, 2000),
-    );
-  };
+    const copyUrl = (): void => {
+      window.DiscordNative.clipboard.copy(url);
+      setOnCooldown(true);
+      if (cooldownTimeout) clearTimeout(cooldownTimeout);
+      setCooldownTimeout(
+        setTimeout(() => {
+          setOnCooldown(false);
+        }, 2000),
+      );
+    };
 
-  return (
-    <div className={wrapper}>
-      <Text.Eyebrow className={titleRegion}>
-        <strong className={title}>{authors}</strong>
-        <Clickable
-          className={`${copyLink}`}
-          style={{
-            paddingRight: "0px",
-          }}
-          onClick={() => openExternal(url)}>
-          {Messages.REPLUGGED_INSTALLER_OPEN_STORE}
-        </Clickable>
-        <Clickable
-          className={`${copyLink}${onCooldown ? ` ${copied} addon-embed-copied` : ""}`}
-          onClick={copyUrl}>
-          <Link className={copyLinkIcon} />
-          {onCooldown
-            ? Messages.REPLUGGED_PLUGIN_EMBED_COPIED
-            : Messages.REPLUGGED_PLUGIN_EMBED_COPY}
-        </Clickable>
-      </Text.Eyebrow>
-      <div className={content}>
-        <Icon className={icon} />
-        <div className={buildInfo} style={{ width: "230px" }}>
-          <Text className={subHead} variant={"text-sm/semibold"}>
-            {manifest.name}
-          </Text>
-          <Tooltip text={manifest.description}>
-            <Text className={buildDetails} variant={"text-md/semibold"}>
-              {manifest.description}
+    return (
+      <div className={wrapper}>
+        <Text.Eyebrow className={titleRegion}>
+          <strong className={title}>{authors}</strong>
+          <Clickable
+            className={`${copyLink}`}
+            style={{
+              paddingRight: "0px",
+            }}
+            onClick={() => openExternal(url)}>
+            {Messages.REPLUGGED_INSTALLER_OPEN_STORE}
+          </Clickable>
+          <Clickable
+            className={`${copyLink}${onCooldown ? ` ${copied} addon-embed-copied` : ""}`}
+            onClick={copyUrl}>
+            <Link className={copyLinkIcon} />
+            {onCooldown
+              ? Messages.REPLUGGED_PLUGIN_EMBED_COPIED
+              : Messages.REPLUGGED_PLUGIN_EMBED_COPY}
+          </Clickable>
+        </Text.Eyebrow>
+        <div className={content}>
+          <Icon className={icon} />
+          <div className={buildInfo} style={{ width: "230px" }}>
+            <Text className={subHead} variant={"text-sm/semibold"}>
+              {manifest.name}
             </Text>
+            <Tooltip text={manifest.description}>
+              <Text className={buildDetails} variant={"text-md/semibold"}>
+                {manifest.description}
+              </Text>
+            </Tooltip>
+          </div>
+          <Tooltip
+            text={Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: manifest.name })}
+            shouldShow={isInstalled ? undefined : false}
+            hideOnClick={false}>
+            <Button
+              className={`${button} ${buttonSize}`}
+              style={{
+                minWidth: "auto",
+                maxWidth: "auto",
+              }}
+              // Workaround because the disabled attribute causes issues with the styles
+              aria-disabled={isDisabled}
+              color={isDisabled ? Button.Colors.TRANSPARENT : undefined}
+              onClick={async () => {
+                // Since we're not actually disabling the button, check if it's disabled before running
+                if (isDisabled) return;
+                setIsInstalling(true);
+                await install(data);
+              }}>
+              {Messages.REPLUGGED_CONFIRM_INSTALL}
+            </Button>
           </Tooltip>
         </div>
-        <Tooltip
-          text={Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: manifest.name })}
-          shouldShow={isInstalled ? undefined : false}
-          hideOnClick={false}>
-          <Button
-            className={`${button} ${buttonSize}`}
-            style={{
-              minWidth: "auto",
-              maxWidth: "auto",
-            }}
-            // Workaround because the disabled attribute causes issues with the styles
-            aria-disabled={isDisabled}
-            color={isDisabled ? Button.Colors.TRANSPARENT : undefined}
-            onClick={async () => {
-              // Since we're not actually disabling the button, check if it's disabled before running
-              if (isDisabled) return;
-              setIsInstalling(true);
-              await install(data);
-            }}>
-            {Messages.REPLUGGED_CONFIRM_INSTALL}
-          </Button>
-        </Tooltip>
       </div>
-    </div>
-  );
-}
+    );
+  },
+);
+
+export default AddonEmbed;
