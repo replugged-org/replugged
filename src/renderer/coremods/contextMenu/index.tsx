@@ -84,17 +84,13 @@ type ContextMenuData = ContextMenuProps["ContextMenu"] & {
   plugged?: boolean;
 };
 
-/**
- * @internal
- * @hidden
- */
 
 export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | null {
   const { navId } = menu;
   const { MenuGroup, Menu: ContextMenu } = getByProps<
     Record<string, React.ComponentType> & { Menu: React.FunctionComponent<ContextMenuData> }
   >(["Menu", "MenuItem", "MenuGroup"])!;
-  //return nothing as we werent able to get ContextMenu component, gets handled in plain text patch
+  //return nothing as we weren't able to get ContextMenu component, gets handled in plain text patch
   if (!ContextMenu) return null;
 
   // No items to insert
@@ -104,7 +100,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
   const data = menu.data[0];
 
-  //Add group only if it doesnt exist
+  //Add group only if it doesn't exist
   if (!menu.children.some((child) => child.props.id === "replugged")) {
     const repluggedGroup = <MenuGroup />;
     repluggedGroup.props.id = "replugged";
@@ -140,7 +136,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
         props: { replug?: boolean };
       };
 
-      // removed the code to add unique id everytime because it made experience bad while hovering over item and it getting updated
+      // removed the code to add unique id every time because it made experience bad while hovering over item and it getting updated
       // should be fine because we actively keep removing old items ig
 
       if (itemRet?.props) {
