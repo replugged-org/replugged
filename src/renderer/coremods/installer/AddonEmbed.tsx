@@ -236,9 +236,6 @@ const AddonEmbed = React.memo(
     addon: InstallLinkProps;
     fallback: React.ReactElement | null;
   }): React.ReactElement | null => {
-    if (addon.source !== "store") return fallback;
-    if (["plugins", "themes"].includes(addon.identifier.toLowerCase())) return fallback;
-
     const [data, setData] = React.useState<CheckResultSuccess | undefined | null>(undefined);
     React.useEffect(() => {
       (async () => {
