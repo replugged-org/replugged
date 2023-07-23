@@ -191,7 +191,7 @@ export function useSetting<
   F extends T[K] | undefined,
 >(
   settings: SettingsManager<T, D>,
-  key: keyof T & string extends K ? string : K,
+  key: `${K}.${string}` extends K ? `${K}.${string}` : K,
   fallback?: F,
 ): {
   value: K extends D
@@ -201,10 +201,17 @@ export function useSetting<
     : NonNullable<T[K]> | F;
   onChange: (newValue: ValType<T[K]>) => void;
 } {
-  const [initialKey, ...pathArray] = key.split(".") as K[];
+  const [initialKey, ...pathArray] = Object.keys(settings.all()).includes(key)
+    ? ([key] as [K])
+    : (key.split(".") as `${K}.${string}` extends K ? [K, ...string[]] : [K]);
   const path = pathArray.join(".");
-  const initial = settings.get(initialKey, fallback);
-  const [value, setValue] = React.useState(path.length ? lodash.get(initial, path) : initial);
+  const initial = settings.get(
+    initialKey,
+    path.length ? (lodash.get({}, path, fallback) as F) : fallback,
+  );
+  const [value, setValue] = React.useState(
+    path.length ? (lodash.get(initial, path, fallback) as typeof initial) : initial,
+  );
 
   return {
     value,
@@ -220,14 +227,16 @@ export function useSetting<
       const targetChecked = target && "checked" in target ? target.checked : undefined;
       const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
 
+      // @ts-expect-error dumb indeed
       setValue(finalValue);
       settings.set(
-        key as K,
-        path.length ? (lodash.set(initial as object, path, finalValue) as T[K]) : finalValue,
+        initialKey,
+        path.length ? (lodash.set(initial!, path, finalValue) as T[K]) : finalValue,
       );
     },
   };
 }
+
 export function useSettingArray<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
@@ -235,7 +244,7 @@ export function useSettingArray<
   F extends T[K] | undefined,
 >(
   settings: SettingsManager<T, D>,
-  key: K,
+  key: `${K}.${string}` extends K ? `${K}.${string}` : K,
   fallback?: F,
 ): [
   K extends D
@@ -245,8 +254,10 @@ export function useSettingArray<
     : NonNullable<T[K]> | F,
   (newValue: ValType<T[K]>) => void,
 ] {
+  // @ts-expect-error ts is dumb, the types are same
   const { value, onChange } = useSetting(settings, key, fallback);
 
+  // @ts-expect-error literally same type just spread open
   return [value, onChange];
 }
 
