@@ -237,6 +237,7 @@ const AddonEmbed = React.memo(
     fallback: React.ReactElement | null;
   }): React.ReactElement | null => {
     if (addon.source !== "store") return fallback;
+    if (["plugins", "themes"].includes(addon.identifier.toLowerCase())) return fallback;
 
     const [data, setData] = React.useState<CheckResultSuccess | null>(null);
     React.useEffect(() => {
