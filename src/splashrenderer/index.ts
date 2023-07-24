@@ -1,3 +1,3 @@
-import * as replugged from "./replugged";
+import * as ignition from "./managers/ignition";
 
-await replugged.ignition.ignite();
+await ignition.ignite();

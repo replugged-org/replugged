@@ -1,6 +1,6 @@
-import { log } from "../modules/logger";
-import * as themes from "./themes";
-import * as quickCSS from "./quick-css";
+import { log } from "../../renderer/modules/logger";
+import * as themes from "../../renderer/managers/themes";
+import * as quickCSS from "../../renderer/managers/quick-css";
 
 export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
