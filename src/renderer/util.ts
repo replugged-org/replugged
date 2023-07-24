@@ -184,22 +184,12 @@ type ValType<T> =
   | React.ChangeEvent<HTMLInputElement>
   | (Record<string, unknown> & { value?: T; checked?: T });
 
-type NestedType<T, P> = P extends `${infer Left}.${infer Right}`
-  ? Left extends keyof T
-    ? NestedType<T[Left], Right>
-    : Left extends `${infer FieldKey}[${infer IndexKey}]`
-    ? FieldKey extends keyof T
-      ? NestedType<Exclude<T[FieldKey], undefined> extends infer U ? U : never, IndexKey>
-      : undefined
+type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
+  ? K extends keyof T
+    ? NestedType<T[K], NestedKey>
     : undefined
   : P extends keyof T
   ? T[P]
-  : P extends `${infer FieldKey}[${infer _IndexKey}]`
-  ? FieldKey extends keyof T
-    ? Exclude<T[FieldKey], undefined> extends infer U
-      ? U
-      : never
-    : undefined
   : undefined;
 
 export function useSetting<
@@ -213,23 +203,23 @@ export function useSetting<
   key: P,
   fallback?: F,
 ): {
-  value: NestedType<T, P> | F;
-  onChange: (newValue: ValType<NestedType<T, P>>) => void;
+  value: NonNullable<NestedType<T, P>>;
+  onChange: (newValue: ValType<NonNullable<NestedType<T, P>>>) => void;
 } {
   const [initialKey, ...pathArray] = Object.keys(settings.all()).includes(key)
     ? ([key] as [K])
     : (key.split(".") as [K, ...string[]]);
   const path = pathArray.join(".");
   const initial = settings.get(initialKey, path.length ? ({} as T[K]) : (fallback as T[K]));
-  const [value, setValue] = React.useState<NestedType<T, P>>(
+  const [value, setValue] = React.useState<NonNullable<NestedType<T, P>>>(
     path.length
-      ? (lodash.get(initial, path, fallback) as NestedType<T, P>)
-      : (initial as NestedType<T, P>),
+      ? (lodash.get(initial, path, fallback) as NonNullable<NestedType<T, P>>)
+      : (initial as NonNullable<NestedType<T, P>>),
   );
 
   return {
     value,
-    onChange: (newValue: ValType<NestedType<T, P>>) => {
+    onChange: (newValue: ValType<NonNullable<NestedType<T, P>>>) => {
       const isObj = newValue && typeof newValue === "object";
       const value = isObj && "value" in newValue ? newValue.value : newValue;
       const checked = isObj && "checked" in newValue ? newValue.checked : undefined;
@@ -241,7 +231,7 @@ export function useSetting<
       const targetChecked = target && "checked" in target ? target.checked : undefined;
       const finalValue = checked ?? targetChecked ?? targetValue ?? value ?? newValue;
 
-      setValue(finalValue as NestedType<T, P>);
+      setValue(finalValue as NonNullable<NestedType<T, P>>);
       settings.set(
         initialKey,
         path.length ? (lodash.set(initial!, path, finalValue) as T[K]) : (finalValue as T[K]),
@@ -260,7 +250,7 @@ export function useSettingArray<
   settings: SettingsManager<T, D>,
   key: P,
   fallback?: F,
-): [NestedType<T, P> | F, (newValue: ValType<NestedType<T, P>>) => void] {
+): [NonNullable<NestedType<T, P>>, (newValue: ValType<NonNullable<NestedType<T, P>>>) => void] {
   const { value, onChange } = useSetting(settings, key, fallback);
 
   return [value, onChange];
