@@ -184,38 +184,52 @@ type ValType<T> =
   | React.ChangeEvent<HTMLInputElement>
   | (Record<string, unknown> & { value?: T; checked?: T });
 
+type NestedType<T, P> = P extends `${infer Left}.${infer Right}`
+  ? Left extends keyof T
+    ? NestedType<T[Left], Right>
+    : Left extends `${infer FieldKey}[${infer IndexKey}]`
+    ? FieldKey extends keyof T
+      ? NestedType<Exclude<T[FieldKey], undefined> extends infer U ? U : never, IndexKey>
+      : undefined
+    : undefined
+  : P extends keyof T
+  ? T[P]
+  : P extends `${infer FieldKey}[${infer _IndexKey}]`
+  ? FieldKey extends keyof T
+    ? Exclude<T[FieldKey], undefined> extends infer U
+      ? U
+      : never
+    : undefined
+  : undefined;
+
 export function useSetting<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
   K extends Extract<keyof T, string>,
-  F extends T[K] | undefined,
+  F extends NestedType<T, P> | T[K] | undefined,
+  P extends `${K}.${string}` | K,
 >(
   settings: SettingsManager<T, D>,
-  key: `${K}.${string}` | K,
+  key: P,
   fallback?: F,
 ): {
-  value: K extends D
-    ? NonNullable<T[K]>
-    : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F;
-  onChange: (newValue: ValType<T[K]>) => void;
+  value: NestedType<T, P> | F;
+  onChange: (newValue: ValType<NestedType<T, P>>) => void;
 } {
   const [initialKey, ...pathArray] = Object.keys(settings.all()).includes(key)
     ? ([key] as [K])
     : (key.split(".") as [K, ...string[]]);
   const path = pathArray.join(".");
-  const initial = settings.get(
-    initialKey,
-    path.length ? (lodash.get({}, path, fallback) as F) : fallback,
-  );
-  const [value, setValue] = React.useState(
-    path.length ? (lodash.get(initial, path, fallback) as typeof initial) : initial,
+  const initial = settings.get(initialKey, path.length ? ({} as T[K]) : (fallback as T[K]));
+  const [value, setValue] = React.useState<NestedType<T, P>>(
+    path.length
+      ? (lodash.get(initial, path, fallback) as NestedType<T, P>)
+      : (initial as NestedType<T, P>),
   );
 
   return {
     value,
-    onChange: (newValue: ValType<T[K]>) => {
+    onChange: (newValue: ValType<NestedType<T, P>>) => {
       const isObj = newValue && typeof newValue === "object";
       const value = isObj && "value" in newValue ? newValue.value : newValue;
       const checked = isObj && "checked" in newValue ? newValue.checked : undefined;
@@ -225,13 +239,12 @@ export function useSetting<
           : undefined;
       const targetValue = target && "value" in target ? target.value : undefined;
       const targetChecked = target && "checked" in target ? target.checked : undefined;
-      const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
+      const finalValue = checked ?? targetChecked ?? targetValue ?? value ?? newValue;
 
-      // @ts-expect-error dumb indeed
-      setValue(finalValue);
+      setValue(finalValue as NestedType<T, P>);
       settings.set(
         initialKey,
-        path.length ? (lodash.set(initial!, path, finalValue) as T[K]) : finalValue,
+        path.length ? (lodash.set(initial!, path, finalValue) as T[K]) : (finalValue as T[K]),
       );
     },
   };
@@ -241,23 +254,15 @@ export function useSettingArray<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
   K extends Extract<keyof T, string>,
-  F extends T[K] | undefined,
+  F extends NestedType<T, P> | T[K] | undefined,
+  P extends `${K}.${string}` | K,
 >(
   settings: SettingsManager<T, D>,
-  key: `${K}.${string}` extends K ? `${K}.${string}` : K,
+  key: P,
   fallback?: F,
-): [
-  K extends D
-    ? NonNullable<T[K]>
-    : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F,
-  (newValue: ValType<T[K]>) => void,
-] {
-  // @ts-expect-error ts is dumb, the types are same
+): [NestedType<T, P> | F, (newValue: ValType<NestedType<T, P>>) => void] {
   const { value, onChange } = useSetting(settings, key, fallback);
 
-  // @ts-expect-error literally same type just spread open
   return [value, onChange];
 }
 
