@@ -163,7 +163,7 @@ electron.app.once("ready", () => {
         filePath = join(__dirname, "./renderer.js");
         break;
       case "splashrenderer":
-        filePath = join(__dirname, "./splashrenderer.js");
+        filePath = join(__dirname, "./splashRenderer.js");
         break;
       case "renderer.css":
         filePath = join(__dirname, "./renderer.css");
