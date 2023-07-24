@@ -75,3 +75,19 @@ export async function ignite(): Promise<void> {
   await componentsReady();
   await start();
 }
+
+export async function startSplash(): Promise<void> {
+  log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
+  const startTime = performance.now();
+
+  await themes.loadMissing().then(themes.loadAll);
+  // Quick CSS needs to be called after themes are loaded so that it will override the theme's CSS
+  quickCSS.load();
+
+  log(
+    "Ignition",
+    "Start",
+    void 0,
+    `Finished igniting Replugged Splash Screen in ${performance.now() - startTime}ms`,
+  );
+}
