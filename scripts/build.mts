@@ -89,15 +89,6 @@ Promise.all([
     outfile: "dist/preload.js",
     external: ["electron"],
   }),
-  // Preload Splash Screen
-  esbuild.build({
-    ...common,
-    entryPoints: ["src/preloadSplash.ts"],
-    platform: "node",
-    target: [`node${NODE_VERSION}`, `chrome${CHROME_VERSION}`],
-    outfile: "dist/preloadSplash.js",
-    external: ["electron"],
-  }),
   // Renderer
   esbuild.build({
     ...common,
@@ -105,15 +96,6 @@ Promise.all([
     platform: "browser",
     target: `chrome${CHROME_VERSION}`,
     outfile: "dist/renderer.js",
-    format: "esm",
-  }),
-  // Splash Screen Renderer
-  esbuild.build({
-    ...common,
-    entryPoints: ["src/splashrenderer/index.ts"],
-    platform: "browser",
-    target: `chrome${CHROME_VERSION}`,
-    outfile: "dist/splashrenderer.js",
     format: "esm",
   }),
 ]);
