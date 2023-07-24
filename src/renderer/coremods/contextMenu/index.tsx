@@ -119,9 +119,13 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   usedSectionIds.forEach((sectionId) => {
     try {
       if (menu.children.at(sectionId)?.props?.children) {
-        menu.children.at(sectionId)!.props.children = menu.children
-          .at(sectionId)
-          ?.props.children.filter((child: React.ReactElement) => child.props.plugged);
+        menu.children.at(sectionId)!.props.children = Array.isArray(
+          menu.children.at(sectionId)?.props.children,
+        )
+          ? menu.children
+              .at(sectionId)
+              ?.props.children.filter((child: React.ReactElement) => child.props.plugged)
+          : [menu.children.at(sectionId)?.props.children];
       }
     } catch (err) {
       logger.error("Error while removing old menu items", err, menu.children.at(sectionId));
