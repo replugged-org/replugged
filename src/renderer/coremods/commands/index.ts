@@ -63,7 +63,7 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
   );
   const storeModFnKey = getFunctionKeyBySource(
     ApplicationCommandSearchStoreMod,
-    "APPLICATION_COMMAND_SEARCH_OPEN_TIMING",
+    "APPLICATION_COMMAND_SEARCH_STORE_UPDATE",
   );
   injector.after(ApplicationCommandSearchStoreMod, storeModFnKey!, (_, res) => {
     const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
