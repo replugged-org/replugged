@@ -285,61 +285,65 @@ const commands: RepluggedCommand[] = [
         const listType = options.find((o) => o.name === "type")?.value;
         switch (addonType) {
           case "plugin": {
-            const allPlugins = Array.from(plugins.plugins.values()).map((p) => p.manifest);
+            const allPlugins = Array.from(plugins.plugins.values())
+              .map((p) => p.manifest)
+              .sort((a, b) => a.name.localeCompare(b.name));
             const enablePlugins = allPlugins?.filter((p) => !plugins.getDisabled().includes(p.id));
             const disabledPlugins = allPlugins?.filter((p) => plugins.getDisabled().includes(p.id));
-            const enabledString = enablePlugins
+            const enabledString = `• ${enablePlugins
               .map((p) => (version ? `${p.name} (${p.version})` : p.name))
-              .join(", ");
-            const disabledString = disabledPlugins
+              .join("\n• ")}`;
+            const disabledString = `• ${disabledPlugins
               .map((p) => (version ? `${p.name} (${p.version})` : p.name))
-              .join(", ");
+              .join("\n• ")}`;
             switch (listType) {
               case "enabled":
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n ${enabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n${enabledString}\n\`\`\``,
                 };
               case "disabled":
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m\n${disabledString}\n\`\`\``,
                 };
 
               default:
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n ${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m\n${disabledString}\n\`\`\``,
                 };
             }
             break;
           }
           case "theme": {
-            const allThemes = Array.from(themes.themes.values()).map((t) => t.manifest);
+            const allThemes = Array.from(themes.themes.values())
+              .map((t) => t.manifest)
+              .sort((a, b) => a.name.localeCompare(b.name));
             const enableThemes = allThemes?.filter((t) => !plugins.getDisabled().includes(t.id));
             const disabledThemes = allThemes?.filter((t) => plugins.getDisabled().includes(t.id));
-            const enabledString = enableThemes
+            const enabledString = `• ${enableThemes
               .map((t) => (version ? `${t.name} (${t.version})` : t.name))
-              .join(", ");
-            const disabledString = disabledThemes
+              .join("\n• ")}`;
+            const disabledString = `• ${disabledThemes
               .map((t) => (version ? `${t.name} (${t.version})` : t.name))
-              .join(", ");
+              .join("\n• ")}`;
             switch (listType) {
               case "enabled":
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n ${enabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n${enabledString}\n\`\`\``,
                 };
               case "disabled":
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Themes (${disabledThemes.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Themes (${disabledThemes.length}):[0m[2;31m[0m\n${disabledString}\n\`\`\``,
                 };
 
               default:
                 return {
                   send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n ${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledThemes.length}):[0m[2;31m[0m \n ${disabledString}\n\`\`\``,
+                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledThemes.length}):[0m[2;31m[0m\n${disabledString}\n\`\`\``,
                 };
             }
             break;
