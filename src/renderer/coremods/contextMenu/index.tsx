@@ -124,7 +124,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
         )
           ? menu.children
               .at(sectionId)
-              ?.props.children.filter((child: React.ReactElement) => child.props.plugged)
+              ?.props.children.filter((child: React.ReactElement) => !child.props.replug)
           : [menu.children.at(sectionId)?.props.children];
       }
     } catch (err) {
