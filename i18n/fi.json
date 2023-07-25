@@ -222,5 +222,10 @@
     "REPLUGGED_SETTINGS_ADVANCED": "Lisäasetukset",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Ota käyttöön React DevTools",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Lataa React DevTools laajennuksen, jonka avulla voit tarkastaa React-puuta ja tehdä virheenkorjauksia helpommin. **Vaatii uudelleenkäynnistyksen**.",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "React DevTools:in lataaminen epäonnistui."
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "React DevTools:in lataaminen epäonnistui.",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "Katso kaupassa",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Näytä Lisäosa Upotukset",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Näytä lisäosan tietojen sisältävä kortti, kun kauppa-/asennuslinkki jaetaan chatissa.",
+    "REPLUGGED_RESTART": "Uudelleenkäynnistä",
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "Uudelleenkäynnistys vaaditaan"
 }

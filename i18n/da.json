@@ -10,5 +10,6 @@
     "REPLUGGED_BADGES_TRANSLATOR": "Replugged Oversætter",
     "REPLUGGED_GENERAL_SETTINGS": "Generelle indstillinger",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% oversat",
-    "REPLUGGED_QUICKCSS": "Hurtig CSS"
+    "REPLUGGED_QUICKCSS": "Hurtig CSS",
+    "REPLUGGED_CONFIRM": "Bekræft"
 }

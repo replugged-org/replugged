@@ -30,5 +30,9 @@
     "REPLUGGED_COMMAND_DEBUG_DESC": "Menghantar maklumat nyahpepijat peranti, Discord dan Replugged dalam sembang.",
     "REPLUGGED_COMMAND_ECHO_DESC": "Mengembalikan argumen yang ditentukan.",
     "REPLUGGED_COMMAND_HELP_DESC": "Memberi anda senarai arahan atau maklumat mengenai arahan yang tertentu.",
-    "REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL": "URL tidak sah! Sila nyatakan URL atau nama pengguna/repositori GitHub yang sah."
+    "REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL": "URL tidak sah! Sila nyatakan URL atau nama pengguna/repositori GitHub yang sah.",
+    "REPLUGGED_CONFIRM": "Sahkan",
+    "REPLUGGED_COMMAND_ENABLE_ENABLED": "!{type} \"{id}\" telah didayakan!",
+    "REPLUGGED_COMMAND_RELOAD_DESC": "Muat sesuatu pemalam/tema",
+    "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id}\" telah dimuat semula!"
 }
