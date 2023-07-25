@@ -215,5 +215,12 @@
     "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "這個{type}未經 Replugged 團隊審核，可能會損壞你的電腦。請自行承擔風險。",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "自動應用 Quick CSS",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "在輸入時自動應用 Quick CSS 的變更。",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "你目前正在開發者模式下執行 Replugged， Replugged 將無法自行更新。 [切換至生產模式]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "你目前正在開發者模式下運行 Replugged， Replugged 將無法自行更新。 [切換至生產模式]({url}).",
+    "REPLUGGED_SETTINGS_DEV_COMPANION": "重新連接開發者夥伴",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "重新連接開發者夥伴核心模塊至 VSCode 插件。",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "重新連接",
+    "REPLUGGED_SETTINGS_ADVANCED": "進階設置",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "開啟 React 開發工具",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "加載 React 開發工具插件，它允許你檢查 React 代碼樹并且更加容易地 debug 代碼。**需要重啟**。",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "下載 React 開發工具失敗。"
 }

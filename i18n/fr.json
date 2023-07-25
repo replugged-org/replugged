@@ -215,5 +215,10 @@
     "REPLUGGED_ADDON_NOT_REVIEWED": "Non examiné {type}",
     "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Ce {type} n'a pas été examiné par l'équipe de Replugged et pourrait nuire à votre ordinateur. Utilisez-le à vos risques et périls.",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Appliquer automatiquement les CSS rapides",
-    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Appliquer automatiquement les modifications au CSS rapide au fur et à mesure de la saisie."
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Appliquer automatiquement les modifications au CSS rapide au fur et à mesure de la saisie.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION": "Reconnecter le compagnon de dev",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Reconnecte le coremod Dev Companion à l'extension VSCode.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Reconnecter",
+    "REPLUGGED_SETTINGS_ADVANCED": "Paramètres avancés",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Activer les outils de développement React"
 }

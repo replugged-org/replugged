@@ -209,5 +209,17 @@
     "REPLUGGED_SETTINGS_BADGES": "Habilitar insignias de Replugged",
     "REPLUGGED_SETTINGS_BADGES_DESC": "Mostrar insignias personalizadas de Replugged en los perfiles de usuario.",
     "REPLUGGED_I18N": "Traducciones de Replugged",
-    "REPLUGGED_DEVELOPER_MODE_WARNING": "Estas ejecutando el modo desarrollador de Replugged, no habrá actualizaciones automaticas. [Cambiar al modo de producción]({url})."
+    "REPLUGGED_DEVELOPER_MODE_WARNING": "Estas ejecutando el modo desarrollador de Replugged, no habrá actualizaciones automaticas. [Cambiar al modo de producción]({url}).",
+    "REPLUGGED_ADDON_BROWSE": "Explorar {type}",
+    "REPLUGGED_ADDON_NOT_REVIEWED": "{type} sin revisar",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Aplicar Quick CSS automáticamente",
+    "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Aplique cambios automáticamente a Quick CSS a medida que escribe.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION": "Vuelva a conectar a Dev Companion",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Vuelve a conectar el coremod Dev Companion a la extensión VSCode.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Reconectar",
+    "REPLUGGED_SETTINGS_ADVANCED": "Ajustes Avanzados",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Habilitar React DevTools",
+    "REPLUGGED_VIEW_UPDATES": "Ver {count, plural, =1 {# Update} other {# Updates}}",
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Este {type} no ha sido revisado por el equipo de Replugged y podría dañar su computadora. Úselo bajo su propio riesgo.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Carga la extensión React DevTools, lo que le permite inspeccionar el árbol React y depurar más fácilmente. **Requiere reinicio**."
 }
