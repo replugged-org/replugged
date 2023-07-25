@@ -46,7 +46,7 @@ export interface RepluggedAnnouncement {
   };
 }
 
-export interface RepluggedCommand {
+export interface UnexecuteableRepluggedCommand {
   applicationId?: string;
   type?: number;
   id?: string;
@@ -55,12 +55,22 @@ export interface RepluggedCommand {
   description: string;
   displayDescription?: string;
   usage: string;
-  executor?: (
-    args: CommandOptionReturn[],
-  ) => Promise<RepluggedCommandResult> | RepluggedCommandResult;
-  execute?: (args: CommandOptionReturn[]) => Promise<void> | void;
   options?: CommandOptions[];
 }
+
+export type RepluggedCommand = UnexecuteableRepluggedCommand &
+  (
+    | {
+        executor: (
+          args: CommandOptionReturn[],
+        ) => Promise<RepluggedCommandResult> | RepluggedCommandResult;
+        execute?: never;
+      }
+    | {
+        execute: (args: CommandOptionReturn[]) => Promise<void> | void;
+        executor?: never;
+      }
+  );
 export interface RepluggedCommandEmbed {
   type: "rich" | "image" | "video" | "article";
   title: string;
