@@ -22,7 +22,7 @@ export * as components from "./modules/components";
 export * as i18n from "./modules/i18n";
 
 export { default as notices } from "./apis/notices";
-export * as commands from "./apis/commands";
+export { CommandManager } from "./apis/commands";
 export * as settings from "./apis/settings";
 
 /**

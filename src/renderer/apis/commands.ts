@@ -79,8 +79,8 @@ async function executeCommand(
 export class CommandManager {
   #section: RepluggedCommandSection;
   #unregister: Array<() => void>;
-  public constructor(props?: RepluggedCommandSection) {
-    this.#section = props ?? defaultSection;
+  public constructor() {
+    this.#section = defaultSection;
     this.#section.type ??= 1;
     this.#unregister = [];
   }
