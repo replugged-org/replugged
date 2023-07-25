@@ -46,7 +46,7 @@ export interface RepluggedAnnouncement {
   };
 }
 
-export interface UnexecuteableRepluggedCommand {
+export interface InexecuteableRepluggedCommand {
   applicationId?: string;
   type?: number;
   id?: string;
@@ -58,7 +58,7 @@ export interface UnexecuteableRepluggedCommand {
   options?: CommandOptions[];
 }
 
-export type RepluggedCommand = UnexecuteableRepluggedCommand &
+export type RepluggedCommand = InexecuteableRepluggedCommand &
   (
     | {
         executor: (
