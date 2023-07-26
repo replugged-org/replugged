@@ -155,7 +155,9 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   menuItems[navId].forEach((item) => {
     try {
       const itemRet = makeItem(item.getItem(data, menu));
-      menu.children.at(item.sectionId)?.props.children?.splice(item.indexInSection, 0, itemRet);
+      if (itemRet) {
+        menu.children.at(item.sectionId)?.props.children?.splice(item.indexInSection, 0, itemRet);
+      }      
     } catch (err) {
       logger.error(
         "Error while running GetContextItem function",
