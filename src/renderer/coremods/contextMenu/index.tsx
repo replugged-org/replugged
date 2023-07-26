@@ -84,6 +84,10 @@ type ContextMenuData = ContextMenuProps["ContextMenu"] & {
   plugged?: boolean;
 };
 
+/**
+ * @internal
+ * @hidden
+ */
 export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | null {
   const { navId } = menu;
   const { MenuGroup, Menu: ContextMenu } = getByProps<
@@ -136,20 +140,19 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   menuItems[navId].forEach((item) => {
     try {
       const itemRet = makeItem(item.getItem(data, menu)) as ContextItem & {
-        props: { replug?: boolean };
+        props: { replug?: boolean; id?: string; };
       };
-
-      // removed the code to add unique id every time because it made experience bad while hovering over item and it getting updated
-      // should be fine because we actively keep removing old items ig
 
       if (itemRet?.props) {
         // add in prop  for cleanup
         itemRet.props.replug = true;
+        // custom unique id if not added by dev
+        itemRet.props.id ??= `repluggedMenuItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`
       }
 
       menu.children.at(item.sectionId)?.props.children?.splice(item.indexInSection, 0, itemRet);
     } catch (err) {
-      logger.error("Error while running GetContextItem function", err, item.getItem);
+      logger.error("Error while running GetContextItem function", err, item.getItem, menu.children.at(item.sectionId));
     }
   });
 
