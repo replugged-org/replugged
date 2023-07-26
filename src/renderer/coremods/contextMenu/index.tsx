@@ -17,15 +17,17 @@ export const menuItems = {} as Record<
 >;
 
 type RepluggedContextItem = ContextItem & {
-  props: { replug?: boolean; id?: string; };
-}
+  props: { replug?: boolean; id?: string };
+};
 
 /**
  * Converts data into a React element. Any elements or falsy value will be returned as is
  * @param raw The data to convert
  * @returns The converted item
  */
-function makeItem(raw: RawContextItem | ContextItem | undefined | void): RepluggedContextItem | undefined {
+function makeItem(
+  raw: RawContextItem | ContextItem | undefined | void,
+): RepluggedContextItem | undefined {
   // Occasionally React won't be loaded when this function is ran, so we don't return anything
   if (!React) return undefined;
 
@@ -41,10 +43,10 @@ function makeItem(raw: RawContextItem | ContextItem | undefined | void): Replugg
   }
 
   const { type, ...props } = raw;
-    // add in prop  for cleanup
-    props.replug = true;
-    // custom unique id if not added by dev
-    props.id ??= `repluggedMenuItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`;  
+  // add in prop  for cleanup
+  props.replug = true;
+  // custom unique id if not added by dev
+  props.id ??= `repluggedMenuItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`;
   if (props.children) {
     props.children = props.children.map((child: RawContextItem | ContextItem | undefined) =>
       makeItem(child),
@@ -148,10 +150,15 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   //adding new items
   menuItems[navId].forEach((item) => {
     try {
-      const itemRet = makeItem(item.getItem(data, menu));     
+      const itemRet = makeItem(item.getItem(data, menu));
       menu.children.at(item.sectionId)?.props.children?.splice(item.indexInSection, 0, itemRet);
     } catch (err) {
-      logger.error("Error while running GetContextItem function", err, item.getItem, menu.children.at(item.sectionId));
+      logger.error(
+        "Error while running GetContextItem function",
+        err,
+        item.getItem,
+        menu.children.at(item.sectionId),
+      );
     }
   });
 
