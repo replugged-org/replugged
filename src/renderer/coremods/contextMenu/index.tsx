@@ -38,7 +38,6 @@ function makeItem(
   }
   if (React.isValidElement(raw)) {
     // We can't construct something that's already made
-    // apparently you can but we ain't gonna do that because states will get messed up.
     return raw as RepluggedContextItem;
   }
 
@@ -46,7 +45,7 @@ function makeItem(
   // add in prop  for cleanup
   props.replug = true;
   // custom unique id if not added by dev
-  props.id ??= `repluggedMenuItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`;
+  props.id ??= `repluggedContextItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`;
   if (props.children) {
     props.children = props.children.map((child: RawContextItem | ContextItem | undefined) =>
       makeItem(child),
@@ -114,8 +113,13 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
   const data = menu.data[0];
 
+  // make children array if it's not already
+  if (!Array.isArray(menu.children)) {
+    menu.children = [menu.children];
+  }
+
   //Add group only if it doesn't exist
-  if (!menu.children.some((child) => child?.props?.id === "replugged")) {
+  if (!menu.children.some?.((child) => child?.props?.id === "replugged")) {
     const repluggedGroup = <MenuGroup />;
     repluggedGroup.props.id = "replugged";
     repluggedGroup.props.children = [];
@@ -139,7 +143,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
         )
           ? menu.children
               .at(sectionId)
-              ?.props.children.filter((child: React.ReactElement) => !child.props.replug)
+              ?.props.children.filter((child: React.ReactElement) => !child?.props?.replug)
           : [menu.children.at(sectionId)?.props.children];
       }
     } catch (err) {
