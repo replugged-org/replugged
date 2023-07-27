@@ -7,7 +7,7 @@ import type {
   RawContextItem,
 } from "../../../types/coremods/contextMenu";
 import { Logger } from "../../modules/logger";
-import { getByProps } from "../../modules/webpack";
+import { ContextMenu as ContextComponents } from "../../modules/components";
 
 const logger = Logger.api("ContextMenu");
 
@@ -42,10 +42,6 @@ function makeItem(
   }
 
   const { type, ...props } = raw;
-  // add in prop  for cleanup
-  props.replug = true;
-  // custom unique id if not added by dev
-  props.id ??= `repluggedContextItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`;
   if (props.children) {
     props.children = props.children.map((child: RawContextItem | ContextItem | undefined) =>
       makeItem(child),
@@ -100,9 +96,8 @@ type ContextMenuData = ContextMenuProps["ContextMenu"] & {
  */
 export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | null {
   const { navId } = menu;
-  const { MenuGroup, Menu: ContextMenu } = getByProps<
-    Record<string, React.ComponentType> & { Menu: React.FunctionComponent<ContextMenuData> }
-  >(["Menu", "MenuItem", "MenuGroup"])!;
+const {MenuGroup, ContextMenu }: {MenuGroup: React.FC<ContextMenuProps["MenuGroup"]>, ContextMenu: React.FC<ContextMenuProps["ContextMenu"] & {plugged?: boolean;}>} = ContextComponents;
+
   //return nothing as we weren't able to get ContextMenu component, gets handled in plain text patch
   if (!ContextMenu) return null;
 
@@ -156,8 +151,12 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
     try {
       const itemRet = makeItem(item.getItem(data, menu));
       if (itemRet) {
+        // adding prop for easy cleanup
+        itemRet.props.replug = true;
+        // custom unique id if not added by dev
+        itemRet.props.id ??= `repluggedItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`;
         menu.children.at(item.sectionId)?.props.children?.splice(item.indexInSection, 0, itemRet);
-      }      
+      }
     } catch (err) {
       logger.error(
         "Error while running GetContextItem function",
