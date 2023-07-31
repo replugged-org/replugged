@@ -84,7 +84,7 @@
     "REPLUGGED_COMMAND_RELOAD_RELOADED": "{type} \"{id}\" dimuat ulang!",
     "REPLUGGED_COMMAND_SAY_DESC": "Mengirim argumen yang telah ditentukan.",
     "REPLUGGED_BUTTON_GOT_IT": "Mengerti",
-    "REPLUGGED_COMMAND_HELP_DESC": "Memberi Anda daftar perintah atau informasi mengenai perintah tertentu.",
+    "REPLUGGED_COMMAND_HELP_DESC": "Memberikan daftar perintah atau information untuk perintah spesifik.",
     "REPLUGGED_COMMAND_ECHO_DESC": "Mengembalikan argumen tertentu.",
     "REPLUGGED_COMMAND_INSTALL_ERROR_INVALID_URL": "URL tidak valid! Harap tentukan URL atau nama pengguna/repositori GitHub yang valid.",
     "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "Plugin atau theme yang diminta tidak dapat ditemukan atau tidak valid.",
