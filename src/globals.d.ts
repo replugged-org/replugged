@@ -7,8 +7,6 @@ import * as replugged from "./renderer/replugged";
 import type { RepluggedNativeType } from "./preload";
 
 import type Lodash from "lodash";
-import { Clipboard } from "electron";
-
 declare global {
   export var appSettings: {
     set(setting: string, v: unknown): void;
@@ -34,7 +32,7 @@ declare global {
       focus(): void;
     };
     clipboard: {
-      copy: (text: string) => void;
+      copy: (text?: string) => void;
       cut: () => void;
       paste: () => void;
       read: () => string;
