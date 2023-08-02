@@ -221,5 +221,9 @@
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Habilitar React DevTools",
     "REPLUGGED_VIEW_UPDATES": "Ver {count, plural, =1 {# Update} other {# Updates}}",
     "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Este {type} no ha sido revisado por el equipo de Replugged y podría dañar su computadora. Úselo bajo su propio riesgo.",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Carga la extensión React DevTools, lo que le permite inspeccionar el árbol React y depurar más fácilmente. **Requiere reinicio**."
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Carga la extensión React DevTools, lo que le permite inspeccionar el árbol React y depurar más fácilmente. **Requiere reinicio**.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Error al descargar React DevTools.",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "Mirar en la tienda",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Mostrar contenido embebido del complemento",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Mostrar una tarjeta con información sobre un complemento cuando se comparte un enlace de tienda/instalación en el chat."
 }

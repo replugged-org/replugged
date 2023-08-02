@@ -113,6 +113,12 @@ export const General = (): React.ReactElement => {
         {Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY}
       </SwitchItem>
 
+      <SwitchItem
+        {...util.useSetting(generalSettings, "addonEmbeds")}
+        note={Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC}>
+        {Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS}
+      </SwitchItem>
+
       <ButtonItem
         button={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT}
         note={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_DESC}
