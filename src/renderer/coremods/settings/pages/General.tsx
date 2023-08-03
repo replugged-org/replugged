@@ -124,7 +124,10 @@ export const General = (): React.ReactElement => {
 
         <SwitchItem
           value={expValue}
-          onChange={(value) => restartModal(false, () => expOnChange(value))}
+          onChange={(value) => {
+            expOnChange(value);
+            restartModal(false);
+          }}
           note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}>
           {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
         </SwitchItem>
@@ -133,13 +136,14 @@ export const General = (): React.ReactElement => {
           value={rdtValue}
           onChange={(value) => {
             if (value) {
+              rdtOnChange(value);
               void RepluggedNative.reactDevTools
                 .downloadExtension()
                 .then(() => {
-                  rdtOnChange(value);
                   restartModal(true);
                 })
                 .catch(() => {
+                  rdtOnChange(false); // Disable if failed
                   toast.toast(
                     Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED,
                     toast.Kind.FAILURE,
