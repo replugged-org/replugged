@@ -13,7 +13,7 @@ import { readFile, writeFile } from "fs/promises";
 import fetch from "node-fetch";
 import { join } from "path";
 import { AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
-import { readTransaction } from "./settings";
+import { getSetting } from "./settings";
 
 const octokit = new Octokit();
 
@@ -87,10 +87,7 @@ async function github(
 }
 
 async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
-  const apiUrl =
-    ((await readTransaction("dev.replugged.Settings", (settings) => settings.get("apiUrl"))) as
-      | string
-      | undefined) ?? "https://replugged.dev";
+  const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", "https://replugged.dev");
   const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
   const asarUrl = `${manifestUrl}.asar`;

@@ -291,6 +291,11 @@ export declare class ChannelMessages {
     thisArg?: unknown,
   ) => Message[];
   public merge: (messages: Message[], prepend?: boolean, clearCache?: boolean) => ChannelMessages;
+  public mergeDelta: (
+    newMessages?: Message[],
+    modifiedMessages?: Message[],
+    deletedMessages?: Message[],
+  ) => ChannelMessages;
   public mutate: (
     callback: ((messages: ChannelMessages) => void) | MutatedChannelMessages,
     deep?: boolean,

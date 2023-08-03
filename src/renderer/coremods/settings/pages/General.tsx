@@ -1,8 +1,9 @@
-import { modal } from "@common";
+import { modal, toast } from "@common";
 import React from "@common/react";
 import {
   Button,
   ButtonItem,
+  Category,
   Divider,
   Flex,
   FormItem,
@@ -23,10 +24,36 @@ export const generalSettings = await settings.init<GeneralSettings, keyof typeof
 
 const konamiCode = ["38", "38", "40", "40", "37", "39", "37", "39", "66", "65"];
 
+function reload(): void {
+  setTimeout(() => window.location.reload(), 250);
+}
+
+function relaunch(): void {
+  setTimeout(() => window.DiscordNative.app.relaunch(), 250);
+}
+
+function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () => void): void {
+  const restart = doRelaunch ? relaunch : reload;
+  void modal
+    .confirm({
+      title: Messages.REPLUGGED_SETTINGS_RESTART_TITLE,
+      body: Messages.REPLUGGED_SETTINGS_RESTART,
+      confirmText: Messages.REPLUGGED_RESTART,
+      confirmColor: Button.Colors.RED,
+      onConfirm,
+      onCancel,
+    })
+    .then((answer) => answer && restart());
+}
+
 export const General = (): React.ReactElement => {
   const { value: expValue, onChange: expOnChange } = util.useSetting(
     generalSettings,
     "experiments",
+  );
+  const { value: rdtValue, onChange: rdtOnChange } = util.useSetting(
+    generalSettings,
+    "reactDevTools",
   );
 
   const [kKeys, setKKeys] = React.useState<number[]>([]);
@@ -63,19 +90,8 @@ export const General = (): React.ReactElement => {
 
       <Divider style={{ margin: "20px 0px" }} />
 
-      <FormItem
-        title={Messages.REPLUGGED_SETTINGS_BACKEND}
-        note={Messages.REPLUGGED_SETTINGS_BACKEND_DESC}
-        divider={true}
-        style={{ marginBottom: "20px" }}>
-        <TextInput
-          {...util.useSetting(generalSettings, "apiUrl")}
-          placeholder="https://replugged.dev"
-        />
-      </FormItem>
-
       {/* <SwitchItem
-        {...util.useSetting(configs, "experiments", false)}
+        {...util.useSetting(generalSettings, "pluginEmbeds", false)}
         note="Enable embedding plugins in chat">
         Plugin Embeds
       </SwitchItem> */}
@@ -87,24 +103,9 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       <SwitchItem
-        value={expValue}
-        onChange={(value) => {
-          void modal
-            .confirm({
-              title: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS,
-              body: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format(),
-              confirmText: Messages.REPLUGGED_RELOAD,
-              confirmColor: Button.Colors.RED,
-            })
-            .then((answer) => {
-              if (answer) {
-                expOnChange(value);
-                setTimeout(() => window.location.reload(), 250);
-              }
-            });
-        }}
-        note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}>
-        {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
+        {...util.useSetting(generalSettings, "addonEmbeds")}
+        note={Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC}>
+        {Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS}
       </SwitchItem>
 
       <SwitchItem
@@ -113,15 +114,66 @@ export const General = (): React.ReactElement => {
         {Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY}
       </SwitchItem>
 
-      <ButtonItem
-        button={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT}
-        note={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_DESC}
-        onClick={() => {
-          socket?.close(1000, "Reconnecting");
-          initWs(true);
-        }}>
-        {Messages.REPLUGGED_SETTINGS_DEV_COMPANION}
-      </ButtonItem>
+      <Category
+        title={Messages.REPLUGGED_SETTINGS_ADVANCED}
+        note={Messages.REPLUGGED_SETTINGS_ADVANCED_DESC}>
+        <FormItem
+          title={Messages.REPLUGGED_SETTINGS_BACKEND}
+          note={Messages.REPLUGGED_SETTINGS_BACKEND_DESC}
+          divider={true}
+          style={{ marginBottom: "20px" }}>
+          <TextInput
+            {...util.useSetting(generalSettings, "apiUrl")}
+            placeholder="https://replugged.dev"
+          />
+        </FormItem>
+
+        <SwitchItem
+          value={expValue}
+          onChange={(value) => {
+            expOnChange(value);
+            restartModal(false);
+          }}
+          note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}>
+          {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
+        </SwitchItem>
+
+        <SwitchItem
+          value={rdtValue}
+          onChange={(value) => {
+            if (value) {
+              rdtOnChange(value);
+              void RepluggedNative.reactDevTools
+                .downloadExtension()
+                .then(() => {
+                  restartModal(true);
+                })
+                .catch(() => {
+                  rdtOnChange(false); // Disable if failed
+                  toast.toast(
+                    Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED,
+                    toast.Kind.FAILURE,
+                  );
+                });
+            } else {
+              rdtOnChange(value);
+              restartModal(true);
+            }
+          }}
+          note={Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC.format()}>
+          {Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS}
+        </SwitchItem>
+
+        <ButtonItem
+          button={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT}
+          note={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_DESC}
+          onClick={() => {
+            socket?.close(1000, "Reconnecting");
+            initWs(true);
+          }}>
+          {Messages.REPLUGGED_SETTINGS_DEV_COMPANION}
+        </ButtonItem>
+      </Category>
 
       {/* Sleeping? Wake up. */}
       {isEasterEgg && (
