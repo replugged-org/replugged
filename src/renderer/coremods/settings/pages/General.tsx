@@ -103,6 +103,12 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       <SwitchItem
+        {...util.useSetting(generalSettings, "addonEmbeds")}
+        note={Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC}>
+        {Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS}
+      </SwitchItem>
+
+      <SwitchItem
         {...util.useSetting(generalSettings, "autoApplyQuickCss")}
         note={Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC}>
         {Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY}
