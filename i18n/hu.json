@@ -201,7 +201,6 @@
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ALL": "Minden frissítés sikeresen befejeződött.",
     "REPLUGGED_UPDATES_TOAST_SUCCESS_ONE": "A frissítés sikeresen befejeződött.",
     "REPLUGGED_UPDATES_TOAST_NEW": "{count, plural, =1 {# new update} other {# new updates}} elérhető!",
-    "REPLUGGED_LIST_RESULTS": "",
     "REPLUGGED_ADDON_AUTHORS_MANY": "szerző: {author1}, {author2}, {author3} és {count, plural, =1 {# other} other {# others}}",
     "REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY": "A(z) {name} újratöltést igényel a megfelelő működéshez. Újratölti most?",
     "REPLUGGED_RELOAD": "Újratöltés"

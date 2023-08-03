@@ -16,7 +16,6 @@
     "REPLUGGED_I18N_CONTRIBUTE": "Tahad aidata tõlkida Replugged'i? Mine meie [Weblate]({weblateUrl}) lehele!",
     "REPLUGGED_SETTINGS_OVERLAY": "Ülekatte DevTools",
     "REPLUGGED_SETTINGS_OVERLAY_DESC": "Avab DevTools'i akna, mis võimaldab teil kontrollida, mis Discord'i mängusiseses ülekattes toimub.",
-    "REPLUGGED_UPDATES_AVAILABLE": "",
     "REPLUGGED_UPDATES_LAST_CHECKED": "Viimati kontrollitud: {date}",
     "REPLUGGED_UPDATES_OPEN_UPDATER": "Ava Uuendaja",
     "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged saab uuendusi taustal alla laadida ja installida ilma teid liigselt tüütamata. Pange tähele, et uuendused nõuavad kasutaja tegevust, kui on vaja uuesti laadida või kui esineb konflikt.",

@@ -3,10 +3,11 @@ import { Messages } from "@common/i18n";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
 import { setUpdaterState } from "src/renderer/managers/updater";
+import { openExternal } from "src/renderer/util";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
-import { getAddonType, label } from "../settings/pages";
+import { getAddonType, getSourceLink, label } from "../settings/pages";
 
 const logger = Logger.coremod("Installer");
 
@@ -136,7 +137,7 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
   return true;
 }
 
-function authorList(authors: string[]): string {
+export function authorList(authors: string[]): string {
   if (authors.length === 1) {
     return Messages.REPLUGGED_ADDON_AUTHORS_ONE.format({
       author1: authors[0],
@@ -164,7 +165,10 @@ function authorList(authors: string[]): string {
   });
 }
 
-async function showInstallPrompt(manifest: AnyAddonManifest): Promise<boolean> {
+async function showInstallPrompt(
+  manifest: AnyAddonManifest,
+  linkToStore = true,
+): Promise<boolean | null> {
   let type: string;
   switch (manifest.type) {
     case "replugged-plugin":
@@ -181,6 +185,8 @@ async function showInstallPrompt(manifest: AnyAddonManifest): Promise<boolean> {
     name: manifest.name,
     authors,
   });
+
+  const storeUrl = linkToStore ? getSourceLink(manifest) : undefined;
 
   const res = await modal.confirm({
     title,
@@ -200,9 +206,11 @@ async function showInstallPrompt(manifest: AnyAddonManifest): Promise<boolean> {
     ),
     confirmText: Messages.REPLUGGED_CONFIRM,
     cancelText: Messages.REPLUGGED_CANCEL,
+    secondaryConfirmText: storeUrl ? Messages.REPLUGGED_INSTALLER_OPEN_STORE : undefined,
+    onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : null),
   });
 
-  return res || false;
+  return res;
 }
 
 export type InstallResponse =
@@ -228,6 +236,8 @@ export type InstallResponse =
  * @param identifier Identifier for the addon in that source
  * @param source Updater source type
  * @param id Optional ID for the addon in that source. Useful for GitHub repositories that have multiple addons.
+ * @param showToasts Whether to show toasts (default: true)
+ * @param linkToStore Whether to link to the store page (default: true)
  * @returns
  */
 export async function installFlow(
@@ -235,6 +245,7 @@ export async function installFlow(
   source?: InstallerSource,
   id?: string,
   showToasts = true,
+  linkToStore = true,
 ): Promise<InstallResponse> {
   const info = await getInfo(identifier, source, id);
   if (!info) {
@@ -263,9 +274,12 @@ export async function installFlow(
 
   window.DiscordNative.window.focus();
 
-  const confirm = await showInstallPrompt(info.manifest);
+  const confirm = await showInstallPrompt(info.manifest, linkToStore);
   if (!confirm) {
-    toast.toast(Messages.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL, toast.Kind.MESSAGE);
+    if (confirm === false && showToasts) {
+      // Do not show if null ("open in store" clicked)
+      toast.toast(Messages.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL, toast.Kind.MESSAGE);
+    }
     return {
       kind: "CANCELLED",
       manifest: info.manifest,
