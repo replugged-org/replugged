@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Band, FluxDispatcher as Dispatcher } from "./fluxDispatcher";
+import type { DispatchBand, FluxDispatcher as Dispatcher } from "./fluxDispatcher";
 import { waitForProps } from "../webpack";
 
 type DispatchToken = string;
@@ -55,7 +55,7 @@ declare class Callbacks {
 }
 
 export declare class Store {
-  public constructor(dispatcher: Dispatcher, actions?: ActionHandlerRecord, band?: Band);
+  public constructor(dispatcher: Dispatcher, actions?: ActionHandlerRecord, band?: DispatchBand);
 
   public static destroy(): void;
   public static getAll(): Store[];
@@ -85,7 +85,7 @@ export declare class Store {
   public removeChangeListener(listener: Callback): void;
   public removeReactChangeListener(listener: Callback): void;
 
-  public registerActionHandlers(actions: ActionHandlerRecord, band?: Band): void;
+  public registerActionHandlers(actions: ActionHandlerRecord, band?: DispatchBand): void;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   public __getLocalVars?(): Record<string, unknown>;

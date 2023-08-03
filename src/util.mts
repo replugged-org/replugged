@@ -47,7 +47,13 @@ if (!existsSync(CONFIG_PATH)) {
   mkdirSync(CONFIG_PATH, { recursive: true });
 }
 
-const CONFIG_FOLDER_NAMES = ["plugins", "themes", "settings", "quickcss"] as const;
+const CONFIG_FOLDER_NAMES = [
+  "plugins",
+  "themes",
+  "settings",
+  "quickcss",
+  "react-devtools",
+] as const;
 
 export const CONFIG_PATHS = Object.fromEntries(
   CONFIG_FOLDER_NAMES.map((name) => {

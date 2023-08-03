@@ -12,6 +12,7 @@ export type GeneralSettings = {
   autoApplyQuickCss?: boolean;
   showWelcomeNoticeOnOpen?: boolean;
   addonEmbeds?: boolean;
+  reactDevTools?: boolean;
 };
 
 export const defaultSettings = {
@@ -20,5 +21,6 @@ export const defaultSettings = {
   badges: true,
   autoApplyQuickCss: false,
   showWelcomeNoticeOnOpen: true,
+  reactDevTools: false,
   addonEmbeds: true,
 } satisfies Partial<GeneralSettings>;
