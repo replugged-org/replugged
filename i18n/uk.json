@@ -222,5 +222,10 @@
     "REPLUGGED_SETTINGS_ADVANCED": "Розширені налаштування",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Ввімкнути React DevTools",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Загружає розширення React DevTools, спрощуючи перегляд дерева React та відлагоджування. **Потребує перезагрузку**.",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Не вдалося завантажити React DevTools."
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Не вдалося завантажити React DevTools.",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "Переглянути в магазині",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Показувати картку додатків",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Показувати картку з інформацією про додаток коли посилання в магазин чи встановлення поширено в чаті.",
+    "REPLUGGED_RESTART": "Перезапустити",
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "Потрібен перезапуск"
 }
