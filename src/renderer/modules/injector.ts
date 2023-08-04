@@ -349,7 +349,7 @@ export class Injector {
     addMenuItem: <T extends Record<string, unknown> = Record<string, unknown>>(
       navId: ContextMenuTypes,
       item: GetContextItem<T>,
-      sectionId = -2, // Replugged's group
+      sectionId: number | undefined = undefined,
       indexInSection = Infinity, // Last item
     ) => {
       const uninjector = addContextMenuItem(

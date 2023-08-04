@@ -225,5 +225,7 @@
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Failed to download React DevTools.",
     "REPLUGGED_INSTALLER_OPEN_STORE": "View in Store",
     "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Show Addon Embeds",
-    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Show a card with information on an addon when a store/install link is shared in chat."
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Show a card with information on an addon when a store/install link is shared in chat.",
+    "REPLUGGED_RESTART": "Restart",
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "Restart Required"
 }

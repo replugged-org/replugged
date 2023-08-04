@@ -23,7 +23,7 @@
     "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Hindert Discord daran, deinen Token aus dem localStorage zu löschen. Dadurch wirst du selterner ungewollt abgemeldet.",
     "REPLUGGED_SETTINGS_NO_CLYDE": "Clyde auslöschen",
     "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Ersetzt [Clyde]({clydeUrl}) in Replugged Befehlen mit einer Variation an Avataren und Nutzernamen, welche von Plugin-Entwicklern angegeben werden können - fällt standardmäßig auf \"Replugged\" zurück.",
-    "REPLUGGED_SETTINGS_OVERLAY": "Overlay DevTools",
+    "REPLUGGED_SETTINGS_OVERLAY": "DevTools Overlay",
     "REPLUGGED_SETTINGS_OVERLAY_DESC": "Öffnet ein DevTools-Fenster, in dem du untersuchen kannst, was innerhalb des In-Game-Overlays von Discord geschieht.",
     "REPLUGGED_SETTINGS_RESTART": "Diese Einstellung benötigt ein Neuladen des Discord-Clients um zu funktionieren. Möchtest du Discord jetzt neustarten?",
     "REPLUGGED_SNIPPET_APPLIED": "Snippet angewandt",
@@ -104,8 +104,8 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_LESS": "Weniger Anzeigen",
     "REPLUGGED_UPDATES_OPTS_DEBUG_UNAUTHORIZED_PLUGINS": "Nicht autorisierte Plugins:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_BETTERDISCORD_PLUGINS": "BetterDiscord Erweiterungen:",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_THEMES": "Themes:",
-    "REPLUGGED_UPDATES_OPTS_DEBUG_LABS": "Labs:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_THEMES": "Themen:",
+    "REPLUGGED_UPDATES_OPTS_DEBUG_LABS": "Labore:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC": "Einstellungen Synchronisieren:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_CACHED_FILES": "Gecachte Dateien:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_ACCOUNT": "Account:",
@@ -222,5 +222,10 @@
     "REPLUGGED_SETTINGS_ADVANCED": "Erweiterte Einstellungen",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "React DevTools aktivieren",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Lädt die React DevTools-Erweiterungen, welche erlaubt, den React-DOM anzusehen und einfacher zu debuggen.",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Herunterladen der React DevTools fehlgeschlagen."
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Herunterladen der React DevTools fehlgeschlagen.",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "Im Shop ansehen",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Addon-Einbettungen anzeigen",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Zeige eine Informationskarte über das Addon when ein Shop-/Installationslink im Chat geteilt wird.",
+    "REPLUGGED_RESTART": "Neustart",
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "Neustart benötigt"
 }
