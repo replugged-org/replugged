@@ -15,10 +15,6 @@ import * as util from "../../../util";
 import { Messages } from "@common/i18n";
 import { type GeneralSettings, defaultSettings } from "src/types";
 import { initWs, socket } from "../../devCompanion";
-import { getByProps } from "@webpack";
-import { Logger } from "@replugged";
-
-const logger = Logger.coremod("GeneralSettings");
 
 export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
@@ -26,37 +22,6 @@ export const generalSettings = await settings.init<GeneralSettings, keyof typeof
 );
 
 const konamiCode = ["38", "38", "40", "40", "37", "39", "37", "39", "66", "65"];
-
-function reloadSidebar(): void {
-  const sidebarClassMod = getByProps<Record<"sidebar" | "sidebarRegion", string>>(
-    "sidebar",
-    "sidebarRegion",
-  );
-  if (!sidebarClassMod) {
-    logger.error("Failed to find sidebar class module");
-    return;
-  }
-
-  const sidebar = document.querySelector(`.${sidebarClassMod.sidebar}`);
-  if (!sidebar) {
-    logger.error("Failed to find sidebar element");
-    return;
-  }
-
-  const sidebarOwner = util.getOwnerInstance(sidebar) as Record<string, unknown> & {
-    forceUpdate: () => void;
-  };
-  if (!sidebarOwner) {
-    logger.error("Failed to find sidebar owner instance");
-    return;
-  }
-  if (!sidebarOwner.forceUpdate) {
-    logger.error("Failed to find sidebar owner forceUpdate");
-    return;
-  }
-
-  sidebarOwner.forceUpdate();
-}
 
 export const General = (): React.ReactElement => {
   const { value: expValue, onChange: expOnChange } = util.useSetting(
@@ -124,24 +89,19 @@ export const General = (): React.ReactElement => {
       <SwitchItem
         value={expValue}
         onChange={(value) => {
-          if (value) {
-            void modal
-              .confirm({
-                title: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS,
-                body: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format(),
-                confirmText: Messages.REPLUGGED_CONFIRM,
-                confirmColor: Button.Colors.RED,
-              })
-              .then((answer) => {
-                if (answer) {
-                  expOnChange(value);
-                  reloadSidebar();
-                }
-              });
-          } else {
-            expOnChange(value);
-            reloadSidebar();
-          }
+          void modal
+            .confirm({
+              title: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS,
+              body: Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format(),
+              confirmText: Messages.REPLUGGED_RELOAD,
+              confirmColor: Button.Colors.RED,
+            })
+            .then((answer) => {
+              if (answer) {
+                expOnChange(value);
+                setTimeout(() => window.location.reload(), 250);
+              }
+            });
         }}
         note={Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC.format()}>
         {Messages.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS}
