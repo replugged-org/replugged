@@ -192,7 +192,7 @@ export async function release() {
         if (clean) nextVersion = cleaned;
       }
     } else {
-      await confirmOrExit(`Version ${nextVersion} is not a valid semver. Continue?`, true);
+      await confirmOrExit(`Version ${nextVersion} is not a valid semver. Continue?`);
     }
   }
 
