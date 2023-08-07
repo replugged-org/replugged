@@ -11,7 +11,7 @@ export const plaintextPatches: RawPlaintextPatch[] = [];
  * @returns Patched module
  */
 export function patchModuleSource(mod: WebpackModule): WebpackModule {
-  const originalSource = mod.toString();
+  const originalSource = mod.toString().replaceAll("\n", "");
 
   const patchedSource = plaintextPatches.reduce((source, patch) => {
     if (
