@@ -19,6 +19,7 @@ import { hideBin } from "yargs/helpers";
 import chalk from "chalk";
 import WebSocket from "ws";
 import { fileURLToPath, pathToFileURL } from "url";
+import { release } from "./release.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const directory = process.cwd();
@@ -566,6 +567,7 @@ const { argv } = yargs(hideBin(process.argv))
       sendUpdateNotification();
     },
   )
+  .command("release", "Interactively release a new version of an addon", () => {}, release)
   .parserConfiguration({
     "boolean-negation": false,
   })
