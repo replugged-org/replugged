@@ -41,7 +41,7 @@ function runCommand(command) {
   try {
     const result = execSync(command, {
       encoding: "utf8",
-      cwd: process.cwd(),
+      cwd: getRootDir(),
     });
     return result;
   } catch (error) {
@@ -57,8 +57,35 @@ function onCancel() {
   process.exit(128); // SIGINT
 }
 
+/** @type {string} */
+let root;
+
+function getRootDir() {
+  if (root) return root;
+
+  try {
+    root = execSync("git rev-parse --show-toplevel", {
+      encoding: "utf8",
+      cwd: process.cwd(),
+    }).trim();
+    return root;
+  } catch (error) {
+    // @ts-expect-error
+    if (error.message.includes("not a git repository")) {
+      console.log(chalk.red("You must run this command from within a git repository"));
+      process.exit(1);
+    }
+
+    // @ts-expect-error
+    console.error(`Command failed with exit code ${error.status}: ${error.message}`);
+    process.exit(1);
+  }
+
+  throw new Error("Unreachable");
+}
+
 export async function release() {
-  const directory = process.cwd();
+  const directory = getRootDir();
 
   const status = runCommand("git status --porcelain");
   const isClean = !status.trim();
