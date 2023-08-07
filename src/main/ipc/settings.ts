@@ -61,8 +61,23 @@ export async function writeTransaction<T>(
   });
 }
 
+export async function getSetting<T>(namespace: string, key: string, fallback: T): Promise<T>;
+export async function getSetting<T>(
+  namespace: string,
+  key: string,
+  fallback?: T,
+): Promise<T | undefined>;
+export async function getSetting<T>(
+  namespace: string,
+  key: string,
+  fallback?: T,
+): Promise<T | undefined> {
+  const setting = (await readTransaction(namespace, (settings) => settings.get(key))) as T;
+  return setting ?? fallback;
+}
+
 ipcMain.handle(RepluggedIpcChannels.GET_SETTING, async (_, namespace: string, key: string) =>
-  readTransaction(namespace, (settings) => settings.get(key)),
+  getSetting(namespace, key),
 );
 
 ipcMain.handle(RepluggedIpcChannels.HAS_SETTING, async (_, namespace: string, key: string) =>

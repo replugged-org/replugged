@@ -1,0 +1,27 @@
+/* Fix Discord's style priority issue. Need to match specificity. */
+div[class] .addon-embed-copied:hover {
+  color: var(--text-positive) !important;
+}
+
+.addon-embed-main-content {
+  display: flex;
+  flex: 1;
+  gap: 16px;
+  align-items: center;
+  max-width: 100%;
+}
+
+.addon-embed-build-info {
+  flex: auto;
+  min-width: 150px;
+  max-width: 210px;
+}
+
+.replugged-addon-embed-button-tooltip {
+  display: flex;
+  flex: 1;
+}
+
+.replugged-addon-embed-button {
+  flex: 1;
+}
