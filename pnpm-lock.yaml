@@ -94,6 +94,9 @@ devDependencies:
   '@types/react-reconciler':
     specifier: ^0.28.2
     version: 0.28.2
+  '@types/semver':
+    specifier: ^7.5.0
+    version: 7.5.0
   '@types/superagent':
     specifier: ^4.1.18
     version: 4.1.18
