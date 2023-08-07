@@ -35,9 +35,10 @@ async function confirmOrExit(message, initial = false) {
  * Run a command and return the output.
  *
  * @param {string} command
+ * @param {boolean} [exit = true] Exit if the command fails
  * @returns {string}
  */
-function runCommand(command) {
+function runCommand(command, exit = true) {
   try {
     const result = execSync(command, {
       encoding: "utf8",
@@ -46,7 +47,9 @@ function runCommand(command) {
     return result;
   } catch (error) {
     // @ts-expect-error
-    console.error(`Command failed with exit code ${error.status}: ${error.message}`);
+    if (!exit) return error.stdout;
+    // @ts-expect-error
+    console.error(error.message);
     process.exit(1);
   }
   throw new Error("Unreachable");
@@ -243,11 +246,26 @@ export async function release() {
     { onCancel },
   );
 
+  const hasSigningKey = Boolean(runCommand("git config --get user.signingkey", false).trim());
+  const commitSigningEnabled =
+    runCommand("git config --get commit.gpgsign", false).trim() === "true";
+  const tagSigningEnabled = runCommand("git config --get tag.gpgsign", false).trim() === "true";
+
+  let sign = false;
+  if (hasSigningKey && (!commitSigningEnabled || !tagSigningEnabled)) {
+    ({ sign } = await prompts({
+      type: "confirm",
+      name: "sign",
+      message: "Sign commit and tag?",
+      initial: true,
+    }));
+  }
+
   // Commit changes
-  runCommand(`git commit -m "${message}"`);
+  runCommand(`git commit${sign ? " -S" : ""} -m "${message}"`);
 
   // Tag commit
-  runCommand(`git tag ${tagName}`);
+  runCommand(`git tag${sign ? " -s" : ""} -a -m "${message}" "${tagName}"`);
 
   // Push changes
   await confirmOrExit("Push changes to remote?", true);
