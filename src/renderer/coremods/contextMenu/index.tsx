@@ -13,7 +13,7 @@ const logger = Logger.api("ContextMenu");
 
 export const menuItems = {} as Record<
   ContextMenuTypes,
-  Array<{ getItem: GetContextItem; sectionId: number; indexInSection: number }>
+  Array<{ getItem: GetContextItem; sectionId: number | undefined; indexInSection: number }>
 >;
 
 type RepluggedContextItem = ContextItem & {
@@ -42,6 +42,7 @@ function makeItem(
   }
 
   const { type, ...props } = raw;
+  // add in prop  for cleanup
   if (props.children) {
     props.children = props.children.map((child: RawContextItem | ContextItem | undefined) =>
       makeItem(child),
@@ -62,7 +63,7 @@ function makeItem(
 export function addContextMenuItem(
   navId: ContextMenuTypes,
   getItem: GetContextItem,
-  sectionId: number,
+  sectionId: number | undefined,
   indexInSection: number,
 ): () => void {
   if (!menuItems[navId]) menuItems[navId] = [];
@@ -120,14 +121,25 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   }
 
   //Add group only if it doesn't exist
-  if (!menu.children.some?.((child) => child?.props?.id === "replugged")) {
+  if (!menu.children?.some?.((child) => child?.props?.id === "replugged")) {
     const repluggedGroup = <MenuGroup />;
     repluggedGroup.props.id = "replugged";
     repluggedGroup.props.children = [];
 
     // Add in the new menu items right above the DevMode Copy ID
     // If the user doesn't have DevMode enabled, the new items will be at the bottom
-    menu.children.splice(-1, 0, repluggedGroup);
+    const hasCopyId =
+          menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
+          menu.children
+            .at(-1)
+            ?.props?.children?.some((c: React.ReactElement) =>
+              c?.props?.id?.startsWith("devmode-copy-id-"),
+            );
+    if (hasCopyId) {
+      menu.children.splice(-1, 0, repluggedGroup);
+    } else {
+      menu.children.push(repluggedGroup);
+    }
   }
 
   //get sections from where to clean items
@@ -138,17 +150,15 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   //cleaning old items before adding new ones
   usedSectionIds.forEach((sectionId) => {
     try {
-      if (menu.children.at(sectionId)?.props?.children) {
-        menu.children.at(sectionId)!.props.children = Array.isArray(
-          menu.children.at(sectionId)?.props.children,
+      if (menu.children.at(sectionId!)?.props?.children) {
+        menu.children.at(sectionId!)!.props.children = Array.isArray(
+          menu.children.at(sectionId!)?.props.children,
         )
-          ? menu.children
-              .at(sectionId)
-              ?.props.children.filter((child: React.ReactElement) => !child?.props?.replug)
-          : [menu.children.at(sectionId)?.props.children];
+          ? menu.children.at(sectionId!)?.props.children.filter((child: React.ReactElement) => !child?.props?.replug)
+          : [menu.children.at(sectionId!)?.props.children];
       }
     } catch (err) {
-      logger.error("Error while removing old menu items", err, menu.children.at(sectionId));
+      logger.error("Error while removing old menu items", err, menu.children.at(sectionId!));
     }
   });
 
@@ -160,15 +170,27 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
         // adding prop for easy cleanup
         itemRet.props.replug = true;
         // custom unique id if not added by dev
-        itemRet.props.id ??= `repluggedItem-${Math.random().toString(36).substring(2)}`;
-        menu.children.at(item.sectionId)?.props.children?.splice(item.indexInSection, 0, itemRet);
+        itemRet.props.id ??= `repluggedItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`;
+        const hasCopyId =
+          menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
+          menu.children
+            .at(-1)
+            ?.props?.children.some((c: React.ReactElement) =>
+              c?.props?.id?.startsWith("devmode-copy-id-"),
+            );
+        const section =
+          typeof item.sectionId === "undefined"
+            ? menu.children.at(hasCopyId ? -2 : -1)
+            : menu.children.at(item.sectionId);
+        if (!section) return logger.error("Couldn't find section", item.sectionId, menu.children);
+        section?.props.children?.splice(item.indexInSection, 0, itemRet);
       }
     } catch (err) {
       logger.error(
         "Error while running GetContextItem function",
         err,
         item.getItem,
-        menu.children.at(item.sectionId),
+        menu.children.at(item.sectionId!),
       );
     }
   });
