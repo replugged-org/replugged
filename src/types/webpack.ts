@@ -74,7 +74,7 @@ export interface WaitForOptions {
   timeout?: number;
 }
 
-export interface byPropsOptions {
+export interface ByPropsOptions {
   /** searches inside the prototype if getting by props */
   byPrototype: boolean;
 }

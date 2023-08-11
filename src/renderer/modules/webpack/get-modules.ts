@@ -1,4 +1,4 @@
-import type { Filter, GetModuleOptions, RawModule } from "src/types";
+import type { ByPropsOptions, Filter, GetModuleOptions, RawModule } from "src/types";
 import { wpRequire } from "./patch-load";
 import { logError } from "./util";
 
@@ -69,7 +69,7 @@ function* iterateModuleExports(
 export function getExportsForProps<T, P extends PropertyKey = keyof T>(
   m: unknown,
   props: P[],
-  options?: { byPrototype?: boolean },
+  options?: ByPropsOptions,
 ): T | undefined {
   // Loop over the module and its exports at the top level
   // Return the first thing that has all the indicated props
