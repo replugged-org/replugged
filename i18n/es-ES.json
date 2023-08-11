@@ -225,5 +225,7 @@
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Error al descargar React DevTools.",
     "REPLUGGED_INSTALLER_OPEN_STORE": "Mirar en la tienda",
     "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Mostrar contenido embebido del complemento",
-    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Mostrar una tarjeta con información sobre un complemento cuando se comparte un enlace de tienda/instalación en el chat."
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Mostrar una tarjeta con información sobre un complemento cuando se comparte un enlace de tienda/instalación en el chat.",
+    "REPLUGGED_RESTART": "Reiniciar",
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "Se requiere un reinicio"
 }
