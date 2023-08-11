@@ -87,7 +87,7 @@ export function getByProps<T, P extends PropertyKey = keyof T>(
   options: { all?: boolean; raw: true } & ByPropsOptions,
 ): RawModule<T> | Array<RawModule<T>> | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
-  props: P,
+  props: P[],
   options: { all?: boolean; raw?: false } & ByPropsOptions,
 ): T | T[] | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(

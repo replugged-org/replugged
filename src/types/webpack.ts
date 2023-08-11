@@ -76,5 +76,5 @@ export interface WaitForOptions {
 
 export interface ByPropsOptions {
   /** searches inside the prototype if getting by props */
-  byPrototype: boolean;
+  byPrototype?: boolean;
 }
