@@ -120,23 +120,21 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
     menu.children = [menu.children];
   }
 
-
   //Add group only if it doesn't exist
   if (!menu.children?.some?.((child) => child?.props?.id === "replugged")) {
     const repluggedGroup = <MenuGroup />;
     repluggedGroup.props.id = "replugged";
     repluggedGroup.props.children = [];
 
-
     // Add in the new menu items right above the DevMode Copy ID
     // If the user doesn't have DevMode enabled, the new items will be at the bottom
     const hasCopyId =
-          menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
-          menu.children
-            .at(-1)
-            ?.props?.children?.some((c: React.ReactElement) =>
-              c?.props?.id?.startsWith("devmode-copy-id-"),
-            );
+      menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
+      menu.children
+        .at(-1)
+        ?.props?.children?.some((c: React.ReactElement) =>
+          c?.props?.id?.startsWith("devmode-copy-id-"),
+        );
     if (hasCopyId) {
       menu.children.splice(-1, 0, repluggedGroup);
     } else {
@@ -156,7 +154,9 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
         menu.children.at(sectionId!)!.props.children = Array.isArray(
           menu.children.at(sectionId!)?.props.children,
         )
-          ? menu.children.at(sectionId!)?.props.children.filter((child: React.ReactElement) => !child?.props?.replug)
+          ? menu.children
+              .at(sectionId!)
+              ?.props.children.filter((child: React.ReactElement) => !child?.props?.replug)
           : [menu.children.at(sectionId!)?.props.children];
       }
     } catch (err) {
