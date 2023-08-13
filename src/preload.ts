@@ -68,8 +68,9 @@ const RepluggedNative = {
       type: InstallerType,
       path: string,
       url: string,
+      version: string,
     ): Promise<InstallResultSuccess | InstallResultFailure> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, false),
+      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, false, version),
   },
 
   quickCSS: {
