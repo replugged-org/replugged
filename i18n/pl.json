@@ -225,7 +225,7 @@
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Nie udało się pobrać React DevTools.",
     "REPLUGGED_INSTALLER_OPEN_STORE": "Zobacz w Sklepie",
     "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Włącz osadzone karty dodatków",
-    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Pokaż karty z informacjami o dodatkach, gdy link do sklepu lub instalacji jest udostępniany na czacie.",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Pokaż kartę z informacjami o dodatku, gdy link do sklepu lub instalacji jest udostępniany na czacie.",
     "REPLUGGED_RESTART": "Uruchom ponownie",
     "REPLUGGED_SETTINGS_RESTART_TITLE": "Ponowne uruchomienie wymagane"
 }
