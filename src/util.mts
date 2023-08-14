@@ -19,17 +19,25 @@ function isCommandInstalled(command: string): boolean {
   }
 }
 
-const ELEVATION_TOOLS = ["doas", "sudo", "su -c"];
-const DETECTED_TOOLS = ELEVATION_TOOLS.filter((x) => isCommandInstalled(x));
+function getElevationTool(): string {
+  if (process.platform === "win32") {
+    return "";
+  }
 
-if (DETECTED_TOOLS.length === 0) {
-  console.error(
-    `${AnsiEscapes.RED}Failed to detect any tool for elevation. Assuming no tools are is required.${AnsiEscapes.RESET}`,
-  );
-  DETECTED_TOOLS[0] = "";
+  const ELEVATION_TOOLS = ["doas", "sudo", "su -c"];
+  const DETECTED_TOOLS = ELEVATION_TOOLS.filter((x) => isCommandInstalled(x));
+
+  if (DETECTED_TOOLS.length === 0) {
+    console.error(
+      `${AnsiEscapes.RED}Failed to detect any tool for elevation. Assuming no tools are is required.${AnsiEscapes.RESET}`,
+    );
+    return "";
+  }
+
+  return DETECTED_TOOLS[0];
 }
 
-export const PRIV_CMD_EXEC = DETECTED_TOOLS[0];
+export const PRIV_CMD_EXEC = getElevationTool();
 
 const REPLUGGED_FOLDER_NAME = "replugged";
 export const configPathFn = (): string => {
@@ -102,12 +110,14 @@ if (!existsSync(QUICK_CSS_FILE)) {
   writeFileSync(QUICK_CSS_FILE, "");
 }
 
-const QUICK_CSS_PERMS = statSync(QUICK_CSS_FILE);
-if (QUICK_CSS_PERMS.gid === 0 && QUICK_CSS_PERMS.uid === 0) {
-  console.warn(
-    `${AnsiEscapes.YELLOW}Detected quickcss/main.css owned by root, attempting to fix...${AnsiEscapes.RESET}`,
-  );
+if (process.platform === "linux") {
+  const QUICK_CSS_PERMS = statSync(QUICK_CSS_FILE);
+  if (QUICK_CSS_PERMS.gid === 0 && QUICK_CSS_PERMS.uid === 0) {
+    console.warn(
+      `${AnsiEscapes.YELLOW}Detected quickcss/main.css owned by root, attempting to fix...${AnsiEscapes.RESET}`,
+    );
 
-  const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
-  execSync(`${PRIV_CMD_EXEC} chown ${REAL_UID}:${REAL_GID} ${QUICK_CSS_FILE}`);
+    const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
+    execSync(`${PRIV_CMD_EXEC} chown ${REAL_UID}:${REAL_GID} ${QUICK_CSS_FILE}`);
+  }
 }

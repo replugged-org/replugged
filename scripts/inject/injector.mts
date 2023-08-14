@@ -4,7 +4,13 @@ import { fileURLToPath } from "url";
 import readline from "readline";
 import { execSync } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
-import { getCommand } from "./util.mjs";
+import {
+  getCommand,
+  privilegedMkdir,
+  privilegedRename,
+  privilegedRm,
+  privilegedWriteFile,
+} from "./util.mjs";
 import { AnsiEscapes, CONFIG_PATH, PRIV_CMD_EXEC } from "../../src/util.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -35,13 +41,7 @@ export const correctMissingMainAsar = async (appDir: string): Promise<boolean> =
         `${AnsiEscapes.YELLOW}Your Discord installation was not properly unplugged, attempting to fix...${AnsiEscapes.RESET}`,
       );
       try {
-        execSync(
-          `${PRIV_CMD_EXEC} mv ${join(appDir, "..", "app.orig.asar")} ${join(
-            appDir,
-            "..",
-            "app.asar",
-          )}`,
-        );
+        await privilegedRename(join(appDir, "..", "app.orig.asar"), join(appDir, "..", "app.asar"));
         console.log(
           `${AnsiEscapes.GREEN}Fixed your Discord installation successfully! Continuing with Replugged installation...${AnsiEscapes.RESET}`,
           "\n",
@@ -172,10 +172,10 @@ export const inject = async (
   }
 
   try {
-    execSync(`${PRIV_CMD_EXEC} mv ${appDir} ${join(appDir, "..", "app.orig.asar")}`);
+    await privilegedRename(appDir, join(appDir, "..", "app.orig.asar"));
   } catch {
     console.error(
-      `${AnsiEscapes.RED}Failed to rename app.asar while plugging. If Discord is open, make sure it is closed.${AnsiEscapes.RESET}`,
+      `${AnsiEscapes.RED}Failed to rename app.asar while plugging. If Discord is open, please close it and try again.${AnsiEscapes.RESET}`,
     );
     process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
   }
@@ -197,19 +197,20 @@ export const inject = async (
     }
   }
 
-  execSync(`${PRIV_CMD_EXEC} mkdir ${appDir}`);
-  execSync(
-    `echo "${`require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}"`.replaceAll(
-      '"',
-      '\\"',
-    )})" | ${PRIV_CMD_EXEC} tee ${join(appDir, "index.js")}`,
-  );
-  execSync(
-    `echo "${JSON.stringify({
-      main: "index.js",
-      name: "discord",
-    }).replaceAll('"', '\\"')}" | ${PRIV_CMD_EXEC} tee ${join(appDir, "package.json")}`,
-  );
+  await privilegedMkdir(appDir);
+  await Promise.all([
+    privilegedWriteFile(
+      join(appDir, "index.js"),
+      `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}")`,
+    ),
+    privilegedWriteFile(
+      join(appDir, "package.json"),
+      JSON.stringify({
+        main: "index.js",
+        name: "discord",
+      }),
+    ),
+  ]);
 
   return true;
 };
@@ -232,7 +233,15 @@ export const uninject = async (
     return false;
   }
 
-  execSync(`${PRIV_CMD_EXEC} rm -rf ${appDir}`);
-  execSync(`${PRIV_CMD_EXEC} mv ${join(appDir, "..", "app.orig.asar")} ${appDir}`);
+  try {
+    await privilegedRm(appDir, { recursive: true, force: true });
+    await privilegedRename(join(appDir, "..", "app.orig.asar"), appDir);
+  } catch {
+    console.error(
+      `${AnsiEscapes.RED}Failed to remove injection code while unplugging. If Discord is open, please close it and try again.${AnsiEscapes.RESET}`,
+    );
+    process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+  }
+
   return true;
 };
