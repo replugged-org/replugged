@@ -59,8 +59,9 @@ export const CONFIG_PATHS = Object.fromEntries(
   }),
 ) as Record<(typeof CONFIG_FOLDER_NAMES)[number], string>;
 
-if (process.platform === "linux") {
-  const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
+const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
+const shouldChown = process.platform === "linux";
+if (shouldChown) {
   chownSync(CONFIG_PATH, REAL_UID, REAL_GID);
   CONFIG_FOLDER_NAMES.forEach((folder) => chownSync(join(CONFIG_PATH, folder), REAL_UID, REAL_GID));
 }
@@ -68,8 +69,7 @@ if (process.platform === "linux") {
 const QUICK_CSS_FILE = join(CONFIG_PATHS.quickcss, "main.css");
 if (!existsSync(QUICK_CSS_FILE)) {
   writeFileSync(QUICK_CSS_FILE, "");
-  if (process.platform === "linux") {
-    const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
+  if (shouldChown) {
     chownSync(QUICK_CSS_FILE, REAL_UID, REAL_GID);
   }
 }
