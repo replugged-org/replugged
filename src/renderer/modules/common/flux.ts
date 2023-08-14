@@ -183,29 +183,6 @@ const SnapshotStoreClass = await waitForModule<typeof SnapshotStore>(
   filters.bySource("SnapshotStores"),
 );
 
-function shallowEqual<T extends Record<string, unknown>>(a: T, b: T): boolean {
-  if (a === b) return true;
-
-  const keysA = Object.keys(a);
-  const keysB = Object.keys(b);
-
-  if (keysA.length !== keysB.length) return false;
-
-  for (let i = 0; i < keysA.length; i++) {
-    let key = keysA[i];
-    if (a[key] !== b[key]) return false;
-  }
-
-  return true;
-}
-
-function areArraysShallowEqual<T extends []>(a: T, b: T): boolean {
-  if (b == null || a.length !== b.length) return false;
-  return !a.some(function (value, index) {
-    return b[index] !== value;
-  });
-}
-
 type useStateFromStores = <T>(
   stores: Store[],
   callback: () => T,
@@ -237,9 +214,9 @@ const statesWillNeverBeEqual = getFunctionBySource<statesWillNeverBeEqual>(
   "return!1",
 )!;
 const useStateFromStoresArray: useStateFromStoresArray = (stores, callback, deps) =>
-  useStateFromStores(stores, callback, deps, areArraysShallowEqual);
+  useStateFromStores(stores, callback, deps, _.isEqual);
 const useStateFromStoresObject: useStateFromStoresObject = (stores, callback, deps) =>
-  useStateFromStores(stores, callback, deps, shallowEqual);
+  useStateFromStores(stores, callback, deps, _.isEqual);
 
 const FluxHooks = {
   useStateFromStores,
