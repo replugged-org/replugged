@@ -68,4 +68,8 @@ if (process.platform === "linux") {
 const QUICK_CSS_FILE = join(CONFIG_PATHS.quickcss, "main.css");
 if (!existsSync(QUICK_CSS_FILE)) {
   writeFileSync(QUICK_CSS_FILE, "");
+  if (process.platform === "linux") {
+    const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
+    chownSync(QUICK_CSS_FILE, REAL_UID, REAL_GID);
+  }
 }
