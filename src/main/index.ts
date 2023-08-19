@@ -1,8 +1,9 @@
 import { dirname, join } from "path";
 
 import electron from "electron";
-import type { RepluggedWebContents } from "../types";
 import { CONFIG_PATHS } from "src/util.mjs";
+import type { RepluggedWebContents } from "../types";
+import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
@@ -103,6 +104,14 @@ electron.protocol.registerSchemesAsPrivileged([
   },
 ]);
 
+async function loadReactDevTools(): Promise<void> {
+  const rdtSetting = await getSetting("dev.replugged.Settings", "reactDevTools", false);
+
+  if (rdtSetting) {
+    void electron.session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
+  }
+}
+
 // Copied from old codebase
 electron.app.once("ready", () => {
   electron.session.defaultSession.webRequest.onBeforeRequest(
@@ -168,6 +177,8 @@ electron.app.once("ready", () => {
     }
     cb({ path: filePath });
   });
+
+  void loadReactDevTools();
 });
 
 // This module is required this way at runtime.
