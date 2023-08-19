@@ -5,6 +5,10 @@ import { registerRPCCommand } from "../rpc";
 import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./util";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
+import AddonEmbed from "./AddonEmbed";
+import { generalSettings } from "../settings/pages";
+import type { Capture, DefaultInRule } from "simple-markdown";
+import { parser } from "@common";
 
 const injector = new Injector();
 const logger = Logger.coremod("Installer");
@@ -14,7 +18,7 @@ interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   focusProps?: Record<string, unknown>;
 }
 
-interface InstallLinkProps {
+export interface InstallLinkProps {
   /** Identifier for the addon in the source */
   identifier: string;
   /** Updater source type */
@@ -26,19 +30,34 @@ interface InstallLinkProps {
 function parseInstallLink(href: string): InstallLinkProps | null {
   try {
     const url = new URL(href);
-    if (url.hostname !== "replugged.dev") return null;
-    if (url.pathname !== "/install") return null;
-    const params = url.searchParams;
-    const identifier = params.get("identifier");
-    const source = params.get("source") ?? undefined;
-    const id = params.get("id") ?? undefined;
-    if (!identifier) return null;
-    if (source !== undefined && !isValidSource(source)) return null;
-    return {
-      identifier,
-      source,
-      id,
-    };
+    const repluggedHostname = new URL(generalSettings.get("apiUrl")).hostname;
+    if (url.hostname !== repluggedHostname) return null;
+
+    if (url.pathname === "/install") {
+      const params = url.searchParams;
+      const identifier = params.get("identifier");
+      const source = params.get("source") ?? "store";
+      const id = params.get("id") ?? undefined;
+      if (!identifier) return null;
+      if (!isValidSource(source)) return null;
+      return {
+        identifier,
+        source,
+        id,
+      };
+    }
+
+    const storeMatch = url.pathname.match(/^\/store\/([^/]+)$/);
+    if (storeMatch) {
+      const identifier = storeMatch[1];
+      if (["plugins", "themes"].includes(identifier.toLowerCase())) return null;
+      return {
+        identifier,
+        source: "store",
+      };
+    }
+
+    return null;
   } catch {
     return null;
   }
@@ -69,7 +88,7 @@ function injectRpc(): void {
         return await modalFlows.get(cacheIdentifier)!;
       }
 
-      const res = installFlow(identifier, source as InstallerSource, id, false);
+      const res = installFlow(identifier, source as InstallerSource, id, false, false);
 
       modalFlows.set(cacheIdentifier, res);
       const ret = await res;
@@ -95,6 +114,17 @@ function injectRpc(): void {
   uninjectFns.push(uninjectInstall, uninjectList);
 }
 
+const triggerInstall = (
+  installLink: InstallLinkProps,
+  e: React.MouseEvent<HTMLAnchorElement>,
+): void => {
+  // If control/cmd is pressed, do not trigger the install modal
+  if (e.ctrlKey || e.metaKey) return;
+
+  e.preventDefault();
+  void installFlow(installLink.identifier, installLink.source, installLink.id, true, true);
+};
+
 async function injectLinks(): Promise<void> {
   const linkMod = await waitForModule(filters.bySource(".useDefaultUnderlineStyles"), {
     raw: true,
@@ -108,18 +138,63 @@ async function injectLinks(): Promise<void> {
     return;
   }
 
-  injector.before(exports, key, ([args]) => {
-    const { href } = args;
-    if (!href) return undefined;
+  injector.instead(exports, key, (args, fn) => {
+    const { href } = args[0];
+    if (!href) return fn(...args);
     const installLink = parseInstallLink(href);
-    if (!installLink) return undefined;
+    if (!installLink) return fn(...args);
 
-    args.onClick = (e) => {
-      e.preventDefault();
-      void installFlow(installLink.identifier, installLink.source, installLink.id);
-    };
+    args[0].onClick = (e) => triggerInstall(installLink, e);
 
-    return [args] as [AnchorProps];
+    const res = fn(...args);
+
+    return res;
+  });
+
+  const defaultRules = parser.defaultRules as typeof parser.defaultRules & {
+    repluggedInstallLink?: DefaultInRule;
+  };
+
+  defaultRules.repluggedInstallLink = {
+    order: defaultRules.autolink.order - 0.5,
+    match: (source: string) => {
+      const match = source.match(/^<?(https?:\/\/[^\s<]+[^<>.,:; "'\]\s])>?/);
+      if (!match) return null;
+      const installLink = parseInstallLink(match[1]);
+      if (!installLink) return null;
+      if (!generalSettings.get("addonEmbeds")) return null;
+      return match;
+    },
+    parse: (capture: Capture) => {
+      const installLink = parseInstallLink(capture[1]);
+      return {
+        ...installLink!,
+        url: capture[1],
+      };
+    },
+    react: (node) => {
+      const { url, ...installLink } = node as unknown as InstallLinkProps & { url: string };
+      const fallback = (
+        <a
+          href={url}
+          onClick={(e) => triggerInstall(installLink, e)}
+          target="_blank"
+          rel="noopener noreferrer">
+          {url}
+        </a>
+      );
+
+      return <AddonEmbed key={installLink.identifier} addon={installLink} fallback={fallback} />;
+    },
+    // @ts-expect-error type is wrong
+    requiredFirstCharacters: ["<", "h"],
+  };
+
+  parser.parse = parser.reactParserFor(defaultRules);
+
+  uninjectFns.push(() => {
+    delete defaultRules.repluggedInstallLink;
+    parser.parse = parser.reactParserFor(defaultRules);
   });
 }
 

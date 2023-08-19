@@ -12,7 +12,7 @@ import {
   Tooltip,
 } from "@components";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
-import type { Author } from "src/types/addon";
+import type { AnyAddonManifest, Author } from "src/types/addon";
 import "./Addons.css";
 import Icons from "../icons";
 import { Logger, plugins, themes, webpack } from "@replugged";
@@ -137,8 +137,8 @@ function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
   return [addon.manifest.author].flat();
 }
 
-function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefined {
-  const { id: addonId, updater } = addon.manifest;
+export function getSourceLink(addon: AnyAddonManifest): string | undefined {
+  const { id: addonId, updater } = addon;
   if (!updater) return undefined;
   const { type, id: updaterId } = updater;
   switch (type) {
@@ -315,7 +315,7 @@ function Card({
   reload: () => void;
   uninstall: () => void;
 }): React.ReactElement {
-  const sourceLink = getSourceLink(addon);
+  const sourceLink = getSourceLink(addon.manifest);
 
   return (
     <div className="replugged-addon-card">

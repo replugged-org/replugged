@@ -6,19 +6,21 @@ export type SettingsTransactionHandler<T> = (settings: SettingsMap) => Promisabl
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type GeneralSettings = {
-  apiUrl: string;
-  // pluginEmbeds: boolean;
-  experiments: boolean;
-  badges: boolean;
-  autoApplyQuickCss: boolean;
-  showWelcomeNoticeOnOpen: boolean;
+  apiUrl?: string;
+  experiments?: boolean;
+  badges?: boolean;
+  autoApplyQuickCss?: boolean;
+  showWelcomeNoticeOnOpen?: boolean;
+  addonEmbeds?: boolean;
+  reactDevTools?: boolean;
 };
 
-export const defaultSettings: Partial<GeneralSettings> = {
+export const defaultSettings = {
   apiUrl: "https://replugged.dev",
-  // pluginEmbeds: false,
   experiments: false,
   badges: true,
   autoApplyQuickCss: false,
   showWelcomeNoticeOnOpen: true,
-};
+  reactDevTools: false,
+  addonEmbeds: true,
+} satisfies Partial<GeneralSettings>;
