@@ -1,7 +1,7 @@
 import type EventEmitter from "events";
 import { waitForProps } from "../webpack";
 
-export enum Band {
+export enum DispatchBand {
   Early,
   Database,
   Default,
@@ -58,7 +58,7 @@ declare class ActionLog {
 
 interface NodeData {
   actionHandler: Record<string, FluxCallback>;
-  band: Band;
+  band: DispatchBand;
   name: string;
   storeDidChange: (action: Action) => void;
 }
@@ -104,12 +104,12 @@ declare class ActionHandlers {
     name: string,
     actionHandler: Record<string, FluxCallback>,
     storeDidChange: (action: Action) => void,
-    band: Band,
+    band: DispatchBand,
     token?: string,
   ) => string;
 
-  private _addToBand: (token: string, band: Band) => void;
-  private _bandToken: (band: Band) => string;
+  private _addToBand: (token: string, band: DispatchBand) => void;
+  private _bandToken: (band: DispatchBand) => string;
   private _computeOrderedActionHandlers: (type: string) => Handler[];
   private _computeOrderedCallbackTokens: () => string[];
   private _invalidateCaches: () => void;
@@ -119,7 +119,7 @@ declare class ActionHandlers {
 export interface FluxDispatcher {
   _actionHandlers: ActionHandlers;
   _currentDispatchActionType: string | null;
-  _defaultBand: Band;
+  _defaultBand: DispatchBand;
   _interceptors: Array<(...rest: unknown[]) => unknown>;
   _processingWaitQueue: boolean;
   _subscriptions: Record<string, Set<FluxCallback>>;
@@ -146,7 +146,7 @@ export interface FluxDispatcher {
     name: string,
     actionHandler: Record<string, FluxCallback>,
     storeDidChange: (action: Action) => void,
-    band: Band,
+    band: DispatchBand,
     token?: string,
   ) => string;
 }

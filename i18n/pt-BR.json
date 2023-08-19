@@ -215,5 +215,10 @@
     "REPLUGGED_ADDON_NOT_REVIEWED": "{type} não revisado",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automaticamente aplicar Quick CSS",
     "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automaticamente aplicar mudanças ao Quick CSS conforme você escreve.",
-    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Este {type} não foi revisado pelo time Replugged e pode causar danos ao seu computador. Use por sua conta e risco."
+    "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Este {type} não foi revisado pelo time Replugged e pode causar danos ao seu computador. Use por sua conta e risco.",
+    "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Reconectar",
+    "REPLUGGED_SETTINGS_ADVANCED": "Configurações avançadas",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Habilitar React DevTools",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Falha ao baixar React DevTools.",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "Ver na loja"
 }

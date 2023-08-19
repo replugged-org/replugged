@@ -80,9 +80,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
           css(),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
-              // eslint-disable-next-line @typescript-eslint/no-base-to-string
               setValue(update.state.doc.toString());
-              // eslint-disable-next-line @typescript-eslint/no-base-to-string
               onChange?.(update.state.doc.toString());
             }
           }),
