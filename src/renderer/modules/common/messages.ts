@@ -151,10 +151,7 @@ declare class MessageCache {
   public clone: () => MessageCache;
   public extract: (amount: number) => Message[];
   public extractAll: () => Message[];
-  public forEach: (
-    callback: (message: Message, index: number, messages: Message[]) => void,
-    thisArg?: unknown,
-  ) => void;
+  public forEach: Message[]["forEach"];
   public get: (messageId: string) => Message | undefined;
   public has: (messageId: string) => boolean;
   public remove: (messageId: string) => void;
@@ -242,10 +239,7 @@ export declare class ChannelMessages {
   ) => Message | undefined;
   public first: () => Message | undefined;
   public focusOnMessage: (focusTargetId: string) => ChannelMessages;
-  public forAll: (
-    callback: (message: Message, index: number, messages: Message[]) => void,
-    thisArg?: unknown,
-  ) => void;
+  public forAll: Array<Message | MessageCache>["forEach"];
   public forEach: (
     callback: (message: Message, index: number, messages: Message[]) => void,
     thisArg?: unknown,
@@ -286,26 +280,21 @@ export declare class ChannelMessages {
     offset: number;
     returnMessageId: string;
   }) => ChannelMessages;
-  public map: (
-    callback: (message: Message, index: number, messages: Message[]) => Message,
-    thisArg?: unknown,
-  ) => Message[];
+  public map: Message[]["map"];
   public merge: (messages: Message[], prepend?: boolean, clearCache?: boolean) => ChannelMessages;
+  public mergeDelta: (
+    newMessages?: Message[],
+    modifiedMessages?: Message[],
+    deletedMessages?: Message[],
+  ) => ChannelMessages;
   public mutate: (
     callback: ((messages: ChannelMessages) => void) | MutatedChannelMessages,
     deep?: boolean,
   ) => ChannelMessages;
   public receiveMessage: (message: Message, truncateFromTop?: boolean) => ChannelMessages;
   public receivePushNotification: (message: Message) => ChannelMessages;
-  public reduce: (
-    callback: (
-      previousValue: unknown,
-      currentMessage: Message,
-      currentIndex: number,
-      messages: Message[],
-    ) => unknown,
-    initialValue?: unknown,
-  ) => void;
+  public reduce: Message[]["reduce"];
+  public some: Message[]["some"];
   public remove: (messageId: string) => ChannelMessages;
   public removeMany: (messageIds: string[]) => ChannelMessages;
   public replace: (prevMessageId: string, newMessage: Message) => ChannelMessages;
