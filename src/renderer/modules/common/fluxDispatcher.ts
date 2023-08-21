@@ -99,7 +99,7 @@ declare class ActionHandlers {
 
   public addDependencies: (token: string, tokens: string) => void;
   public createToken: () => string;
-  public getOrderedActionHandlers: (action: Action) => void;
+  public getOrderedActionHandlers: (action: Action) => Handler[];
   public register: (
     name: string,
     actionHandler: Record<string, FluxCallback>,
