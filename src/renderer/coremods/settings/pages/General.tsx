@@ -55,6 +55,10 @@ export const General = (): React.ReactElement => {
     generalSettings,
     "reactDevTools",
   );
+  const { value: transValue, onChange: transOnChange } = util.useSetting(
+    generalSettings,
+    "transparentWindow",
+  );
 
   const [kKeys, setKKeys] = React.useState<number[]>([]);
 
@@ -175,7 +179,11 @@ export const General = (): React.ReactElement => {
         </ButtonItem>
 
         <SwitchItem
-          {...util.useSetting(generalSettings, "transparentWindow")}
+          value={transValue}
+          onChange={(value) => {
+            transOnChange(value);
+            restartModal(true);
+          }}
           note={Messages.REPLUGGED_SETTINGS_TRANSPARENT_DESC}>
           {Messages.REPLUGGED_SETTINGS_TRANSPARENT}
         </SwitchItem>
