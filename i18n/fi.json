@@ -13,7 +13,7 @@
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% käännetty",
     "REPLUGGED_LINK_NOW": "Linkitä se nyt",
     "REPLUGGED_PLUGINS": "Pluginit",
-    "REPLUGGED_QUICKCSS": "Quick CSS",
+    "REPLUGGED_QUICKCSS": "Pika-CSS",
     "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
     "REPLUGGED_SETTINGS_BACKEND_DESC": "URL, jota käytetään muutaman tavaran hakuun ja Repluggedin REST-ohjelmointirajapinnan pyyntöihin.",
     "REPLUGGED_BADGES_STAFF": "Repluggedin henkilökunta",

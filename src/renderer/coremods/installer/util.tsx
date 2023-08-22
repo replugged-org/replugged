@@ -102,7 +102,12 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
     manifest: { name, type, id, version },
   } = data;
 
-  const res = await RepluggedNative.installer.install(type, `${id}.asar`, url);
+  const res = await RepluggedNative.installer.install(
+    type,
+    `${id}.asar`,
+    url,
+    data.manifest.version,
+  );
   if (!res.success) {
     logger.error(`Failed to install ${name}: ${res.error}`);
     toast.toast(
