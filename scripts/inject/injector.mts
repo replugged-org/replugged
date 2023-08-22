@@ -14,6 +14,7 @@ import readline from "readline";
 import { exec } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
 import { CONFIG_PATH } from "../../src/util.mjs";
+import { existsSync } from "fs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -175,6 +176,13 @@ export const inject = async (
 
   try {
     await rename(appDir, join(appDir, "..", "app.orig.asar"));
+    // For discord_arch_electron
+    if (existsSync(join(appDir, "..", "app.asar.unpacked"))) {
+      await rename(
+        join(appDir, "..", "app.asar.unpacked"),
+        join(appDir, "..", "app.orig.asar.unpacked"),
+      );
+    }
   } catch {
     console.error(
       `${AnsiEscapes.RED}Failed to rename app.asar while plugging. If Discord is open, make sure it is closed.${AnsiEscapes.RESET}`,
@@ -236,6 +244,13 @@ export const uninject = async (
 
   await rm(appDir, { recursive: true, force: true });
   await rename(join(appDir, "..", "app.orig.asar"), appDir);
+  // For discord_arch_electron
+  if (existsSync(join(appDir, "..", "app.orig.asar.unpacked"))) {
+    await rename(
+      join(appDir, "..", "app.orig.asar.unpacked"),
+      join(appDir, "..", "app.asar.unpacked"),
+    );
+  }
   return true;
 };
 
