@@ -1,4 +1,4 @@
-import path, { join } from "path";
+import path, { basename, join } from "path";
 import { fileURLToPath } from "url";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
@@ -15,6 +15,52 @@ const ProcessRegex = {
   ptb: /discord-?ptb$/i,
   canary: /discord-?canary$/i,
   dev: /discord-?development$/i,
+};
+
+const findAppAsarInDir = (dir: string): string | null => {
+  const name = basename(dir);
+  if (name === "app.asar") return dir;
+  const topLevelAsar = join(dir, "app.asar");
+  if (existsSync(topLevelAsar)) return topLevelAsar;
+  const resourcesAsar = join(dir, "resources", "app.asar");
+  if (existsSync(resourcesAsar)) return resourcesAsar;
+
+  return null;
+};
+
+const findPathFromPaths = async (
+  platform: DiscordPlatform,
+  paths: string[],
+): Promise<string | null> => {
+  let discordPath = paths.find((path) => existsSync(path));
+  if (!discordPath) {
+    const readlineInterface = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    const askPath = (): Promise<string> =>
+      new Promise((resolve) => readlineInterface.question("> ", resolve));
+    console.log(
+      `${AnsiEscapes.YELLOW}Failed to locate ${PlatformNames[platform]} installation folder.${AnsiEscapes.RESET}`,
+      "\n",
+    );
+    console.log(`Please provide the path of your ${PlatformNames[platform]} installation folder`);
+    discordPath = await askPath();
+    readlineInterface.close();
+
+    if (!existsSync(discordPath)) {
+      console.log("");
+      console.log(
+        `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
+      );
+      console.log("The path you provided is invalid.");
+      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+    }
+  }
+
+  const path = findAppAsarInDir(discordPath);
+  return path;
 };
 
 const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
@@ -69,45 +115,39 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
     .find((p) => p[4] && ProcessRegex[platform].test(p[4]) && p.includes("--type=renderer"));
 
   if (!discordProcess) {
-    let discordPath = KnownLinuxPaths[platform].find((path) => existsSync(path));
-    if (!discordPath) {
-      const readlineInterface = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-
-      const askPath = (): Promise<string> =>
-        new Promise((resolve) => readlineInterface.question("> ", resolve));
-      console.log(
-        `${AnsiEscapes.YELLOW}Failed to locate ${PlatformNames[platform]} installation folder.${AnsiEscapes.RESET}`,
-        "\n",
-      );
-      console.log(`Please provide the path of your ${PlatformNames[platform]} installation folder`);
-      discordPath = await askPath();
-      readlineInterface.close();
-
-      if (!existsSync(discordPath)) {
-        console.log("");
-        console.log(
-          `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
-        );
-        console.log("The path you provided is invalid.");
-        process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
-      }
+    const fromPath = await findPathFromPaths(platform, KnownLinuxPaths[platform]);
+    if (!fromPath) {
+      console.log("Failed to find Discord path");
+      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
     }
 
-    return join(discordPath, "resources", "app.asar");
+    return fromPath;
   }
 
   const discordPath = discordProcess[4].split("/");
   discordPath.splice(discordPath.length - 1, 1);
-  return join("/", ...discordPath, "resources", "app.asar");
+  const path = findAppAsarInDir(join("/", ...discordPath));
+  if (!path) {
+    console.log("Failed to find app.asar from Discord process, checking by path");
+
+    const fromPath = await findPathFromPaths(platform, KnownLinuxPaths[platform]);
+    if (!fromPath) {
+      console.log("Failed to find Discord path");
+      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+    }
+
+    return fromPath;
+  }
+
+  return path;
 };
 
 export const getAppDir = async (platform: DiscordPlatform): Promise<string> => {
   const installDirPath = installDirFile + platform;
   if (existsSync(installDirPath)) {
-    return readFileSync(installDirPath, "utf8");
+    const path = readFileSync(installDirPath, "utf8").trim();
+    if (existsSync(path)) return path;
+    console.log("Failed to find Discord path from previous executions, finding from scratch.");
   }
   const appDir = await findAppDir(platform);
   writeFileSync(installDirPath, appDir);

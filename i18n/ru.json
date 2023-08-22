@@ -225,5 +225,7 @@
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Ошибка установки React DevTools.",
     "REPLUGGED_INSTALLER_OPEN_STORE": "Посмотреть в магазине",
     "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Посмотреть в хранилище.",
-    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Показывать карточку с информацией об аддоне, при отправке ссылки на хранилище/установку в чате"
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Показывать карточку с информацией об аддоне, при отправке ссылки на хранилище/установку в чате",
+    "REPLUGGED_RESTART": "Перезагрузить",
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "Требуется перезагрузка"
 }

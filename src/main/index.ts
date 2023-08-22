@@ -1,8 +1,9 @@
 import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import electron from "electron";
-import type { RepluggedWebContents } from "../types";
 import { CONFIG_PATHS } from "src/util.mjs";
+import type { RepluggedWebContents } from "../types";
+import { getSetting } from "./ipc/settings";
 
 // TODO: This shouldn't be here, it should be in it's own module
 // like src/main/ipc/settings.ts, except that's specifically for
@@ -124,6 +125,14 @@ electron.protocol.registerSchemesAsPrivileged([
   },
 ]);
 
+async function loadReactDevTools(): Promise<void> {
+  const rdtSetting = await getSetting("dev.replugged.Settings", "reactDevTools", false);
+
+  if (rdtSetting) {
+    void electron.session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
+  }
+}
+
 // Copied from old codebase
 electron.app.once("ready", () => {
   electron.session.defaultSession.webRequest.onBeforeRequest(
@@ -189,6 +198,8 @@ electron.app.once("ready", () => {
     }
     cb({ path: filePath });
   });
+
+  void loadReactDevTools();
 });
 
 // This module is required this way at runtime.
