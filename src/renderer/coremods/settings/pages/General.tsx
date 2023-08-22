@@ -118,6 +118,16 @@ export const General = (): React.ReactElement => {
         {Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY}
       </SwitchItem>
 
+      <SwitchItem
+        value={transValue}
+        onChange={(value) => {
+          transOnChange(value);
+          restartModal(true);
+        }}
+        note={Messages.REPLUGGED_SETTINGS_TRANSPARENT_DESC}>
+        {Messages.REPLUGGED_SETTINGS_TRANSPARENT}
+      </SwitchItem>
+
       <Category
         title={Messages.REPLUGGED_SETTINGS_ADVANCED}
         note={Messages.REPLUGGED_SETTINGS_ADVANCED_DESC}>
@@ -177,16 +187,6 @@ export const General = (): React.ReactElement => {
           }}>
           {Messages.REPLUGGED_SETTINGS_DEV_COMPANION}
         </ButtonItem>
-
-        <SwitchItem
-          value={transValue}
-          onChange={(value) => {
-            transOnChange(value);
-            restartModal(true);
-          }}
-          note={Messages.REPLUGGED_SETTINGS_TRANSPARENT_DESC}>
-          {Messages.REPLUGGED_SETTINGS_TRANSPARENT}
-        </SwitchItem>
       </Category>
 
       {/* Sleeping? Wake up. */}
