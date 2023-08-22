@@ -7,7 +7,7 @@ export default [
     replacements: [
       {
         match: /\w+\({applicationId:(\w+)}/,
-        replace: (suffix, id) => `replugged.commands.commandAndSections.has(${id})||${suffix}`,
+        replace: (suffix, id) => `${id} == "replugged"||${suffix}`,
       },
     ],
   },

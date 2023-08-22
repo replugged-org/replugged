@@ -7,6 +7,7 @@ import { Logger } from "../modules/logger";
 import { channels, guilds, messages } from "../modules/common";
 import { CommandOptionReturn } from "../../types/discord";
 const logger = Logger.api("Commands");
+
 interface CommandsAndSection {
   section: RepluggedCommandSection;
   commands: Map<string, RepluggedCommand>;
@@ -21,6 +22,10 @@ export const defaultSection: RepluggedCommandSection = Object.freeze({
   icon: "https://cdn.discordapp.com/attachments/1000955992068079716/1004196106055454820/Replugged-Logo.png",
 });
 
+/**
+ * @internal
+ * @hidden
+ */
 async function executeCommand(
   cmdExecutor:
     | ((args: CommandOptionReturn[]) => Promise<RepluggedCommandResult> | RepluggedCommandResult)
@@ -84,6 +89,12 @@ export class CommandManager {
     this.#section.type ??= 1;
     this.#unregister = [];
   }
+
+  /**
+   * Code to register an slash command
+   * @param cmd Slash Command to be registered
+   * @returns An Callback to unregister the slash command
+   */
   public registerCommand(command: RepluggedCommand): () => void {
     if (!commandAndSections.has(this.#section.id)) {
       commandAndSections.set(this.#section.id, {
@@ -109,11 +120,18 @@ export class CommandManager {
     });
 
     currentSection?.commands.set(command.id, command);
-    const uninject = (): void => void currentSection?.commands.delete(command.id!);
+
+    const uninject = (): void => {
+      void currentSection?.commands.delete(command.id!);
+      this.#unregister = this.#unregister.filter((u) => u !== uninject);
+    };
     this.#unregister.push(uninject);
     return uninject;
   }
+  /**
+   * Code to unregister all slash commands registered with this class
+   */
   public unregisterAllCommands(): void {
-    for (const unregister of this.#unregister) unregister();
+    for (const unregister of this.#unregister) unregister?.();
   }
 }

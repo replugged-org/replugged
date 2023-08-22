@@ -88,7 +88,7 @@ const commands: RepluggedCommand[] = [
         type: ApplicationCommandOptionType.String,
         required: true,
         get choices() {
-          let choices = [];
+          const choices = [];
 
           const enabledPlugins = Array.from(plugins.plugins.values()).filter(
             (plugin) => !plugins.getDisabled().includes(plugin.manifest.id),
@@ -161,7 +161,7 @@ const commands: RepluggedCommand[] = [
         type: ApplicationCommandOptionType.String,
         required: true,
         get choices() {
-          let choices = [];
+          const choices = [];
 
           const enabledPlugins = Array.from(plugins.plugins.values());
           const enabledThemes = Array.from(themes.themes.values());
@@ -251,13 +251,13 @@ const commands: RepluggedCommand[] = [
         name: "version",
         description: "Whether you want to add version info.",
         type: ApplicationCommandOptionType.Boolean,
-        required: true,
+        required: false,
       },
       {
         name: "type",
         description: "Whether you want to send either only enabled, disabled or all themes.",
         type: ApplicationCommandOptionType.String,
-        required: true,
+        required: false,
         choices: [
           {
             name: "Enabled",
@@ -279,79 +279,74 @@ const commands: RepluggedCommand[] = [
     ],
     executor: (options) => {
       try {
-        const send = (options.find((o) => o.name === "send")?.value as boolean) ?? false;
-        const addonType = options.find((o) => o.name === "addon type")?.value;
-        const version = options.find((o) => o.name === "version")?.value;
-        const listType = options.find((o) => o.name === "type")?.value;
+        const getValue = (
+          name: string,
+          defaultValue?: boolean | string,
+        ): boolean | string | undefined =>
+          options.find((o) => o.name === name)?.value ?? defaultValue;
+        const send = getValue("send", false) as boolean;
+        const addonType = getValue("addon type");
+        const version = getValue("version", true);
+        const listType = getValue("type", "default");
+
+        const generateListString = (
+          items: Array<{ name: string; version: string }>,
+          typeColor: string,
+          typeName: string,
+        ): string =>
+          `[2;${typeColor}m[1;${typeColor}m${typeName} (${items.length}):[0m[2;${typeColor}m[0m\n${items
+            .map((item) => (version ? `${item.name} (v${item.version})` : item.name))
+            .join("\n• ")}`;
+
         switch (addonType) {
           case "plugin": {
             const allPlugins = Array.from(plugins.plugins.values())
               .map((p) => p.manifest)
               .sort((a, b) => a.name.localeCompare(b.name));
-            const enablePlugins = allPlugins?.filter((p) => !plugins.getDisabled().includes(p.id));
-            const disabledPlugins = allPlugins?.filter((p) => plugins.getDisabled().includes(p.id));
-            const enabledString = `• ${enablePlugins
-              .map((p) => (version ? `${p.name} (${p.version})` : p.name))
-              .join("\n• ")}`;
-            const disabledString = `• ${disabledPlugins
-              .map((p) => (version ? `${p.name} (${p.version})` : p.name))
-              .join("\n• ")}`;
-            switch (listType) {
-              case "enabled":
-                return {
-                  send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n${enabledString}\n\`\`\``,
-                };
-              case "disabled":
-                return {
-                  send,
-                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m\n${disabledString}\n\`\`\``,
-                };
+            const enablePlugins = allPlugins.filter((p) => !plugins.getDisabled().includes(p.id));
+            const disabledPlugins = allPlugins.filter((p) => plugins.getDisabled().includes(p.id));
 
-              default:
-                return {
-                  send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Plugins (${enablePlugins.length}):[0m[2;32m[0m\n${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledPlugins.length}):[0m[2;31m[0m\n${disabledString}\n\`\`\``,
-                };
-            }
-            break;
+            const enabledString = generateListString(enablePlugins, "32", "Enabled Plugins");
+            const disabledString = generateListString(disabledPlugins, "31", "Disabled Plugins");
+
+            const result =
+              listType === "enabled"
+                ? enabledString
+                : listType === "disabled"
+                ? disabledString
+                : `${enabledString}\n\n${disabledString}`;
+
+            return {
+              send,
+              result: `\`\`\`ansi\n${result}\n\`\`\``,
+            };
           }
           case "theme": {
             const allThemes = Array.from(themes.themes.values())
               .map((t) => t.manifest)
               .sort((a, b) => a.name.localeCompare(b.name));
-            const enableThemes = allThemes?.filter((t) => !plugins.getDisabled().includes(t.id));
-            const disabledThemes = allThemes?.filter((t) => plugins.getDisabled().includes(t.id));
-            const enabledString = `• ${enableThemes
-              .map((t) => (version ? `${t.name} (${t.version})` : t.name))
-              .join("\n• ")}`;
-            const disabledString = `• ${disabledThemes
-              .map((t) => (version ? `${t.name} (${t.version})` : t.name))
-              .join("\n• ")}`;
-            switch (listType) {
-              case "enabled":
-                return {
-                  send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n${enabledString}\n\`\`\``,
-                };
-              case "disabled":
-                return {
-                  send,
-                  result: `\`\`\`ansi\n[2;31m[1;31mDisabled Themes (${disabledThemes.length}):[0m[2;31m[0m\n${disabledString}\n\`\`\``,
-                };
+            const enableThemes = allThemes.filter((t) => !plugins.getDisabled().includes(t.id));
+            const disabledThemes = allThemes.filter((t) => plugins.getDisabled().includes(t.id));
 
-              default:
-                return {
-                  send,
-                  result: `\`\`\`ansi\n[2;32m[1;32mEnabled Themes (${enableThemes.length}):[0m[2;32m[0m\n${enabledString}\n\n[2;31m[1;31mDisabled Plugins (${disabledThemes.length}):[0m[2;31m[0m\n${disabledString}\n\`\`\``,
-                };
-            }
-            break;
+            const enabledString = generateListString(enableThemes, "32", "Enabled Themes");
+            const disabledString = generateListString(disabledThemes, "31", "Disabled Themes");
+
+            const result =
+              listType === "enabled"
+                ? enabledString
+                : listType === "disabled"
+                ? disabledString
+                : `${enabledString}\n\n${disabledString}`;
+
+            return {
+              send,
+              result: `\`\`\`ansi\n${result}\n\`\`\``,
+            };
           }
           default:
             return {
               send: false,
-              result: `You need to specify weather to send plugin or theme list`,
+              result: "You need to specify whether to send a plugin or theme list",
             };
         }
       } catch (err) {

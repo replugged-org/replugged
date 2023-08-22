@@ -4,6 +4,12 @@ import type { GetButtonItem } from "../../types/coremods/message";
 import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
 import { addContextMenuItem } from "../coremods/contextMenu";
+import { CommandManager } from "../apis/commands";
+import { RepluggedCommand } from "src/types";
+
+// Slash command manager to be used in injector.
+
+const SlashCommandManager = new CommandManager();
 
 enum InjectionTypes {
   Before,
@@ -358,6 +364,38 @@ export class Injector {
         sectionId,
         indexInSection,
       );
+      this.#uninjectors.add(uninjector);
+      return uninjector;
+    },
+
+    /**
+     * A utility function to add an item to any context menu.
+     * By default, items are placed in a group for custom items, though that can be customized with `sectionId` and `indexInSection`
+     * @param cmd The slash cmd to add to register
+     * @returns A callback to de-register the cmd
+     *
+     * @example
+     * ```
+     * import { Injector, components, types } from "replugged";
+     *
+     * const injector = new Injector();
+     *
+     * export function start() {
+     *   injector.utils.registerSlashCommand({
+     *        name: "use",
+     *        description: "a command meant to be used",
+     *        usage: "/use",
+     *        executor: function executor(),
+     *    })
+     * }
+     *
+     * export function stop() {
+     *   injector.uninjectAll();
+     * }
+     * ```
+     */
+    registerSlashCommand: (cmd: RepluggedCommand) => {
+      const uninjector = SlashCommandManager.registerCommand(cmd);
       this.#uninjectors.add(uninjector);
       return uninjector;
     },

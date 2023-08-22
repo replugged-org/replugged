@@ -38,6 +38,8 @@ interface ApplicationCommandSearchStore {
 }
 
 async function injectRepluggedBotIcon(): Promise<void> {
+  // Adds Avatar for replugged to default avatar to be used by system bot just like clyde
+  // Ain't removing it on stop because we have checks here
   const DefaultAvatars = await waitForProps<{
     BOT_AVATARS: Record<string, string>;
   }>("BOT_AVATARS");
@@ -49,6 +51,8 @@ async function injectRepluggedBotIcon(): Promise<void> {
 }
 
 async function injectRepluggedSectionIcon(): Promise<void> {
+  // Patches the function which gets icon URL for slash command sections
+  // makes it return the custom url if it's our section
   const AssetsUtils = await waitForProps<{
     getApplicationIconURL: (args: { id: string; icon: string }) => string;
   }>("getApplicationIconURL");
@@ -58,6 +62,7 @@ async function injectRepluggedSectionIcon(): Promise<void> {
 }
 
 async function injectApplicationCommandSearchStore(): Promise<void> {
+  // The module which contains the store
   const ApplicationCommandSearchStoreMod = await waitForModule<ApplicationCommandSearchStoreMod>(
     filters.bySource("ApplicationCommandSearchStore"),
   );
@@ -65,6 +70,9 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     ApplicationCommandSearchStoreMod,
     "APPLICATION_COMMAND_SEARCH_STORE_UPDATE",
   );
+
+  // Base handler function for ApplicationCommandSearchStore which is ran to get the info in store
+  // commands are mainly added here
   injector.after(ApplicationCommandSearchStoreMod, storeModFnKey!, (_, res) => {
     const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
       (commandAndSection) => commandAndSection.commands.size,
@@ -154,11 +162,14 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     return res;
   });
 
+  // The store itself
   const ApplicationCommandSearchStore = getExportsForProps<ApplicationCommandSearchStore>(
     ApplicationCommandSearchStoreMod,
     ["getApplicationSections", "getChannelState", "getQueryCommands"],
   )!;
 
+  // Channel state gets update with each character entered in text box and search so we patch this to keep our custom section
+  // even after updates happen
   injector.after(ApplicationCommandSearchStore, "getChannelState", (_, res) => {
     const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
       (commandAndSection) => commandAndSection.commands.size,
@@ -198,6 +209,8 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     return res;
   });
 
+  // Makes sure if our custom section is included or not
+  // Add it if not
   injector.after(ApplicationCommandSearchStore, "getApplicationSections", (_, res) => {
     res ??= [];
     const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
@@ -217,6 +230,8 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     return res;
   });
 
+  // Slash command search patched to return our slash commands too
+  // only those which match tho
   injector.after(ApplicationCommandSearchStore, "getQueryCommands", ([_, __, query], res) => {
     if (!query || query.startsWith("/")) return res;
 
