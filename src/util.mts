@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
+import { chownSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "fs";
 import { join } from "path";
 
 const REPLUGGED_FOLDER_NAME = "replugged";
@@ -77,5 +77,15 @@ if (!existsSync(QUICK_CSS_FILE)) {
   writeFileSync(QUICK_CSS_FILE, "");
   if (shouldChown) {
     chownSync(QUICK_CSS_FILE, REAL_UID, REAL_GID);
+  }
+}
+
+const SETTINGS_DIR = CONFIG_PATHS.settings;
+export function readSettingsSync(namespace: string): Map<string, unknown> {
+  try {
+    const data = readFileSync(join(SETTINGS_DIR, `${namespace}.json`), "utf8");
+    return new Map(Object.entries(JSON.parse(data)));
+  } catch {
+    return new Map();
   }
 }

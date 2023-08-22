@@ -1,25 +1,10 @@
-import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import electron from "electron";
-import { CONFIG_PATHS } from "src/util.mjs";
+import { CONFIG_PATHS, readSettingsSync } from "src/util.mjs";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
-// TODO: This shouldn't be here, it should be in it's own module
-// like src/main/ipc/settings.ts, except that's specifically for
-// ipc transactions(which are async); So not there. Perhaps
-// it should be in util?
-const SETTINGS_DIR = CONFIG_PATHS.settings;
-function readSettingsSync(namespace: string): Map<string, unknown> {
-  try {
-    const data = readFileSync(join(SETTINGS_DIR, `${namespace}.json`), "utf8");
-    return new Map(Object.entries(JSON.parse(data)));
-  } catch {
-    return new Map();
-  }
-}
 const settings = readSettingsSync("dev.replugged.Settings");
-
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 // require.main!.filename = discordMain;
