@@ -26,6 +26,7 @@ export type GetContextItem<T extends Record<string, unknown> = Record<string, un
 export enum ContextMenuTypes {
   /** Click the user icon in the bottom left */
   Account = "account",
+  ActivityShelfItemContext = "activity-shelf-item-context",
   AddQuestions = "add-questions",
   ApplicationDirectoryProfile = "application-directory-profile",
   /** Right-click mute or deafen buttons */
@@ -64,21 +65,28 @@ export enum ContextMenuTypes {
   /** Dropdown under a server's name */
   GuildHeaderPopout = "guild-header-popout",
   GuildIntegrationsPermissionRoleContext = "guild-integrations-permission-role-context",
+  GuildModerationRoles = "guild-moderation-roles",
+  GuildProductContext = "guild-product-context",
   GuildRoleConnectionsContext = "guild-role-connections-context",
   /** Right-click a role in the guild settings */
   GuildSettingsRoleContext = "guild-settings-role-context",
+  GuildShopContext = "guild-shop-context",
   ImageContext = "image-context",
   JoinRequestGuildContext = "join-request-guild-context",
   LaunchContext = "launch-context",
+  ManageBroadcast = "manage-broadcast",
   ManageIntegration = "manage-integration",
   ManageMultiAccount = "manage-multi-account",
   ManageStreams = "manage-streams",
   MemberApplicationContextMenu = "member-application-context-menu",
+  MemberSafetyFlags = "member-safety-flags",
+  MemberSafetyOptions = "member-safety-options",
   MentionsFilter = "mentions-filter",
-  /** Right-click message */
-  Message = "message",
   /** Click the triple dots on a message popover */
   MessageActions = "message-actions",
+  MessageReminderSnooze = "message-reminder-snooze",
+  /** Right-click message */
+  Message = "message",
   ModerationRaidContext = "moderation-raid-context",
   NotificationActions = "notification-actions",
   NowPlayingMenu = "now-playing-menu",
@@ -91,6 +99,7 @@ export enum ContextMenuTypes {
   RoleSubscriptionContext = "role-subscription-context",
   RtcChannel = "rtc-channel",
   SearchResults = "search-results",
+  SetImageForAction = "set-image-for-action",
   SortAndView = "sort-and-view",
   SoundButtonContext = "sound-button-context",
   StaffHelpPopout = "staff-help-popout",

@@ -221,7 +221,7 @@
     "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Neuverbinden",
     "REPLUGGED_SETTINGS_ADVANCED": "Erweiterte Einstellungen",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "React DevTools aktivieren",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Lädt die React DevTools-Erweiterungen, welche erlaubt, den React-DOM anzusehen und einfacher zu debuggen.",
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Lädt die React DevTools-Erweiterungen, welche erlaubt, den React-DOM anzusehen und einfacher zu debuggen. **Neustart benötigt**.",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Herunterladen der React DevTools fehlgeschlagen.",
     "REPLUGGED_INSTALLER_OPEN_STORE": "Im Shop ansehen",
     "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Addon-Einbettungen anzeigen",
