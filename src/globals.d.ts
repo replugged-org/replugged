@@ -37,6 +37,9 @@ declare global {
       paste: () => void;
       read: () => string;
     };
+    process: {
+      platform: string;
+    };
   };
 
   export const _: typeof Lodash;
