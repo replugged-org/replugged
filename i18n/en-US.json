@@ -227,5 +227,9 @@
     "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Show Addon Embeds",
     "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Show a card with information on an addon when a store/install link is shared in chat.",
     "REPLUGGED_RESTART": "Restart",
-    "REPLUGGED_SETTINGS_RESTART_TITLE": "Restart Required"
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "Restart Required",
+    "REPLUGGED_SETTINGS_TRANSPARENT": "Transparent Window",
+    "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Makes the discord window transparent, primarily useful for theming. **Requires restart**.",
+    "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS": "****WARNING:**** This will break **window snapping**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due of the monitor resolution, or when the development tools are open and docked.",
+    "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due of the monitor resolution, or when the development tools are open and docked."
 }
