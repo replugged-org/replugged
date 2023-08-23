@@ -55,7 +55,7 @@ class BrowserWindow extends electron.BrowserWindow {
         if (settings.get("transparentWindow")) {
           opts.transparent = true;
           opts.frame = process.platform === "win32" ? false : opts.frame;
-          delete opts.backgroundColor;
+          opts.backgroundColor = "#00000000";
         }
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
