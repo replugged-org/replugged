@@ -222,5 +222,10 @@
     "REPLUGGED_SETTINGS_ADVANCED": "進階設置",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "開啟 React 開發工具",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "加載 React 開發工具插件，它允許你檢查 React 代碼樹并且更加容易地 debug 代碼。**需要重啟**。",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "下載 React 開發工具失敗。"
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "下載 React 開發工具失敗。",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "在商店中查看",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "查看插件卡片",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "在聊天中分享商店/安裝連結時，顯示一張包含插件信息的卡片。",
+    "REPLUGGED_RESTART": "重新啟動",
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "需要重新啟動"
 }

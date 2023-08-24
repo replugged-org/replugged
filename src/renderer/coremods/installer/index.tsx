@@ -162,6 +162,7 @@ async function injectLinks(): Promise<void> {
       if (!match) return null;
       const installLink = parseInstallLink(match[1]);
       if (!installLink) return null;
+      if (installLink.source !== "store") return null;
       if (!generalSettings.get("addonEmbeds")) return null;
       return match;
     },
