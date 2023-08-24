@@ -222,5 +222,12 @@
     "REPLUGGED_SETTINGS_ADVANCED": "Cài đặt nâng cao",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Kích hoạt React DevTools",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Kích hoạt phần mở rộng của React DevTools, từ đó cho phép bạn quan sát cây React và gỡ lỗi dễ dàng hơn. **Cần khởi động lại**.",
-    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Đã có lỗi xảy ra khi tải về React DevTools."
+    "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Đã có lỗi xảy ra khi tải về React DevTools.",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "Xem trong Cửa hàng",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Hiển thị Đính kèm Addon",
+    "REPLUGGED_RESTART": "Khởi động lại",
+    "REPLUGGED_SETTINGS_RESTART_TITLE": "Cần khởi động lại",
+    "REPLUGGED_SETTINGS_TRANSPARENT": "Cửa sổ trong suốt",
+    "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Cài đặt này khiến cho khung cửa sổ Discord trong suốt, tiện lợi cho các chủ đề hổ trợ khung cửa sổ trong suốt. **Cần khởi động lại**.",
+    "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Hiển thị thẻ với thông tin của một addon khi link cửa hàng/cài đặt cho một addon được chia sẻ trong khu trò chuyện."
 }

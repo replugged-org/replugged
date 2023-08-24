@@ -17,7 +17,7 @@ export type InstallerSource = (typeof INSTALLER_SOURCES)[number];
 
 const CACHE_INTERVAL = 1000 * 60 * 60;
 
-const cache: Map<string, { data: CheckResultSuccess; expires: Date }> = new Map();
+const cache: Map<string, { data: CheckResultSuccess | null; expires: Date }> = new Map();
 
 export function isValidSource(type: string): type is InstallerSource {
   // @ts-expect-error Doesn't matter that it might not be a valid type
@@ -40,6 +40,10 @@ export async function getInfo(
   const info = await RepluggedNative.installer.getInfo(source, identifier, id);
   if (!info.success) {
     logger.error(`Failed to get info for ${identifier}: ${info.error}`);
+    cache.set(cacheIdentifier, {
+      data: null,
+      expires: new Date(Date.now() + CACHE_INTERVAL),
+    });
     return null;
   }
   if (info.manifest.type === "replugged") {
