@@ -1,8 +1,7 @@
-import { CommandManager } from "../../apis/commands";
 import { ApplicationCommandOptionType, RepluggedCommand } from "../../../types";
 import { Messages } from "@common/i18n";
-import { plugins, themes } from "@replugged";
-const command = new CommandManager();
+import { Injector, plugins, themes } from "@replugged";
+const injector = new Injector();
 
 const commands: RepluggedCommand[] = [
   {
@@ -314,7 +313,7 @@ const commands: RepluggedCommand[] = [
           typeColor: string,
           typeName: string,
         ): string =>
-          `[2;${typeColor}m[1;${typeColor}m${typeName} (${items.length}):[0m[2;${typeColor}m[0m\n${items
+          `[2;${typeColor}m[1;${typeColor}m${typeName} (${items.length}):[0m[2;${typeColor}m[0m\n• ${items
             .map((item) => (version ? `${item.name} (v${item.version})` : item.name))
             .join("\n• ")}`;
 
@@ -388,10 +387,10 @@ const commands: RepluggedCommand[] = [
 
 export function loadCommands(): void {
   for (const cmd of commands) {
-    command.registerCommand(cmd);
+    injector.utils.registerSlashCommand(cmd);
   }
 }
 
 export function unloadCommands(): void {
-  command.unregisterAllCommands();
+  injector.uninjectAll();
 }

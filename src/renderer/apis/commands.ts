@@ -4,9 +4,8 @@ import type {
   RepluggedCommandSection,
 } from "../../types";
 import { Logger } from "../modules/logger";
-import { channels, guilds, messages } from "../modules/common";
+import { channels, guilds, messages, users } from "../modules/common";
 import { CommandOptionReturn } from "../../types/discord";
-import users from "@common/users";
 const logger = Logger.api("Commands");
 
 interface CommandsAndSection {
@@ -141,7 +140,7 @@ export class CommandManager {
     command.applicationId = currentSection?.section.id;
     command.displayName ??= command.name;
     command.displayDescription ??= command.description;
-    command.type = 1;
+    command.type = 2;
     command.id ??= command.name;
 
     command.execute ??= async (args) => {
