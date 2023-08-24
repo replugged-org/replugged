@@ -6,6 +6,7 @@ import type {
 import { Logger } from "../modules/logger";
 import { channels, guilds, messages } from "../modules/common";
 import { CommandOptionReturn } from "../../types/discord";
+import users from "@common/users";
 const logger = Logger.api("Commands");
 
 interface CommandsAndSection {
@@ -22,18 +23,33 @@ export const defaultSection: RepluggedCommandSection = Object.freeze({
   icon: "https://cdn.discordapp.com/attachments/1000955992068079716/1004196106055454820/Replugged-Logo.png",
 });
 
+export class CommandInteraction {
+  public options: CommandOptionReturn[];
+  public constructor(args: CommandOptionReturn[]) {
+    this.options = args;
+  }
+
+  public getValue<T>(name: string, defaultValue: T): T {
+    return (this.options.find((o) => o.name === name)?.value as T) ?? defaultValue;
+  }
+}
+
 /**
  * @internal
  * @hidden
  */
 async function executeCommand(
   cmdExecutor:
-    | ((args: CommandOptionReturn[]) => Promise<RepluggedCommandResult> | RepluggedCommandResult)
+    | ((
+        interaction: CommandInteraction,
+      ) => Promise<RepluggedCommandResult> | RepluggedCommandResult)
     | undefined,
   args: CommandOptionReturn[],
+  command: RepluggedCommand,
 ): Promise<void> {
   try {
-    const result = await cmdExecutor?.(args);
+    const interaction = new CommandInteraction(args);
+    const result = await cmdExecutor?.(interaction);
     const currentGuildId = guilds.getGuildId();
     const currentChannelId = channels.getChannelId(currentGuildId!)!;
 
@@ -59,6 +75,15 @@ async function executeCommand(
         avatar: "replugged",
       });
 
+      Object.assign(botMessage, {
+        interaction: {
+          displayName: command.displayName,
+          name: command.name,
+          type: command.type,
+          id: command.id,
+          user: users.getCurrentUser(),
+        },
+      });
       messages.receiveMessage(currentChannelId, botMessage);
     }
   } catch (error) {
@@ -75,6 +100,16 @@ async function executeCommand(
     Object.assign(botMessage.author, {
       username: "Replugged",
       avatar: "replugged",
+    });
+
+    Object.assign(botMessage, {
+      interaction: {
+        displayName: command.displayName,
+        name: command.name,
+        type: command.type,
+        id: command.id,
+        user: users.getCurrentUser(),
+      },
     });
 
     messages.receiveMessage(currentChannelId, botMessage);
@@ -110,7 +145,7 @@ export class CommandManager {
     command.id ??= command.name;
 
     command.execute ??= async (args) => {
-      await executeCommand(command.executor, args ?? []);
+      await executeCommand(command.executor, args ?? [], command);
     };
 
     command.options?.map((option) => {

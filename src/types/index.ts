@@ -1,4 +1,5 @@
 import type { WebContents } from "electron";
+import type { CommandInteraction } from "../renderer/apis/commands";
 import type { CommandOptionReturn, CommandOptions, ConnectedAccount } from "./discord";
 import type { PluginManifest, ThemeManifest } from "./addon";
 
@@ -63,7 +64,7 @@ export type RepluggedCommand = InexecutableRepluggedCommand &
   (
     | {
         executor: (
-          args: CommandOptionReturn[],
+          interaction: CommandInteraction,
         ) => Promise<RepluggedCommandResult> | RepluggedCommandResult;
         execute?: never;
       }

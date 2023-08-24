@@ -1,12 +1,13 @@
 import { CommandManager } from "../../apis/commands";
 import { ApplicationCommandOptionType, RepluggedCommand } from "../../../types";
+import { Messages } from "@common/i18n";
 import { plugins, themes } from "@replugged";
 const command = new CommandManager();
 
 const commands: RepluggedCommand[] = [
   {
     name: "enable",
-    description: "Enable a plugin or theme",
+    description: Messages.REPLUGGED_COMMAND_ENABLE_DESC,
     usage: "/enable <plugin/theme>",
     options: [
       {
@@ -26,30 +27,35 @@ const commands: RepluggedCommand[] = [
           );
 
           choices.push(
-            ...disabledPlugins.map((plugin) => ({
-              name: plugin.manifest.name,
-              displayName: `Plugin: ${plugin.manifest.name}`,
-              value: plugin.manifest.id,
-            })),
+            ...disabledPlugins
+              .map((plugin) => ({
+                name: plugin.manifest.name,
+                displayName: `Plugin: ${plugin.manifest.name}`,
+                value: plugin.manifest.id,
+              }))
+              .sort((a, b) => a.name.localeCompare(b.name)),
           );
           choices.push(
-            ...disabledThemes.map((theme) => ({
-              name: theme.manifest.name,
-              displayName: `Theme: ${theme.manifest.name}`,
-              value: theme.manifest.id,
-            })),
+            ...disabledThemes
+              .map((theme) => ({
+                name: theme.manifest.name,
+                displayName: `Theme: ${theme.manifest.name}`,
+                value: theme.manifest.id,
+              }))
+              .sort((a, b) => a.name.localeCompare(b.name)),
           );
 
           return choices;
         },
       },
     ],
-    executor: async (args) => {
+    executor: async (interaction) => {
       try {
-        if (plugins.plugins.has(args[0].value as string)) {
-          await plugins.enable(args[0].value as string);
+        const addonId = interaction.getValue<string>("addon", "");
+        if (plugins.plugins.has(addonId)) {
+          await plugins.enable(addonId);
         } else {
-          themes.enable(args[0].value as string);
+          themes.enable(addonId);
         }
         return {
           send: false,
@@ -58,7 +64,10 @@ const commands: RepluggedCommand[] = [
               type: "rich",
               color: 0x1bbb1b,
               title: "Success",
-              description: `${args[0].value} has been enabled!`,
+              description: `${plugins.plugins.get(addonId) ? "Plugin" : "Theme"} ${
+                plugins.plugins.get(addonId)?.manifest?.name ??
+                themes.themes.get(addonId)?.manifest?.name
+              } has been enabled!`,
             },
           ],
         };
@@ -99,30 +108,35 @@ const commands: RepluggedCommand[] = [
           );
 
           choices.push(
-            ...enabledPlugins.map((plugin) => ({
-              name: plugin.manifest.name,
-              displayName: `Plugin: ${plugin.manifest.name}`,
-              value: plugin.manifest.id,
-            })),
+            ...enabledPlugins
+              .map((plugin) => ({
+                name: plugin.manifest.name,
+                displayName: `Plugin: ${plugin.manifest.name}`,
+                value: plugin.manifest.id,
+              }))
+              .sort((a, b) => a.name.localeCompare(b.name)),
           );
           choices.push(
-            ...enabledThemes.map((theme) => ({
-              name: theme.manifest.name,
-              displayName: `Theme: ${theme.manifest.name}`,
-              value: theme.manifest.id,
-            })),
+            ...enabledThemes
+              .map((theme) => ({
+                name: theme.manifest.name,
+                displayName: `Theme: ${theme.manifest.name}`,
+                value: theme.manifest.id,
+              }))
+              .sort((a, b) => a.name.localeCompare(b.name)),
           );
 
           return choices;
         },
       },
     ],
-    executor: async (args) => {
+    executor: async (interaction) => {
       try {
-        if (plugins.plugins.has(args[0].value as string)) {
-          await plugins.disable(args[0].value as string);
+        const addonId = interaction.getValue<string>("addon", "");
+        if (plugins.plugins.has(addonId)) {
+          await plugins.disable(addonId);
         } else {
-          themes.disable(args[0].value as string);
+          themes.disable(addonId);
         }
         return {
           send: false,
@@ -131,7 +145,10 @@ const commands: RepluggedCommand[] = [
               type: "rich",
               color: 0x1bbb1b,
               title: "Success",
-              description: `${args[0].value} has been disabled!`,
+              description: `${plugins.plugins.get(addonId) ? "Plugin" : "Theme"}: ${
+                plugins.plugins.get(addonId)?.manifest?.name ??
+                themes.themes.get(addonId)?.manifest?.name
+              } has been disabled!`,
             },
           ],
         };
@@ -167,30 +184,35 @@ const commands: RepluggedCommand[] = [
           const enabledThemes = Array.from(themes.themes.values());
 
           choices.push(
-            ...enabledPlugins.map((plugin) => ({
-              name: plugin.manifest.name,
-              displayName: `Plugin: ${plugin.manifest.name}`,
-              value: plugin.manifest.id,
-            })),
+            ...enabledPlugins
+              .map((plugin) => ({
+                name: plugin.manifest.name,
+                displayName: `Plugin: ${plugin.manifest.name}`,
+                value: plugin.manifest.id,
+              }))
+              .sort((a, b) => a.name.localeCompare(b.name)),
           );
           choices.push(
-            ...enabledThemes.map((theme) => ({
-              name: theme.manifest.name,
-              displayName: `Theme: ${theme.manifest.name}`,
-              value: theme.manifest.id,
-            })),
+            ...enabledThemes
+              .map((theme) => ({
+                name: theme.manifest.name,
+                displayName: `Theme: ${theme.manifest.name}`,
+                value: theme.manifest.id,
+              }))
+              .sort((a, b) => a.name.localeCompare(b.name)),
           );
 
           return choices;
         },
       },
     ],
-    executor: async (args) => {
+    executor: async (interaction) => {
       try {
-        if (plugins.plugins.has(args[0].value as string)) {
-          await plugins.reload(args[0].value as string);
+        const addonId = interaction.getValue<string>("addon", "");
+        if (plugins.plugins.has(addonId)) {
+          await plugins.reload(addonId);
         } else {
-          themes.reload(args[0].value as string);
+          themes.reload(addonId);
         }
         return {
           send: false,
@@ -199,7 +221,10 @@ const commands: RepluggedCommand[] = [
               type: "rich",
               color: 0x1bbb1b,
               title: "Success",
-              description: `${args[0].value} has been reloaded!`,
+              description: `${plugins.plugins.get(addonId) ? "Plugin" : "Theme"}: ${
+                plugins.plugins.get(addonId)?.manifest?.name ??
+                themes.themes.get(addonId)?.manifest?.name
+              } has been reloaded!`,
             },
           ],
         };
@@ -221,7 +246,7 @@ const commands: RepluggedCommand[] = [
   {
     name: "list",
     description: "List all plugins/themes",
-    usage: '/list <true/false> <"plugin"/"theme"> <>',
+    usage: "/list <plugin/theme>",
     options: [
       {
         name: "send",
@@ -230,7 +255,7 @@ const commands: RepluggedCommand[] = [
         required: false,
       },
       {
-        name: "addon type",
+        name: "type",
         description: "Choose what type of addons to list.",
         type: ApplicationCommandOptionType.String,
         required: true,
@@ -254,7 +279,7 @@ const commands: RepluggedCommand[] = [
         required: false,
       },
       {
-        name: "type",
+        name: "status",
         description: "Whether you want to send either only enabled, disabled or all themes.",
         type: ApplicationCommandOptionType.String,
         required: false,
@@ -277,17 +302,12 @@ const commands: RepluggedCommand[] = [
         ],
       },
     ],
-    executor: (options) => {
+    executor: (interaction) => {
       try {
-        const getValue = (
-          name: string,
-          defaultValue?: boolean | string,
-        ): boolean | string | undefined =>
-          options.find((o) => o.name === name)?.value ?? defaultValue;
-        const send = getValue("send", false) as boolean;
-        const addonType = getValue("addon type");
-        const version = getValue("version", true);
-        const listType = getValue("type", "default");
+        const send = interaction.getValue<boolean>("send", false);
+        const addonType = interaction.getValue<string>("type", "plugin");
+        const version = interaction.getValue<boolean>("version", true);
+        const listType = interaction.getValue<string>("status", "default");
 
         const generateListString = (
           items: Array<{ name: string; version: string }>,

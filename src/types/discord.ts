@@ -37,7 +37,7 @@ export interface CommandOptionReturn {
   focused: unknown; // literally no clue what it is for...
   name: string;
   type: ApplicationCommandOptionType;
-  value: string | boolean | string;
+  value: string | boolean;
 }
 
 export interface ConnectedAccount {
