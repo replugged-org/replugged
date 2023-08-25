@@ -76,6 +76,7 @@ class BrowserWindow extends electron.BrowserWindow {
         if (settings.get("transparentWindow")) {
           opts.transparent = true;
           opts.frame = process.platform === "win32" ? false : opts.frame;
+          // TODO: Figure out what background color each OS needs.
           opts.backgroundColor = "#00000000";
         }
         break;
@@ -91,6 +92,20 @@ class BrowserWindow extends electron.BrowserWindow {
     }
 
     super(opts);
+
+    if (
+      currentWindow === DiscordWindowType.DISCORD_CLIENT &&
+      settings.get("transparentWindow") &&
+      process.platform === "darwin"
+    ) {
+      this.on("ready-to-show", () => {
+        // TODO: As far as I know, this is only needed on some macOS versions.
+        // This automatically maximizes the window on all displays the window is dragged to
+        this.maximize();
+        this.setResizable(false);
+      });
+    }
+
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
   }
 }
