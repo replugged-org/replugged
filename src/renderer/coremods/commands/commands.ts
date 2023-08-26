@@ -64,7 +64,7 @@ const commands: RepluggedCommand[] = [
             {
               type: "rich",
               color: 0x1bbb1b,
-              title: "Success",
+              title: "Success", // TODO: i18n
               description: Messages.REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED.format({
                 type: plugins.plugins.get(addonId)
                   ? Messages.REPLUGGED_PLUGIN
@@ -151,7 +151,7 @@ const commands: RepluggedCommand[] = [
             {
               type: "rich",
               color: 0x1bbb1b,
-              title: "Success",
+              title: "Success", // TODO: i18n
               description: Messages.REPLUGGED_COMMAND_DISABLE_MESSAGE_ENABLED.format({
                 type: plugins.plugins.get(addonId)
                   ? Messages.REPLUGGED_PLUGIN
@@ -233,7 +233,7 @@ const commands: RepluggedCommand[] = [
             {
               type: "rich",
               color: 0x1bbb1b,
-              title: "Success",
+              title: "Success", // TODO: i18n
               description: Messages.REPLUGGED_COMMAND_RELOAD_MESSAGE_ENABLED.format({
                 type: plugins.plugins.get(addonId)
                   ? Messages.REPLUGGED_PLUGIN
@@ -277,13 +277,13 @@ const commands: RepluggedCommand[] = [
         required: true,
         choices: [
           {
-            name: "Theme",
-            displayName: `List themes`,
+            name: Messages.REPLUGGED_THEME,
+            displayName: `List themes`, // TODO: i18n
             value: "theme",
           },
           {
-            name: "Plugin",
-            displayName: `List plugins`,
+            name: Messages.REPLUGGED_PLUGIN,
+            displayName: `List plugins`, // TODO: i18n
             value: "plugin",
           },
         ],
