@@ -5,13 +5,12 @@ const injector = new Injector();
 
 const commands: RepluggedCommand[] = [
   {
-    name: "enable",
+    name: Messages.REPLUGGED_COMMAND_ENABLE_NAME,
     description: Messages.REPLUGGED_COMMAND_ENABLE_DESC,
-    usage: "/enable <plugin/theme>",
     options: [
       {
-        name: "addon",
-        description: "Choose the addon you want to enable",
+        name: Messages.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME,
+        description: Messages.REPLUGGED_COMMAND_ADDONS_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
         get choices() {
@@ -29,7 +28,7 @@ const commands: RepluggedCommand[] = [
             ...disabledPlugins
               .map((plugin) => ({
                 name: plugin.manifest.name,
-                displayName: `Plugin: ${plugin.manifest.name}`,
+                displayName: `${Messages.REPLUGGED_PLUGIN}: ${plugin.manifest.name}`,
                 value: plugin.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -38,7 +37,7 @@ const commands: RepluggedCommand[] = [
             ...disabledThemes
               .map((theme) => ({
                 name: theme.manifest.name,
-                displayName: `Theme: ${theme.manifest.name}`,
+                displayName: `${Messages.REPLUGGED_THEME}: ${theme.manifest.name}`,
                 value: theme.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -50,7 +49,10 @@ const commands: RepluggedCommand[] = [
     ],
     executor: async (interaction) => {
       try {
-        const addonId = interaction.getValue<string>("addon", "");
+        const addonId = interaction.getValue<string>(
+          Messages.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME,
+          "",
+        );
         if (plugins.plugins.has(addonId)) {
           await plugins.enable(addonId);
         } else {
@@ -63,10 +65,14 @@ const commands: RepluggedCommand[] = [
               type: "rich",
               color: 0x1bbb1b,
               title: "Success",
-              description: `${plugins.plugins.get(addonId) ? "Plugin" : "Theme"} ${
-                plugins.plugins.get(addonId)?.manifest?.name ??
-                themes.themes.get(addonId)?.manifest?.name
-              } has been enabled!`,
+              description: Messages.REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED.format({
+                type: plugins.plugins.get(addonId)
+                  ? Messages.REPLUGGED_PLUGIN
+                  : Messages.REPLUGGED_THEME,
+                name:
+                  plugins.plugins.get(addonId)?.manifest?.name ??
+                  themes.themes.get(addonId)?.manifest?.name,
+              }),
             },
           ],
         };
@@ -77,7 +83,7 @@ const commands: RepluggedCommand[] = [
             {
               type: "rich",
               color: 0xdd2d2d,
-              title: "Error",
+              title: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
               description: err as string,
             },
           ],
@@ -86,13 +92,12 @@ const commands: RepluggedCommand[] = [
     },
   },
   {
-    name: "disable",
-    description: "Disable a plugin or theme",
-    usage: "/disable <plugin/theme>",
+    name: Messages.REPLUGGED_COMMAND_DISABLE_NAME,
+    description: Messages.REPLUGGED_COMMAND_DISABLE_DESC,
     options: [
       {
-        name: "addon",
-        description: "Choose the addon you want to disable",
+        name: Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME,
+        description: Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
         get choices() {
@@ -110,7 +115,7 @@ const commands: RepluggedCommand[] = [
             ...enabledPlugins
               .map((plugin) => ({
                 name: plugin.manifest.name,
-                displayName: `Plugin: ${plugin.manifest.name}`,
+                displayName: `${Messages.REPLUGGED_PLUGIN}: ${plugin.manifest.name}`,
                 value: plugin.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -119,7 +124,7 @@ const commands: RepluggedCommand[] = [
             ...enabledThemes
               .map((theme) => ({
                 name: theme.manifest.name,
-                displayName: `Theme: ${theme.manifest.name}`,
+                displayName: `${Messages.REPLUGGED_THEME}: ${theme.manifest.name}`,
                 value: theme.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -131,7 +136,10 @@ const commands: RepluggedCommand[] = [
     ],
     executor: async (interaction) => {
       try {
-        const addonId = interaction.getValue<string>("addon", "");
+        const addonId = interaction.getValue<string>(
+          Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME,
+          "",
+        );
         if (plugins.plugins.has(addonId)) {
           await plugins.disable(addonId);
         } else {
@@ -144,10 +152,14 @@ const commands: RepluggedCommand[] = [
               type: "rich",
               color: 0x1bbb1b,
               title: "Success",
-              description: `${plugins.plugins.get(addonId) ? "Plugin" : "Theme"}: ${
-                plugins.plugins.get(addonId)?.manifest?.name ??
-                themes.themes.get(addonId)?.manifest?.name
-              } has been disabled!`,
+              description: Messages.REPLUGGED_COMMAND_DISABLE_MESSAGE_ENABLED.format({
+                type: plugins.plugins.get(addonId)
+                  ? Messages.REPLUGGED_PLUGIN
+                  : Messages.REPLUGGED_THEME,
+                name:
+                  plugins.plugins.get(addonId)?.manifest?.name ??
+                  themes.themes.get(addonId)?.manifest?.name,
+              }),
             },
           ],
         };
@@ -158,7 +170,7 @@ const commands: RepluggedCommand[] = [
             {
               type: "rich",
               color: 0xdd2d2d,
-              title: "Error",
+              title: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
               description: err as string,
             },
           ],
@@ -167,13 +179,12 @@ const commands: RepluggedCommand[] = [
     },
   },
   {
-    name: "reload",
-    description: "Reload a plugin or theme",
-    usage: "/reload <plugin/theme>",
+    name: Messages.REPLUGGED_COMMAND_RELOAD_NAME,
+    description: Messages.REPLUGGED_COMMAND_RELOAD_DESC,
     options: [
       {
-        name: "addon",
-        description: "Choose the addon you want to reload",
+        name: Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME,
+        description: Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
         get choices() {
@@ -186,7 +197,7 @@ const commands: RepluggedCommand[] = [
             ...enabledPlugins
               .map((plugin) => ({
                 name: plugin.manifest.name,
-                displayName: `Plugin: ${plugin.manifest.name}`,
+                displayName: `${Messages.REPLUGGED_PLUGIN}: ${plugin.manifest.name}`,
                 value: plugin.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -195,7 +206,7 @@ const commands: RepluggedCommand[] = [
             ...enabledThemes
               .map((theme) => ({
                 name: theme.manifest.name,
-                displayName: `Theme: ${theme.manifest.name}`,
+                displayName: `${Messages.REPLUGGED_THEME}: ${theme.manifest.name}`,
                 value: theme.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -207,7 +218,10 @@ const commands: RepluggedCommand[] = [
     ],
     executor: async (interaction) => {
       try {
-        const addonId = interaction.getValue<string>("addon", "");
+        const addonId = interaction.getValue<string>(
+          Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME,
+          "",
+        );
         if (plugins.plugins.has(addonId)) {
           await plugins.reload(addonId);
         } else {
@@ -220,10 +234,14 @@ const commands: RepluggedCommand[] = [
               type: "rich",
               color: 0x1bbb1b,
               title: "Success",
-              description: `${plugins.plugins.get(addonId) ? "Plugin" : "Theme"}: ${
-                plugins.plugins.get(addonId)?.manifest?.name ??
-                themes.themes.get(addonId)?.manifest?.name
-              } has been reloaded!`,
+              description: Messages.REPLUGGED_COMMAND_RELOAD_MESSAGE_ENABLED.format({
+                type: plugins.plugins.get(addonId)
+                  ? Messages.REPLUGGED_PLUGIN
+                  : Messages.REPLUGGED_THEME,
+                name:
+                  plugins.plugins.get(addonId)?.manifest?.name ??
+                  themes.themes.get(addonId)?.manifest?.name,
+              }),
             },
           ],
         };
@@ -234,7 +252,7 @@ const commands: RepluggedCommand[] = [
             {
               type: "rich",
               color: 0xdd2d2d,
-              title: "Error",
+              title: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
               description: err as string,
             },
           ],
@@ -243,19 +261,18 @@ const commands: RepluggedCommand[] = [
     },
   },
   {
-    name: "list",
-    description: "List all plugins/themes",
-    usage: "/list <plugin/theme>",
+    name: Messages.REPLUGGED_COMMAND_LIST_NAME,
+    description: Messages.REPLUGGED_COMMAND_LIST_DESC,
     options: [
       {
-        name: "send",
-        description: "Whether you want to send this or not.",
+        name: Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME,
+        description: Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_DESC,
         type: ApplicationCommandOptionType.Boolean,
         required: false,
       },
       {
-        name: "type",
-        description: "Choose what type of addons to list.",
+        name: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME,
+        description: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [
@@ -272,30 +289,30 @@ const commands: RepluggedCommand[] = [
         ],
       },
       {
-        name: "version",
-        description: "Whether you want to add version info.",
+        name: Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME,
+        description: Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC,
         type: ApplicationCommandOptionType.Boolean,
         required: false,
       },
       {
-        name: "status",
-        description: "Whether you want to send either only enabled, disabled or all themes.",
+        name: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME,
+        description: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC,
         type: ApplicationCommandOptionType.String,
         required: false,
         choices: [
           {
-            name: "Enabled",
-            displayName: "Enabled",
+            name: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED,
+            displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED,
             value: "enabled",
           },
           {
-            name: "Disabled",
-            displayName: "Disabled",
+            name: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED,
+            displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED,
             value: "disabled",
           },
           {
-            name: "Both",
-            displayName: "Both",
+            name: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH,
+            displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH,
             value: "default",
           },
         ],
@@ -303,10 +320,22 @@ const commands: RepluggedCommand[] = [
     ],
     executor: (interaction) => {
       try {
-        const send = interaction.getValue<boolean>("send", false);
-        const addonType = interaction.getValue<string>("type", "plugin");
-        const version = interaction.getValue<boolean>("version", true);
-        const listType = interaction.getValue<string>("status", "default");
+        const send = interaction.getValue<boolean>(
+          Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME,
+          false,
+        );
+        const addonType = interaction.getValue<string>(
+          Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME,
+          "plugin",
+        );
+        const version = interaction.getValue<boolean>(
+          Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME,
+          true,
+        );
+        const listType = interaction.getValue<string>(
+          Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME,
+          "default",
+        );
 
         const generateListString = (
           items: Array<{ name: string; version: string }>,
@@ -325,8 +354,20 @@ const commands: RepluggedCommand[] = [
             const enablePlugins = allPlugins.filter((p) => !plugins.getDisabled().includes(p.id));
             const disabledPlugins = allPlugins.filter((p) => plugins.getDisabled().includes(p.id));
 
-            const enabledString = generateListString(enablePlugins, "32", "Enabled Plugins");
-            const disabledString = generateListString(disabledPlugins, "31", "Disabled Plugins");
+            const enabledString = generateListString(
+              enablePlugins,
+              "32",
+              Messages.REPLUGGED_COMMAND_LIST_HEADER_ENABLED.format({
+                type: Messages.REPLUGGED_PLUGINS,
+              }),
+            );
+            const disabledString = generateListString(
+              disabledPlugins,
+              "31",
+              Messages.REPLUGGED_COMMAND_LIST_HEADER_DISABLED.format({
+                type: Messages.REPLUGGED_PLUGINS,
+              }),
+            );
 
             const result =
               listType === "enabled"
@@ -347,8 +388,20 @@ const commands: RepluggedCommand[] = [
             const enableThemes = allThemes.filter((t) => !plugins.getDisabled().includes(t.id));
             const disabledThemes = allThemes.filter((t) => plugins.getDisabled().includes(t.id));
 
-            const enabledString = generateListString(enableThemes, "32", "Enabled Themes");
-            const disabledString = generateListString(disabledThemes, "31", "Disabled Themes");
+            const enabledString = generateListString(
+              enableThemes,
+              "32",
+              Messages.REPLUGGED_COMMAND_LIST_HEADER_ENABLED.format({
+                type: Messages.REPLUGGED_THEMES,
+              }),
+            );
+            const disabledString = generateListString(
+              disabledThemes,
+              "31",
+              Messages.REPLUGGED_COMMAND_LIST_HEADER_DISABLED.format({
+                type: Messages.REPLUGGED_THEMES,
+              }),
+            );
 
             const result =
               listType === "enabled"
@@ -365,7 +418,7 @@ const commands: RepluggedCommand[] = [
           default:
             return {
               send: false,
-              result: "You need to specify whether to send a plugin or theme list",
+              result: Messages.REPLUGGED_COMMAND_LIST_ERROR_SPECIFY,
             };
         }
       } catch (err) {
@@ -375,7 +428,7 @@ const commands: RepluggedCommand[] = [
             {
               type: "rich",
               color: 0xdd2d2d,
-              title: "Error",
+              title: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
               description: err as string,
             },
           ],

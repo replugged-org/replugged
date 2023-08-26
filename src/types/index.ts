@@ -56,7 +56,7 @@ export interface InexecutableRepluggedCommand {
   displayName?: string;
   description: string;
   displayDescription?: string;
-  usage: string;
+  usage?: string;
   options?: CommandOptions[];
 }
 
