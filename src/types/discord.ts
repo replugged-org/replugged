@@ -1,7 +1,5 @@
 export enum ApplicationCommandOptionType {
-  Subcommand = 1,
-  SubcommandGroup,
-  String,
+  String = 3,
   Integer,
   Boolean,
   User,
@@ -26,18 +24,6 @@ interface BaseCommandOptions {
   displayDescription?: string;
   serverLocalizedName?: string;
   required?: boolean;
-}
-
-export interface SubcommandOptions extends BaseCommandOptions {
-  type: ApplicationCommandOptionType.Subcommand;
-  options?: readonly CommandOptions[];
-  required?: true;
-}
-
-export interface SubcommandGroupOptions extends BaseCommandOptions {
-  type: ApplicationCommandOptionType.SubcommandGroup;
-  options?: readonly SubcommandOptions[];
-  required?: true;
 }
 
 export interface StringOptions extends BaseCommandOptions {
@@ -81,8 +67,6 @@ export interface CommandOptionReturn<T = unknown> {
 }
 
 export type CommandOptions =
-  | SubcommandOptions
-  | SubcommandGroupOptions
   | StringOptions
   | NumberOptions
   | UserOptions

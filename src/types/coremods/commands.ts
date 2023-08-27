@@ -9,8 +9,6 @@ import {
 import { ObjectValues } from "../util";
 
 interface OptionTypeMapping {
-  [ApplicationCommandOptionType.Subcommand]: string; // TODO: check
-  [ApplicationCommandOptionType.SubcommandGroup]: string; // TODO: check
   [ApplicationCommandOptionType.String]: string;
   [ApplicationCommandOptionType.Integer]: number;
   [ApplicationCommandOptionType.Boolean]: boolean;
@@ -32,11 +30,7 @@ type GetType<T extends CommandOptions> = GetConditionallyOptional<
       ? T["choices"][number]["value"]
       : OptionTypeMapping[T["type"]]
     : OptionTypeMapping[T["type"]],
-  T["type"] extends
-    | ApplicationCommandOptionType.Subcommand
-    | ApplicationCommandOptionType.SubcommandGroup
-    ? true
-    : T["required"]
+  T["required"]
 >;
 
 export type GetCommandOption<T extends CommandOptionReturn, K extends T["name"]> = Extract<
