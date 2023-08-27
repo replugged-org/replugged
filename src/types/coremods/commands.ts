@@ -1,3 +1,4 @@
+import { Channel, Guild } from "discord-types/general";
 import { CommandInteraction } from "../../renderer/apis/commands";
 import {
   ApplicationCommandOptionType,
@@ -72,7 +73,10 @@ export type RepluggedCommand<T extends CommandOptions> = InexecutableRepluggedCo
         execute?: never;
       }
     | {
-        execute: (args: CommandOptionReturn[]) => Promise<void> | void;
+        execute: (
+          args: Array<GetCommandOptions<T>>,
+          currentInfo: { channel: Channel; guild: Guild },
+        ) => Promise<void> | void;
         executor?: never;
       }
   );

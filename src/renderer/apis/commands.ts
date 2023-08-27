@@ -1,5 +1,6 @@
 import type {
   AnyRepluggedCommand,
+  CommandOptionReturn,
   CommandOptions,
   GetCommandOption,
   GetCommandOptions,
@@ -8,9 +9,9 @@ import type {
   RepluggedCommandResult,
   RepluggedCommandSection,
 } from "../../types";
+import type { Channel, Guild } from "discord-types/general";
 import { Logger } from "../modules/logger";
 import { channels, guilds, messages, users } from "../modules/common";
-import { CommandOptionReturn } from "../../types/discord";
 const logger = Logger.api("Commands");
 
 interface CommandsAndSection {
@@ -29,16 +30,22 @@ export const defaultSection: RepluggedCommandSection = Object.freeze({
 
 export class CommandInteraction<T extends CommandOptionReturn> {
   public options: T[];
-  public constructor(args: T[]) {
-    this.options = args;
+  public channel: Channel;
+  public guild: Guild;
+  public constructor(props: { options: T[]; channel: Channel; guild: Guild }) {
+    this.options = props.options;
+    this.channel = props.channel;
+    this.guild = props.guild;
   }
 
   public getValue<K extends T["name"], D = undefined>(
     name: K,
     defaultValue?: D,
   ): GetValueType<GetCommandOption<T, K>, D> {
-    // @ts-expect-error shut up
-    return this.options.find((o) => o.name === name)?.value ?? defaultValue;
+    return (this.options.find((o) => o.name === name)?.value ?? defaultValue) as GetValueType<
+      GetCommandOption<T, K>,
+      D
+    >;
   }
 }
 
@@ -53,10 +60,11 @@ async function executeCommand<T extends CommandOptions>(
       ) => Promise<RepluggedCommandResult> | RepluggedCommandResult)
     | undefined,
   args: Array<GetCommandOptions<T>>,
-  command: RepluggedCommand<CommandOptions>,
+  currentInfo: { guild: Guild; channel: Channel },
+  command: RepluggedCommand<T>,
 ): Promise<void> {
   try {
-    const interaction = new CommandInteraction(args);
+    const interaction = new CommandInteraction({ options: args, ...currentInfo });
     const result = await cmdExecutor?.(interaction);
     const currentGuildId = guilds.getGuildId();
     const currentChannelId = channels.getChannelId(currentGuildId!)!;
@@ -152,9 +160,8 @@ export class CommandManager {
     command.type = 2;
     command.id ??= command.name;
 
-    command.execute ??= async (args) => {
-      // @ts-expect-error shut up
-      await executeCommand(command.executor, args ?? [], command);
+    command.execute ??= async (args, currentInfo) => {
+      await executeCommand(command.executor, args ?? [], currentInfo ?? {}, command);
     };
 
     command.options?.map((option) => {
