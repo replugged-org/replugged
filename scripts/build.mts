@@ -11,6 +11,7 @@ import {
   rmSync,
   writeFileSync,
 } from "fs";
+import { logBuildPlugin } from "src/util.mjs";
 
 const NODE_VERSION = "14";
 const CHROME_VERSION = "91";
@@ -51,6 +52,8 @@ const preBundle: esbuild.Plugin = {
 
 const plugins: esbuild.Plugin[] = [];
 
+if (!watch) plugins.push(logBuildPlugin);
+
 if (production) {
   rmSync("dist", { recursive: true, force: true });
   plugins.push(preBundle);
@@ -66,13 +69,13 @@ const common: esbuild.BuildOptions = {
   sourcemap: !production,
   format: "cjs" as esbuild.Format,
   logLevel: "info",
-  watch,
   plugins,
+  metafile: true,
 };
 
-Promise.all([
+const contexts = await Promise.all([
   // Main
-  esbuild.build({
+  esbuild.context({
     ...common,
     entryPoints: ["src/main/index.ts"],
     platform: "node",
@@ -81,7 +84,7 @@ Promise.all([
     external: ["electron"],
   }),
   // Preload
-  esbuild.build({
+  esbuild.context({
     ...common,
     entryPoints: ["src/preload.ts"],
     platform: "node",
@@ -90,7 +93,7 @@ Promise.all([
     external: ["electron"],
   }),
   // Renderer
-  esbuild.build({
+  esbuild.context({
     ...common,
     entryPoints: ["src/renderer/index.ts"],
     platform: "browser",
@@ -99,3 +102,13 @@ Promise.all([
     format: "esm",
   }),
 ]);
+await Promise.all(
+  contexts.map(async (context) => {
+    if (watch) {
+      await context.watch();
+    } else {
+      await context.rebuild().catch(() => {});
+      context.dispose();
+    }
+  }),
+);
