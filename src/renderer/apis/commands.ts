@@ -1,4 +1,9 @@
 import type {
+  AnyRepluggedCommand,
+  CommandOptions,
+  GetCommandOption,
+  GetCommandOptions,
+  GetValueType,
   RepluggedCommand,
   RepluggedCommandResult,
   RepluggedCommandSection,
@@ -10,7 +15,7 @@ const logger = Logger.api("Commands");
 
 interface CommandsAndSection {
   section: RepluggedCommandSection;
-  commands: Map<string, RepluggedCommand>;
+  commands: Map<string, AnyRepluggedCommand>;
 }
 
 export const commandAndSections = new Map<string, CommandsAndSection>();
@@ -22,14 +27,18 @@ export const defaultSection: RepluggedCommandSection = Object.freeze({
   icon: "https://cdn.discordapp.com/attachments/1000955992068079716/1004196106055454820/Replugged-Logo.png",
 });
 
-export class CommandInteraction {
-  public options: CommandOptionReturn[];
-  public constructor(args: CommandOptionReturn[]) {
+export class CommandInteraction<T extends CommandOptionReturn> {
+  public options: T[];
+  public constructor(args: T[]) {
     this.options = args;
   }
 
-  public getValue<T>(name: string, defaultValue: T): T {
-    return (this.options.find((o) => o.name === name)?.value as T) ?? defaultValue;
+  public getValue<K extends T["name"], D = undefined>(
+    name: K,
+    defaultValue?: D,
+  ): GetValueType<GetCommandOption<T, K>, D> {
+    // @ts-expect-error shut up
+    return this.options.find((o) => o.name === name)?.value ?? defaultValue;
   }
 }
 
@@ -37,14 +46,14 @@ export class CommandInteraction {
  * @internal
  * @hidden
  */
-async function executeCommand(
+async function executeCommand<T extends CommandOptions>(
   cmdExecutor:
     | ((
-        interaction: CommandInteraction,
+        interaction: CommandInteraction<GetCommandOptions<T>>,
       ) => Promise<RepluggedCommandResult> | RepluggedCommandResult)
     | undefined,
-  args: CommandOptionReturn[],
-  command: RepluggedCommand,
+  args: Array<GetCommandOptions<T>>,
+  command: RepluggedCommand<CommandOptions>,
 ): Promise<void> {
   try {
     const interaction = new CommandInteraction(args);
@@ -129,11 +138,11 @@ export class CommandManager {
    * @param cmd Slash Command to be registered
    * @returns An Callback to unregister the slash command
    */
-  public registerCommand(command: RepluggedCommand): () => void {
+  public registerCommand<const T extends CommandOptions>(command: RepluggedCommand<T>): () => void {
     if (!commandAndSections.has(this.#section.id)) {
       commandAndSections.set(this.#section.id, {
         section: this.#section,
-        commands: new Map<string, RepluggedCommand>(),
+        commands: new Map<string, AnyRepluggedCommand>(),
       });
     }
     const currentSection = commandAndSections.get(this.#section.id);
@@ -144,6 +153,7 @@ export class CommandManager {
     command.id ??= command.name;
 
     command.execute ??= async (args) => {
+      // @ts-expect-error shut up
       await executeCommand(command.executor, args ?? [], command);
     };
 
@@ -153,7 +163,7 @@ export class CommandManager {
       return option;
     });
 
-    currentSection?.commands.set(command.id, command);
+    currentSection?.commands.set(command.id, command as AnyRepluggedCommand);
 
     const uninject = (): void => {
       void currentSection?.commands.delete(command.id!);

@@ -7,7 +7,7 @@ import {
   waitForModule,
   waitForProps,
 } from "../../modules/webpack";
-import { RepluggedCommand, RepluggedCommandSection } from "../../../types";
+import { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
 
 import { commandAndSections, defaultSection } from "../../apis/commands";
 import { loadCommands, unloadCommands } from "./commands";
@@ -17,12 +17,12 @@ const injector = new Injector();
 interface ApplicationCommandSearchStoreMod {
   [key: string]: (...args: unknown[]) => {
     sectionDescriptors: RepluggedCommandSection[];
-    commands: RepluggedCommand[];
+    commands: AnyRepluggedCommand[];
     filteredSectionId: string;
     activeSections: RepluggedCommandSection[];
     commandsByActiveSection: Array<{
       section: RepluggedCommandSection;
-      data: RepluggedCommand[];
+      data: AnyRepluggedCommand[];
     }>;
   };
 }
@@ -30,11 +30,11 @@ interface ApplicationCommandSearchStoreMod {
 interface ApplicationCommandSearchStore {
   getChannelState: (...args: unknown[]) => {
     applicationSections: RepluggedCommandSection[];
-    applicationCommands: RepluggedCommand[];
+    applicationCommands: AnyRepluggedCommand[];
   };
   getApplicationSections: (...args: unknown[]) => RepluggedCommandSection[];
   useSearchManager: (...args: unknown[]) => unknown;
-  getQueryCommands: (...args: [string, string, string]) => RepluggedCommand[];
+  getQueryCommands: (...args: [string, string, string]) => AnyRepluggedCommand[];
 }
 
 async function injectRepluggedBotIcon(): Promise<void> {

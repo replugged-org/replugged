@@ -5,7 +5,7 @@ import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/cont
 import { addButton } from "../coremods/messagePopover";
 import { addContextMenuItem } from "../coremods/contextMenu";
 import { CommandManager } from "../apis/commands";
-import { RepluggedCommand } from "src/types";
+import { CommandOptions, RepluggedCommand } from "src/types";
 
 // Slash command manager to be used in injector.
 
@@ -394,8 +394,8 @@ export class Injector {
      * }
      * ```
      */
-    registerSlashCommand: (cmd: RepluggedCommand) => {
-      const uninjector = SlashCommandManager.registerCommand(cmd);
+    registerSlashCommand: <const T extends CommandOptions>(cmd: RepluggedCommand<T>) => {
+      const uninjector = SlashCommandManager.registerCommand<T>(cmd);
       this.#uninjectors.add(uninjector);
       return uninjector;
     },

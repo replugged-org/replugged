@@ -1,6 +1,5 @@
 import type { WebContents } from "electron";
-import type { CommandInteraction } from "../renderer/apis/commands";
-import type { CommandOptionReturn, CommandOptions, ConnectedAccount } from "./discord";
+import type { ConnectedAccount } from "./discord";
 import type { PluginManifest, ThemeManifest } from "./addon";
 
 export type RepluggedWebContents = WebContents & {
@@ -48,85 +47,6 @@ export interface RepluggedAnnouncement {
   };
 }
 
-export interface InexecutableRepluggedCommand {
-  applicationId?: string;
-  type?: number;
-  id?: string;
-  name: string;
-  displayName?: string;
-  description: string;
-  displayDescription?: string;
-  usage?: string;
-  options?: CommandOptions[];
-}
-
-export type RepluggedCommand = InexecutableRepluggedCommand &
-  (
-    | {
-        executor: (
-          interaction: CommandInteraction,
-        ) => Promise<RepluggedCommandResult> | RepluggedCommandResult;
-        execute?: never;
-      }
-    | {
-        execute: (args: CommandOptionReturn[]) => Promise<void> | void;
-        executor?: never;
-      }
-  );
-export interface RepluggedCommandEmbed {
-  type: "rich" | "image" | "video" | "article";
-  title: string;
-  description: string;
-  color?: string | number;
-  thumbnail?: {
-    url: string;
-    proxyURL: string;
-    width: number;
-    height: number;
-  };
-  image?: {
-    url: string;
-    proxyURL: string;
-    width: number;
-    height: number;
-  };
-  video?: {
-    url: string;
-    proxyURL: string;
-    width: number;
-    height: number;
-  };
-  fields?: Array<{
-    name: string;
-    value: string;
-    inline: boolean;
-  }>;
-  author?: {
-    iconProxyURL: string;
-    iconURL: string;
-    name: string;
-    url?: string;
-  };
-  footer?: {
-    text: string;
-    iconProxyURL: string;
-    iconURL: string;
-  };
-  provider?: { name: string; url: string };
-  timestamp?: string;
-}
-export interface RepluggedCommandResult {
-  send: boolean;
-  result?: string;
-  embeds?: RepluggedCommandEmbed[];
-}
-export interface RepluggedCommandSection {
-  id: string;
-  name: string;
-  type?: 1;
-  icon: string;
-}
-
 export interface RepluggedConnection {
   type: string;
   name: string;
@@ -167,3 +87,4 @@ export * from "./installer";
 export * from "./coremods/message";
 export * from "./coremods/settings";
 export * from "./coremods/contextMenu";
+export * from "./coremods/commands";

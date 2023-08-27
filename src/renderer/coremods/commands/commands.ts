@@ -1,15 +1,15 @@
-import { ApplicationCommandOptionType, RepluggedCommand } from "../../../types";
+import { ApplicationCommandOptionType } from "../../../types";
 import { Messages } from "@common/i18n";
 import { Injector, plugins, themes } from "@replugged";
 const injector = new Injector();
 
-const commands: RepluggedCommand[] = [
-  {
+export function loadCommands(): void {
+  injector.utils.registerSlashCommand({
     name: Messages.REPLUGGED_COMMAND_ENABLE_NAME,
     description: Messages.REPLUGGED_COMMAND_ENABLE_DESC,
     options: [
       {
-        name: Messages.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME,
+        name: "addon", // Messages.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME,
         description: Messages.REPLUGGED_COMMAND_ADDONS_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
@@ -49,9 +49,8 @@ const commands: RepluggedCommand[] = [
     ],
     executor: async (interaction) => {
       try {
-        const addonId = interaction.getValue<string>(
-          Messages.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME,
-          "",
+        const addonId = interaction.getValue(
+          "addon", // Messages.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME,
         );
         if (plugins.plugins.has(addonId)) {
           await plugins.enable(addonId);
@@ -90,13 +89,13 @@ const commands: RepluggedCommand[] = [
         };
       }
     },
-  },
-  {
+  });
+  injector.utils.registerSlashCommand({
     name: Messages.REPLUGGED_COMMAND_DISABLE_NAME,
     description: Messages.REPLUGGED_COMMAND_DISABLE_DESC,
     options: [
       {
-        name: Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME,
+        name: "addon", // Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME,
         description: Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
@@ -136,9 +135,8 @@ const commands: RepluggedCommand[] = [
     ],
     executor: async (interaction) => {
       try {
-        const addonId = interaction.getValue<string>(
-          Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME,
-          "",
+        const addonId = interaction.getValue(
+          "addon", // Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME
         );
         if (plugins.plugins.has(addonId)) {
           await plugins.disable(addonId);
@@ -177,13 +175,13 @@ const commands: RepluggedCommand[] = [
         };
       }
     },
-  },
-  {
+  });
+  injector.utils.registerSlashCommand({
     name: Messages.REPLUGGED_COMMAND_RELOAD_NAME,
     description: Messages.REPLUGGED_COMMAND_RELOAD_DESC,
     options: [
       {
-        name: Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME,
+        name: "addon", // Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME,
         description: Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
@@ -218,9 +216,8 @@ const commands: RepluggedCommand[] = [
     ],
     executor: async (interaction) => {
       try {
-        const addonId = interaction.getValue<string>(
-          Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME,
-          "",
+        const addonId = interaction.getValue(
+          "addon", // Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME,
         );
         if (plugins.plugins.has(addonId)) {
           await plugins.reload(addonId);
@@ -259,19 +256,20 @@ const commands: RepluggedCommand[] = [
         };
       }
     },
-  },
-  {
+  });
+  injector.utils.registerSlashCommand({
     name: Messages.REPLUGGED_COMMAND_LIST_NAME,
     description: Messages.REPLUGGED_COMMAND_LIST_DESC,
     options: [
       {
-        name: Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME,
+        name: "send", // Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME,
         description: Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_DESC,
         type: ApplicationCommandOptionType.Boolean,
         required: false,
+        test: [],
       },
       {
-        name: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME,
+        name: "type", // Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME,
         description: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
@@ -289,13 +287,13 @@ const commands: RepluggedCommand[] = [
         ],
       },
       {
-        name: Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME,
+        name: "version", // Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME,
         description: Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC,
         type: ApplicationCommandOptionType.Boolean,
         required: false,
       },
       {
-        name: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME,
+        name: "status", // Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME,
         description: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC,
         type: ApplicationCommandOptionType.String,
         required: false,
@@ -320,20 +318,19 @@ const commands: RepluggedCommand[] = [
     ],
     executor: (interaction) => {
       try {
-        const send = interaction.getValue<boolean>(
-          Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME,
+        const send = interaction.getValue(
+          "send", // Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME,
           false,
         );
-        const addonType = interaction.getValue<string>(
-          Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME,
-          "plugin",
+        const addonType = interaction.getValue(
+          "type", // Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME
         );
-        const version = interaction.getValue<boolean>(
-          Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME,
+        const version = interaction.getValue(
+          "version", // Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME
           true,
         );
-        const listType = interaction.getValue<string>(
-          Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME,
+        const listType = interaction.getValue(
+          "status", // Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME
           "default",
         );
 
@@ -435,13 +432,7 @@ const commands: RepluggedCommand[] = [
         };
       }
     },
-  },
-];
-
-export function loadCommands(): void {
-  for (const cmd of commands) {
-    injector.utils.registerSlashCommand(cmd);
-  }
+  });
 }
 
 export function unloadCommands(): void {

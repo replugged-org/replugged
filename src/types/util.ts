@@ -8,3 +8,5 @@ export type ReactComponent<P> = React.ComponentType<
 >;
 
 export type ObjectWithProps<P extends PropertyKey> = Record<P, unknown>;
+
+export type ObjectValues<O extends Record<string, unknown>> = O[keyof O];
