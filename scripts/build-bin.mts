@@ -13,7 +13,7 @@ const packageNames = Object.keys(packageJson.dependencies);
 const context = await esbuild.context({
   absWorkingDir: path.join(dirname, ".."),
   bundle: true,
-  minify: false,
+  minify: true,
   format: "esm",
   logLevel: "info",
   metafile: true,
