@@ -17,7 +17,7 @@ interface OptionTypeMapping {
   [ApplicationCommandOptionType.Role]: string; // its role id
   [ApplicationCommandOptionType.Mentionable]: string; // id of whatever can be mentioned. usually channel/user/role
   [ApplicationCommandOptionType.Number]: number;
-  [ApplicationCommandOptionType.Attachment]: unknown; // TODO: better type
+  //[ApplicationCommandOptionType.Attachment]: unknown; // TODO: better type
 }
 
 type GetConditionallyOptional<T, Required extends boolean | undefined> = Required extends true
