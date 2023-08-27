@@ -327,7 +327,7 @@ export function loadCommands(): void {
           items: Array<{ name: string; version: string }>,
           typeName: string,
         ): string =>
-          `# ${typeName} (${items.length}):\n• ${items
+          `# ${typeName} (${items.length})${items.length ? ":\n•" : ""} ${items
             .map((item) => (version ? `${item.name} (v${item.version})` : item.name))
             .join("\n• ")}`;
 
