@@ -119,26 +119,29 @@ export const logBuildPlugin: esbuild.Plugin = {
           const dirname = path.dirname(file);
           const basename = path.basename(file);
 
-          const coloredName = [dirname, sep, chalk.bold(chalk.white(basename))].join("");
+          const coloredName = [dirname, sep, chalk.bold(basename)].join("");
 
           const sizeText = formatBytes(bytes);
           const isBigFile = bytes > Math.pow(1024, 2) && !file.endsWith(".map"); // 1mb
-          const coloredSize = isBigFile ? `${chalk.yellow(sizeText)} ⚠️` : chalk.cyan(sizeText);
+          const coloredSize = isBigFile ? chalk.yellow(sizeText) : chalk.cyan(sizeText);
+          const suffix = isBigFile ? chalk.yellow(" ⚠️") : "";
 
           return {
             name: coloredName,
             size: coloredSize,
+            suffix,
           };
         });
       const maxNameLength = Math.max(...fileData.map(({ name }) => name.length));
+      const maxSizeLength = Math.max(...fileData.map(({ size }) => size.length));
 
       console.log("");
-      fileData.forEach(({ name, size }) => {
-        console.log(`${name.padEnd(maxNameLength + 1)} ${size}`);
+      fileData.forEach(({ name, size, suffix }) => {
+        console.log(`  ${name.padEnd(maxNameLength + 1)} ${size.padStart(maxSizeLength)}${suffix}`);
       });
       console.log("");
 
-      console.log(chalk.green(`⚡ Done in ${time.toLocaleString()}ms`));
+      console.log(`⚡ ${chalk.green(`Done in ${time.toLocaleString()}ms`)}`);
     });
   },
 };
