@@ -266,7 +266,8 @@ export function loadCommands(): void {
         required: false,
       },
       {
-        name: "type", // Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME,
+        name: "type",
+        displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME,
         description: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
