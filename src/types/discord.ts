@@ -1,5 +1,3 @@
-import { CommandSymbol } from "./coremods/commands";
-
 export enum ApplicationCommandOptionType {
   Subcommand = 1,
   SubcommandGroup,
@@ -79,7 +77,6 @@ export interface CommandOptionReturn<T = unknown> {
   name: string;
   type: ApplicationCommandOptionType;
   value: T;
-  [CommandSymbol]: CommandOptions;
 }
 
 export type CommandOptions =

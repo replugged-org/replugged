@@ -8,8 +8,6 @@ import {
 } from "../discord";
 import { ObjectValues } from "../util";
 
-export declare const CommandSymbol: unique symbol;
-
 interface OptionTypeMapping {
   [ApplicationCommandOptionType.Subcommand]: string; // TODO: check
   [ApplicationCommandOptionType.SubcommandGroup]: string; // TODO: check
@@ -52,16 +50,12 @@ export type GetCommandOptions<T extends CommandOptions> = ObjectValues<{
     name: K;
     type: T["type"];
     value: GetType<Extract<T, { name: K }>>;
-    [CommandSymbol]: T;
   };
 }>;
 
-export type GetValueType<
-  T extends CommandOptionReturn,
-  D,
-> = T[typeof CommandSymbol]["required"] extends true
-  ? T["value"]
-  : Exclude<T["value"], undefined> | D;
+export type GetValueType<T extends CommandOptionReturn, D> = undefined extends T["value"]
+  ? Exclude<T["value"], undefined> | D
+  : T["value"];
 
 export interface InexecutableRepluggedCommand<T extends CommandOptions> {
   applicationId?: string;
@@ -72,7 +66,7 @@ export interface InexecutableRepluggedCommand<T extends CommandOptions> {
   description: string;
   displayDescription?: string;
   usage?: string;
-  options?: T[];
+  options?: readonly T[];
 }
 
 export type RepluggedCommand<T extends CommandOptions> = InexecutableRepluggedCommand<T> &
