@@ -81,7 +81,6 @@
     "@electron/asar": "^3.2.4",
     "@lezer/highlight": "^1.1.6",
     "@octokit/rest": "^19.0.13",
-    "@parcel/transformer-sass": "^2.9.3",
     "@types/esm": "^3.2.0",
     "adm-zip": "^0.5.10",
     "chalk": "^5.3.0",
