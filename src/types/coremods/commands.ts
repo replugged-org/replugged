@@ -17,7 +17,7 @@ interface OptionTypeMapping {
   [ApplicationCommandOptionType.User]: string; // its user id
   [ApplicationCommandOptionType.Channel]: string; // its channel id
   [ApplicationCommandOptionType.Role]: string; // its role id
-  [ApplicationCommandOptionType.Mentionable]: string; // id of whatever can be mentioned. usually channnel/user/role
+  [ApplicationCommandOptionType.Mentionable]: string; // id of whatever can be mentioned. usually channel/user/role
   [ApplicationCommandOptionType.Number]: number;
   [ApplicationCommandOptionType.Attachment]: unknown; // TODO: better type
 }
