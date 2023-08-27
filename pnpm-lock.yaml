@@ -167,7 +167,7 @@ devDependencies:
     specifier: ^0.23.28
     version: 0.23.28(typescript@5.2.2)
   typescript:
-    specifier: ^5.2.2
+    specifier: ^5.1.6
     version: 5.2.2
 
 packages:
