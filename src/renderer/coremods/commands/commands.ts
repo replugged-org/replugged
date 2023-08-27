@@ -325,10 +325,9 @@ export function loadCommands(): void {
 
         const generateListString = (
           items: Array<{ name: string; version: string }>,
-          typeColor: string,
           typeName: string,
         ): string =>
-          `[2;${typeColor}m[1;${typeColor}m${typeName} (${items.length}):[0m[2;${typeColor}m[0m\n• ${items
+          `# ${typeName} (${items.length}):\n• ${items
             .map((item) => (version ? `${item.name} (v${item.version})` : item.name))
             .join("\n• ")}`;
 
@@ -342,14 +341,12 @@ export function loadCommands(): void {
 
             const enabledString = generateListString(
               enablePlugins,
-              "32",
               Messages.REPLUGGED_COMMAND_LIST_HEADER_ENABLED.format({
                 type: Messages.REPLUGGED_PLUGINS,
               }),
             );
             const disabledString = generateListString(
               disabledPlugins,
-              "31",
               Messages.REPLUGGED_COMMAND_LIST_HEADER_DISABLED.format({
                 type: Messages.REPLUGGED_PLUGINS,
               }),
@@ -364,7 +361,7 @@ export function loadCommands(): void {
 
             return {
               send,
-              result: `\`\`\`ansi\n${result}\n\`\`\``,
+              result,
             };
           }
           case "theme": {
@@ -376,14 +373,12 @@ export function loadCommands(): void {
 
             const enabledString = generateListString(
               enableThemes,
-              "32",
               Messages.REPLUGGED_COMMAND_LIST_HEADER_ENABLED.format({
                 type: Messages.REPLUGGED_THEMES,
               }),
             );
             const disabledString = generateListString(
               disabledThemes,
-              "31",
               Messages.REPLUGGED_COMMAND_LIST_HEADER_DISABLED.format({
                 type: Messages.REPLUGGED_THEMES,
               }),
@@ -398,7 +393,7 @@ export function loadCommands(): void {
 
             return {
               send,
-              result: `\`\`\`ansi\n${result}\n\`\`\``,
+              result,
             };
           }
           default:

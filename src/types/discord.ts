@@ -1,13 +1,14 @@
 export enum ApplicationCommandOptionType {
   String = 3,
-  Integer,
-  Boolean,
-  User,
-  Channel,
-  Role,
-  Mentionable,
-  Number,
-  Attachment,
+  Integer = 4,
+  Boolean = 5,
+  User = 6,
+  Channel = 7,
+  Role = 8,
+  Mentionable = 9,
+  Number = 10,
+  //Attachment = 11,
+  // Commenting out attachment since cant get it working for now
 }
 
 export type CommandChoices = ReadonlyArray<{
@@ -55,8 +56,8 @@ export interface OtherCommandOptions extends BaseCommandOptions {
   type:
     | ApplicationCommandOptionType.Boolean
     | ApplicationCommandOptionType.Role
-    | ApplicationCommandOptionType.Mentionable
-    | ApplicationCommandOptionType.Attachment;
+    | ApplicationCommandOptionType.Mentionable;
+  // | ApplicationCommandOptionType.Attachment;
 }
 
 export interface CommandOptionReturn<T = unknown> {
