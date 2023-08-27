@@ -24,6 +24,7 @@ interface BaseCommandOptions {
   displayName?: string;
   description: string;
   displayDescription?: string;
+  serverLocalizedName?: string;
   required?: boolean;
 }
 

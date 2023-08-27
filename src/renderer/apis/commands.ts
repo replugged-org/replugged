@@ -158,8 +158,10 @@ export class CommandManager {
     };
 
     command.options?.map((option) => {
+      option.serverLocalizedName ??= option.displayName;
       option.displayName ??= option.name;
       option.displayDescription ??= option.description;
+
       return option;
     });
 

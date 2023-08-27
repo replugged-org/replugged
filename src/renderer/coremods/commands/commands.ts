@@ -9,7 +9,8 @@ export function loadCommands(): void {
     description: Messages.REPLUGGED_COMMAND_ENABLE_DESC,
     options: [
       {
-        name: "addon", // Messages.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME,
+        name: "addon",
+        displayName: Messages.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME,
         description: Messages.REPLUGGED_COMMAND_ADDONS_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
@@ -49,9 +50,7 @@ export function loadCommands(): void {
     ],
     executor: async (interaction) => {
       try {
-        const addonId = interaction.getValue(
-          "addon", // Messages.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME,
-        );
+        const addonId = interaction.getValue("addon");
         if (plugins.plugins.has(addonId)) {
           await plugins.enable(addonId);
         } else {
@@ -95,7 +94,8 @@ export function loadCommands(): void {
     description: Messages.REPLUGGED_COMMAND_DISABLE_DESC,
     options: [
       {
-        name: "addon", // Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME,
+        name: "addon",
+        displayName: Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME,
         description: Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
@@ -135,9 +135,7 @@ export function loadCommands(): void {
     ],
     executor: async (interaction) => {
       try {
-        const addonId = interaction.getValue(
-          "addon", // Messages.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME
-        );
+        const addonId = interaction.getValue("addon");
         if (plugins.plugins.has(addonId)) {
           await plugins.disable(addonId);
         } else {
@@ -181,7 +179,8 @@ export function loadCommands(): void {
     description: Messages.REPLUGGED_COMMAND_RELOAD_DESC,
     options: [
       {
-        name: "addon", // Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME,
+        name: "addon",
+        displayName: Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME,
         description: Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
@@ -216,9 +215,7 @@ export function loadCommands(): void {
     ],
     executor: async (interaction) => {
       try {
-        const addonId = interaction.getValue(
-          "addon", // Messages.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME,
-        );
+        const addonId = interaction.getValue("addon");
         if (plugins.plugins.has(addonId)) {
           await plugins.reload(addonId);
         } else {
@@ -262,7 +259,8 @@ export function loadCommands(): void {
     description: Messages.REPLUGGED_COMMAND_LIST_DESC,
     options: [
       {
-        name: "send", // Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME,
+        name: "send",
+        displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME,
         description: Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_DESC,
         type: ApplicationCommandOptionType.Boolean,
         required: false,
@@ -286,13 +284,15 @@ export function loadCommands(): void {
         ],
       },
       {
-        name: "version", // Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME,
+        name: "version",
+        displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME,
         description: Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC,
         type: ApplicationCommandOptionType.Boolean,
         required: false,
       },
       {
-        name: "status", // Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME,
+        name: "status",
+        displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME,
         description: Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC,
         type: ApplicationCommandOptionType.String,
         required: false,
@@ -317,21 +317,10 @@ export function loadCommands(): void {
     ],
     executor: (interaction) => {
       try {
-        const send = interaction.getValue(
-          "send", // Messages.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME,
-          false,
-        );
-        const addonType = interaction.getValue(
-          "type", // Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME
-        );
-        const version = interaction.getValue(
-          "version", // Messages.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME
-          true,
-        );
-        const listType = interaction.getValue(
-          "status", // Messages.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME
-          "default",
-        );
+        const send = interaction.getValue("send", false);
+        const addonType = interaction.getValue("type");
+        const version = interaction.getValue("version", true);
+        const listType = interaction.getValue("status", "default");
 
         const generateListString = (
           items: Array<{ name: string; version: string }>,

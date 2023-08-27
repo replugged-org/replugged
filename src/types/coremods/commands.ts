@@ -14,10 +14,10 @@ interface OptionTypeMapping {
   [ApplicationCommandOptionType.String]: string;
   [ApplicationCommandOptionType.Integer]: number;
   [ApplicationCommandOptionType.Boolean]: boolean;
-  [ApplicationCommandOptionType.User]: unknown; // TODO: better type
-  [ApplicationCommandOptionType.Channel]: unknown; // TODO: better type
-  [ApplicationCommandOptionType.Role]: unknown; // TODO: better type
-  [ApplicationCommandOptionType.Mentionable]: unknown; // TODO: better type
+  [ApplicationCommandOptionType.User]: string; // its user id
+  [ApplicationCommandOptionType.Channel]: string; // its channel id
+  [ApplicationCommandOptionType.Role]: string; // its role id
+  [ApplicationCommandOptionType.Mentionable]: string; // id of whatever can be mentioned. usually channnel/user/role
   [ApplicationCommandOptionType.Number]: number;
   [ApplicationCommandOptionType.Attachment]: unknown; // TODO: better type
 }
