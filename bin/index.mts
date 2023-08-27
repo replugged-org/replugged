@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-
 import asar from "@electron/asar";
-import { Parcel } from "@parcel/core";
 import {
   copyFileSync,
   cpSync,
@@ -14,18 +12,29 @@ import {
 import esbuild from "esbuild";
 import path from "path";
 import updateNotifier from "update-notifier";
-import yargs from "yargs";
+import yargs, { ArgumentsCamelCase } from "yargs";
 import { hideBin } from "yargs/helpers";
 import chalk from "chalk";
 import WebSocket from "ws";
-import { fileURLToPath, pathToFileURL } from "url";
 import { release } from "./release.mjs";
+import { logBuildPlugin } from "../src/util.mjs";
+import { sassPlugin } from "esbuild-sass-plugin";
+import { fileURLToPath } from "url";
+
+interface BaseArgs {
+  watch?: boolean;
+  noInstall?: boolean;
+  production?: boolean;
+  noReload?: boolean;
+}
+
+type Args = ArgumentsCamelCase<BaseArgs> | BaseArgs;
+
+const directory = process.cwd();
+const manifestPath = path.join(directory, "manifest.json");
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
-const directory = process.cwd();
-const manifestPath = pathToFileURL(path.join(directory, "manifest.json"));
-
-const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "../package.json"), "utf-8"));
+const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
   " → ",
@@ -36,7 +45,7 @@ const notifier = updateNotifier({
   shouldNotifyInNpmScript: true,
 });
 
-function sendUpdateNotification() {
+function sendUpdateNotification(): void {
   notifier.notify({
     message: updateMessage,
   });
@@ -45,25 +54,18 @@ function sendUpdateNotification() {
 const MIN_PORT = 6463;
 const MAX_PORT = 6472;
 
-function random() {
+function random(): string {
   return Math.random().toString(16).slice(2);
 }
 
-/**
- * @type {WebSocket | undefined}
- */
-let ws;
+let ws: WebSocket | undefined;
 let failed = false;
-/**
- * @type {Promise<WebSocket | undefined> | undefined}
- */
-let connectingPromise;
+let connectingPromise: Promise<WebSocket | undefined> | undefined;
 
 /**
  * Try to connect to RPC on a specific port and handle the READY event as well as errors and close events
- * @param {number} port
  */
-function tryPort(port) {
+function tryPort(port: number): Promise<WebSocket | undefined> {
   ws = new WebSocket(`ws://127.0.0.1:${port}/?v=1&client_id=REPLUGGED-${random()}`);
   return new Promise((resolve, reject) => {
     let didFinish = false;
@@ -108,7 +110,7 @@ function tryPort(port) {
  * Get an active websocket connection to Discord. If one is already open, it will be returned. Otherwise, a new connection will be made.
  * If a connection cannot be made or failed previously, none will be made and undefined will be returned.
  */
-async function connectWebsocket() {
+async function connectWebsocket(): Promise<WebSocket | null | undefined> {
   if (ws && ws.readyState === WebSocket.OPEN) {
     return ws;
   }
@@ -141,9 +143,8 @@ let reloadAgain = false;
 
 /**
  * Send WS request to reload an addon
- * @param {string} id
  */
-async function reload(id) {
+async function reload(id: string): Promise<void> {
   const ws = await connectWebsocket();
   if (!ws) return;
 
@@ -172,7 +173,7 @@ async function reload(id) {
      * @param {import('ws').RawData} data
      * @returns
      */
-    const onMessage = async (data) => {
+    const onMessage = async (data: string): Promise<void> => {
       const message = JSON.parse(data.toString());
       if (message.nonce !== nonce) {
         return;
@@ -212,18 +213,7 @@ async function reload(id) {
   });
 }
 
-/**
- * @typedef Args
- * @property {boolean} [watch]
- * @property {boolean} [noInstall]
- * @property {boolean} [production]
- * @property {boolean} [noReload]
- */
-
-/**
- * @param {(args: Args) => Promise<void>} buildFn
- */
-async function bundleAddon(buildFn) {
+async function bundleAddon(buildFn: (args: Args) => Promise<void>): Promise<void> {
   if (existsSync("dist")) {
     rmSync("dist", { recursive: true });
   }
@@ -241,22 +231,48 @@ async function bundleAddon(buildFn) {
   console.log(`Bundled ${manifest.name}`);
 }
 
-/**
- * @param {Args} args
- */
-async function buildPlugin({ watch, noInstall, production, noReload }) {
-  // @ts-expect-error
-  let manifest = await import(manifestPath.toString(), {
-    assert: { type: "json" },
-  });
-  if ("default" in manifest) manifest = manifest.default;
-  const CHROME_VERSION = "91";
-  const REPLUGGED_FOLDER_NAME = "replugged";
-  const globalModules = {
+async function handleContexts(
+  contexts: esbuild.BuildContext[],
+  watch: boolean | undefined,
+): Promise<void> {
+  await Promise.all(
+    contexts.map(async (context) => {
+      if (watch) {
+        await context.watch();
+      } else {
+        await context.rebuild().catch(() => {});
+        context.dispose();
+      }
+    }),
+  );
+}
+
+const REPLUGGED_FOLDER_NAME = "replugged";
+const CONFIG_PATH = (() => {
+  switch (process.platform) {
+    case "win32":
+      return path.join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
+    case "darwin":
+      return path.join(
+        process.env.HOME || "",
+        "Library",
+        "Application Support",
+        REPLUGGED_FOLDER_NAME,
+      );
+    default:
+      if (process.env.XDG_CONFIG_HOME) {
+        return path.join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
+      }
+      return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
+  }
+})();
+const CHROME_VERSION = "91";
+
+async function buildPlugin({ watch, noInstall, production, noReload }: Args): Promise<void> {
+  let manifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const globalModules: esbuild.Plugin = {
     name: "globalModules",
-    // @ts-expect-error
     setup: (build) => {
-      // @ts-expect-error
       build.onResolve({ filter: /^replugged.+$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
@@ -269,7 +285,6 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
         };
       });
 
-      // @ts-expect-error
       build.onResolve({ filter: /^replugged$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
@@ -293,28 +308,8 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
     },
   };
 
-  const CONFIG_PATH = (() => {
-    switch (process.platform) {
-      case "win32":
-        return path.join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
-      case "darwin":
-        return path.join(
-          process.env.HOME || "",
-          "Library",
-          "Application Support",
-          REPLUGGED_FOLDER_NAME,
-        );
-      default:
-        if (process.env.XDG_CONFIG_HOME) {
-          return path.join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
-        }
-        return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
-    }
-  })();
-
-  const install = {
+  const install: esbuild.Plugin = {
     name: "install",
-    // @ts-expect-error
     setup: (build) => {
       build.onEnd(async () => {
         if (!noInstall) {
@@ -331,25 +326,26 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
     },
   };
 
-  const common = {
+  const plugins: esbuild.Plugin[] = [globalModules, install];
+  if (watch) plugins.push(logBuildPlugin);
+
+  const common: esbuild.BuildOptions = {
     absWorkingDir: directory,
     bundle: true,
     format: "esm",
     logLevel: "info",
     minify: production,
     platform: "browser",
-    plugins: [globalModules, install],
+    plugins,
     sourcemap: !production,
     target: `chrome${CHROME_VERSION}`,
-    watch,
   };
 
-  const targets = [];
+  const targets: Array<Promise<esbuild.BuildContext>> = [];
 
   if ("renderer" in manifest) {
     targets.push(
-      // @ts-expect-error
-      esbuild.build({
+      esbuild.context({
         ...common,
         entryPoints: [manifest.renderer],
         outfile: "dist/renderer.js",
@@ -361,8 +357,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
 
   if ("plaintextPatches" in manifest) {
     targets.push(
-      // @ts-expect-error
-      esbuild.build({
+      esbuild.context({
         ...common,
         entryPoints: [manifest.plaintextPatches],
         outfile: "dist/plaintextPatches.js",
@@ -376,132 +371,88 @@ async function buildPlugin({ watch, noInstall, production, noReload }) {
 
   writeFileSync("dist/manifest.json", JSON.stringify(manifest));
 
-  await Promise.all(targets);
+  const contexts = await Promise.all(targets);
+  await handleContexts(contexts, watch);
 
   ws?.close();
 }
 
-/**
- * @param {Args} args
- */
-async function buildTheme({ watch: shouldWatch, noInstall, production, noReload }) {
-  // @ts-expect-error
-  let manifest = await import(manifestPath, {
-    assert: { type: "json" },
-  });
-  if ("default" in manifest) manifest = manifest.default;
+async function buildTheme({ watch, noInstall, production, noReload }: Args): Promise<void> {
+  let manifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
 
   const main = manifest.main || "src/main.css";
   const splash = manifest.splash || (existsSync("src/splash.css") ? "src/splash.css" : undefined);
 
-  const mainBundler = new Parcel({
-    entries: main,
-    defaultConfig: "@parcel/config-default",
-    targets: {
-      main: {
-        distDir: "dist",
-        distEntry: "main.css",
-        sourceMap: !production,
-        optimize: production,
-      },
-    },
-  });
+  const install: esbuild.Plugin = {
+    name: "install",
+    setup: (build) => {
+      build.onEnd(async () => {
+        if (!noInstall) {
+          const dest = path.join(CONFIG_PATH, "themes", manifest.id);
+          if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
+          cpSync("dist", dest, { recursive: true });
+          console.log("Installed updated version");
 
-  const splashBundler = splash
-    ? new Parcel({
-        entries: splash,
-        defaultConfig: "@parcel/config-default",
-        targets: {
-          main: {
-            distDir: "dist",
-            distEntry: "splash.css",
-          },
-        },
-      })
-    : undefined;
-
-  const REPLUGGED_FOLDER_NAME = "replugged";
-  const CONFIG_PATH = (() => {
-    switch (process.platform) {
-      case "win32":
-        return path.join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
-      case "darwin":
-        return path.join(
-          process.env.HOME || "",
-          "Library",
-          "Application Support",
-          REPLUGGED_FOLDER_NAME,
-        );
-      default:
-        if (process.env.XDG_CONFIG_HOME) {
-          return path.join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
+          if (!noReload) {
+            await reload(manifest.id);
+          }
         }
-        return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
-    }
-  })();
+      });
+    },
+  };
 
-  async function install() {
-    if (!noInstall) {
-      const dest = path.join(CONFIG_PATH, "themes", manifest.id);
-      if (existsSync(dest)) {
-        rmSync(dest, { recursive: true, force: true });
-      }
-      cpSync("dist", dest, { recursive: true });
-      console.log("Installed updated version");
+  const plugins: esbuild.Plugin[] = [sassPlugin(), install];
+  if (watch) plugins.push(logBuildPlugin);
 
-      if (!noReload) {
-        // @ts-expect-error
-        await reload(manifest.id, watch);
-      }
-    }
+  const common: esbuild.BuildOptions = {
+    absWorkingDir: directory,
+    bundle: true,
+    format: "esm",
+    logLevel: "info",
+    minify: production,
+    platform: "browser",
+    plugins,
+    sourcemap: !production,
+    target: `chrome${CHROME_VERSION}`,
+  };
+
+  const targets: Array<Promise<esbuild.BuildContext>> = [];
+
+  if (main) {
+    targets.push(
+      esbuild.context({
+        ...common,
+        entryPoints: [main],
+        outfile: "dist/main.css",
+      }),
+    );
+
+    manifest.main = "main.css";
   }
 
-  // @ts-expect-error
-  async function build(bundler) {
-    const { bundleGraph, buildTime } = await bundler.run();
-    let bundles = bundleGraph.getBundles();
-    console.log(`Built ${bundles.length} bundles in ${buildTime}ms!`);
-    install();
+  if (splash) {
+    targets.push(
+      esbuild.context({
+        ...common,
+        entryPoints: [splash],
+        outfile: "dist/splash.css",
+      }),
+    );
+
+    manifest.plaintextPatches = "splash.css";
   }
 
-  // @ts-expect-error
-  async function watch(bundler) {
-    // @ts-expect-error
-    await bundler.watch((err, event) => {
-      if (err) {
-        // fatal error
-        throw err;
-      }
-      if (!event) return;
-
-      if (event.type === "buildSuccess") {
-        let bundles = event.bundleGraph.getBundles();
-        console.log(`✨ Built ${bundles.length} bundles in ${event.buildTime}ms!`);
-        install();
-      } else if (event.type === "buildFailure") {
-        console.log(event.diagnostics);
-      }
-    });
-  }
-
-  const fn = shouldWatch ? watch : build;
-  const promises = [mainBundler, splashBundler].filter(Boolean).map((bundler) => fn(bundler));
-
-  manifest.main = "main.css";
-  manifest.splash = splash ? "splash.css" : undefined;
-
-  if (!existsSync("dist")) {
-    mkdirSync("dist");
-  }
+  if (!existsSync("dist")) mkdirSync("dist");
 
   writeFileSync("dist/manifest.json", JSON.stringify(manifest));
 
-  await Promise.all(promises);
+  const contexts = await Promise.all(targets);
+  await handleContexts(contexts, watch);
 
   ws?.close();
 }
 
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { argv } = yargs(hideBin(process.argv))
   .scriptName("replugged")
   .usage("$0 <cmd> [args]")
@@ -536,10 +487,8 @@ const { argv } = yargs(hideBin(process.argv))
     },
     (argv) => {
       if (argv.addon === "plugin") {
-        // @ts-expect-error
         buildPlugin(argv);
       } else if (argv.addon === "theme") {
-        // @ts-expect-error
         buildTheme(argv);
       } else {
         console.log("Invalid addon type.");
