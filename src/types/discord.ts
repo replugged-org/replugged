@@ -8,7 +8,6 @@ export enum ApplicationCommandOptionType {
   Mentionable = 9,
   Number = 10,
   Attachment = 11,
-  // Thanks Fede for getting this to work
 }
 
 export type CommandChoices = ReadonlyArray<{
