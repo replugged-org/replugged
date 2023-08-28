@@ -73,6 +73,5 @@
     "REPLUGGED_CANCEL": "Atšaukti",
     "REPLUGGED_CONFIRM": "Patvirtinti",
     "REPLUGGED_OK": "Gerai",
-    "REPLUGGED_COMMAND_DISABLE_DESC": "Deaktyvuoti įskiepį/temą",
-    "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" aktyvuota!"
+    "REPLUGGED_COMMAND_DISABLE_DESC": "Deaktyvuoti įskiepį/temą"
 }
