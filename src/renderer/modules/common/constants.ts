@@ -62,6 +62,12 @@ export const CSSVariables = await waitForProps<Record<string, string>>(
   "BACKGROUND_PRIMARY",
 );
 
+export const MessageFlags = getExportsForProps<Record<string, number>>(Constants, [
+  "EPHEMERA",
+  "LOADING",
+  "CROSSPOSTED",
+])!;
+
 interface ColorResponse {
   hex: () => string;
   hsl: () => string;

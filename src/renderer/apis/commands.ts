@@ -13,7 +13,7 @@ import {
 import type { Store } from "../modules/common/flux";
 import type { Channel, Guild } from "discord-types/general";
 import { Logger } from "../modules/logger";
-import { channels, messages, users } from "../modules/common";
+import { channels, constants, messages, users } from "../modules/common";
 import { getByStoreName } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
@@ -97,15 +97,23 @@ async function executeCommand<T extends CommandOptions>(
     });
 
     Object.assign(loadingMessage, {
+      flags: constants.MessageFlags.EPHEMERAL + constants.MessageFlags.LOADING, // adding loading too
+      state: "SENDING", // Keep it a little faded
       interaction: {
-        displayName: command.displayName,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        name_localized: command.displayName,
         name: command.name,
         type: command.type,
         id: command.id,
         user: users.getCurrentUser(),
       },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      interaction_data: {
+        name: command.displayName,
+      },
+      type: 20,
     });
-    messages.receiveMessage(currentChannelId, loadingMessage);
+    messages.receiveMessage(currentChannelId, loadingMessage, true);
     const interaction = new CommandInteraction({ options: args, ...currentInfo });
     const result = await cmdExecutor?.(interaction);
     messages.dismissAutomatedMessage(loadingMessage);
@@ -134,14 +142,20 @@ async function executeCommand<T extends CommandOptions>(
 
       Object.assign(botMessage, {
         interaction: {
-          displayName: command.displayName,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          name_localized: command.displayName,
           name: command.name,
           type: command.type,
           id: command.id,
           user: users.getCurrentUser(),
         },
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        interaction_data: {
+          name: command.displayName,
+        },
+        type: 20,
       });
-      messages.receiveMessage(currentChannelId, botMessage);
+      messages.receiveMessage(currentChannelId, botMessage, true);
     }
   } catch (error) {
     logger.error(error);
@@ -161,15 +175,21 @@ async function executeCommand<T extends CommandOptions>(
 
     Object.assign(botMessage, {
       interaction: {
-        displayName: command.displayName,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        name_localized: command.displayName,
         name: command.name,
         type: command.type,
         id: command.id,
         user: users.getCurrentUser(),
       },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      interaction_data: {
+        name: command.displayName,
+      },
+      type: 20,
     });
 
-    messages.receiveMessage(currentChannelId, botMessage);
+    messages?.receiveMessage?.(currentChannelId, botMessage, true);
   }
 }
 
