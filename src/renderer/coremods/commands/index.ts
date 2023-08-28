@@ -258,10 +258,30 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
   });
 }
 
+async function injectProfileFetch(): Promise<void> {
+  const mod = await waitForModule<
+    Record<
+      string,
+      (
+        id: string,
+        avatar: string,
+        { guildId, channelId }: { guildId: string; channelId: string },
+      ) => Promise<void>
+    >
+  >(filters.bySource(".preloadUserBanner,"), { raw: true });
+  const fnKey = getFunctionKeyBySource(mod.exports, ".apply(this");
+  injector.instead(mod.exports, fnKey!, (args, res) => {
+    if (args[1] === defaultSection.icon) {
+      return;
+    }
+    return res(...args);
+  });
+}
 export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
   await injectRepluggedSectionIcon();
   await injectApplicationCommandSearchStore();
+  await injectProfileFetch();
   loadCommands();
 }
 export function stop(): void {
