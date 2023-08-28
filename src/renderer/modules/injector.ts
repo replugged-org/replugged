@@ -7,10 +7,6 @@ import { addContextMenuItem } from "../coremods/contextMenu";
 import { CommandManager } from "../apis/commands";
 import { CommandOptions, RepluggedCommand } from "src/types";
 
-// Slash command manager to be used in injector.
-
-const SlashCommandManager = new CommandManager();
-
 enum InjectionTypes {
   Before,
   Instead,
@@ -223,7 +219,7 @@ function after<
  */
 export class Injector {
   #uninjectors = new Set<() => void>();
-
+  #slashCommandManager = new CommandManager();
   /**
    * Run code before a native module
    * @param obj Module to inject to
@@ -395,7 +391,7 @@ export class Injector {
      * ```
      */
     registerSlashCommand: <const T extends CommandOptions>(cmd: RepluggedCommand<T>) => {
-      const uninjector = SlashCommandManager.registerCommand<T>(cmd);
+      const uninjector = this.#slashCommandManager.registerCommand<T>(cmd);
       this.#uninjectors.add(uninjector);
       return uninjector;
     },
