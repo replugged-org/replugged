@@ -63,9 +63,8 @@ export const CSSVariables = await waitForProps<Record<string, string>>(
 );
 
 export const MessageFlags = getExportsForProps<Record<string, number>>(Constants, [
-  "EPHEMERA",
+  "EPHEMERAL",
   "LOADING",
-  "CROSSPOSTED",
 ])!;
 
 interface ColorResponse {
