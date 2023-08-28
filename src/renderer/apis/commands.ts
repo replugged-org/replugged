@@ -11,7 +11,7 @@ import type {
 } from "../../types";
 import type { Channel, Guild } from "discord-types/general";
 import { Logger } from "../modules/logger";
-import { channels, guilds, messages, users } from "../modules/common";
+import { channels, messages, users } from "../modules/common";
 const logger = Logger.api("Commands");
 
 interface CommandsAndSection {
@@ -64,10 +64,31 @@ async function executeCommand<T extends CommandOptions>(
   command: RepluggedCommand<T>,
 ): Promise<void> {
   try {
+    const currentChannelId = currentInfo.channel.id;
+    const loadingMessage = messages.createBotMessage({
+      channelId: currentChannelId,
+      content: "Executing Command, Please Wait...",
+      loggingName: "Replugged",
+    });
+
+    Object.assign(loadingMessage.author, {
+      username: "Replugged",
+      avatar: "replugged",
+    });
+
+    Object.assign(loadingMessage, {
+      interaction: {
+        displayName: command.displayName,
+        name: command.name,
+        type: command.type,
+        id: command.id,
+        user: users.getCurrentUser(),
+      },
+    });
+    messages.receiveMessage(currentChannelId, loadingMessage);
     const interaction = new CommandInteraction({ options: args, ...currentInfo });
     const result = await cmdExecutor?.(interaction);
-    const currentGuildId = guilds.getGuildId();
-    const currentChannelId = channels.getChannelId(currentGuildId!)!;
+    messages.dismissAutomatedMessage(loadingMessage);
 
     if ((!result?.result && !result?.embeds) || !currentChannelId) return;
 
@@ -160,8 +181,8 @@ export class CommandManager {
     command.type = 2;
     command.id ??= command.name;
 
-    command.execute ??= async (args, currentInfo) => {
-      await executeCommand(command.executor, args ?? [], currentInfo ?? {}, command);
+    command.execute ??= (args, currentInfo) => {
+      void executeCommand(command.executor, args ?? [], currentInfo ?? {}, command);
     };
 
     command.options?.map((option) => {
