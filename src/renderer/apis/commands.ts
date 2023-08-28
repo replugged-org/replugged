@@ -1,17 +1,21 @@
-import type {
-  AnyRepluggedCommand,
-  CommandOptionReturn,
-  CommandOptions,
-  GetCommandOption,
-  GetCommandOptions,
-  GetValueType,
-  RepluggedCommand,
-  RepluggedCommandResult,
-  RepluggedCommandSection,
+import {
+  type AnyRepluggedCommand,
+  ApplicationCommandOptionType,
+  type CommandOptionReturn,
+  type CommandOptions,
+  type GetCommandOption,
+  type GetCommandOptions,
+  type GetValueType,
+  type RepluggedCommand,
+  type RepluggedCommandResult,
+  type RepluggedCommandSection,
 } from "../../types";
+import type { Store } from "../modules/common/flux";
 import type { Channel, Guild } from "discord-types/general";
 import { Logger } from "../modules/logger";
 import { channels, messages, users } from "../modules/common";
+import { getByStoreName } from "../modules/webpack";
+
 const logger = Logger.api("Commands");
 
 interface CommandsAndSection {
@@ -33,9 +37,25 @@ export class CommandInteraction<T extends CommandOptionReturn> {
   public channel: Channel;
   public guild: Guild;
   public constructor(props: { options: T[]; channel: Channel; guild: Guild }) {
+    const UploadAttachmentStore = getByStoreName<
+      Store & {
+        getUpload: (
+          channelId: string,
+          optionName: string,
+          draftType: 0,
+        ) => { uploadedFilename?: string; item?: { file: File } };
+      }
+    >("UploadAttachmentStore")!;
     this.options = props.options;
     this.channel = props.channel;
     this.guild = props.guild;
+    for (const option of this.options.filter(
+      (o) => o.type === ApplicationCommandOptionType.Attachment,
+    )) {
+      const { uploadedFilename, item } =
+        UploadAttachmentStore.getUpload(props.channel.id, option.name, 0) ?? {};
+      option.value = { uploadedFilename, file: item?.file };
+    }
   }
 
   public getValue<K extends T["name"], D = undefined>(
