@@ -69,6 +69,5 @@
     "REPLUGGED_CANCEL": "ביטול",
     "REPLUGGED_CONFIRM": "אישור",
     "REPLUGGED_OK": "אוקיי",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "שולח debug של דיסקורד ושל ריפלג של המכשיר הזה בצ'אט.",
     "REPLUGGED_COMMAND_DISABLE_DESC": "השבת תוספת/ערכת נושא"
 }
