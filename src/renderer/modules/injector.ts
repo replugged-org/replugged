@@ -14,7 +14,7 @@ enum InjectionTypes {
 /**
  * Code to run before the original function
  * @param args Arguments passed to the original function
- * @param self The module the injected function is on
+ * @param self The module the injected function is on (deprecated, use the `this` keyword)
  * @returns New arguments to pass to the original function, or undefined to leave them unchanged
  */
 export type BeforeCallback<A extends unknown[] = unknown[]> = (
@@ -26,7 +26,7 @@ export type BeforeCallback<A extends unknown[] = unknown[]> = (
  * Code to run instead of the original function
  * @param args Arguments passed to the original function
  * @param orig The original function
- * @param self The module the injected function is on
+ * @param self The module the injected function is on (deprecated, use the `this` keyword)
  * @returns New result to return
  */
 export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
@@ -39,7 +39,7 @@ export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
  * Code to run after the original function
  * @param args Arguments passed to the original function
  * @param res Result of the original function
- * @param self The module the injected function is on
+ * @param self The module the injected function is on (deprecated, use the `this` keyword)
  * @returns New result to return, or undefined to leave it unchanged
  */
 export type AfterCallback<A extends unknown[] = unknown[], R = unknown> = (
@@ -99,7 +99,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
       const injectionsForProp = objInjections.injections.get(funcName)!;
 
       for (const b of injectionsForProp.before) {
-        const newArgs = b(args, this);
+        const newArgs = b.call(this, args, this);
         if (Array.isArray(newArgs)) {
           args = newArgs;
         }
@@ -111,7 +111,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
         res = originalFunc.apply(this, args);
       } else {
         for (const i of injectionsForProp.instead) {
-          const newResult = i(args, originalFunc, this);
+          const newResult = i.call(this, args, originalFunc, this);
           if (newResult !== void 0) {
             res = newResult;
           }
@@ -119,7 +119,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
       }
 
       for (const a of injectionsForProp.after) {
-        const newResult = a(args, res, this);
+        const newResult = a.call(this, args, res, this);
         if (newResult !== void 0) {
           res = newResult;
         }
