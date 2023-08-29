@@ -1,11 +1,11 @@
-import type { ObjectExports } from "../../types/webpack";
-import type { AnyFunction } from "../../types/util";
-import type { GetButtonItem } from "../../types/coremods/message";
+import type { CommandOptions, RepluggedCommand } from "src/types";
 import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
-import { addButton } from "../coremods/messagePopover";
-import { addContextMenuItem } from "../coremods/contextMenu";
+import type { GetButtonItem } from "../../types/coremods/message";
+import type { AnyFunction } from "../../types/util";
+import type { ObjectExports } from "../../types/webpack";
 import { CommandManager } from "../apis/commands";
-import { CommandOptions, RepluggedCommand } from "src/types";
+import { addContextMenuItem } from "../coremods/contextMenu";
+import { addButton } from "../coremods/messagePopover";
 
 enum InjectionTypes {
   Before,

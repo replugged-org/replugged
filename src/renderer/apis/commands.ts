@@ -1,19 +1,19 @@
-import {
-  type AnyRepluggedCommand,
-  ApplicationCommandOptionType,
-  type CommandOptionReturn,
-  type CommandOptions,
-  type GetCommandOption,
-  type GetCommandOptions,
-  type GetValueType,
-  type RepluggedCommand,
-  type RepluggedCommandResult,
-  type RepluggedCommandSection,
-} from "../../types";
-import type { Store } from "../modules/common/flux";
 import type { Channel, Guild } from "discord-types/general";
-import { Logger } from "../modules/logger";
+import type {
+  AnyRepluggedCommand,
+  CommandOptionReturn,
+  CommandOptions,
+  GetCommandOption,
+  GetCommandOptions,
+  GetValueType,
+  RepluggedCommand,
+  RepluggedCommandResult,
+  RepluggedCommandSection,
+} from "../../types";
+import { ApplicationCommandOptionType } from "../../types";
 import { channels, constants, messages, users } from "../modules/common";
+import type { Store } from "../modules/common/flux";
+import { Logger } from "../modules/logger";
 import { getByStoreName } from "../modules/webpack";
 
 const logger = Logger.api("Commands");

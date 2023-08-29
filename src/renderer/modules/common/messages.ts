@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
-import type { RepluggedCommandEmbed } from "../../../types";
 import type { Channel, Message, MessageAttachment, User } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
+import type { APIEmbed } from "src/types";
+import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
 
 export enum ActivityActionTypes {
   JOIN = 1,
@@ -417,7 +417,7 @@ export interface MessageActions {
 interface CreateBotMessageOptions {
   channelId: string;
   content: string;
-  embeds?: RepluggedCommandEmbed[];
+  embeds?: APIEmbed[];
   loggingName?: string;
 }
 

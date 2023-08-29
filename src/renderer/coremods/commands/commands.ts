@@ -1,6 +1,7 @@
-import { ApplicationCommandOptionType } from "../../../types";
 import { Messages } from "@common/i18n";
 import { Injector, plugins, themes } from "@replugged";
+import { ApplicationCommandOptionType } from "../../../types";
+
 const injector = new Injector();
 
 export function loadCommands(): void {
@@ -60,7 +61,6 @@ export function loadCommands(): void {
           send: false,
           embeds: [
             {
-              type: "rich",
               color: 0x1bbb1b,
               title: Messages.REPLUGGED_COMMAND_SUCCESS_GENERIC,
               description: Messages.REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED.format({
@@ -79,7 +79,6 @@ export function loadCommands(): void {
           send: false,
           embeds: [
             {
-              type: "rich",
               color: 0xdd2d2d,
               title: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
               description: err as string,
@@ -145,7 +144,6 @@ export function loadCommands(): void {
           send: false,
           embeds: [
             {
-              type: "rich",
               color: 0x1bbb1b,
               title: Messages.REPLUGGED_COMMAND_SUCCESS_GENERIC,
               description: Messages.REPLUGGED_COMMAND_DISABLE_MESSAGE_ENABLED.format({
@@ -164,7 +162,6 @@ export function loadCommands(): void {
           send: false,
           embeds: [
             {
-              type: "rich",
               color: 0xdd2d2d,
               title: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
               description: err as string,
@@ -225,7 +222,6 @@ export function loadCommands(): void {
           send: false,
           embeds: [
             {
-              type: "rich",
               color: 0x1bbb1b,
               title: Messages.REPLUGGED_COMMAND_SUCCESS_GENERIC,
               description: Messages.REPLUGGED_COMMAND_RELOAD_MESSAGE_ENABLED.format({
@@ -244,7 +240,6 @@ export function loadCommands(): void {
           send: false,
           embeds: [
             {
-              type: "rich",
               color: 0xdd2d2d,
               title: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
               description: err as string,
@@ -407,7 +402,6 @@ export function loadCommands(): void {
           send: false,
           embeds: [
             {
-              type: "rich",
               color: 0xdd2d2d,
               title: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
               description: err as string,

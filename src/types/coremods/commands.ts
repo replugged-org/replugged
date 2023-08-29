@@ -1,13 +1,14 @@
-import { Channel, Guild } from "discord-types/general";
+import type { Channel, Guild } from "discord-types/general";
+import type { ValueOf } from "type-fest";
 import { CommandInteraction } from "../../renderer/apis/commands";
-import {
-  ApplicationCommandOptionType,
+import type {
+  APIEmbed,
   CommandChoices,
   CommandOptionReturn,
   CommandOptions,
   StringOptions,
 } from "../discord";
-import { ObjectValues } from "../util";
+import { ApplicationCommandOptionType } from "../discord";
 
 interface OptionTypeMapping {
   [ApplicationCommandOptionType.String]: string;
@@ -39,9 +40,9 @@ export type GetCommandOption<T extends CommandOptionReturn, K extends T["name"]>
   { name: K }
 >;
 
-export type GetCommandOptions<T extends CommandOptions> = ObjectValues<{
+export type GetCommandOptions<T extends CommandOptions> = ValueOf<{
   [K in T["name"]]: {
-    focused: unknown;
+    focused?: boolean;
     name: K;
     type: T["type"];
     value: GetType<Extract<T, { name: K }>>;
@@ -83,52 +84,10 @@ export type RepluggedCommand<T extends CommandOptions> = InexecutableRepluggedCo
 
 export type AnyRepluggedCommand = RepluggedCommand<CommandOptions>;
 
-export interface RepluggedCommandEmbed {
-  type: "rich" | "image" | "video" | "article";
-  title: string;
-  description: string;
-  color?: string | number;
-  thumbnail?: {
-    url: string;
-    proxyURL: string;
-    width: number;
-    height: number;
-  };
-  image?: {
-    url: string;
-    proxyURL: string;
-    width: number;
-    height: number;
-  };
-  video?: {
-    url: string;
-    proxyURL: string;
-    width: number;
-    height: number;
-  };
-  fields?: Array<{
-    name: string;
-    value: string;
-    inline: boolean;
-  }>;
-  author?: {
-    iconProxyURL: string;
-    iconURL: string;
-    name: string;
-    url?: string;
-  };
-  footer?: {
-    text: string;
-    iconProxyURL: string;
-    iconURL: string;
-  };
-  provider?: { name: string; url: string };
-  timestamp?: string;
-}
 export interface RepluggedCommandResult {
   send: boolean;
   result?: string;
-  embeds?: RepluggedCommandEmbed[];
+  embeds?: APIEmbed[];
 }
 export interface RepluggedCommandSection {
   id: string;
