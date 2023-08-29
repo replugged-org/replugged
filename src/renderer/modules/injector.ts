@@ -365,8 +365,7 @@ export class Injector {
     },
 
     /**
-     * A utility function to add an item to any context menu.
-     * By default, items are placed in a group for custom items, though that can be customized with `sectionId` and `indexInSection`
+     * A utility function to add an custom slash command.
      * @param cmd The slash cmd to add to register
      * @returns A callback to de-register the cmd
      *

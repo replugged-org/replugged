@@ -62,7 +62,7 @@ export function loadCommands(): void {
             {
               type: "rich",
               color: 0x1bbb1b,
-              title: "Success", // TODO: i18n
+              title: Messages.REPLUGGED_COMMAND_SUCCESS_GENERIC,
               description: Messages.REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED.format({
                 type: plugins.plugins.get(addonId)
                   ? Messages.REPLUGGED_PLUGIN
@@ -147,7 +147,7 @@ export function loadCommands(): void {
             {
               type: "rich",
               color: 0x1bbb1b,
-              title: "Success", // TODO: i18n
+              title: Messages.REPLUGGED_COMMAND_SUCCESS_GENERIC,
               description: Messages.REPLUGGED_COMMAND_DISABLE_MESSAGE_ENABLED.format({
                 type: plugins.plugins.get(addonId)
                   ? Messages.REPLUGGED_PLUGIN
@@ -227,7 +227,7 @@ export function loadCommands(): void {
             {
               type: "rich",
               color: 0x1bbb1b,
-              title: "Success", // TODO: i18n
+              title: Messages.REPLUGGED_COMMAND_SUCCESS_GENERIC,
               description: Messages.REPLUGGED_COMMAND_RELOAD_MESSAGE_ENABLED.format({
                 type: plugins.plugins.get(addonId)
                   ? Messages.REPLUGGED_PLUGIN
@@ -274,12 +274,12 @@ export function loadCommands(): void {
         choices: [
           {
             name: Messages.REPLUGGED_THEME,
-            displayName: `List themes`, // TODO: i18n
+            displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME,
             value: "theme",
           },
           {
             name: Messages.REPLUGGED_PLUGIN,
-            displayName: `List plugins`, // TODO: i18n
+            displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN,
             value: "plugin",
           },
         ],

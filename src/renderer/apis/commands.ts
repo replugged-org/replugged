@@ -87,7 +87,7 @@ async function executeCommand<T extends CommandOptions>(
     const currentChannelId = currentInfo.channel.id;
     const loadingMessage = messages.createBotMessage({
       channelId: currentChannelId,
-      content: "Executing Command, Please Wait...",
+      content: "",
       loggingName: "Replugged",
     });
 
