@@ -81,7 +81,6 @@
     "REPLUGGED_COMMAND_DISABLE_DESC": "Ota plugin tai teema pois käytöstä",
     "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} asennettu",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Lataa {type}",
-    "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" poistettu käytöstä!",
     "REPLUGGED_COMMAND_RELOAD_DESC": "Lataa plugin tai teema uudelleen",
     "REPLUGGED_INSTALL_MODAL_HEADER": "Asenna {type}",
     "REPLUGGED_ERROR_ALREADY_INSTALLED": "{name} on jo asennettu.",
