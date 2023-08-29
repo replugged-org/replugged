@@ -20,11 +20,11 @@ interface BaseCommandOptions<T extends ApplicationCommandOptionType> {
   required?: boolean;
 }
 
-export type CommandChoices = ReadonlyArray<{
+export interface CommandChoices {
   name: string;
   displayName: string;
   value: string | number;
-}>;
+}
 
 export interface CommandOptionAutocompleteAndChoices {
   autocomplete?: boolean;
