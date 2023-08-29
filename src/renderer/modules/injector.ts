@@ -381,7 +381,7 @@ export class Injector {
      *        name: "use",
      *        description: "a command meant to be used",
      *        usage: "/use",
-     *        executor: function executor(),
+     *        executor: (interaction) => {},
      *    })
      * }
      *
