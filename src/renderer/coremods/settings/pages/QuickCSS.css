@@ -25,4 +25,16 @@
 
 #replugged-quickcss-wrapper .cm-scroller {
   overflow: auto;
+  max-height: 75vh;
+}
+
+#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+  padding: 10px;
+}
+
+#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thin-thumb);
+  border-radius: 10px;
 }
