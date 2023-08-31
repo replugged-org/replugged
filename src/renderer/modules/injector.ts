@@ -14,7 +14,7 @@ enum InjectionTypes {
 /**
  * Code to run before the original function
  * @param args Arguments passed to the original function
- * @param self The module the injected function is on (deprecated, use the `this` keyword)
+ * @param self The module the injected function is on
  * @returns New arguments to pass to the original function, or undefined to leave them unchanged
  */
 export type BeforeCallback<A extends unknown[] = unknown[]> = (
@@ -26,7 +26,7 @@ export type BeforeCallback<A extends unknown[] = unknown[]> = (
  * Code to run instead of the original function
  * @param args Arguments passed to the original function
  * @param orig The original function
- * @param self The module the injected function is on (deprecated, use the `this` keyword)
+ * @param self The module the injected function is on
  * @returns New result to return
  */
 export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
@@ -39,7 +39,7 @@ export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
  * Code to run after the original function
  * @param args Arguments passed to the original function
  * @param res Result of the original function
- * @param self The module the injected function is on (deprecated, use the `this` keyword)
+ * @param self The module the injected function is on
  * @returns New result to return, or undefined to leave it unchanged
  */
 export type AfterCallback<A extends unknown[] = unknown[], R = unknown> = (
