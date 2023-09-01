@@ -11,7 +11,7 @@ import type {
   RepluggedCommandSection,
 } from "../../types";
 import { ApplicationCommandOptionType } from "../../types";
-import { channels, constants, messages, users } from "../modules/common";
+import { constants, messages, users } from "../modules/common";
 import { Messages } from "../modules/common/i18n";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
