@@ -1,3 +1,4 @@
+import type { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
 import { Injector } from "../../modules/injector";
 import { Logger } from "../../modules/logger";
 import {
@@ -7,10 +8,10 @@ import {
   waitForModule,
   waitForProps,
 } from "../../modules/webpack";
-import { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
 
 import { commandAndSections, defaultSection } from "../../apis/commands";
 import { loadCommands, unloadCommands } from "./commands";
+
 const logger = Logger.api("Commands");
 const injector = new Injector();
 

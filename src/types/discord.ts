@@ -10,14 +10,8 @@ export enum ApplicationCommandOptionType {
   Attachment = 11,
 }
 
-export type CommandChoices = ReadonlyArray<{
-  name: string;
-  displayName: string;
-  value: string;
-}>;
-
-interface BaseCommandOptions {
-  type: ApplicationCommandOptionType;
+interface BaseCommandOptions<T extends ApplicationCommandOptionType> {
+  type: T;
   name: string;
   displayName?: string;
   description: string;
@@ -26,56 +20,123 @@ interface BaseCommandOptions {
   required?: boolean;
 }
 
-export interface StringOptions extends BaseCommandOptions {
-  type: ApplicationCommandOptionType.String;
-  choices?: CommandChoices;
-  autocomplete?: boolean;
+export interface CommandChoices {
+  name: string;
+  displayName: string;
+  value: string | number;
 }
 
-export interface NumberOptions extends BaseCommandOptions {
-  type: ApplicationCommandOptionType.Integer | ApplicationCommandOptionType.Number;
+export interface CommandOptionAutocompleteAndChoices {
+  autocomplete?: boolean;
+  choices?: CommandChoices[];
+  focused?: boolean;
+}
+
+export interface StringOptions
+  extends CommandOptionAutocompleteAndChoices,
+    BaseCommandOptions<ApplicationCommandOptionType.String> {
+  /* eslint-disable @typescript-eslint/naming-convention */
+  min_length?: number;
+  max_length?: number;
+  /* eslint-enable @typescript-eslint/naming-convention */
+}
+
+export interface NumberOptions
+  extends CommandOptionAutocompleteAndChoices,
+    BaseCommandOptions<ApplicationCommandOptionType.Integer | ApplicationCommandOptionType.Number> {
   /* eslint-disable @typescript-eslint/naming-convention */
   min_value?: number;
   max_value?: number;
   /* eslint-enable @typescript-eslint/naming-convention */
 }
 
-export interface UserOptions extends BaseCommandOptions {
-  type: ApplicationCommandOptionType.User;
-}
-
-export interface ChannelOptions extends BaseCommandOptions {
-  type: ApplicationCommandOptionType.Channel;
-  required?: boolean;
+export interface ChannelOptions extends BaseCommandOptions<ApplicationCommandOptionType.Channel> {
   /* eslint-disable @typescript-eslint/naming-convention */
   channel_types?: readonly number[];
 }
 
-export interface OtherCommandOptions extends BaseCommandOptions {
-  type:
+export interface OtherCommandOptions
+  extends BaseCommandOptions<
+    | ApplicationCommandOptionType.Attachment
     | ApplicationCommandOptionType.Boolean
-    | ApplicationCommandOptionType.Role
     | ApplicationCommandOptionType.Mentionable
-    | ApplicationCommandOptionType.Attachment;
-}
+    | ApplicationCommandOptionType.Role
+    | ApplicationCommandOptionType.User
+  > {}
 
 export interface CommandOptionReturn<T = unknown> {
-  focused: unknown; // literally no clue what it is for...
   name: string;
   type: ApplicationCommandOptionType;
   value: T;
 }
 
-export type CommandOptions =
-  | StringOptions
-  | NumberOptions
-  | UserOptions
-  | ChannelOptions
-  | OtherCommandOptions;
+export type CommandOptions = StringOptions | NumberOptions | ChannelOptions | OtherCommandOptions;
 
 export interface ConnectedAccount {
   type: string;
   name: string;
   id: string;
   verified: boolean;
+}
+
+export enum MessageEmbedTypes {
+  IMAGE = "image",
+  VIDEO = "video",
+  LINK = "link",
+  ARTICLE = "article",
+  TWEET = "tweet",
+  RICH = "rich",
+  GIFV = "gifv",
+  APPLICATION_NEWS = "application_news",
+  AUTO_MODERATION_MESSAGE = "auto_moderation_message",
+  AUTO_MODERATION_NOTIFICATION = "auto_moderation_notification",
+  TEXT = "text",
+  POST_PREVIEW = "post_preview",
+}
+
+export interface APIEmbed {
+  title?: string;
+  type?: MessageEmbedTypes;
+  description?: string;
+  url?: string;
+  timestamp?: string;
+  color?: number;
+  footer?: {
+    text: string;
+    icon_url?: string;
+    proxy_icon_url?: string;
+  };
+  image?: {
+    url: string;
+    proxy_url?: string;
+    height?: number;
+    width?: number;
+  };
+  thumbnail?: {
+    url: string;
+    proxy_url?: string;
+    width?: number;
+    height?: number;
+  };
+  video?: {
+    url?: string;
+    proxy_url?: string;
+    height?: number;
+    width?: number;
+  };
+  provider?: {
+    name?: string;
+    url?: string;
+  };
+  author?: {
+    name: string;
+    url?: string;
+    icon_url?: string;
+    proxy_icon_url?: string;
+  };
+  fields?: Array<{
+    name: string;
+    value: string;
+    inline?: boolean;
+  }>;
 }

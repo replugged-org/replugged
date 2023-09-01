@@ -50,6 +50,10 @@ export const GuildFeatures = getExportsForProps<Record<string, string>>(Constant
   "VERIFIED",
   "ANIMATED_BANNER",
 ])!;
+export const MessageFlags = getExportsForProps<Record<string, number>>(Constants, [
+  "EPHEMERAL",
+  "LOADING",
+])!;
 export const Routes = getExportsForProps<Record<string, unknown>>(Constants, ["INDEX", "LOGIN"])!;
 export const UserFlags = getExportsForProps<Record<string, number>>(Constants, [
   "STAFF",
@@ -61,11 +65,6 @@ export const CSSVariables = await waitForProps<Record<string, string>>(
   "TEXT_NORMAL",
   "BACKGROUND_PRIMARY",
 );
-
-export const MessageFlags = getExportsForProps<Record<string, number>>(Constants, [
-  "EPHEMERAL",
-  "LOADING",
-])!;
 
 interface ColorResponse {
   hex: () => string;
