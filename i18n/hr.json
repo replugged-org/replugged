@@ -11,7 +11,6 @@
     "REPLUGGED_BADGES_STAFF": "Replugged Osoblje",
     "REPLUGGED_BADGES_SUPPORT": "Replugged Podrška",
     "REPLUGGED_BADGES_BOOSTER": "Replugged Booster Servera",
-    "REPLUGGED_COMMAND_PREFIX": "Prefiks Naredbe",
     "REPLUGGED_GENERAL_SETTINGS": "Opće Postavke",
     "REPLUGGED_I18N_CONTRIBUTE": "Želite li pomoći prevesti Replugged? Idite na naš [Weblate]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% prevedeno",

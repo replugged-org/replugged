@@ -8,7 +8,6 @@
     "REPLUGGED_BADGES_STAFF": "„Replugged“ personalas",
     "REPLUGGED_BADGES_SUPPORT": "„Replugged“ pagalba",
     "REPLUGGED_BADGES_TRANSLATOR": "„Replugged“ vertėjas",
-    "REPLUGGED_COMMAND_PREFIX": "Komandų priešdėlis",
     "REPLUGGED_GENERAL_SETTINGS": "Bendri nustatymai",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "„Replugged“: išversta {translated,number}%",
     "REPLUGGED_LINK_NOW": "Prijunk dabar",
@@ -74,8 +73,5 @@
     "REPLUGGED_CANCEL": "Atšaukti",
     "REPLUGGED_CONFIRM": "Patvirtinti",
     "REPLUGGED_OK": "Gerai",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "Išsiunčia tavo įrenginio, „Discord“ ir „Replugged“ veikimo žurnalą į pokalbį.",
-    "REPLUGGED_COMMAND_DISABLE_DESC": "Deaktyvuoti įskiepį/temą",
-    "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" deaktyvuota!",
-    "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" aktyvuota!"
+    "REPLUGGED_COMMAND_DISABLE_DESC": "Deaktyvuoti įskiepį/temą"
 }
