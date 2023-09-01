@@ -160,7 +160,7 @@ async function executeCommand<T extends CommandOptions>(
     }
   } catch (error) {
     logger.error(error);
-    const currentChannelId = channels.getLastSelectedChannelId()!;
+    const currentChannelId = currentInfo.channel.id;
     const botMessage = messages.createBotMessage?.({
       channelId: currentChannelId,
       content: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
