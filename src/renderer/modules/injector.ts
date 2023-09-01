@@ -367,7 +367,7 @@ export class Injector {
     /**
      * A utility function to add an custom slash command.
      * @param cmd The slash cmd to add to register
-     * @returns A callback to de-register the cmd
+     * @returns A callback to de-register the command
      *
      * @example
      * ```
