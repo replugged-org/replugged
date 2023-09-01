@@ -14,6 +14,7 @@ import type { Store } from "../modules/common/flux";
 import type { Channel, Guild } from "discord-types/general";
 import { Logger } from "../modules/logger";
 import { channels, constants, messages, users } from "../modules/common";
+import { Messages } from "../modules/common/i18n";
 import { getByStoreName } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
@@ -162,7 +163,7 @@ async function executeCommand<T extends CommandOptions>(
     const currentChannelId = channels.getLastSelectedChannelId()!;
     const botMessage = messages.createBotMessage?.({
       channelId: currentChannelId,
-      content: `Something went wrong: ${error}`,
+      content: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
       embeds: [],
       loggingName: "Replugged",
     });
