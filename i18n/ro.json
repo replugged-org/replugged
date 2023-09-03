@@ -74,7 +74,6 @@
     "REPLUGGED_CONFIRM": "Confirmă",
     "REPLUGGED_OK": "OK",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Dezactivează un plugin sau o temă",
-    "REPLUGGED_COMMAND_HELP_COMMAND_TITLE": "Ajutor pentru {commandName}",
     "REPLUGGED_COMMAND_RELOAD_DESC": "Reîncarcă un plugin/temă",
     "REPLUGGED_ERROR_ALREADY_INSTALLED": "{name} este deja instalat.",
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "A aparut o eroare în timp ce se executa comanda:",
