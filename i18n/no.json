@@ -65,7 +65,6 @@
     "REPLUGGED_CANCEL": "Avbryt",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Nedlast {type}",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Deaktiver en plugin/tema",
-    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "Installerte Plugins og Temaer",
     "REPLUGGED_UPDATES_OPTS_DEBUG_UNAUTHORIZED_PLUGINS": "Uautoriserte plugins:",
     "REPLUGGED_ADDON_AUTHORS_THREE": "Av {author1}, {author2}, og {author3}",
     "REPLUGGED_ADDON_AUTHORS_TWO": "av {author1} og {author2}",

@@ -116,7 +116,6 @@
     "REPLUGGED_OK": "OK",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Lülita pistikprogramm/teema välja",
     "REPLUGGED_COMMAND_RELOAD_DESC": "Laadige pistikprogramm/teema uuesti",
-    "REPLUGGED_COMMAND_ECHO_DESC": "Tagastab määratud argumendid.",
     "REPLUGGED_COMMAND_INSTALL_DESC": "Installige pistikprogramm või teema.",
     "REPLUGGED_SETTINGS_ERROR_HEADER": "Selle elemendi renderdamisel läks midagi valesti!",
     "REPLUGGED_SETTINGS_ERROR_RENDER_PANEL": "Seadete paneeli renderdamisel ilmnes viga.",
