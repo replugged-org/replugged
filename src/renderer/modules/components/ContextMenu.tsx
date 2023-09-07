@@ -145,10 +145,18 @@ export type ContextMenuType = ContextMenuComponents & {
   ItemColors: typeof ItemColors;
 };
 
-export type modType = Record<"Menu" | "MenuSeparator" |"MenuCheckboxItem" | "MenuRadioItem" | "MenuControlItem" | "MenuGroup" | "MenuItem", React.ComponentType>;
+export type modType = Record<
+  | "Menu"
+  | "MenuSeparator"
+  | "MenuCheckboxItem"
+  | "MenuRadioItem"
+  | "MenuControlItem"
+  | "MenuGroup"
+  | "MenuItem",
+  React.ComponentType
+>;
 
 const menuMod = await waitForProps<modType>("Menu", "MenuGroup", "MenuItem");
-
 
 const Menu = {
   ItemColors,
@@ -160,6 +168,5 @@ const Menu = {
   MenuGroup: menuMod.MenuGroup,
   MenuItem: menuMod.MenuItem,
 } as ContextMenuType;
-
 
 export default Menu;
