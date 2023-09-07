@@ -36,4 +36,4 @@ export type TextAreaType = React.ComponentClass<TextAreaProps> & {
 export default await waitForModule<Record<string, TextAreaType>>(
   filters.bySource(/.resizeable,/),
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-).then((mod) => Object.values(mod).find((x) => x.defaultProps && "resizeable" in x.defaultProps)!);
+).then((mod) => Object.values(mod).find((x) => x?.defaultProps && "resizeable" in x.defaultProps)!);

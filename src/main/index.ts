@@ -39,16 +39,20 @@ class BrowserWindow extends electron.BrowserWindow {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (opts.webContents) {
       // General purpose pop-outs used by Discord
-    } else if (opts.webPreferences.nodeIntegration) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    } else if (opts.webPreferences?.nodeIntegration) {
       // Splash Screen
       // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-    } else if (opts.webPreferences.offscreen) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    } else if (opts.webPreferences?.offscreen) {
       // Overlay
       //      originalPreload = opts.webPreferences.preload;
       // opts.webPreferences.preload = join(__dirname, './preload.js');
-    } else if (opts.webPreferences.preload) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    } else if (opts.webPreferences?.preload) {
       // originalPreload = opts.webPreferences.preload;
-      if (opts.webPreferences.nativeWindowOpen) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (opts.webPreferences?.nativeWindowOpen) {
         // Discord Client
         opts.webPreferences.preload = join(__dirname, "./preload.js");
         // opts.webPreferences.contextIsolation = false; // shrug

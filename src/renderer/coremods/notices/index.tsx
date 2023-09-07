@@ -26,7 +26,8 @@ function Announcement({
         ) : (
           <NoticeButton
             onClick={() => {
-              button.onClick();
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              button.onClick?.();
               notices.closeActiveAnnouncement();
             }}>
             {button.text}

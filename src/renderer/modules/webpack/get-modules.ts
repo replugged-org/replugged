@@ -151,7 +151,8 @@ export function getModule<T>(
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
   try {
     // Find nothing if webpack hasn't been started yet
-    if (typeof wpRequire.c === "undefined") return options.all ? [] : undefined;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (typeof wpRequire?.c === "undefined") return options.all ? [] : undefined;
 
     const wrappedFilter: Filter = (mod) => {
       try {

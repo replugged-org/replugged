@@ -23,7 +23,8 @@ const FormItemComp = await waitForModule<
     }
   >
 >(filters.bySource(formItemStr)).then(
-  (mod) => Object.values(mod).find((x) => x.render.toString().includes(formItemStr))!,
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  (mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!,
 );
 
 const classes = await waitForProps<Record<"dividerDefault", string>>("dividerDefault");

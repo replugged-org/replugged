@@ -14,10 +14,12 @@ class NoticesAPI extends EventTarget {
   }
 
   public getAnnouncement(): RepluggedAnnouncement | undefined {
-    while (this.announcements[0]?._dismissed) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    while (this.announcements?.[0]?._dismissed) {
       this.announcements.shift();
     }
-    return this.announcements[0];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return this.announcements?.[0];
   }
 
   public closeActiveAnnouncement(): void {

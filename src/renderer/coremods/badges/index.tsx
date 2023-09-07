@@ -97,7 +97,8 @@ export async function start(): Promise<void> {
         return res;
       }
 
-      const { children } = res.props;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const children = res?.props?.children;
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!children || !Array.isArray(children)) {
         logger.error("Error injecting badges: res.props.children is not an array", { children });

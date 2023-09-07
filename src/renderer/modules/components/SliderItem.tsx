@@ -44,7 +44,8 @@ type SliderCompType = React.ComponentClass<SliderCompProps>;
 const SliderComp = await waitForModule<Record<string, SliderCompType>>(
   filters.bySource(".moveGrabber="),
 ).then(
-  (mod) => Object.values(mod).find((x) => x.defaultProps && "stickToMarkers" in x.defaultProps)!,
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  (mod) => Object.values(mod).find((x) => x?.defaultProps && "stickToMarkers" in x.defaultProps)!,
 );
 
 interface SliderProps extends SliderCompProps {

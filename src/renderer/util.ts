@@ -85,7 +85,8 @@ export function forceUpdateElement(selector: string, all = false): void {
     all ? [...document.querySelectorAll(selector)] : [document.querySelector(selector)]
   ).filter(Boolean) as Element[];
 
-  elements.forEach((element) => getOwnerInstance(element).forceUpdate());
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  elements.forEach((element) => getOwnerInstance(element)?.forceUpdate());
 }
 
 type Invite = Record<string, unknown> & {

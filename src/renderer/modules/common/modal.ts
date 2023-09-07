@@ -71,10 +71,14 @@ const classes = getBySource<ModalClasses>("().justifyStart")!;
 export default {
   openModal: getFunctionBySource<Modal["openModal"]>(mod, "onCloseRequest:null!=")!,
   closeModal: getFunctionBySource<Modal["closeModal"]>(mod, "onCloseCallback&&")!,
-  Direction: classes.Direction,
-  Align: classes.Align,
-  Justify: classes.Justify,
-  Wrap: classes.Wrap,
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  Direction: classes?.Direction,
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  Align: classes?.Align,
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  Justify: classes?.Justify,
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  Wrap: classes?.Wrap,
   alert: alertMod.show,
   confirm: (props: AlertProps) =>
     new Promise((resolve) => {

@@ -136,7 +136,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
       const res = makeItem(item.getItem(data, menu)) as ContextItem & { props: { id?: string } };
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (res.props) {
+      if (res?.props) {
         // add in unique ids
         res.props.id = `${res.props.id || "repluggedItem"}-${Math.random()
           .toString(36)
