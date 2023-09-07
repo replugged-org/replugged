@@ -3,7 +3,7 @@ import { FormItem } from ".";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
-interface RadioOptionType {
+type RadioOptionType = {
   name: string;
   value: string;
   desc?: string;
@@ -15,7 +15,7 @@ interface RadioOptionType {
   collapsibleContent?: React.ReactNode;
 }
 
-interface RadioProps {
+type RadioProps = {
   options: RadioOptionType[];
   value?: string;
   onChange: (option: RadioOptionType) => void;
