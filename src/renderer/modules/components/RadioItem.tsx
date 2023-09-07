@@ -3,6 +3,7 @@ import { FormItem } from ".";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type RadioOptionType = {
   name: string;
   value: string;
@@ -15,6 +16,7 @@ type RadioOptionType = {
   collapsibleContent?: React.ReactNode;
 };
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type RadioProps = {
   options: RadioOptionType[];
   value?: string;
