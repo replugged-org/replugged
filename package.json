@@ -54,7 +54,7 @@
     "cspell": "^6.31.3",
     "discord-types": "^1.3.26",
     "eslint": "^8.48.0",
-    "eslint-config-dmitmel": "github:dmitmel/eslint-config-dmitmel",
+    "eslint-config-dmitmel": "github:dmitmel/eslint-config-dmitmel#690f1b1121d342fcc8ee511ca9f2af7502f53db6",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.33.2",
     "moment": "^2.29.4",
