@@ -163,10 +163,16 @@ ipcMain.handle(
     type: InstallerType | "replugged",
     path: string,
     url: string,
+    update: boolean,
+    version?: string,
   ): Promise<InstallResultSuccess | InstallResultFailure> => {
+    const query = new URLSearchParams();
+    query.set("type", update ? "update" : "install");
+    if (version) query.set("version", version);
+
     let res;
     try {
-      res = await fetch(url);
+      res = await fetch(`${url}?${query}`);
     } catch (err) {
       return {
         success: false,
