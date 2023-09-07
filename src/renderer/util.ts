@@ -85,7 +85,7 @@ export function forceUpdateElement(selector: string, all = false): void {
     all ? [...document.querySelectorAll(selector)] : [document.querySelector(selector)]
   ).filter(Boolean) as Element[];
 
-  elements.forEach((element) => getOwnerInstance(element)?.forceUpdate());
+  elements.forEach((element) => getOwnerInstance(element).forceUpdate());
 }
 
 type Invite = Record<string, unknown> & {
@@ -175,7 +175,7 @@ export async function openExternal(url: string): Promise<void> {
   if (!mod) {
     throw new Error("Could not find openExternal");
   }
-  return await mod(url);
+  await mod(url);
 }
 
 type ValType<T> =
@@ -325,7 +325,7 @@ export function findInTree(
     return tree;
   }
 
-  if (typeof tree !== "object" || tree == null) return undefined;
+  if (typeof tree !== "object") return undefined;
 
   let tempReturn;
   if (Array.isArray(tree)) {

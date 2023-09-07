@@ -151,7 +151,7 @@ export function getModule<T>(
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
   try {
     // Find nothing if webpack hasn't been started yet
-    if (typeof wpRequire?.c === "undefined") return options.all ? [] : undefined;
+    if (typeof wpRequire.c === "undefined") return options.all ? [] : undefined;
 
     const wrappedFilter: Filter = (mod) => {
       try {

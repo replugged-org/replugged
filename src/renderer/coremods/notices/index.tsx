@@ -26,7 +26,7 @@ function Announcement({
         ) : (
           <NoticeButton
             onClick={() => {
-              button.onClick?.();
+              button.onClick();
               notices.closeActiveAnnouncement();
             }}>
             {button.text}

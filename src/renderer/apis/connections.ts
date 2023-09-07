@@ -22,6 +22,7 @@ class ConnectionsAPI extends EventTarget {
   }
 
   public registerConnection(connection: RepluggedConnection): void {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.get(connection.type)) {
       throw new Error("This type of connection already exists!");
     }

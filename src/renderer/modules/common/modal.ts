@@ -71,10 +71,10 @@ const classes = getBySource<ModalClasses>("().justifyStart")!;
 export default {
   openModal: getFunctionBySource<Modal["openModal"]>(mod, "onCloseRequest:null!=")!,
   closeModal: getFunctionBySource<Modal["closeModal"]>(mod, "onCloseCallback&&")!,
-  Direction: classes?.Direction,
-  Align: classes?.Align,
-  Justify: classes?.Justify,
-  Wrap: classes?.Wrap,
+  Direction: classes.Direction,
+  Align: classes.Align,
+  Justify: classes.Justify,
+  Wrap: classes.Wrap,
   alert: alertMod.show,
   confirm: (props: AlertProps) =>
     new Promise((resolve) => {

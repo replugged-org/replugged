@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Messages } from "@common/i18n";
 import { React, api, fluxDispatcher, modal, toast, users } from "@common";
 import {
@@ -572,9 +573,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 {
                   id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
                   label:
-                    list?.filter?.(
-                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
-                    )?.[0]?.manifest?.name || "",
+                    list?.filter((x) => x.manifest.id === section.slice(`rp_${type}_`.length))?.[0]
+                      ?.manifest.name || "",
                 },
               ]}
               onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}

@@ -35,11 +35,11 @@ export namespace coremods {
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
-  await coremods[name]?.start?.();
+  await coremods[name].start?.();
 }
 
 export async function stop(name: keyof typeof coremods): Promise<void> {
-  await coremods[name]?.stop?.();
+  await coremods[name].stop?.();
 }
 
 export async function startAll(): Promise<void> {

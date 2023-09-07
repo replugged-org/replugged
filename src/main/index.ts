@@ -36,16 +36,17 @@ class BrowserWindow extends electron.BrowserWindow {
   ) {
     const originalPreload = opts.webPreferences.preload;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (opts.webContents) {
       // General purpose pop-outs used by Discord
-    } else if (opts.webPreferences?.nodeIntegration) {
+    } else if (opts.webPreferences.nodeIntegration) {
       // Splash Screen
       // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-    } else if (opts.webPreferences?.offscreen) {
+    } else if (opts.webPreferences.offscreen) {
       // Overlay
       //      originalPreload = opts.webPreferences.preload;
       // opts.webPreferences.preload = join(__dirname, './preload.js');
-    } else if (opts.webPreferences?.preload) {
+    } else if (opts.webPreferences.preload) {
       // originalPreload = opts.webPreferences.preload;
       if (opts.webPreferences.nativeWindowOpen) {
         // Discord Client
@@ -125,7 +126,8 @@ electron.app.once("ready", () => {
   // @todo: Whitelist a few domains instead of removing CSP altogether; See #386
   electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     if (!responseHeaders) {
-      return done({});
+      done({});
+      return;
     }
 
     const hasFrameOptions = Object.keys(responseHeaders).find((e) => /x-frame-options/i.test(e));

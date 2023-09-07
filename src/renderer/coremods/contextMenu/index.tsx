@@ -23,6 +23,7 @@ export const menuItems = {} as Record<
  */
 function makeItem(raw: RawContextItem | ContextItem | undefined | void): ContextItem | undefined {
   // Occasionally React won't be loaded when this function is ran, so we don't return anything
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!React) return undefined;
 
   if (!raw) {
@@ -59,6 +60,7 @@ export function addContextMenuItem(
   sectionId: number | undefined,
   indexInSection: number,
 ): () => void {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!menuItems[navId]) menuItems[navId] = [];
 
   menuItems[navId].push({ getItem, sectionId, indexInSection });
@@ -92,6 +94,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
   const { navId } = menu;
 
   // No items to insert
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!menuItems[navId]) return;
 
   // Already inserted items
@@ -106,6 +109,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
     "MenuGroup",
   ])!;
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!MenuGroup) return;
 
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
@@ -131,7 +135,8 @@ export function _insertMenuItems(menu: ContextMenuData): void {
     try {
       const res = makeItem(item.getItem(data, menu)) as ContextItem & { props: { id?: string } };
 
-      if (res?.props) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (res.props) {
         // add in unique ids
         res.props.id = `${res.props.id || "repluggedItem"}-${Math.random()
           .toString(36)
@@ -141,7 +146,10 @@ export function _insertMenuItems(menu: ContextMenuData): void {
       if (!Array.isArray(menu.children)) menu.children = [menu.children];
       const section =
         typeof item.sectionId === "undefined" ? repluggedGroup : menu.children.at(item.sectionId);
-      if (!section) return logger.error("Couldn't find section", item.sectionId, menu.children);
+      if (!section) {
+        logger.error("Couldn't find section", item.sectionId, menu.children);
+        return;
+      }
       section.props.children.splice(item.indexInSection, 0, res);
     } catch (err) {
       logger.error("Error while running GetContextItem function", err, item.getItem);

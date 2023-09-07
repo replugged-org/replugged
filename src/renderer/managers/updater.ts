@@ -288,9 +288,10 @@ async function autoUpdateCheck(): Promise<void> {
   if (isAnUpdate && (areNewUpdates || isFirstRun)) {
     logger.log("Showing update notification");
 
-    const Messages = common.i18n?.Messages; // Weird hack due to circular dependency
+    const { Messages } = common.i18n; // Weird hack due to circular dependency
     const { open } = await openSettingsModPromise;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!Messages) {
       logger.error("Messages missing, cannot show update notification");
       return;

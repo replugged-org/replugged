@@ -63,7 +63,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
     // @ts-expect-error It doesn't understand ig
-    return this.#settings[key] ?? fallback ?? this.#defaultSettings?.[key];
+    return this.#settings[key] ?? fallback ?? this.#defaultSettings[key];
   }
 
   /**

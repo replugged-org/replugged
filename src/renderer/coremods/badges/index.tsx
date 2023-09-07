@@ -71,6 +71,7 @@ export async function start(): Promise<void> {
 
                   if (res.status === 200 || res.status === 404) {
                     return {
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       badges: body.badges || {},
                       lastFetch: Date.now(),
                     };
@@ -96,7 +97,8 @@ export async function start(): Promise<void> {
         return res;
       }
 
-      const children = res?.props?.children;
+      const { children } = res.props;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!children || !Array.isArray(children)) {
         logger.error("Error injecting badges: res.props.children is not an array", { children });
         return res;
@@ -112,6 +114,7 @@ export async function start(): Promise<void> {
 
       children.forEach((badge) => {
         const elem: React.ReactElement = badge.props.children?.();
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (elem) {
           elem.props.children.props.className = sizeClass;
           badge.props.children = (props: Record<string, unknown>) => {
