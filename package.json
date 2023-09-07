@@ -79,7 +79,7 @@
     "@ddietr/codemirror-themes": "^1.4.2",
     "@electron/asar": "^3.2.4",
     "@lezer/highlight": "^1.1.6",
-    "@octokit/rest": "^19.0.13",
+    "@octokit/rest": "^20.0.1",
     "@parcel/config-default": "^2.9.3",
     "@parcel/core": "^2.9.3",
     "@parcel/transformer-sass": "^2.9.3",
