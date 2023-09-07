@@ -248,7 +248,7 @@ export function getByValue<T>(
   return getModule<T>(filters.byValue(match), options);
 }
 
-export function getByStoreName<T>(name: string): (T & Store) | undefined {
+export function getByStoreName<T extends Store>(name: string): T | undefined {
   const stores = Flux.Store.getAll();
-  return stores.find((store) => store.getName() === name) as (T & Store) | undefined;
+  return stores.find((store) => store.getName() === name) as T | undefined;
 }
