@@ -13,7 +13,7 @@ type RadioOptionType = {
   tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   icon?: React.ComponentType<unknown>;
   collapsibleContent?: React.ReactNode;
-}
+};
 
 type RadioProps = {
   options: RadioOptionType[];
@@ -30,7 +30,7 @@ type RadioProps = {
   itemTitleClassName?: string;
   radioItemClassName?: string;
   collapsibleClassName?: string;
-}
+};
 
 export type RadioType = React.FC<RadioProps> & {
   Sizes: Record<"NOT_SET" | "NONE" | "SMALL" | "MEDIUM", string>;
