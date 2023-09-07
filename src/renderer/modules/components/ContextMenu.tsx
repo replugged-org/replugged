@@ -1,6 +1,5 @@
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import { sourceStrings } from "../webpack/patch-load";
+import { waitForProps } from "../webpack";
 
 const ItemColors = {
   DEFAULT: "default",
@@ -146,39 +145,21 @@ export type ContextMenuType = ContextMenuComponents & {
   ItemColors: typeof ItemColors;
 };
 
-const componentMap: Record<string, keyof ContextMenuComponents> = {
-  separator: "MenuSeparator",
-  checkbox: "MenuCheckboxItem",
-  radio: "MenuRadioItem",
-  control: "MenuControlItem",
-  groupstart: "MenuGroup",
-  customitem: "MenuItem",
-} as const;
+export type modType = Record<"Menu" | "MenuSeparator" |"MenuCheckboxItem" | "MenuRadioItem" | "MenuControlItem" | "MenuGroup" | "MenuItem", React.ComponentType>;
 
-const menuMod = await waitForModule<Record<string, React.ComponentType>>(
-  filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"),
-);
+const menuMod = await waitForProps<modType>("Menu", "MenuGroup", "MenuItem");
 
-const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
-const source = sourceStrings[rawMod?.id].matchAll(
-  /if\(\w+\.type===(\w+)(?:\.\w+)?\).+?type:"(.+?)"/gs,
-);
-
-const menuComponents = Object.values(menuMod)
-  .filter((m) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
-  .reduce<Record<string, React.ComponentType>>((components, component) => {
-    components[component.name] = component;
-    return components;
-  }, {});
 
 const Menu = {
   ItemColors,
-  ContextMenu: getFunctionBySource(menuMod, "getContainerProps"),
+  ContextMenu: menuMod.Menu,
+  MenuSeparator: menuMod.MenuSeparator,
+  MenuCheckboxItem: menuMod.MenuCheckboxItem,
+  MenuRadioItem: menuMod.MenuRadioItem,
+  MenuControlItem: menuMod.MenuControlItem,
+  MenuGroup: menuMod.MenuGroup,
+  MenuItem: menuMod.MenuItem,
 } as ContextMenuType;
 
-for (const [, identifier, type] of source) {
-  // @ts-expect-error Doesn't like that the generic changes
-  Menu[componentMap[type]] = menuComponents[identifier];
-}
 
 export default Menu;
