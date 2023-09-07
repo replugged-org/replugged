@@ -32,6 +32,7 @@ interface ModalHeaderProps {
 interface ModalContentProps extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
   scrollerRef?: React.Ref<unknown>;
+  scrollbarType?: "auto" | "none" | "thin";
 }
 
 interface ModalFooterProps extends ModalHeaderProps {}
