@@ -92,6 +92,8 @@ export enum MessageEmbedTypes {
   AUTO_MODERATION_NOTIFICATION = "auto_moderation_notification",
   TEXT = "text",
   POST_PREVIEW = "post_preview",
+  GIFT = "gift",
+  SAFETY_POLICY_NOTICE = "safety_policy_notice",
 }
 
 export interface APIEmbed {
