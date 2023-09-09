@@ -283,24 +283,17 @@ const CONFIG_PATH = (() => {
 })();
 const CHROME_VERSION = "91";
 
-function buildAddons(args: Args, type: AddonType): void {
+function buildAddons(buildFn: (args: Args) => Promise<void>, args: Args, type: AddonType): void {
   const addons = getAddonFolder(type);
 
   addons.forEach((addon) => {
-    buildPlugin({ ...args, addon, close: false });
+    buildFn({ ...args, addon });
   });
 
   ws?.close();
 }
 
-async function buildPlugin({
-  watch,
-  noInstall,
-  production,
-  noReload,
-  addon,
-  close = true,
-}: Args & { close?: boolean }): Promise<void> {
+async function buildPlugin({ watch, noInstall, production, noReload, addon }: Args): Promise<void> {
   const manifestPath = addon
     ? path.join(directory, "plugins", addon, "manifest.json")
     : path.join(directory, "manifest.json");
@@ -412,23 +405,16 @@ async function buildPlugin({
   const contexts = await Promise.all(targets);
   await handleContexts(contexts, watch);
 
-  if (close) ws?.close();
+  ws?.close();
 }
 
-async function buildTheme({
-  watch,
-  noInstall,
-  production,
-  noReload,
-  addon,
-  close,
-}: Args & { close?: boolean }): Promise<void> {
+async function buildTheme({ watch, noInstall, production, noReload, addon }: Args): Promise<void> {
   const manifestPath = addon
     ? path.join(directory, "themes", addon, "manifest.json")
     : "manifest.json";
   const manifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
   const distPath = addon ? `dist/${manifest.id}` : "dist";
-  const folderPath = addon ? path.join(directory, "plugins", addon) : directory;
+  const folderPath = addon ? path.join(directory, "themes", addon) : directory;
 
   const main = path.join(folderPath, manifest.main || "src/main.css");
   const splash = existsSync(path.join(folderPath, manifest.splash || "src/main.css"))
@@ -501,7 +487,7 @@ async function buildTheme({
   const contexts = await Promise.all(targets);
   await handleContexts(contexts, watch);
 
-  if (close) ws?.close();
+  ws?.close();
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -544,13 +530,13 @@ const { argv } = yargs(hideBin(process.argv))
     },
     async (argv) => {
       if (argv.addon === "plugin") {
-        if (argv.all && isMonoRepo) return buildAddons(argv, "plugins");
+        if (argv.all && isMonoRepo) return buildAddons(buildPlugin, argv, "plugins");
         else {
           const plugin = isMonoRepo ? await selectAddon("plugins") : undefined;
           buildPlugin({ ...argv, addon: plugin?.name });
         }
       } else if (argv.addon === "theme") {
-        if (argv.all && isMonoRepo) return buildAddons(argv, "themes");
+        if (argv.all && isMonoRepo) return buildAddons(buildTheme, argv, "themes");
         else {
           const theme = isMonoRepo ? await selectAddon("themes") : undefined;
           buildTheme({ ...argv, addon: theme?.name });
@@ -578,7 +564,7 @@ const { argv } = yargs(hideBin(process.argv))
           bundleAddon(buildPlugin, addon?.name);
         }
       } else if (argv.addon === "theme") {
-        if (argv.all && isMonoRepo) return bundleAddons(buildPlugin, "themes");
+        if (argv.all && isMonoRepo) return bundleAddons(buildTheme, "themes");
         else {
           const addon = isMonoRepo ? await selectAddon("themes") : undefined;
           bundleAddon(buildTheme, addon?.name);
