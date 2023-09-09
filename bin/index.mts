@@ -332,24 +332,6 @@ async function buildPlugin({
         };
       });
 
-      build.onResolve({ filter: /^react$/ }, (args) => {
-        if (args.kind !== "import-statement") return undefined;
-
-        return {
-          path: args.path,
-          namespace: "react",
-        };
-      });
-
-      build.onResolve({ filter: /^react-dom$/ }, (args) => {
-        if (args.kind !== "import-statement") return undefined;
-
-        return {
-          path: args.path,
-          namespace: "react-dom",
-        };
-      });
-
       build.onLoad(
         {
           filter: /.*/,
@@ -359,28 +341,6 @@ async function buildPlugin({
           return {
             contents: "module.exports = window.replugged",
           };
-        },
-      );
-
-      build.onLoad(
-        {
-          filter: /.*/,
-          namespace: "react",
-        },
-        () => {
-          return {
-            contents: "module.exports = window.replugged.common.React",
-          };
-        },
-      );
-
-      build.onLoad(
-        {
-          filter: /.*/,
-          namespace: "react-dom",
-        },
-        () => {
-          return { contents: "module.exports = window.replugged.common.ReactDOM" };
         },
       );
     },
