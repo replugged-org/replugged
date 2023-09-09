@@ -18,3 +18,4 @@ config.json
 
 /docs
 /*.asar
+/bin.mjs
