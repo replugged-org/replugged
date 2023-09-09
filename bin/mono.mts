@@ -44,13 +44,7 @@ export async function selectAddon(type: AddonType | "all"): Promise<SelectedAddo
 
     return addon;
   } else {
-    /**
-     * @type {string[]}
-     */
     const plugins: string[] = [];
-    /**
-     * @type {string[]}
-     */
     const themes: string[] = [];
 
     if (existsSync(path.join(directory, "plugins"))) {

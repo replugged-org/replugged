@@ -289,8 +289,6 @@ function buildAddons(buildFn: (args: Args) => Promise<void>, args: Args, type: A
   addons.forEach((addon) => {
     buildFn({ ...args, addon });
   });
-
-  ws?.close();
 }
 
 async function buildPlugin({ watch, noInstall, production, noReload, addon }: Args): Promise<void> {
