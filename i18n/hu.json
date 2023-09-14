@@ -75,7 +75,6 @@
     "REPLUGGED_CONFIRM": "Megerősít",
     "REPLUGGED_OK": "OK",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Plugin/Téma kikapcsolása",
-    "REPLUGGED_COMMAND_INSTALL_ERROR_NOT_FOUND": "A kért plugin vagy téma nem található vagy érvénytelen.",
     "REPLUGGED_COMMAND_RELOAD_DESC": "Plugin/téma újratöltése",
     "REPLUGGED_NOTICES_WELCOME_NEW_USER": "Üdvözöllek! Replugged sikeresen injectelődött a Discord kliensedbe. Csatlakozz a Discord szerverünkhöz közlemények, segítség és egyebekért!",
     "REPLUGGED_NOTICES_JOIN_SERVER_BUTTON": "Szerverre csatlakozás",
