@@ -1,9 +1,11 @@
-import type { ObjectExports } from "../../types/webpack";
-import type { AnyFunction } from "../../types/util";
-import type { GetButtonItem } from "../../types/coremods/message";
+import type { CommandOptions, RepluggedCommand } from "src/types";
 import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
-import { addButton } from "../coremods/messagePopover";
+import type { GetButtonItem } from "../../types/coremods/message";
+import type { AnyFunction } from "../../types/util";
+import type { ObjectExports } from "../../types/webpack";
+import { CommandManager } from "../apis/commands";
 import { addContextMenuItem } from "../coremods/contextMenu";
+import { addButton } from "../coremods/messagePopover";
 
 enum InjectionTypes {
   Before,
@@ -217,7 +219,7 @@ function after<
  */
 export class Injector {
   #uninjectors = new Set<() => void>();
-
+  #slashCommandManager = new CommandManager();
   /**
    * Run code before a native module
    * @param obj Module to inject to
@@ -358,6 +360,37 @@ export class Injector {
         sectionId,
         indexInSection,
       );
+      this.#uninjectors.add(uninjector);
+      return uninjector;
+    },
+
+    /**
+     * A utility function to add a custom slash command.
+     * @param cmd The slash command to add to register
+     * @returns A callback to de-register the command
+     *
+     * @example
+     * ```
+     * import { Injector, components, types } from "replugged";
+     *
+     * const injector = new Injector();
+     *
+     * export function start() {
+     *   injector.utils.registerSlashCommand({
+     *        name: "use",
+     *        description: "a command meant to be used",
+     *        usage: "/use",
+     *        executor: (interaction) => {},
+     *    })
+     * }
+     *
+     * export function stop() {
+     *   injector.uninjectAll();
+     * }
+     * ```
+     */
+    registerSlashCommand: <const T extends CommandOptions>(cmd: RepluggedCommand<T>) => {
+      const uninjector = this.#slashCommandManager.registerCommand<T>(cmd);
       this.#uninjectors.add(uninjector);
       return uninjector;
     },

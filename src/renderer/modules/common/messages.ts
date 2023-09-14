@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { waitForProps } from "../webpack";
-
-import type { Channel, Message, MessageAttachment } from "discord-types/general";
+import type { Channel, Message, MessageAttachment, User } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
+import type { APIEmbed } from "src/types";
+import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
 
 export enum ActivityActionTypes {
   JOIN = 1,
@@ -414,9 +414,52 @@ export interface MessageActions {
   _tryFetchMessagesCached: (options: FetchMessagesCachedOptions) => boolean;
 }
 
-export type Messages = PartialMessageStore & MessageActions;
+interface CreateBotMessageOptions {
+  channelId: string;
+  content: string;
+  embeds?: APIEmbed[];
+  loggingName?: string;
+}
+
+interface CreateMessageOptions {
+  channelId: string;
+  content: string;
+  tts?: boolean;
+  type?: number;
+  messageReference?: MessageReference;
+  allowedMentions?: AllowedMentions;
+  author: User;
+  flags?: number;
+  nonce?: string;
+}
+
+interface UserServer {
+  id: string;
+  username: string;
+  avatar: string | null;
+  discriminator: string;
+  bot: boolean | undefined;
+  global_name: string | null;
+}
+
+interface MessageUtils {
+  createBotMessage: (options: CreateBotMessageOptions) => Message;
+  createMessage: (options: CreateMessageOptions) => Message;
+  createNonce: () => string;
+  userRecordToServer: (user: User) => UserServer;
+}
 
 const MessageStore = await waitForProps<MessageStore>("getMessage", "getMessages");
+
+const MessageUtilsMod = await waitForModule(filters.bySource('username:"Clyde"'));
+const MessageUtils = {
+  createBotMessage: getFunctionBySource(MessageUtilsMod, 'username:"Clyde"'),
+  createMessage: getFunctionBySource(MessageUtilsMod, "createMessage"),
+  createNonce: getFunctionBySource(MessageUtilsMod, "fromTimestamp"),
+  userRecordToServer: getFunctionBySource(MessageUtilsMod, "global_name:"),
+} as MessageUtils;
+
+export type Messages = PartialMessageStore & MessageActions & MessageUtils;
 
 export default virtualMerge(
   await waitForProps<MessageActions>("sendMessage", "editMessage", "deleteMessage"),
@@ -424,4 +467,5 @@ export default virtualMerge(
     getMessage: MessageStore.getMessage,
     getMessages: MessageStore.getMessages,
   },
+  MessageUtils,
 );
