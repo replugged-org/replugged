@@ -11,8 +11,7 @@ import type {
   RepluggedCommandSection,
 } from "../../types";
 import { ApplicationCommandOptionType } from "../../types";
-import { constants, messages, users } from "../modules/common";
-import { Messages } from "../modules/common/i18n";
+import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
 import { getByStoreName } from "../modules/webpack";
@@ -163,7 +162,7 @@ async function executeCommand<T extends CommandOptions>(
     const currentChannelId = currentInfo.channel.id;
     const botMessage = messages.createBotMessage?.({
       channelId: currentChannelId,
-      content: Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
+      content: i18n.Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
       embeds: [],
       loggingName: "Replugged",
     });
