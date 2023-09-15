@@ -4,6 +4,11 @@ import { INSTALLER_SOURCES, InstallerSource, getInfo, install } from "./util";
 
 const injector = new Injector();
 
+const installSourceDisplayName: Record<InstallerSource, string> = {
+  github: "GitHub",
+  store: "Store",
+};
+
 export function loadCommands(): void {
   injector.utils.registerSlashCommand({
     name: "install",
@@ -29,8 +34,8 @@ export function loadCommands(): void {
         required: false,
         choices: INSTALLER_SOURCES.map((v) => ({
           name: v,
-          // TODO: i18n
-          displayName: v,
+          // TODO: i18n for store?
+          displayName: installSourceDisplayName[v],
           value: v,
         })),
       },
