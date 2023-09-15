@@ -12,7 +12,7 @@ import { getAddonType, getSourceLink, label } from "../settings/pages";
 const logger = Logger.coremod("Installer");
 
 // First item is the default
-const INSTALLER_SOURCES = ["store", "github"] as const;
+export const INSTALLER_SOURCES = ["store", "github"] as const;
 export type InstallerSource = (typeof INSTALLER_SOURCES)[number];
 
 const CACHE_INTERVAL = 1000 * 60 * 60;
