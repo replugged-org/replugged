@@ -1,6 +1,6 @@
-import { Injector, plugins } from "@replugged";
+import { Injector } from "@replugged";
 import { ApplicationCommandOptionType } from "src/types";
-import { INSTALLER_SOURCES, InstallerSource, installFlow, installURL } from "./util";
+import { INSTALLER_SOURCES, InstallerSource, installFlow } from "./util";
 
 /**
  * A map of display names for installer sources.
