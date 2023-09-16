@@ -59,14 +59,13 @@ export function loadCommands(injector: Injector): void {
       },
     ],
 
-    async execute(args) {
+    async executor(i) {
       await installFlow(
-        // @ts-expect-error identifier is a required argument, so no need for assertion
-        // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-        args.find((v) => v.name === "identifier").value as string,
-        args.find((v) => v.name === "source")?.value as InstallerSource | undefined,
-        args.find((v) => v.name === "id")?.value,
+        i.getValue("identifier"),
+        i.getValue("source") as InstallerSource | undefined,
+        i.getValue("id"),
       );
+      return null
     },
   });
 
