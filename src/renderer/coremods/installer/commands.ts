@@ -1,6 +1,6 @@
 import { Injector } from "@replugged";
 import { ApplicationCommandOptionType } from "src/types";
-import { INSTALLER_SOURCES, InstallerSource, getInfo, install } from "./util";
+import { INSTALLER_SOURCES, InstallerSource, installFlow } from "./util";
 
 const injector = new Injector();
 
@@ -61,28 +61,14 @@ export function loadCommands(): void {
       },
     ],
 
-    async executor(interaction) {
-      const identifier = interaction.getValue("identifier");
-      const source = interaction.getValue("source") as InstallerSource | undefined;
-      const id = interaction.getValue("id");
-
-      const info = await getInfo(identifier, source, id);
-
-      if (!info) {
-        return {
-          send: false,
-          // TODO: i18n?
-          result: "Error: couldn't fetch the plugin",
-        };
-      }
-
-      const success = await install(info);
-
-      return {
-        send: false,
-        // TODO: i18n
-        result: success ? "Success: Addon installed" : "Error: plugin fetched but not installed",
-      };
+    async execute(args) {
+      await installFlow(
+        // @ts-expect-error identifier is a required argument, so no need for assertion
+        // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+        args.find(v => v.name === 'identifier').value as string,
+        args.find(v => v.name === 'source')?.value as InstallerSource | undefined,
+        args.find(v => v.name === 'id')?.value, 
+      )
     },
   });
 }
