@@ -94,11 +94,15 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
             <h1>{Messages.REPLUGGED_SETTINGS_ERROR_HEADER}</h1>
             {pluginName && (
               <p className="replugged-error-boundary-plugin">
-                {Messages.REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME.format({ name: pluginName })}
+                {Messages.REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME?.format?.({ name: pluginName })}
               </p>
             )}
             <p>{Messages.REPLUGGED_SETTINGS_ERROR_SUB_HEADER}</p>
-            {error?.stack && <CollapsibleErrorStack stack={error.stack} />}
+            {error?.stack && (
+              <ErrorBoundary fallback={<></>}>
+                <CollapsibleErrorStack stack={error.stack} />
+              </ErrorBoundary>
+            )}
           </div>
         )
       );
