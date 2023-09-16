@@ -3,7 +3,7 @@ import { ApplicationCommandOptionType } from "src/types";
 import { INSTALLER_SOURCES, InstallerSource, installFlow, installURL } from "./util";
 
 /**
- * A map of display names for installer sources. 
+ * A map of display names for installer sources.
  */
 const sourceDisplayNames: Record<InstallerSource, string> = {
   github: "GitHub",
