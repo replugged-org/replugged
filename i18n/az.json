@@ -73,6 +73,6 @@
     "REPLUGGED_CONFIRM": "Təsdiq edin",
     "REPLUGGED_OK": "Tamam",
     "REPLUGGED_COMMAND_ENABLE_DESC": "Bir Plaqin/Tema'ı açın",
-    "REPLUGGED_COMMAND_INSTALL_DESC": "Bir Plaqin və ya Tema qurun.",
-    "REPLUGGED_COMMAND_DISABLE_DESC": "Bir plaqin/tema deaktiv edin"
+    "REPLUGGED_COMMAND_DISABLE_DESC": "Bir plaqin/tema deaktiv edin",
+    "REPLUGGED_PLUGIN": "Plaqin"
 }
