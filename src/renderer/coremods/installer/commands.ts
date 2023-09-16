@@ -65,7 +65,7 @@ export function loadCommands(injector: Injector): void {
         i.getValue("source") as InstallerSource | undefined,
         i.getValue("id"),
       );
-      return null
+      return null;
     },
   });
 
