@@ -12,13 +12,13 @@ const specialSourceDisplayNames: Partial<Record<InstallerSource, string>> = {
 };
 
 function installSourceName(source: InstallerSource): string {
-  const displayName = specialSourceDisplayNames[source]
+  const displayName = specialSourceDisplayNames[source];
   if (displayName) {
-    return displayName
+    return displayName;
   }
-  
+
   // TODO: i18n
-  return source
+  return source;
 }
 
 export function loadCommands(): void {
@@ -65,10 +65,10 @@ export function loadCommands(): void {
       await installFlow(
         // @ts-expect-error identifier is a required argument, so no need for assertion
         // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-        args.find(v => v.name === 'identifier').value as string,
-        args.find(v => v.name === 'source')?.value as InstallerSource | undefined,
-        args.find(v => v.name === 'id')?.value, 
-      )
+        args.find((v) => v.name === "identifier").value as string,
+        args.find((v) => v.name === "source")?.value as InstallerSource | undefined,
+        args.find((v) => v.name === "id")?.value,
+      );
     },
   });
 }
