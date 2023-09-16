@@ -92,7 +92,11 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
         this.props.fallback || (
           <div className="replugged-error-boundary">
             <h1>{Messages.REPLUGGED_SETTINGS_ERROR_HEADER}</h1>
-            {pluginName && <p className="replugged-error-boundary-plugin">Plugin: {pluginName}</p>}
+            {pluginName && (
+              <p className="replugged-error-boundary-plugin">
+                {Messages.REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME.format({ name: pluginName })}
+              </p>
+            )}
             <p>{Messages.REPLUGGED_SETTINGS_ERROR_SUB_HEADER}</p>
             {error?.stack && <CollapsibleErrorStack stack={error.stack} />}
           </div>
