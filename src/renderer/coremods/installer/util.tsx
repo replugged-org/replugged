@@ -322,3 +322,19 @@ export async function installFlow(
     manifest: info.manifest,
   };
 }
+
+/**
+ * Generate a URL given a manifest
+ * 
+ * @param manifest an addon manifest
+ * @returns a fully formed URL to install the addon
+ */
+export function installURL(manifest: AnyAddonManifest): string {
+  const base = "https://replugged.dev/install"
+
+  if (!manifest.updater) {
+    return `${base}?identifier=${manifest.id}`
+  }
+
+  return `${base}?identifier=${manifest.updater.id}&source=${manifest.updater.id}&id=${manifest.id}`
+}
