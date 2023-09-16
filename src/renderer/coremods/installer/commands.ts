@@ -3,21 +3,13 @@ import { ApplicationCommandOptionType } from "src/types";
 import { INSTALLER_SOURCES, InstallerSource, installFlow, installURL } from "./util";
 
 /**
- * A map 'special' names that don't need to be translated by i18n
+ * A map of display names for installer sources. 
  */
-const specialSourceDisplayNames: Partial<Record<InstallerSource, string>> = {
+const sourceDisplayNames: Record<InstallerSource, string> = {
   github: "GitHub",
-};
-
-function installSourceName(source: InstallerSource): string {
-  const displayName = specialSourceDisplayNames[source];
-  if (displayName) {
-    return displayName;
-  }
-
   // TODO: i18n
-  return source;
-}
+  store: "store",
+};
 
 export function loadCommands(injector: Injector): void {
   injector.utils.registerSlashCommand({
@@ -44,7 +36,7 @@ export function loadCommands(injector: Injector): void {
         required: false,
         choices: INSTALLER_SOURCES.map((v) => ({
           name: v,
-          displayName: installSourceName(v),
+          displayName: sourceDisplayNames[v],
           value: v,
         })),
       },
