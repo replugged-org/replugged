@@ -1,6 +1,6 @@
-import { Injector } from "@replugged";
+import { Injector, plugins } from "@replugged";
 import { ApplicationCommandOptionType } from "src/types";
-import { INSTALLER_SOURCES, InstallerSource, installFlow } from "./util";
+import { INSTALLER_SOURCES, InstallerSource, installFlow, installURL } from "./util";
 
 const injector = new Injector();
 
@@ -70,6 +70,50 @@ export function loadCommands(): void {
         args.find((v) => v.name === "id")?.value,
       );
     },
+  });
+
+  injector.utils.registerSlashCommand({
+    name: "share",
+    // TODO: i18n
+    displayName: "",
+    // TODO: i18n
+    description: "Share an addon's installation link",
+    options: [
+      {
+        name: "id",
+        // TODO: i18n
+        displayName: "",
+        // TODO: i18n
+        description: "The id of the addon",
+        required: true,
+        type: ApplicationCommandOptionType.String,
+      },
+      {
+        name: "send",
+        // TODO: i18n
+        displayName: "",
+        // TODO: i18n
+        description: "If set to false, this will only send an ephemeral message",
+        required: false,
+        type: ApplicationCommandOptionType.Boolean,
+      },
+    ],
+
+    executor(i) {
+      const plugin = plugins.plugins.get(i.getValue("id"))
+      if (!plugin) {
+        return {
+          send: false,
+          // TODO: i18n?
+          result: "Error: plugin not found"
+        }
+      }
+
+      return {
+        send: i.getValue("send", true),
+        result: installURL(plugin.manifest)
+      }
+    }
   });
 }
 
