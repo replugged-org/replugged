@@ -232,5 +232,6 @@
     "REPLUGGED_SETTINGS_TRANSPARENT": "Transparent Window",
     "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Makes the Discord window transparent, primarily useful for theming. **Requires restart**.",
     "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS": "****WARNING:**** This will break **window snapping**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
-    "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked."
+    "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
+    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}"
 }
