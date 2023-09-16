@@ -9,7 +9,7 @@ import AddonEmbed from "./AddonEmbed";
 import { generalSettings } from "../settings/pages";
 import type { Capture, DefaultInRule } from "simple-markdown";
 import { parser } from "@common";
-import { loadCommands, unloadCommands } from "./commands";
+import { loadCommands } from "./commands";
 
 const injector = new Injector();
 const logger = Logger.coremod("Installer");
@@ -200,15 +200,10 @@ async function injectLinks(): Promise<void> {
   });
 }
 
-function injectCommands(): void {
-  loadCommands();
-  uninjectFns.push(unloadCommands);
-}
-
 export async function start(): Promise<void> {
   await injectLinks();
   injectRpc();
-  injectCommands();
+  loadCommands(injector);
 }
 
 export function stop(): void {

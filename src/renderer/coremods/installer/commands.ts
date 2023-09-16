@@ -2,8 +2,6 @@ import { Injector, plugins } from "@replugged";
 import { ApplicationCommandOptionType } from "src/types";
 import { INSTALLER_SOURCES, InstallerSource, installFlow, installURL } from "./util";
 
-const injector = new Injector();
-
 /**
  * A map 'special' names that don't need to be translated by i18n
  */
@@ -21,7 +19,7 @@ function installSourceName(source: InstallerSource): string {
   return source;
 }
 
-export function loadCommands(): void {
+export function loadCommands(injector: Injector): void {
   injector.utils.registerSlashCommand({
     name: "install",
     // TODO: i18n
@@ -115,8 +113,4 @@ export function loadCommands(): void {
       };
     },
   });
-}
-
-export function unloadCommands(): void {
-  injector.uninjectAll();
 }
