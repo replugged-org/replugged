@@ -100,20 +100,20 @@ export function loadCommands(): void {
     ],
 
     executor(i) {
-      const plugin = plugins.plugins.get(i.getValue("id"))
+      const plugin = plugins.plugins.get(i.getValue("id"));
       if (!plugin) {
         return {
           send: false,
           // TODO: i18n?
-          result: "Error: plugin not found"
-        }
+          result: "Error: plugin not found",
+        };
       }
 
       return {
         send: i.getValue("send", true),
-        result: installURL(plugin.manifest)
-      }
-    }
+        result: installURL(plugin.manifest),
+      };
+    },
   });
 }
 
