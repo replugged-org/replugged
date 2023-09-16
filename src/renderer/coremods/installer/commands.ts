@@ -4,10 +4,22 @@ import { INSTALLER_SOURCES, InstallerSource, getInfo, install } from "./util";
 
 const injector = new Injector();
 
-const installSourceDisplayName: Record<InstallerSource, string> = {
+/**
+ * A map 'special' names that don't need to be translated by i18n
+ */
+const specialSourceDisplayNames: Partial<Record<InstallerSource, string>> = {
   github: "GitHub",
-  store: "Store",
 };
+
+function installSourceName(source: InstallerSource): string {
+  const displayName = specialSourceDisplayNames[source]
+  if (displayName) {
+    return displayName
+  }
+  
+  // TODO: i18n
+  return source
+}
 
 export function loadCommands(): void {
   injector.utils.registerSlashCommand({
@@ -34,8 +46,7 @@ export function loadCommands(): void {
         required: false,
         choices: INSTALLER_SOURCES.map((v) => ({
           name: v,
-          // TODO: i18n for store?
-          displayName: installSourceDisplayName[v],
+          displayName: installSourceName(v),
           value: v,
         })),
       },
