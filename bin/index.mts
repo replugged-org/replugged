@@ -276,6 +276,16 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
       build.onResolve({ filter: /^replugged(\/\w+)?$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
+        if (args.path.includes("dist")) {
+          return {
+            errors: [
+              {
+                text: `Unsupported import from dist: ${args.path}`,
+              },
+            ],
+          };
+        }
+
         return {
           path: args.path,
           namespace: "replugged",
