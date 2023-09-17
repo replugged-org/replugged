@@ -282,6 +282,15 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
         };
       });
 
+      build.onResolve({ filter: /^react$/ }, (args) => {
+        if (args.kind !== "import-statement") return undefined;
+
+        return {
+          path: "replugged/common/React",
+          namespace: "replugged",
+        };
+      });
+
       build.onLoad(
         {
           filter: /.*/,
@@ -289,7 +298,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
         },
         (loadArgs) => {
           return {
-            contents: `module.exports = window.${loadArgs.path.replace("/", ".")}`,
+            contents: `module.exports = window.${loadArgs.path.replaceAll("/", ".")}`,
           };
         },
       );
