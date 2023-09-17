@@ -9,7 +9,7 @@ const locations = {
 for (const [category, names] of Object.entries(locations)) {
   for (const name of names) {
     const path = `./dist/renderer/${category}/${name}`;
-    const dtsContents = `import * as exp from "${path}"; export = exp;`;
+    const dtsContents = `export * from "${path}";`;
     writeFileSync(`${name}.d.ts`, dtsContents);
   }
 }
