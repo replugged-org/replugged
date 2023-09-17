@@ -280,7 +280,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
           return {
             errors: [
               {
-                text: `Unsupported import from dist: ${args.path}`,
+                text: `Unsupported import from dist: ${args.path} Import from either the top level of this module ("replugged") or a top-level subpath (e.g. "replugged/common") instead.`,
               },
             ],
           };
