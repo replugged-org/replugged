@@ -21,7 +21,7 @@ function CollapsibleErrorStack(props: { stack: string }): React.ReactElement {
           width={24}
           height={24}
           viewBox="0 0 24 24"
-          style={{ transform: open ? "rotate(180deg)" : undefined }}>
+          style={{ transform: open ? "rotate(180deg)" : undefined, flex: "0 0 auto" }}>
           <path
             fill="var(--header-primary)"
             d="M16.59 8.59003L12 13.17L7.41 8.59003L6 10L12 16L18 10L16.59 8.59003Z"
@@ -48,7 +48,6 @@ export interface ErrorProps {
 export interface ErrorState {
   hasError: boolean;
   error?: Error;
-  errorInfo?: React.ErrorInfo;
   pluginName?: string;
 }
 
