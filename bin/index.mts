@@ -273,19 +273,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
   const globalModules: esbuild.Plugin = {
     name: "globalModules",
     setup: (build) => {
-      build.onResolve({ filter: /^replugged.+$/ }, (args) => {
-        if (args.kind !== "import-statement") return undefined;
-
-        return {
-          errors: [
-            {
-              text: `Importing from a path (${args.path}) is not supported. Instead, please import from "replugged" and destructure the required modules.`,
-            },
-          ],
-        };
-      });
-
-      build.onResolve({ filter: /^replugged$/ }, (args) => {
+      build.onResolve({ filter: /^replugged(\/\w+)?$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
         return {
@@ -299,9 +287,9 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
           filter: /.*/,
           namespace: "replugged",
         },
-        () => {
+        (loadArgs) => {
           return {
-            contents: "module.exports = window.replugged",
+            contents: `module.exports = window.${loadArgs.path.replace("/", ".")}`,
           };
         },
       );
