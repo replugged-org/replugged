@@ -84,7 +84,6 @@
     "REPLUGGED_OK": "ОК",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Отключить плагин/тему",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Скачать {type}",
-    "REPLUGGED_COMMAND_SAY_DESC": "Отправляет данные агрументы.",
     "REPLUGGED_ERROR_ALREADY_INSTALLED": "{name} уже установлен.",
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "Произошла ошибка во время исполнения команнды:",
     "REPLUGGED_ERROR_CHECK_CONSOLE": "Проверьте консоль для дополнительной информации.",

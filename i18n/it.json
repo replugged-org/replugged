@@ -192,7 +192,7 @@
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Carica l'estensione React DevTools, permettendoti di ispezionare l'albero di React ed eseguire il debug più facilmente. **Necessita di un riavvio**.",
     "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Riconnette il coremod Dev Companion all'estensione di VSCode.",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Impossibile scaricare React DevTools.",
-    "REPLUGGED_INSTALLER_OPEN_STORE": "Mostra nello Store",
+    "REPLUGGED_INSTALLER_OPEN_STORE": "Mostra nello store",
     "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Mostra gli addon embed",
     "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Mostra una scheda con le informazioni su un addon quando un link allo store/installazione viene condiviso in chat.",
     "REPLUGGED_RESTART": "Riavvia",
@@ -223,11 +223,14 @@
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME": "versione",
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC": "Includere i numeri di versione nell'elenco",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "stato",
-    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Se mostrare abilitato, disabilitato o entrambi",
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Se mostrare gli addon abilitati, disabilitati o entrambi",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED": "Abilitato",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED": "Disabilitato",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH": "Entrambi",
     "REPLUGGED_COMMAND_LIST_HEADER_ENABLED": "{type} abilitato",
     "REPLUGGED_COMMAND_LIST_HEADER_DISABLED": "{type} disabilitato",
-    "REPLUGGED_COMMAND_LIST_ERROR_SPECIFY": "È necessario specificare se inviare un plugin o un elenco di temi"
+    "REPLUGGED_COMMAND_LIST_ERROR_SPECIFY": "È necessario specificare se inviare un plugin o un elenco di temi",
+    "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Completato",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "Elenca plugin",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Elenca temi"
 }

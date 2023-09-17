@@ -76,15 +76,17 @@ export async function start(id: string): Promise<void> {
     }
 
     if (plugin.manifest.renderer) {
-      plugin.exports = await import(
-        `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
-      );
-
       await Promise.race([
         new Promise((_, reject) =>
           setTimeout(() => reject(new Error("Plugin took too long to start")), 5_000),
         ),
-        plugin.exports!.start?.(),
+        (async () => {
+          const pluginExports = await import(
+            `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
+          );
+          plugin.exports = pluginExports;
+          await pluginExports.start?.();
+        })(),
       ]);
     }
 
