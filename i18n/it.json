@@ -232,5 +232,6 @@
     "REPLUGGED_COMMAND_LIST_ERROR_SPECIFY": "È necessario specificare se inviare un plugin o un elenco di temi",
     "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Completato",
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "Elenca plugin",
-    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Elenca temi"
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Elenca temi",
+    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}"
 }
