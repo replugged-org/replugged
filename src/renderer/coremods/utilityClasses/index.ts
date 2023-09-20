@@ -1,9 +1,11 @@
-import { Injector /*, Logger*/ } from "@replugged";
+import { Injector, Logger } from "@replugged";
+import { filters, getByProps, getByStoreName, waitForModule } from "src/renderer/modules/webpack";
+import { users } from "@common";
 import type React from "react";
 import type { Store } from "src/renderer/modules/common/flux";
-import { getByProps, getByStoreName } from "src/renderer/modules/webpack";
+import type { Message } from "discord-types/general";
 
-const injector = new Injector();
+const inject = new Injector();
 //const logger = Logger.coremod("UtilityClasses");
 const html = document.documentElement;
 
@@ -23,7 +25,7 @@ function tabBarItemId(): void {
     throw new Error("Failed to find TabBar module!");
   }
 
-  injector.after(
+  inject.after(
     TabBarModule.TabBar.Item.prototype,
     "render",
     function (this: TabBarItemType, _, res) {
@@ -71,11 +73,57 @@ function nitroThemeClass(): void {
   onNitroThemeChange(ClientThemesBackgroundStore, ThemeIDMap);
 }
 
-export function start(): void {
+interface MessageComponent {
+  props: { id: string };
+  type: {
+    type: (msg: { message: Message }) => React.ReactElement;
+  };
+}
+
+async function messageDataAttributes(): Promise<void> {
+  const MessagesComponent = await waitForModule<{
+    type: () => React.ReactElement;
+  }>(filters.bySource(".content.id)"));
+
+  const uninjectMessagesComponent = inject.after(MessagesComponent, "type", (_, res) => {
+    uninjectMessagesComponent();
+
+    const MessageListComponent = res.props.children.type;
+    const uninjectMessageList = inject.after(MessageListComponent, "type", (_, res) => {
+      const messagesArray = res.props.children.props.children[1].props.children[1].props
+        .children[1] as MessageComponent[];
+      const messageElement = messagesArray.find((e) => e.props.id !== undefined);
+
+      // messageElement isn't found when first loading the message list.
+      if (messageElement) {
+        uninjectMessageList();
+        // found a message component, inject into it
+        inject.after(messageElement.type, "type", ([{ message }], res) => {
+          const { props } = res.props.children.props.children;
+          props["data-is-author-self"] = message.author.id === users.getCurrentUser().id;
+          props["data-is-author-bot"] = message.author.bot;
+          if (message.author.bot) {
+            props["data-is-author-webhook"] = message.webhookId !== null;
+          }
+          props["data-author-id"] = message.author.id;
+          props["data-message-type"] = message.type;
+          if (message.blocked) props["data-is-blocked"] = "true";
+          return res;
+        });
+      }
+
+      return res;
+    });
+    return res;
+  });
+}
+
+export async function start(): Promise<void> {
   tabBarItemId();
   nitroThemeClass();
+  await messageDataAttributes();
 }
 
 export function stop(): void {
-  injector.uninjectAll();
+  inject.uninjectAll();
 }
