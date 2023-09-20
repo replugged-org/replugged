@@ -43,10 +43,10 @@ const closePopout = webpack.getFunctionBySource(PopoutModule, "POPOUT_WINDOW_CLO
 ) => void;
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-const setAlwaysOnTop = webpack.getFunctionBySource(PopoutModule, "POPOUT_WINDOW_SET_ALWAYS_ON_TOP") as (
-  key: string,
-  alwaysOnTop: boolean,
-) => void;
+const setAlwaysOnTop = webpack.getFunctionBySource(
+  PopoutModule,
+  "POPOUT_WINDOW_SET_ALWAYS_ON_TOP",
+) as (key: string, alwaysOnTop: boolean) => void;
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 const PopoutWindowStore = webpack.getByStoreName("PopoutWindowStore") as Store & {
@@ -219,7 +219,7 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
     }, []);
   }
 
-  const [ alwaysOnTop, setAlwaysOnTop_ ] = React.useState(props.popoutOnTop);
+  const [alwaysOnTop, setAlwaysOnTop_] = React.useState(props.popoutOnTop);
 
   return (
     <>
@@ -260,28 +260,42 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
               <Settings />
             </Tooltip>
 
-            {props.popout ? <Tooltip text={alwaysOnTop ? Messages.POPOUT_REMOVE_FROM_TOP : Messages.POPOUT_STAY_ON_TOP}>
-              {alwaysOnTop ? <Unpin onClick={() => {
-                setAlwaysOnTop('DISCORD_REPLUGGED_QUICKCSS', false);
-                setAlwaysOnTop_(false);
-              }} /> : <Pin onClick={() => {
-                setAlwaysOnTop('DISCORD_REPLUGGED_QUICKCSS', true);
-                setAlwaysOnTop_(true);
-              }} />
-              }
-            </Tooltip> : <Tooltip text={Messages.POPOUT_PLAYER}>
-              <Popout onClick={() => {
-                openPopout(
-                  "DISCORD_REPLUGGED_QUICKCSS",
-                  () => (
-                    <DnDProvider windowKey="DISCORD_REPLUGGED_QUICKCSS">
-                      <QuickCSS popout={true}></QuickCSS>
-                    </DnDProvider>
-                  ),
-                  {},
-                );
-              }} />
-            </Tooltip>}
+            {props.popout ? (
+              <Tooltip
+                text={alwaysOnTop ? Messages.POPOUT_REMOVE_FROM_TOP : Messages.POPOUT_STAY_ON_TOP}>
+                {alwaysOnTop ? (
+                  <Unpin
+                    onClick={() => {
+                      setAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS", false);
+                      setAlwaysOnTop_(false);
+                    }}
+                  />
+                ) : (
+                  <Pin
+                    onClick={() => {
+                      setAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS", true);
+                      setAlwaysOnTop_(true);
+                    }}
+                  />
+                )}
+              </Tooltip>
+            ) : (
+              <Tooltip text={Messages.POPOUT_PLAYER}>
+                <Popout
+                  onClick={() => {
+                    openPopout(
+                      "DISCORD_REPLUGGED_QUICKCSS",
+                      () => (
+                        <DnDProvider windowKey="DISCORD_REPLUGGED_QUICKCSS">
+                          <QuickCSS popout={true}></QuickCSS>
+                        </DnDProvider>
+                      ),
+                      {},
+                    );
+                  }}
+                />
+              </Tooltip>
+            )}
           </div>
           <div ref={ref}></div>
         </div>
@@ -290,10 +304,13 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
   );
 };
 
-export const ConnectedQuickCSS = flux.connectStores<{ popout: boolean }, { popout: boolean; isPopoutOpen: boolean }>([PopoutWindowStore], (props) => {
+export const ConnectedQuickCSS = flux.connectStores<
+  { popout: boolean },
+  { popout: boolean; isPopoutOpen: boolean }
+>([PopoutWindowStore], (props) => {
   return {
     isPopoutOpen: PopoutWindowStore.getWindowOpen("DISCORD_REPLUGGED_QUICKCSS"),
     popoutOnTop: PopoutWindowStore.getIsAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS"),
-    ...props
-  }
+    ...props,
+  };
 })(QuickCSS);

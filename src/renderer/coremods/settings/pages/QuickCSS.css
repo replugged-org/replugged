@@ -2,7 +2,7 @@
   color: var(--text-normal);
 }
 
-#replugged-quickcss-wrapper[data-popout=true] {
+#replugged-quickcss-wrapper[data-popout="true"] {
   width: 100% !important;
 }
 
@@ -37,7 +37,7 @@
 }
 
 /* TODO: Fix the height not working in popout */
-#replugged-quickcss-wrapper[data-popout=true] .cm-scroller {
+#replugged-quickcss-wrapper[data-popout="true"] .cm-scroller {
   max-height: 95vh;
 }
 
@@ -63,7 +63,7 @@
   background-color: var(--background-secondary);
 }
 /* Why do these have to be different in different windows.. */
-#replugged-quickcss-wrapper[data-popout=true] .replugged-quickcss-header {
+#replugged-quickcss-wrapper[data-popout="true"] .replugged-quickcss-header {
   height: 16px;
 }
 

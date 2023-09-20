@@ -4,7 +4,7 @@ import { Injector } from "@replugged";
 import { filters, waitForModule } from "src/renderer/modules/webpack";
 import type { Section as SectionType } from "src/types/coremods/settings";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, ConnectedQuickCSS, Themes, Updater } from "./pages";
+import { ConnectedQuickCSS, General, Plugins, Themes, Updater } from "./pages";
 
 const injector = new Injector();
 

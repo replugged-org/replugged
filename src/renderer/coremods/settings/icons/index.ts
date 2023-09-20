@@ -17,5 +17,5 @@ export default {
   Trash,
   Popout,
   Pin,
-  Unpin
+  Unpin,
 };
