@@ -4,7 +4,7 @@ import { Injector } from "@replugged";
 import { filters, waitForModule } from "src/renderer/modules/webpack";
 import type { Section as SectionType } from "src/types/coremods/settings";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
+import { General, Plugins, ConnectedQuickCSS, Themes, Updater } from "./pages";
 
 const injector = new Injector();
 
@@ -47,7 +47,7 @@ export function start(): void {
     Section({
       name: "rp-quickcss",
       label: () => Messages.REPLUGGED_QUICKCSS,
-      elem: QuickCSS,
+      elem: ConnectedQuickCSS as unknown as (args: unknown) => React.ReactElement,
     }),
     Section({
       name: "rp-plugins",
