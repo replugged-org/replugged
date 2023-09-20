@@ -11,10 +11,9 @@ import { generalSettings } from "./General";
 import { ReactComponent } from "src/types";
 import { Store } from "@common/flux";
 import Settings from "../icons/Settings";
-import Close from "../icons/Close";
 import Popout from "../icons/Popout";
-
-const { connectStores } = flux;
+import Unpin from "../icons/Unpin";
+import Pin from "../icons/Pin";
 
 interface UseCodeMirrorOptions {
   value?: string;
@@ -42,10 +41,18 @@ const openPopout = webpack.getFunctionBySource(PopoutModule, "POPOUT_WINDOW_OPEN
 const closePopout = webpack.getFunctionBySource(PopoutModule, "POPOUT_WINDOW_CLOSE") as (
   key: string,
 ) => void;
+
+// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+const setAlwaysOnTop = webpack.getFunctionBySource(PopoutModule, "POPOUT_WINDOW_SET_ALWAYS_ON_TOP") as (
+  key: string,
+  alwaysOnTop: boolean,
+) => void;
+
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 const PopoutWindowStore = webpack.getByStoreName("PopoutWindowStore") as Store & {
   getWindow: (key: string) => Window;
   getWindowOpen: (key: string) => boolean;
+  getIsAlwaysOnTop: (key: string) => boolean;
 };
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
@@ -212,6 +219,8 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
     }, []);
   }
 
+  const [ alwaysOnTop, setAlwaysOnTop_ ] = React.useState(props.popoutOnTop);
+
   return (
     <>
       {!props.popout ? (
@@ -251,25 +260,28 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
               <Settings />
             </Tooltip>
 
-            <Tooltip text={props.popout ? Messages.CLOSE : Messages.POPOUT_PLAYER}>
-              {!props.popout ? (
-                <Popout onClick={() => {
-                  openPopout(
-                    "DISCORD_REPLUGGED_QUICKCSS",
-                    () => (
-                      <DnDProvider windowKey="DISCORD_REPLUGGED_QUICKCSS">
-                        <QuickCSS popout={true}></QuickCSS>
-                      </DnDProvider>
-                    ),
-                    {},
-                  );
-                }} />
-              ) : (
-                <Close onClick={() => {
-                  closePopout("DISCORD_REPLUGGED_QUICKCSS");
-                }} />
-              )}
-            </Tooltip>
+            {props.popout ? <Tooltip text={alwaysOnTop ? Messages.POPOUT_REMOVE_FROM_TOP : Messages.POPOUT_STAY_ON_TOP}>
+              {alwaysOnTop ? <Unpin onClick={() => {
+                setAlwaysOnTop('DISCORD_REPLUGGED_QUICKCSS', false);
+                setAlwaysOnTop_(false);
+              }} /> : <Pin onClick={() => {
+                setAlwaysOnTop('DISCORD_REPLUGGED_QUICKCSS', true);
+                setAlwaysOnTop_(true);
+              }} />
+              }
+            </Tooltip> : <Tooltip text={Messages.POPOUT_PLAYER}>
+              <Popout onClick={() => {
+                openPopout(
+                  "DISCORD_REPLUGGED_QUICKCSS",
+                  () => (
+                    <DnDProvider windowKey="DISCORD_REPLUGGED_QUICKCSS">
+                      <QuickCSS popout={true}></QuickCSS>
+                    </DnDProvider>
+                  ),
+                  {},
+                );
+              }} />
+            </Tooltip>}
           </div>
           <div ref={ref}></div>
         </div>
@@ -278,9 +290,10 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
   );
 };
 
-export const ConnectedQuickCSS = connectStores<{ popout: boolean }, { popout: boolean; isPopoutOpen: boolean }>([PopoutWindowStore], (props) => {
+export const ConnectedQuickCSS = flux.connectStores<{ popout: boolean }, { popout: boolean; isPopoutOpen: boolean }>([PopoutWindowStore], (props) => {
   return {
     isPopoutOpen: PopoutWindowStore.getWindowOpen("DISCORD_REPLUGGED_QUICKCSS"),
+    popoutOnTop: PopoutWindowStore.getIsAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS"),
     ...props
   }
 })(QuickCSS);
