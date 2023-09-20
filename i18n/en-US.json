@@ -15,6 +15,7 @@
     "REPLUGGED_CONFIRM": "Confirm",
     "REPLUGGED_OK": "OK",
     "REPLUGGED_COMMAND_ERROR_GENERIC": "Something went wrong, please try again later. If this issue persists, please contact the Replugged team.",
+    "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Success",
     "REPLUGGED_COMMAND_ENABLE_NAME": "enable",
     "REPLUGGED_COMMAND_ENABLE_DESC": "Enable a plugin or theme",
     "REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME": "addon",
@@ -36,10 +37,12 @@
     "REPLUGGED_COMMAND_LIST_OPTION_SEND_DESC": "Share the list publicly in chat",
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME": "type",
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_DESC": "What type of addons to show",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "List Plugins",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "List Themes",
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME": "version",
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC": "Include version numbers in the list",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "status",
-    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Whether to show enabled, disabled or both",
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Whether to show addons that are enabled, disabled or both",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED": "Enabled",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED": "Disabled",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH": "Both",
@@ -229,5 +232,6 @@
     "REPLUGGED_SETTINGS_TRANSPARENT": "Transparent Window",
     "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Makes the Discord window transparent, primarily useful for theming. **Requires restart**.",
     "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS": "****WARNING:**** This will break **window snapping**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
-    "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked."
+    "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
+    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}"
 }

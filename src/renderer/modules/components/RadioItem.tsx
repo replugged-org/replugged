@@ -3,7 +3,8 @@ import { FormItem } from ".";
 import type { ObjectExports } from "../../../types";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
-interface RadioOptionType {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type RadioOptionType = {
   name: string;
   value: string;
   desc?: string;
@@ -13,9 +14,10 @@ interface RadioOptionType {
   tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   icon?: React.ComponentType<unknown>;
   collapsibleContent?: React.ReactNode;
-}
+};
 
-interface RadioProps {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type RadioProps = {
   options: RadioOptionType[];
   value?: string;
   onChange: (option: RadioOptionType) => void;
@@ -30,7 +32,7 @@ interface RadioProps {
   itemTitleClassName?: string;
   radioItemClassName?: string;
   collapsibleClassName?: string;
-}
+};
 
 export type RadioType = React.FC<RadioProps> & {
   Sizes: Record<"NOT_SET" | "NONE" | "SMALL" | "MEDIUM", string>;
