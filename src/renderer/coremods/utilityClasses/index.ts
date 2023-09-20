@@ -118,10 +118,20 @@ async function messageDataAttributes(): Promise<void> {
   });
 }
 
+function addHtmlClasses(): void {
+  if (!html.classList.contains("replugged")) {
+    html.classList.add("replugged");
+  }
+}
+
 export async function start(): Promise<void> {
   tabBarItemId();
   nitroThemeClass();
   await messageDataAttributes();
+
+  // generic stuff
+  const observer = new MutationObserver(addHtmlClasses);
+  observer.observe(html, { attributeFilter: ["class"] });
 }
 
 export function stop(): void {
