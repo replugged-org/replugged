@@ -185,6 +185,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     entity.manifest.type,
     entity.path,
     updateSettings.url,
+    updateSettings.version,
   );
 
   if (!res.success) {
