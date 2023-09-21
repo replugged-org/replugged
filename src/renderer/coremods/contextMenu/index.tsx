@@ -85,7 +85,7 @@ export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetConte
 }
 
 type ContextMenuData = ContextMenuProps["ContextMenu"] & {
-  children: React.ReactElement[];
+  children: React.ReactElement | React.ReactElement[];
   data: Array<Record<string, unknown>>;
   navId: ContextMenuTypes;
   plugged?: boolean;
@@ -118,6 +118,9 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   // make children array if it's not already
   if (!Array.isArray(menu.children)) {
     menu.children = [menu.children];
+    if (!Array.isArray(menu.children)) {
+      return <ContextMenu {...menu} plugged={true} />;
+    }
   }
 
   //Add group only if it doesn't exist
@@ -150,6 +153,9 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   //cleaning old items before adding new ones
   usedSectionIds.forEach((sectionId) => {
     try {
+      if (!Array.isArray(menu.children)) {
+        return;
+      }
       if (menu.children.at(sectionId!)?.props?.children) {
         menu.children.at(sectionId!)!.props.children = Array.isArray(
           menu.children.at(sectionId!)?.props.children,
@@ -160,13 +166,20 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
           : [menu.children.at(sectionId!)?.props.children];
       }
     } catch (err) {
-      logger.error("Error while removing old menu items", err, menu.children.at(sectionId!));
+      logger.error(
+        "Error while removing old menu items",
+        err,
+        Array.isArray(menu.children) ? menu.children.at(sectionId!) : null,
+      );
     }
   });
 
   //adding new items
   menuItems[navId].forEach((item) => {
     try {
+      if (!Array.isArray(menu.children)) {
+        return;
+      }
       const itemRet = makeItem(item.getItem(data, menu));
       if (itemRet) {
         // adding prop for easy cleanup
@@ -192,7 +205,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
         "Error while running GetContextItem function",
         err,
         item.getItem,
-        menu.children.at(item.sectionId!),
+        Array.isArray(menu.children) ? menu.children.at(item.sectionId!) : null,
       );
     }
   });
