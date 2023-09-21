@@ -229,5 +229,8 @@
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME": "wersja",
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_DESC": "Jaki rodzaj dodatków ma być wyświetlany",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "status",
-    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Czy wyświetlać włączone, wyłączone lub wszystkie dodatki"
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Czy wyświetlać włączone, wyłączone lub wszystkie dodatki",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "Wyświetl wtyczki",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Wyświetl motywy",
+    "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Sukces"
 }

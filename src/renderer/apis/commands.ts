@@ -1,4 +1,4 @@
-import type { Channel, Guild } from "discord-types/general";
+import type { Channel, Guild, User } from "discord-types/general";
 import type {
   AnyRepluggedCommand,
   CommandOptionReturn,
@@ -14,14 +14,87 @@ import { ApplicationCommandOptionType } from "../../types";
 import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
-import { getByStoreName } from "../modules/webpack";
+import { getByStoreName, waitForModule, filters } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
+
+let RepluggedUser: User;
 
 interface CommandsAndSection {
   section: RepluggedCommandSection;
   commands: Map<string, AnyRepluggedCommand>;
 }
+
+declare class user implements User {
+  public constructor(props: {
+    avatar?: string;
+    id: string;
+    bot?: boolean;
+    username?: string;
+    system?: boolean;
+  });
+  public accentColor: number;
+  public avatar: string;
+  public banner: string;
+  public bio: string;
+  public bot: boolean;
+  public desktop: boolean;
+  public discriminator: string;
+  public email: string | undefined;
+  public flags: number;
+  public guildMemberAvatars: Record<string, string>;
+  public id: string;
+  public mfaEnabled: boolean;
+  public mobile: boolean;
+  public nsfwAllowed: boolean | undefined;
+  public phone: string | undefined;
+  public premiumType: number | undefined;
+  public premiumUsageFlags: number;
+  public publicFlags: number;
+  public purchasedFlags: number;
+  public system: boolean;
+  public username: string;
+  public verified: boolean;
+  public get createdAt(): Date;
+  public get hasPremiumPerks(): boolean;
+  public get tag(): string;
+  public get usernameNormalized(): string;
+  public addGuildAvatarHash(guildId: string, avatarHash: string): User;
+  public getAvatarSource(guildId: string, canAnimate?: boolean | undefined): { uri: string };
+  public getAvatarURL(
+    guildId?: string | undefined,
+    t?: unknown,
+    canAnimate?: boolean | undefined,
+  ): string;
+  public hasAvatarForGuild(guildId: string): boolean;
+  public hasDisabledPremium(): boolean;
+  public hasFlag(flag: number): boolean;
+  public hasFreePremium(): boolean;
+  public hasHadSKU(e: unknown): boolean;
+  public hasPremiumUsageFlag(flag: number): boolean;
+  public hasPurchasedFlag(flag: number): boolean;
+  public hasUrgentMessages(): boolean;
+  public isClaimed(): boolean;
+  public isLocalBot(): boolean;
+  public isNonUserBot(): boolean;
+  public isPhoneVerified(): boolean;
+  public isStaff(): boolean;
+  public isSystemUser(): boolean;
+  public isVerifiedBot(): boolean;
+  public removeGuildAvatarHash(guildId: string): User;
+  public toString(): string;
+}
+
+void waitForModule(filters.bySource(".isStaffPersonal=")).then((mod) => {
+  const userClass = mod as typeof user;
+  RepluggedUser = new userClass({
+    avatar: "replugged",
+    id: "replugged",
+    bot: true,
+    username: "Replugged",
+    system: true,
+  }) as User;
+});
 
 export const commandAndSections = new Map<string, CommandsAndSection>();
 
@@ -91,11 +164,6 @@ async function executeCommand<T extends CommandOptions>(
       loggingName: "Replugged",
     });
 
-    Object.assign(loadingMessage.author, {
-      username: "Replugged",
-      avatar: "replugged",
-    });
-
     Object.assign(loadingMessage, {
       flags: constants.MessageFlags.EPHEMERAL + constants.MessageFlags.LOADING, // adding loading too
       state: "SENDING", // Keep it a little faded
@@ -112,6 +180,7 @@ async function executeCommand<T extends CommandOptions>(
         name: command.displayName,
       },
       type: 20,
+      author: RepluggedUser ?? loadingMessage.author,
     });
     messages.receiveMessage(currentChannelId, loadingMessage, true);
     const interaction = new CommandInteraction({ options: args, ...currentInfo });
@@ -135,11 +204,6 @@ async function executeCommand<T extends CommandOptions>(
         loggingName: "Replugged",
       });
 
-      Object.assign(botMessage.author, {
-        username: "Replugged",
-        avatar: "replugged",
-      });
-
       Object.assign(botMessage, {
         interaction: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -154,6 +218,7 @@ async function executeCommand<T extends CommandOptions>(
           name: command.displayName,
         },
         type: 20,
+        author: RepluggedUser ?? botMessage.author,
       });
       messages.receiveMessage(currentChannelId, botMessage, true);
     }
@@ -167,11 +232,6 @@ async function executeCommand<T extends CommandOptions>(
       loggingName: "Replugged",
     });
     if (!botMessage) return;
-
-    Object.assign(botMessage.author, {
-      username: "Replugged",
-      avatar: "replugged",
-    });
 
     Object.assign(botMessage, {
       interaction: {
@@ -187,6 +247,7 @@ async function executeCommand<T extends CommandOptions>(
         name: command.displayName,
       },
       type: 20,
+      author: RepluggedUser ?? botMessage.author,
     });
 
     messages?.receiveMessage?.(currentChannelId, botMessage, true);
@@ -224,14 +285,25 @@ export class CommandManager {
     command.execute ??= (args, currentInfo) => {
       void executeCommand(command.executor, args ?? [], currentInfo ?? {}, command);
     };
-
-    command.options?.map((option) => {
-      option.serverLocalizedName ??= option.displayName;
+    const mapOptions = (option: T): T => {
       option.displayName ??= option.name;
       option.displayDescription ??= option.description;
-
+      option.serverLocalizedName ??= option.displayName;
+      if (
+        option.type === ApplicationCommandOptionType.SubCommand ||
+        option.type === ApplicationCommandOptionType.SubCommandGroup
+      ) {
+        option.id ??= option.name;
+        option.options.map(mapOptions);
+      }
+      if (option.type === ApplicationCommandOptionType.SubCommand) {
+        option.execute ??= (args, currentInfo) => {
+          void executeCommand(option.executor, args ?? [], currentInfo ?? {}, option);
+        };
+      }
       return option;
-    });
+    };
+    command.options?.map(mapOptions);
 
     currentSection?.commands.set(command.id, command as AnyRepluggedCommand);
 

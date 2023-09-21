@@ -114,7 +114,6 @@
     "REPLUGGED_COMMAND_RELOAD_DESC": "Recarga un complemento/tema",
     "REPLUGGED_OK": "OK",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Deshabilitar un complemento o tema",
-    "REPLUGGED_COMMAND_INSTALL_DESC": "Instala un complemento o tema.",
     "REPLUGGED_UPDATES_UPDATER": "Actualizador",
     "REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM": "Upstream:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH": "Ramal:",

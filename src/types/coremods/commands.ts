@@ -11,6 +11,8 @@ import type {
 import { ApplicationCommandOptionType } from "../discord";
 
 interface OptionTypeMapping {
+  [ApplicationCommandOptionType.SubCommand]: undefined;
+  [ApplicationCommandOptionType.SubCommandGroup]: undefined;
   [ApplicationCommandOptionType.String]: string;
   [ApplicationCommandOptionType.Integer]: number;
   [ApplicationCommandOptionType.Boolean]: boolean;
@@ -84,11 +86,12 @@ export type RepluggedCommand<T extends CommandOptions> = InexecutableRepluggedCo
 
 export type AnyRepluggedCommand = RepluggedCommand<CommandOptions>;
 
-export interface RepluggedCommandResult {
-  send: boolean;
-  result?: string;
+export type RepluggedCommandResult = {
+  send?: boolean;
+  result?: string | null;
   embeds?: APIEmbed[];
-}
+} | null;
+
 export interface RepluggedCommandSection {
   id: string;
   name: string;
