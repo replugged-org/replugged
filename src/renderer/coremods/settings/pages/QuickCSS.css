@@ -1,5 +1,6 @@
 #replugged-quickcss-wrapper {
   color: var(--text-normal);
+  height: 100%; /* SB: Prevent huge ass margins */
 }
 
 #replugged-quickcss-wrapper[data-popout="true"] {
@@ -11,6 +12,7 @@
   border-radius: 4px;
   border: 1px solid var(--background-tertiary);
   outline: none !important;
+  height: 100%; /* SB: Prevent huge ass margins */
 }
 
 #replugged-quickcss-wrapper .cm-gutters {
@@ -31,15 +33,17 @@
   min-height: 300px;
 }
 
+/*
 #replugged-quickcss-wrapper .cm-scroller {
-  overflow: auto;
+  overflow: auto; SB: Overflow already sets itself to auto, shouldn't be a problem removing it.
   max-height: 75vh;
 }
 
-/* TODO: Fix the height not working in popout */
+TODO: Fix the height not working in popout 
 #replugged-quickcss-wrapper[data-popout="true"] .cm-scroller {
   max-height: 95vh;
-}
+} 
+SB: Don't think that's needed anymore. */
 
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar {
   width: 10px;
@@ -71,4 +75,23 @@
 .replugged-quickcss-header svg {
   width: 100%;
   height: 100%;
+}
+
+
+/* SB: This is fucking horrendous but this is why there's a major problem
+too when you try to height 100% everything to fit correctly 
+This is obviously a kinda bad solution that needs to be fixed without css
+I would fix it myself but idk how to typescript so have this abomination for now.
+If you remove this section of the code, the Discord Title bar will show up which is
+annoying since it's black and well with Light Theme it don't make sense bud. */
+[class^="popout-"]:has(#replugged-quickcss-wrapper) [class^="content-"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/* SB: This is also horrendous, need a class here people.
+It works though. This is part of the real fix. */
+#replugged-quickcss-wrapper > div:last-of-type {
+  height: calc(100% - 31px); /* SB: Why 31 pixels? I HAVE NO IDEA (blame the settings button at the top. */
 }
