@@ -256,10 +256,6 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
       ) : (
         <div id="replugged-quickcss-wrapper" data-popout={props.popout}>
           <div className="replugged-quickcss-header">
-            <Tooltip text={Messages.SETTINGS}>
-              <Settings />
-            </Tooltip>
-
             {props.popout ? (
               <Tooltip
                 text={alwaysOnTop ? Messages.POPOUT_REMOVE_FROM_TOP : Messages.POPOUT_STAY_ON_TOP}>

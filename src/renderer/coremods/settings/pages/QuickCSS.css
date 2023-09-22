@@ -11,6 +11,7 @@
   border-radius: 4px;
   border: 1px solid var(--background-tertiary);
   outline: none !important;
+  max-height: calc(100vh - 52px);
 }
 
 #replugged-quickcss-wrapper .cm-gutters {
@@ -38,7 +39,7 @@
 
 /* TODO: Fix the height not working in popout */
 #replugged-quickcss-wrapper[data-popout="true"] .cm-scroller {
-  max-height: 95vh;
+  max-height: 100%;
 }
 
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar {
@@ -71,4 +72,8 @@
 .replugged-quickcss-header svg {
   width: 100%;
   height: 100%;
+}
+
+[class^="content-2qc4CV"]:has(> #replugged-quickcss-wrapper) {
+  display: block;
 }
