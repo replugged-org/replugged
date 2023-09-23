@@ -52,11 +52,7 @@ export function loadCommands(injector: Injector): void {
     ],
 
     async executor(i) {
-      await installFlow(
-        i.getValue("identifier"),
-        i.getValue("source") as InstallerSource | undefined,
-        i.getValue("id"),
-      );
+      await installFlow(i.getValue("identifier"), i.getValue("source"), i.getValue("id"));
       return null;
     },
   });

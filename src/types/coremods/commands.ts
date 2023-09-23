@@ -28,7 +28,7 @@ type GetConditionallyOptional<T, Required extends boolean | undefined> = Require
 
 type GetType<T extends CommandOptions> = GetConditionallyOptional<
   T extends StringOptions
-    ? T["choices"] extends CommandChoices
+    ? T["choices"] extends CommandChoices[]
       ? T["choices"][number]["value"]
       : OptionTypeMapping[T["type"]]
     : OptionTypeMapping[T["type"]],
