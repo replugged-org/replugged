@@ -13,7 +13,8 @@ const logger = Logger.api("ContextMenu");
 
 export const menuItems = {} as Record<
   ContextMenuTypes,
-  Array<{ getItem: GetContextItem; sectionId: number | undefined; indexInSection: number }>
+  | Array<{ getItem: GetContextItem; sectionId: number | undefined; indexInSection: number }>
+  | undefined
 >;
 
 /**
@@ -60,10 +61,9 @@ export function addContextMenuItem(
   sectionId: number | undefined,
   indexInSection: number,
 ): () => void {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!menuItems[navId]) menuItems[navId] = [];
+  menuItems[navId] ||= [];
 
-  menuItems[navId].push({ getItem, sectionId, indexInSection });
+  menuItems[navId]?.push({ getItem, sectionId, indexInSection });
   return () => removeContextMenuItem(navId, getItem);
 }
 
@@ -74,9 +74,7 @@ export function addContextMenuItem(
  * @returns
  */
 export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetContextItem): void {
-  const items = menuItems[navId];
-
-  menuItems[navId] = items.filter((item) => item.getItem !== getItem);
+  menuItems[navId] = menuItems[navId]?.filter((item) => item.getItem !== getItem);
 }
 
 type ContextMenuData = ContextMenuProps["ContextMenu"] & {
@@ -94,7 +92,6 @@ export function _insertMenuItems(menu: ContextMenuData): void {
   const { navId } = menu;
 
   // No items to insert
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!menuItems[navId]) return;
 
   // Already inserted items
@@ -107,9 +104,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
     "Menu",
     "MenuItem",
     "MenuGroup",
-  ])!;
-
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  ]) || { MenuGroup: undefined };
   if (!MenuGroup) return;
 
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
@@ -131,11 +126,11 @@ export function _insertMenuItems(menu: ContextMenuData): void {
     menu.children.push(repluggedGroup);
   }
 
-  menuItems[navId].forEach((item) => {
+  menuItems[navId]?.forEach((item) => {
     try {
-      const res = makeItem(item.getItem(data, menu)) as ContextItem & { props: { id?: string } };
-
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const res = makeItem(item.getItem(data, menu)) as
+        | (ContextItem & { props: { id?: string } })
+        | undefined;
       if (res?.props) {
         // add in unique ids
         res.props.id = `${res.props.id || "repluggedItem"}-${Math.random()

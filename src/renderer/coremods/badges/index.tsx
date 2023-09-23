@@ -20,10 +20,12 @@ interface BadgeModArgs {
   size?: BadgeSizes;
 }
 
-type BadgeMod = (args: BadgeModArgs) => React.ReactElement<{
-  children: React.ReactElement[];
-  className: string;
-}>;
+type BadgeMod = (args: BadgeModArgs) =>
+  | React.ReactElement<{
+      children?: React.ReactElement[];
+      className: string;
+    }>
+  | undefined;
 
 interface BadgeCache {
   badges: APIBadges;
@@ -66,12 +68,11 @@ export async function start(): Promise<void> {
               await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${id}`)
                 .then(async (res) => {
                   const body = (await res.json()) as Record<string, unknown> & {
-                    badges: APIBadges;
+                    badges: APIBadges | undefined;
                   };
 
                   if (res.status === 200 || res.status === 404) {
                     return {
-                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       badges: body.badges || {},
                       lastFetch: Date.now(),
                     };
@@ -96,10 +97,7 @@ export async function start(): Promise<void> {
       if (!badges) {
         return res;
       }
-
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const children = res?.props?.children;
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const children = res?.props.children;
       if (!children || !Array.isArray(children)) {
         logger.error("Error injecting badges: res.props.children is not an array", { children });
         return res;
@@ -114,8 +112,7 @@ export async function start(): Promise<void> {
       const sizeClass = getBadgeSizeClass(size);
 
       children.forEach((badge) => {
-        const elem: React.ReactElement = badge.props.children?.();
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        const elem: React.ReactElement | undefined = badge.props.children?.();
         if (elem) {
           elem.props.children.props.className = sizeClass;
           badge.props.children = (props: Record<string, unknown>) => {

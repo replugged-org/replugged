@@ -28,10 +28,9 @@ function writeSettings(namespace: string, settings: SettingsMap): Promise<void> 
   );
 }
 
-const locks: Record<string, Promise<unknown>> = {};
+const locks: Record<string, Promise<unknown> | undefined> = {};
 
 async function transaction<T>(namespace: string, handler: TransactionHandler<T>): Promise<T> {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lock = locks[namespace] ?? Promise.resolve();
 
   const result = lock.then(() => handler());

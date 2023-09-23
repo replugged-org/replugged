@@ -23,7 +23,6 @@ const FormItemComp = await waitForModule<
     }
   >
 >(filters.bySource(formItemStr)).then(
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   (mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!,
 );
 

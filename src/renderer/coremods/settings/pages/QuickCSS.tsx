@@ -93,8 +93,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
     container.setAttribute("data-theme", theme);
 
     return () => {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      newView.destroy?.();
+      newView.destroy();
       setView(undefined);
     };
   }, [container, theme, update]);

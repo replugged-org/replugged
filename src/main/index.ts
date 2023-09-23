@@ -28,31 +28,26 @@ Object.defineProperty(global, "appSettings", {
 class BrowserWindow extends electron.BrowserWindow {
   public constructor(
     opts: electron.BrowserWindowConstructorOptions & {
-      webContents: electron.WebContents;
-      webPreferences: {
+      webContents?: electron.WebContents;
+      webPreferences?: {
         nativeWindowOpen: boolean;
       };
     },
   ) {
-    const originalPreload = opts.webPreferences.preload;
+    const originalPreload = opts.webPreferences?.preload;
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (opts.webContents) {
       // General purpose pop-outs used by Discord
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (opts.webPreferences?.nodeIntegration) {
       // Splash Screen
       // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (opts.webPreferences?.offscreen) {
       // Overlay
       //      originalPreload = opts.webPreferences.preload;
       // opts.webPreferences.preload = join(__dirname, './preload.js');
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (opts.webPreferences?.preload) {
       // originalPreload = opts.webPreferences.preload;
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (opts.webPreferences?.nativeWindowOpen) {
+      if (opts.webPreferences.nativeWindowOpen) {
         // Discord Client
         opts.webPreferences.preload = join(__dirname, "./preload.js");
         // opts.webPreferences.contextIsolation = false; // shrug
