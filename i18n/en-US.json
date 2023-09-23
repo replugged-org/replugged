@@ -49,6 +49,14 @@
     "REPLUGGED_COMMAND_LIST_HEADER_ENABLED": "Enabled {type}",
     "REPLUGGED_COMMAND_LIST_HEADER_DISABLED": "Disabled {type}",
     "REPLUGGED_COMMAND_LIST_ERROR_SPECIFY": "You need to specify whether to send a plugin or theme list",
+    "REPLUGGED_COMMAND_INSTALL_NAME": "install",
+    "REPLUGGED_COMMAND_INSTALL_DESC": "Install a plugin or theme",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME": "addon",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC": "Identifier of the addon to install from the source",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME": "source",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Source to install the addon from",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "id",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "If the source has multiple addons, specify which one to install",
     "REPLUGGED_ERROR_ALREADY_INSTALLED": "{name} is already installed.",
     "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "An error occurred while executing the command:",
     "REPLUGGED_ERROR_CHECK_CONSOLE": "Check the console for more details.",
@@ -234,5 +242,6 @@
     "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Makes the Discord window transparent, primarily useful for theming. **Requires restart**.",
     "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS": "****WARNING:**** This will break **window snapping**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
     "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
-    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}"
+    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}",
+    "REPLUGGED_STORE": "Store"
 }
