@@ -1,37 +1,33 @@
 import { Injector } from "@replugged";
 import { ApplicationCommandOptionType } from "src/types";
 import { INSTALLER_SOURCES, InstallerSource, installFlow } from "./util";
+import { Messages } from "@common/i18n";
 
 /**
  * A map of display names for installer sources.
  */
 const sourceDisplayNames: Record<InstallerSource, string> = {
   github: "GitHub",
-  // TODO: i18n
-  store: "store",
+  store: Messages.REPLUGGED_STORE,
 };
 
 export function loadCommands(injector: Injector): void {
   injector.utils.registerSlashCommand({
     name: "install",
-    // TODO: i18n
-    displayName: "install",
-    // TODO: i18n
-    description: "Install an addon",
+    displayName: Messages.REPLUGGED_COMMAND_INSTALL_NAME,
+    description: Messages.REPLUGGED_COMMAND_INSTALL_DESC,
     options: [
       {
-        name: "identifier",
-        // TODO: i18n
-        description: "The addon's updater id",
+        name: "addon",
+        displayName: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME,
+        description: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC,
         type: ApplicationCommandOptionType.String,
         required: true,
       },
       {
         name: "source",
-        // TODO: i18n
-        displayName: "source",
-        // TODO: i18n
-        description: `The addon source`,
+        displayName: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME,
+        description: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC,
         type: ApplicationCommandOptionType.String,
         required: false,
         choices: INSTALLER_SOURCES.map((v) => ({
@@ -42,17 +38,15 @@ export function loadCommands(injector: Injector): void {
       },
       {
         name: "id",
-        // TODO: i18n
-        displayName: "id",
-        // TODO: i18n
-        description: `A plugin ID that used by monorepo plugins only`,
+        displayName: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME,
+        description: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC,
         type: ApplicationCommandOptionType.String,
         required: false,
       },
     ],
 
     async executor(i) {
-      await installFlow(i.getValue("identifier"), i.getValue("source"), i.getValue("id"));
+      await installFlow(i.getValue("addon"), i.getValue("source"), i.getValue("id"));
       return null;
     },
   });
