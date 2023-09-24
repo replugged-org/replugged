@@ -2,7 +2,7 @@ import { Injector, Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { ObjectExports } from "src/types";
 import { registerRPCCommand } from "../rpc";
-import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./util";
+import { InstallLinkProps, InstallResponse, InstallerSource, installFlow, parseInstallLink } from "./util";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import AddonEmbed from "./AddonEmbed";
@@ -17,51 +17,6 @@ const logger = Logger.coremod("Installer");
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
   focusProps?: Record<string, unknown>;
-}
-
-export interface InstallLinkProps {
-  /** Identifier for the addon in the source */
-  identifier: string;
-  /** Updater source type */
-  source?: InstallerSource;
-  /** ID for the addon in that source. Useful for GitHub repositories that have multiple addons. */
-  id?: string;
-}
-
-function parseInstallLink(href: string): InstallLinkProps | null {
-  try {
-    const url = new URL(href);
-    const repluggedHostname = new URL(generalSettings.get("apiUrl")).hostname;
-    if (url.hostname !== repluggedHostname) return null;
-
-    if (url.pathname === "/install") {
-      const params = url.searchParams;
-      const identifier = params.get("identifier");
-      const source = params.get("source") ?? "store";
-      const id = params.get("id") ?? undefined;
-      if (!identifier) return null;
-      if (!isValidSource(source)) return null;
-      return {
-        identifier,
-        source,
-        id,
-      };
-    }
-
-    const storeMatch = url.pathname.match(/^\/store\/([^/]+)$/);
-    if (storeMatch) {
-      const identifier = storeMatch[1];
-      if (["plugins", "themes"].includes(identifier.toLowerCase())) return null;
-      return {
-        identifier,
-        source: "store",
-      };
-    }
-
-    return null;
-  } catch {
-    return null;
-  }
 }
 
 let uninjectFns: Array<() => void> = [];

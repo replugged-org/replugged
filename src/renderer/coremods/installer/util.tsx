@@ -7,7 +7,7 @@ import { openExternal } from "src/renderer/util";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
-import { getAddonType, getSourceLink, label } from "../settings/pages";
+import { generalSettings, getAddonType, getSourceLink, label } from "../settings/pages";
 
 const logger = Logger.coremod("Installer");
 
@@ -22,6 +22,51 @@ const cache: Map<string, { data: CheckResultSuccess | null; expires: Date }> = n
 export function isValidSource(type: string): type is InstallerSource {
   // @ts-expect-error Doesn't matter that it might not be a valid type
   return INSTALLER_SOURCES.includes(type);
+}
+
+export interface InstallLinkProps {
+  /** Identifier for the addon in the source */
+  identifier: string;
+  /** Updater source type */
+  source?: InstallerSource;
+  /** ID for the addon in that source. Useful for GitHub repositories that have multiple addons. */
+  id?: string;
+}
+
+export function parseInstallLink(href: string): InstallLinkProps | null {
+  try {
+    const url = new URL(href);
+    const repluggedHostname = new URL(generalSettings.get("apiUrl")).hostname;
+    if (url.hostname !== repluggedHostname) return null;
+
+    if (url.pathname === "/install") {
+      const params = url.searchParams;
+      const identifier = params.get("identifier");
+      const source = params.get("source") ?? "store";
+      const id = params.get("id") ?? undefined;
+      if (!identifier) return null;
+      if (!isValidSource(source)) return null;
+      return {
+        identifier,
+        source,
+        id,
+      };
+    }
+
+    const storeMatch = url.pathname.match(/^\/store\/([^/]+)$/);
+    if (storeMatch) {
+      const identifier = storeMatch[1];
+      if (["plugins", "themes"].includes(identifier.toLowerCase())) return null;
+      return {
+        identifier,
+        source: "store",
+      };
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 export async function getInfo(

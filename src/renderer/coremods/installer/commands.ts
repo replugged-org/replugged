@@ -46,7 +46,8 @@ export function loadCommands(injector: Injector): void {
     ],
 
     async executor(i) {
-      await installFlow(i.getValue("addon"), i.getValue("source"), i.getValue("id"));
+      
+      await installFlow(i.getValue("addon"), i.getValue("source"), i.getValue("id"), false);
       return null;
     },
   });
