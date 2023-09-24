@@ -166,7 +166,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
           : [menu.children.at(sectionId!)?.props.children];
       }
     } catch (err) {
-      logger.error(
+      logger.warn(
         "Error while removing old menu items",
         err,
         Array.isArray(menu.children) ? menu.children.at(sectionId!) : null,
@@ -197,7 +197,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
           typeof item.sectionId === "undefined"
             ? menu.children.at(hasCopyId ? -2 : -1)
             : menu.children.at(item.sectionId);
-        if (!section) return logger.error("Couldn't find section", item.sectionId, menu.children);
+        if (!section) return logger.warn("Couldn't find section", item.sectionId, menu.children);
         section?.props.children?.splice(item.indexInSection, 0, itemRet);
       }
     } catch (err) {
