@@ -84,7 +84,7 @@ export type SubCommandOptions<T extends CommandOptions> =
 export interface SubCommandGroupOptions<T extends CommandOptions>
   extends BaseCommandOptions<ApplicationCommandOptionType.SubCommandGroup> {
   id?: string;
-  options: T[];
+  options: Array<SubCommandOptions<T>>;
 }
 
 export interface OtherCommandOptions
