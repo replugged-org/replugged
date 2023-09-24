@@ -85,8 +85,10 @@ export const killProcessByPID = (pid: number): Promise<void> => {
   });
 };
 
-export const openProcess = (command: string, args: string[], options: SpawnOptions): void => {
-  spawn(command, args, options).unref();
+export const openProcess = (command: string, args?: string[], options?: SpawnOptions): void => {
+  void (process.platform === "darwin"
+    ? execSync(command)
+    : spawn(command, args ?? [], options ?? {}).unref());
 };
 
 export const GetUserData = (): UserData => {

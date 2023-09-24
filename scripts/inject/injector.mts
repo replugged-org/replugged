@@ -270,9 +270,9 @@ export const smartInject = async (
         : inject(platformModule, platform, production);
   } else {
     const processName = PlatformNames[platform].replace(" ", "");
+    const processInfo = getProcessInfoByName(processName)!;
     try {
       if ((replug && cmd === "uninject") || !replug) {
-        const processInfo = getProcessInfoByName(processName)!;
         await killProcessByPID(processInfo?.pid);
       }
     } catch {}
@@ -280,7 +280,7 @@ export const smartInject = async (
       cmd === "uninject"
         ? await uninject(platformModule, platform)
         : inject(platformModule, platform, production);
-    if ((replug && cmd === "inject") || !replug) {
+    if (((replug && cmd === "inject") || !replug) && processInfo) {
       const appDir = await platformModule.getAppDir(platform);
       switch (process.platform) {
         case "win32":
@@ -298,10 +298,7 @@ export const smartInject = async (
           });
           break;
         case "darwin":
-          openProcess(join(appDir, "..", "..", "MacOS", processName), [], {
-            detached: true,
-            stdio: "ignore",
-          });
+          openProcess(`open -a ${PlatformNames[platform]}`);
           break;
       }
     }
