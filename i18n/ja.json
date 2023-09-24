@@ -56,7 +56,7 @@
     "REPLUGGED_UPDATES_OPTS_RELEASE_STABLE_BTN": "安定版ブランチに切り替える",
     "REPLUGGED_UPDATES_OPTS_RELEASE_SWITCH": "切り替え",
     "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "アップデート確認のトーストを表示する",
-    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "クライアント上にオーバーレイを表示してアップデートを確認中であることを示し、アップデートが見つかった場合はアップデートを促します。バックグラウンドでの更新が無効の場合のみ適用されます。",
+    "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "アップデートがチェックされていることを示すオーバーレイをクライアント上に表示して、アップデートが見つかった場合はアップデートを促します。バックグラウンドでのアップデートが無効の場合のみ適用されます。",
     "REPLUGGED_UPDATES_UPDATE": "今すぐアップデート",
     "REPLUGGED_UPDATES_UPDATING": "Repluggedをアップデートしています…",
     "REPLUGGED_UPDATES_UPDATING_ITEM": "アップデートしています…",
