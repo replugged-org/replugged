@@ -212,5 +212,9 @@
     "REPLUGGED_COMMAND_RELOAD_MESSAGE_ENABLED": "{type} {name} ladattiin uudelleen!",
     "REPLUGGED_COMMAND_LIST_NAME": "lista",
     "REPLUGGED_COMMAND_LIST_DESC": "Listaa kaikki pluginit ja teemat",
-    "REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME": "lähetä"
+    "REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME": "lähetä",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Jos lähteessä on useita lisäosia, valitse mikä asennetaan",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "id",
+    "REPLUGGED_STORE": "Kauppa",
+    "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Onnistui"
 }

@@ -233,5 +233,14 @@
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "Wyświetl wtyczki",
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Wyświetl motywy",
     "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Sukces",
-    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Wtyczka: {name}"
+    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Wtyczka: {name}",
+    "REPLUGGED_COMMAND_INSTALL_NAME": "zainstaluj",
+    "REPLUGGED_COMMAND_INSTALL_DESC": "Zainstaluj wtyczkę lub motyw",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME": "dodatek",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC": "Identyfikator dodatku do zainstalowania ze źródła",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME": "źródło",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Źródło, z którego ma zostać zainstalowany dodatek",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "identyfikator",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Jeśli źródło zawiera wiele dodatków, określ, który z nich ma zostać zainstalowany",
+    "REPLUGGED_STORE": "Sklep"
 }
