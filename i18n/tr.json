@@ -232,5 +232,15 @@
     "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Discord penceresini geçirgen yapar, daha çok temalar içindir. **Yeniden başlatma gerektirir**.",
     "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Başarılı",
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "Eklentileri Listele",
-    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Temaları Listele"
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Temaları Listele",
+    "REPLUGGED_COMMAND_INSTALL_NAME": "kur",
+    "REPLUGGED_COMMAND_INSTALL_DESC": "Bir plugin veya tema kur",
+    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Eklenti: {name}",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME": "eklenti",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC": "Kaynağından indirmek için eklentinin tanımlayıcısı",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME": "kaynak",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Eklentiyi indirmek için kaynak",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "id",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Kaynakta birden fazla eklenti varsa hangisinin kurulacağını belirt",
+    "REPLUGGED_STORE": "Mağaza"
 }
