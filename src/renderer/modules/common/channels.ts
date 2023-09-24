@@ -8,7 +8,7 @@ interface LastChannelFollowingDestination {
 }
 
 export interface SelectedChannelStore {
-  getChannelId: (guildId: string, fallbackToDefault?: boolean) => string | undefined;
+  getChannelId: (guildId?: string, fallbackToDefault?: boolean) => string | undefined;
   getCurrentlySelectedChannelId: (guildId?: string) => string | undefined;
   getLastChannelFollowingDestination: () => LastChannelFollowingDestination;
   getLastSelectedChannelId: (guildId?: string) => string | undefined;
