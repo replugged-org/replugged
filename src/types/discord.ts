@@ -2,8 +2,8 @@ import type { Channel, Guild } from "discord-types/general";
 import { CommandInteraction } from "../renderer/apis/commands";
 import { GetCommandOptions, RepluggedCommandResult } from "./coremods/commands";
 export enum ApplicationCommandOptionType {
-  SubCommand = 1,
-  SubCommandGroup = 2,
+  Subcommand = 1,
+  SubcommandGroup = 2,
   String = 3,
   Integer = 4,
   Boolean = 5,
@@ -60,8 +60,8 @@ export interface ChannelOptions extends BaseCommandOptions<ApplicationCommandOpt
   channel_types?: readonly number[];
 }
 
-export type SubCommandOptions<T extends CommandOptions> =
-  (BaseCommandOptions<ApplicationCommandOptionType.SubCommand> & {
+export type SubcommandOptions<T extends CommandOptions> =
+  (BaseCommandOptions<ApplicationCommandOptionType.Subcommand> & {
     applicationId?: string;
     id?: string;
     options: T[];
@@ -82,11 +82,11 @@ export type SubCommandOptions<T extends CommandOptions> =
         }
     );
 
-export interface SubCommandGroupOptions<T extends CommandOptions>
-  extends BaseCommandOptions<ApplicationCommandOptionType.SubCommandGroup> {
+export interface SubcommandGroupOptions<T extends CommandOptions>
+  extends BaseCommandOptions<ApplicationCommandOptionType.SubcommandGroup> {
   applicationId?: string;
   id?: string;
-  options: Array<SubCommandOptions<T>>;
+  options: Array<SubcommandOptions<T>>;
 }
 
 export interface OtherCommandOptions

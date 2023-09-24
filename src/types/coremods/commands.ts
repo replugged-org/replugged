@@ -11,8 +11,8 @@ import type {
 import { ApplicationCommandOptionType } from "../discord";
 
 interface OptionTypeMapping {
-  [ApplicationCommandOptionType.SubCommand]: undefined;
-  [ApplicationCommandOptionType.SubCommandGroup]: undefined;
+  [ApplicationCommandOptionType.Subcommand]: undefined;
+  [ApplicationCommandOptionType.SubcommandGroup]: undefined;
   [ApplicationCommandOptionType.String]: string;
   [ApplicationCommandOptionType.Integer]: number;
   [ApplicationCommandOptionType.Boolean]: boolean;
