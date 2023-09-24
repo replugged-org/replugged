@@ -2,7 +2,13 @@ import { Injector, Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { ObjectExports } from "src/types";
 import { registerRPCCommand } from "../rpc";
-import { InstallLinkProps, InstallResponse, InstallerSource, installFlow, parseInstallLink } from "./util";
+import {
+  InstallLinkProps,
+  InstallResponse,
+  InstallerSource,
+  installFlow,
+  parseInstallLink,
+} from "./util";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import AddonEmbed from "./AddonEmbed";

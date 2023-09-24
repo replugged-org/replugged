@@ -46,40 +46,42 @@ export function loadCommands(injector: Injector): void {
     ],
 
     async executor(i) {
-      let addon = i.getValue("addon")
-      let source = i.getValue("source")
-      let id = i.getValue("id")
-      
+      let addon = i.getValue("addon");
+      let source = i.getValue("source");
+      let id = i.getValue("id");
+
       try {
         // If addon is not a url, this will throw an error
-        const _ = new URL(addon)
-        const resp = parseInstallLink(addon)
+        const _ = new URL(addon);
+        const resp = parseInstallLink(addon);
         if (resp) {
-          addon = resp.identifier
-          source = resp.source
-          id = resp.id
+          addon = resp.identifier;
+          source = resp.source;
+          id = resp.id;
         }
       } catch {}
 
       const resp = await installFlow(addon, source, id, false);
-      
+
       switch (resp.kind) {
         case "FAILED":
           return {
             result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED,
-          }
+          };
         case "ALREADY_INSTALLED":
           return {
-            result: Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: resp.manifest.name })
-          }
+            result: Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: resp.manifest.name }),
+          };
         case "CANCELLED":
           return {
             result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL,
-          }
+          };
         case "SUCCESS":
           return {
-            result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS.format({ name: resp.manifest.name })
-          }
+            result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS.format({
+              name: resp.manifest.name,
+            }),
+          };
       }
     },
   });
