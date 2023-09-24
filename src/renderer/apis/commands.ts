@@ -14,7 +14,7 @@ import { ApplicationCommandOptionType } from "../../types";
 import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
-import { getByStoreName, waitForModule, filters } from "../modules/webpack";
+import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
 
@@ -25,7 +25,7 @@ interface CommandsAndSection {
   commands: Map<string, AnyRepluggedCommand>;
 }
 
-declare class user implements User {
+declare class UserClass implements User {
   public constructor(props: {
     avatar?: string;
     id: string;
@@ -85,15 +85,14 @@ declare class user implements User {
   public toString(): string;
 }
 
-void waitForModule(filters.bySource(".isStaffPersonal=")).then((mod) => {
-  const userClass = mod as typeof user;
-  RepluggedUser = new userClass({
+void waitForModule(filters.bySource(".isStaffPersonal=")).then((User) => {
+  RepluggedUser = new (User as typeof UserClass)({
     avatar: "replugged",
     id: "replugged",
     bot: true,
     username: "Replugged",
     system: true,
-  }) as User;
+  });
 });
 
 export const commandAndSections = new Map<string, CommandsAndSection>();
