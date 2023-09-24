@@ -60,9 +60,27 @@ export function loadCommands(injector: Injector): void {
           id = resp.id
         }
       } catch {}
+
+      const resp = await installFlow(addon, source, id, false);
       
-      await installFlow(addon, source, id, false);
-      return null;
+      switch (resp.kind) {
+        case "FAILED":
+          return {
+            result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED,
+          }
+        case "ALREADY_INSTALLED":
+          return {
+            result: Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: resp.manifest.name })
+          }
+        case "CANCELLED":
+          return {
+            result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL,
+          }
+        case "SUCCESS":
+          return {
+            result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS.format({ name: resp.manifest.name })
+          }
+      }
     },
   });
 }
