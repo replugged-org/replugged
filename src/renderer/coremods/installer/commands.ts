@@ -1,6 +1,6 @@
 import { Injector } from "@replugged";
 import { ApplicationCommandOptionType } from "src/types";
-import { INSTALLER_SOURCES, InstallerSource, installFlow } from "./util";
+import { INSTALLER_SOURCES, InstallerSource, installFlow, parseInstallLink } from "./util";
 import { Messages } from "@common/i18n";
 
 /**
@@ -46,8 +46,22 @@ export function loadCommands(injector: Injector): void {
     ],
 
     async executor(i) {
+      let addon = i.getValue("addon")
+      let source = i.getValue("source")
+      let id = i.getValue("id")
       
-      await installFlow(i.getValue("addon"), i.getValue("source"), i.getValue("id"), false);
+      try {
+        // If addon is not a url, this will throw an error
+        const _ = new URL(addon)
+        const resp = parseInstallLink(addon)
+        if (resp) {
+          addon = resp.identifier
+          source = resp.source
+          id = resp.id
+        }
+      } catch {}
+      
+      await installFlow(addon, source, id, false);
       return null;
     },
   });
