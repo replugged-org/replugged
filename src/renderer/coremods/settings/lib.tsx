@@ -20,7 +20,7 @@ export const Section = ({
   _id?: string;
   label?: string | LabelCallback;
   color?: string;
-  elem: React.FunctionComponent;
+  elem: (args: unknown) => React.ReactElement;
   pos?: number;
   fromEnd?: boolean;
 }): SectionType => ({
