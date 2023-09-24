@@ -104,14 +104,14 @@
     "REPLUGGED_UPDATES_OPTS_DEBUG_REVISION": "Revisión:",
     "REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH": "Ruta de Replugged",
     "REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH": "Ruta de Discord",
-    "REPLUGGED_COMMAND_ENABLE_DESC": "Habilita un complemento/tema",
+    "REPLUGGED_COMMAND_ENABLE_DESC": "Habilita un complemento o tema",
     "REPLUGGED_NOTICES_WELCOME_NEW_USER": "¡Bienvenido! Replugged se ha inyectado correctamente a tu cliente de Discord. ¡Únete a nuestro servidor de Discord para anuncios, soporte y mas!",
     "REPLUGGED_BUTTON_GOT_IT": "Entendido",
     "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} Instalado",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Descargar {type}",
     "REPLUGGED_CANCEL": "Cancelar",
     "REPLUGGED_CONFIRM": "Confirmar",
-    "REPLUGGED_COMMAND_RELOAD_DESC": "Recarga un complemento/tema",
+    "REPLUGGED_COMMAND_RELOAD_DESC": "Recarga un complemento o tema",
     "REPLUGGED_OK": "OK",
     "REPLUGGED_COMMAND_DISABLE_DESC": "Deshabilitar un complemento o tema",
     "REPLUGGED_UPDATES_UPDATER": "Actualizador",
@@ -213,5 +213,8 @@
     "REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME": "enviar",
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME": "tipo",
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME": "versión",
-    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "estado"
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "estado",
+    "REPLUGGED_COMMAND_ERROR_GENERIC": "Ha ocurrido un error, por favor intente mas tarde. Si el problema persiste, contacte al equipo de Replugged.",
+    "REPLUGGED_COMMAND_RELOAD_NAME": "recargar",
+    "REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC": "Incluir el numero de versión en la lista"
 }
