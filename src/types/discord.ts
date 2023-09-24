@@ -62,6 +62,7 @@ export interface ChannelOptions extends BaseCommandOptions<ApplicationCommandOpt
 
 export type SubCommandOptions<T extends CommandOptions> =
   (BaseCommandOptions<ApplicationCommandOptionType.SubCommand> & {
+    applicationId?: string;
     id?: string;
     options: T[];
   }) &
@@ -83,6 +84,7 @@ export type SubCommandOptions<T extends CommandOptions> =
 
 export interface SubCommandGroupOptions<T extends CommandOptions>
   extends BaseCommandOptions<ApplicationCommandOptionType.SubCommandGroup> {
+  applicationId?: string;
   id?: string;
   options: Array<SubCommandOptions<T>>;
 }

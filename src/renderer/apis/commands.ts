@@ -292,6 +292,7 @@ export class CommandManager {
         option.type === ApplicationCommandOptionType.SubCommand ||
         option.type === ApplicationCommandOptionType.SubCommandGroup
       ) {
+        option.applicationId = currentSection?.section.id;
         option.id ??= option.name;
         option.options.map(mapOptions);
       }
