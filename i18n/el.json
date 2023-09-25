@@ -89,5 +89,18 @@
     "REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED": "το {type} {name} έχει ενεργοποιηθεί!",
     "REPLUGGED_COMMAND_DISABLE_MESSAGE_ENABLED": "το {type} {name} έχει απενεργοποιηθεί!",
     "REPLUGGED_COMMAND_RELOAD_NAME": "επαναφόρτωση",
-    "REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME": "πρόσθετο"
+    "REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME": "πρόσθετο",
+    "REPLUGGED_COMMAND_RELOAD_MESSAGE_ENABLED": "το {type} {name} έχει επαναφορτωθεί!",
+    "REPLUGGED_COMMAND_LIST_NAME": "λίστα",
+    "REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_DESC": "Επιλέξτε ποιο πρόσθετο θέλετε να επαναφόρτωσετε",
+    "REPLUGGED_COMMAND_LIST_DESC": "Λίστα όλων των πρόσθετων και θέματων",
+    "REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME": "στείλε",
+    "REPLUGGED_COMMAND_LIST_OPTION_SEND_DESC": "Στείλτε τη λίστα δημόσια στο κανάλι",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME": "είδος",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_DESC": "Τι είδους πρόσθετα να δειξει",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "λίστα πρόσθετων",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "λίστα θεμάτων",
+    "REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME": "έκδοση",
+    "REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC": "Συμπεριλαμβάνει και τους αριθμούς εκδόσεων στη λίστα",
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "κατάσταση"
 }
