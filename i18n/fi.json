@@ -81,7 +81,6 @@
     "REPLUGGED_COMMAND_DISABLE_DESC": "Ota plugin tai teema pois käytöstä",
     "REPLUGGED_BUTTON_INSTALLER_INSTALLED": "{type} asennettu",
     "REPLUGGED_BUTTON_INSTALLER_DOWNLOAD": "Lataa {type}",
-    "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" poistettu käytöstä!",
     "REPLUGGED_COMMAND_RELOAD_DESC": "Lataa plugin tai teema uudelleen",
     "REPLUGGED_INSTALL_MODAL_HEADER": "Asenna {type}",
     "REPLUGGED_ERROR_ALREADY_INSTALLED": "{name} on jo asennettu.",
@@ -213,5 +212,9 @@
     "REPLUGGED_COMMAND_RELOAD_MESSAGE_ENABLED": "{type} {name} ladattiin uudelleen!",
     "REPLUGGED_COMMAND_LIST_NAME": "lista",
     "REPLUGGED_COMMAND_LIST_DESC": "Listaa kaikki pluginit ja teemat",
-    "REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME": "lähetä"
+    "REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME": "lähetä",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Jos lähteessä on useita lisäosia, valitse mikä asennetaan",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "id",
+    "REPLUGGED_STORE": "Kauppa",
+    "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Onnistui"
 }

@@ -52,7 +52,7 @@ export interface RepluggedEntity {
 
 export const theme = common.extend({
   type: z.literal("replugged-theme"),
-  main: z.string(),
+  main: z.string().optional(),
   splash: z.string().optional(),
 });
 
