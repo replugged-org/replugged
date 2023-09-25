@@ -69,20 +69,20 @@ export async function start(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
     if (!plugin) {
-      throw new Error("Plugin does not exist or is not loaded");
+      throw new Error(`Plugin "${id}" does not exist or is not loaded`);
     }
     if (running.has(plugin.manifest.id)) {
-      throw new Error("Plugin is already running");
+      throw new Error(`Plugin "${id}" is already running`);
     }
 
     if (plugin.manifest.renderer) {
       await Promise.race([
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Plugin took too long to start")), 5_000),
+          setTimeout(() => reject(new Error(`Plugin "${id}" took too long to start`)), 5_000),
         ),
         (async () => {
           const pluginExports = await import(
-            `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
+            `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}`
           );
           plugin.exports = pluginExports;
           await pluginExports.start?.();
@@ -129,10 +129,10 @@ export async function stop(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
     if (!plugin) {
-      throw new Error("Plugin does not exist or is not loaded");
+      throw new Error(`Plugin "${id}" does not exist or is not loaded`);
     }
     if (!running.has(id)) {
-      throw new Error("Plugin is not running");
+      throw new Error(`Plugin "${id}" is not running`);
     }
 
     await plugin.exports?.stop?.();
