@@ -47,7 +47,7 @@ export async function start(): Promise<void> {
     "Ignition",
     "Start",
     void 0,
-    `Finished igniting Replugged in ${performance.now() - startTime}ms`,
+    `Finished igniting Replugged in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
 
@@ -62,7 +62,7 @@ export async function stop(): Promise<void> {
     "Ignition",
     "Stop",
     void 0,
-    `Finished de-igniting Replugged in ${performance.now() - startTime}ms`,
+    `Finished de-igniting Replugged in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
 
