@@ -33,7 +33,7 @@ export async function selectAddon(type: AddonType | "all"): Promise<SelectedAddo
       {
         type: "select",
         name: "addon",
-        message: "Select a addon",
+        message: "Select an addon",
         choices: folder.map((folderName) => ({
           title: folderName,
           value: { type, name: folderName },
@@ -62,7 +62,7 @@ export async function selectAddon(type: AddonType | "all"): Promise<SelectedAddo
       {
         type: "select",
         name: "addon",
-        message: "Select a addon",
+        message: "Select an addon",
         choices: [
           ...plugins.map((plugin) => ({
             title: `${plugin} (plugin)`,
