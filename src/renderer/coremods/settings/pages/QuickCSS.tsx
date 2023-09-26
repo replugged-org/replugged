@@ -5,15 +5,15 @@ import { EditorState } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";
 import { githubDark, githubLight } from "./codemirror-github";
 import { webpack } from "@replugged";
-import { Button, ButtonItem, Divider, Flex, Text, Tooltip } from "@components";
-import "./QuickCSS.css";
+import { Button, ButtonItem, Clickable, Divider, Flex, Text, Tooltip } from "@components";
 import { generalSettings } from "./General";
 import { ReactComponent } from "src/types";
 import { Store } from "@common/flux";
-import Settings from "../icons/Settings";
 import Popout from "../icons/Popout";
 import Unpin from "../icons/Unpin";
 import Pin from "../icons/Pin";
+
+import "./QuickCSS.css";
 
 interface UseCodeMirrorOptions {
   value?: string;
@@ -30,35 +30,34 @@ type ThemeModule = {
 
 const PopoutModule = await webpack.waitForModule(
   webpack.filters.bySource('type:"POPOUT_WINDOW_OPEN"'),
-);
-// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-const openPopout = webpack.getFunctionBySource(PopoutModule, "POPOUT_WINDOW_OPEN") as (
+)!;
+const openPopout = webpack.getFunctionBySource<(
   key: string,
-  render: ReactComponent<unknown>,
+  render: React.ComponentType,
   features: Record<string, string>,
-) => void;
-// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-const closePopout = webpack.getFunctionBySource(PopoutModule, "POPOUT_WINDOW_CLOSE") as (
+) => void>(PopoutModule, "POPOUT_WINDOW_OPEN")!;
+const closePopout = webpack.getFunctionBySource<(
   key: string,
-) => void;
+) => void>(PopoutModule, "POPOUT_WINDOW_CLOSE")!;
 
-// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-const setAlwaysOnTop = webpack.getFunctionBySource(
+const setAlwaysOnTop = webpack.getFunctionBySource<(key: string, alwaysOnTop: boolean) => void>(
   PopoutModule,
   "POPOUT_WINDOW_SET_ALWAYS_ON_TOP",
-) as (key: string, alwaysOnTop: boolean) => void;
+)!;
 
-// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-const PopoutWindowStore = webpack.getByStoreName("PopoutWindowStore") as Store & {
+const PopoutWindowStore = webpack.getByStoreName<Store & {
   getWindow: (key: string) => Window;
   getWindowOpen: (key: string) => boolean;
   getIsAlwaysOnTop: (key: string) => boolean;
-};
+}>("PopoutWindowStore")!;
 
-// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-const DnDProvider = webpack.getBySource(
+const PopoutWindow = webpack.getBySource<ReactComponent<unknown>>(
   ".EMBEDDED_ACTIVITIES_ARE_YOU_SURE_WANT_TO_LEAVE",
-) as ReactComponent<unknown>;
+)!;
+
+const StayAlwaysOnTopButton = webpack.getBySource<ReactComponent<unknown>>(
+  'popoutWindowAlwaysOnTop"',
+)!;
 
 function useTheme(): "light" | "dark" {
   const [theme, setTheme] = React.useState<"light" | "dark">("dark");
@@ -247,7 +246,7 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
 
       {!props.popout && props.isPopoutOpen ? (
         <ButtonItem
-          button="Close Popout"
+          button={Messages.POPOUT_RETURN}
           onClick={() => {
             closePopout("DISCORD_REPLUGGED_QUICKCSS");
           }}>
@@ -259,37 +258,30 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
             {props.popout ? (
               <Tooltip
                 text={alwaysOnTop ? Messages.POPOUT_REMOVE_FROM_TOP : Messages.POPOUT_STAY_ON_TOP}>
-                {alwaysOnTop ? (
-                  <Unpin
-                    onClick={() => {
-                      setAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS", false);
-                      setAlwaysOnTop_(false);
-                    }}
-                  />
-                ) : (
-                  <Pin
-                    onClick={() => {
-                      setAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS", true);
-                      setAlwaysOnTop_(true);
-                    }}
-                  />
-                )}
+                <Clickable
+                  onClick={() => {
+                    setAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS", !alwaysOnTop);
+                    setAlwaysOnTop_(!alwaysOnTop);
+                  }}>
+                    {alwaysOnTop ? <Unpin /> : <Pin />}
+                </Clickable>
               </Tooltip>
             ) : (
               <Tooltip text={Messages.POPOUT_PLAYER}>
-                <Popout
+                <Clickable
                   onClick={() => {
                     openPopout(
                       "DISCORD_REPLUGGED_QUICKCSS",
                       () => (
-                        <DnDProvider windowKey="DISCORD_REPLUGGED_QUICKCSS">
+                        <PopoutWindow windowKey="DISCORD_REPLUGGED_QUICKCSS" title={Messages.REPLUGGED_QUICKCSS}>
                           <QuickCSS popout={true}></QuickCSS>
-                        </DnDProvider>
+                        </PopoutWindow>
                       ),
                       {},
                     );
-                  }}
-                />
+                  }}>
+                  <Popout />
+                </Clickable>
               </Tooltip>
             )}
           </div>
