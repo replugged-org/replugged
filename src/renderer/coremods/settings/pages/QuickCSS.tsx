@@ -31,32 +31,29 @@ type ThemeModule = {
 const PopoutModule = await webpack.waitForModule(
   webpack.filters.bySource('type:"POPOUT_WINDOW_OPEN"'),
 )!;
-const openPopout = webpack.getFunctionBySource<(
-  key: string,
-  render: React.ComponentType,
-  features: Record<string, string>,
-) => void>(PopoutModule, "POPOUT_WINDOW_OPEN")!;
-const closePopout = webpack.getFunctionBySource<(
-  key: string,
-) => void>(PopoutModule, "POPOUT_WINDOW_CLOSE")!;
+const openPopout = webpack.getFunctionBySource<
+  (key: string, render: React.ComponentType, features: Record<string, string>) => void
+>(PopoutModule, "POPOUT_WINDOW_OPEN")!;
+const closePopout = webpack.getFunctionBySource<(key: string) => void>(
+  PopoutModule,
+  "POPOUT_WINDOW_CLOSE",
+)!;
 
 const setAlwaysOnTop = webpack.getFunctionBySource<(key: string, alwaysOnTop: boolean) => void>(
   PopoutModule,
   "POPOUT_WINDOW_SET_ALWAYS_ON_TOP",
 )!;
 
-const PopoutWindowStore = webpack.getByStoreName<Store & {
-  getWindow: (key: string) => Window;
-  getWindowOpen: (key: string) => boolean;
-  getIsAlwaysOnTop: (key: string) => boolean;
-}>("PopoutWindowStore")!;
+const PopoutWindowStore = webpack.getByStoreName<
+  Store & {
+    getWindow: (key: string) => Window;
+    getWindowOpen: (key: string) => boolean;
+    getIsAlwaysOnTop: (key: string) => boolean;
+  }
+>("PopoutWindowStore")!;
 
 const PopoutWindow = webpack.getBySource<ReactComponent<unknown>>(
   ".EMBEDDED_ACTIVITIES_ARE_YOU_SURE_WANT_TO_LEAVE",
-)!;
-
-const StayAlwaysOnTopButton = webpack.getBySource<ReactComponent<unknown>>(
-  'popoutWindowAlwaysOnTop"',
 )!;
 
 function useTheme(): "light" | "dark" {
@@ -263,7 +260,7 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
                     setAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS", !alwaysOnTop);
                     setAlwaysOnTop_(!alwaysOnTop);
                   }}>
-                    {alwaysOnTop ? <Unpin /> : <Pin />}
+                  {alwaysOnTop ? <Unpin /> : <Pin />}
                 </Clickable>
               </Tooltip>
             ) : (
@@ -273,7 +270,9 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
                     openPopout(
                       "DISCORD_REPLUGGED_QUICKCSS",
                       () => (
-                        <PopoutWindow windowKey="DISCORD_REPLUGGED_QUICKCSS" title={Messages.REPLUGGED_QUICKCSS}>
+                        <PopoutWindow
+                          windowKey="DISCORD_REPLUGGED_QUICKCSS"
+                          title={Messages.REPLUGGED_QUICKCSS}>
                           <QuickCSS popout={true}></QuickCSS>
                         </PopoutWindow>
                       ),
