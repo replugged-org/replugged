@@ -108,5 +108,10 @@
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED": "απενεργοποιημένα",
     "REPLUGGED_COMMAND_LIST_HEADER_ENABLED": "ενεργοποιήθηκε το {type}",
     "REPLUGGED_COMMAND_LIST_HEADER_DISABLED": "απενεργοποιήθηκε το {type}",
-    "REPLUGGED_COMMAND_LIST_ERROR_SPECIFY": "Πρέπει να καθορίσετε εάν θα στείλετε μια λίστα προσθηκών ή θεμάτων"
+    "REPLUGGED_COMMAND_LIST_ERROR_SPECIFY": "Πρέπει να καθορίσετε εάν θα στείλετε μια λίστα προσθηκών ή θεμάτων",
+    "REPLUGGED_COMMAND_INSTALL_NAME": "βάλε",
+    "REPLUGGED_COMMAND_INSTALL_DESC": "εγκαταστήστε ένα πρόσθετο ή θέμα",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME": "πρόσθετο",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC": "Αναγνωριστικό του πρόσθετου προς εγκατάσταση από την πηγή",
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH": "Και τα δυο"
 }
