@@ -42,7 +42,7 @@ export interface RepluggedAnnouncement {
   onClose?: () => void;
   button?: {
     text: string;
-    onClick: () => void;
+    onClick?: () => void;
     href?: string;
   };
 }

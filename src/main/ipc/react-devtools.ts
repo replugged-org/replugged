@@ -33,7 +33,10 @@ ipcMain.handle(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS, async () => {
 
   return new Promise<void>((resolve, reject) => {
     zip.extractAllToAsync(OUTPUT_PATH, true, false, (error) => {
-      if (error) return reject(error);
+      if (error) {
+        reject(error);
+        return;
+      }
       resolve();
     });
   });

@@ -11,6 +11,7 @@ import {
   rmSync,
   writeFileSync,
 } from "fs";
+import { polyfillNode } from "esbuild-plugin-polyfill-node";
 
 const NODE_VERSION = "14";
 const CHROME_VERSION = "91";
@@ -97,5 +98,12 @@ Promise.all([
     target: `chrome${CHROME_VERSION}`,
     outfile: "dist/renderer.js",
     format: "esm",
+    plugins: [
+      polyfillNode({
+        polyfills: {
+          assert: true,
+        },
+      }),
+    ],
   }),
 ]);

@@ -75,3 +75,9 @@ overrides:
   - files: "src/renderer/**/*.{ts,tsx,mts,cts}"
     rules:
       no-console: error
+  - files: "src/renderer/modules/{common,components}/*.{ts,tsx,mts,cts}"
+    rules:
+      # These files sometimes have checks that are technically unnecessary according to the typedefs,
+      # but should help prevent a crash in the case of an unexpected Discord change
+      # So we will allow them
+      "@typescript-eslint/no-unnecessary-condition": off

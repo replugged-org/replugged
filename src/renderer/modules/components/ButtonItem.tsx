@@ -98,9 +98,10 @@ export const Button = await waitForModule(filters.bySource(".BorderColors=")).th
   (mod) => getFunctionBySource<ButtonType>(mod, "wrapperClassName")!,
 );
 
-const classes = await waitForProps<
-  Record<"dividerDefault" | "labelRow" | "note" | "title", string>
->("dividerDefault");
+const classes =
+  await waitForProps<Record<"dividerDefault" | "labelRow" | "note" | "title", string>>(
+    "dividerDefault",
+  );
 
 interface ButtonItemProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;

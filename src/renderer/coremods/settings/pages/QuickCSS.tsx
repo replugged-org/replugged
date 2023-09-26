@@ -91,8 +91,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
 
   const [value, setValue] = React.useState("");
   const [view, setView] = React.useState<EditorView | undefined>(undefined);
-  // ESLint doesn't think x is a number, but it is
-  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+
   const [update, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
   React.useEffect(() => {
@@ -128,7 +127,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
     container.setAttribute("data-theme", theme);
 
     return () => {
-      newView?.destroy();
+      newView.destroy();
       setView(undefined);
     };
   }, [container, theme, update]);

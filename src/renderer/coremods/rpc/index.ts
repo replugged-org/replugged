@@ -14,7 +14,7 @@ type Socket = Record<string, unknown> & {
 };
 
 type RPCData = {
-  args: Record<string, Jsonifiable>;
+  args: Record<string, Jsonifiable | undefined>;
   cmd: string;
 };
 

@@ -56,7 +56,8 @@ export async function stop(): Promise<void> {
   const startTime = performance.now();
 
   quickCSS.unload();
-  await Promise.all([coremods.stopAll(), plugins.stopAll(), themes.unloadAll()]);
+  themes.unloadAll();
+  await Promise.all([coremods.stopAll(), plugins.stopAll()]);
 
   log(
     "Ignition",

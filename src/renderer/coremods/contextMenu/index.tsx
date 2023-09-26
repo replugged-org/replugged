@@ -13,7 +13,8 @@ const logger = Logger.api("ContextMenu");
 
 export const menuItems = {} as Record<
   ContextMenuTypes,
-  Array<{ getItem: GetContextItem; sectionId: number | undefined; indexInSection: number }>
+  | Array<{ getItem: GetContextItem; sectionId: number | undefined; indexInSection: number }>
+  | undefined
 >;
 
 /**
@@ -23,6 +24,7 @@ export const menuItems = {} as Record<
  */
 function makeItem(raw: RawContextItem | ContextItem | undefined | void): ContextItem | undefined {
   // Occasionally React won't be loaded when this function is ran, so we don't return anything
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!React) return undefined;
 
   if (!raw) {
@@ -59,9 +61,9 @@ export function addContextMenuItem(
   sectionId: number | undefined,
   indexInSection: number,
 ): () => void {
-  if (!menuItems[navId]) menuItems[navId] = [];
+  menuItems[navId] ||= [];
 
-  menuItems[navId].push({ getItem, sectionId, indexInSection });
+  menuItems[navId]?.push({ getItem, sectionId, indexInSection });
   return () => removeContextMenuItem(navId, getItem);
 }
 
@@ -72,9 +74,7 @@ export function addContextMenuItem(
  * @returns
  */
 export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetContextItem): void {
-  const items = menuItems[navId];
-
-  menuItems[navId] = items.filter((item) => item.getItem !== getItem);
+  menuItems[navId] = menuItems[navId]?.filter((item) => item.getItem !== getItem);
 }
 
 type ContextMenuData = ContextMenuProps["ContextMenu"] & {
@@ -104,8 +104,7 @@ export function _insertMenuItems(menu: ContextMenuData): void {
     "Menu",
     "MenuItem",
     "MenuGroup",
-  ])!;
-
+  ]) || { MenuGroup: undefined };
   if (!MenuGroup) return;
 
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
@@ -127,10 +126,11 @@ export function _insertMenuItems(menu: ContextMenuData): void {
     menu.children.push(repluggedGroup);
   }
 
-  menuItems[navId].forEach((item) => {
+  menuItems[navId]?.forEach((item) => {
     try {
-      const res = makeItem(item.getItem(data, menu)) as ContextItem & { props: { id?: string } };
-
+      const res = makeItem(item.getItem(data, menu)) as
+        | (ContextItem & { props: { id?: string } })
+        | undefined;
       if (res?.props) {
         // add in unique ids
         res.props.id = `${res.props.id || "repluggedItem"}-${Math.random()
@@ -141,7 +141,10 @@ export function _insertMenuItems(menu: ContextMenuData): void {
       if (!Array.isArray(menu.children)) menu.children = [menu.children];
       const section =
         typeof item.sectionId === "undefined" ? repluggedGroup : menu.children.at(item.sectionId);
-      if (!section) return logger.error("Couldn't find section", item.sectionId, menu.children);
+      if (!section) {
+        logger.error("Couldn't find section", item.sectionId, menu.children);
+        return;
+      }
       section.props.children.splice(item.indexInSection, 0, res);
     } catch (err) {
       logger.error("Error while running GetContextItem function", err, item.getItem);
