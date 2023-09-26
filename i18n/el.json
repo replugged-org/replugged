@@ -102,5 +102,11 @@
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "λίστα θεμάτων",
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME": "έκδοση",
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC": "Συμπεριλαμβάνει και τους αριθμούς εκδόσεων στη λίστα",
-    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "κατάσταση"
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "κατάσταση",
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Να εμφανίζονται τα πρόσθετα που είναι ενεργοποιημένα, απενεργοποιημένα ή και τα δύο",
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED": "ενεργοποιημένα",
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED": "απενεργοποιημένα",
+    "REPLUGGED_COMMAND_LIST_HEADER_ENABLED": "ενεργοποιήθηκε το {type}",
+    "REPLUGGED_COMMAND_LIST_HEADER_DISABLED": "απενεργοποιήθηκε το {type}",
+    "REPLUGGED_COMMAND_LIST_ERROR_SPECIFY": "Πρέπει να καθορίσετε εάν θα στείλετε μια λίστα προσθηκών ή θεμάτων"
 }
