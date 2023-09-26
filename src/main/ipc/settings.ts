@@ -28,7 +28,7 @@ function writeSettings(namespace: string, settings: SettingsMap): Promise<void> 
   );
 }
 
-const locks: Record<string, Promise<unknown>> = {};
+const locks: Record<string, Promise<unknown> | undefined> = {};
 
 async function transaction<T>(namespace: string, handler: TransactionHandler<T>): Promise<T> {
   const lock = locks[namespace] ?? Promise.resolve();

@@ -1,6 +1,7 @@
 import type { Filter, GetModuleOptions, RawModule } from "src/types";
 import { wpRequire } from "./patch-load";
 import { logError } from "./util";
+import assert from "assert";
 
 // Export-finding utilities
 
@@ -81,6 +82,7 @@ export function getById<T>(id: number, raw?: boolean): T | RawModule<T> | undefi
  * You should not use this function in production unless the ID is dynamically determined.
  */
 export function getById<T>(id: number, raw = false): T | RawModule<T> | undefined {
+  assert(wpRequire, "Webpack not initialized");
   // Load the module if not already initialized
   if (!(id in wpRequire.c)) {
     wpRequire(id);
