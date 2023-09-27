@@ -10,7 +10,6 @@ import { default as notices } from "../coremods/notices/plaintextPatches";
 import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches";
 import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
 import { Logger } from "../modules/logger";
-import assert from "assert";
 
 const logger = Logger.api("Coremods");
 
@@ -36,12 +35,12 @@ export namespace coremods {
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
-  assert(name in coremods, `Coremod ${name} does not exist`);
+  if (!(name in coremods)) throw new Error(`Coremod ${name} does not exist`);
   await coremods[name].start?.();
 }
 
 export async function stop(name: keyof typeof coremods): Promise<void> {
-  assert(name in coremods, `Coremod ${name} does not exist`);
+  if (!(name in coremods)) throw new Error(`Coremod ${name} does not exist`);
   await coremods[name].stop?.();
 }
 
