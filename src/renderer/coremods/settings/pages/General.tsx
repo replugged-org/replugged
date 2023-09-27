@@ -125,6 +125,7 @@ export const General = (): React.ReactElement => {
           <TextInput
             {...util.useSetting(generalSettings, "apiUrl")}
             placeholder="https://replugged.dev"
+            disabled
           />
         </FormItem>
 
