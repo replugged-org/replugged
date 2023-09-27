@@ -10,11 +10,16 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
           error("CommonModules", name, void 0, `Could not find module "${name}"`);
           rej(new Error(`Module not found: "${name}`));
         }, 10_000);
-        void moduleImport.then((mod) => {
-          clearTimeout(timeout);
-          cb(mod);
-          res();
-        });
+        void moduleImport
+          .then((mod) => {
+            clearTimeout(timeout);
+            cb(mod);
+            res();
+          })
+          .catch((err) => {
+            error("CommonModules", name, void 0, `Failed to import module "${name}"`, err);
+            rej(err);
+          });
       }),
   );
 }
