@@ -15,11 +15,16 @@ function importTimeout<T extends ModuleExports>(
           error("Components", name, void 0, `Could not find component "${name}"`);
           rej(new Error(`Module not found: "${name}`));
         }, 10_000);
-        void moduleImport.then((mod) => {
-          clearTimeout(timeout);
-          cb(mod);
-          res();
-        });
+        void moduleImport
+          .then((mod) => {
+            clearTimeout(timeout);
+            cb(mod);
+            res();
+          })
+          .catch((err) => {
+            error("Components", name, void 0, `Failed to import component "${name}"`, err);
+            rej(err);
+          });
       }),
   );
 }
