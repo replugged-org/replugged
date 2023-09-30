@@ -78,7 +78,7 @@ Promise.all([
     platform: "node",
     target: `node${NODE_VERSION}`,
     outfile: "dist/main.js",
-    external: ["electron"],
+    external: ["electron", "original-fs"],
   }),
   // Preload
   esbuild.build({

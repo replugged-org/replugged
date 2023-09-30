@@ -47,7 +47,7 @@ export async function start(): Promise<void> {
     "Ignition",
     "Start",
     void 0,
-    `Finished igniting Replugged in ${performance.now() - startTime}ms`,
+    `Finished igniting Replugged in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
 
@@ -56,13 +56,14 @@ export async function stop(): Promise<void> {
   const startTime = performance.now();
 
   quickCSS.unload();
-  await Promise.all([coremods.stopAll(), plugins.stopAll(), themes.unloadAll()]);
+  themes.unloadAll();
+  await Promise.all([coremods.stopAll(), plugins.stopAll()]);
 
   log(
     "Ignition",
     "Stop",
     void 0,
-    `Finished de-igniting Replugged in ${performance.now() - startTime}ms`,
+    `Finished de-igniting Replugged in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
 
