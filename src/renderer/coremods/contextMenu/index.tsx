@@ -106,10 +106,12 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   } = ContextComponents;
 
   //return nothing as we weren't able to get ContextMenu component, gets handled in plain text patch
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!ContextMenu) return null;
 
   // No items to insert
   // Or MenuGroup Component is not available
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!menuItems[navId] || !MenuGroup) return <ContextMenu {...menu} plugged={true} />;
 
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
@@ -123,7 +125,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
     }
   }
   //Add group only if it doesn't exist
-  if (!menu.children?.some?.((child) => child?.props?.id === "replugged")) {
+  if (!menu.children.some((child) => child.props?.id === "replugged")) {
     const repluggedGroup = <MenuGroup />;
     repluggedGroup.props.id = "replugged";
     repluggedGroup.props.children = [];
@@ -134,8 +136,8 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
       menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
       menu.children
         .at(-1)
-        ?.props?.children?.some((c: React.ReactElement) =>
-          c?.props?.id?.startsWith("devmode-copy-id-"),
+        ?.props?.children?.some(
+          (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
         );
     if (hasCopyId) {
       menu.children.splice(-1, 0, repluggedGroup);
@@ -161,7 +163,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
         )
           ? menu.children
               .at(sectionId!)
-              ?.props.children.filter((child: React.ReactElement) => !child?.props?.replug)
+              ?.props.children.filter((child: React.ReactElement | null) => !child?.props?.replug)
           : [menu.children.at(sectionId!)?.props.children];
       }
     } catch (err) {
@@ -189,15 +191,18 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
           menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
           menu.children
             .at(-1)
-            ?.props?.children.some((c: React.ReactElement) =>
-              c?.props?.id?.startsWith("devmode-copy-id-"),
+            ?.props?.children.some(
+              (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
             );
         const section =
           typeof item.sectionId === "undefined"
             ? menu.children.at(hasCopyId ? -2 : -1)
             : menu.children.at(item.sectionId);
-        if (!section) return logger.warn("Couldn't find section", item.sectionId, menu.children);
-        section?.props.children?.splice(item.indexInSection, 0, itemRet);
+        if (!section) {
+          logger.warn("Couldn't find section", item.sectionId, menu.children);
+          return;
+        }
+        section.props.children?.splice(item.indexInSection, 0, itemRet);
       }
     } catch (err) {
       logger.error(
