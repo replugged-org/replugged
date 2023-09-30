@@ -13,7 +13,8 @@ const logger = Logger.api("ContextMenu");
 
 export const menuItems = {} as Record<
   ContextMenuTypes,
-  Array<{ getItem: GetContextItem; sectionId: number | undefined; indexInSection: number }>
+  | Array<{ getItem: GetContextItem; sectionId: number | undefined; indexInSection: number }>
+  | undefined
 >;
 
 type RepluggedContextItem = ContextItem & {
@@ -29,6 +30,7 @@ function makeItem(
   raw: RawContextItem | ContextItem | undefined | void,
 ): RepluggedContextItem | undefined {
   // Occasionally React won't be loaded when this function is ran, so we don't return anything
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!React) return undefined;
 
   if (!raw) {
@@ -66,9 +68,9 @@ export function addContextMenuItem(
   sectionId: number | undefined,
   indexInSection: number,
 ): () => void {
-  if (!menuItems[navId]) menuItems[navId] = [];
+  menuItems[navId] ||= [];
 
-  menuItems[navId].push({ getItem, sectionId, indexInSection });
+  menuItems[navId]?.push({ getItem, sectionId, indexInSection });
   return () => removeContextMenuItem(navId, getItem);
 }
 
@@ -79,9 +81,7 @@ export function addContextMenuItem(
  * @returns
  */
 export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetContextItem): void {
-  const items = menuItems[navId];
-
-  menuItems[navId] = items.filter((item) => item.getItem !== getItem);
+  menuItems[navId] = menuItems[navId]?.filter((item) => item.getItem !== getItem);
 }
 
 type ContextMenuData = ContextMenuProps["ContextMenu"] & {
@@ -122,7 +122,6 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
       return <ContextMenu {...menu} plugged={true} />;
     }
   }
-
   //Add group only if it doesn't exist
   if (!menu.children?.some?.((child) => child?.props?.id === "replugged")) {
     const repluggedGroup = <MenuGroup />;
