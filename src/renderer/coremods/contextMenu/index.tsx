@@ -146,11 +146,11 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
 
   //get sections from where to clean items
   const usedSectionIds = menuItems[navId]
-    .map((item) => item.sectionId)
+    ?.map((item) => item.sectionId)
     .filter((item, index, array) => array.indexOf(item) === index);
 
   //cleaning old items before adding new ones
-  usedSectionIds.forEach((sectionId) => {
+  usedSectionIds?.forEach((sectionId) => {
     try {
       if (!Array.isArray(menu.children)) {
         return;
@@ -174,7 +174,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   });
 
   //adding new items
-  menuItems[navId].forEach((item) => {
+  menuItems[navId]?.forEach((item) => {
     try {
       if (!Array.isArray(menu.children)) {
         return;
