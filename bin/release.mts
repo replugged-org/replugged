@@ -4,6 +4,7 @@ import prompts from "prompts";
 import semver from "semver";
 import chalk from "chalk";
 import { execSync } from "child_process";
+import { isMonoRepo, selectAddon } from "./mono.mjs";
 
 /**
  * Prompt a confirmation message and exit if the user does not confirm.
@@ -44,7 +45,7 @@ function runCommand(command: string, exit = true): string {
   }
 }
 
-function onCancel(): void {
+export function onCancel(): void {
   console.log(chalk.red("Aborting"));
   process.exit(128); // SIGINT
 }
@@ -82,7 +83,10 @@ export async function release(): Promise<void> {
   const isClean = !status.trim();
   if (!isClean) await confirmOrExit("Working directory is not clean. Continue?");
 
-  const manifestPath = path.resolve(directory, "manifest.json");
+  const addon = isMonoRepo ? await selectAddon("all") : null;
+  const manifestPath = addon
+    ? path.resolve(directory, addon.type, addon.name, "manifest.json")
+    : path.resolve(directory, "manifest.json");
   if (!existsSync(manifestPath)) {
     console.log(chalk.red("manifest.json not found"));
     process.exit(1);
@@ -96,15 +100,15 @@ export async function release(): Promise<void> {
     process.exit(1);
   }
 
-  const packagePath = path.resolve(directory, "package.json");
-  if (!existsSync(packagePath)) {
+  const packagePath = addon ? null : path.resolve(directory, "package.json");
+  if (!isMonoRepo && !existsSync(packagePath!)) {
     console.log(chalk.red("package.json not found"));
     process.exit(1);
   }
-  const packageText = readFileSync(packagePath, "utf8");
+  const packageText = packagePath ? readFileSync(packagePath, "utf8") : null;
   let packageJson;
   try {
-    packageJson = JSON.parse(packageText);
+    packageJson = packagePath ? JSON.parse(packageText!) : null;
   } catch {
     console.log(chalk.red("package.json is not valid JSON"));
     process.exit(1);
@@ -189,14 +193,15 @@ export async function release(): Promise<void> {
 
   // Update manifest.json and package.json
   manifest.version = nextVersion;
-  packageJson.version = nextVersion;
+  if (packageJson) packageJson.version = nextVersion;
 
   // Write manifest.json and package.json (indent with 2 spaces and keep trailing newline)
   writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-  writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
+  if (packageJson) writeFileSync(packagePath!, `${JSON.stringify(packageJson, null, 2)}\n`);
 
   // Stage changes
-  runCommand("git add manifest.json package.json");
+  if (isMonoRepo) runCommand(`git add ${path.join(addon!.type, addon!.name, "manifest.json")}`);
+  else runCommand("git add manifest.json package.json");
 
   // Commit changes
   const { message } = await prompts(
@@ -204,7 +209,9 @@ export async function release(): Promise<void> {
       type: "text",
       name: "message",
       message: "Commit message",
-      initial: `Release v${nextVersion}`,
+      initial: isMonoRepo
+        ? `[${manifest.name}] Release v${nextVersion}`
+        : `Release v${nextVersion}`,
       validate: (value) => {
         if (!value.trim()) return "Commit message is required";
 
@@ -222,7 +229,9 @@ export async function release(): Promise<void> {
       type: "text",
       name: "tagName",
       message: "Tag name",
-      initial: `v${nextVersion}`,
+      initial: isMonoRepo
+        ? `v${nextVersion}-${manifest.name.replace(" ", "_")}`
+        : `v${nextVersion}`,
       validate: (value) => {
         if (!value.trim()) return "Tag name is required";
 

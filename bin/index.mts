@@ -20,18 +20,19 @@ import { release } from "./release.mjs";
 import { logBuildPlugin } from "../src/util.mjs";
 import { sassPlugin } from "esbuild-sass-plugin";
 import { fileURLToPath } from "url";
+import { AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
 
 interface BaseArgs {
   watch?: boolean;
   noInstall?: boolean;
   production?: boolean;
   noReload?: boolean;
+  addon?: string;
 }
 
 type Args = ArgumentsCamelCase<BaseArgs> | BaseArgs;
 
-const directory = process.cwd();
-const manifestPath = path.join(directory, "manifest.json");
+export const directory = process.cwd();
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
@@ -213,20 +214,34 @@ async function reload(id: string): Promise<void> {
   });
 }
 
-async function bundleAddon(buildFn: (args: Args) => Promise<void>): Promise<void> {
-  if (existsSync("dist")) {
-    rmSync("dist", { recursive: true });
-  }
-  await buildFn({ watch: false, noInstall: true, production: true });
+function bundleAddons(buildFn: (args: Args) => Promise<void>, type: AddonType): void {
+  const addons = getAddonFolder(type);
 
-  const manifest = JSON.parse(readFileSync("dist/manifest.json", "utf-8"));
+  addons.forEach((addon) => bundleAddon(buildFn, addon, type));
+}
+
+async function bundleAddon(
+  buildFn: (args: Args) => Promise<void>,
+  addon?: string,
+  type?: AddonType,
+): Promise<void> {
+  const manifestPath = addon
+    ? path.join(directory, type!, addon, "manifest.json")
+    : path.join(directory, "manifest.json");
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+  const distPath = addon ? `dist/${manifest.id}` : "dist";
+  if (existsSync(distPath)) {
+    rmSync(distPath, { recursive: true });
+  }
+  await buildFn({ watch: false, noInstall: true, production: true, addon });
+
   const outputName = `bundle/${manifest.id}`;
 
   if (!existsSync("bundle")) {
     mkdirSync("bundle");
   }
-  asar.createPackage("dist", `${outputName}.asar`);
-  copyFileSync("dist/manifest.json", `${outputName}.json`);
+  asar.createPackage(distPath, `${outputName}.asar`);
+  copyFileSync(`${distPath}/manifest.json`, `${outputName}.json`);
 
   console.log(`Bundled ${manifest.name}`);
 }
@@ -268,28 +283,49 @@ const CONFIG_PATH = (() => {
 })();
 const CHROME_VERSION = "91";
 
-async function buildPlugin({ watch, noInstall, production, noReload }: Args): Promise<void> {
-  let manifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+function buildAddons(buildFn: (args: Args) => Promise<void>, args: Args, type: AddonType): void {
+  const addons = getAddonFolder(type);
+
+  addons.forEach((addon) => {
+    buildFn({ ...args, addon });
+  });
+}
+
+async function buildPlugin({ watch, noInstall, production, noReload, addon }: Args): Promise<void> {
+  const manifestPath = addon
+    ? path.join(directory, "plugins", addon, "manifest.json")
+    : path.join(directory, "manifest.json");
+  const manifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const distPath = addon ? `dist/${manifest.id}` : "dist";
+  const folderPath = addon ? path.join(directory, "plugins", addon) : directory;
+
   const globalModules: esbuild.Plugin = {
     name: "globalModules",
     setup: (build) => {
-      build.onResolve({ filter: /^replugged.+$/ }, (args) => {
+      build.onResolve({ filter: /^replugged(\/\w+)?$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
-        return {
-          errors: [
-            {
-              text: `Importing from a path (${args.path}) is not supported. Instead, please import from "replugged" and destructure the required modules.`,
-            },
-          ],
-        };
-      });
-
-      build.onResolve({ filter: /^replugged$/ }, (args) => {
-        if (args.kind !== "import-statement") return undefined;
+        if (args.path.includes("dist")) {
+          return {
+            errors: [
+              {
+                text: `Unsupported import from dist: ${args.path}\nImport from either the top level of this module ("replugged") or a top-level subpath (e.g. "replugged/common") instead.`,
+              },
+            ],
+          };
+        }
 
         return {
           path: args.path,
+          namespace: "replugged",
+        };
+      });
+
+      build.onResolve({ filter: /^react$/ }, (args) => {
+        if (args.kind !== "import-statement") return undefined;
+
+        return {
+          path: "replugged/common/React",
           namespace: "replugged",
         };
       });
@@ -299,9 +335,9 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
           filter: /.*/,
           namespace: "replugged",
         },
-        () => {
+        (loadArgs) => {
           return {
-            contents: "module.exports = window.replugged",
+            contents: `module.exports = window.${loadArgs.path.replaceAll("/", ".")}`,
           };
         },
       );
@@ -315,7 +351,7 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "plugins", manifest.id);
           if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
-          cpSync("dist", dest, { recursive: true });
+          cpSync(distPath, dest, { recursive: true });
           console.log("Installed updated version");
 
           if (!noReload) {
@@ -347,8 +383,8 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
     targets.push(
       esbuild.context({
         ...common,
-        entryPoints: [manifest.renderer],
-        outfile: "dist/renderer.js",
+        entryPoints: [path.join(folderPath, manifest.renderer)],
+        outfile: `${distPath}/renderer.js`,
       }),
     );
 
@@ -359,17 +395,17 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
     targets.push(
       esbuild.context({
         ...common,
-        entryPoints: [manifest.plaintextPatches],
-        outfile: "dist/plaintextPatches.js",
+        entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
+        outfile: `${distPath}/plaintextPatches.js`,
       }),
     );
 
     manifest.plaintextPatches = "plaintextPatches.js";
   }
 
-  if (!existsSync("dist")) mkdirSync("dist");
+  if (!existsSync(distPath)) mkdirSync(distPath, { recursive: true });
 
-  writeFileSync("dist/manifest.json", JSON.stringify(manifest));
+  writeFileSync(`${distPath}/manifest.json`, JSON.stringify(manifest));
 
   const contexts = await Promise.all(targets);
   await handleContexts(contexts, watch);
@@ -377,11 +413,18 @@ async function buildPlugin({ watch, noInstall, production, noReload }: Args): Pr
   ws?.close();
 }
 
-async function buildTheme({ watch, noInstall, production, noReload }: Args): Promise<void> {
-  let manifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+async function buildTheme({ watch, noInstall, production, noReload, addon }: Args): Promise<void> {
+  const manifestPath = addon
+    ? path.join(directory, "themes", addon, "manifest.json")
+    : "manifest.json";
+  const manifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const distPath = addon ? `dist/${manifest.id}` : "dist";
+  const folderPath = addon ? path.join(directory, "themes", addon) : directory;
 
-  const main = manifest.main || "src/main.css";
-  const splash = manifest.splash || (existsSync("src/splash.css") ? "src/splash.css" : undefined);
+  const main = path.join(folderPath, manifest.main || "src/main.css");
+  const splash = existsSync(path.join(folderPath, manifest.splash || "src/main.css"))
+    ? path.join(folderPath, manifest.splash || "src/main.css")
+    : undefined;
 
   const install: esbuild.Plugin = {
     name: "install",
@@ -390,7 +433,7 @@ async function buildTheme({ watch, noInstall, production, noReload }: Args): Pro
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "themes", manifest.id);
           if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
-          cpSync("dist", dest, { recursive: true });
+          cpSync(distPath, dest, { recursive: true });
           console.log("Installed updated version");
 
           if (!noReload) {
@@ -423,7 +466,7 @@ async function buildTheme({ watch, noInstall, production, noReload }: Args): Pro
       esbuild.context({
         ...common,
         entryPoints: [main],
-        outfile: "dist/main.css",
+        outfile: `${distPath}/main.css`,
       }),
     );
 
@@ -435,16 +478,16 @@ async function buildTheme({ watch, noInstall, production, noReload }: Args): Pro
       esbuild.context({
         ...common,
         entryPoints: [splash],
-        outfile: "dist/splash.css",
+        outfile: `${distPath}/splash.css`,
       }),
     );
 
     manifest.plaintextPatches = "splash.css";
   }
 
-  if (!existsSync("dist")) mkdirSync("dist");
+  if (!existsSync(distPath)) mkdirSync(distPath, { recursive: true });
 
-  writeFileSync("dist/manifest.json", JSON.stringify(manifest));
+  writeFileSync(`${distPath}/manifest.json`, JSON.stringify(manifest));
 
   const contexts = await Promise.all(targets);
   await handleContexts(contexts, watch);
@@ -484,12 +527,25 @@ const { argv } = yargs(hideBin(process.argv))
         describe: "Don't reload the addon in Discord after building.",
         default: false,
       });
+      yargs.option("all", {
+        type: "boolean",
+        describe: "Build all addons in a monorepo.",
+        default: false,
+      });
     },
-    (argv) => {
+    async (argv) => {
       if (argv.addon === "plugin") {
-        buildPlugin(argv);
+        if (argv.all && isMonoRepo) return buildAddons(buildPlugin, argv, "plugins");
+        else {
+          const plugin = isMonoRepo ? await selectAddon("plugins") : undefined;
+          buildPlugin({ ...argv, addon: plugin?.name });
+        }
       } else if (argv.addon === "theme") {
-        buildTheme(argv);
+        if (argv.all && isMonoRepo) return buildAddons(buildTheme, argv, "themes");
+        else {
+          const theme = isMonoRepo ? await selectAddon("themes") : undefined;
+          buildTheme({ ...argv, addon: theme?.name });
+        }
       } else {
         console.log("Invalid addon type.");
       }
@@ -505,11 +561,19 @@ const { argv } = yargs(hideBin(process.argv))
         describe: "Either a plugin or theme",
       });
     },
-    (argv) => {
+    async (argv) => {
       if (argv.addon === "plugin") {
-        bundleAddon(buildPlugin);
+        if (argv.all && isMonoRepo) return bundleAddons(buildPlugin, "plugins");
+        else {
+          const addon = isMonoRepo ? await selectAddon("plugins") : undefined;
+          bundleAddon(buildPlugin, addon?.name);
+        }
       } else if (argv.addon === "theme") {
-        bundleAddon(buildTheme);
+        if (argv.all && isMonoRepo) return bundleAddons(buildTheme, "themes");
+        else {
+          const addon = isMonoRepo ? await selectAddon("themes") : undefined;
+          bundleAddon(buildTheme, addon?.name);
+        }
       } else {
         console.log("Invalid addon type.");
       }
