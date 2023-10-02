@@ -302,23 +302,30 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
   const globalModules: esbuild.Plugin = {
     name: "globalModules",
     setup: (build) => {
-      build.onResolve({ filter: /^replugged.+$/ }, (args) => {
+      build.onResolve({ filter: /^replugged(\/\w+)?$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
 
-        return {
-          errors: [
-            {
-              text: `Importing from a path (${args.path}) is not supported. Instead, please import from "replugged" and destructure the required modules.`,
-            },
-          ],
-        };
-      });
-
-      build.onResolve({ filter: /^replugged$/ }, (args) => {
-        if (args.kind !== "import-statement") return undefined;
+        if (args.path.includes("dist")) {
+          return {
+            errors: [
+              {
+                text: `Unsupported import from dist: ${args.path}\nImport from either the top level of this module ("replugged") or a top-level subpath (e.g. "replugged/common") instead.`,
+              },
+            ],
+          };
+        }
 
         return {
           path: args.path,
+          namespace: "replugged",
+        };
+      });
+
+      build.onResolve({ filter: /^react$/ }, (args) => {
+        if (args.kind !== "import-statement") return undefined;
+
+        return {
+          path: "replugged/common/React",
           namespace: "replugged",
         };
       });
@@ -328,9 +335,9 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
           filter: /.*/,
           namespace: "replugged",
         },
-        () => {
+        (loadArgs) => {
           return {
-            contents: "module.exports = window.replugged",
+            contents: `module.exports = window.${loadArgs.path.replaceAll("/", ".")}`,
           };
         },
       );

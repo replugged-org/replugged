@@ -4,7 +4,18 @@
   font-weight: bold;
   color: var(--header-primary);
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
+}
+
+.replugged-error-boundary h3 {
+  font-size: 14px;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  color: var(--header-primary);
+}
+
+.replugged-error-boundary .replugged-error-boundary-plugin {
+  margin-bottom: 8px;
 }
 
 .replugged-error-boundary p {
@@ -14,4 +25,36 @@
   color: var(--text-muted);
   text-align: center;
   margin: 0px;
+}
+
+.replugged-error-boundary-collapsible {
+  color: var(--header-primary);
+  background-color: var(--background-secondary-alt);
+  border-radius: 8px;
+  transition: background-color 0.1s ease;
+  padding: 8px 12px;
+  margin-top: 16px;
+}
+
+.replugged-error-boundary-collapsible:active {
+  background-color: var(--background-accent);
+}
+
+.replugged-error-boundary-collapsible-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.replugged-error-boundary-collapsible-stack {
+  background-color: var(--background-secondary);
+  color: var(--text-normal);
+  border-radius: 5px;
+  border: 1px solid var(--background-tertiary);
+  margin: 10px 0px;
+  padding: 12px;
+  user-select: text;
+  white-space: pre-wrap;
 }
