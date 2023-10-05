@@ -50,16 +50,11 @@ export function loadCommands(injector: Injector): void {
       let source = i.getValue("source");
       let id = i.getValue("id");
 
-      try {
-        // If addon is not a url, this will throw an error
-        const _ = new URL(addon);
-        const resp = parseInstallLink(addon);
-        if (resp) {
-          addon = resp.identifier;
-          source = resp.source;
-          id = resp.id;
-        }
-      } catch {}
+      const linkParsed = parseInstallLink(addon);
+
+      if (linkParsed) {
+        ({identifier: addon, source, id} = linkParsed);
+      }
 
       const resp = await installFlow(addon, source, id, false);
 
