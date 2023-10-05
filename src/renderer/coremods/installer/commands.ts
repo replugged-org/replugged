@@ -53,7 +53,7 @@ export function loadCommands(injector: Injector): void {
       const linkParsed = parseInstallLink(addon);
 
       if (linkParsed) {
-        ({identifier: addon, source, id} = linkParsed);
+        ({ identifier: addon, source, id } = linkParsed);
       }
 
       const resp = await installFlow(addon, source, id, false);
