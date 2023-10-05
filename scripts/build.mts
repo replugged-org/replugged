@@ -28,7 +28,6 @@ rmSync("dist", { recursive: true, force: true });
 rmSync("dist-bundle", { recursive: true, force: true });
 rmSync("replugged.asar", { force: true });
 
-
 const preBundle: esbuild.Plugin = {
   name: "preBundle",
   setup: (build) => {
