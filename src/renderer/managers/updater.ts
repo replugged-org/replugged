@@ -65,7 +65,7 @@ const completedUpdates = new Set<string>();
 
 const notDigit = /(?!\.)\D/gi;
 
-function listLjust(iterable: string[], length: number, defaultValue: string): void {
+function listLJust(iterable: string[], length: number, defaultValue: string): void {
   const l = iterable.length;
   for (let i = 0; i < length - l; i++) {
     iterable.push(defaultValue);
@@ -86,8 +86,8 @@ function isLatest(localVersion: string, serverVersion: string): boolean {
       return elm !== "";
     });
 
-  listLjust(ver1, ver2.length, "0");
-  listLjust(ver2, ver1.length, "0");
+  listLJust(ver1, ver2.length, "0");
+  listLJust(ver2, ver1.length, "0");
 
   for (let i = 0; i < ver1.length; i++) {
     ver1[i] = ver1[i].padStart(ver2[i].length, "0");
