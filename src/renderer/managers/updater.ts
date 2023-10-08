@@ -73,8 +73,18 @@ function listLjust(iterable: string[], length: number, defaultValue: string): vo
 }
 
 function isLatest(localVersion: string, serverVersion: string): boolean {
-  const ver1 = localVersion.replace(notDigit, "").split(".").filter((elm) => {return elm !== ""});
-  const ver2 = serverVersion.replace(notDigit, "").split(".").filter((elm) => {return elm !== ""});
+  const ver1 = localVersion
+    .replace(notDigit, "")
+    .split(".")
+    .filter((elm) => {
+      return elm !== "";
+    });
+  const ver2 = serverVersion
+    .replace(notDigit, "")
+    .split(".")
+    .filter((elm) => {
+      return elm !== "";
+    });
 
   listLjust(ver1, ver2.length, "0");
   listLjust(ver2, ver1.length, "0");
