@@ -19,7 +19,11 @@ import { promisify } from "util";
 
 const writeFile = promisify(originalWriteFile);
 
-const octokit = new Octokit();
+const octokit = new Octokit({
+  request: {
+    fetch,
+  },
+});
 
 async function github(
   identifier: string,
