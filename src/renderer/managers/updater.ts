@@ -63,6 +63,36 @@ const updaterState = await init<Record<string, UpdateSettings>>("dev.replugged.U
 
 const completedUpdates = new Set<string>();
 
+const notDigit = /(?!\.)\D/gi;
+
+function listLjust(iterable: string[], length: number, defaultValue: string): void {
+  const l = iterable.length;
+  for (let i = 0; i < length - l; i++) {
+    iterable.push(defaultValue);
+  }
+}
+
+function isLatest(localVersion: string, serverVersion: string): boolean {
+  const ver1 = localVersion.replace(notDigit, "").split(".").filter((elm) => {return elm !== ""});
+  const ver2 = serverVersion.replace(notDigit, "").split(".").filter((elm) => {return elm !== ""});
+
+  listLjust(ver1, ver2.length, "0");
+  listLjust(ver2, ver1.length, "0");
+
+  for (let i = 0; i < ver1.length; i++) {
+    ver1[i] = ver1[i].padStart(ver2[i].length, "0");
+  }
+
+  for (let i = 0; i < ver1.length; i++) {
+    ver2[i] = ver2[i].padStart(ver1[i].length, "0");
+  }
+
+  const ver1Int = parseInt(ver1.join(""), 10);
+  const ver2Int = parseInt(ver2.join(""), 10);
+
+  return ver1Int >= ver2Int;
+}
+
 export function getUpdateState(id: string): UpdateSettings | null {
   const setting = updaterState.get(id);
   if (!setting) return null;
@@ -135,7 +165,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
 
   const newVersion = res.manifest.version;
 
-  if (newVersion === version) {
+  if (isLatest(version, newVersion)) {
     if (verbose) logger.log(`Entity ${id} is up to date`);
     updaterState.set(id, {
       available: false,
