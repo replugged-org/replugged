@@ -268,12 +268,12 @@ export function loadCommands(): void {
         required: true,
         choices: [
           {
-            name: Messages.REPLUGGED_THEME,
+            name: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME,
             displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME,
             value: "theme",
           },
           {
-            name: Messages.REPLUGGED_PLUGIN,
+            name: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN,
             displayName: Messages.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN,
             value: "plugin",
           },
