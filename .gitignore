@@ -4,6 +4,7 @@
 node_modules
 result
 dist/
+dist-bundle/
 .parcel-cache
 yarn.lock
 package-lock.json

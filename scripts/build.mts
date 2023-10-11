@@ -21,31 +21,38 @@ const production = process.argv.includes("--production");
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const distDir = production ? "dist-bundle" : "dist";
+
+// Delete old builds to prevent issues/confusion from leftover files
+rmSync("dist", { recursive: true, force: true });
+rmSync("dist-bundle", { recursive: true, force: true });
+rmSync("replugged.asar", { force: true });
+
 const preBundle: esbuild.Plugin = {
   name: "preBundle",
   setup: (build) => {
     build.onEnd(() => {
-      if (!existsSync("dist/i18n")) {
-        mkdirSync("dist/i18n");
+      if (!existsSync(`${distDir}/i18n`)) {
+        mkdirSync(`${distDir}/i18n`);
       }
 
       readdirSync("i18n").forEach((file) => {
         if (file.endsWith(".json")) {
-          copyFileSync(`i18n/${file}`, `dist/i18n/${file}`);
+          copyFileSync(`i18n/${file}`, `${distDir}/i18n/${file}`);
         }
       });
 
       const mainPackage = JSON.parse(readFileSync("package.json", "utf-8"));
 
       writeFileSync(
-        "dist/package.json",
+        `${distDir}/package.json`,
         JSON.stringify({
           main: "main.js",
           name: "replugged",
           version: mainPackage.version,
         }),
       );
-      asar.createPackage("dist", "replugged.asar");
+      asar.createPackage(`${distDir}`, "replugged.asar");
     });
   },
 };
@@ -53,13 +60,8 @@ const preBundle: esbuild.Plugin = {
 const plugins: esbuild.Plugin[] = [];
 
 if (!watch) plugins.push(logBuildPlugin);
-
 if (production) {
-  rmSync("dist", { recursive: true, force: true });
   plugins.push(preBundle);
-} else {
-  rmSync("dist/i18n", { recursive: true, force: true });
-  rmSync("dist/package.json", { force: true });
 }
 
 const common: esbuild.BuildOptions = {
@@ -80,7 +82,7 @@ const contexts = await Promise.all([
     entryPoints: ["src/main/index.ts"],
     platform: "node",
     target: `node${NODE_VERSION}`,
-    outfile: "dist/main.js",
+    outfile: `${distDir}/main.js`,
     external: ["electron"],
   }),
   // Preload
@@ -89,7 +91,7 @@ const contexts = await Promise.all([
     entryPoints: ["src/preload.ts"],
     platform: "node",
     target: [`node${NODE_VERSION}`, `chrome${CHROME_VERSION}`],
-    outfile: "dist/preload.js",
+    outfile: `${distDir}/preload.js`,
     external: ["electron"],
   }),
   // Renderer
@@ -98,7 +100,7 @@ const contexts = await Promise.all([
     entryPoints: ["src/renderer/index.ts"],
     platform: "browser",
     target: `chrome${CHROME_VERSION}`,
-    outfile: "dist/renderer.js",
+    outfile: `${distDir}/renderer.js`,
     format: "esm",
   }),
 ]);
