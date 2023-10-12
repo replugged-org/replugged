@@ -18,7 +18,7 @@ const DEFAULT_INSTALLER_SOURCE: InstallerSource = "store";
 
 const CACHE_INTERVAL = 1000 * 60 * 60;
 
-const cache: Map<string, { data: CheckResultSuccess | null; expires: Date }> = new Map();
+const cache = new Map<string, { data: CheckResultSuccess | null; expires: Date }>();
 
 export function isValidSource(type: string): type is InstallerSource {
   // @ts-expect-error Doesn't matter that it might not be a valid type

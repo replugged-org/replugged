@@ -6,6 +6,7 @@ import {
 } from "electron";
 
 import { RepluggedIpcChannels } from "./types";
+// eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
 import type {
   CheckResultFailure,
   CheckResultSuccess,

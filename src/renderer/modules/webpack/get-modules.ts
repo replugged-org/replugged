@@ -81,6 +81,7 @@ export function getById<T>(id: number, raw?: boolean): T | RawModule<T> | undefi
  * You should not use this function in production unless the ID is dynamically determined.
  */
 export function getById<T>(id: number, raw = false): T | RawModule<T> | undefined {
+  if (!wpRequire) throw new Error("Webpack not initialized");
   // Load the module if not already initialized
   if (!(id in wpRequire.c)) {
     wpRequire(id);
