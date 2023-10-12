@@ -40,25 +40,22 @@ export type FormItemType = React.FC<FormItemProps>;
 
 export default ((props) => {
   const { note, notePosition = "before", noteStyle, noteClassName, divider, ...compProps } = props;
+
+  const noteStyleDefault = notePosition === "before" ? { marginTop: 8 } : { marginTop: 8 };
+  const noteComp = (
+    <FormText.DESCRIPTION
+      disabled={props.disabled}
+      className={noteClassName}
+      style={{ ...noteStyleDefault, ...noteStyle }}>
+      {note}
+    </FormText.DESCRIPTION>
+  );
+
   return (
     <FormItemComp {...compProps}>
-      {note && notePosition === "before" && (
-        <FormText.DESCRIPTION
-          disabled={props.disabled}
-          className={noteClassName}
-          style={{ marginBottom: 8, ...noteStyle }}>
-          {note}
-        </FormText.DESCRIPTION>
-      )}
+      {note && notePosition === "before" && noteComp}
       {props.children}
-      {note && notePosition === "after" && (
-        <FormText.DESCRIPTION
-          disabled={props.disabled}
-          className={noteClassName}
-          style={{ marginTop: 8, ...noteStyle }}>
-          {note}
-        </FormText.DESCRIPTION>
-      )}
+      {note && notePosition === "after" && noteComp}
       {divider && <Divider className={classes.dividerDefault} />}
     </FormItemComp>
   );
