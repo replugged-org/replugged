@@ -68,8 +68,8 @@ export function loadCommands(): void {
                   ? Messages.REPLUGGED_PLUGIN
                   : Messages.REPLUGGED_THEME,
                 name:
-                  plugins.plugins.get(addonId)?.manifest?.name ??
-                  themes.themes.get(addonId)?.manifest?.name,
+                  plugins.plugins.get(addonId)?.manifest.name ??
+                  themes.themes.get(addonId)?.manifest.name,
               }),
             },
           ],
@@ -151,8 +151,8 @@ export function loadCommands(): void {
                   ? Messages.REPLUGGED_PLUGIN
                   : Messages.REPLUGGED_THEME,
                 name:
-                  plugins.plugins.get(addonId)?.manifest?.name ??
-                  themes.themes.get(addonId)?.manifest?.name,
+                  plugins.plugins.get(addonId)?.manifest.name ??
+                  themes.themes.get(addonId)?.manifest.name,
               }),
             },
           ],
@@ -229,8 +229,8 @@ export function loadCommands(): void {
                   ? Messages.REPLUGGED_PLUGIN
                   : Messages.REPLUGGED_THEME,
                 name:
-                  plugins.plugins.get(addonId)?.manifest?.name ??
-                  themes.themes.get(addonId)?.manifest?.name,
+                  plugins.plugins.get(addonId)?.manifest.name ??
+                  themes.themes.get(addonId)?.manifest.name,
               }),
             },
           ],

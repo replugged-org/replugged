@@ -19,32 +19,32 @@ interface ApplicationCommandSearchStoreMod {
   [key: string]: (...args: unknown[]) => {
     sectionDescriptors: RepluggedCommandSection[];
     commands: AnyRepluggedCommand[];
-    filteredSectionId: string;
+    filteredSectionId: string | null;
     activeSections: RepluggedCommandSection[];
     commandsByActiveSection: Array<{
       section: RepluggedCommandSection;
       data: AnyRepluggedCommand[];
     }>;
-  };
+  } | undefined;
 }
 
 interface ApplicationCommandSearchStore {
   getChannelState: (...args: unknown[]) => {
     applicationSections: RepluggedCommandSection[];
     applicationCommands: AnyRepluggedCommand[];
-  };
-  getApplicationSections: (...args: unknown[]) => RepluggedCommandSection[];
+  } | undefined;
+  getApplicationSections: (...args: unknown[]) => RepluggedCommandSection[] | undefined;
   useSearchManager: (...args: unknown[]) => unknown;
-  getQueryCommands: (...args: [string, string, string]) => AnyRepluggedCommand[];
+  getQueryCommands: (...args: [string, string, string]) => AnyRepluggedCommand[] | undefined;
 }
 
 async function injectRepluggedBotIcon(): Promise<void> {
   // Adds Avatar for replugged to default avatar to be used by system bot just like clyde
   // Ain't removing it on stop because we have checks here
   const DefaultAvatars = await waitForProps<{
-    BOT_AVATARS: Record<string, string>;
+    BOT_AVATARS: Record<string, string> | undefined;
   }>("BOT_AVATARS");
-  if (DefaultAvatars?.BOT_AVATARS) {
+  if (DefaultAvatars.BOT_AVATARS) {
     DefaultAvatars.BOT_AVATARS.replugged = defaultSection.icon;
   } else {
     logger.error("Error while injecting custom icon for slash command replies.");
@@ -88,7 +88,7 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
       const sectionsToAdd = commandAndSectionsArray
         .map((commandAndSection) => commandAndSection.section)
         .filter((section) => !res.sectionDescriptors.includes(section));
-      if (res.sectionDescriptors.some?.((section) => section?.id === "-2")) {
+      if (res.sectionDescriptors.some((section) => section.id === "-2")) {
         res.sectionDescriptors.splice(1, 0, ...sectionsToAdd);
       } else {
         res.sectionDescriptors = Array.isArray(res.sectionDescriptors)
@@ -109,7 +109,7 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
             (res.filteredSectionId == null || res.filteredSectionId === section.id) &&
             !res.activeSections.includes(section),
         );
-      if (res.activeSections.some?.((section) => section?.id === "-2")) {
+      if (res.activeSections.some((section) => section.id === "-2")) {
         res.activeSections.splice(1, 0, ...sectionsToAdd);
       } else {
         res.activeSections = Array.isArray(res.activeSections)
@@ -134,8 +134,8 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
         }));
 
       if (
-        res.commandsByActiveSection.some?.(
-          (activeCommandAndSections) => activeCommandAndSections?.section?.id === "-2",
+        res.commandsByActiveSection.some(
+          (activeCommandAndSections) => activeCommandAndSections.section.id === "-2",
         )
       ) {
         res.commandsByActiveSection.splice(1, 0, ...commandsBySectionToAdd);
@@ -179,7 +179,7 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     if (
       !Array.isArray(res.applicationSections) ||
       !commandAndSectionsArray.every((commandAndSection) =>
-        res.applicationSections?.some((section) => section.id === commandAndSection.section.id),
+        res.applicationSections.some((section) => section.id === commandAndSection.section.id),
       )
     ) {
       const sectionsToAdd = commandAndSectionsArray.map(
@@ -217,16 +217,16 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
       (commandAndSection) => commandAndSection.commands.size,
     );
-    if (!res || !commandAndSectionsArray.length) return;
+    if (!commandAndSectionsArray.length) return;
     if (
       !commandAndSectionsArray.every((commandAndSection) =>
-        res.some((section) => section.id === commandAndSection.section.id),
+        res?.some((section) => section.id === commandAndSection.section.id),
       )
     ) {
       const sectionsToAdd = commandAndSectionsArray
         .map((commandAndSection) => commandAndSection.section)
-        .filter((section) => res.some((existingSections) => section.id === existingSections.id));
-      res = [...res, ...sectionsToAdd];
+        .filter((section) => res?.some((existingSections) => section.id === existingSections.id));
+      res.push(...sectionsToAdd);
     }
     return res;
   });
