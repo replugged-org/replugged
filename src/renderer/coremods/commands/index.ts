@@ -16,23 +16,27 @@ const logger = Logger.api("Commands");
 const injector = new Injector();
 
 interface ApplicationCommandSearchStoreMod {
-  [key: string]: (...args: unknown[]) => {
-    sectionDescriptors: RepluggedCommandSection[];
-    commands: AnyRepluggedCommand[];
-    filteredSectionId: string | null;
-    activeSections: RepluggedCommandSection[];
-    commandsByActiveSection: Array<{
-      section: RepluggedCommandSection;
-      data: AnyRepluggedCommand[];
-    }>;
-  } | undefined;
+  [key: string]: (...args: unknown[]) =>
+    | {
+        sectionDescriptors: RepluggedCommandSection[];
+        commands: AnyRepluggedCommand[];
+        filteredSectionId: string | null;
+        activeSections: RepluggedCommandSection[];
+        commandsByActiveSection: Array<{
+          section: RepluggedCommandSection;
+          data: AnyRepluggedCommand[];
+        }>;
+      }
+    | undefined;
 }
 
 interface ApplicationCommandSearchStore {
-  getChannelState: (...args: unknown[]) => {
-    applicationSections: RepluggedCommandSection[];
-    applicationCommands: AnyRepluggedCommand[];
-  } | undefined;
+  getChannelState: (...args: unknown[]) =>
+    | {
+        applicationSections: RepluggedCommandSection[];
+        applicationCommands: AnyRepluggedCommand[];
+      }
+    | undefined;
   getApplicationSections: (...args: unknown[]) => RepluggedCommandSection[] | undefined;
   useSearchManager: (...args: unknown[]) => unknown;
   getQueryCommands: (...args: [string, string, string]) => AnyRepluggedCommand[] | undefined;
