@@ -52,7 +52,7 @@ export const GuildFeatures = getExportsForProps<Record<string, string>>(Constant
   "VERIFIED",
   "ANIMATED_BANNER",
 ])!;
-export const MessageFlags = getExportsForProps<Record<string, string | number>>(Constants, [
+export const MessageFlags = getExportsForProps<Record<string, number>>(Constants, [
   "EPHEMERAL",
   "LOADING",
 ])!;
