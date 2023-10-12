@@ -49,17 +49,15 @@ export function load(id: string): void {
   const theme = themes.get(id)!;
   let themeSettings = settings.get(theme.manifest.id);
   if (!themeSettings) themeSettings = {};
-  console.log(themeSettings);
   if (!themeSettings.chosenPreset) {
     themeSettings.chosenPreset = theme.manifest.presets?.find((x) => x.default)?.path;
-    console.log(themeSettings);
     settings.set(theme.manifest.id, themeSettings);
   }
 
   let el;
   if (theme.manifest.main) {
     el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
-  } else if (themeSettings?.chosenPreset) {
+  } else if (themeSettings.chosenPreset) {
     el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenPreset}`);
   } else {
     throw new Error(`Theme ${id} does not have a main variant.`);

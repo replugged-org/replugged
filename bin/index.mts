@@ -21,7 +21,6 @@ import { logBuildPlugin } from "../src/util.mjs";
 import { sassPlugin } from "esbuild-sass-plugin";
 import { fileURLToPath } from "url";
 import { AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
-import { ThemeManifest } from "src/types";
 
 interface BaseArgs {
   watch?: boolean;

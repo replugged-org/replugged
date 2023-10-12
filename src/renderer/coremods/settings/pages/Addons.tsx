@@ -702,7 +702,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Text>
         ) : null
       ) : (
-        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length+1), type)) && (
+        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length + 1), type)) && (
           <ErrorBoundary>
             <SettingsElement />
           </ErrorBoundary>
