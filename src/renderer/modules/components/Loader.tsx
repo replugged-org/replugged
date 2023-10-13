@@ -6,6 +6,7 @@ const Types = {
   CHASING_DOTS: "chasingDots",
   PULSING_ELLIPSIS: "pulsingEllipsis",
   SPINNING_CIRCLE: "spinningCircle",
+  SPINNING_CIRCLE_SIMPLE: "spinningCircleSimple",
   LOW_MOTION: "lowMotion",
 } as const;
 
@@ -20,7 +21,7 @@ type LoaderProps = GenericLoaderProps & {
   type?: (typeof Types)[keyof typeof Types];
 } & React.ComponentPropsWithoutRef<"span">;
 type SpinningCircleLoaderProps = GenericLoaderProps & {
-  type?: (typeof Types)["SPINNING_CIRCLE"];
+  type?: (typeof Types)["SPINNING_CIRCLE"] | (typeof Types)["SPINNING_CIRCLE_SIMPLE"];
 } & React.ComponentPropsWithoutRef<"div">;
 
 export type LoaderType = React.FC<LoaderProps | SpinningCircleLoaderProps> & {
