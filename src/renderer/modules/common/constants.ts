@@ -56,7 +56,7 @@ export const MessageFlags = getExportsForProps<Record<string, number>>(Constants
   "EPHEMERAL",
   "LOADING",
 ])!;
-export const Routes = getExportsForProps<Record<string, StringConcat>>(Constants, [
+export const Routes = getExportsForProps<Record<string, string | StringConcat>>(Constants, [
   "INDEX",
   "LOGIN",
 ])!;
