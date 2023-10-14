@@ -5,9 +5,8 @@ import { Logger } from "@replugged";
 import { getByProps } from "@webpack";
 import { openExternal } from "src/renderer/util";
 import { CheckResultSuccess } from "src/types";
-import { InstallLinkProps } from ".";
 import { getSourceLink } from "../settings/pages";
-import { authorList, checkIsInstalled, getInfo, install } from "./util";
+import { InstallLinkProps, authorList, checkIsInstalled, getInfo, install } from "./util";
 
 import "./addonEmbed.css";
 
