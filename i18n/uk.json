@@ -197,7 +197,7 @@
     "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Показувати картку з інформацією про аддон коли посилання в магазин чи встановлення поширено в чаті.",
     "REPLUGGED_RESTART": "Перезавантажити",
     "REPLUGGED_SETTINGS_RESTART_TITLE": "Потрібне перезавантаження",
-    "REPLUGGED_COMMAND_ERROR_GENERIC": "Щось пішло не так, спробуйте пізніше. Якщо проблема не зникне, зверніться до команли Replugged.",
+    "REPLUGGED_COMMAND_ERROR_GENERIC": "Щось пішло не так, спробуйте пізніше. Якщо проблема не зникне, зверніться до команди Replugged.",
     "REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME": "аддон",
     "REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME": "аддон",
     "REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_DESC": "Виберіть, який аддон вимкнути",
@@ -227,5 +227,11 @@
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Чи показувати ввімкнуті, вимкнені або всі аддони",
     "REPLUGGED_COMMAND_LIST_ERROR_SPECIFY": "Вам потрібно вказати, чи відправити список плагінінів або список тем",
     "REPLUGGED_SETTINGS_TRANSPARENT": "Прозоре вікно",
-    "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Робить вікно Discord прозорим, що є доволі корисним для створення тем. **Потрібне перезавантаження**."
+    "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Робить вікно Discord прозорим, що є доволі корисним для створення тем. **Потрібне перезавантаження**.",
+    "REPLUGGED_COMMAND_INSTALL_NAME": "встановити",
+    "REPLUGGED_COMMAND_INSTALL_DESC": "Встановити плагін чи тему",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME": "аддон",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC": "Ідентифікатор доповнення для встановлення з джерела",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME": "джерело",
+    "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Успіх"
 }
