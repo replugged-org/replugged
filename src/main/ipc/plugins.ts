@@ -5,7 +5,7 @@ IPC events:
 */
 
 import { readFile, readdir, readlink, rm, stat } from "fs/promises";
-import { extname, join } from "path";
+import { extname, join, sep } from "path";
 import { ipcMain, shell } from "electron";
 import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
@@ -19,8 +19,14 @@ export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
 };
 
 async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
+  const manifestPath = join(PLUGINS_DIR, pluginName, "manifest.json");
+  if (!manifestPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
+    // Ensure file changes are restricted to the base path
+    throw new Error("Invalid plugin name");
+  }
+
   const manifest: unknown = JSON.parse(
-    await readFile(join(PLUGINS_DIR, pluginName, "manifest.json"), {
+    await readFile(manifestPath, {
       encoding: "utf-8",
     }),
   );
@@ -85,7 +91,13 @@ ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlu
 });
 
 ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: string) => {
-  await rm(join(PLUGINS_DIR, pluginName), {
+  const pluginPath = join(PLUGINS_DIR, pluginName);
+  if (!pluginPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
+    // Ensure file changes are restricted to the base path
+    throw new Error("Invalid plugin name");
+  }
+
+  await rm(pluginPath, {
     recursive: true,
     force: true,
   });

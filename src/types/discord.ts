@@ -1,3 +1,5 @@
+import { Message } from "@common/i18n";
+
 export enum ApplicationCommandOptionType {
   String = 3,
   Integer = 4,
@@ -21,14 +23,14 @@ interface BaseCommandOptions<T extends ApplicationCommandOptionType> {
 }
 
 export interface CommandChoices {
-  name: string;
-  displayName: string;
+  name: string | Message;
+  displayName: string | Message;
   value: string | number;
 }
 
 export interface CommandOptionAutocompleteAndChoices {
   autocomplete?: boolean;
-  choices?: CommandChoices[];
+  choices?: readonly CommandChoices[];
   focused?: boolean;
 }
 

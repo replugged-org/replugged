@@ -14,10 +14,11 @@ const logger = Logger.coremod("Installer");
 // First item is the default
 export const INSTALLER_SOURCES = ["store", "github"] as const;
 export type InstallerSource = (typeof INSTALLER_SOURCES)[number];
+const DEFAULT_INSTALLER_SOURCE: InstallerSource = "store";
 
 const CACHE_INTERVAL = 1000 * 60 * 60;
 
-const cache: Map<string, { data: CheckResultSuccess | null; expires: Date }> = new Map();
+const cache = new Map<string, { data: CheckResultSuccess | null; expires: Date }>();
 
 export function isValidSource(type: string): type is InstallerSource {
   // @ts-expect-error Doesn't matter that it might not be a valid type
@@ -74,7 +75,7 @@ export async function getInfo(
   source?: InstallerSource,
   id?: string,
 ): Promise<CheckResultSuccess | null> {
-  source ??= INSTALLER_SOURCES[0];
+  source ??= DEFAULT_INSTALLER_SOURCE;
 
   const cacheIdentifier = `${source}:${identifier}:${id ?? ""}`;
   const cached = cache.get(cacheIdentifier);
@@ -221,6 +222,7 @@ export function authorList(authors: string[]): string {
 
 async function showInstallPrompt(
   manifest: AnyAddonManifest,
+  source: InstallerSource | undefined,
   linkToStore = true,
 ): Promise<boolean | null> {
   let type: string;
@@ -247,7 +249,7 @@ async function showInstallPrompt(
     body: (
       <>
         {text}
-        {manifest.updater?.type !== "store" ? (
+        {(source ?? DEFAULT_INSTALLER_SOURCE) !== "store" ? (
           <div style={{ marginTop: "16px" }}>
             <Notice messageType={Notice.Types.ERROR}>
               {Messages.REPLUGGED_ADDON_NOT_REVIEWED_DESC.format({
@@ -328,7 +330,7 @@ export async function installFlow(
 
   window.DiscordNative.window.focus();
 
-  const confirm = await showInstallPrompt(info.manifest, linkToStore);
+  const confirm = await showInstallPrompt(info.manifest, source, linkToStore);
   if (!confirm) {
     if (confirm === false && showToasts) {
       // Do not show if null ("open in store" clicked)

@@ -150,17 +150,18 @@ const Embed = React.memo(
             <div className={barLoader} />
           ) : (
             <>
-              <strong className={title}>{props.authors}</strong>
+              <Tooltip text={props.authors} className="replugged-addon-embed-title-tooltip">
+                <strong className={`${title} replugged-addon-embed-title`}>{props.authors}</strong>
+              </Tooltip>
               <Clickable
-                className={`${copyLink}`}
-                style={{
-                  paddingRight: "0px",
-                }}
+                className={`${copyLink} replugged-addon-embed-store-button`}
                 onClick={() => openExternal(props.url)}>
                 {Messages.REPLUGGED_INSTALLER_OPEN_STORE}
               </Clickable>
               <Clickable
-                className={`${copyLink}${props.onCooldown ? ` ${copied} addon-embed-copied` : ""}`}
+                className={`${copyLink} replugged-addon-embed-copy-button${
+                  props.onCooldown ? ` ${copied} addon-embed-copied` : ""
+                }`}
                 onClick={props.copyUrl}>
                 <Link className={copyLinkIcon} />
                 {props.onCooldown

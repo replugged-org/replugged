@@ -38,7 +38,6 @@ interface BaseTooltipProps {
   allowOverflow?: boolean;
   disableTooltipPointerEvents?: boolean;
   forceOpen?: boolean;
-  hide?: boolean;
   hideOnClick?: boolean;
   clickableOnMobile?: boolean;
   shouldShow?: boolean;
