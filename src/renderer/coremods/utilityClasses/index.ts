@@ -1,4 +1,4 @@
-import { Injector, Logger } from "@replugged";
+import { Injector } from "@replugged";
 import { filters, getByProps, getByStoreName, waitForModule } from "src/renderer/modules/webpack";
 import { users } from "@common";
 import type React from "react";
@@ -6,7 +6,6 @@ import type { Store } from "src/renderer/modules/common/flux";
 import type { Message } from "discord-types/general";
 
 const inject = new Injector();
-//const logger = Logger.coremod("UtilityClasses");
 const html = document.documentElement;
 
 interface TabBarItemProps {
@@ -38,9 +37,7 @@ function tabBarItemId(): void {
 }
 
 interface ClientThemesBackgroundStore extends Store {
-  gradientPreset: {
-    id: number;
-  };
+  gradientPreset: { id: number } | undefined; // undefined when no nitro theme is selected
 }
 type ThemeIDMap = Record<string, number> & Record<number, string>;
 
@@ -74,7 +71,7 @@ function nitroThemeClass(): void {
 }
 
 interface MessageComponent {
-  props: { id: string };
+  props: { id: string | undefined }; // may not be there for non-message components
   type: {
     type: (msg: { message: Message }) => React.ReactElement;
   };
@@ -85,6 +82,7 @@ async function messageDataAttributes(): Promise<void> {
     type: () => React.ReactElement;
   }>(filters.bySource(".content.id)"));
 
+  // the Message component isn't exported, so it must be extracted like this
   const uninjectMessagesComponent = inject.after(MessagesComponent, "type", (_, res) => {
     uninjectMessagesComponent();
 
@@ -102,11 +100,12 @@ async function messageDataAttributes(): Promise<void> {
           const { props } = res.props.children.props.children;
           props["data-is-author-self"] = message.author.id === users.getCurrentUser().id;
           props["data-is-author-bot"] = message.author.bot;
+          // webhooks are also considered bots
           if (message.author.bot) {
-            props["data-is-author-webhook"] = message.webhookId !== null;
+            props["data-is-author-webhook"] = Boolean(message.webhookId);
           }
           props["data-author-id"] = message.author.id;
-          props["data-message-type"] = message.type;
+          props["data-message-type"] = message.type; // raw enum value, seems consistent
           if (message.blocked) props["data-is-blocked"] = "true";
           return res;
         });
