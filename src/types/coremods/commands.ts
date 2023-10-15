@@ -85,7 +85,7 @@ export type RepluggedCommand<T extends CommandOptions> = InexecutableRepluggedCo
 export type AnyRepluggedCommand = RepluggedCommand<CommandOptions>;
 
 export interface RepluggedCommandResult {
-  send: boolean;
+  send?: boolean;
   result?: string;
   embeds?: APIEmbed[];
 }

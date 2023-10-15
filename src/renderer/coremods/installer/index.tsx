@@ -131,7 +131,7 @@ async function injectLinks(): Promise<void> {
     parse: (capture: Capture) => {
       const installLink = parseInstallLink(capture[1]);
       return {
-        ...installLink!,
+        ...installLink,
         url: capture[1],
       };
     },
