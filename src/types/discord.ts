@@ -1,7 +1,7 @@
 import type { Channel, Guild } from "discord-types/general";
-import { CommandInteraction } from "../renderer/apis/commands";
 import { GetCommandOptions, RepluggedCommandResult } from "./coremods/commands";
 import { Message } from "@common/i18n";
+import { CommandInteraction } from "src/renderer/apis/commands";
 
 export enum ApplicationCommandOptionType {
   Subcommand = 1,
@@ -62,11 +62,11 @@ export interface ChannelOptions extends BaseCommandOptions<ApplicationCommandOpt
   channel_types?: readonly number[];
 }
 
-export type SubcommandOptions<T extends CommandOptions> =
+export type SubcommandOptions<T extends SubcommandCommandOptions = SubcommandCommandOptions> =
   (BaseCommandOptions<ApplicationCommandOptionType.Subcommand> & {
     applicationId?: string;
     id?: string;
-    options: T[];
+    options?: SubcommandCommandOptions[];
   }) &
     (
       | {
@@ -84,11 +84,11 @@ export type SubcommandOptions<T extends CommandOptions> =
         }
     );
 
-export interface SubcommandGroupOptions<T extends CommandOptions>
+export interface SubcommandGroupOptions
   extends BaseCommandOptions<ApplicationCommandOptionType.SubcommandGroup> {
   applicationId?: string;
   id?: string;
-  options: Array<SubcommandOptions<T>>;
+  options: SubcommandGroupCommandOptions[];
 }
 
 export interface OtherCommandOptions
@@ -106,7 +106,15 @@ export interface CommandOptionReturn<T = unknown> {
   value: T;
 }
 
-export type CommandOptions = StringOptions | NumberOptions | ChannelOptions | OtherCommandOptions;
+type NormalCommandOptions = StringOptions | NumberOptions | ChannelOptions | OtherCommandOptions;
+
+export type CommandOptions = SubcommandGroupOptions | SubcommandOptions | NormalCommandOptions;
+
+// https://discord.com/developers/docs/interactions/application-commands#subcommands-and-subcommand-groups
+// Subcommand groups can only have a subcommand as a child.
+// Subcommands or subcommand groups cannot be nested within a subcommand.
+export type SubcommandGroupCommandOptions = SubcommandOptions;
+export type SubcommandCommandOptions = NormalCommandOptions;
 
 export interface ConnectedAccount {
   type: string;

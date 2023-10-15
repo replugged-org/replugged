@@ -11,7 +11,7 @@ import type {
   RepluggedCommandSection,
 } from "../../types";
 // eslint-disable-next-line no-duplicate-imports
-import { ApplicationCommandOptionType } from "../../types";
+import { ApplicationCommandOptionType, SubcommandCommandOptions } from "../../types";
 import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
@@ -19,7 +19,7 @@ import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
 
-let RepluggedUser: User;
+let RepluggedUser: User | undefined;
 
 interface CommandsAndSection {
   section: RepluggedCommandSection;
@@ -224,7 +224,7 @@ export class CommandManager {
     command.execute ??= (args, currentInfo) => {
       void executeCommand(command.executor, args, currentInfo, command);
     };
-    const mapOptions = (option: T): T => {
+    const mapOptions = <T extends CommandOptions>(option: T): T => {
       option.displayName ??= option.name;
       option.displayDescription ??= option.description;
       option.serverLocalizedName ??= option.displayName;
@@ -234,11 +234,11 @@ export class CommandManager {
       ) {
         option.applicationId = currentSection?.section.id;
         option.id ??= option.name;
-        option.options.map(mapOptions);
+        option.options?.map(mapOptions);
       }
       if (option.type === ApplicationCommandOptionType.Subcommand) {
         option.execute ??= (args, currentInfo) => {
-          void executeCommand(option.executor, args ?? [], currentInfo ?? {}, option);
+          void executeCommand<SubcommandCommandOptions>(option.executor, args, currentInfo, option);
         };
       }
       return option;
