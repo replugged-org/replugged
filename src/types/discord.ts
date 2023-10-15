@@ -1,6 +1,8 @@
 import type { Channel, Guild } from "discord-types/general";
 import { CommandInteraction } from "../renderer/apis/commands";
 import { GetCommandOptions, RepluggedCommandResult } from "./coremods/commands";
+import { Message } from "@common/i18n";
+
 export enum ApplicationCommandOptionType {
   Subcommand = 1,
   SubcommandGroup = 2,
@@ -26,14 +28,14 @@ interface BaseCommandOptions<T extends ApplicationCommandOptionType> {
 }
 
 export interface CommandChoices {
-  name: string;
-  displayName: string;
+  name: string | Message;
+  displayName: string | Message;
   value: string | number;
 }
 
 export interface CommandOptionAutocompleteAndChoices {
   autocomplete?: boolean;
-  choices?: CommandChoices[];
+  choices?: readonly CommandChoices[];
   focused?: boolean;
 }
 

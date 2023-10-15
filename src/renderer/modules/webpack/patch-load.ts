@@ -9,7 +9,7 @@ import { patchModuleSource } from "./plaintext-patch";
  * @internal
  * @hidden
  */
-export let wpRequire: WebpackRequire;
+export let wpRequire: WebpackRequire | undefined;
 
 let signalReady: () => void;
 let ready = false;

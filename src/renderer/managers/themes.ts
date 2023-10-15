@@ -82,7 +82,7 @@ export function loadSplash(id: string): void {
  */
 export function loadAll(): void {
   for (const id of themes.keys()) {
-    if (!disabled.includes(id) && themes.get(id)?.manifest?.main) {
+    if (!disabled.includes(id) && themes.get(id)?.manifest.main) {
       load(id);
     }
   }
@@ -93,7 +93,7 @@ export function loadAll(): void {
  */
 export function loadAllSplash(): void {
   for (const id of themes.keys()) {
-    if (!disabled.includes(id) && themes.get(id)?.manifest?.splash) {
+    if (!disabled.includes(id) && themes.get(id)?.manifest.splash) {
       loadSplash(id);
     }
   }

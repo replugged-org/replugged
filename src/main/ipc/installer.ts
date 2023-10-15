@@ -9,11 +9,15 @@ import {
 } from "../../types";
 import { Octokit } from "@octokit/rest";
 import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
+import { writeFile as originalWriteFile } from "original-fs";
 import fetch from "node-fetch";
-import { join } from "path";
+import { join, resolve, sep } from "path";
 import { AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
 import { getSetting } from "./settings";
+import { promisify } from "util";
+
+const writeFile = promisify(originalWriteFile);
 
 const octokit = new Octokit();
 
@@ -170,6 +174,13 @@ ipcMain.handle(
     query.set("type", update ? "update" : "install");
     if (version) query.set("version", version);
 
+    if (type === "replugged") {
+      // Manually set Path and URL for security purposes
+      path = "replugged.asar";
+      const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", "https://replugged.dev");
+      url = `${apiUrl}/api/v1/store/dev.replugged.Replugged.asar`;
+    }
+
     let res;
     try {
       res = await fetch(`${url}?${query}`);
@@ -191,8 +202,20 @@ ipcMain.handle(
 
     const buf = Buffer.from(file);
 
+    const base = getBaseName(type);
+    const filePath = resolve(base, path);
+    if (!filePath.startsWith(`${base}${sep}`)) {
+      // Ensure file changes are restricted to the base path
+      return {
+        success: false,
+        error: "Invalid path",
+      };
+    }
+
+    console.log(url, filePath);
+
     try {
-      await writeFile(join(getBaseName(type), path), buf);
+      await writeFile(filePath, buf);
     } catch (err) {
       return {
         success: false,

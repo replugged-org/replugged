@@ -10,6 +10,7 @@ import type {
   RepluggedCommandResult,
   RepluggedCommandSection,
 } from "../../types";
+// eslint-disable-next-line no-duplicate-imports
 import { ApplicationCommandOptionType } from "../../types";
 import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
@@ -55,7 +56,7 @@ export class CommandInteraction<T extends CommandOptionReturn> {
           channelId: string,
           optionName: string,
           draftType: 0,
-        ) => { uploadedFilename?: string; item?: { file: File } };
+        ) => { uploadedFilename?: string; item?: { file: File } } | undefined;
       }
     >("UploadAttachmentStore")!;
     this.options = props.options;
@@ -164,13 +165,12 @@ async function executeCommand<T extends CommandOptions>(
   } catch (error) {
     logger.error(error);
     const currentChannelId = currentInfo.channel.id;
-    const botMessage = messages.createBotMessage?.({
+    const botMessage = messages.createBotMessage({
       channelId: currentChannelId,
       content: i18n.Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
       embeds: [],
       loggingName: "Replugged",
     });
-    if (!botMessage) return;
 
     Object.assign(botMessage, {
       interaction: {
@@ -189,7 +189,7 @@ async function executeCommand<T extends CommandOptions>(
       author: RepluggedUser ?? botMessage.author,
     });
 
-    messages?.receiveMessage?.(currentChannelId, botMessage, true);
+    messages.receiveMessage(currentChannelId, botMessage, true);
   }
 }
 
@@ -222,7 +222,7 @@ export class CommandManager {
     command.id ??= command.name;
 
     command.execute ??= (args, currentInfo) => {
-      void executeCommand(command.executor, args ?? [], currentInfo ?? {}, command);
+      void executeCommand(command.executor, args, currentInfo, command);
     };
     const mapOptions = (option: T): T => {
       option.displayName ??= option.name;
@@ -258,6 +258,6 @@ export class CommandManager {
    * Code to unregister all slash commands registered with this class
    */
   public unregisterAllCommands(): void {
-    for (const unregister of this.#unregister) unregister?.();
+    for (const unregister of this.#unregister) unregister();
   }
 }
