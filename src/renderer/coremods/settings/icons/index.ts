@@ -1,3 +1,4 @@
+import _ from "react";
 import Discord from "./Discord";
 import GitHub from "./GitHub";
 import Link from "./Link";

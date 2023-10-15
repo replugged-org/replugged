@@ -1,5 +1,5 @@
 import { Messages } from "@common/i18n";
-import { React } from "@common";
+import React, { _ } from "@common/react";
 import { Button, Clickable, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { getByProps } from "@webpack";

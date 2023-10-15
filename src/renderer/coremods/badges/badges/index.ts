@@ -1,3 +1,4 @@
+import type _ from "react"
 import Booster from "./Booster";
 import BugHunter from "./BugHunter";
 import Contributor from "./Contributor";

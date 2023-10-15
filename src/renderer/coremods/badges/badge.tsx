@@ -1,5 +1,5 @@
 import { Messages } from "@common/i18n";
-import React from "@common/react";
+import React, { _ } from "@common/react";
 import { Clickable, Tooltip } from "@components";
 import { getByProps } from "../../modules/webpack";
 import { goToOrJoinServer, openExternal } from "../../util";
