@@ -142,8 +142,10 @@ export function initWs(isManual = false): void {
 
         const candidates = search(find);
         const keys = Object.keys(candidates);
-        if (keys.length !== 1)
-          return reply(`Expected exactly one 'find' match, found ${keys.length}`);
+        if (keys.length !== 1) {
+          reply(`Expected exactly one 'find' match, found ${keys.length}`);
+          return;
+        }
 
         let src = String(candidates[keys[0] as keyof typeof candidates]);
 
@@ -163,7 +165,8 @@ export function initWs(isManual = false): void {
 
             src = newSource;
           } catch (err) {
-            return reply(`Replacement ${i} failed: ${err}`);
+            reply(`Replacement ${i} failed: ${err}`);
+            return;
           }
         }
 
@@ -176,7 +179,8 @@ export function initWs(isManual = false): void {
         try {
           parsedArgs = args.map(parseNode);
         } catch (err) {
-          return reply(`Failed to parse args: ${err}`);
+          reply(`Failed to parse args: ${err}`);
+          return;
         }
 
         try {
@@ -185,7 +189,8 @@ export function initWs(isManual = false): void {
           if (results.length > 1)
             throw new Error("Found more than one result! Make this filter more specific.");
         } catch (err) {
-          return reply(`Failed to find: ${err}`);
+          reply(`Failed to find: ${err}`);
+          return;
         }
 
         reply();

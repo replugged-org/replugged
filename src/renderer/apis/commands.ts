@@ -19,7 +19,7 @@ import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
 
-let RepluggedUser: User | null;
+let RepluggedUser: User | undefined;
 
 interface CommandsAndSection {
   section: RepluggedCommandSection;
@@ -165,13 +165,12 @@ async function executeCommand<T extends CommandOptions>(
   } catch (error) {
     logger.error(error);
     const currentChannelId = currentInfo.channel.id;
-    const botMessage = messages.createBotMessage?.({
+    const botMessage = messages.createBotMessage({
       channelId: currentChannelId,
       content: i18n.Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
       embeds: [],
       loggingName: "Replugged",
     });
-    if (!botMessage) return;
 
     Object.assign(botMessage, {
       interaction: {
@@ -223,13 +222,13 @@ export class CommandManager {
     command.id ??= command.name;
 
     command.execute ??= (args, currentInfo) => {
-      void executeCommand(command.executor, args ?? [], currentInfo ?? {}, command);
+      void executeCommand(command.executor, args, currentInfo, command);
     };
+
     command.options?.map((option) => {
       option.serverLocalizedName ??= option.displayName;
       option.displayName ??= option.name;
       option.displayDescription ??= option.description;
-
       return option;
     });
 
