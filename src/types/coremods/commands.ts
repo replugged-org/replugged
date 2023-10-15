@@ -3,16 +3,14 @@ import type { ValueOf } from "type-fest";
 import { CommandInteraction } from "../../renderer/apis/commands";
 import type {
   APIEmbed,
+  ApplicationCommandOptionType,
   CommandChoices,
   CommandOptionReturn,
   CommandOptions,
   StringOptions,
 } from "../discord";
-import { ApplicationCommandOptionType } from "../discord";
 
 interface OptionTypeMapping {
-  [ApplicationCommandOptionType.Subcommand]: undefined;
-  [ApplicationCommandOptionType.SubcommandGroup]: undefined;
   [ApplicationCommandOptionType.String]: string;
   [ApplicationCommandOptionType.Integer]: number;
   [ApplicationCommandOptionType.Boolean]: boolean;

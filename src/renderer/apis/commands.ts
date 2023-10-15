@@ -10,6 +10,7 @@ import type {
   RepluggedCommandResult,
   RepluggedCommandSection,
 } from "../../types";
+// eslint-disable-next-line no-duplicate-imports
 import { ApplicationCommandOptionType } from "../../types";
 import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
@@ -18,7 +19,7 @@ import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
 
-let RepluggedUser: User;
+let RepluggedUser: User | null;
 
 interface CommandsAndSection {
   section: RepluggedCommandSection;
@@ -55,7 +56,7 @@ export class CommandInteraction<T extends CommandOptionReturn> {
           channelId: string,
           optionName: string,
           draftType: 0,
-        ) => { uploadedFilename?: string; item?: { file: File } };
+        ) => { uploadedFilename?: string; item?: { file: File } } | undefined;
       }
     >("UploadAttachmentStore")!;
     this.options = props.options;
@@ -189,7 +190,7 @@ async function executeCommand<T extends CommandOptions>(
       author: RepluggedUser ?? botMessage.author,
     });
 
-    messages?.receiveMessage?.(currentChannelId, botMessage, true);
+    messages.receiveMessage(currentChannelId, botMessage, true);
   }
 }
 
@@ -224,26 +225,13 @@ export class CommandManager {
     command.execute ??= (args, currentInfo) => {
       void executeCommand(command.executor, args ?? [], currentInfo ?? {}, command);
     };
-    const mapOptions = (option: T): T => {
+    command.options?.map((option) => {
+      option.serverLocalizedName ??= option.displayName;
       option.displayName ??= option.name;
       option.displayDescription ??= option.description;
-      option.serverLocalizedName ??= option.displayName;
-      if (
-        option.type === ApplicationCommandOptionType.Subcommand ||
-        option.type === ApplicationCommandOptionType.SubcommandGroup
-      ) {
-        option.applicationId = currentSection?.section.id;
-        option.id ??= option.name;
-        option.options.map(mapOptions);
-      }
-      if (option.type === ApplicationCommandOptionType.Subcommand) {
-        option.execute ??= (args, currentInfo) => {
-          void executeCommand(option.executor, args ?? [], currentInfo ?? {}, option);
-        };
-      }
+
       return option;
-    };
-    command.options?.map(mapOptions);
+    });
 
     currentSection?.commands.set(command.id, command as AnyRepluggedCommand);
 
@@ -258,6 +246,6 @@ export class CommandManager {
    * Code to unregister all slash commands registered with this class
    */
   public unregisterAllCommands(): void {
-    for (const unregister of this.#unregister) unregister?.();
+    for (const unregister of this.#unregister) unregister();
   }
 }
