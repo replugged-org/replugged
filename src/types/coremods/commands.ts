@@ -86,7 +86,7 @@ export type AnyRepluggedCommand = RepluggedCommand<CommandOptions>;
 
 export interface RepluggedCommandResult {
   send?: boolean;
-  result?: string;
+  result?: string | null;
   embeds?: APIEmbed[];
 }
 export interface RepluggedCommandSection {
