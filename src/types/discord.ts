@@ -1,6 +1,8 @@
 import { Message } from "@common/i18n";
 
 export enum ApplicationCommandOptionType {
+  //Subcommand = 1,
+  //SubcommandGroup = 2,
   String = 3,
   Integer = 4,
   Boolean = 5,

@@ -1,13 +1,13 @@
 import type { Channel, Guild } from "discord-types/general";
 import type { ValueOf } from "type-fest";
 import { CommandInteraction } from "../../renderer/apis/commands";
-import {
-  type APIEmbed,
+import type {
+  APIEmbed,
   ApplicationCommandOptionType,
-  type CommandChoices,
-  type CommandOptionReturn,
-  type CommandOptions,
-  type StringOptions,
+  CommandChoices,
+  CommandOptionReturn,
+  CommandOptions,
+  StringOptions,
 } from "../discord";
 
 interface OptionTypeMapping {
