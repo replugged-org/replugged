@@ -41,7 +41,7 @@ export type FormItemType = React.FC<FormItemProps>;
 export default ((props) => {
   const { note, notePosition = "before", noteStyle, noteClassName, divider, ...compProps } = props;
 
-  const noteStyleDefault = notePosition === "before" ? { marginTop: 8 } : { marginTop: 8 };
+  const noteStyleDefault = notePosition === "before" ? { marginBottom: 8 } : { marginTop: 8 };
   const noteComp = (
     <FormText.DESCRIPTION
       disabled={props.disabled}
