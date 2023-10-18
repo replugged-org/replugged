@@ -13,7 +13,6 @@ const SETTINGS_DIR = CONFIG_PATHS.settings;
 
 export function getSettingsPath(namespace: string): string {
   const resolved = resolve(SETTINGS_DIR, `${namespace}.json`);
-  console.log(resolved, SETTINGS_DIR, resolved.startsWith(SETTINGS_DIR));
   if (!resolved.startsWith(`${SETTINGS_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
     throw new Error("Invalid namespace");
