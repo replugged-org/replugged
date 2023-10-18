@@ -1,4 +1,5 @@
-import type { CommandOptions, RepluggedCommand } from "src/types";
+import type { CommandOptions } from "../../types/discord";
+import type { RepluggedCommand } from "../../types/coremods/commands";
 import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
 import type { GetButtonItem } from "../../types/coremods/message";
 import type { AnyFunction } from "../../types/util";
