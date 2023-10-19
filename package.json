@@ -71,6 +71,7 @@
   "files": [
     "dist",
     "bin",
+    "scripts",
     "*.d.ts"
   ],
   "dependencies": {
