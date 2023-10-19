@@ -1,4 +1,4 @@
-#!/usr/bin / env node
+#!/usr/bin/env node
 
 // WARNING: any imported files need to be added to files in package.json
 
