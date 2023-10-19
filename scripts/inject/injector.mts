@@ -10,13 +10,13 @@ import {
   killProcessByPID,
   openProcess,
 } from "./util.mjs";
-import readline from "readline";
-import { exec, execSync } from "child_process";
-import { DiscordPlatform, PlatformModule } from "./types.mjs";
+import { execSync } from "child_process";
+import { DiscordPlatform, PlatformModule, ProcessInfo } from "./types.mjs";
 import { CONFIG_PATH } from "../../src/util.mjs";
 import { existsSync } from "fs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
+let processInfo: ProcessInfo;
 
 export const isDiscordInstalled = async (appDir: string, silent?: boolean): Promise<boolean> => {
   try {
@@ -100,7 +100,7 @@ export const inject = async (
     return false;
   }
 
-  const fileToCheck = join(dirname, "..", "..", prod ? "replugged.asar" : "dist/main.js");
+  const fileToCheck = join(dirname, "..", "..", prod ? "replugged.asar" : "dist-bundle/main.js");
   const fileToCheckExists = await stat(fileToCheck)
     .then(() => true)
     .catch(() => false);
@@ -119,7 +119,7 @@ export const inject = async (
 
   const entryPoint = prod
     ? join(CONFIG_PATH, "replugged.asar")
-    : join(dirname, "..", "..", "dist/main.js");
+    : join(dirname, "..", "..", "dist-bundle/main.js");
   const entryPointDir = path.dirname(entryPoint);
 
   if (appDir.includes("flatpak")) {
@@ -227,9 +227,9 @@ export const smartInject = async (
         : inject(platformModule, platform, production);
   } else {
     const processName = PlatformNames[platform].replace(" ", "");
-    const processInfo = getProcessInfoByName(processName)!;
     try {
       if ((replug && cmd === "uninject") || !replug) {
+        processInfo = getProcessInfoByName(processName)!;
         await killProcessByPID(processInfo?.pid);
       }
     } catch {}
@@ -237,7 +237,7 @@ export const smartInject = async (
       cmd === "uninject"
         ? await uninject(platformModule, platform)
         : inject(platformModule, platform, production);
-    if (((replug && cmd === "inject") || !replug) && processInfo) {
+    if (((replug && cmd !== "uninject") || !replug) && processInfo) {
       const appDir = await platformModule.getAppDir(platform);
       switch (process.platform) {
         case "win32":
