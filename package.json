@@ -72,7 +72,8 @@
     "dist",
     "bin",
     "scripts",
-    "*.d.ts"
+    "*.d.ts",
+    "src/util.mts"
   ],
   "dependencies": {
     "@codemirror/lang-css": "^6.2.1",

@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// WARNING: any imported files need to be added to files in package.json
+
 import { existsSync, readdirSync } from "fs";
 import path from "path";
 import { directory } from "./index.mjs";
