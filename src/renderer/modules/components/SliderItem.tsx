@@ -1,6 +1,6 @@
 import type React from "react";
 import { FormItem } from ".";
-import { filters, waitForModule } from "../webpack";
+import { filters, waitForModule, waitForProps } from "../webpack";
 
 const MarkerPositions = {
   ABOVE: 0,
@@ -61,6 +61,8 @@ export const Slider = ((props) => {
 }) as SliderType;
 Slider.MarkerPositions = MarkerPositions;
 
+const classes = await waitForProps<Record<"marginTop20", string>>("marginTop20");
+
 interface SliderItemProps extends SliderProps {
   note?: string;
   style?: React.CSSProperties;
@@ -69,7 +71,7 @@ interface SliderItemProps extends SliderProps {
 export type SliderItemType = React.FC<React.PropsWithChildren<SliderItemProps>>;
 
 export const SliderItem = (props: React.PropsWithChildren<SliderItemProps>): React.ReactElement => {
-  const { children, ...compProps } = props;
+  const { children, className, ...compProps } = props;
   return (
     <FormItem
       title={children}
@@ -78,7 +80,12 @@ export const SliderItem = (props: React.PropsWithChildren<SliderItemProps>): Rea
       noteStyle={{ marginBottom: props.markers ? 16 : 4 }}
       disabled={props.disabled}
       divider>
-      <Slider {...compProps} />
+      <Slider
+        className={`${props.markers && !props.note ? classes.marginTop20 : ""}${
+          className ? ` ${className}` : ""
+        }`}
+        {...compProps}
+      />
     </FormItem>
   );
 };

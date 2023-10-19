@@ -233,5 +233,14 @@
     "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Completato",
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "Elenca plugin",
     "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Elenca temi",
-    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}"
+    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}",
+    "REPLUGGED_COMMAND_INSTALL_NAME": "installa",
+    "REPLUGGED_COMMAND_INSTALL_DESC": "Installa un plugin o un tema",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME": "addon",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME": "sorgente",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC": "Identificatore dell'addon da installare dalla sorgente",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Sorgente da cui installare l'addon",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "id",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Se la sorgente ha più addon, specifica quale installare",
+    "REPLUGGED_STORE": "Store"
 }
