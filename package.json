@@ -25,8 +25,9 @@
     "eslint:fix": "eslint ./src ./scripts ./bin --fix",
     "lint": "pnpm run prettier:check && pnpm run eslint:check && pnpm run cspell:check && pnpm run typescript:check",
     "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix && pnpm run cspell:check && pnpm run typescript:check",
-    "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src; cp src/*.d.ts dist",
-    "postpublish": "rm -rf dist; npm run build",
+    "postinstall": "tsx scripts/build-bin.mts",
+    "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src; cp src/*.d.ts dist; tsx scripts/create-import-wrappers.mts",
+    "postpublish": "rm -rf *.d.ts; rm -rf dist; npm run build",
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
     "docs:watch": "pnpm run docs --watch"
   },
@@ -59,7 +60,6 @@
     "eslint-plugin-react": "^7.33.2",
     "moment": "^2.29.4",
     "np": "^8.0.4",
-    "parcel": "^2.9.3",
     "prettier": "^3.0.3",
     "simple-markdown": "^0.7.3",
     "style-mod": "^4.1.0",
@@ -70,7 +70,8 @@
   },
   "files": [
     "dist",
-    "bin"
+    "bin",
+    "*.d.ts"
   ],
   "dependencies": {
     "@codemirror/lang-css": "^6.2.1",
@@ -80,13 +81,12 @@
     "@electron/asar": "^3.2.4",
     "@lezer/highlight": "^1.1.6",
     "@octokit/rest": "^20.0.1",
-    "@parcel/config-default": "^2.9.3",
-    "@parcel/core": "^2.9.3",
-    "@parcel/transformer-sass": "^2.9.3",
     "adm-zip": "^0.5.10",
     "chalk": "^5.3.0",
     "codemirror": "^6.0.1",
-    "esbuild": "^0.16.17",
+    "esbuild": "^0.19.2",
+    "esbuild-sass-plugin": "^2.13.0",
+    "esm": "^3.2.25",
     "node-fetch": "^3.3.2",
     "prompts": "^2.4.2",
     "semver": "^7.5.4",
@@ -97,7 +97,7 @@
     "zod": "^3.22.2"
   },
   "bin": {
-    "replugged": "bin/replugged.mjs"
+    "replugged": "bin.mjs"
   },
   "pnpm": {
     "overrides": {
