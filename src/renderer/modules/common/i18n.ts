@@ -181,7 +181,7 @@ interface IntlMessageObject {
   plainFormat: (values?: string | IntlMessageValues) => string;
 }
 
-type Message = string & IntlMessageObject;
+export type Message = string & IntlMessageObject;
 type Messages = Record<string, Message>;
 
 export interface I18n extends EventEmitter {

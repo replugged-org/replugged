@@ -16,8 +16,7 @@ type RadioOptionType = {
   collapsibleContent?: React.ReactNode;
 };
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type RadioProps = {
+interface RadioProps {
   options: RadioOptionType[];
   value?: string;
   onChange: (option: RadioOptionType) => void;
@@ -32,7 +31,7 @@ type RadioProps = {
   itemTitleClassName?: string;
   radioItemClassName?: string;
   collapsibleClassName?: string;
-};
+}
 
 export type RadioType = React.FC<RadioProps> & {
   Sizes: Record<"NOT_SET" | "NONE" | "SMALL" | "MEDIUM", string>;
