@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-/* eslint-disable no-process-exit */
+// WARNING: any imported files need to be added to files in package.json
 
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
@@ -7,14 +6,12 @@ import prompts from "prompts";
 import semver from "semver";
 import chalk from "chalk";
 import { execSync } from "child_process";
+import { isMonoRepo, selectAddon } from "./mono.mjs";
 
 /**
  * Prompt a confirmation message and exit if the user does not confirm.
- *
- * @param {string} message
- * @param {boolean} [initial]
  */
-async function confirmOrExit(message, initial = false) {
+async function confirmOrExit(message: string, initial = false): Promise<void> {
   const { doContinue } = await prompts(
     {
       type: "confirm",
@@ -33,12 +30,8 @@ async function confirmOrExit(message, initial = false) {
 
 /**
  * Run a command and return the output.
- *
- * @param {string} command
- * @param {boolean} [exit = true] Exit if the command fails
- * @returns {string}
  */
-function runCommand(command, exit = true) {
+function runCommand(command: string, exit = true): string {
   try {
     const result = execSync(command, {
       encoding: "utf8",
@@ -46,24 +39,22 @@ function runCommand(command, exit = true) {
     });
     return result;
   } catch (error) {
-    // @ts-expect-error
+    // @ts-expect-error not unknown
     if (!exit) return error.stdout;
-    // @ts-expect-error
+    // @ts-expect-error not unknown
     console.error(error.message);
     process.exit(1);
   }
-  throw new Error("Unreachable");
 }
 
-function onCancel() {
+export function onCancel(): void {
   console.log(chalk.red("Aborting"));
   process.exit(128); // SIGINT
 }
 
-/** @type {string} */
-let root;
+let root: string;
 
-function getRootDir() {
+function getRootDir(): string {
   if (root) return root;
 
   try {
@@ -73,13 +64,13 @@ function getRootDir() {
     }).trim();
     return root;
   } catch (error) {
-    // @ts-expect-error
+    // @ts-expect-error not unknown
     if (error.message.includes("not a git repository")) {
       console.log(chalk.red("You must run this command from within a git repository"));
       process.exit(1);
     }
 
-    // @ts-expect-error
+    // @ts-expect-error not unknown
     console.error(`Command failed with exit code ${error.status}: ${error.message}`);
     process.exit(1);
   }
@@ -87,14 +78,17 @@ function getRootDir() {
   throw new Error("Unreachable");
 }
 
-export async function release() {
+export async function release(): Promise<void> {
   const directory = getRootDir();
 
   const status = runCommand("git status --porcelain");
   const isClean = !status.trim();
   if (!isClean) await confirmOrExit("Working directory is not clean. Continue?");
 
-  const manifestPath = path.resolve(directory, "manifest.json");
+  const addon = isMonoRepo ? await selectAddon("all") : null;
+  const manifestPath = addon
+    ? path.resolve(directory, addon.type, addon.name, "manifest.json")
+    : path.resolve(directory, "manifest.json");
   if (!existsSync(manifestPath)) {
     console.log(chalk.red("manifest.json not found"));
     process.exit(1);
@@ -108,15 +102,15 @@ export async function release() {
     process.exit(1);
   }
 
-  const packagePath = path.resolve(directory, "package.json");
-  if (!existsSync(packagePath)) {
+  const packagePath = addon ? null : path.resolve(directory, "package.json");
+  if (!isMonoRepo && !existsSync(packagePath!)) {
     console.log(chalk.red("package.json not found"));
     process.exit(1);
   }
-  const packageText = readFileSync(packagePath, "utf8");
+  const packageText = packagePath ? readFileSync(packagePath, "utf8") : null;
   let packageJson;
   try {
-    packageJson = JSON.parse(packageText);
+    packageJson = packagePath ? JSON.parse(packageText!) : null;
   } catch {
     console.log(chalk.red("package.json is not valid JSON"));
     process.exit(1);
@@ -201,14 +195,15 @@ export async function release() {
 
   // Update manifest.json and package.json
   manifest.version = nextVersion;
-  packageJson.version = nextVersion;
+  if (packageJson) packageJson.version = nextVersion;
 
   // Write manifest.json and package.json (indent with 2 spaces and keep trailing newline)
   writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-  writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
+  if (packageJson) writeFileSync(packagePath!, `${JSON.stringify(packageJson, null, 2)}\n`);
 
   // Stage changes
-  runCommand("git add manifest.json package.json");
+  if (isMonoRepo) runCommand(`git add ${path.join(addon!.type, addon!.name, "manifest.json")}`);
+  else runCommand("git add manifest.json package.json");
 
   // Commit changes
   const { message } = await prompts(
@@ -216,7 +211,9 @@ export async function release() {
       type: "text",
       name: "message",
       message: "Commit message",
-      initial: `Release v${nextVersion}`,
+      initial: isMonoRepo
+        ? `[${manifest.name}] Release v${nextVersion}`
+        : `Release v${nextVersion}`,
       validate: (value) => {
         if (!value.trim()) return "Commit message is required";
 
@@ -234,7 +231,9 @@ export async function release() {
       type: "text",
       name: "tagName",
       message: "Tag name",
-      initial: `v${nextVersion}`,
+      initial: isMonoRepo
+        ? `v${nextVersion}-${manifest.name.replace(" ", "_")}`
+        : `v${nextVersion}`,
       validate: (value) => {
         if (!value.trim()) return "Tag name is required";
 

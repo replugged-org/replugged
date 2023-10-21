@@ -216,5 +216,7 @@
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "estado",
     "REPLUGGED_COMMAND_ERROR_GENERIC": "Ha ocurrido un error, por favor intente mas tarde. Si el problema persiste, contacte al equipo de Replugged.",
     "REPLUGGED_COMMAND_RELOAD_NAME": "recargar",
-    "REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC": "Incluir el numero de versión en la lista"
+    "REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC": "Incluir el numero de versión en la lista",
+    "REPLUGGED_COMMAND_LIST_OPTION_SEND_DESC": "Comparte la lista públicamente en el chat",
+    "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Éxito"
 }

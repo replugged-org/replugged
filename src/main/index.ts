@@ -53,7 +53,7 @@ class BrowserWindow extends electron.BrowserWindow {
         // opts.webPreferences.contextIsolation = false; // shrug
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
+        opts.webPreferences.preload = join(__dirname, "./preload.js");
       }
     }
 

@@ -9,6 +9,7 @@ import { default as messagePopover } from "../coremods/messagePopover/plaintextP
 import { default as notices } from "../coremods/notices/plaintextPatches";
 import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches";
 import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
+import { default as commandsPlaintext } from "../coremods/commands/plaintextPatches";
 import { Logger } from "../modules/logger";
 
 const logger = Logger.api("Coremods");
@@ -31,6 +32,7 @@ export namespace coremods {
   export let language: Coremod;
   export let rpc: Coremod;
   export let watcher: Coremod;
+  export let commands: Coremod;
   export let welcome: Coremod;
   export let utilityClasses: Coremod;
 }
@@ -56,6 +58,7 @@ export async function startAll(): Promise<void> {
   coremods.language = await import("../coremods/language");
   coremods.rpc = await import("../coremods/rpc");
   coremods.watcher = await import("../coremods/watcher");
+  coremods.commands = await import("../coremods/commands");
   coremods.welcome = await import("../coremods/welcome");
   coremods.utilityClasses = await import("../coremods/utilityClasses");
   await Promise.all(
@@ -83,5 +86,6 @@ export function runPlaintextPatches(): void {
     notices,
     contextMenu,
     languagePlaintext,
+    commandsPlaintext,
   ].forEach(patchPlaintext);
 }
