@@ -54,6 +54,14 @@ export const theme = common.extend({
   type: z.literal("replugged-theme"),
   main: z.string().optional(),
   splash: z.string().optional(),
+  presets: z
+    .object({
+      label: z.string(),
+      path: z.string(),
+      default: z.boolean().optional(),
+    })
+    .array()
+    .optional(),
 });
 
 export type ThemeManifest = z.infer<typeof theme>;
@@ -85,4 +93,10 @@ export interface PluginExports {
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type AddonSettings = {
   disabled?: string[];
+};
+
+export type ThemeSettings = AddonSettings & {
+  [x: string]: {
+    chosenPreset?: string;
+  };
 };

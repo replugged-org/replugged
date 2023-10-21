@@ -45,6 +45,7 @@
     "notif",
     "notrack",
     "outfile",
+    "outdir",
     "popout",
     "postpublish",
     "Promisable",
