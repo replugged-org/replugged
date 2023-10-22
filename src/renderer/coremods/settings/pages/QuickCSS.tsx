@@ -1,13 +1,19 @@
-import { React, toast } from "@common";
+import { React, flux, toast } from "@common";
 import { Messages } from "@common/i18n";
 import { EditorView, basicSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";
 import { githubDark, githubLight } from "./codemirror-github";
 import { webpack } from "@replugged";
-import { Button, Divider, Flex, Text } from "@components";
-import "./QuickCSS.css";
+import { Button, ButtonItem, Clickable, Divider, Flex, Text, Tooltip } from "@components";
 import { generalSettings } from "./General";
+import { ReactComponent } from "src/types";
+import { Store } from "@common/flux";
+import Popout from "../icons/Popout";
+import Unpin from "../icons/Unpin";
+import Pin from "../icons/Pin";
+
+import "./QuickCSS.css";
 
 interface UseCodeMirrorOptions {
   value?: string;
@@ -21,6 +27,34 @@ type ThemeModule = {
   addChangeListener: (listener: () => unknown) => unknown;
   removeChangeListener: (listener: () => unknown) => unknown;
 };
+
+const PopoutModule = await webpack.waitForModule(
+  webpack.filters.bySource('type:"POPOUT_WINDOW_OPEN"'),
+)!;
+const openPopout = webpack.getFunctionBySource<
+  (key: string, render: React.ComponentType, features: Record<string, string>) => void
+>(PopoutModule, "POPOUT_WINDOW_OPEN")!;
+const closePopout = webpack.getFunctionBySource<(key: string) => void>(
+  PopoutModule,
+  "POPOUT_WINDOW_CLOSE",
+)!;
+
+const setAlwaysOnTop = webpack.getFunctionBySource<(key: string, alwaysOnTop: boolean) => void>(
+  PopoutModule,
+  "POPOUT_WINDOW_SET_ALWAYS_ON_TOP",
+)!;
+
+const PopoutWindowStore = webpack.getByStoreName<
+  Store & {
+    getWindow: (key: string) => Window;
+    getWindowOpen: (key: string) => boolean;
+    getIsAlwaysOnTop: (key: string) => boolean;
+  }
+>("PopoutWindowStore")!;
+
+const PopoutWindow = webpack.getBySource<ReactComponent<unknown>>(
+  ".EMBEDDED_ACTIVITIES_ARE_YOU_SURE_WANT_TO_LEAVE",
+)!;
 
 function useTheme(): "light" | "dark" {
   const [theme, setTheme] = React.useState<"light" | "dark">("dark");
@@ -109,7 +143,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
   return { value, setValue: customSetValue };
 }
 
-export const QuickCSS = (): React.ReactElement => {
+const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.ReactElement => {
   const ref = React.useRef<HTMLDivElement>(null);
   const { value, setValue } = useCodeMirror({
     container: ref.current,
@@ -169,24 +203,100 @@ export const QuickCSS = (): React.ReactElement => {
     if (autoApply) setReloadTimer(setTimeout(reload, 500));
   }, [value]);
 
+  if (props.popout) {
+    React.useEffect(() => {
+      const window = PopoutWindowStore?.getWindow("DISCORD_REPLUGGED_QUICKCSS");
+
+      let el = window.document.createElement("link");
+      el.rel = "stylesheet";
+      el.href = `replugged://renderer.css?t=${Date.now()}`;
+      window.document.head.appendChild(el);
+    }, []);
+  }
+
+  const [alwaysOnTop, setAlwaysOnTop_] = React.useState(props.popoutOnTop);
+
   return (
     <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{Messages.REPLUGGED_QUICKCSS}</Text.H2>
-        <div style={{ display: "flex" }}>
-          {autoApply ? null : (
-            <Button onClick={reloadAndToast}>{Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}</Button>
-          )}
-          <Button
-            onClick={() => window.RepluggedNative.quickCSS.openFolder()}
-            color={Button.Colors.PRIMARY}
-            look={Button.Looks.LINK}>
-            {Messages.REPLUGGED_QUICKCSS_FOLDER_OPEN}
-          </Button>
+      {!props.popout ? (
+        <>
+          <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
+            <Text.H2>{Messages.REPLUGGED_QUICKCSS}</Text.H2>
+            <div style={{ display: "flex" }}>
+              {autoApply ? null : (
+                <Button onClick={reloadAndToast}>
+                  {Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}
+                </Button>
+              )}
+              <Button
+                onClick={() => window.RepluggedNative.quickCSS.openFolder()}
+                color={Button.Colors.PRIMARY}
+                look={Button.Looks.LINK}>
+                {Messages.REPLUGGED_QUICKCSS_FOLDER_OPEN}
+              </Button>
+            </div>
+          </Flex>
+          <Divider style={{ margin: "20px 0px" }} />
+        </>
+      ) : null}
+
+      {!props.popout && props.isPopoutOpen ? (
+        <ButtonItem
+          button={Messages.POPOUT_RETURN}
+          onClick={() => {
+            closePopout("DISCORD_REPLUGGED_QUICKCSS");
+          }}>
+          {Messages.REPLUGGED_QUICKCSS_POPPED_OUT}
+        </ButtonItem>
+      ) : (
+        <div id="replugged-quickcss-wrapper" data-popout={props.popout}>
+          <div className="replugged-quickcss-header">
+            {props.popout ? (
+              <Tooltip
+                text={alwaysOnTop ? Messages.POPOUT_REMOVE_FROM_TOP : Messages.POPOUT_STAY_ON_TOP}>
+                <Clickable
+                  onClick={() => {
+                    setAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS", !alwaysOnTop);
+                    setAlwaysOnTop_(!alwaysOnTop);
+                  }}>
+                  {alwaysOnTop ? <Unpin /> : <Pin />}
+                </Clickable>
+              </Tooltip>
+            ) : (
+              <Tooltip text={Messages.POPOUT_PLAYER}>
+                <Clickable
+                  onClick={() => {
+                    openPopout(
+                      "DISCORD_REPLUGGED_QUICKCSS",
+                      () => (
+                        <PopoutWindow
+                          windowKey="DISCORD_REPLUGGED_QUICKCSS"
+                          title={Messages.REPLUGGED_QUICKCSS}>
+                          <QuickCSS popout={true}></QuickCSS>
+                        </PopoutWindow>
+                      ),
+                      {},
+                    );
+                  }}>
+                  <Popout />
+                </Clickable>
+              </Tooltip>
+            )}
+          </div>
+          <div ref={ref}></div>
         </div>
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
-      <div ref={ref} id="replugged-quickcss-wrapper" />
+      )}
     </>
   );
 };
+
+export const ConnectedQuickCSS = flux.connectStores<
+  { popout: boolean },
+  { popout: boolean; isPopoutOpen: boolean }
+>([PopoutWindowStore], (props) => {
+  return {
+    isPopoutOpen: PopoutWindowStore.getWindowOpen("DISCORD_REPLUGGED_QUICKCSS"),
+    popoutOnTop: PopoutWindowStore.getIsAlwaysOnTop("DISCORD_REPLUGGED_QUICKCSS"),
+    ...props,
+  };
+})(QuickCSS);

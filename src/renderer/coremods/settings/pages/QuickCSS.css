@@ -1,8 +1,17 @@
+#replugged-quickcss-wrapper {
+  color: var(--text-normal);
+}
+
+#replugged-quickcss-wrapper[data-popout="true"] {
+  width: 100% !important;
+}
+
 #replugged-quickcss-wrapper .cm-editor {
   border: 1px solid transparent;
   border-radius: 4px;
   border: 1px solid var(--background-tertiary);
   outline: none !important;
+  max-height: calc(100vh - 52px);
 }
 
 #replugged-quickcss-wrapper .cm-gutters {
@@ -25,4 +34,47 @@
 
 #replugged-quickcss-wrapper .cm-scroller {
   overflow: auto;
+  max-height: 75vh;
+}
+
+/* TODO: Fix the height not working in popout */
+#replugged-quickcss-wrapper[data-popout="true"] .cm-scroller {
+  max-height: 100%;
+}
+
+#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar {
+  width: 10px;
+  height: 0px;
+  padding: 10px;
+}
+
+#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thin-thumb);
+  border-radius: 10px;
+}
+
+.replugged-quickcss-header {
+  height: 30px;
+  color: var(--text-normal);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 7px 15px;
+  background-color: var(--background-secondary);
+}
+/* Why do these have to be different in different windows.. */
+#replugged-quickcss-wrapper[data-popout="true"] .replugged-quickcss-header {
+  height: 16px;
+}
+
+.replugged-quickcss-header span,
+.replugged-quickcss-header div,
+.replugged-quickcss-header svg {
+  width: 100%;
+  height: 100%;
+}
+
+[class^="content-2qc4CV"]:has(> #replugged-quickcss-wrapper) {
+  display: block;
 }
