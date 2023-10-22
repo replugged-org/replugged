@@ -21,6 +21,7 @@ export interface ChannelStore {
   getAllThreadsForParent(channelId: string): Channel[];
   getBasicChannel(channelId: string): Channel | undefined;
   getChannel(channelId: string): Channel | undefined;
+  getChannelIds(guildId?: string): string[];
   getDMFromUserId(userId: string): string | undefined;
   getDMUserIds(): string[];
   getGuildChannelsVersion(guildId: string): number;

@@ -22,7 +22,7 @@ async function getTheme(path: string): Promise<RepluggedTheme> {
   const manifestPath = join(THEMES_DIR, path, "manifest.json");
   if (!manifestPath.startsWith(`${THEMES_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
-    throw new Error("Invalid plugin name");
+    throw new Error("Invalid theme name");
   }
 
   const manifest: unknown = JSON.parse(
