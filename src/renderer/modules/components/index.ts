@@ -163,6 +163,11 @@ export type { NoticeType };
 export let Notice: NoticeType;
 importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));
 
+import type { KeybindType } from "./KeybindItem";
+export type { KeybindType };
+export let KeybindItem: KeybindType;
+importTimeout("KeybindItem", import("./KeybindItem"), (mod) => (KeybindItem = mod.default));
+
 /**
  * @internal
  * @hidden
