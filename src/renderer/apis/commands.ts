@@ -215,10 +215,11 @@ export class CommandManager {
       });
     }
     const currentSection = commandAndSections.get(this.#section.id);
+    const subcommandUnregister: Array<() => void> = [];
     command.applicationId = currentSection?.section.id;
     command.displayName ??= command.name;
     command.displayDescription ??= command.description;
-    command.type = 2;
+    command.type = 1;
     command.id ??= command.name;
 
     command.execute ??= (args, currentInfo) => {
@@ -226,15 +227,43 @@ export class CommandManager {
     };
 
     command.options?.map((option) => {
+      if (option.type === ApplicationCommandOptionType.Subcommand) {
+        option.applicationId = currentSection?.section.id;
+        option.name = `${command.name} ${option.name}`;
+        option.displayName ??= option.name;
+        option.displayDescription ??= option.description;
+        option.id = `${command.id}\u0000${option.name}`;
+        option.execute ??= (args, currentInfo) => {
+          void executeCommand(option.executor, args, currentInfo, option);
+        };
+        subcommandUnregister.push(this.registerCommand(option));
+        return null;
+      }
+      if (option.type === ApplicationCommandOptionType.SubcommandGroup) {
+        for (const subcommand of option.options ?? []) {
+          subcommand.type = 1;
+          subcommand.applicationId = currentSection?.section.id;
+          subcommand.name = `${command.name} ${option.name} ${subcommand.name}`;
+          subcommand.displayName ??= subcommand.name;
+          subcommand.displayDescription ??= subcommand.description;
+          subcommand.id = `${command.id}\u0000${option.name}\u0000${subcommand.name}`;
+          subcommand.execute ??= (args, currentInfo) => {
+            void executeCommand(subcommand.executor, args, currentInfo, subcommand);
+          };
+          subcommandUnregister.push(this.registerCommand(subcommand));
+        }
+        return null;
+      }
       option.serverLocalizedName ??= option.displayName;
       option.displayName ??= option.name;
       option.displayDescription ??= option.description;
       return option;
     });
-
+    command.options = command.options?.filter(Boolean);
     currentSection?.commands.set(command.id, command as AnyRepluggedCommand);
 
     const uninject = (): void => {
+      subcommandUnregister.forEach((un) => un());
       void currentSection?.commands.delete(command.id!);
       this.#unregister = this.#unregister.filter((u) => u !== uninject);
     };
