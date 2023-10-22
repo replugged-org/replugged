@@ -28,7 +28,7 @@ type GetConditionallyOptional<T, Required extends boolean | undefined> = Require
 
 type GetType<T extends CommandOptions> = GetConditionallyOptional<
   T extends StringOptions
-    ? T["choices"] extends CommandChoices
+    ? T["choices"] extends readonly CommandChoices[]
       ? T["choices"][number]["value"]
       : OptionTypeMapping[T["type"]]
     : OptionTypeMapping[T["type"]],
@@ -84,11 +84,12 @@ export type RepluggedCommand<T extends CommandOptions> = InexecutableRepluggedCo
 
 export type AnyRepluggedCommand = RepluggedCommand<CommandOptions>;
 
-export interface RepluggedCommandResult {
+export type RepluggedCommandResult = {
   send?: boolean;
-  result?: string;
+  result?: string | null;
   embeds?: APIEmbed[];
-}
+} | null;
+
 export interface RepluggedCommandSection {
   id: string;
   name: string;
