@@ -39,6 +39,12 @@ export const directory = process.cwd();
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
+let extraESBuildConfig = new Promise<esbuild.BuildOptions>(() => ({}))
+
+if (existsSync("./esbuild.extra.mjs")) {
+  // @ts-expect-error it doesn't exist here, but it does exist in the pkg
+  extraESBuildConfig = import("./esbuild.extra.mjs")
+}
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
   " → ",
@@ -382,12 +388,15 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
 
+  const overwrites = await extraESBuildConfig
+
   if ("renderer" in manifest) {
     targets.push(
       esbuild.context({
         ...common,
         entryPoints: [path.join(folderPath, manifest.renderer)],
         outfile: `${distPath}/renderer.js`,
+        ...overwrites,
       }),
     );
 
@@ -400,6 +409,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
         ...common,
         entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
         outfile: `${distPath}/plaintextPatches.js`,
+        ...overwrites,
       }),
     );
 
@@ -464,12 +474,15 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
 
+  const overwrites = await extraESBuildConfig
+
   if (main) {
     targets.push(
       esbuild.context({
         ...common,
         entryPoints: [main],
         outfile: `${distPath}/main.css`,
+        ...overwrites,
       }),
     );
 
@@ -482,6 +495,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
         ...common,
         entryPoints: [splash],
         outfile: `${distPath}/splash.css`,
+        ...overwrites,
       }),
     );
 

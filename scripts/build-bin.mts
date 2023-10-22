@@ -21,7 +21,7 @@ const context = await esbuild.context({
   platform: "node",
   target: `node${NODE_VERSION}`,
   outfile: "bin.mjs",
-  external: packageNames,
+  external: [...packageNames, "./esbuild.extra.mjs"],
 });
 
 await context.rebuild();
