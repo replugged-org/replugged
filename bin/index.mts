@@ -39,7 +39,7 @@ export const directory = process.cwd();
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
-let extraESBuildConfig = new Promise<esbuild.BuildOptions>(() => ({}))
+let extraESBuildConfig = new Promise<(current: esbuild.BuildOptions) => esbuild.BuildOptions>(() => ((v: esbuild.BuildOptions) => v))
 
 if (existsSync("./esbuild.extra.mjs")) {
   // @ts-expect-error it doesn't exist here, but it does exist in the pkg
@@ -392,12 +392,11 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
 
   if ("renderer" in manifest) {
     targets.push(
-      esbuild.context({
+      esbuild.context(overwrites({
         ...common,
         entryPoints: [path.join(folderPath, manifest.renderer)],
         outfile: `${distPath}/renderer.js`,
-        ...overwrites,
-      }),
+      })),
     );
 
     manifest.renderer = "renderer.js";
@@ -405,12 +404,11 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
 
   if ("plaintextPatches" in manifest) {
     targets.push(
-      esbuild.context({
+      esbuild.context(overwrites({
         ...common,
         entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
         outfile: `${distPath}/plaintextPatches.js`,
-        ...overwrites,
-      }),
+      })),
     );
 
     manifest.plaintextPatches = "plaintextPatches.js";
@@ -478,12 +476,11 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (main) {
     targets.push(
-      esbuild.context({
+      esbuild.context(overwrites({
         ...common,
         entryPoints: [main],
         outfile: `${distPath}/main.css`,
-        ...overwrites,
-      }),
+      })),
     );
 
     manifest.main = "main.css";
@@ -491,12 +488,11 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (splash) {
     targets.push(
-      esbuild.context({
+      esbuild.context(overwrites({
         ...common,
         entryPoints: [splash],
         outfile: `${distPath}/splash.css`,
-        ...overwrites,
-      }),
+      })),
     );
 
     manifest.plaintextPatches = "splash.css";
