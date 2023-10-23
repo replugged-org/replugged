@@ -12,6 +12,7 @@ import {
   rmSync,
   writeFileSync,
 } from "fs";
+import {cwd} from "process";
 import esbuild from "esbuild";
 import path from "path";
 import updateNotifier from "update-notifier";
@@ -40,12 +41,15 @@ export const directory = process.cwd();
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
 let extraESBuildConfig = new Promise<(current: esbuild.BuildOptions) => esbuild.BuildOptions>(
-  () => (v: esbuild.BuildOptions) => v,
+  (resolve) => resolve(v => v)
 );
 
 if (existsSync("./esbuild.extra.mjs")) {
-  // @ts-expect-error it doesn't exist here, but it does exist in the pkg
-  extraESBuildConfig = import("./esbuild.extra.mjs");
+  extraESBuildConfig = new Promise((resolve) => {
+    import(path.join(cwd(), "esbuild.extra.mjs")).then(v => {
+      resolve(v.default)
+    })
+  });
 }
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
