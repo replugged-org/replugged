@@ -7,10 +7,11 @@ export default [
       {
         match: /var \w,\w=(.)\.navId/,
         replace: (vars, menu) =>
-          `if (!${menu}.plugged){` +
-          `const patchedMenu=replugged.coremods.coremods.contextMenu._buildPatchedMenu(${menu});` +
-          `if (patchedMenu!==null){return patchedMenu}` +
-          `}${vars}`,
+          `const patchedMenu=replugged.coremods.coremods.contextMenu._buildPatchedMenu(${menu});${vars}`,
+      },
+      {
+        match: /(return)(\(0,.\.jsx.{50,72}\(\)\.menu)/,
+        replace: (_, prefix, suffix) => `${prefix} patchedMenu?patchedMenu:${suffix}`,
       },
     ],
   },

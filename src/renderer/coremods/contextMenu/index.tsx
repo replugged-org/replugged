@@ -107,7 +107,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
 
   //return nothing as we weren't able to get ContextMenu component, gets handled in plain text patch
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!ContextMenu) return null;
+  if (!ContextMenu || menu.plugged) return null;
 
   // No items to insert
   // Or MenuGroup Component is not available
