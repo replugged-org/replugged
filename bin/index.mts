@@ -39,11 +39,13 @@ export const directory = process.cwd();
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
-let extraESBuildConfig = new Promise<(current: esbuild.BuildOptions) => esbuild.BuildOptions>(() => ((v: esbuild.BuildOptions) => v))
+let extraESBuildConfig = new Promise<(current: esbuild.BuildOptions) => esbuild.BuildOptions>(
+  () => (v: esbuild.BuildOptions) => v,
+);
 
 if (existsSync("./esbuild.extra.mjs")) {
   // @ts-expect-error it doesn't exist here, but it does exist in the pkg
-  extraESBuildConfig = import("./esbuild.extra.mjs")
+  extraESBuildConfig = import("./esbuild.extra.mjs");
 }
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
@@ -388,15 +390,17 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
 
-  const overwrites = await extraESBuildConfig
+  const overwrites = await extraESBuildConfig;
 
   if ("renderer" in manifest) {
     targets.push(
-      esbuild.context(overwrites({
-        ...common,
-        entryPoints: [path.join(folderPath, manifest.renderer)],
-        outfile: `${distPath}/renderer.js`,
-      })),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [path.join(folderPath, manifest.renderer)],
+          outfile: `${distPath}/renderer.js`,
+        }),
+      ),
     );
 
     manifest.renderer = "renderer.js";
@@ -404,11 +408,13 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
 
   if ("plaintextPatches" in manifest) {
     targets.push(
-      esbuild.context(overwrites({
-        ...common,
-        entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
-        outfile: `${distPath}/plaintextPatches.js`,
-      })),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
+          outfile: `${distPath}/plaintextPatches.js`,
+        }),
+      ),
     );
 
     manifest.plaintextPatches = "plaintextPatches.js";
@@ -472,15 +478,17 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
 
-  const overwrites = await extraESBuildConfig
+  const overwrites = await extraESBuildConfig;
 
   if (main) {
     targets.push(
-      esbuild.context(overwrites({
-        ...common,
-        entryPoints: [main],
-        outfile: `${distPath}/main.css`,
-      })),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [main],
+          outfile: `${distPath}/main.css`,
+        }),
+      ),
     );
 
     manifest.main = "main.css";
@@ -488,11 +496,13 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (splash) {
     targets.push(
-      esbuild.context(overwrites({
-        ...common,
-        entryPoints: [splash],
-        outfile: `${distPath}/splash.css`,
-      })),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [splash],
+          outfile: `${distPath}/splash.css`,
+        }),
+      ),
     );
 
     manifest.plaintextPatches = "splash.css";
