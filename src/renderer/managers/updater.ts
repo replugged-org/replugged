@@ -158,7 +158,6 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
       webUrl: res.webUrl,
       version: newVersion,
     });
-    return;
   }
 }
 
@@ -224,16 +223,16 @@ export async function checkAllUpdates(autoCheck = false, verbose = false): Promi
 
   logger.log("Checking for updates");
 
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const delay = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
 
-  async function checkUpdatesWithRateLimit() {
+  async function checkUpdatesWithRateLimit(): Promise<void> {
     await checkUpdate(REPLUGGED_ID, verbose);
   
     for (const addon of addons) {
       await checkUpdate(addon.manifest.id, verbose);
       await delay(1000 / 15); // Delay for 1 second divided by 15 (15 requests per second)
     }
-  }
+}
   
   await checkUpdatesWithRateLimit();
 
