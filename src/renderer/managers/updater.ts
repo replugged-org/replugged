@@ -134,8 +134,22 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
   }
 
   const newVersion = res.manifest.version;
+  const versions = [ newVersion.split('.'), version.split('.') ];
 
-  if (newVersion === version) {
+  if(newVersion !== version &&
+    (versions[0][0] > versions[1][0] || 
+     (versions[0][0] === versions[1][0] && versions[0][1] > versions[1][1]) || 
+     (versions[0][0] === versions[1][0] && versions[0][1] === versions[1][1] && versions[0][2] > versions[1][2])
+    )) {
+    logger.log(`Entity ${id} has an update available`);
+    updaterState.set(id, {
+      available: true,
+      url: res.url,
+      webUrl: res.webUrl,
+      lastChecked: Date.now(),
+      version: newVersion,
+    });
+  } else {
     if (verbose) logger.log(`Entity ${id} is up to date`);
     updaterState.set(id, {
       available: false,
@@ -146,15 +160,6 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
     });
     return;
   }
-
-  logger.log(`Entity ${id} has an update available`);
-  updaterState.set(id, {
-    available: true,
-    url: res.url,
-    webUrl: res.webUrl,
-    lastChecked: Date.now(),
-    version: newVersion,
-  });
 }
 
 export async function installUpdate(id: string, force = false, verbose = true): Promise<boolean> {
