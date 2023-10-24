@@ -264,7 +264,18 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     return res;
   });
 }
-
+async function injectApplicationCommandRegistryStore(): Promise<void> {
+  const mod = await waitForProps<{
+    getCommandFromInteractionData: ({ id }: { id: string }) => AnyRepluggedCommand | undefined;
+  }>("getCommandFromInteractionData");
+  injector.after(mod, "getCommandFromInteractionData", ([{ id }], res) => {
+    const commandsToSearch = Array.from(commandAndSections.values())
+      .filter((commandAndSection) => commandAndSection.commands.size)
+      .map((commandAndSection) => Array.from(commandAndSection.commands.values()))
+      .flat(10);
+    return (res ??= commandsToSearch.find((command) => command.id === id));
+  });
+}
 async function injectProfileFetch(): Promise<void> {
   const mod = await waitForModule<
     Record<
@@ -288,6 +299,7 @@ export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
   await injectRepluggedSectionIcon();
   await injectApplicationCommandSearchStore();
+  await injectApplicationCommandRegistryStore();
   await injectProfileFetch();
   loadCommands();
 }

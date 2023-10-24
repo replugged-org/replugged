@@ -117,6 +117,11 @@ async function executeCommand<T extends CommandOptions>(
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       interaction_data: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        application_command: command,
+        options: args,
+        type: command.type,
+        id: command.id,
         name: command.displayName,
       },
       type: 20,
@@ -155,6 +160,11 @@ async function executeCommand<T extends CommandOptions>(
         },
         // eslint-disable-next-line @typescript-eslint/naming-convention
         interaction_data: {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          application_command: command,
+          options: args,
+          type: command.type,
+          id: command.id,
           name: command.displayName,
         },
         type: 20,
@@ -183,6 +193,11 @@ async function executeCommand<T extends CommandOptions>(
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       interaction_data: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        application_command: command,
+        options: args,
+        type: command.type,
+        id: command.id,
         name: command.displayName,
       },
       type: 20,
