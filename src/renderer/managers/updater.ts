@@ -134,13 +134,16 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
   }
 
   const newVersion = res.manifest.version;
-  const versions = [ newVersion.split('.'), version.split('.') ];
+  const versions = [newVersion.split("."), version.split(".")];
 
-  if(newVersion !== version &&
-    (versions[0][0] > versions[1][0] || 
-     (versions[0][0] === versions[1][0] && versions[0][1] > versions[1][1]) || 
-     (versions[0][0] === versions[1][0] && versions[0][1] === versions[1][1] && versions[0][2] > versions[1][2])
-    )) {
+  if (
+    newVersion !== version &&
+    (versions[0][0] > versions[1][0] ||
+      (versions[0][0] === versions[1][0] && versions[0][1] > versions[1][1]) ||
+      (versions[0][0] === versions[1][0] &&
+        versions[0][1] === versions[1][1] &&
+        versions[0][2] > versions[1][2]))
+  ) {
     logger.log(`Entity ${id} has an update available`);
     updaterState.set(id, {
       available: true,
@@ -223,17 +226,17 @@ export async function checkAllUpdates(autoCheck = false, verbose = false): Promi
 
   logger.log("Checking for updates");
 
-  const delay = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
+  const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
   async function checkUpdatesWithRateLimit(): Promise<void> {
     await checkUpdate(REPLUGGED_ID, verbose);
-  
+
     for (const addon of addons) {
       await checkUpdate(addon.manifest.id, verbose);
       await delay(1000 / 15); // Delay for 1 second divided by 15 (15 requests per second)
     }
-}
-  
+  }
+
   await checkUpdatesWithRateLimit();
 
   logger.log("All updates checked");
