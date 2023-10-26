@@ -136,20 +136,17 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
 let webpackChunk: WebpackChunkGlobal | undefined;
 
 if (window.webpackChunkdiscord_app) {
-  // eslint-disable-next-line no-console
-  console.log("ready dear");
   webpackChunk = window.webpackChunkdiscord_app;
   loadWebpackModules(webpackChunk!);
 } else {
   Object.defineProperty(window, "webpackChunkdiscord_app", {
     get: () => webpackChunk,
     set: (v) => {
-      // eslint-disable-next-line no-console
-      console.log("setting webpack global");
-      // Only modify if the global has actually changed and is an array
+      // Only modify if the global has actually changed
+      // We don't need to check if push is the special webpack push,
+      // because webpack will go over the previously loaded modules
+      // when it sets the custom push method.
       if (v !== webpackChunk && !ready) {
-        // eslint-disable-next-line no-console
-        console.log("loading late");
         loadWebpackModules(v);
       }
       webpackChunk = v;
