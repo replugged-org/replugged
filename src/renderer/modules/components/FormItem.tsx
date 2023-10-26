@@ -1,7 +1,7 @@
 import type React from "react";
 import { Divider, FormText } from ".";
-import { waitForProps } from "../webpack";
 import components from "../common/components";
+import { waitForProps } from "../webpack";
 
 interface FormItemCompProps extends Omit<React.ComponentPropsWithoutRef<"div">, "title"> {
   children: React.ReactNode;
