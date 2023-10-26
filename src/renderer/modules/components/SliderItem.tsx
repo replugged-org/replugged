@@ -1,7 +1,7 @@
 import type React from "react";
 import { FormItem } from ".";
-import { waitForProps } from "../webpack";
 import components from "../common/components";
+import { waitForProps } from "../webpack";
 
 const MarkerPositions = {
   ABOVE: 0,
