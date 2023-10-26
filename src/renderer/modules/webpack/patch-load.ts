@@ -45,6 +45,26 @@ export const waitForStart = new Promise<void>((resolve) => (signalStart = resolv
  */
 export const sourceStrings: Record<number, string> = {};
 
+function patchChunk(chunk: WebpackChunk): void {
+  const modules = chunk[1];
+  for (const id in modules) {
+    const originalMod = modules[id];
+    sourceStrings[id] = originalMod.toString();
+    const mod = patchModuleSource(originalMod);
+    modules[id] = function (module, exports, require) {
+      mod(module, exports, require);
+
+      for (const [filter, callback] of listeners) {
+        try {
+          if (filter(module)) {
+            callback(module);
+          }
+        } catch {}
+      }
+    };
+  }
+}
+
 /**
  * Patch the push method of window.webpackChunkdiscord_app
  * @param webpackChunk Webpack chunk global
@@ -53,25 +73,8 @@ export const sourceStrings: Record<number, string> = {};
 function patchPush(webpackChunk: WebpackChunkGlobal): void {
   let original = webpackChunk.push;
 
-  async function handlePush(chunk: WebpackChunk): Promise<unknown> {
-    await waitForStart;
-
-    const modules = chunk[1];
-    for (const id in modules) {
-      const originalMod = modules[id];
-      sourceStrings[id] = originalMod.toString();
-      const mod = patchModuleSource(originalMod);
-      modules[id] = function (module, exports, require) {
-        mod(module, exports, require);
-
-        for (const [filter, callback] of listeners) {
-          if (filter(module)) {
-            callback(module);
-          }
-        }
-      };
-    }
-
+  function handlePush(chunk: WebpackChunk): unknown {
+    patchChunk(chunk);
     return original.call(webpackChunk, chunk);
   }
 
@@ -87,23 +90,42 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
  * @param webpackChunk Webpack chunk global
  * @internal
  */
-function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
-  wpRequire = webpackChunk.push([[Symbol("replugged")], {}, (r: WebpackRequire) => r]);
+function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
+  chunksGlobal.push([
+    [Symbol("replugged")],
+    {},
+    (r: WebpackRequire) => {
+      wpRequire = r;
+    },
+  ]);
+  chunksGlobal.pop();
 
-  wpRequire.d = (module: unknown, exports: Record<string, () => unknown>) => {
-    for (const prop in exports) {
-      if (Object.hasOwnProperty.call(exports, prop) && !Object.hasOwnProperty.call(module, prop)) {
-        Object.defineProperty(module, prop, {
-          enumerable: true,
-          configurable: true,
-          get: () => exports[prop](),
-          set: (value) => (exports[prop] = () => value),
-        });
+  if (wpRequire) {
+    wpRequire.d = (module: unknown, exports: Record<string, () => unknown>) => {
+      for (const prop in exports) {
+        if (
+          Object.hasOwnProperty.call(exports, prop) &&
+          !Object.hasOwnProperty.call(module, prop)
+        ) {
+          Object.defineProperty(module, prop, {
+            enumerable: true,
+            configurable: true,
+            get: () => exports[prop](),
+            set: (value) => (exports[prop] = () => value),
+          });
+        }
       }
-    }
-  };
+    };
+  }
 
-  patchPush(webpackChunk);
+  // Patch previously loaded chunks
+  if (Array.isArray(chunksGlobal)) {
+    for (const loadedChunk of chunksGlobal) {
+      patchChunk(loadedChunk);
+    }
+  }
+
+  patchPush(chunksGlobal);
   signalReady();
 }
 
@@ -114,13 +136,20 @@ function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
 let webpackChunk: WebpackChunkGlobal | undefined;
 
 if (window.webpackChunkdiscord_app) {
+  // eslint-disable-next-line no-console
+  console.log("ready dear");
   webpackChunk = window.webpackChunkdiscord_app;
   loadWebpackModules(webpackChunk!);
 } else {
   Object.defineProperty(window, "webpackChunkdiscord_app", {
     get: () => webpackChunk,
     set: (v) => {
-      if (!ready && v?.push !== Array.prototype.push) {
+      // eslint-disable-next-line no-console
+      console.log("setting webpack global");
+      // Only modify if the global has actually changed and is an array
+      if (v !== webpackChunk && !ready) {
+        // eslint-disable-next-line no-console
+        console.log("loading late");
         loadWebpackModules(v);
       }
       webpackChunk = v;

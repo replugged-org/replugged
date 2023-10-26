@@ -37,9 +37,13 @@ export function patchModuleSource(mod: WebpackModule): WebpackModule {
   if (patchedSource === originalSource) {
     return mod;
   }
-
-  // eslint-disable-next-line no-eval
-  return (0, eval)(patchedSource);
+  try {
+    // eslint-disable-next-line no-eval
+    return (0, eval)(patchedSource);
+  } catch {
+    // Syntax error in patched module--fail
+    return mod;
+  }
 }
 
 /**
