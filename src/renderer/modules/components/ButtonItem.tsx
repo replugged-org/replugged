@@ -1,7 +1,7 @@
 import type React from "react";
 import { Divider, Flex, FormText, Tooltip } from ".";
 import { waitForProps } from "../webpack";
-import { components } from "../common";
+import components from "../common/components";
 
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   look?: string;

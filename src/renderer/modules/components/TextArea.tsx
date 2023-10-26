@@ -1,5 +1,5 @@
 import type React from "react";
-import { filters, waitForModule } from "../webpack";
+import components from "../common/components";
 
 interface TextAreaProps {
   autoFocus?: boolean;
@@ -33,6 +33,4 @@ export type TextAreaType = React.ComponentClass<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 
-export default await waitForModule<Record<string, TextAreaType>>(
-  filters.bySource(/.resizeable,/),
-).then((mod) => Object.values(mod).find((x) => x?.defaultProps && "resizeable" in x.defaultProps)!);
+export default components.TextArea;
