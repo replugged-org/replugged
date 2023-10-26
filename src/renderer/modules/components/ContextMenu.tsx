@@ -1,5 +1,5 @@
 import type React from "react";
-import { waitForProps } from "../webpack";
+import components from "../common/components";
 
 const ItemColors = {
   DEFAULT: "default",
@@ -156,17 +156,15 @@ export type modType = Record<
   React.ComponentType
 >;
 
-const menuMod = await waitForProps<modType>("Menu", "MenuGroup", "MenuItem");
-
 const Menu = {
   ItemColors,
-  ContextMenu: menuMod.Menu,
-  MenuSeparator: menuMod.MenuSeparator,
-  MenuCheckboxItem: menuMod.MenuCheckboxItem,
-  MenuRadioItem: menuMod.MenuRadioItem,
-  MenuControlItem: menuMod.MenuControlItem,
-  MenuGroup: menuMod.MenuGroup,
-  MenuItem: menuMod.MenuItem,
+  ContextMenu: components.Menu,
+  MenuSeparator: components.MenuSeparator,
+  MenuCheckboxItem: components.MenuCheckboxItem,
+  MenuRadioItem: components.MenuRadioItem,
+  MenuControlItem: components.MenuControlItem,
+  MenuGroup: components.MenuGroup,
+  MenuItem: components.MenuItem,
 } as ContextMenuType;
 
 export default Menu;

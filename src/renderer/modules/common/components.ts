@@ -13,6 +13,7 @@ import type { SwitchItemType, SwitchType } from "../components/SwitchItem";
 import type { TextAreaType } from "../components/TextArea";
 import type { TextInputType } from "../components/TextInput";
 import type { OriginalTooltipType } from "../components/Tooltip";
+import type { ContextMenuType } from "../components/ContextMenu";
 
 // Expand this as needed
 interface DiscordComponents {
@@ -24,7 +25,13 @@ interface DiscordComponents {
   FormSwitch: SwitchItemType;
   FormText: FormTextCompType;
   FormTextTypes: Record<FormTextTypeKey, string>;
-  MenuItem: unknown;
+  Menu: ContextMenuType["ContextMenu"];
+  MenuSeparator: ContextMenuType["MenuSeparator"];
+  MenuCheckboxItem: ContextMenuType["MenuCheckboxItem"];
+  MenuRadioItem: ContextMenuType["MenuRadioItem"];
+  MenuControlItem: ContextMenuType["MenuControlItem"];
+  MenuGroup: ContextMenuType["MenuGroup"];
+  MenuItem: ContextMenuType["MenuItem"];
   ModalRoot: ModalType["ModalRoot"];
   ModalContent: ModalType["ModalContent"];
   ModalHeader: ModalType["ModalHeader"];

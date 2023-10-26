@@ -1,5 +1,4 @@
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
 import components from "../common/components";
 
 interface SwitchProps {

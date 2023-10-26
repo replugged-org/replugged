@@ -18,12 +18,13 @@ interface NoticeProps {
 }
 
 export type NoticeType = React.FC<NoticeProps> & {
-  Types: typeof Types;
+  Types: typeof Types; // for backwards compat
+  HelpMessageTypes: typeof Types;
 };
 
-const Notice = await waitForModule<Record<string, NoticeType>>(
-  filters.bySource(/.\.messageType/),
-).then((mod) => Object.values(mod).find((x) => typeof x === "function")!);
+const Notice = await waitForModule<NoticeType>(
+  filters.bySource("WARNING=0]"),
+);
 Notice.Types = Types;
 
 export default Notice;
