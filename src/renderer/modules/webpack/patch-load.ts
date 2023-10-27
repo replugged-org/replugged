@@ -78,6 +78,9 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
     return original.call(webpackChunk, chunk);
   }
 
+  // https://github.com/Vendicated/Vencord/blob/e4701769a5b8e0a71dba0e26bc311ff6e34eadf7/src/webpack/patchWebpack.ts#L93-L98
+  handlePush.bind = (...args: unknown[]) => original.bind([...args]);
+
   Object.defineProperty(webpackChunk, "push", {
     get: () => handlePush,
     set: (v) => (original = v),
@@ -98,7 +101,6 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
       wpRequire = r;
     },
   ]);
-  chunksGlobal.pop();
 
   if (wpRequire) {
     wpRequire.d = (module: unknown, exports: Record<string, () => unknown>) => {
