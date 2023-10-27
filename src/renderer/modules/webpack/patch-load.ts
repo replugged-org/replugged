@@ -50,7 +50,7 @@ function patchChunk(chunk: WebpackChunk): void {
   for (const id in modules) {
     const originalMod = modules[id];
     sourceStrings[id] = originalMod.toString();
-    const mod = patchModuleSource(originalMod);
+    const mod = patchModuleSource(originalMod, id);
     modules[id] = function (module, exports, require) {
       mod(module, exports, require);
 

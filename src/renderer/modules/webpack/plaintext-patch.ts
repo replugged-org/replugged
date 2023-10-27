@@ -1,5 +1,7 @@
 import type { PlaintextPatch, RawPlaintextPatch, WebpackModule } from "../../../types";
+import { Logger } from "../logger";
 
+const logger = Logger.api("plaintext-patch");
 /**
  * All plaintext patches
  */
@@ -10,7 +12,7 @@ export const plaintextPatches: RawPlaintextPatch[] = [];
  * @param mod Module
  * @returns Patched module
  */
-export function patchModuleSource(mod: WebpackModule): WebpackModule {
+export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule {
   const originalSource = mod.toString();
 
   const patchedSource = plaintextPatches.reduce((source, patch) => {
@@ -39,8 +41,13 @@ export function patchModuleSource(mod: WebpackModule): WebpackModule {
   }
   try {
     // eslint-disable-next-line no-eval
-    return (0, eval)(patchedSource);
-  } catch {
+    return (0, eval)(
+      `${
+        patchedSource.startsWith("function") ? `0,${patchedSource}` : patchedSource
+      }\n//# sourceURL=PatchedWebpack-${id}`,
+    );
+  } catch (err) {
+    logger.error(err);
     // Syntax error in patched module--fail
     return mod;
   }
