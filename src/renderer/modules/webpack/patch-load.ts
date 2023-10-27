@@ -71,13 +71,13 @@ function patchChunk(chunk: WebpackChunk): void {
  * @internal
  */
 function patchPush(webpackChunk: WebpackChunkGlobal): void {
-  function handlePush(original: WebpackChunkGlobal["push"], chunk: WebpackChunk): unknown {
+  const original = webpackChunk.push.bind(webpackChunk);
+  function handlePush(chunk: WebpackChunk): unknown {
     patchChunk(chunk);
     return original(chunk);
   }
 
-  // mirror behavior of discord's redefinitions of webpackChunk.push to not break things
-  webpackChunk.push = handlePush.bind(null, webpackChunk.push.bind(webpackChunk));
+  webpackChunk.push = handlePush as WebpackChunkGlobal["push"];
 }
 
 /**
@@ -106,7 +106,7 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
             });
           }
         }
-      }
+      };
     },
   ]);
 
