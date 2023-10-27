@@ -22,7 +22,7 @@ interface FormTextProps {
 
 export type FormTextCompType = React.FC<React.PropsWithChildren<FormTextProps>>;
 
-type FormTextType = Record<FormTextTypeKey, FormTextCompType>;
+export type FormTextType = Record<FormTextTypeKey, FormTextCompType>;
 
 const FormTextComp = components.FormText;
 const types = components.FormTextTypes;

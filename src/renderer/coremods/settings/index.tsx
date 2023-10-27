@@ -17,7 +17,9 @@ async function injectVersionInfo(): Promise<void> {
   const mod = await waitForModule<VersionMod>(filters.bySource(".versionHash"), { raw: true });
 
   injector.after(mod.exports, "default", (_, res) => {
-    res.props.children.push(" ", null, 
+    res.props.children.push(
+      " ",
+      null,
       <Text
         variant="text-xs/normal"
         color="text-muted"
@@ -66,8 +68,8 @@ export async function start(): Promise<void> {
     default: {
       prototype: {
         getPredicateSections: (_: unknown) => SectionType[];
-      }
-    }
+      };
+    };
   }>(filters.bySource("getPredicateSections"));
   injector.after(mod.default.prototype, "getPredicateSections", (_, res) => {
     return insertSections(res);
