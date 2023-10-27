@@ -120,31 +120,17 @@ export type RepluggedNativeType = typeof RepluggedNative;
 
 contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 
-(async () => {
-  //await webFrame.executeJavaScript('(async () => {await import("replugged://renderer");})()');
+// webFrame.executeJavaScript returns a Promise, but we don't have any use for it
+void webFrame.executeJavaScript('void import("replugged://renderer");');
 
-  try {
-    window.addEventListener("beforeunload", () => {
-      ipcRenderer.send(RepluggedIpcChannels.REGISTER_RELOAD);
-    });
-    // Get and execute Discord preload
-    // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
-    const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
-    if (preload) {
-      if (preload.toLowerCase().includes("splash")) {
-        // Splash screen
-        void webFrame.executeJavaScript(
-          'import("replugged://renderer").then(() => window.replugged.ignition.startSplash());',
-        );
-      } else {
-        // Main window
-        await webFrame.executeJavaScript(
-          '(async () => { await import("replugged://renderer"); await window.replugged.ignition.ignite(); })()',
-        );
-      }
-      require(preload);
-    }
-  } catch (err) {
-    console.error("Error loading original preload", err);
-  }
-})();
+try {
+  window.addEventListener("beforeunload", () => {
+    ipcRenderer.send(RepluggedIpcChannels.REGISTER_RELOAD);
+  });
+  // Get and execute Discord preload
+  // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
+  const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
+  if (preload) require(preload);
+} catch (err) {
+  console.error("Error loading original preload", err);
+}
