@@ -52,9 +52,11 @@ interface NoticeMod {
   Notice: React.FC<React.PropsWithChildren<NoticeProps>>;
 }
 
-const mod = await waitForModule<NoticeMod & {
-  default: React.FC<React.PropsWithChildren<NoticeProps>>;
-}>(filters.bySource(".colorPremiumTier1,"));
+const mod = await waitForModule<
+  NoticeMod & {
+    default: React.FC<React.PropsWithChildren<NoticeProps>>;
+  }
+>(filters.bySource(".colorPremiumTier1,"));
 
 export default {
   NoticeColors: mod.NoticeColors,
