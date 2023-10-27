@@ -12,11 +12,11 @@ export default [
     ],
   },
   {
-    find: "navId:",
+    find: ".Menu,{",
     replacements: [
       {
-        match: /navId:[\w"-]+,/g,
-        replace: (navId) => `${navId}data:arguments,`,
+        match: /\.Menu,{/g,
+        replace: (prefix) => `${prefix}data:arguments,`,
       },
     ],
   },
