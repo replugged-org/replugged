@@ -71,18 +71,13 @@ function patchChunk(chunk: WebpackChunk): void {
  * @internal
  */
 function patchPush(webpackChunk: WebpackChunkGlobal): void {
-  let original = webpackChunk.push;
-
-  function handlePush(chunk: WebpackChunk): unknown {
+  function handlePush(original: WebpackChunkGlobal["push"], chunk: WebpackChunk): unknown {
     patchChunk(chunk);
-    return original.call(webpackChunk, chunk);
+    return original(chunk);
   }
 
-  Object.defineProperty(webpackChunk, "push", {
-    get: () => handlePush,
-    set: (v) => (original = v),
-    configurable: true,
-  });
+  // mirror behavior of discord's redefinitions of webpackChunk.push to not break things
+  webpackChunk.push = handlePush.bind(null, webpackChunk.push.bind(webpackChunk));
 }
 
 /**
@@ -91,32 +86,29 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
  * @internal
  */
 function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
+  // once the webpack loads the modules, wpRequire is patched and exported
   chunksGlobal.push([
     [Symbol("replugged")],
     {},
     (r: WebpackRequire) => {
       wpRequire = r;
-    },
-  ]);
-  chunksGlobal.pop();
-
-  if (wpRequire) {
-    wpRequire.d = (module: unknown, exports: Record<string, () => unknown>) => {
-      for (const prop in exports) {
-        if (
-          Object.hasOwnProperty.call(exports, prop) &&
-          !Object.hasOwnProperty.call(module, prop)
-        ) {
-          Object.defineProperty(module, prop, {
-            enumerable: true,
-            configurable: true,
-            get: () => exports[prop](),
-            set: (value) => (exports[prop] = () => value),
-          });
+      wpRequire.d = (module: unknown, exports: Record<string, () => unknown>) => {
+        for (const prop in exports) {
+          if (
+            Object.hasOwnProperty.call(exports, prop) &&
+            !Object.hasOwnProperty.call(module, prop)
+          ) {
+            Object.defineProperty(module, prop, {
+              enumerable: true,
+              configurable: true,
+              get: () => exports[prop](),
+              set: (value) => (exports[prop] = () => value),
+            });
+          }
         }
       }
-    };
-  }
+    },
+  ]);
 
   // Patch previously loaded chunks
   if (Array.isArray(chunksGlobal)) {
