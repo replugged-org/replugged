@@ -22,7 +22,9 @@ export type NoticeType = React.FC<NoticeProps> & {
   HelpMessageTypes: typeof Types;
 };
 
-const Notice = await waitForModule<NoticeType>(filters.bySource("WARNING=0]"));
+const { default: Notice } = await waitForModule<{ default: NoticeType }>(
+  filters.bySource("WARNING=0]"),
+);
 Notice.Types = Types;
 
 export default Notice;
