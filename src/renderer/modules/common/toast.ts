@@ -31,7 +31,9 @@ export interface Toast {
   Position: typeof Position;
 }
 
-const mod = await waitForModule(filters.bySource("queuedToasts"));
+const mod = await waitForModule<{ showToast: (props: ReturnType<ToastFn>) => void }>(
+  filters.bySource("queuedToasts"),
+);
 
 const propGenMod = await waitForModule(filters.bySource(/case (\w+\.){1,2}FAILURE/));
 const propGenFn = getFunctionBySource<ToastFn>(
