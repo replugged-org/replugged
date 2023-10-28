@@ -132,7 +132,7 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
   signalReady();
 }
 
-// Intercept the webpack chunk global as soon as Discord creates it
+// Intervoid he webpack chunk global as soon as Discord creates it
 
 // Because using a timer is bad, thanks Ven
 // https://github.com/Vendicated/Vencord/blob/ef353f1d66dbf1d14e528830d267aac518ed1beb/src/webpack/patchWebpack.ts
