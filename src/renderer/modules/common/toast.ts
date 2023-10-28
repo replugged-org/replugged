@@ -32,7 +32,6 @@ export interface Toast {
 }
 
 const mod = await waitForModule(filters.bySource("queuedToasts"));
-const fn = getFunctionBySource<(props: ReturnType<ToastFn>) => void>(mod, "queuedToasts).concat")!;
 
 const propGenMod = await waitForModule(filters.bySource(/case (\w+\.){1,2}FAILURE/));
 const propGenFn = getFunctionBySource<ToastFn>(
@@ -42,7 +41,7 @@ const propGenFn = getFunctionBySource<ToastFn>(
 
 const toast: ToastFn = (content, kind = Kind.SUCCESS, opts = undefined) => {
   const props = propGenFn(content, kind, opts);
-  fn(props);
+  mod.showToast(props);
 };
 
 export default {
