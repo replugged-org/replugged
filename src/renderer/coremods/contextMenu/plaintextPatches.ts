@@ -5,9 +5,9 @@ export default [
     find: 'Error("Menu',
     replacements: [
       {
-        match: /var \w,\w=(.)\.navId/,
-        replace: (vars, menu) =>
-          `replugged.coremods.coremods.contextMenu._insertMenuItems(${menu});${vars}`,
+        match: /((\w+)\){)(var\s*\w+;let{navId:)/,
+        replace: (_, prefix, menu, suffix) =>
+          `${prefix}replugged.coremods.coremods.contextMenu._insertMenuItems(${menu});${suffix}`,
       },
     ],
   },
