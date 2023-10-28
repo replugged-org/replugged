@@ -84,7 +84,7 @@ Load order:
 export async function ignite(): Promise<void> {
   // This is the function that will be called when loading the window.
   // Plaintext patches are executed before Discord's preload.
-  coremods.runPlaintextPatches();
+  await coremods.runPlaintextPatches();
   await plugins.loadAll();
   await plugins.runPlaintextPatches();
   // These next things will happen after Discord's preload is called.

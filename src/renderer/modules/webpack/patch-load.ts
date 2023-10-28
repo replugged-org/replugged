@@ -45,12 +45,13 @@ export const waitForStart = new Promise<void>((resolve) => (signalStart = resolv
  */
 export const sourceStrings: Record<number, string> = {};
 
-function patchChunk(chunk: WebpackChunk): void {
+async function patchChunk(chunk: WebpackChunk): Promise<void> {
+  await waitForStart;
   const modules = chunk[1];
   for (const id in modules) {
     const originalMod = modules[id];
     sourceStrings[id] = originalMod.toString();
-    const mod = patchModuleSource(originalMod);
+    const mod = patchModuleSource(originalMod, id);
     modules[id] = function (module, exports, require) {
       mod(module, exports, require);
 
@@ -73,8 +74,8 @@ function patchChunk(chunk: WebpackChunk): void {
 function patchPush(webpackChunk: WebpackChunkGlobal): void {
   let original = webpackChunk.push;
 
-  function handlePush(chunk: WebpackChunk): unknown {
-    patchChunk(chunk);
+  async function handlePush(chunk: WebpackChunk): Promise<unknown> {
+    await patchChunk(chunk);
     return original.call(webpackChunk, chunk);
   }
 
@@ -123,7 +124,7 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
   // Patch previously loaded chunks
   if (Array.isArray(chunksGlobal)) {
     for (const loadedChunk of chunksGlobal) {
-      patchChunk(loadedChunk);
+      void patchChunk(loadedChunk);
     }
   }
 

@@ -74,15 +74,18 @@ export async function stopAll(): Promise<void> {
   await Promise.allSettled(Object.values(coremods).map((c) => c.stop?.()));
 }
 
-export function runPlaintextPatches(): void {
-  [
-    experimentsPlaintext,
-    notrackPlaintext,
-    noDevtoolsWarningPlaintext,
-    messagePopover,
-    notices,
-    contextMenu,
-    languagePlaintext,
-    commandsPlaintext,
-  ].forEach(patchPlaintext);
+export function runPlaintextPatches(): Promise<void> {
+  return new Promise<void>((res) => {
+    [
+      experimentsPlaintext,
+      notrackPlaintext,
+      noDevtoolsWarningPlaintext,
+      messagePopover,
+      notices,
+      contextMenu,
+      languagePlaintext,
+      commandsPlaintext,
+    ].forEach(patchPlaintext);
+    res();
+  });
 }
