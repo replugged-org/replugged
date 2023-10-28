@@ -20,9 +20,12 @@ interface NoticeProps {
 export type NoticeType = React.FC<NoticeProps> & {
   Types: typeof Types; // for backwards compat
   HelpMessageTypes: typeof Types;
-};
+  default: React.FC<NoticeProps>;
+}
 
-const Notice = await waitForModule<NoticeType>(filters.bySource("WARNING=0]"));
+const NoticeComp = await waitForModule<NoticeType>(filters.bySource("WARNING=0]"));
+const Notice = NoticeComp.default as NoticeType;
 Notice.Types = Types;
+Notice.HelpMessageTypes = NoticeComp.HelpMessageTypes;
 
 export default Notice;
