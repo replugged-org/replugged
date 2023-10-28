@@ -98,28 +98,28 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
   chunksGlobal.push([
     [Symbol("replugged")],
     {},
-    (r: WebpackRequire) => {
-      wpRequire = r;
+    (r: WebpackRequire | undefined) => {
+      wpRequire = r!;
+
+      if (r) {
+        r.d = (module: unknown, exports: Record<string, () => unknown>) => {
+          for (const prop in exports) {
+            if (
+              Object.hasOwnProperty.call(exports, prop) &&
+              !Object.hasOwnProperty.call(module, prop)
+            ) {
+              Object.defineProperty(module, prop, {
+                enumerable: true,
+                configurable: true,
+                get: () => exports[prop](),
+                set: (value) => (exports[prop] = () => value),
+              });
+            }
+          }
+        };
+      }
     },
   ]);
-
-  if (wpRequire) {
-    wpRequire.d = (module: unknown, exports: Record<string, () => unknown>) => {
-      for (const prop in exports) {
-        if (
-          Object.hasOwnProperty.call(exports, prop) &&
-          !Object.hasOwnProperty.call(module, prop)
-        ) {
-          Object.defineProperty(module, prop, {
-            enumerable: true,
-            configurable: true,
-            get: () => exports[prop](),
-            set: (value) => (exports[prop] = () => value),
-          });
-        }
-      }
-    };
-  }
 
   // Patch previously loaded chunks
   if (Array.isArray(chunksGlobal)) {
