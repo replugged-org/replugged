@@ -53,6 +53,8 @@ export type { API };
 export let api: API;
 importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
+import * as Components from "./components";
+export type { Components };
 export let components: typeof import("./components").default;
 importTimeout("components", import("./components"), (mod) => (components = mod.default));
 
