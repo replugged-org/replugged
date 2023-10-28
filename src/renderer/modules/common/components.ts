@@ -17,12 +17,14 @@ import type { TextAreaType } from "../components/TextArea";
 import type { TextInputType } from "../components/TextInput";
 import type { OriginalTooltipType } from "../components/Tooltip";
 import { waitForProps } from "../webpack";
+import type { CreateToast, ShowToast } from "./toast";
 
 // Expand this as needed
 interface DiscordComponents {
   Button: ButtonType;
   Checkbox: CheckboxType;
   Clickable: ClickableCompType;
+  createToast: CreateToast;
   FormDivider: DividerType;
   FormItem: FormItemCompType;
   FormNotice: FormNoticeType;
@@ -43,6 +45,7 @@ interface DiscordComponents {
   ModalRoot: ModalType["ModalRoot"];
   RadioGroup: RadioType;
   Select: SelectCompType;
+  showToast: ShowToast;
   Slider: SliderCompType;
   Spinner: LoaderType;
   Switch: SwitchType;
