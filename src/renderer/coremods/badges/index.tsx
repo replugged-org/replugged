@@ -37,9 +37,7 @@ const cache = new Map<string, BadgeCache>();
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
 export async function start(): Promise<void> {
-  const mod = await waitForProps<{ BadgeSizes: Record<string, string>; default: BadgeMod }>(
-    "BadgeSizes",
-  );
+  const mod = await waitForProps<{ BadgeSizes: BadgeSizes; default: BadgeMod }>("BadgeSizes");
 
   const { containerWithContent } = getByProps<{ containerWithContent: "string" }>(
     "containerWithContent",

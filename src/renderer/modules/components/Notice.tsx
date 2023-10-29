@@ -25,6 +25,7 @@ export type NoticeType = React.FC<NoticeProps> & {
 
 const NoticeComp = await waitForModule<NoticeType>(filters.bySource("WARNING=0]"));
 const Notice = NoticeComp.default as NoticeType;
+Notice.Types = NoticeComp.HelpMessageTypes;
 Notice.HelpMessageTypes = NoticeComp.HelpMessageTypes;
 
 export default Notice;
