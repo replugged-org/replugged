@@ -18,8 +18,6 @@ async function injectVersionInfo(): Promise<void> {
 
   injector.after(mod.exports, "default", (_, res) => {
     res.props.children.push(
-      " ",
-      null,
       <Text
         variant="text-xs/normal"
         color="text-muted"
@@ -32,7 +30,7 @@ async function injectVersionInfo(): Promise<void> {
 }
 
 export async function start(): Promise<void> {
-  await injectVersionInfo();
+  void injectVersionInfo();
 
   settingsTools.addAfter("Billing", [
     Divider(),
