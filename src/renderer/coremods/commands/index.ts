@@ -78,7 +78,8 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
 
   // Base handler function for ApplicationCommandSearchStore which is ran to get the info in store
   // commands are mainly added here
-  injector.after(ApplicationCommandSearchStoreMod, storeModFnKey!, (_, res) => {
+  injector.after(ApplicationCommandSearchStoreMod, storeModFnKey!, ([_, commandType], res) => {
+    if (commandType !== 1) return res;
     const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
       (commandAndSection) => commandAndSection.commands.size,
     );
@@ -175,7 +176,8 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
 
   // Channel state gets update with each character entered in text box and search so we patch this to keep our custom section
   // even after updates happen
-  injector.after(ApplicationCommandSearchStore, "getChannelState", (_, res) => {
+  injector.after(ApplicationCommandSearchStore, "getChannelState", ([_, commandType], res) => {
+    if (commandType !== 1) return res;
     const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
       (commandAndSection) => commandAndSection.commands.size,
     );
@@ -262,7 +264,18 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     return res;
   });
 }
-
+async function injectApplicationCommandRegistryStore(): Promise<void> {
+  const mod = await waitForProps<{
+    getCommandFromInteractionData: ({ id }: { id: string }) => AnyRepluggedCommand | undefined;
+  }>("getCommandFromInteractionData");
+  injector.after(mod, "getCommandFromInteractionData", ([{ id }], res) => {
+    const commandsToSearch = Array.from(commandAndSections.values())
+      .filter((commandAndSection) => commandAndSection.commands.size)
+      .map((commandAndSection) => Array.from(commandAndSection.commands.values()))
+      .flat(10);
+    return (res ??= commandsToSearch.find((command) => command.id === id));
+  });
+}
 async function injectProfileFetch(): Promise<void> {
   const mod = await waitForModule<
     Record<
@@ -286,6 +299,7 @@ export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
   await injectRepluggedSectionIcon();
   await injectApplicationCommandSearchStore();
+  await injectApplicationCommandRegistryStore();
   await injectProfileFetch();
   loadCommands();
 }
