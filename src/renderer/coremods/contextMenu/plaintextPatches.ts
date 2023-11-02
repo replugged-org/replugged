@@ -5,22 +5,22 @@ export default [
     find: 'Error("Menu',
     replacements: [
       {
-        match: /var \w,\w=(.)\.navId/,
-        replace: (vars, menu) =>
-          `const patchedMenu=replugged.coremods.coremods.contextMenu._buildPatchedMenu(${menu});${vars}`,
+        match: /((\w+)\){)(var\s*\w+;let{navId:)/,
+        replace: (_, prefix, menu, suffix) =>
+          `${prefix}const patchedMenu=replugged.coremods.coremods.contextMenu._buildPatchedMenu(${menu});${suffix}`,
       },
       {
-        match: /(return)(\(0,.\.jsx.{50,72}\(\)\.menu)/,
+        match: /(patchedMenu.{2400,2600}return)(\(0,.\.jsx\)\(\w+.OnMenuSelectContext)/,
         replace: (_, prefix, suffix) => `${prefix} patchedMenu?patchedMenu:${suffix}`,
       },
     ],
   },
   {
-    find: "navId:",
+    find: ".Menu,{",
     replacements: [
       {
-        match: /navId:[\w"-]+,/g,
-        replace: (navId) => `${navId}data:arguments,`,
+        match: /\.Menu,{/g,
+        replace: (prefix) => `${prefix}data:arguments,`,
       },
     ],
   },
