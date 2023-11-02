@@ -45,12 +45,13 @@ export const waitForStart = new Promise<void>((resolve) => (signalStart = resolv
  */
 export const sourceStrings: Record<number, string> = {};
 
-function patchChunk(chunk: WebpackChunk): void {
+async function patchChunk(chunk: WebpackChunk): Promise<void> {
+  await waitForStart;
   const modules = chunk[1];
   for (const id in modules) {
     const originalMod = modules[id];
     sourceStrings[id] = originalMod.toString();
-    const mod = patchModuleSource(originalMod);
+    const mod = patchModuleSource(originalMod, id);
     modules[id] = function (module, exports, require) {
       mod(module, exports, require);
 
@@ -73,8 +74,8 @@ function patchChunk(chunk: WebpackChunk): void {
 function patchPush(webpackChunk: WebpackChunkGlobal): void {
   let original = webpackChunk.push;
 
-  function handlePush(chunk: WebpackChunk): unknown {
-    patchChunk(chunk);
+  async function handlePush(chunk: WebpackChunk): Promise<unknown> {
+    await patchChunk(chunk);
     return original.call(webpackChunk, chunk);
   }
 
@@ -97,33 +98,33 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
   chunksGlobal.push([
     [Symbol("replugged")],
     {},
-    (r: WebpackRequire) => {
-      wpRequire = r;
+    (r: WebpackRequire | undefined) => {
+      wpRequire = r!;
+
+      if (r) {
+        r.d = (module: unknown, exports: Record<string, () => unknown>) => {
+          for (const prop in exports) {
+            if (
+              Object.hasOwnProperty.call(exports, prop) &&
+              !Object.hasOwnProperty.call(module, prop)
+            ) {
+              Object.defineProperty(module, prop, {
+                enumerable: true,
+                configurable: true,
+                get: () => exports[prop](),
+                set: (value) => (exports[prop] = () => value),
+              });
+            }
+          }
+        };
+      }
     },
   ]);
-
-  if (wpRequire) {
-    wpRequire.d = (module: unknown, exports: Record<string, () => unknown>) => {
-      for (const prop in exports) {
-        if (
-          Object.hasOwnProperty.call(exports, prop) &&
-          !Object.hasOwnProperty.call(module, prop)
-        ) {
-          Object.defineProperty(module, prop, {
-            enumerable: true,
-            configurable: true,
-            get: () => exports[prop](),
-            set: (value) => (exports[prop] = () => value),
-          });
-        }
-      }
-    };
-  }
 
   // Patch previously loaded chunks
   if (Array.isArray(chunksGlobal)) {
     for (const loadedChunk of chunksGlobal) {
-      patchChunk(loadedChunk);
+      void patchChunk(loadedChunk);
     }
   }
 
