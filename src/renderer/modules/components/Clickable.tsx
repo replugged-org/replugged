@@ -1,5 +1,5 @@
 import type React from "react";
-import { filters, waitForModule } from "../webpack";
+import components from "../common/components";
 
 // TODO: generic type for tags?
 type ClickableProps = React.ComponentPropsWithoutRef<"div"> & {
@@ -7,13 +7,11 @@ type ClickableProps = React.ComponentPropsWithoutRef<"div"> & {
   ignoreKeyPress?: boolean;
 };
 
-type ClickableCompType = React.ComponentClass<React.PropsWithChildren<ClickableProps>> & {
+export type ClickableCompType = React.ComponentClass<React.PropsWithChildren<ClickableProps>> & {
   defaultProps: ClickableProps;
 };
 
-const Clickable = await waitForModule<Record<string, ClickableCompType>>(
-  filters.bySource("renderNonInteractive"),
-).then((mod) => Object.values(mod).find((x) => x.prototype?.renderNonInteractive)!);
+const { Clickable } = components;
 
 export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
 

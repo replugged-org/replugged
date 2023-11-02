@@ -1,5 +1,5 @@
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 interface SwitchProps {
   checked: boolean;
@@ -26,15 +26,6 @@ interface SwitchItemProps {
 
 export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;
 
-const switchModStr = "xMinYMid meet";
-const switchItemStr = ").dividerDefault";
+export const { Switch } = components;
 
-export const Switch = await waitForModule(filters.bySource(switchModStr)).then((mod) => {
-  if (typeof mod === "function") return mod as SwitchType;
-  return getFunctionBySource<SwitchType>(mod, switchModStr)!;
-});
-
-export const SwitchItem = await waitForModule(filters.bySource(switchItemStr)).then((mod) => {
-  if (typeof mod === "function") return mod as SwitchItemType;
-  return getFunctionBySource<SwitchItemType>(mod, switchItemStr)!;
-});
+export const SwitchItem = components.FormSwitch;

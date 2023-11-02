@@ -2,7 +2,6 @@ import type { Promisable } from "type-fest";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 
 import { default as experimentsPlaintext } from "../coremods/experiments/plaintextPatches";
-import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
 import { default as notrackPlaintext } from "../coremods/notrack/plaintextPatches";
 import { default as noDevtoolsWarningPlaintext } from "../coremods/noDevtoolsWarning/plaintextPatches";
 import { default as messagePopover } from "../coremods/messagePopover/plaintextPatches";
@@ -59,6 +58,7 @@ export async function startAll(): Promise<void> {
   coremods.watcher = await import("../coremods/watcher");
   coremods.commands = await import("../coremods/commands");
   coremods.welcome = await import("../coremods/welcome");
+
   await Promise.all(
     Object.entries(coremods).map(async ([name, mod]) => {
       try {
@@ -74,16 +74,18 @@ export async function stopAll(): Promise<void> {
   await Promise.allSettled(Object.values(coremods).map((c) => c.stop?.()));
 }
 
-export function runPlaintextPatches(): void {
-  [
-    experimentsPlaintext,
-    settingsPlaintext,
-    notrackPlaintext,
-    noDevtoolsWarningPlaintext,
-    messagePopover,
-    notices,
-    contextMenu,
-    languagePlaintext,
-    commandsPlaintext,
-  ].forEach(patchPlaintext);
+export function runPlaintextPatches(): Promise<void> {
+  return new Promise<void>((res) => {
+    [
+      experimentsPlaintext,
+      notrackPlaintext,
+      noDevtoolsWarningPlaintext,
+      messagePopover,
+      notices,
+      contextMenu,
+      languagePlaintext,
+      commandsPlaintext,
+    ].forEach(patchPlaintext);
+    res();
+  });
 }
