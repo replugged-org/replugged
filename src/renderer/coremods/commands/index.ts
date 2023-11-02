@@ -1,13 +1,7 @@
 import type { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
 import { Injector } from "../../modules/injector";
 import { Logger } from "../../modules/logger";
-import {
-  filters,
-  getExportsForProps,
-  getFunctionKeyBySource,
-  waitForModule,
-  waitForProps,
-} from "../../modules/webpack";
+import { waitForProps } from "../../modules/webpack";
 
 import { commandAndSections, defaultSection } from "../../apis/commands";
 import { loadCommands, unloadCommands } from "./commands";
@@ -16,7 +10,7 @@ const logger = Logger.api("Commands");
 const injector = new Injector();
 
 interface ApplicationCommandSearchStoreMod {
-  [key: string]: (...args: unknown[]) =>
+  useDiscoveryState: (...args: unknown[]) =>
     | {
         sectionDescriptors: RepluggedCommandSection[];
         commands: AnyRepluggedCommand[];
@@ -28,6 +22,10 @@ interface ApplicationCommandSearchStoreMod {
         }>;
       }
     | undefined;
+  useQueryState: (...args: unknown[]) => unknown;
+  useSearchStoreOpenState: (...args: unknown[]) => unknown;
+  search: (...args: unknown[]) => unknown;
+  default: ApplicationCommandSearchStore;
 }
 
 interface ApplicationCommandSearchStore {
@@ -68,17 +66,16 @@ async function injectRepluggedSectionIcon(): Promise<void> {
 
 async function injectApplicationCommandSearchStore(): Promise<void> {
   // The module which contains the store
-  const ApplicationCommandSearchStoreMod = await waitForModule<ApplicationCommandSearchStoreMod>(
-    filters.bySource("ApplicationCommandSearchStore"),
-  );
-  const storeModFnKey = getFunctionKeyBySource(
-    ApplicationCommandSearchStoreMod,
-    "APPLICATION_COMMAND_SEARCH_STORE_UPDATE",
+  const ApplicationCommandSearchStoreMod = await waitForProps<ApplicationCommandSearchStoreMod>(
+    "useDiscoveryState",
+    "useQueryState",
+    "useSearchStoreOpenState",
+    "search",
   );
 
   // Base handler function for ApplicationCommandSearchStore which is ran to get the info in store
   // commands are mainly added here
-  injector.after(ApplicationCommandSearchStoreMod, storeModFnKey!, (_, res) => {
+  injector.after(ApplicationCommandSearchStoreMod, "useDiscoveryState", (_, res) => {
     const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
       (commandAndSection) => commandAndSection.commands.size,
     );
@@ -168,10 +165,7 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
   });
 
   // The store itself
-  const ApplicationCommandSearchStore = getExportsForProps<ApplicationCommandSearchStore>(
-    ApplicationCommandSearchStoreMod,
-    ["getApplicationSections", "getChannelState", "getQueryCommands"],
-  )!;
+  const ApplicationCommandSearchStore = ApplicationCommandSearchStoreMod.default;
 
   // Channel state gets update with each character entered in text box and search so we patch this to keep our custom section
   // even after updates happen
@@ -264,19 +258,11 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
 }
 
 async function injectProfileFetch(): Promise<void> {
-  const mod = await waitForModule<
-    Record<
-      string,
-      (
-        id: string,
-        avatar: string,
-        { guildId, channelId }: { guildId: string; channelId: string },
-      ) => Promise<void>
-    >
-  >(filters.bySource(".preloadUserBanner,"), { raw: true });
-  const fnKey = getFunctionKeyBySource(mod.exports, ".apply(this");
-  injector.instead(mod.exports, fnKey!, (args, res) => {
-    if (args[1] === defaultSection.icon) {
+  const mod = await waitForProps<{
+    fetchProfile: (id: string) => Promise<void>;
+  }>("fetchProfile");
+  injector.instead(mod, "fetchProfile", (args, res) => {
+    if (args[0] === "replugged") {
       return;
     }
     return res(...args);
