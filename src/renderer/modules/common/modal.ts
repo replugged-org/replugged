@@ -66,7 +66,7 @@ export type Modal = {
 const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
 const alertMod = await waitForProps<AlertMod>("show", "close");
 
-const classes = getBySource<ModalClasses>("().justifyStart")!;
+const classes = getBySource<ModalClasses>(".justifyStart")!;
 
 export default {
   openModal: getFunctionBySource<Modal["openModal"]>(mod, "onCloseRequest:null!=")!,

@@ -35,7 +35,7 @@ interface BreadcrumbProps {
 const logger = Logger.coremod("AddonSettings");
 
 const Breadcrumbs = webpack.getBySource<React.ComponentClass<BreadcrumbProps>>(
-  "().breadcrumbFinalWrapper",
+  /\w+.breadcrumbFinalWrapper/,
 )!;
 const BreadcrumbClasses =
   webpack.getByProps<Record<"breadcrumbActive" | "breadcrumbInactive" | "breadcrumbs", string>>(
