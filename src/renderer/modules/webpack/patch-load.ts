@@ -38,6 +38,8 @@ export let signalStart: () => void;
  */
 export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
 
+const patchedModules = new Set<string>();
+
 /**
  * Original stringified module (without plaintext patches applied) for source searches
  * @internal
@@ -49,6 +51,8 @@ async function patchChunk(chunk: WebpackChunk): Promise<void> {
   await waitForStart;
   const modules = chunk[1];
   for (const id in modules) {
+    if (patchedModules.has(id)) continue;
+    patchedModules.add(id);
     const originalMod = modules[id];
     sourceStrings[id] = originalMod.toString();
     const mod = patchModuleSource(originalMod, id);
@@ -130,6 +134,16 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
 
   patchPush(chunksGlobal);
   signalReady();
+
+  // There is some kind of race condition where chunks are not patched ever, so this should make sure everything gets patched
+  // This is a temporary workaround that should be removed once we figure out the real cause
+  setInterval(() => {
+    if (Array.isArray(chunksGlobal)) {
+      for (const loadedChunk of chunksGlobal) {
+        void patchChunk(loadedChunk);
+      }
+    }
+  }, 1000);
 }
 
 // Intercept the webpack chunk global as soon as Discord creates it
