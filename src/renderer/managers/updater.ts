@@ -223,13 +223,13 @@ export async function checkAllUpdates(autoCheck = false, verbose = false): Promi
 
   async function checkUpdatesWithRateLimit(): Promise<void> {
     await checkUpdate(REPLUGGED_ID, verbose);
-  
+
     let addonCount = 0;
-  
+
     for (const addon of addons) {
       await checkUpdate(addon.manifest.id, verbose);
       addonCount++;
-  
+
       if (addonCount === 15) {
         addonCount = 0;
         await delay(1000); // Delay for 1 second after sending 15 requests
