@@ -83,13 +83,19 @@ Load order:
 
 export async function ignite(): Promise<void> {
   // This is the function that will be called when loading the window.
-  coremods.runPlaintextPatches();
+  // Plaintext patches are executed before Discord's preload.
+  await coremods.runPlaintextPatches();
+  await plugins.loadAll();
   await plugins.runPlaintextPatches();
-  await waitForReady;
-  signalStart();
-  await commonReady();
-  await componentsReady();
-  await start();
+  // These next things will happen after Discord's preload is called.
+  // We schedule them here, but they cannot block the ignite function from returning.
+  (async () => {
+    await waitForReady;
+    signalStart();
+    await commonReady();
+    await componentsReady();
+    await start();
+  })();
 }
 
 export async function startSplash(): Promise<void> {
