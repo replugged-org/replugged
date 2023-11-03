@@ -1,5 +1,5 @@
 import { Injector } from "@replugged";
-import { filters, getByProps, getByStoreName, waitForModule } from "src/renderer/modules/webpack";
+import { getByProps, getByStoreName } from "src/renderer/modules/webpack";
 import { users } from "@common";
 import type React from "react";
 import type { Store } from "src/renderer/modules/common/flux";
@@ -70,49 +70,28 @@ function nitroThemeClass(): void {
   onNitroThemeChange(ClientThemesBackgroundStore, ThemeIDMap);
 }
 
-interface MessageComponent {
-  props: { id: string | undefined }; // may not be there for non-message components
-  type: {
-    type: (msg: { message: Message }) => React.ReactElement;
-  };
-}
+function messageDataAttributes(): void {
+  const Message = getByProps<{
+    default: { type: (msg: { message: Message }) => React.ReactElement };
+    getElementFromMessage: unknown;
+  }>("getElementFromMessage");
 
-async function messageDataAttributes(): Promise<void> {
-  const MessagesComponent = await waitForModule<{
-    type: () => React.ReactElement;
-  }>(filters.bySource(".content.id)"));
+  if (!Message) {
+    throw new Error("Failed to find Message module!");
+  }
 
-  // the Message component isn't exported, so it must be extracted like this
-  const uninjectMessagesComponent = inject.after(MessagesComponent, "type", (_, res) => {
-    uninjectMessagesComponent();
-
-    const MessageListComponent = res.props.children.type;
-    const uninjectMessageList = inject.after(MessageListComponent, "type", (_, res) => {
-      const messagesArray = res.props.children.props.children[1].props.children[1].props
-        .children[1] as MessageComponent[];
-      const messageElement = messagesArray.find((e) => e.props.id !== undefined);
-
-      // messageElement isn't found when first loading the message list.
-      if (messageElement) {
-        uninjectMessageList();
-        // found a message component, inject into it
-        inject.after(messageElement.type, "type", ([{ message }], res) => {
-          const { props } = res.props.children.props.children;
-          props["data-is-author-self"] = message.author.id === users.getCurrentUser().id;
-          props["data-is-author-bot"] = message.author.bot;
-          // webhooks are also considered bots
-          if (message.author.bot) {
-            props["data-is-author-webhook"] = Boolean(message.webhookId);
-          }
-          props["data-author-id"] = message.author.id;
-          props["data-message-type"] = message.type; // raw enum value, seems consistent
-          if (message.blocked) props["data-is-blocked"] = "true";
-          return res;
-        });
-      }
-
-      return res;
-    });
+  inject.after(Message.default, "type", ([{ message }], res) => {
+    const props = res.props?.children?.props?.children?.props;
+    if (!props) return;
+    props["data-is-author-self"] = message.author.id === users.getCurrentUser().id;
+    props["data-is-author-bot"] = message.author.bot;
+    // webhooks are also considered bots
+    if (message.author.bot) {
+      props["data-is-author-webhook"] = Boolean(message.webhookId);
+    }
+    props["data-author-id"] = message.author.id;
+    props["data-message-type"] = message.type; // raw enum value, seems consistent enough to be useful
+    if (message.blocked) props["data-is-blocked"] = "true";
     return res;
   });
 }
@@ -123,16 +102,21 @@ function addHtmlClasses(): void {
   }
 }
 
-export async function start(): Promise<void> {
+let observer: MutationObserver;
+
+export function start(): void {
   tabBarItemId();
   nitroThemeClass();
-  await messageDataAttributes();
+  messageDataAttributes();
 
   // generic stuff
-  const observer = new MutationObserver(addHtmlClasses);
+  observer = new MutationObserver(addHtmlClasses);
   observer.observe(html, { attributeFilter: ["class"] });
 }
 
 export function stop(): void {
   inject.uninjectAll();
+  observer.disconnect();
+  html.classList.remove("replugged");
+  html.removeAttribute("data-nitro-theme");
 }
