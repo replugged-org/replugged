@@ -144,6 +144,16 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
     } else {
       menu.children.push(repluggedGroup);
     }
+  } else {
+    const hasCopyId =
+      menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
+      menu.children
+        .at(-1)
+        ?.props?.children?.some(
+          (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
+        );
+    //clear replugged section if it was there already
+    menu.children.at(hasCopyId ? -2 : -1)!.props.children = [];
   }
 
   //get sections from where to clean items
