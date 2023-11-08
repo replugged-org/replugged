@@ -543,7 +543,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Flex align={Flex.Align.CENTER} className={"rp-addon-breadcrumbs"}>
+        <Flex align={Flex.Align.CENTER} className={"replugged-addon-breadcrumbs"}>
           {section === `rp_${type}` ? (
             <Text.H2
               style={{
@@ -578,7 +578,11 @@ export const Addons = (type: AddonType): React.ReactElement => {
               renderCustomBreadcrumb={(breadcrumb, active) => (
                 <Text.H2
                   color={active ? "header-primary" : "inherit"}
-                  className={active ? "rp-addon-breadcrumbsActive" : "rp-addon-breadcrumbsInactive"}
+                  className={
+                    active
+                      ? "replugged-addon-breadcrumbsActive"
+                      : "replugged-addon-breadcrumbsInactive"
+                  }
                   style={{
                     // Do not turn "(num)" into a single symbol
                     fontVariantLigatures: "none",

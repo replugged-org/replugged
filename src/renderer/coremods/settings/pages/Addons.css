@@ -35,13 +35,13 @@
 .replugged-addon-breadcrumbs {
   margin-bottom: 20px;
 }
-.rp-addon-breadcrumbsActive {
+.replugged-addon-breadcrumbsActive {
   color: var(--header-primary);
 }
-.rp-addon-breadcrumbsInactive {
+.replugged-addon-breadcrumbsInactive {
   cursor: pointer;
   color: var(--header-secondary);
 }
-.rp-addon-breadcrumbsInactive:hover {
+.replugged-addon-breadcrumbsInactive:hover {
   color: var(--header-primary);
 }
