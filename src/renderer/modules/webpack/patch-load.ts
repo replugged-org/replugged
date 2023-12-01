@@ -67,6 +67,7 @@ async function patchChunk(chunk: WebpackChunk): Promise<void> {
         } catch {}
       }
     };
+    modules[id].toString = () => sourceStrings[id];
   }
 }
 
