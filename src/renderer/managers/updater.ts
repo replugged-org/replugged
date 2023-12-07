@@ -219,10 +219,32 @@ export async function checkAllUpdates(autoCheck = false, verbose = false): Promi
 
   logger.log("Checking for updates");
 
-  await Promise.all([
-    checkUpdate(REPLUGGED_ID, verbose),
-    ...addons.map((addon) => checkUpdate(addon.manifest.id, verbose)),
-  ]);
+  const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
+  async function checkUpdatesWithRateLimit(): Promise<void> {
+    await checkUpdate(REPLUGGED_ID, verbose);
+    let requests = [];
+    let addonCount = 0;
+
+    for (const addon of addons) {
+      requests.push(checkUpdate(addon.manifest.id, verbose));
+      addonCount++;
+
+      if (addonCount === 15) {
+        addonCount = 0;
+        try {
+
+          await Promise.all(requests)
+        } catch (error) {
+
+          throw new Error(`Updater threw error:\n ${error}`);
+        }
+
+        await delay(1000); // Delay for 1 second after sending 15 requests
+      }
+    }
+  }
+
+  await checkUpdatesWithRateLimit();
 
   logger.log("All updates checked");
   updaterSettings.set("lastChecked", Date.now());
