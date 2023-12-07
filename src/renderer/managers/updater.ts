@@ -232,7 +232,6 @@ export async function checkAllUpdates(autoCheck = false, verbose = false): Promi
       if (addonCount === 15) {
         addonCount = 0;
         try {
-
           await Promise.all(requests)
         } catch (error) {
 
