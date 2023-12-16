@@ -92,7 +92,7 @@
     "prompts": "^2.4.2",
     "semver": "^7.5.4",
     "standalone-electron-types": "^1.0.0",
-    "tsx": "^3.14.0",
+    "tsx": "^4.6.2",
     "update-notifier": "^6.0.2",
     "ws": "^8.14.2",
     "yargs": "^17.7.2",
