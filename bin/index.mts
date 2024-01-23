@@ -12,7 +12,6 @@ import {
   rmSync,
   writeFileSync,
 } from "fs";
-import { cwd } from "process";
 import esbuild from "esbuild";
 import path from "path";
 import updateNotifier from "update-notifier";
@@ -23,7 +22,7 @@ import WebSocket from "ws";
 import { release } from "./release.mjs";
 import { logBuildPlugin } from "../src/util.mjs";
 import { sassPlugin } from "esbuild-sass-plugin";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 import { AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
 
 interface BaseArgs {
@@ -44,9 +43,9 @@ let extraESBuildConfig = new Promise<(current: esbuild.BuildOptions) => esbuild.
   (resolve) => resolve((v) => v),
 );
 
-if (existsSync("./esbuild.extra.mjs")) {
+if (existsSync(path.join(directory, "esbuild.extra.mjs"))) {
   extraESBuildConfig = new Promise((resolve) => {
-    import(path.join(cwd(), "esbuild.extra.mjs")).then((v) => {
+    import(pathToFileURL(path.join(directory, "esbuild.extra.mjs"))).then((v) => {
       resolve(v.default);
     });
   });
