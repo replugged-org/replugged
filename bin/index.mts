@@ -39,17 +39,20 @@ export const directory = process.cwd();
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
-let extraESBuildConfig = new Promise<(current: esbuild.BuildOptions) => esbuild.BuildOptions>(
-  (resolve) => resolve((v) => v),
-);
 
-if (existsSync(path.join(directory, "esbuild.extra.mjs"))) {
-  extraESBuildConfig = new Promise((resolve) => {
-    import(pathToFileURL(path.join(directory, "esbuild.extra.mjs"))).then((v) => {
-      resolve(v.default);
-    });
-  });
-}
+const extraESBuildPath = path.join(directory, "esbuild.extra.mjs");
+const extraESBuildConfig = new Promise<(config: esbuild.BuildOptions) => esbuild.BuildOptions>(
+  (resolve) => {
+    if (existsSync(extraESBuildPath))
+      resolve(
+        import(pathToFileURL(extraESBuildPath).href).then((m) => {
+          resolve(m.default);
+        }) as Promise<(config: esbuild.BuildOptions) => esbuild.BuildOptions>,
+      );
+
+    resolve((config: esbuild.BuildOptions) => config);
+  },
+);
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
   " → ",
