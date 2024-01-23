@@ -45,9 +45,9 @@ const extraESBuildConfig = new Promise<(config: esbuild.BuildOptions) => esbuild
   (resolve) => {
     if (existsSync(extraESBuildPath))
       resolve(
-        import(pathToFileURL(extraESBuildPath).href).then((m) => {
-          resolve(m.default);
-        }) as Promise<(config: esbuild.BuildOptions) => esbuild.BuildOptions>,
+        import(pathToFileURL(extraESBuildPath).href).then((m) => m.default) as Promise<
+          (config: esbuild.BuildOptions) => esbuild.BuildOptions
+        >,
       );
 
     resolve((config: esbuild.BuildOptions) => config);
