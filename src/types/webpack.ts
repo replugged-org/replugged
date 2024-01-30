@@ -15,8 +15,10 @@ export interface RawModule<T = unknown> {
   exports: T;
 }
 
+export type WebpackRawModules = Record<string | number, RawModule>;
+
 export type WebpackRequire = ((e: number) => unknown) & {
-  c: Record<string | number, RawModule>;
+  c?: WebpackRawModules;
   d: (module: unknown, exports: Record<string, () => unknown>) => void;
   m: WebpackChunk;
 };

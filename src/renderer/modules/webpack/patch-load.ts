@@ -1,4 +1,9 @@
-import type { WebpackChunk, WebpackChunkGlobal, WebpackRequire } from "../../../types";
+import type {
+  WebpackChunk,
+  WebpackChunkGlobal,
+  WebpackRawModules,
+  WebpackRequire,
+} from "../../../types";
 
 import { listeners } from "./lazy";
 
@@ -10,6 +15,7 @@ import { patchModuleSource } from "./plaintext-patch";
  * @hidden
  */
 export let wpRequire: WebpackRequire | undefined;
+export let webpackChunks: WebpackRawModules | undefined;
 
 let signalReady: () => void;
 let ready = false;
@@ -67,6 +73,7 @@ async function patchChunk(chunk: WebpackChunk): Promise<void> {
         } catch {}
       }
     };
+    modules[id].toString = () => sourceStrings[id];
   }
 }
 
@@ -104,6 +111,7 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
     {},
     (r: WebpackRequire | undefined) => {
       wpRequire = r!;
+      if (wpRequire.c && !webpackChunks) webpackChunks = wpRequire.c;
 
       if (r) {
         r.d = (module: unknown, exports: Record<string, () => unknown>) => {
