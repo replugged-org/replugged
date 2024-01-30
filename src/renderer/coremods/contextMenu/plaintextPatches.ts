@@ -11,7 +11,7 @@ export default [
       },
       {
         match: /(patchedMenu.{2400,2600}return)(\(0,.\.jsx\)\(\w+.OnMenuSelectContext)/,
-        replace: (_, prefix, suffix) => `${prefix} patchedMenu?patchedMenu:${suffix}`,
+        replace: (_, prefix, suffix) => `${prefix} patchedMenu??${suffix}`,
       },
     ],
   },
