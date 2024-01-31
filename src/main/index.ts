@@ -53,6 +53,37 @@ function windowTypeFromOpts(
   return opts.webContents;
 }
 
+enum DiscordWindowType {
+  POP_OUT,
+  SPLASH_SCREEN,
+  OVERLAY,
+  DISCORD_CLIENT,
+}
+
+function windowTypeFromOpts(
+  opts: electron.BrowserWindowConstructorOptions & {
+    webContents: electron.WebContents;
+    webPreferences: {
+      nativeWindowOpen: boolean;
+    };
+  },
+): DiscordWindowType {
+  if (opts.webContents) {
+    return DiscordWindowType.POP_OUT;
+  } else if (opts.webPreferences?.nodeIntegration) {
+    return DiscordWindowType.SPLASH_SCREEN;
+  } else if (opts.webPreferences?.offscreen) {
+    return DiscordWindowType.OVERLAY;
+  } else if (opts.webPreferences?.preload) {
+    if (opts.webPreferences.nativeWindowOpen) {
+      return DiscordWindowType.DISCORD_CLIENT;
+    } else {
+      return DiscordWindowType.SPLASH_SCREEN;
+    }
+  }
+  return opts.webContents;
+}
+
 // This class has to be named "BrowserWindow" exactly
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
@@ -92,6 +123,20 @@ class BrowserWindow extends electron.BrowserWindow {
     }
 
     super(opts);
+
+    if (
+      currentWindow === DiscordWindowType.DISCORD_CLIENT &&
+      settings.get("transparentWindow") &&
+      process.platform === "darwin"
+    ) {
+      this.on("ready-to-show", () => {
+        // TODO: As far as I know, this is only needed on some macOS versions.
+        // This automatically maximizes the window on all displays the window is dragged to
+        this.maximize();
+        this.setResizable(false);
+      });
+    }
+
 
     if (
       currentWindow === DiscordWindowType.DISCORD_CLIENT &&

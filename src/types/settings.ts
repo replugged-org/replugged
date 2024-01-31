@@ -22,6 +22,7 @@ export const defaultSettings = {
   badges: true,
   autoApplyQuickCss: false,
   showWelcomeNoticeOnOpen: true,
+  transparentWindow: false,
   reactDevTools: false,
   addonEmbeds: true,
   transparentWindow: false,
