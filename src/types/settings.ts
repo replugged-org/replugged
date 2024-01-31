@@ -25,5 +25,4 @@ export const defaultSettings = {
   transparentWindow: false,
   reactDevTools: false,
   addonEmbeds: true,
-  transparentWindow: false,
 } satisfies Partial<GeneralSettings>;
