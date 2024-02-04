@@ -3,6 +3,9 @@ import electron from "electron";
 import { CONFIG_PATHS, readSettingsSync } from "src/util.mjs";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
+import vibePath from "../vibe.node";
+const vibe = require(vibePath) as unknown as typeof import('@pyke/vibe');
+vibe.setup(electron.app);
 
 const settings = readSettingsSync("dev.replugged.Settings");
 const electronPath = require.resolve("electron");
@@ -74,8 +77,10 @@ class BrowserWindow extends electron.BrowserWindow {
         opts.webPreferences.preload = join(__dirname, "./preload.js");
 
         if (settings.get("transparentWindow")) {
-          opts.transparent = true;
-          opts.frame = process.platform === "win32" ? false : opts.frame;
+          opts.show = false;
+          // Menu bar needs to be remade -_-
+          opts.autoHideMenuBar = true;
+          // opts.frame = process.platform === "win32" ? false : opts.frame;
           // TODO: Figure out what background color each OS needs.
           opts.backgroundColor = "#00000000";
         }
@@ -95,28 +100,10 @@ class BrowserWindow extends electron.BrowserWindow {
 
     if (
       currentWindow === DiscordWindowType.DISCORD_CLIENT &&
-      settings.get("transparentWindow") &&
-      process.platform === "darwin"
+      settings.get("transparentWindow")
     ) {
       this.on("ready-to-show", () => {
-        // TODO: As far as I know, this is only needed on some macOS versions.
-        // This automatically maximizes the window on all displays the window is dragged to
-        this.maximize();
-        this.setResizable(false);
-      });
-    }
-
-
-    if (
-      currentWindow === DiscordWindowType.DISCORD_CLIENT &&
-      settings.get("transparentWindow") &&
-      process.platform === "darwin"
-    ) {
-      this.on("ready-to-show", () => {
-        // TODO: As far as I know, this is only needed on some macOS versions.
-        // This automatically maximizes the window on all displays the window is dragged to
-        this.maximize();
-        this.setResizable(false);
+        vibe.applyEffect(this, 'acrylic');
       });
     }
 
