@@ -1,5 +1,5 @@
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 enum ModalTransitionState {
   ENTERING,
@@ -54,12 +54,10 @@ export interface ModalType {
   ModalCloseButton: React.FC<ModalCloseButtonProps>;
 }
 
-const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"));
-
 export default {
-  ModalRoot: getFunctionBySource(mod, "().root"),
-  ModalHeader: getFunctionBySource(mod, "().header"),
-  ModalContent: getFunctionBySource(mod, "().content"),
-  ModalFooter: getFunctionBySource(mod, "().footerSeparator"),
-  ModalCloseButton: getFunctionBySource(mod, "().closeWithCircleBackground"),
+  ModalRoot: components.ModalRoot,
+  ModalHeader: components.ModalHeader,
+  ModalContent: components.ModalContent,
+  ModalFooter: components.ModalFooter,
+  ModalCloseButton: components.ModalCloseButton,
 } as ModalType;

@@ -11,16 +11,13 @@ const injector = new Injector();
 export { insertSections };
 
 interface VersionMod {
-  Z: () => SectionType[];
+  default: () => React.ReactElement;
 }
 async function injectVersionInfo(): Promise<void> {
-  const mod = await waitForModule<VersionMod>(filters.bySource("().versionHash"), { raw: true });
+  const mod = await waitForModule<VersionMod>(filters.bySource(".versionHash"), { raw: true });
 
-  injector.after(mod.exports, "Z", (_, sections: SectionType[]) => {
-    const lastSection = sections.at(-1)!;
-    const element = lastSection.element?.({});
-    if (!element) return;
-    element.props.children.push(
+  injector.after(mod.exports, "default", (_, res) => {
+    res.props.children.push(
       <Text
         variant="text-xs/normal"
         color="text-muted"
@@ -29,11 +26,10 @@ async function injectVersionInfo(): Promise<void> {
         {Messages.REPLUGGED_VERSION.format({ version: window.RepluggedNative.getVersion() })}
       </Text>,
     );
-    lastSection.element = () => element;
   });
 }
 
-export function start(): void {
+export async function start(): Promise<void> {
   void injectVersionInfo();
 
   settingsTools.addAfter("Billing", [
@@ -65,6 +61,17 @@ export function start(): void {
       elem: Updater,
     }),
   ]);
+
+  const mod = await waitForModule<{
+    default: {
+      prototype: {
+        getPredicateSections: (_: unknown) => SectionType[];
+      };
+    };
+  }>(filters.bySource("getPredicateSections"));
+  injector.after(mod.default.prototype, "getPredicateSections", (_, res) => {
+    return insertSections(res);
+  });
 }
 
 export function stop(): void {
