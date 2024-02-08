@@ -9,6 +9,7 @@ import { default as notices } from "../coremods/notices/plaintextPatches";
 import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches";
 import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
 import { default as commandsPlaintext } from "../coremods/commands/plaintextPatches";
+import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
 import { Logger } from "../modules/logger";
 
 const logger = Logger.api("Coremods");
@@ -85,6 +86,7 @@ export function runPlaintextPatches(): Promise<void> {
       contextMenu,
       languagePlaintext,
       commandsPlaintext,
+      settingsPlaintext,
     ].forEach(patchPlaintext);
     res();
   });
