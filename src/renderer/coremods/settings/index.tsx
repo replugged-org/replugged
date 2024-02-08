@@ -17,7 +17,7 @@ async function injectVersionInfo(): Promise<void> {
   const mod = await waitForModule<VersionMod>(filters.bySource(".versionHash"), { raw: true });
 
   injector.after(mod.exports, "default", (_, res) => {
-    res.props.children.push(
+    res.props.children.props.children.push(
       <Text
         variant="text-xs/normal"
         color="text-muted"
