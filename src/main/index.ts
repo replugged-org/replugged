@@ -103,7 +103,9 @@ class BrowserWindow extends electron.BrowserWindow {
       settings.get("transparentWindow")
     ) {
       this.on("ready-to-show", () => {
-        vibe.applyEffect(this, 'acrylic');
+        vibe.applyEffect(this, 'unified-acrylic');
+        vibe.forceTheme(this, 'dark');
+        this.setBackgroundColor("#00000000");
       });
     }
 
