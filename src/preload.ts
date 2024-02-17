@@ -108,6 +108,11 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
   },
 
+  transparency: {
+    applyEffect: (): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.APPLY_TRANSPARENCY_EFFECT),
+  },
+
   getVersion: () => version,
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
