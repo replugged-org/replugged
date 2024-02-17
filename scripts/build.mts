@@ -86,7 +86,7 @@ const contexts = await Promise.all([
     external: ["electron", "original-fs"],
     loader: {
       ".node": "file",
-    }
+    },
   }),
   // Preload
   esbuild.context({
@@ -112,7 +112,7 @@ await Promise.all(
     if (watch) {
       await context.watch();
     } else {
-      await context.rebuild().catch(() => { });
+      await context.rebuild().catch(() => {});
       context.dispose();
     }
   }),
