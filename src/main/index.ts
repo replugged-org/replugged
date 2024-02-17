@@ -3,9 +3,14 @@ import electron from "electron";
 import { CONFIG_PATHS, readSettingsSync } from "src/util.mjs";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
+// @ts-expect-error Type defs are obtained through @pyke/vibe
 import vibePath from "../vibe.node";
-const vibe = require(vibePath) as unknown as typeof import('@pyke/vibe');
-vibe.setup(electron.app);
+
+let vibe: typeof import("@pyke/vibe");
+if (process.platform === "win32") {
+  vibe = require(vibePath) as unknown as typeof import("@pyke/vibe");
+  vibe.setup(electron.app);
+}
 
 const settings = readSettingsSync("dev.replugged.Settings");
 const electronPath = require.resolve("electron");
@@ -26,20 +31,21 @@ Object.defineProperty(global, "appSettings", {
 });
 
 enum DiscordWindowType {
+  UNKNOWN,
   POP_OUT,
   SPLASH_SCREEN,
   OVERLAY,
   DISCORD_CLIENT,
 }
 
-function windowTypeFromOpts(
-  opts: electron.BrowserWindowConstructorOptions & {
-    webContents: electron.WebContents;
-    webPreferences: {
-      nativeWindowOpen: boolean;
-    };
-  },
-): DiscordWindowType {
+type InternalBrowserWindowConstructorOptions = electron.BrowserWindowConstructorOptions & {
+  webContents?: electron.WebContents;
+  webPreferences?: {
+    nativeWindowOpen: boolean;
+  };
+};
+
+function windowTypeFromOpts(opts: InternalBrowserWindowConstructorOptions): DiscordWindowType {
   if (opts.webContents) {
     return DiscordWindowType.POP_OUT;
   } else if (opts.webPreferences?.nodeIntegration) {
@@ -53,28 +59,22 @@ function windowTypeFromOpts(
       return DiscordWindowType.SPLASH_SCREEN;
     }
   }
-  return opts.webContents;
+
+  return DiscordWindowType.UNKNOWN;
 }
 
 // This class has to be named "BrowserWindow" exactly
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  public constructor(
-    opts: electron.BrowserWindowConstructorOptions & {
-      webContents?: electron.WebContents;
-      webPreferences?: {
-        nativeWindowOpen: boolean;
-      };
-    },
-  ) {
+  public constructor(opts: InternalBrowserWindowConstructorOptions) {
     const originalPreload = opts.webPreferences?.preload;
 
     const currentWindow = windowTypeFromOpts(opts);
 
     switch (currentWindow) {
       case DiscordWindowType.DISCORD_CLIENT: {
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
+        opts.webPreferences!.preload = join(__dirname, "./preload.js");
 
         if (settings.get("transparentWindow")) {
           opts.show = false;
@@ -82,7 +82,11 @@ class BrowserWindow extends electron.BrowserWindow {
           opts.autoHideMenuBar = true;
           // opts.frame = process.platform === "win32" ? false : opts.frame;
           // TODO: Figure out what background color each OS needs.
-          opts.backgroundColor = "#00000000";
+          opts.backgroundColor = "#0000000";
+
+          if (process.platform === "linux") {
+            opts.transparent = true;
+          }
         }
         break;
       }
@@ -98,13 +102,12 @@ class BrowserWindow extends electron.BrowserWindow {
 
     super(opts);
 
-    if (
-      currentWindow === DiscordWindowType.DISCORD_CLIENT &&
-      settings.get("transparentWindow")
-    ) {
+    if (currentWindow === DiscordWindowType.DISCORD_CLIENT && settings.get("transparentWindow")) {
       this.on("ready-to-show", () => {
-        vibe.applyEffect(this, 'unified-acrylic');
-        vibe.forceTheme(this, 'dark');
+        if (process.platform === "win32") {
+          vibe.applyEffect(this, "unified-acrylic");
+          vibe.forceTheme(this, "dark");
+        }
         this.setBackgroundColor("#00000000");
       });
     }

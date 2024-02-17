@@ -67,7 +67,8 @@
     "Vendicated",
     "Webauthn",
     "weblate",
-    "XLARGE"
+    "XLARGE",
+    "pyke"
   ],
   "ignoreWords": [],
   "import": [],
