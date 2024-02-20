@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
+import { filters, waitForModule, waitForProps } from "../webpack";
 import type { DispatchBand, FluxDispatcher as Dispatcher } from "./fluxDispatcher";
 
 type DispatchToken = string;
@@ -187,46 +187,34 @@ const SnapshotStoreClass = await waitForModule<typeof SnapshotStore>(
   filters.bySource("SnapshotStores"),
 );
 
-type useStateFromStores = <T>(
-  stores: Store[],
-  callback: () => T,
-  deps?: React.DependencyList,
-  compare?:
-    | (<T extends []>(a: T, b: T) => boolean)
-    | (<T extends Record<string, unknown>>(a: T, b: T) => boolean),
-) => T;
-type statesWillNeverBeEqual = <T>(a: T, b: T) => boolean;
-type useStateFromStoresArray = <T>(
-  stores: Store[],
-  callback: () => T,
-  deps?: React.DependencyList,
-) => T;
-type useStateFromStoresObject = <T>(
-  stores: Store[],
-  callback: () => T,
-  deps?: React.DependencyList,
-) => T;
+interface FluxHooks {
+  useStateFromStores: <T>(
+    stores: Store[],
+    callback: () => T,
+    deps?: React.DependencyList,
+    compare?:
+      | (<T extends []>(a: T, b: T) => boolean)
+      | (<T extends Record<string, unknown>>(a: T, b: T) => boolean),
+  ) => T;
+  statesWillNeverBeEqual: <T>(a: T, b: T) => boolean;
+  useStateFromStoresArray: <T>(
+    stores: Store[],
+    callback: () => T,
+    deps?: React.DependencyList,
+  ) => T;
+  useStateFromStoresObject: <T>(
+    stores: Store[],
+    callback: () => T,
+    deps?: React.DependencyList,
+  ) => T;
+}
 
-const FluxHooksMod = await waitForModule(filters.bySource("useStateFromStores"));
-
-const useStateFromStores = getFunctionBySource<useStateFromStores>(
-  FluxHooksMod,
-  "useStateFromStores",
-)!;
-const statesWillNeverBeEqual = getFunctionBySource<statesWillNeverBeEqual>(
-  FluxHooksMod,
-  "return!1",
-)!;
-const useStateFromStoresArray: useStateFromStoresArray = (stores, callback, deps) =>
-  useStateFromStores(stores, callback, deps, _.isEqual);
-const useStateFromStoresObject: useStateFromStoresObject = (stores, callback, deps) =>
-  useStateFromStores(stores, callback, deps, _.isEqual);
-
+const FluxHooksMod = await waitForProps<FluxHooks>("useStateFromStores");
 const FluxHooks = {
-  useStateFromStores,
-  statesWillNeverBeEqual,
-  useStateFromStoresArray,
-  useStateFromStoresObject,
+  useStateFromStores: FluxHooksMod.useStateFromStores,
+  statesWillNeverBeEqual: FluxHooksMod.statesWillNeverBeEqual,
+  useStateFromStoresArray: FluxHooksMod.useStateFromStoresArray,
+  useStateFromStoresObject: FluxHooksMod.useStateFromStoresObject,
 };
 
 export type Flux = FluxMod & { SnapshotStore: typeof SnapshotStore } & typeof FluxHooks;

@@ -107,7 +107,7 @@ export type BadgeComponent = (args: BadgeArgs) => React.ReactElement<{
 const openContributorsPage = (): Promise<void> =>
   openExternal(`${generalSettings.get("apiUrl")}/contributors`);
 const openTranslationsPage = (): Promise<void> => openExternal("https://i18n.replugged.dev");
-const joinRepluggedServer = (): Promise<void> => goToOrJoinServer("replugged");
+const joinRepluggedServer = (): Promise<void> => goToOrJoinServer("HnYFUhv4x4");
 
 const Custom = React.memo(({ url, name, size }: BadgeArgs) => (
   <Base

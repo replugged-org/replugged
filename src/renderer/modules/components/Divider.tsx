@@ -1,5 +1,5 @@
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 interface DividerProps {
   className?: string;
@@ -8,9 +8,4 @@ interface DividerProps {
 
 export type DividerType = React.FC<DividerProps>;
 
-const rgx = /\.divider,.\),style:./;
-
-export default await waitForModule(filters.bySource(rgx)).then((mod) => {
-  if (typeof mod === "function") return mod as DividerType;
-  return getFunctionBySource<DividerType>(mod, rgx)!;
-});
+export default components.FormDivider;

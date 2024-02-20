@@ -2,7 +2,7 @@ import React from "@common/react";
 import { Logger } from "@replugged";
 import type { User } from "discord-types/general";
 import { Injector } from "../../modules/injector";
-import { filters, getByProps, waitForModule } from "../../modules/webpack";
+import { getByProps, waitForProps } from "../../modules/webpack";
 import { generalSettings } from "../settings/pages/General";
 import { APIBadges, BadgeSizes, Custom, badgeElements, getBadgeSizeClass } from "./badge";
 
@@ -37,17 +37,13 @@ const cache = new Map<string, BadgeCache>();
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
 export async function start(): Promise<void> {
-  const mod = await waitForModule<Record<string, BadgeMod>>(filters.bySource("getBadges()"));
-  const fnPropName = Object.entries(mod).find(([_, v]) => typeof v === "function")?.[0];
-  if (!fnPropName) {
-    throw new Error("Could not find badges function");
-  }
+  const mod = await waitForProps<{ BadgeSizes: BadgeSizes; default: BadgeMod }>("BadgeSizes");
 
   const { containerWithContent } = getByProps<{ containerWithContent: "string" }>(
     "containerWithContent",
   )!;
 
-  injector.after(mod, fnPropName, ([props], res) => {
+  injector.after(mod, "default", ([props], res) => {
     let {
       user: { id },
       shrinkAtCount,

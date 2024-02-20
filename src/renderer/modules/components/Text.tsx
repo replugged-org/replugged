@@ -1,7 +1,6 @@
 import { parser } from "@common";
 import type React from "react";
-import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 export type Variant =
   | "heading-sm/normal"
@@ -81,13 +80,12 @@ interface CustomTextProps extends TextProps {
   allowMarkdownList?: boolean;
 }
 
-type OriginalTextType = React.FC<CustomTextProps>;
+export type OriginalTextType = React.FC<CustomTextProps>;
 
 export type TextType = OriginalTextType &
   Record<"Normal" | "H1" | "H2" | "H3" | "H4" | "Eyebrow", OriginalTextType>;
 
-const mod = await waitForModule<ObjectExports>(filters.bySource("data-text-variant"));
-const OriginalText = getFunctionBySource<OriginalTextType>(mod, "data-text-variant")!;
+const TextComp = components.Text;
 
 function TextWithDefaultProps(defaultProps: CustomTextProps) {
   return (props: CustomTextProps) => {
@@ -105,7 +103,7 @@ function TextWithDefaultProps(defaultProps: CustomTextProps) {
     delete props.allowMarkdownLinks;
     delete props.allowMarkdownHeading;
     delete props.allowMarkdownList;
-    return <OriginalText {...props}>{newChildren}</OriginalText>;
+    return <TextComp {...props}>{newChildren}</TextComp>;
   };
 }
 
