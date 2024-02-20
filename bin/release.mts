@@ -94,7 +94,7 @@ export async function release(): Promise<void> {
     process.exit(1);
   }
   const manifestText = readFileSync(manifestPath, "utf8");
-  let manifest;
+  let manifest: { version: string; name: string };
   try {
     manifest = JSON.parse(manifestText);
   } catch {
@@ -108,7 +108,7 @@ export async function release(): Promise<void> {
     process.exit(1);
   }
   const packageText = packagePath ? readFileSync(packagePath, "utf8") : null;
-  let packageJson;
+  let packageJson: { version: string };
   try {
     packageJson = packagePath ? JSON.parse(packageText!) : null;
   } catch {
@@ -220,7 +220,14 @@ export async function release(): Promise<void> {
         return true;
       },
     },
-    { onCancel },
+    {
+      onCancel() {
+        manifest.version = version;
+        if (packageJson) packageJson.version = version;
+        console.log(chalk.yellow(`Reverted Version to:${version}`));
+        onCancel();
+      },
+    },
   );
 
   // Pick tag name
@@ -242,7 +249,14 @@ export async function release(): Promise<void> {
         return true;
       },
     },
-    { onCancel },
+    {
+      onCancel() {
+        manifest.version = version;
+        if (packageJson) packageJson.version = version;
+        console.log(chalk.yellow(`Reverted Version to:${version}`));
+        onCancel();
+      },
+    },
   );
 
   const hasSigningKey = Boolean(runCommand("git config --get user.signingkey", false).trim());
