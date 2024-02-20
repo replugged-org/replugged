@@ -22,9 +22,8 @@ const logger = Logger.coremod("Settings:Updater");
 
 export const Updater = (): React.ReactElement => {
   const [checking, setChecking] = React.useState(false);
-  const [updatesAvailable, setUpdatesAvailable] = React.useState<
-    Array<UpdateSettings & { id: string }>
-  >(getAvailableUpdates());
+  const [updatesAvailable, setUpdatesAvailable] =
+    React.useState<Array<UpdateSettings & { id: string }>>(getAvailableUpdates());
   const [updatePromises, setUpdatePromises] = React.useState<Record<string, Promise<boolean>>>({});
   const [didInstallAll, setDidInstallAll] = React.useState(false);
   const [lastChecked, setLastChecked] = useSettingArray(updaterSettings, "lastChecked");
