@@ -12,7 +12,7 @@ let currentEffect: Parameters<typeof vibe.applyEffect>[1] | null = null;
 ipcMain.handle(
   RepluggedIpcChannels.GET_TRANSPARENCY_EFFECT,
   (): Parameters<typeof vibe.applyEffect>[1] | null => {
-    if (DiscordNative.process.platform !== "win32") {
+    if (process.platform !== "win32") {
       console.warn("GET_TRANSPARENCY_EFFECT only works on Windows");
     }
 
@@ -23,14 +23,12 @@ ipcMain.handle(
 ipcMain.handle(
   RepluggedIpcChannels.APPLY_TRANSPARENCY_EFFECT,
   (_, effect: Parameters<typeof vibe.applyEffect>[1]) => {
-    if (DiscordNative.process.platform !== "win32") {
+    if (process.platform !== "win32") {
       console.warn("RepluggedNative.transparency.applyEffect only works on Windows");
       return;
     }
 
     let windows = BrowserWindow.getAllWindows();
-    console.log(windows);
-    // @todo: Is it a bad idea to apply this to all active windows?
     windows.forEach((window) => vibe.applyEffect(window, effect));
     currentEffect = effect;
   },
@@ -47,7 +45,6 @@ ipcMain.handle(
   (_, vibrancy: Parameters<typeof BrowserWindow.prototype.setVibrancy>[0]) => {
     let windows = BrowserWindow.getAllWindows();
 
-    // @todo: Is it a bad idea to apply this to all active windows?
     windows.forEach((window) => window.setVibrancy(vibrancy));
     currentVibrancy = vibrancy;
   },
