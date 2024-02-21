@@ -1,11 +1,8 @@
-import { Logger } from "@replugged";
-
-const logger = Logger.coremod("Transparency");
 let observer: MutationObserver;
 
 export function start(): void {
   let html = document.body.parentElement!;
-  // RepluggedNative.transparency.applyEffect();
+
   observer = new MutationObserver(async (mutations) => {
     let cssModified = false;
     for (const mutation of mutations) {
@@ -35,7 +32,7 @@ export function start(): void {
             return;
           }
 
-          // @ts-expect-error TODO: Check if the vibrancy is valid?
+          // @ts-expect-error @todo: Check if the vibrancy is valid?
           await RepluggedNative.transparency.applyEffect(transparencyEffect);
           break;
         }
@@ -45,7 +42,7 @@ export function start(): void {
             return;
           }
 
-          // @ts-expect-error TODO: Check if the vibrancy is valid?
+          // @ts-expect-error @todo: Check if the vibrancy is valid?
           await RepluggedNative.transparency.setVibrancy(vibrancy);
           break;
         }

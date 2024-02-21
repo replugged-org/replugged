@@ -30,7 +30,7 @@ ipcMain.handle(
 
     let windows = BrowserWindow.getAllWindows();
     console.log(windows);
-    // TODO: Is it a bad idea to apply this to all active windows?
+    // @todo: Is it a bad idea to apply this to all active windows?
     windows.forEach((window) => vibe.applyEffect(window, effect));
     currentEffect = effect;
   },
@@ -47,7 +47,7 @@ ipcMain.handle(
   (_, vibrancy: Parameters<typeof BrowserWindow.prototype.setVibrancy>[0]) => {
     let windows = BrowserWindow.getAllWindows();
 
-    // TODO: Is it a bad idea to apply this to all active windows?
+    // @todo: Is it a bad idea to apply this to all active windows?
     windows.forEach((window) => window.setVibrancy(vibrancy));
     currentVibrancy = vibrancy;
   },

@@ -79,16 +79,16 @@ class BrowserWindow extends electron.BrowserWindow {
         if (settings.get("transparentWindow")) {
           switch (process.platform) {
             case "win32":
-              // TODO: Menu bar will need to be remade
+              // @todo: Menu bar will need to be remade
               opts.autoHideMenuBar = true;
-              opts.show = false; // TODO: Unsure if this is needed everywhere
+              opts.show = false; // @todo: Unsure if this is needed everywhere
               break;
             case "linux":
               opts.transparent = true;
               break;
           }
-          // TODO: Determine what `frame` value is needed on each platform
-          // TODO: Determine what `backgroundColor` is needed on each platform
+          // @todo: Determine what `frame` value is needed on each platform
+          // @todo: Determine what `backgroundColor` is needed on each platform
         }
         break;
       }
@@ -110,7 +110,7 @@ class BrowserWindow extends electron.BrowserWindow {
         //   vibe.applyEffect(this, "unified-acrylic");
         //   vibe.forceTheme(this, "dark");
         // }
-        // TODO: unsure if this is needed
+        // @todo: unsure if this is needed
         this.setBackgroundColor("#00000000");
       });
     }
