@@ -3,6 +3,7 @@ import {
   contextBridge,
   ipcRenderer,
   webFrame,
+  BrowserWindow,
 } from "electron";
 
 import { RepluggedIpcChannels } from "./types";
@@ -17,6 +18,8 @@ import type {
   RepluggedTheme,
   RepluggedTranslations,
 } from "./types";
+// Note that this may ONLY be used for types.
+import vibe from "@pyke/vibe";
 
 let version = "";
 void ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
@@ -109,8 +112,16 @@ const RepluggedNative = {
   },
 
   transparency: {
-    applyEffect: (): Promise<void> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.APPLY_TRANSPARENCY_EFFECT),
+    getEffect: (): Promise<Parameters<typeof vibe.applyEffect>[1]> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_TRANSPARENCY_EFFECT),
+    applyEffect: (effect: Parameters<typeof vibe.applyEffect>[1]): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.APPLY_TRANSPARENCY_EFFECT, effect),
+    getVibrancy: (): Promise<Parameters<typeof BrowserWindow.prototype.setVibrancy>[0]> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_VIBRANCY),
+    setVibrancy: (
+      vibrancy: Parameters<typeof BrowserWindow.prototype.setVibrancy>[0],
+    ): Promise<void> => ipcRenderer.invoke(RepluggedIpcChannels.SET_VIBRANCY, vibrancy),
+    // visualEffectState does not need to be implemented until https://github.com/electron/electron/issues/25513 is implemented.
   },
 
   getVersion: () => version,
