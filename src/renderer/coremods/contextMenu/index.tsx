@@ -120,38 +120,29 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   // make children array if it's not already
   if (!Array.isArray(menu.children)) {
     menu.children = [menu.children];
-    if (!Array.isArray(menu.children)) {
-      return <ContextMenu {...menu} plugged={true} />;
-    }
   }
-  //Add group only if it doesn't exist
-  if (!menu.children.some?.((child) => child.props?.id === "replugged")) {
+
+  // For Adding in the new menu items right above the DevMode Copy ID
+  // If the user doesn't have DevMode enabled, the new items will be at the bottom
+  const hasCopyId =
+    menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
+    menu.children
+      .at(-1)
+      ?.props?.children?.some?.(
+        (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
+      );
+  if (!menu.children.some((child) => child.props?.id === "replugged")) {
+    //Add group only if it doesn't exist
     const repluggedGroup = <MenuGroup />;
     repluggedGroup.props.id = "replugged";
     repluggedGroup.props.children = [];
 
-    // Add in the new menu items right above the DevMode Copy ID
-    // If the user doesn't have DevMode enabled, the new items will be at the bottom
-    const hasCopyId =
-      menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
-      menu.children
-        .at(-1)
-        ?.props?.children?.some?.(
-          (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
-        );
     if (hasCopyId) {
       menu.children.splice(-1, 0, repluggedGroup);
     } else {
       menu.children.push(repluggedGroup);
     }
   } else {
-    const hasCopyId =
-      menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
-      menu.children
-        .at(-1)
-        ?.props?.children?.some(
-          (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
-        );
     //clear replugged section if it was there already
     menu.children.at(hasCopyId ? -2 : -1)!.props.children = [];
   }
@@ -197,13 +188,6 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
         itemRet.props.replug = true;
         // custom unique id if not added by dev
         itemRet.props.id ??= `repluggedItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`;
-        const hasCopyId =
-          menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
-          menu.children
-            .at(-1)
-            ?.props?.children.some(
-              (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
-            );
         const section =
           typeof item.sectionId === "undefined"
             ? menu.children.at(hasCopyId ? -2 : -1)
