@@ -125,7 +125,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
     }
   }
   //Add group only if it doesn't exist
-  if (!menu.children.some((child) => child.props?.id === "replugged")) {
+  if (!menu.children.some?.((child) => child.props?.id === "replugged")) {
     const repluggedGroup = <MenuGroup />;
     repluggedGroup.props.id = "replugged";
     repluggedGroup.props.children = [];
@@ -136,7 +136,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
       menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
       menu.children
         .at(-1)
-        ?.props?.children?.some(
+        ?.props?.children?.some?.(
           (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
         );
     if (hasCopyId) {
