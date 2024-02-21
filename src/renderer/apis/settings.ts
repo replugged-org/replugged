@@ -57,8 +57,8 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
   ): K extends D
     ? NonNullable<T[K]>
     : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F {
+      ? T[K] | undefined
+      : NonNullable<T[K]> | F {
     if (typeof this.#settings === "undefined") {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }

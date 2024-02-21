@@ -217,8 +217,8 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     );
     if (!commandAndSectionsArray.length) return;
     if (
-      !commandAndSectionsArray.every(
-        (commandAndSection) => res?.some((section) => section.id === commandAndSection.section.id),
+      !commandAndSectionsArray.every((commandAndSection) =>
+        res?.some((section) => section.id === commandAndSection.section.id),
       )
     ) {
       const sectionsToAdd = commandAndSectionsArray
