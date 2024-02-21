@@ -77,16 +77,18 @@ class BrowserWindow extends electron.BrowserWindow {
         opts.webPreferences!.preload = join(__dirname, "./preload.js");
 
         if (settings.get("transparentWindow")) {
-          opts.show = false;
-          // Menu bar needs to be remade -_-
-          opts.autoHideMenuBar = true;
-          // opts.frame = process.platform === "win32" ? false : opts.frame;
-          // TODO: Figure out what background color each OS needs.
-          opts.backgroundColor = "#0000000";
-
-          if (process.platform === "linux") {
-            opts.transparent = true;
+          switch (process.platform) {
+            case "win32":
+              // TODO: Menu bar will need to be remade
+              opts.autoHideMenuBar = true;
+              opts.show = false; // TODO: Unsure if this is needed everywhere
+              break;
+            case "linux":
+              opts.transparent = true;
+              break;
           }
+          // TODO: Determine what `frame` value is needed on each platform
+          // TODO: Determine what `backgroundColor` is needed on each platform
         }
         break;
       }
@@ -104,10 +106,11 @@ class BrowserWindow extends electron.BrowserWindow {
 
     if (currentWindow === DiscordWindowType.DISCORD_CLIENT && settings.get("transparentWindow")) {
       this.on("ready-to-show", () => {
-        if (process.platform === "win32") {
-          vibe.applyEffect(this, "unified-acrylic");
-          vibe.forceTheme(this, "dark");
-        }
+        // if (process.platform === "win32") {
+        //   vibe.applyEffect(this, "unified-acrylic");
+        //   vibe.forceTheme(this, "dark");
+        // }
+        // TODO: unsure if this is needed
         this.setBackgroundColor("#00000000");
       });
     }
