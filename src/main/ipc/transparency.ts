@@ -24,7 +24,7 @@ ipcMain.handle(
   RepluggedIpcChannels.APPLY_TRANSPARENCY_EFFECT,
   (_, effect: Parameters<typeof vibe.applyEffect>[1]) => {
     if (process.platform !== "win32") {
-      console.warn("RepluggedNative.transparency.applyEffect only works on Windows");
+      console.warn("APPLY_TRANSPARENCY_EFFECT only works on Windows");
       return;
     }
 

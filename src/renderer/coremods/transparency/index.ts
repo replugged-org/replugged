@@ -32,7 +32,7 @@ export function start(): void {
             return;
           }
 
-          // @ts-expect-error @todo: Check if the vibrancy is valid?
+          // @ts-expect-error @todo: Check if the transparency effect is valid?
           await RepluggedNative.transparency.applyEffect(transparencyEffect);
           break;
         }
