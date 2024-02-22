@@ -1,5 +1,12 @@
 let observer: MutationObserver;
 
+function getRootStringProperty(property: string): string {
+  const computedStyle = getComputedStyle(document.body);
+  const value = computedStyle.getPropertyValue(property);
+
+  return value.split('"')[1];
+}
+
 export function start(): void {
   let html = document.body.parentElement!;
 
@@ -25,28 +32,34 @@ export function start(): void {
     }
 
     if (cssModified) {
-      switch (DiscordNative.process.platform) {
-        case "win32": {
-          const transparencyEffect = getComputedStyle(html).getPropertyValue("--window-win-blur");
-          if (transparencyEffect === (await RepluggedNative.transparency.getEffect())) {
-            return;
-          }
+      // Originally this used requestAnimationFrame but it took to long
+      // so instead we setTimeout and pray. The setTimeout could be
+      // shorter if we wanted, but it's hard to say if it would
+      // work as consistently.
+      setTimeout(async () => {
+        switch (DiscordNative.process.platform) {
+          case "win32": {
+            const transparencyEffect = getRootStringProperty("--window-win-blur");
+            if (transparencyEffect === (await RepluggedNative.transparency.getEffect())) {
+              return;
+            }
 
-          // @ts-expect-error @todo: Check if the transparency effect is valid?
-          await RepluggedNative.transparency.applyEffect(transparencyEffect);
-          break;
-        }
-        case "darwin": {
-          const vibrancy = getComputedStyle(html).getPropertyValue("--window-vibrancy");
-          if (vibrancy === (await RepluggedNative.transparency.getVibrancy())) {
-            return;
+            // @ts-expect-error @todo: Check if the transparency effect is valid?
+            await RepluggedNative.transparency.applyEffect(transparencyEffect);
+            break;
           }
+          case "darwin": {
+            const vibrancy = getRootStringProperty("--window-vibrancy");
+            if (vibrancy === (await RepluggedNative.transparency.getVibrancy())) {
+              return;
+            }
 
-          // @ts-expect-error @todo: Check if the vibrancy is valid?
-          await RepluggedNative.transparency.setVibrancy(vibrancy);
-          break;
+            // @ts-expect-error @todo: Check if the vibrancy is valid?
+            await RepluggedNative.transparency.setVibrancy(vibrancy);
+            break;
+          }
         }
-      }
+      }, 100);
     }
   });
 
