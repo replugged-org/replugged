@@ -7,7 +7,7 @@ import type {
   RawContextItem,
 } from "../../../types/coremods/contextMenu";
 import { Logger } from "../../modules/logger";
-import { getByProps } from "../../modules/webpack";
+import { ContextMenu as ContextComponents } from "../../modules/components";
 
 const logger = Logger.api("ContextMenu");
 
@@ -17,12 +17,18 @@ export const menuItems = {} as Record<
   | undefined
 >;
 
+type RepluggedContextItem = ContextItem & {
+  props: { replug?: boolean; id?: string };
+};
+
 /**
  * Converts data into a React element. Any elements or falsy value will be returned as is
  * @param raw The data to convert
  * @returns The converted item
  */
-function makeItem(raw: RawContextItem | ContextItem | undefined | void): ContextItem | undefined {
+function makeItem(
+  raw: RawContextItem | ContextItem | undefined | void,
+): RepluggedContextItem | undefined {
   // Occasionally React won't be loaded when this function is ran, so we don't return anything
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!React) return undefined;
@@ -30,14 +36,15 @@ function makeItem(raw: RawContextItem | ContextItem | undefined | void): Context
   if (!raw) {
     // If something falsy is passed, let it through
     // Discord just skips over them too
-    return raw as ContextItem | undefined;
+    return raw as undefined;
   }
   if (React.isValidElement(raw)) {
     // We can't construct something that's already made
-    return raw as ContextItem | undefined;
+    return raw as RepluggedContextItem;
   }
 
   const { type, ...props } = raw;
+  // add in prop  for cleanup
   if (props.children) {
     props.children = props.children.map((child: RawContextItem | ContextItem | undefined) =>
       makeItem(child),
@@ -78,7 +85,7 @@ export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetConte
 }
 
 type ContextMenuData = ContextMenuProps["ContextMenu"] & {
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactElement | Array<React.ReactElement | null> | null;
   data: Array<Record<string, unknown>>;
   navId: ContextMenuTypes;
   plugged?: boolean;
@@ -88,68 +95,118 @@ type ContextMenuData = ContextMenuProps["ContextMenu"] & {
  * @internal
  * @hidden
  */
-export function _insertMenuItems(menu: ContextMenuData): void {
+export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | null {
   const { navId } = menu;
+  const {
+    MenuGroup,
+    ContextMenu,
+  }: {
+    MenuGroup: React.FC<ContextMenuProps["MenuGroup"]>;
+    ContextMenu: React.FC<ContextMenuProps["ContextMenu"] & { plugged?: boolean }>;
+  } = ContextComponents;
+
+  //return nothing as we weren't able to get ContextMenu component, gets handled in plain text patch
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!ContextMenu || menu.plugged) return null;
 
   // No items to insert
-  if (!menuItems[navId]) return;
-
-  // Already inserted items
-  // If this isn't here, another group of items is added every update
-  if (menu.plugged) return;
-
-  // We delay getting the items until now, as importing at the start of the file causes Discord to hang
-  // Using `await import(...)` is undesirable because the new items will only appear once the menu is interacted with
-  const { MenuGroup } = getByProps<Record<string, React.ComponentType>>([
-    "Menu",
-    "MenuItem",
-    "MenuGroup",
-  ]) || { MenuGroup: undefined };
-  if (!MenuGroup) return;
+  // Or MenuGroup Component is not available
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!menuItems[navId] || !MenuGroup) return <ContextMenu {...menu} plugged={true} />;
 
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
   const data = menu.data[0];
 
-  const repluggedGroup = <MenuGroup />;
-  repluggedGroup.props.id = "replugged";
-  repluggedGroup.props.children = [];
-
-  // Add in the new menu items right above the DevMode Copy ID
-  // If the user doesn't have DevMode enabled, the new items will be at the bottom
-  if (!Array.isArray(menu.children)) menu.children = [menu.children];
-  const hasCopyId = menu.children
-    .at(-1)
-    ?.props?.children?.props?.id?.startsWith("devmode-copy-id-");
-  if (hasCopyId) {
-    menu.children.splice(-1, 0, repluggedGroup);
-  } else {
-    menu.children.push(repluggedGroup);
+  // make children array if it's not already
+  if (!Array.isArray(menu.children)) {
+    menu.children = [menu.children];
   }
 
-  menuItems[navId]?.forEach((item) => {
-    try {
-      const res = makeItem(item.getItem(data, menu)) as
-        | (ContextItem & { props: { id?: string } })
-        | undefined;
-      if (res?.props) {
-        // add in unique ids
-        res.props.id = `${res.props.id || "repluggedItem"}-${Math.random()
-          .toString(36)
-          .substring(2)}`;
-      }
+  // For Adding in the new menu items right above the DevMode Copy ID
+  // If the user doesn't have DevMode enabled, the new items will be at the bottom
+  const hasCopyId =
+    menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
+    menu.children
+      .at(-1)
+      ?.props?.children?.some?.(
+        (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
+      );
+  if (!menu.children.some((child) => child?.props?.id === "replugged")) {
+    //Add group only if it doesn't exist
+    const repluggedGroup = <MenuGroup />;
+    repluggedGroup.props.id = "replugged";
+    repluggedGroup.props.children = [];
 
-      if (!Array.isArray(menu.children)) menu.children = [menu.children];
-      const section =
-        typeof item.sectionId === "undefined" ? repluggedGroup : menu.children.at(item.sectionId);
-      if (!section) {
-        logger.error("Couldn't find section", item.sectionId, menu.children);
+    if (hasCopyId) {
+      menu.children.splice(-1, 0, repluggedGroup);
+    } else {
+      menu.children.push(repluggedGroup);
+    }
+  } else {
+    //clear replugged section if it was there already
+    menu.children.at(hasCopyId ? -2 : -1)!.props.children = [];
+  }
+
+  //get sections from where to clean items
+  const usedSectionIds = menuItems[navId]
+    ?.map((item) => item.sectionId)
+    .filter((item, index, array) => array.indexOf(item) === index);
+
+  //cleaning old items before adding new ones
+  usedSectionIds?.forEach((sectionId) => {
+    try {
+      if (!Array.isArray(menu.children)) {
         return;
       }
-      section.props.children.splice(item.indexInSection, 0, res);
+      if (menu.children.at(sectionId!)?.props?.children) {
+        menu.children.at(sectionId!)!.props.children = Array.isArray(
+          menu.children.at(sectionId!)?.props.children,
+        )
+          ? menu.children
+              .at(sectionId!)
+              ?.props.children.filter((child: React.ReactElement | null) => !child?.props?.replug)
+          : [menu.children.at(sectionId!)?.props.children];
+      }
     } catch (err) {
-      logger.error("Error while running GetContextItem function", err, item.getItem);
+      logger.warn(
+        "Error while removing old menu items",
+        err,
+        Array.isArray(menu.children) ? menu.children.at(sectionId!) : null,
+      );
     }
   });
 
-  menu.plugged = true;
+  //adding new items
+  menuItems[navId]?.forEach((item) => {
+    try {
+      if (!Array.isArray(menu.children)) {
+        return;
+      }
+      const itemRet = makeItem(item.getItem(data, menu));
+      if (itemRet) {
+        // adding prop for easy cleanup
+        itemRet.props.replug = true;
+        // custom unique id if not added by dev
+        itemRet.props.id ??= `repluggedItem-${Number(`0.${Date.now()}`).toString(36).substring(2)}`;
+        const section =
+          typeof item.sectionId === "undefined"
+            ? menu.children.at(hasCopyId ? -2 : -1)
+            : menu.children.at(item.sectionId);
+        if (!section) {
+          logger.warn("Couldn't find section", item.sectionId, menu.children);
+          return;
+        }
+        section.props.children?.splice(item.indexInSection, 0, itemRet);
+      }
+    } catch (err) {
+      logger.error(
+        "Error while running GetContextItem function",
+        err,
+        item.getItem,
+        Array.isArray(menu.children) ? menu.children.at(item.sectionId!) : null,
+      );
+    }
+  });
+
+  return <ContextMenu {...menu} plugged={true} />;
 }
