@@ -85,7 +85,7 @@ export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetConte
 }
 
 type ContextMenuData = ContextMenuProps["ContextMenu"] & {
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactElement | Array<React.ReactElement | null> | null;
   data: Array<Record<string, unknown>>;
   navId: ContextMenuTypes;
   plugged?: boolean;
@@ -131,7 +131,7 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
       ?.props?.children?.some?.(
         (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
       );
-  if (!menu.children.some((child) => child.props?.id === "replugged")) {
+  if (!menu.children.some((child) => child?.props?.id === "replugged")) {
     //Add group only if it doesn't exist
     const repluggedGroup = <MenuGroup />;
     repluggedGroup.props.id = "replugged";
