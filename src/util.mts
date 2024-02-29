@@ -1,6 +1,8 @@
 import esbuild from "esbuild";
 import { execSync } from "child_process";
-import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
+import { extractAll } from "@electron/asar";
+import { tmpdir } from "os";
+import { chownSync, existsSync, mkdirSync, mkdtempSync, statSync, writeFileSync } from "fs";
 import path, { join } from "path";
 import chalk from "chalk";
 
@@ -55,15 +57,27 @@ const CONFIG_FOLDER_NAMES = [
   "settings",
   "quickcss",
   "react-devtools",
+  "temp_themes",
+  "temp_plugins",
 ] as const;
 
 export const CONFIG_PATHS = Object.fromEntries(
   CONFIG_FOLDER_NAMES.map((name) => {
-    const path = join(CONFIG_PATH, name);
-    if (!existsSync(path)) {
-      mkdirSync(path);
+    switch (name) {
+      case "temp_themes": {
+        return [name, mkdtempSync(join(tmpdir(), "replugged-theme-"))];
+      }
+      case "temp_plugins": {
+        return [name, mkdtempSync(join(tmpdir(), "replugged-plugin-"))];
+      }
+      default: {
+        const path = join(CONFIG_PATH, name);
+        if (!existsSync(path)) {
+          mkdirSync(path);
+        }
+        return [name, path];
+      }
     }
-    return [name, path];
   }),
 ) as Record<(typeof CONFIG_FOLDER_NAMES)[number], string>;
 
@@ -144,4 +158,15 @@ export const logBuildPlugin: esbuild.Plugin = {
       console.log(`⚡ ${chalk.green(`Done in ${time.toLocaleString()}ms`)}`);
     });
   },
+};
+
+export const extractAddon = async (srcPath: string, destPath: string): Promise<void> => {
+  return new Promise<void>((res) => {
+    // Ensure the destination directory exists
+    mkdirSync(destPath, { recursive: true });
+
+    // Extract the contents of the asar archive directly into the destination directory
+    extractAll(srcPath, destPath);
+    res();
+  });
 };
