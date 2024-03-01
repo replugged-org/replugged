@@ -190,12 +190,6 @@ export const General = (): React.ReactElement => {
           {Messages.REPLUGGED_SETTINGS_REACT_DEVTOOLS}
         </SwitchItem>
 
-        <SwitchItem
-          {...util.useSetting(generalSettings, "transparentWindow")}
-          note={Messages.REPLUGGED_SETTINGS_TRANSPARENT_DESC}>
-          {Messages.REPLUGGED_SETTINGS_TRANSPARENT}
-        </SwitchItem>
-
         <ButtonItem
           button={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT}
           note={Messages.REPLUGGED_SETTINGS_DEV_COMPANION_DESC}
