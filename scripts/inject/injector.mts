@@ -1,13 +1,22 @@
 import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
-import { AnsiEscapes, getCommand } from "./util.mjs";
+import {
+  AnsiEscapes,
+  GetUserData,
+  PlatformNames,
+  getCommand,
+  getProcessInfoByName,
+  killProcessByPID,
+  openProcess,
+} from "./util.mjs";
 import { execSync } from "child_process";
-import { DiscordPlatform, PlatformModule } from "./types.mjs";
+import { DiscordPlatform, PlatformModule, ProcessInfo } from "./types.mjs";
 import { CONFIG_PATH } from "../../src/util.mjs";
 import { existsSync } from "fs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
+let processInfo: ProcessInfo;
 
 export const isDiscordInstalled = async (appDir: string, silent?: boolean): Promise<boolean> => {
   try {
@@ -91,7 +100,7 @@ export const inject = async (
     return false;
   }
 
-  const fileToCheck = join(dirname, "..", "..", prod ? "replugged.asar" : "dist/main.js");
+  const fileToCheck = join(dirname, "..", "..", prod ? "replugged.asar" : "dist-bundle/main.js");
   const fileToCheckExists = await stat(fileToCheck)
     .then(() => true)
     .catch(() => false);
@@ -110,7 +119,7 @@ export const inject = async (
 
   const entryPoint = prod
     ? join(CONFIG_PATH, "replugged.asar")
-    : join(dirname, "..", "..", "dist/main.js");
+    : join(dirname, "..", "..", "dist-bundle/main.js");
   const entryPointDir = path.dirname(entryPoint);
 
   if (appDir.includes("flatpak")) {
@@ -200,4 +209,56 @@ export const uninject = async (
     );
   }
   return true;
+};
+
+export const smartInject = async (
+  cmd: "uninject" | "inject",
+  replug: boolean,
+  platformModule: PlatformModule,
+  platform: DiscordPlatform,
+  production: boolean,
+  noRelaunch: boolean,
+): Promise<boolean> => {
+  let result;
+  if (noRelaunch) {
+    result =
+      cmd === "uninject"
+        ? await uninject(platformModule, platform)
+        : inject(platformModule, platform, production);
+  } else {
+    const processName = PlatformNames[platform].replace(" ", "");
+    try {
+      if ((replug && cmd === "uninject") || !replug) {
+        processInfo = getProcessInfoByName(processName)!;
+        await killProcessByPID(processInfo?.pid);
+      }
+    } catch {}
+    result =
+      cmd === "uninject"
+        ? await uninject(platformModule, platform)
+        : inject(platformModule, platform, production);
+    if (((replug && cmd !== "uninject") || !replug) && processInfo) {
+      const appDir = await platformModule.getAppDir(platform);
+      switch (process.platform) {
+        case "win32":
+          openProcess(
+            join(appDir, "..", "..", "..", "Update"),
+            ["--processStart", `${processName}.exe`],
+            { detached: true, stdio: "ignore" },
+          );
+          break;
+        case "linux":
+          openProcess(join(appDir, "..", "..", processName), [], {
+            ...GetUserData(),
+            detached: true,
+            stdio: "ignore",
+          });
+          break;
+        case "darwin":
+          openProcess(`open -a ${PlatformNames[platform]}`);
+          break;
+      }
+    }
+  }
+  return result;
 };
