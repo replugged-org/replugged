@@ -1,5 +1,6 @@
-import { React, channels, fluxDispatcher, guilds } from "@common";
+import { React, channels, fluxDispatcher, guilds, lodash } from "@common";
 import type { Fiber } from "react-reconciler";
+import type { ReactElement } from "react";
 import type { Jsonifiable } from "type-fest";
 import type { ObjectExports } from "../types";
 import { SettingsManager } from "./apis/settings";
@@ -184,29 +185,42 @@ type ValType<T> =
   | React.ChangeEvent<HTMLInputElement>
   | (Record<string, unknown> & { value?: T; checked?: T });
 
+type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
+  ? K extends keyof T
+    ? NestedType<T[K], NestedKey>
+    : undefined
+  : P extends keyof T
+  ? T[P]
+  : undefined;
+
 export function useSetting<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
   K extends Extract<keyof T, string>,
-  F extends T[K] | undefined,
+  F extends NestedType<T, P> | T[K] | undefined,
+  P extends `${K}.${string}` | K,
 >(
   settings: SettingsManager<T, D>,
-  key: K,
+  key: P,
   fallback?: F,
 ): {
-  value: K extends D
-    ? NonNullable<T[K]>
-    : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F;
-  onChange: (newValue: ValType<T[K]>) => void;
+  value: NonNullable<NestedType<T, P>>;
+  onChange: (newValue: ValType<NonNullable<NestedType<T, P>>>) => void;
 } {
-  const initial = settings.get(key, fallback);
-  const [value, setValue] = React.useState(initial);
+  const [initialKey, ...pathArray] = Object.keys(settings.all()).includes(key)
+    ? ([key] as [K])
+    : (key.split(".") as [K, ...string[]]);
+  const path = pathArray.join(".");
+  const initial = settings.get(initialKey, path.length ? ({} as T[K]) : (fallback as T[K]));
+  const [value, setValue] = React.useState<NonNullable<NestedType<T, P>>>(
+    path.length
+      ? (lodash.get(initial, path, fallback) as NonNullable<NestedType<T, P>>)
+      : (initial as NonNullable<NestedType<T, P>>),
+  );
 
   return {
     value,
-    onChange: (newValue: ValType<T[K]>) => {
+    onChange: (newValue: ValType<NonNullable<NestedType<T, P>>>) => {
       const isObj = newValue && typeof newValue === "object";
       const value = isObj && "value" in newValue ? newValue.value : newValue;
       const checked = isObj && "checked" in newValue ? newValue.checked : undefined;
@@ -216,31 +230,28 @@ export function useSetting<
           : undefined;
       const targetValue = target && "value" in target ? target.value : undefined;
       const targetChecked = target && "checked" in target ? target.checked : undefined;
-      const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
+      const finalValue = checked ?? targetChecked ?? targetValue ?? value ?? newValue;
 
-      // @ts-expect-error dumb
-      setValue(finalValue);
-      settings.set(key, finalValue);
+      setValue(finalValue as NonNullable<NestedType<T, P>>);
+      settings.set(
+        initialKey,
+        path.length ? (lodash.set(initial!, path, finalValue) as T[K]) : (finalValue as T[K]),
+      );
     },
   };
 }
+
 export function useSettingArray<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
   K extends Extract<keyof T, string>,
-  F extends T[K] | undefined,
+  F extends NestedType<T, P> | T[K] | undefined,
+  P extends `${K}.${string}` | K,
 >(
   settings: SettingsManager<T, D>,
-  key: K,
+  key: P,
   fallback?: F,
-): [
-  K extends D
-    ? NonNullable<T[K]>
-    : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F,
-  (newValue: ValType<T[K]>) => void,
-] {
+): [NonNullable<NestedType<T, P>>, (newValue: ValType<NonNullable<NestedType<T, P>>>) => void] {
   const { value, onChange } = useSetting(settings, key, fallback);
 
   return [value, onChange];
@@ -363,11 +374,11 @@ export function findInTree(
  * @returns The component you are looking for
  */
 export function findInReactTree(
-  tree: Tree,
+  tree: Tree | ReactElement,
   searchFilter: TreeFilter,
   maxRecursion = 100,
-): Tree | null | undefined {
-  return findInTree(tree, searchFilter, {
+): Tree | ReactElement | null | undefined {
+  return findInTree(tree as Tree, searchFilter, {
     walkable: ["props", "children", "child", "sibling"],
     maxRecursion,
   });
