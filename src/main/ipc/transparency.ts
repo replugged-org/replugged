@@ -45,7 +45,7 @@ ipcMain.handle(
 
     let windows = BrowserWindow.getAllWindows();
     windows.forEach((window) => {
-      if (usesVibe) {
+      if (!usesVibe) {
         // The valid options for setBackgroundMaterial are "auto" | "none" | "mica" | "acrylic" | "tabbed".
         // This goes against vibe which allows for "unified-acrylic" and "blurbehind".
         // Also, vibe does not allow for "auto", "none" or "tabbed"
