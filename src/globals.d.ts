@@ -1,11 +1,12 @@
 /// <reference types="standalone-electron-types"/>
 
-// TODO: Scope global types to each component
+// @todo: Scope global types to each component
 
 import type { WebpackChunkGlobal } from "./types/discord";
 import * as replugged from "./renderer/replugged";
 import type { RepluggedNativeType } from "./preload";
 
+// eslint-disable-next-line node/no-extraneous-import
 import type Lodash from "lodash";
 declare global {
   export var appSettings: {
@@ -36,6 +37,9 @@ declare global {
       cut: () => void;
       paste: () => void;
       read: () => string;
+    };
+    process: {
+      platform: string;
     };
   };
 

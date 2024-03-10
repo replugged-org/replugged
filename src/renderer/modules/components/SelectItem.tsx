@@ -1,7 +1,6 @@
 import type React from "react";
 import { FormItem } from ".";
-import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 const Looks = {
   FILLED: 0,
@@ -42,13 +41,9 @@ interface SelectCompProps {
   optionClassName?: string;
 }
 
-type SelectCompType = React.FC<SelectCompProps>;
+export type SelectCompType = React.FC<SelectCompProps>;
 
-const selectRgx = /.\.options,.=.\.placeholder/;
-
-const SelectComp = await waitForModule(filters.bySource(selectRgx)).then(
-  (mod) => getFunctionBySource<SelectCompType>(mod as ObjectExports, selectRgx)!,
-);
+const SelectComp = components.Select;
 
 interface SelectProps extends SelectCompProps {
   onChange?: (value: string) => void;

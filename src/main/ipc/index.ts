@@ -6,6 +6,7 @@ import "./settings";
 import "./installer";
 import "./i18n";
 import "./react-devtools";
+import "./transparency";
 import { RepluggedIpcChannels, type RepluggedWebContents } from "../../types";
 
 ipcMain.on(RepluggedIpcChannels.GET_DISCORD_PRELOAD, (event) => {

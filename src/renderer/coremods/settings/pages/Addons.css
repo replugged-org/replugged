@@ -31,3 +31,17 @@
 .replugged-addon-icon:hover svg {
   color: var(--interactive-hover);
 }
+
+.replugged-addon-breadcrumbs {
+  margin-bottom: 20px;
+}
+.replugged-addon-breadcrumbsActive {
+  color: var(--header-primary);
+}
+.replugged-addon-breadcrumbsInactive {
+  cursor: pointer;
+  color: var(--header-secondary);
+}
+.replugged-addon-breadcrumbsInactive:hover {
+  color: var(--header-primary);
+}
