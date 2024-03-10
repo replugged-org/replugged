@@ -38,7 +38,7 @@ ipcMain.handle(
 
 ipcMain.handle(
   RepluggedIpcChannels.APPLY_TRANSPARENCY_EFFECT,
-  (_, effect: Parameters<typeof vibe.applyEffect>[1]) => {
+  (_, effect: Parameters<typeof vibe.applyEffect>[1] | null) => {
     if (process.platform !== "win32") {
       console.warn("APPLY_TRANSPARENCY_EFFECT only works on Windows");
       return;
@@ -52,7 +52,9 @@ ipcMain.handle(
         // Also, vibe does not allow for "auto", "none" or "tabbed"
 
         // @ts-expect-error Only exists in electron 24+, our types don't have this.
-        window.setBackgroundMaterial(effect === NULL ? "none" : effect); // NULL is used to disable.
+        window.setBackgroundMaterial(effect === null ? "none" : effect); // NULL is used to disable.
+      } else if (effect === null) {
+        vibe.clearEffects(window);
       } else {
         vibe.applyEffect(window, effect);
       }
