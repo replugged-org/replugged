@@ -16,13 +16,11 @@ let usesVibe =
   release[1] < 22621;
 
 if (usesVibe) {
-  import(vibePath)
-    .then((module) => {
-      vibe = module as unknown as typeof import("@pyke/vibe");
-    })
-    .catch((error) => {
-      console.error("Failed to load vibe.", error);
-    });
+  try {
+    vibe = require(vibePath) as unknown as typeof import("@pyke/vibe");
+  } catch (error) {
+    console.error("Failed to load vibe.", error);
+  }
 }
 
 let currentEffect: Parameters<typeof vibe.applyEffect>[1] | null = null;
