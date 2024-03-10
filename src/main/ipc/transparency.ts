@@ -1,6 +1,8 @@
 import { BrowserWindow, ipcMain } from "electron";
 import { RepluggedIpcChannels } from "../../types";
 import os from "os";
+// @ts-expect-error Type defs are obtained through @pyke/vibe
+import vibePath from "../../vibe.node";
 
 let vibe: typeof import("@pyke/vibe");
 let release = os.release().split(".").map(Number);
@@ -14,8 +16,7 @@ let usesVibe =
   release[1] < 22621;
 
 if (usesVibe) {
-  // @ts-expect-error Type defs are obtained through @pyke/vibe
-  import("../../vibe.node")
+  import(vibePath)
     .then((module) => {
       vibe = module as unknown as typeof import("@pyke/vibe");
     })
