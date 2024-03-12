@@ -82,7 +82,7 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
     );
     if (!res || !commandAndSectionsArray.length) return res;
     if (
-      !Array.isArray(res.descriptor) ||
+      !Array.isArray(res.descriptors) ||
       !commandAndSectionsArray.every((commandAndSection) =>
         res.descriptors.some((section) => section.id === commandAndSection.section.id),
       )
@@ -111,7 +111,7 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
         .flat(10);
       const indexAt = res.commands.findIndex(
         (c) =>
-          c.id === res.sectionedCommands?.find(({ section }) => section.id == "-2")?.data?.[0]?.id,
+          c.id === res.sectionedCommands.find(({ section }) => section.id === "-2")?.data[0].id,
       );
       if (indexAt) {
         res.commands.splice(indexAt, 0, ...commandsToAdd);
@@ -176,7 +176,7 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
         const sectionsToAdd = commandAndSectionsArray.map(
           (commandAndSection) => commandAndSection.section,
         );
-        res.descriptors = Array.isArray(res.applicationSections)
+        res.descriptors = Array.isArray(res.commands)
           ? [...sectionsToAdd, ...res.descriptors]
           : sectionsToAdd;
       }
