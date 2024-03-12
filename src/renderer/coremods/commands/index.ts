@@ -9,35 +9,36 @@ import { loadCommands, unloadCommands } from "./commands";
 const logger = Logger.api("Commands");
 const injector = new Injector();
 
-interface ApplicationCommandSearchStoreMod {
-  useDiscoveryState: (...args: unknown[]) =>
-    | {
-        sectionDescriptors: RepluggedCommandSection[];
-        commands: AnyRepluggedCommand[];
-        filteredSectionId: string | null;
-        activeSections: RepluggedCommandSection[];
-        commandsByActiveSection: Array<{
-          section: RepluggedCommandSection;
-          data: AnyRepluggedCommand[];
-        }>;
-      }
-    | undefined;
-  useQueryState: (...args: unknown[]) => unknown;
-  useSearchStoreOpenState: (...args: unknown[]) => unknown;
-  search: (...args: unknown[]) => unknown;
-  default: ApplicationCommandSearchStore;
-}
-
-interface ApplicationCommandSearchStore {
-  getChannelState: (...args: unknown[]) =>
+interface ApplicationCommandIndexStoreMod {
+  useContextIndexState: (...args: unknown[]) =>
     | {
         applicationSections: RepluggedCommandSection[];
         applicationCommands: AnyRepluggedCommand[];
       }
     | undefined;
-  getApplicationSections: (...args: unknown[]) => RepluggedCommandSection[] | undefined;
-  useSearchManager: (...args: unknown[]) => unknown;
-  getQueryCommands: (...args: [string, string, string]) => AnyRepluggedCommand[] | undefined;
+  useDiscoveryState: (...args: unknown[]) =>
+    | {
+        descriptors: RepluggedCommandSection[];
+        commands: AnyRepluggedCommand[];
+        loading: boolean;
+        sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
+      }
+    | undefined;
+  useGuildIndexState: (...args: unknown[]) => unknown;
+  useUserIndexState: (...args: unknown[]) => unknown;
+  default: ApplicationCommandIndexStore;
+}
+
+interface ApplicationCommandIndexStore {
+  getContextState: (...args: unknown[]) => unknown;
+  getUserState: (...args: unknown[]) => unknown;
+  query: (...args: unknown[]) =>
+    | {
+        descriptors: RepluggedCommandSection[];
+        commands: AnyRepluggedCommand[];
+        sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
+      }
+    | undefined;
 }
 
 async function injectRepluggedBotIcon(): Promise<void> {
@@ -64,86 +65,37 @@ async function injectRepluggedSectionIcon(): Promise<void> {
   );
 }
 
-async function injectApplicationCommandSearchStore(): Promise<void> {
+async function injectApplicationCommandIndexStore(): Promise<void> {
   // The module which contains the store
-  const ApplicationCommandSearchStoreMod = await waitForProps<ApplicationCommandSearchStoreMod>(
+  const ApplicationCommandIndexStoreMod = await waitForProps<ApplicationCommandIndexStoreMod>(
+    "useContextIndexState",
     "useDiscoveryState",
-    "useQueryState",
-    "useSearchStoreOpenState",
-    "search",
+    "useGuildIndexState",
+    "useUserIndexState",
   );
 
-  // Base handler function for ApplicationCommandSearchStore which is ran to get the info in store
+  // Base handler function for ApplicationCommandIndexStore which is ran to get the info in store
   // commands are mainly added here
-  injector.after(ApplicationCommandSearchStoreMod, "useDiscoveryState", (_, res) => {
+  injector.after(ApplicationCommandIndexStoreMod, "useDiscoveryState", (_, res) => {
     const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
       (commandAndSection) => commandAndSection.commands.size,
     );
     if (!res || !commandAndSectionsArray.length) return res;
     if (
-      !Array.isArray(res.sectionDescriptors) ||
+      !Array.isArray(res.descriptor) ||
       !commandAndSectionsArray.every((commandAndSection) =>
-        res.sectionDescriptors.some((section) => section.id === commandAndSection.section.id),
+        res.descriptors.some((section) => section.id === commandAndSection.section.id),
       )
     ) {
       const sectionsToAdd = commandAndSectionsArray
         .map((commandAndSection) => commandAndSection.section)
-        .filter((section) => !res.sectionDescriptors.includes(section));
-      if (res.sectionDescriptors.some((section) => section.id === "-2")) {
-        res.sectionDescriptors.splice(1, 0, ...sectionsToAdd);
+        .filter((section) => !res.descriptors.includes(section));
+      if (res.descriptors.some((section) => section.id === "-2")) {
+        res.descriptors.splice(1, 0, ...sectionsToAdd);
       } else {
-        res.sectionDescriptors = Array.isArray(res.sectionDescriptors)
-          ? [...sectionsToAdd, ...res.sectionDescriptors]
+        res.descriptors = Array.isArray(res.descriptors)
+          ? [...sectionsToAdd, ...res.descriptors]
           : sectionsToAdd;
-      }
-    }
-    if (
-      res.filteredSectionId === null ||
-      commandAndSectionsArray.some(
-        (commandAndSection) => res.filteredSectionId === commandAndSection.section.id,
-      )
-    ) {
-      const sectionsToAdd = commandAndSectionsArray
-        .map((commandAndSection) => commandAndSection.section)
-        .filter(
-          (section) =>
-            (res.filteredSectionId == null || res.filteredSectionId === section.id) &&
-            !res.activeSections.includes(section),
-        );
-      if (res.activeSections.some((section) => section.id === "-2")) {
-        res.activeSections.splice(1, 0, ...sectionsToAdd);
-      } else {
-        res.activeSections = Array.isArray(res.activeSections)
-          ? [...sectionsToAdd, ...res.activeSections]
-          : sectionsToAdd;
-      }
-
-      const commandsBySectionToAdd = commandAndSectionsArray
-        .filter(
-          (commandAndSection) =>
-            (res.filteredSectionId !== null
-              ? res.filteredSectionId === commandAndSection.section.id
-              : true) &&
-            !res.commandsByActiveSection.some(
-              (activeCommandAndSection) =>
-                activeCommandAndSection.section.id === commandAndSection.section.id,
-            ),
-        )
-        .map((commandAndSection) => ({
-          section: commandAndSection.section,
-          data: Array.from(commandAndSection.commands.values()),
-        }));
-
-      if (
-        res.commandsByActiveSection.some(
-          (activeCommandAndSections) => activeCommandAndSections.section.id === "-2",
-        )
-      ) {
-        res.commandsByActiveSection.splice(1, 0, ...commandsBySectionToAdd);
-      } else {
-        res.commandsByActiveSection = Array.isArray(res.commandsByActiveSection)
-          ? [...commandsBySectionToAdd, ...res.commandsByActiveSection]
-          : commandsBySectionToAdd;
       }
     }
     if (
@@ -157,104 +109,111 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
       const commandsToAdd = commandAndSectionsArray
         .map((commandAndSection) => Array.from(commandAndSection.commands.values()))
         .flat(10);
-      res.commands = Array.isArray(res.commands)
-        ? [...res.commands.filter((command) => !commandsToAdd.includes(command)), ...commandsToAdd]
-        : commandsToAdd;
+      const indexAt = res.commands.findIndex(
+        (c) =>
+          c.id === res.sectionedCommands?.find(({ section }) => section.id == "-2")?.data?.[0]?.id,
+      );
+      if (indexAt) {
+        res.commands.splice(indexAt, 0, ...commandsToAdd);
+      } else {
+        res.commands = Array.isArray(res.commands)
+          ? [
+              ...commandsToAdd,
+              ...res.commands.filter((command) => !commandsToAdd.includes(command)),
+            ]
+          : commandsToAdd;
+      }
+    }
+
+    if (
+      !Array.isArray(res.sectionedCommands) ||
+      !commandAndSectionsArray.every((commandAndSection) =>
+        res.sectionedCommands.some(({ section }) => section.id === commandAndSection.section.id),
+      )
+    ) {
+      const dataToAdd = commandAndSectionsArray.map((commandAndSection) => ({
+        section: commandAndSection.section,
+        data: Array.from(commandAndSection.commands.values()),
+      }));
+      if (res.sectionedCommands.some(({ section }) => section.id === "-2")) {
+        res.sectionedCommands.splice(1, 0, ...dataToAdd);
+      } else {
+        res.sectionedCommands = Array.isArray(res.sectionedCommands)
+          ? [...dataToAdd, ...res.sectionedCommands]
+          : dataToAdd;
+      }
     }
     return res;
   });
 
   // The store itself
-  const ApplicationCommandSearchStore = ApplicationCommandSearchStoreMod.default;
+  const ApplicationCommandIndexStore = ApplicationCommandIndexStoreMod.default;
 
-  // Channel state gets update with each character entered in text box and search so we patch this to keep our custom section
-  // even after updates happen
-  injector.after(ApplicationCommandSearchStore, "getChannelState", (_, res) => {
-    const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
-      (commandAndSection) => commandAndSection.commands.size,
-    );
-    if (!res || !commandAndSectionsArray.length) return res;
-    if (
-      !Array.isArray(res.applicationSections) ||
-      !commandAndSectionsArray.every((commandAndSection) =>
-        res.applicationSections.some((section) => section.id === commandAndSection.section.id),
-      )
-    ) {
-      const sectionsToAdd = commandAndSectionsArray.map(
-        (commandAndSection) => commandAndSection.section,
-      );
-      res.applicationSections = Array.isArray(res.applicationSections)
-        ? [...sectionsToAdd, ...res.applicationSections]
-        : sectionsToAdd;
-    }
-    if (
-      !Array.isArray(res.applicationCommands) ||
-      commandAndSectionsArray.some((commandAndSection) =>
-        Array.from(commandAndSection.commands.values()).some(
-          (command) => !res.applicationCommands.includes(command),
-        ),
-      )
-    ) {
-      const commandsToAdd = commandAndSectionsArray
-        .map((commandAndSection) => Array.from(commandAndSection.commands.values()))
-        .flat(10);
-      res.applicationCommands = Array.isArray(res.applicationCommands)
-        ? [
-            ...commandsToAdd,
-            ...res.applicationCommands.filter((command) => !commandsToAdd.includes(command)),
-          ]
-        : commandsToAdd;
-    }
-    return res;
-  });
-
-  // Makes sure if our custom section is included or not
-  // Add it if not
-  injector.after(ApplicationCommandSearchStore, "getApplicationSections", (_, res) => {
-    res ??= [];
-    const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
-      (commandAndSection) => commandAndSection.commands.size,
-    );
-    if (!commandAndSectionsArray.length) return;
-    if (
-      !commandAndSectionsArray.every(
-        (commandAndSection) => res?.some((section) => section.id === commandAndSection.section.id),
-      )
-    ) {
-      const sectionsToAdd = commandAndSectionsArray
-        .map((commandAndSection) => commandAndSection.section)
-        .filter((section) => res?.some((existingSections) => section.id === existingSections.id));
-      res.push(...sectionsToAdd);
-    }
-    return res;
-  });
-
-  // Slash command search patched to return our slash commands too
+  // Slash command indexing patched to return our slash commands too
   // only those which match tho
-  injector.after(ApplicationCommandSearchStore, "getQueryCommands", ([_, __, query], res) => {
-    if (!query || query.startsWith("/")) return res;
+  injector.after(
+    ApplicationCommandIndexStore,
+    "query",
+    ([_, { text: query }]: [unknown, { text?: string }], res) => {
+      if (!query || query.startsWith("/")) return res;
 
-    res ??= [];
-    const commandsToAdd = Array.from(commandAndSections.values())
-      .filter((commandAndSection) => commandAndSection.commands.size)
-      .map((commandAndSection) => Array.from(commandAndSection.commands.values()))
-      .flat(10);
-    for (const command of commandsToAdd) {
-      const exists = res.some((c) => c.id === command.id);
+      const commandAndSectionsArray = Array.from(commandAndSections.values())
+        .map((commandAndSection) => ({
+          section: commandAndSection.section,
+          commands: Array.from(commandAndSection.commands.values()).filter((c) =>
+            c.name.includes(query),
+          ),
+        }))
+        .filter((commandAndSection) => commandAndSection.commands.length);
+      if (!res || !commandAndSectionsArray.length) return res;
 
-      if (exists || !command.name.includes(query)) {
-        continue;
+      if (
+        !Array.isArray(res.descriptors) ||
+        !commandAndSectionsArray.every((commandAndSection) =>
+          res.descriptors.some((section) => section.id === commandAndSection.section.id),
+        )
+      ) {
+        const sectionsToAdd = commandAndSectionsArray.map(
+          (commandAndSection) => commandAndSection.section,
+        );
+        res.descriptors = Array.isArray(res.applicationSections)
+          ? [...sectionsToAdd, ...res.descriptors]
+          : sectionsToAdd;
+      }
+      if (
+        !Array.isArray(res.commands) ||
+        commandAndSectionsArray.some((commandAndSection) =>
+          Array.from(commandAndSection.commands).some((command) => !res.commands.includes(command)),
+        )
+      ) {
+        const commandsToAdd = commandAndSectionsArray
+          .map((commandAndSection) => commandAndSection.commands)
+          .flat(10);
+        res.commands = Array.isArray(res.commands)
+          ? [
+              ...commandsToAdd,
+              ...res.commands.filter((command) => !commandsToAdd.includes(command)),
+            ]
+          : commandsToAdd;
       }
 
-      try {
-        res.unshift(command);
-      } catch {
-        res = [command, ...res];
+      if (
+        !Array.isArray(res.sectionedCommands) ||
+        !commandAndSectionsArray.every((commandAndSection) =>
+          res.sectionedCommands.some(({ section }) => section.id === commandAndSection.section.id),
+        )
+      ) {
+        const dataToAdd = commandAndSectionsArray.map((commandAndSection) => ({
+          section: commandAndSection.section,
+          data: commandAndSection.commands,
+        }));
+        res.sectionedCommands = Array.isArray(res.sectionedCommands)
+          ? [...dataToAdd, ...res.sectionedCommands]
+          : dataToAdd;
       }
-    }
-
-    return res;
-  });
+      return res;
+    },
+  );
 }
 
 async function injectProfileFetch(): Promise<void> {
@@ -271,7 +230,7 @@ async function injectProfileFetch(): Promise<void> {
 export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
   await injectRepluggedSectionIcon();
-  await injectApplicationCommandSearchStore();
+  await injectApplicationCommandIndexStore();
   await injectProfileFetch();
   loadCommands();
 }
