@@ -16,7 +16,7 @@ import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
-
+import icon from "../assets/logo.png";
 const logger = Logger.api("Commands");
 
 let RepluggedUser: User | undefined;
@@ -42,7 +42,7 @@ export const defaultSection: RepluggedCommandSection = Object.freeze({
   id: "replugged",
   name: "Replugged",
   type: 1,
-  icon: "https://cdn.discordapp.com/attachments/1000955992068079716/1004196106055454820/Replugged-Logo.png",
+  icon,
 });
 
 export class CommandInteraction<T extends CommandOptionReturn> {
