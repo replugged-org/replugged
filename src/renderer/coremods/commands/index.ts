@@ -1,4 +1,5 @@
 import type { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
+import { Channel } from "discord-types/general";
 import { Injector } from "../../modules/injector";
 import { Logger } from "../../modules/logger";
 import { waitForProps } from "../../modules/webpack";
@@ -16,7 +17,14 @@ interface ApplicationCommandIndexStoreMod {
         applicationCommands: AnyRepluggedCommand[];
       }
     | undefined;
-  useDiscoveryState: (...args: unknown[]) =>
+  useDiscoveryState: (
+    ...args: [
+      Channel,
+      unknown,
+      Record<string, unknown> & { commandType: number },
+      Record<string, unknown>,
+    ]
+  ) =>
     | {
         descriptors: RepluggedCommandSection[];
         commands: AnyRepluggedCommand[];
@@ -76,75 +84,79 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
 
   // Base handler function for ApplicationCommandIndexStore which is ran to get the info in store
   // commands are mainly added here
-  injector.after(ApplicationCommandIndexStoreMod, "useDiscoveryState", (_, res) => {
-    const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
-      (commandAndSection) => commandAndSection.commands.size,
-    );
-    if (!res || !commandAndSectionsArray.length) return res;
-    if (
-      !Array.isArray(res.descriptors) ||
-      !commandAndSectionsArray.every((commandAndSection) =>
-        res.descriptors.some((section) => section.id === commandAndSection.section.id),
-      )
-    ) {
-      const sectionsToAdd = commandAndSectionsArray
-        .map((commandAndSection) => commandAndSection.section)
-        .filter((section) => !res.descriptors.includes(section));
-      if (res.descriptors.some((section) => section.id === "-2")) {
-        res.descriptors.splice(1, 0, ...sectionsToAdd);
-      } else {
-        res.descriptors = Array.isArray(res.descriptors)
-          ? [...sectionsToAdd, ...res.descriptors]
-          : sectionsToAdd;
-      }
-    }
-    if (
-      !Array.isArray(res.commands) ||
-      commandAndSectionsArray.some((commandAndSection) =>
-        Array.from(commandAndSection.commands.values()).some(
-          (command) => !res.commands.includes(command),
-        ),
-      )
-    ) {
-      const commandsToAdd = commandAndSectionsArray
-        .map((commandAndSection) => Array.from(commandAndSection.commands.values()))
-        .flat(10);
-      const indexAt = res.commands.findIndex(
-        (c) =>
-          c.id === res.sectionedCommands.find(({ section }) => section.id === "-2")?.data[0].id,
+  injector.after(
+    ApplicationCommandIndexStoreMod,
+    "useDiscoveryState",
+    ([, , { commandType }], res) => {
+      const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
+        (commandAndSection) => commandAndSection.commands.size,
       );
-      if (indexAt) {
-        res.commands.splice(indexAt, 0, ...commandsToAdd);
-      } else {
-        res.commands = Array.isArray(res.commands)
-          ? [
-              ...commandsToAdd,
-              ...res.commands.filter((command) => !commandsToAdd.includes(command)),
-            ]
-          : commandsToAdd;
+      if (!res || !commandAndSectionsArray.length || commandType !== 1) return res;
+      if (
+        !Array.isArray(res.descriptors) ||
+        !commandAndSectionsArray.every((commandAndSection) =>
+          res.descriptors.some((section) => section.id === commandAndSection.section.id),
+        )
+      ) {
+        const sectionsToAdd = commandAndSectionsArray
+          .map((commandAndSection) => commandAndSection.section)
+          .filter((section) => !res.descriptors.includes(section));
+        if (res.descriptors.some((section) => section.id === "-2")) {
+          res.descriptors.splice(1, 0, ...sectionsToAdd);
+        } else {
+          res.descriptors = Array.isArray(res.descriptors)
+            ? [...sectionsToAdd, ...res.descriptors]
+            : sectionsToAdd;
+        }
       }
-    }
+      if (
+        !Array.isArray(res.commands) ||
+        commandAndSectionsArray.some((commandAndSection) =>
+          Array.from(commandAndSection.commands.values()).some(
+            (command) => !res.commands.includes(command),
+          ),
+        )
+      ) {
+        const commandsToAdd = commandAndSectionsArray
+          .map((commandAndSection) => Array.from(commandAndSection.commands.values()))
+          .flat(10);
+        const indexAt = res.commands.findIndex(
+          (c) =>
+            c.id === res.sectionedCommands.find(({ section }) => section.id === "-2")?.data[0].id,
+        );
+        if (indexAt) {
+          res.commands.splice(indexAt, 0, ...commandsToAdd);
+        } else {
+          res.commands = Array.isArray(res.commands)
+            ? [
+                ...commandsToAdd,
+                ...res.commands.filter((command) => !commandsToAdd.includes(command)),
+              ]
+            : commandsToAdd;
+        }
+      }
 
-    if (
-      !Array.isArray(res.sectionedCommands) ||
-      !commandAndSectionsArray.every((commandAndSection) =>
-        res.sectionedCommands.some(({ section }) => section.id === commandAndSection.section.id),
-      )
-    ) {
-      const dataToAdd = commandAndSectionsArray.map((commandAndSection) => ({
-        section: commandAndSection.section,
-        data: Array.from(commandAndSection.commands.values()),
-      }));
-      if (res.sectionedCommands.some(({ section }) => section.id === "-2")) {
-        res.sectionedCommands.splice(1, 0, ...dataToAdd);
-      } else {
-        res.sectionedCommands = Array.isArray(res.sectionedCommands)
-          ? [...dataToAdd, ...res.sectionedCommands]
-          : dataToAdd;
+      if (
+        !Array.isArray(res.sectionedCommands) ||
+        !commandAndSectionsArray.every((commandAndSection) =>
+          res.sectionedCommands.some(({ section }) => section.id === commandAndSection.section.id),
+        )
+      ) {
+        const dataToAdd = commandAndSectionsArray.map((commandAndSection) => ({
+          section: commandAndSection.section,
+          data: Array.from(commandAndSection.commands.values()),
+        }));
+        if (res.sectionedCommands.some(({ section }) => section.id === "-2")) {
+          res.sectionedCommands.splice(1, 0, ...dataToAdd);
+        } else {
+          res.sectionedCommands = Array.isArray(res.sectionedCommands)
+            ? [...dataToAdd, ...res.sectionedCommands]
+            : dataToAdd;
+        }
       }
-    }
-    return res;
-  });
+      return res;
+    },
+  );
 
   // The store itself
   const ApplicationCommandIndexStore = ApplicationCommandIndexStoreMod.default;
