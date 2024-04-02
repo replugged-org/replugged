@@ -1,5 +1,6 @@
 import type { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
-import { Channel } from "discord-types/general";
+import type { Channel, Guild } from "discord-types/general";
+import type { Store } from "@common/flux";
 import { Injector } from "../../modules/injector";
 import { Logger } from "../../modules/logger";
 import { waitForProps } from "../../modules/webpack";
@@ -10,20 +11,92 @@ import { loadCommands, unloadCommands } from "./commands";
 const logger = Logger.api("Commands");
 const injector = new Injector();
 
-interface ApplicationCommandIndexStoreMod {
-  useContextIndexState: (...args: unknown[]) =>
+interface ApplicationCommandIndexStore extends Store {
+  getContextState: (channel: Channel) =>
     | {
-        applicationSections: RepluggedCommandSection[];
-        applicationCommands: AnyRepluggedCommand[];
+        fetchState: { fetching: boolean };
+        result: {
+          sectionIdsByBotId: Record<string, string>;
+          sections: Record<
+            string,
+            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
+          >;
+          version: string;
+        };
+        serverVersion: symbol | string;
+      }
+    | undefined;
+  getUserState: () =>
+    | {
+        fetchState: { fetching: boolean };
+        result: {
+          sectionIdsByBotId: Record<string, string>;
+          sections: Record<
+            string,
+            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
+          >;
+          version: string;
+        };
+        serverVersion: symbol | string;
+      }
+    | undefined;
+  query: (
+    channel: Channel,
+    queryOptions: {
+      commandType: number;
+      text: string;
+    },
+    fetchOptions: {
+      allowFetch: boolean;
+      limit: number;
+      includeFrecency?: boolean;
+      placeholderCount?: number;
+      scoreMethod?: string;
+    },
+  ) =>
+    | {
+        descriptors: RepluggedCommandSection[];
+        commands: AnyRepluggedCommand[];
+        sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
+        loading: boolean;
+      }
+    | undefined;
+}
+
+interface ApplicationCommandIndexStoreMod {
+  useContextIndexState: (
+    channel: Channel,
+    allowCache: boolean,
+    allowFetch: boolean,
+  ) =>
+    | {
+        fetchState: { fetching: boolean };
+        result: {
+          sectionIdsByBotId: Record<string, string>;
+          sections: Record<
+            string,
+            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
+          >;
+          version: string;
+        };
+        serverVersion: symbol | string;
       }
     | undefined;
   useDiscoveryState: (
-    ...args: [
-      Channel,
-      unknown,
-      Record<string, unknown> & { commandType: number },
-      Record<string, unknown>,
-    ]
+    channel: Channel,
+    guild: Guild,
+    commandOptions: {
+      commandType: number;
+      applicationCommands?: boolean;
+      builtIns?: "allow" | "deny";
+    },
+    fetchOptions: {
+      allowFetch: boolean;
+      limit: number;
+      includeFrecency?: boolean;
+      placeholderCount?: number;
+      scoreMethod?: string;
+    },
   ) =>
     | {
         descriptors: RepluggedCommandSection[];
@@ -32,21 +105,41 @@ interface ApplicationCommandIndexStoreMod {
         sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
       }
     | undefined;
-  useGuildIndexState: (...args: unknown[]) => unknown;
-  useUserIndexState: (...args: unknown[]) => unknown;
-  default: ApplicationCommandIndexStore;
-}
-
-interface ApplicationCommandIndexStore {
-  getContextState: (...args: unknown[]) => unknown;
-  getUserState: (...args: unknown[]) => unknown;
-  query: (...args: unknown[]) =>
+  useGuildIndexState: (
+    guildId: string,
+    allowFetch: boolean,
+  ) =>
     | {
-        descriptors: RepluggedCommandSection[];
-        commands: AnyRepluggedCommand[];
-        sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
+        fetchState: { fetching: boolean };
+        result: {
+          sectionIdsByBotId: Record<string, string>;
+          sections: Record<
+            string,
+            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
+          >;
+          version: string;
+        };
+        serverVersion: symbol | string;
       }
     | undefined;
+  useUserIndexState: (
+    allowCache: boolean,
+    allowFetch: boolean,
+  ) =>
+    | {
+        fetchState: { fetching: boolean };
+        result: {
+          sectionIdsByBotId: Record<string, string>;
+          sections: Record<
+            string,
+            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
+          >;
+          version: string;
+        };
+        serverVersion: symbol | string;
+      }
+    | undefined;
+  default: ApplicationCommandIndexStore;
 }
 
 async function injectRepluggedBotIcon(): Promise<void> {
