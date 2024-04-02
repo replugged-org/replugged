@@ -99,7 +99,7 @@ function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string,
 async function openUserProfile(id: string): Promise<void> {
   if (!users.getUser(id)) {
     try {
-      const { body } = await api.get({
+      const { body } = await api.HTTP.get({
         url: `/users/${id}/profile`,
         query: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -113,7 +113,7 @@ async function openUserProfile(id: string): Promise<void> {
       fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
     } catch {
       try {
-        const { body } = await api.get({
+        const { body } = await api.HTTP.get({
           url: `/users/${id}`,
         });
         fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
