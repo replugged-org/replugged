@@ -1,9 +1,8 @@
 import React from "@common/react";
-import { Logger } from "@replugged";
+import { util, Logger } from "@replugged";
 import type { User } from "discord-types/general";
 import { Injector } from "../../modules/injector";
 import { getByProps, waitForProps } from "../../modules/webpack";
-import {util} from "@replugged";
 import { generalSettings } from "../settings/pages/General";
 import { APIBadges, BadgeSizes, Custom, badgeElements, getBadgeSizeClass } from "./badge";
 import {Tree} from "../../util";
