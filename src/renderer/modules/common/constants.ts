@@ -108,6 +108,7 @@ interface UnsafeRawColor {
 
 interface ColorMod {
   themes: Record<string, string>;
+  modules: Record<string, Record<string, number>>;
   colors: Record<string, Color>;
   spacing: Record<string, string>;
   radii: Record<string, number>;

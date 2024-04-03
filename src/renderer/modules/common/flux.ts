@@ -29,7 +29,7 @@ export declare class Emitter {
 
   public emit(): void;
   public emitReactOnce(): void;
-  public emitNonReactOnce(): void;
+  public emitNonReactOnce(callbacks: Set<() => boolean>, stores: Set<Store>): void;
 
   public getChangeSentinel(): number;
   public getIsPaused(): boolean;
@@ -54,6 +54,11 @@ declare class ChangeListeners {
   public invokeAll(): void;
 }
 
+interface SyncWiths {
+  func: () => boolean;
+  store: Store;
+}
+
 export declare class Store {
   public constructor(
     dispatcher: Dispatcher,
@@ -69,6 +74,7 @@ export declare class Store {
   public _isInitialized: boolean;
   public _dispatchToken: DispatchToken;
   public _dispatcher: Dispatcher;
+  public _syncWiths: SyncWiths[];
   public _changeCallbacks: ChangeListeners;
   public _reactChangeCallbacks: ChangeListeners;
   public _mustEmitChanges: Parameters<Store["mustEmitChanges"]>[0];
@@ -179,7 +185,6 @@ export declare class SnapshotStore<Data = Record<string, unknown>> extends Store
   public clear: () => void;
   public getClass: () => any;
   public readSnapshot: (version: number) => Snapshot<Data>["data"] | null;
-  public registerActionHandlers: (actionHandlers: ActionHandlerRecord) => void;
   public save: () => void;
 }
 
