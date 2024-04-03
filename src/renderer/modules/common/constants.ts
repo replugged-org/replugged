@@ -3,8 +3,8 @@ import { filters, getExportsForProps, waitForModule, waitForProps } from "../web
 
 type StringConcat = (...rest: string[]) => string;
 
-const ConstantsCommon = await waitForModule<Record<string, unknown>>(filters.bySource("BASE_URL:"));
-const Constants = await waitForModule<Record<string, unknown>>(filters.bySource("USER_PROFILE:"));
+const ConstantsCommon = await waitForProps<Record<string, unknown>>("Links");
+const Constants = await waitForProps<Record<string, unknown>>("Endpoints", "Routes");
 export const raw = virtualMerge(ConstantsCommon, Constants);
 
 export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsCommon, [
