@@ -128,7 +128,23 @@ interface MessageGreetOptions {
   allowedMentions?: AllowedMentions;
 }
 
-declare class LocalFetchComplete {
+interface Poll {
+  question: {
+    text: string;
+  };
+  answers: Array<{
+    poll_media: {
+      text: string;
+    };
+    answer_id: number;
+  }>;
+  expiry: string;
+  allow_multiselect: boolean;
+  duration: number;
+  layout_type: number;
+}
+
+declare class RemoteFetch {
   public completed: boolean;
 
   public markComplete: () => void;
@@ -231,6 +247,7 @@ export declare class ChannelMessages {
   public _clearMessages: () => void;
   public _merge: (messages: Message[], prepend?: boolean, clearCache?: boolean) => void;
   public addCachedMessages: (messages: Message[], cache?: boolean) => ChannelMessages;
+  public filter: Message[]["filter"];
   public findNewest: (
     callback: (message: Message, index: number, messages: Message) => unknown,
   ) => Message | undefined;
@@ -310,11 +327,15 @@ export interface MessageStore {
   focusedMessageId: (channelId: string) => string | null | undefined;
   getLastCommandMessage: (channelId: string) => Message | undefined;
   getLastEditableMessage: (channelId: string) => Message | undefined;
+  getLastMessage: (channelId: string) => Message | undefined;
+  getLastNonCurrentUserMessage: (channelId: string) => Message | undefined;
   getMessage: (channelId: string, messageId: string) => Message | undefined;
   getMessages: (channelId: string) => ChannelMessages;
   hasCurrentUserSentMessage: (channelId: string) => boolean;
+  hasCurrentUserSentMessageSinceAppStart: () => boolean;
   hasPresent: (channelId: string) => boolean;
   isLoadingMessages: (channelId: string) => boolean;
+  isReady: (channelId: string) => boolean;
   jumpedMessageId: (channelId: string) => string | null | undefined;
   whenReady: (channelId: string, callback: () => void) => void;
 }
@@ -341,7 +362,7 @@ export interface MessageActions {
     before: string,
     after: string,
     limit: number,
-    localFetchComplete: LocalFetchComplete,
+    remoteFetch: RemoteFetch,
   ) => Promise<void>;
   fetchMessages: (options: FetchMessagesOptions) => Promise<boolean>;
   fetchNewLocalMessages: (channelId: string, limit: number) => Promise<void>;
@@ -369,14 +390,18 @@ export interface MessageActions {
     analyticsTriggeredFrom?: string,
     suggestedInvite?: InviteSuggestion,
   ) => Promise<unknown | void>;
-  sendBotMessage: (channelId: string, content: string, messageName?: string) => void;
-  sendClydeError: (channelId: string, code?: number) => void;
-  sendClydeProfileOverride: (
+  sendBotMessage: (
     channelId: string,
-    clydeProfileURL: string,
-    analyticsTriggeredFrom?: string,
-    suggestedInvite?: InviteSuggestion,
-  ) => Promise<unknown | void>;
+    content: string,
+    messageName?: string,
+    messageId?: string,
+  ) => void;
+  sendClydeError: (channelId: string, code?: number) => void;
+  sendExplicitMediaClydeError: (
+    channelId: string,
+    attachments: MessageAttachment[] | undefined,
+    context: string,
+  ) => void;
   sendGreetMessage: (
     channelId: string,
     stickerId: string,
@@ -401,7 +426,17 @@ export interface MessageActions {
     options?: SendMessageOptionsForReply | Record<never, never>,
     tts?: boolean,
   ) => Promise<unknown | void>;
-  startEditMessage: (channelId: string, messageId: string, content: string) => void;
+  sendPollMessage: (
+    channelId: string,
+    poll: Poll,
+    options?: SendMessageOptionsForReply | Record<never, never>,
+  ) => Promise<unknown | void>;
+  startEditMessage: (
+    channelId: string,
+    messageId: string,
+    content: string,
+    source?: string,
+  ) => void;
   suppressEmbeds: (channelId: string, messageId: string) => Promise<void>;
   trackInvite: (options: TrackInviteOptions) => void;
   trackJump(
@@ -425,6 +460,7 @@ interface CreateBotMessageOptions {
   content: string;
   embeds?: APIEmbed[];
   loggingName?: string;
+  messageId?: string;
 }
 
 interface CreateMessageOptions {
@@ -437,6 +473,7 @@ interface CreateMessageOptions {
   author: User;
   flags?: number;
   nonce?: string;
+  poll?: Poll;
 }
 
 interface UserServer {
