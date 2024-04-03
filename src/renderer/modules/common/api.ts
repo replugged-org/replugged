@@ -40,7 +40,7 @@ interface HTTPRequest {
   onRequestProgress?: (progress: ProgressEvent) => void;
 }
 
-interface HTTPResponse<T = Record<string, unknown>> {
+export interface HTTPResponse<T = Record<string, unknown>> {
   body: T;
   headers: Record<string, string>;
   ok: boolean;

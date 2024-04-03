@@ -9,7 +9,7 @@ const generalSettings = await init<GeneralSettings, keyof typeof defaultSettings
 
 export default [
   {
-    find: /\.displayName="(Developer)?ExperimentStore"/,
+    find: /"displayName","(Developer)?ExperimentStore"/,
     replacements: generalSettings.get("experiments")
       ? [
           {
