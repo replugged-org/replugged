@@ -57,7 +57,6 @@ export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
     | "PRIMARY"
     | "LINK"
     | "WHITE"
-    | "BLACK"
     | "TRANSPARENT"
     | "BRAND_NEW"
     | "CUSTOM",
