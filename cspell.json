@@ -11,6 +11,7 @@
     "autosize",
     "backoff",
     "blurple",
+    "Breacrumb",
     "Chunkdiscord",
     "codemirror",
     "cooldown",
@@ -70,6 +71,7 @@
     "Vendicated",
     "Webauthn",
     "weblate",
+    "Withs",
     "XLARGE"
   ],
   "ignoreWords": [],
