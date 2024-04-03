@@ -3,7 +3,7 @@ import { filters, getExportsForProps, waitForModule, waitForProps } from "../web
 
 type StringConcat = (...rest: string[]) => string;
 
-const ConstantsCommon = await waitForProps<Record<string, unknown>>("Links");
+const ConstantsCommon = await waitForProps<Record<string, unknown>>("Links", "RPCCommands");
 const Constants = await waitForProps<Record<string, unknown>>("Endpoints", "Routes");
 export const raw = virtualMerge(ConstantsCommon, Constants);
 
