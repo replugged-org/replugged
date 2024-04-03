@@ -17,8 +17,8 @@ export default [
             replace: `"staging"`,
           },
           {
-            match: /(isDeveloper:{configurable:!1,get:\(\)=>)\w+(}})/g,
-            replace: (_, before, after) => `${before}true${after}`,
+            match: /(isDeveloper:{configurable:!1,get:\(\)=>)\w+/g,
+            replace: `$1true`,
           },
           {
             match: /=\(0,\w+\.isStaffEnv\)\(\w+\.default\.getCurrentUser\(\)\)/,
