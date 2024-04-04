@@ -15,6 +15,7 @@ interface ErrorComponentState {
     message: string;
     stack: string;
   } | null;
+  info: null;
 }
 
 interface ErrorScreenInstance {
@@ -43,6 +44,14 @@ function startMainRecovery(): void {
   }
 
   try {
+    // I think trying to transition first is a better move.
+    // Considering most errors come from patching.
+    RouteModule?.transitionTo("/channels/@me");
+  } catch {
+    err("Failed to transition to '/channels/@me'.");
+  }
+  
+  try {
     fluxDispatcher.dispatch({ type: "CONTEXT_MENU_CLOSE" });
   } catch {
     err("ContextMenu's could not be closed.");
@@ -52,12 +61,6 @@ function startMainRecovery(): void {
     ModalModule.closeAllModals();
   } catch {
     err("Could not close (most) modals.");
-  }
-
-  try {
-    RouteModule?.transitionTo("/channels/@me");
-  } catch {
-    err("Failed to transition to '/channels/@me'.");
   }
 
   log("Ended main recovery.");
@@ -73,7 +76,7 @@ export async function start(): Promise<void> {
     "render",
     (_args, res: React.ReactElement, instance: ErrorScreenInstance): void => {
       if (generalSettings.get("automaticRecover")) {
-        instance.setState({ error: null });
+        instance.setState({ error: null, info: null });
       }
       const children = res.props?.action?.props?.children;
       if (!children || !instance.state?.error) return;
@@ -85,7 +88,7 @@ export async function start(): Promise<void> {
             className={`recovery-button`}
             onClick={() => {
               startMainRecovery();
-              instance.setState({ error: null });
+              instance.setState({ error: null, info: null });
             }}>
             Recover Discord
           </Button>
