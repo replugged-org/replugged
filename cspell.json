@@ -12,6 +12,7 @@
     "autosize",
     "backoff",
     "blurple",
+    "Breacrumb",
     "Chunkdiscord",
     "codemirror",
     "cooldown",
@@ -61,6 +62,7 @@
     "Scroller",
     "shopt",
     "signingkey",
+    "Skema",
     "skus",
     "uninject",
     "uninjector",
@@ -68,6 +70,7 @@
     "Vendicated",
     "Webauthn",
     "weblate",
+    "Withs",
     "XLARGE"
   ],
   "ignoreWords": [],
