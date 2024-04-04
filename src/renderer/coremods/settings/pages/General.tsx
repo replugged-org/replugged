@@ -103,6 +103,12 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       <SwitchItem
+        {...util.useSetting(generalSettings, "automaticRecover")}
+        note={Messages.REPLUGGED_SETTINGS_AUTOMATIC_RECOVERY_DESC}>
+        {Messages.REPLUGGED_SETTINGS_AUTOMATIC_RECOVERY}
+      </SwitchItem>
+
+      <SwitchItem
         {...util.useSetting(generalSettings, "addonEmbeds")}
         note={Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC}>
         {Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS}
