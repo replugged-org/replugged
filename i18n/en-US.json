@@ -229,6 +229,8 @@
     "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Reconnects the Dev Companion coremod to the VSCode extension.",
     "REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT": "Reconnect",
     "REPLUGGED_SETTINGS_ADVANCED": "Advanced Settings",
+    "REPLUGGED_SETTINGS_AUTOMATIC_RECOVERY":  "Automatic Recovery",
+    "REPLUGGED_SETTINGS_AUTOMATIC_RECOVERY_DESC":  "Allows Discord to try to automatically recover from a crash.",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Enable React DevTools",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Loads the React DevTools extension, allowing you to inspect the React tree and debug more easily. **Requires restart**.",
     "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Failed to download React DevTools.",
@@ -242,7 +244,5 @@
     "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS": "****WARNING:**** This will break **window snapping**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
     "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
     "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}",
-    "REPLUGGED_STORE": "Store",
-    "REPLUGGED_SETTINGS_AUTOMATIC_RECOVERY":  "Automatic Recovery",
-    "REPLUGGED_SETTINGS_AUTOMATIC_RECOVERY_DESC":  "Allows Discord to try to automatically recover from a crash."
+    "REPLUGGED_STORE": "Store"
 }
