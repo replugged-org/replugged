@@ -50,7 +50,7 @@ function startMainRecovery(): void {
   } catch {
     err("Failed to transition to '/channels/@me'.");
   }
-  
+
   try {
     fluxDispatcher.dispatch({ type: "CONTEXT_MENU_CLOSE" });
   } catch {
