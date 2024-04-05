@@ -96,10 +96,9 @@ export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
 
 export const { Button } = components;
 
-const classes =
-  await waitForProps<Record<"dividerDefault" | "labelRow" | "note" | "title", string>>(
-    "dividerDefault",
-  );
+const classes = await waitForProps<
+  Record<"dividerDefault" | "labelRow" | "note" | "title", string>
+>("dividerDefault");
 
 interface ButtonItemProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
