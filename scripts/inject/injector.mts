@@ -2,10 +2,10 @@ import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
 import { AnsiEscapes, getCommand } from "./util.mjs";
-import readline from "readline";
-import { exec } from "child_process";
+import { execSync } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
 import { CONFIG_PATH } from "../../src/util.mjs";
+import { existsSync } from "fs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -108,75 +108,39 @@ export const inject = async (
     return false;
   }
 
+  const entryPoint = prod
+    ? join(CONFIG_PATH, "replugged.asar")
+    : join(dirname, "..", "..", "dist/main.js");
+  const entryPointDir = path.dirname(entryPoint);
+
   if (appDir.includes("flatpak")) {
     const discordName = platform === "canary" ? "DiscordCanary" : "Discord";
     const overrideCommand = `${
       appDir.startsWith("/var") ? "sudo flatpak override" : "flatpak override --user"
-    } com.discordapp.${discordName} --filesystem=${join(dirname, "..")}`;
-    const updateScript = `
-    #!/bin/bash
-    shopt -s globstar
-    
-    for folder in ${join(dirname, "..")}/**/.git; do
-      (cd "$folder/.." && echo "Pulling $PWD" && git pull)
-    done`;
-    const readlineInterface = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
+    } com.discordapp.${discordName} --filesystem=${entryPointDir}`;
 
-    const askExecCmd = (): Promise<string> =>
-      new Promise((resolve) =>
-        readlineInterface.question("Would you like to execute the command now? y/N: ", resolve),
-      );
-    const askViewScript = (): Promise<string> =>
-      new Promise((resolve) =>
-        readlineInterface.question(
-          "To update Replugged and its plugins, you need to pull in changes with git manually. A script is available for this however. View it? Y/n: ",
-          resolve,
-        ),
-      );
-
-    console.warn(
-      `${AnsiEscapes.YELLOW}NOTE:${AnsiEscapes.RESET} You seem to be using the Flatpak version of Discord.`,
+    console.log(
+      `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to Replugged files (${entryPointDir})${AnsiEscapes.RESET}`,
     );
-    console.warn(
-      "Some Replugged features such as auto updates won't work properly with Flatpaks.",
-      "\n",
-    );
-    console.warn("You'll need to allow Discord to access Replugged's installation directory");
-    console.warn(
-      `You can allow access to Replugged's directory with this command: ${AnsiEscapes.YELLOW}${overrideCommand}${AnsiEscapes.RESET}`,
-    );
-
-    const doCmd = await askExecCmd();
-
-    if (doCmd === "y" || doCmd === "yes") {
-      console.log("Running...");
-      exec(overrideCommand);
-    } else {
-      console.log("OK. The command will not be executed.", "\n");
-    }
-
-    const viewScript = await askViewScript();
-    if (viewScript === "" || viewScript === "y" || viewScript === "yes") {
-      console.log(`${AnsiEscapes.YELLOW}${updateScript}${AnsiEscapes.RESET}`);
-    }
-    readlineInterface.close();
+    execSync(overrideCommand);
+    console.log("Done!");
   }
 
   try {
     await rename(appDir, join(appDir, "..", "app.orig.asar"));
+    // For discord_arch_electron
+    if (existsSync(join(appDir, "..", "app.asar.unpacked"))) {
+      await rename(
+        join(appDir, "..", "app.asar.unpacked"),
+        join(appDir, "..", "app.orig.asar.unpacked"),
+      );
+    }
   } catch {
     console.error(
       `${AnsiEscapes.RED}Failed to rename app.asar while plugging. If Discord is open, make sure it is closed.${AnsiEscapes.RESET}`,
     );
     process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
   }
-
-  const entryPoint = prod
-    ? join(CONFIG_PATH, "replugged.asar")
-    : join(dirname, "..", "..", "dist/main.js");
 
   if (prod) {
     await copyFile(join(dirname, "..", "..", "replugged.asar"), entryPoint);
@@ -228,5 +192,12 @@ export const uninject = async (
 
   await rm(appDir, { recursive: true, force: true });
   await rename(join(appDir, "..", "app.orig.asar"), appDir);
+  // For discord_arch_electron
+  if (existsSync(join(appDir, "..", "app.orig.asar.unpacked"))) {
+    await rename(
+      join(appDir, "..", "app.orig.asar.unpacked"),
+      join(appDir, "..", "app.asar.unpacked"),
+    );
+  }
   return true;
 };

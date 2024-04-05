@@ -1,6 +1,5 @@
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import { sourceStrings } from "../webpack/patch-load";
+import components from "../common/components";
 
 const ItemColors = {
   DEFAULT: "default",
@@ -146,39 +145,26 @@ export type ContextMenuType = ContextMenuComponents & {
   ItemColors: typeof ItemColors;
 };
 
-const componentMap: Record<string, keyof ContextMenuComponents> = {
-  separator: "MenuSeparator",
-  checkbox: "MenuCheckboxItem",
-  radio: "MenuRadioItem",
-  control: "MenuControlItem",
-  groupstart: "MenuGroup",
-  customitem: "MenuItem",
-} as const;
-
-const menuMod = await waitForModule<Record<string, React.ComponentType>>(
-  filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"),
-);
-
-const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
-const source = sourceStrings[rawMod?.id].matchAll(
-  /if\(\w+\.type===(\w+)(?:\.\w+)?\).+?type:"(.+?)"/gs,
-);
-
-const menuComponents = Object.values(menuMod)
-  .filter((m) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
-  .reduce<Record<string, React.ComponentType>>((components, component) => {
-    components[component.name] = component;
-    return components;
-  }, {});
+export type modType = Record<
+  | "Menu"
+  | "MenuSeparator"
+  | "MenuCheckboxItem"
+  | "MenuRadioItem"
+  | "MenuControlItem"
+  | "MenuGroup"
+  | "MenuItem",
+  React.ComponentType
+>;
 
 const Menu = {
   ItemColors,
-  ContextMenu: getFunctionBySource(menuMod, "getContainerProps"),
+  ContextMenu: components.Menu,
+  MenuSeparator: components.MenuSeparator,
+  MenuCheckboxItem: components.MenuCheckboxItem,
+  MenuRadioItem: components.MenuRadioItem,
+  MenuControlItem: components.MenuControlItem,
+  MenuGroup: components.MenuGroup,
+  MenuItem: components.MenuItem,
 } as ContextMenuType;
-
-for (const [, identifier, type] of source) {
-  // @ts-expect-error Doesn't like that the generic changes
-  Menu[componentMap[type]] = menuComponents[identifier];
-}
 
 export default Menu;

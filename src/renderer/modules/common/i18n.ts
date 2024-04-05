@@ -1,4 +1,4 @@
-import { waitForProps } from "../webpack";
+import { filters, waitForModule } from "../webpack";
 import type EventEmitter from "events";
 
 import type SimpleMarkdown from "simple-markdown";
@@ -181,7 +181,7 @@ interface IntlMessageObject {
   plainFormat: (values?: string | IntlMessageValues) => string;
 }
 
-type Message = string & IntlMessageObject;
+export type Message = string & IntlMessageObject;
 type Messages = Record<string, Message>;
 
 export interface I18n extends EventEmitter {
@@ -225,7 +225,7 @@ export interface I18n extends EventEmitter {
   _loadMessagesForLocale: (locale?: string) => Promise<void>;
 }
 
-const i18n = await waitForProps<I18n>("Messages", "getLanguages");
+const i18n = await waitForModule<I18n>(filters.bySource("registerLocale:"));
 
 export const { Messages } = i18n;
 

@@ -7,7 +7,6 @@
     "REPLUGGED_BADGES_SUPPORT": "תמיכת ריפלגד",
     "REPLUGGED_BADGES_TRANSLATOR": "מתרגם ריפלגד",
     "REPLUGGED_BADGES_BOOSTER": "בוסטר שרת ריפלגד",
-    "REPLUGGED_COMMAND_PREFIX": "קידומת פקודה",
     "REPLUGGED_GENERAL_SETTINGS": "הגדרות כלליות",
     "REPLUGGED_I18N_CONTRIBUTE": "רוצה לעזור לתרגם את ריפלגד? אפשר לעשות את זה ב[Weblate שלנו]({weblateUrl})!",
     "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "ריפלגד: {translated,number}% מתורגם",
@@ -70,12 +69,5 @@
     "REPLUGGED_CANCEL": "ביטול",
     "REPLUGGED_CONFIRM": "אישור",
     "REPLUGGED_OK": "אוקיי",
-    "REPLUGGED_COMMAND_AUTOCOMPLETE_ENTITY_LIST": "תוספים וערכות נושא מותקנות",
-    "REPLUGGED_COMMAND_AUTOCOMPLETE_PLUGIN": "תוספת - {description}",
-    "REPLUGGED_COMMAND_AUTOCOMPLETE_THEME": "ערכת נושא - {description}",
-    "REPLUGGED_COMMAND_DEBUG_DESC": "שולח debug של דיסקורד ושל ריפלג של המכשיר הזה בצ'אט.",
-    "REPLUGGED_COMMAND_DISABLE_DISABLED": "{type} \"{id}\" הושבת!",
-    "REPLUGGED_COMMAND_DISABLE_DESC": "השבת תוספת/ערכת נושא",
-    "REPLUGGED_COMMAND_ENABLE_ENABLED": "{type} \"{id}\" הופעל!",
-    "REPLUGGED_COMMAND_ECHO_DESC": "מחזיר את הארגומנטים המפורטים."
+    "REPLUGGED_COMMAND_DISABLE_DESC": "השבת תוספת/ערכת נושא"
 }

@@ -1,6 +1,7 @@
-import { waitForProps } from "../webpack";
-import type { Guild } from "discord-types/general";
+import type { Guild, Role } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
+import { waitForProps } from "../webpack";
+import type { Store } from "./flux";
 
 interface State {
   selectedGuildTimestampMillis: Record<string, number>;
@@ -18,26 +19,33 @@ export interface SelectedGuildStore {
 }
 
 export interface GuildStore {
+  getAllGuildsRoles: () => Record<string, Record<string, Role>>;
+  getGeoRestrictedGuilds: () => string[];
   getGuild: (guildId: string) => Guild | undefined;
   getGuildCount: () => number;
   getGuildIds: () => string[];
   getGuilds: () => Record<string, Guild>;
+  getRole: (guildId: string, roleId: string) => Role | undefined;
+  getRoles: (guildId: string) => Record<string, Role>;
   isLoaded: () => boolean;
 }
 
 export type Guilds = SelectedGuildStore & GuildStore;
 
-const guilds: Guilds = {
-  ...(await waitForProps<GuildStore>("getGuild", "getGuilds").then(Object.getPrototypeOf)),
-  ...(await waitForProps<SelectedGuildStore>("getGuildId", "getLastSelectedGuildId").then(
-    Object.getPrototypeOf,
-  )),
-};
+const GuildStore = await waitForProps<GuildStore & Store>("getGuild", "getGuildIds");
+const SelectedGuildStore = await waitForProps<SelectedGuildStore & Store>(
+  "getGuildId",
+  "getLastSelectedGuildId",
+);
 
 export function getCurrentGuild(): Guild | undefined {
-  const guildId = guilds.getGuildId();
+  const guildId = SelectedGuildStore.getGuildId();
   if (!guildId) return undefined;
-  return guilds.getGuild(guildId);
+  return GuildStore.getGuild(guildId);
 }
 
-export default virtualMerge(guilds, { getCurrentGuild });
+export default virtualMerge(
+  Object.getPrototypeOf(GuildStore) as GuildStore,
+  Object.getPrototypeOf(SelectedGuildStore) as SelectedGuildStore,
+  { getCurrentGuild },
+);

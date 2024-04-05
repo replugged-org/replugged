@@ -1,5 +1,5 @@
 import { signalStart, waitForReady } from "../modules/webpack/patch-load";
-import { log } from "../modules/logger";
+import { error, log } from "../modules/logger";
 
 import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
@@ -17,11 +17,26 @@ export async function start(): Promise<void> {
 
   loadStyleSheet("replugged://renderer.css");
   i18n.load();
-  await Promise.all([
-    coremods.startAll(),
-    plugins.startAll(),
-    themes.loadMissing().then(themes.loadAll),
+
+  let started = false;
+  await Promise.race([
+    Promise.allSettled([
+      coremods.startAll(),
+      plugins.startAll(),
+      themes.loadMissing().then(themes.loadAll),
+    ]),
+    // Failsafe to ensure that we always start Replugged
+    new Promise((resolve) =>
+      setTimeout(() => {
+        if (!started) {
+          error("Ignition", "Start", void 0, "Ignition timed out after 10 seconds");
+          resolve(void 0);
+        }
+      }, 10_000),
+    ),
   ]);
+  started = true;
+
   // Quick CSS needs to be called after themes are loaded so that it will override the theme's CSS
   quickCSS.load();
 
@@ -32,7 +47,7 @@ export async function start(): Promise<void> {
     "Ignition",
     "Start",
     void 0,
-    `Finished igniting Replugged in ${performance.now() - startTime}ms`,
+    `Finished igniting Replugged in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
 
@@ -41,13 +56,14 @@ export async function stop(): Promise<void> {
   const startTime = performance.now();
 
   quickCSS.unload();
-  await Promise.all([coremods.stopAll(), plugins.stopAll(), themes.unloadAll()]);
+  themes.unloadAll();
+  await Promise.all([coremods.stopAll(), plugins.stopAll()]);
 
   log(
     "Ignition",
     "Stop",
     void 0,
-    `Finished de-igniting Replugged in ${performance.now() - startTime}ms`,
+    `Finished de-igniting Replugged in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
 
@@ -67,11 +83,31 @@ Load order:
 
 export async function ignite(): Promise<void> {
   // This is the function that will be called when loading the window.
-  coremods.runPlaintextPatches();
+  // Plaintext patches are executed before Discord's preload.
+  await coremods.runPlaintextPatches();
+  await plugins.loadAll();
   await plugins.runPlaintextPatches();
-  await waitForReady;
-  signalStart();
-  await commonReady();
-  await componentsReady();
-  await start();
+  // These next things will happen after Discord's preload is called.
+  // We schedule them here, but they cannot block the ignite function from returning.
+  (async () => {
+    await waitForReady;
+    signalStart();
+    await commonReady();
+    await componentsReady();
+    await start();
+  })();
+}
+
+export async function startSplash(): Promise<void> {
+  log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
+  const startTime = performance.now();
+
+  await themes.loadMissing().then(themes.loadAllSplash);
+
+  log(
+    "Ignition",
+    "Start",
+    void 0,
+    `Finished igniting Replugged Splash Screen in ${performance.now() - startTime}ms`,
+  );
 }

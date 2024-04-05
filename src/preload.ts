@@ -6,6 +6,7 @@ import {
 } from "electron";
 
 import { RepluggedIpcChannels } from "./types";
+// eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
 import type {
   CheckResultFailure,
   CheckResultSuccess,
@@ -52,8 +53,9 @@ const RepluggedNative = {
       type: InstallerType | "replugged",
       path: string,
       url: string,
+      version: string,
     ): Promise<InstallResultSuccess | InstallResultFailure> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url),
+      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, true, version),
   },
 
   installer: {
@@ -67,8 +69,9 @@ const RepluggedNative = {
       type: InstallerType,
       path: string,
       url: string,
+      version: string,
     ): Promise<InstallResultSuccess | InstallResultFailure> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url),
+      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, false, version),
   },
 
   quickCSS: {
@@ -99,6 +102,12 @@ const RepluggedNative = {
     getStrings: (): Promise<RepluggedTranslations> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_STRINGS),
   },
+
+  reactDevTools: {
+    downloadExtension: (): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
+  },
+
   getVersion: () => version,
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -9,13 +9,21 @@ import {
 } from "../../types";
 import { Octokit } from "@octokit/rest";
 import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
+import { writeFile as originalWriteFile } from "original-fs";
 import fetch from "node-fetch";
-import { join } from "path";
+import { join, resolve, sep } from "path";
 import { AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
-import { readTransaction } from "./settings";
+import { getSetting } from "./settings";
+import { promisify } from "util";
 
-const octokit = new Octokit();
+const writeFile = promisify(originalWriteFile);
+
+const octokit = new Octokit({
+  request: {
+    fetch,
+  },
+});
 
 async function github(
   identifier: string,
@@ -87,10 +95,7 @@ async function github(
 }
 
 async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
-  const apiUrl =
-    ((await readTransaction("dev.replugged.Settings", (settings) => settings.get("apiUrl"))) as
-      | string
-      | undefined) ?? "https://replugged.dev";
+  const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", "https://replugged.dev");
   const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
   const asarUrl = `${manifestUrl}.asar`;
@@ -166,10 +171,23 @@ ipcMain.handle(
     type: InstallerType | "replugged",
     path: string,
     url: string,
+    update: boolean,
+    version?: string,
   ): Promise<InstallResultSuccess | InstallResultFailure> => {
+    const query = new URLSearchParams();
+    query.set("type", update ? "update" : "install");
+    if (version) query.set("version", version);
+
+    if (type === "replugged") {
+      // Manually set Path and URL for security purposes
+      path = "replugged.asar";
+      const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", "https://replugged.dev");
+      url = `${apiUrl}/api/v1/store/dev.replugged.Replugged.asar`;
+    }
+
     let res;
     try {
-      res = await fetch(url);
+      res = await fetch(`${url}?${query}`);
     } catch (err) {
       return {
         success: false,
@@ -188,8 +206,20 @@ ipcMain.handle(
 
     const buf = Buffer.from(file);
 
+    const base = getBaseName(type);
+    const filePath = resolve(base, path);
+    if (!filePath.startsWith(`${base}${sep}`)) {
+      // Ensure file changes are restricted to the base path
+      return {
+        success: false,
+        error: "Invalid path",
+      };
+    }
+
+    console.log(url, filePath);
+
     try {
-      await writeFile(join(getBaseName(type), path), buf);
+      await writeFile(filePath, buf);
     } catch (err) {
       return {
         success: false,

@@ -1,5 +1,5 @@
 import type { WebContents } from "electron";
-import type { CommandOptions, ConnectedAccount } from "./discord";
+import type { ConnectedAccount } from "./discord";
 import type { PluginManifest, ThemeManifest } from "./addon";
 
 export type RepluggedWebContents = WebContents & {
@@ -32,6 +32,7 @@ export enum RepluggedIpcChannels {
   OPEN_SETTINGS_FOLDER = "REPLUGGED_OPEN_SETTINGS_FOLDER",
   OPEN_QUICKCSS_FOLDER = "REPLUGGED_OPEN_QUICKCSS_FOLDER",
   GET_REPLUGGED_VERSION = "REPLUGGED_GET_REPLUGGED_VERSION",
+  DOWNLOAD_REACT_DEVTOOLS = "REPLUGGED_DOWNLOAD_REACT_DEVTOOLS",
 }
 
 export interface RepluggedAnnouncement {
@@ -41,17 +42,9 @@ export interface RepluggedAnnouncement {
   onClose?: () => void;
   button?: {
     text: string;
-    onClick: () => void;
+    onClick?: () => void;
     href?: string;
   };
-}
-
-export interface RepluggedCommand {
-  name: string;
-  description: string;
-  usage: string;
-  executor: (args: unknown) => void;
-  options: CommandOptions;
 }
 
 export interface RepluggedConnection {
@@ -94,3 +87,4 @@ export * from "./installer";
 export * from "./coremods/message";
 export * from "./coremods/settings";
 export * from "./coremods/contextMenu";
+export * from "./coremods/commands";

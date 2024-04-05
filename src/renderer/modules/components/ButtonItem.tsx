@@ -1,6 +1,7 @@
 import type React from "react";
 import { Divider, Flex, FormText, Tooltip } from ".";
-import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
+import components from "../common/components";
+import { waitForProps } from "../webpack";
 
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   look?: string;
@@ -56,7 +57,6 @@ export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
     | "PRIMARY"
     | "LINK"
     | "WHITE"
-    | "BLACK"
     | "TRANSPARENT"
     | "BRAND_NEW"
     | "CUSTOM",
@@ -94,13 +94,12 @@ export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
   >;
 };
 
-export const Button = await waitForModule(filters.bySource(".BorderColors=")).then(
-  (mod) => getFunctionBySource<ButtonType>(mod, "wrapperClassName")!,
-);
+export const { Button } = components;
 
-const classes = await waitForProps<
-  Record<"dividerDefault" | "labelRow" | "note" | "title", string>
->("dividerDefault");
+const classes =
+  await waitForProps<Record<"dividerDefault" | "labelRow" | "note" | "title", string>>(
+    "dividerDefault",
+  );
 
 interface ButtonItemProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;

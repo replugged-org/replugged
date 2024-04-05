@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Messages } from "@common/i18n";
 import { React, api, fluxDispatcher, modal, toast, users } from "@common";
 import {
@@ -12,7 +13,7 @@ import {
   Tooltip,
 } from "@components";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
-import type { Author } from "src/types/addon";
+import type { AnyAddonManifest, Author } from "src/types/addon";
 import "./Addons.css";
 import Icons from "../icons";
 import { Logger, plugins, themes, webpack } from "@replugged";
@@ -34,12 +35,8 @@ interface BreadcrumbProps {
 const logger = Logger.coremod("AddonSettings");
 
 const Breadcrumbs = webpack.getBySource<React.ComponentClass<BreadcrumbProps>>(
-  "().breadcrumbFinalWrapper",
+  /\w+.breadcrumbFinalWrapper/,
 )!;
-const BreadcrumbClasses =
-  webpack.getByProps<Record<"breadcrumbActive" | "breadcrumbInactive" | "breadcrumbs", string>>(
-    "breadcrumbActive",
-  )!;
 
 export enum AddonType {
   Plugin = "plugin",
@@ -102,7 +99,7 @@ function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string,
 async function openUserProfile(id: string): Promise<void> {
   if (!users.getUser(id)) {
     try {
-      const { body } = await api.get({
+      const { body } = await api.HTTP.get({
         url: `/users/${id}/profile`,
         query: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -116,7 +113,7 @@ async function openUserProfile(id: string): Promise<void> {
       fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
     } catch {
       try {
-        const { body } = await api.get({
+        const { body } = await api.HTTP.get({
           url: `/users/${id}`,
         });
         fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
@@ -137,8 +134,8 @@ function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
   return [addon.manifest.author].flat();
 }
 
-function getSourceLink(addon: RepluggedPlugin | RepluggedTheme): string | undefined {
-  const { id: addonId, updater } = addon.manifest;
+export function getSourceLink(addon: AnyAddonManifest): string | undefined {
+  const { id: addonId, updater } = addon;
   if (!updater) return undefined;
   const { type, id: updaterId } = updater;
   switch (type) {
@@ -315,7 +312,7 @@ function Card({
   reload: () => void;
   uninstall: () => void;
 }): React.ReactElement {
-  const sourceLink = getSourceLink(addon);
+  const sourceLink = getSourceLink(addon.manifest);
 
   return (
     <div className="replugged-addon-card">
@@ -546,7 +543,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Flex align={Flex.Align.CENTER} className={BreadcrumbClasses.breadcrumbs}>
+        <Flex align={Flex.Align.CENTER} className={"replugged-addon-breadcrumbs"}>
           {section === `rp_${type}` ? (
             <Text.H2
               style={{
@@ -574,7 +571,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   label:
                     list?.filter?.(
                       (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
-                    )?.[0]?.manifest?.name || "",
+                    )?.[0]?.manifest.name || "",
                 },
               ]}
               onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
@@ -583,8 +580,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   color={active ? "header-primary" : "inherit"}
                   className={
                     active
-                      ? BreadcrumbClasses.breadcrumbActive
-                      : BreadcrumbClasses.breadcrumbInactive
+                      ? "replugged-addon-breadcrumbsActive"
+                      : "replugged-addon-breadcrumbsInactive"
                   }
                   style={{
                     // Do not turn "(num)" into a single symbol

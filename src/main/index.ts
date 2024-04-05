@@ -1,8 +1,9 @@
 import { dirname, join } from "path";
 
 import electron from "electron";
-import type { RepluggedWebContents } from "../types";
 import { CONFIG_PATHS } from "src/util.mjs";
+import type { RepluggedWebContents } from "../types";
+import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
@@ -27,13 +28,13 @@ Object.defineProperty(global, "appSettings", {
 class BrowserWindow extends electron.BrowserWindow {
   public constructor(
     opts: electron.BrowserWindowConstructorOptions & {
-      webContents: electron.WebContents;
-      webPreferences: {
+      webContents?: electron.WebContents;
+      webPreferences?: {
         nativeWindowOpen: boolean;
       };
     },
   ) {
-    const originalPreload = opts.webPreferences.preload;
+    const originalPreload = opts.webPreferences?.preload;
 
     if (opts.webContents) {
       // General purpose pop-outs used by Discord
@@ -52,7 +53,7 @@ class BrowserWindow extends electron.BrowserWindow {
         // opts.webPreferences.contextIsolation = false; // shrug
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
+        opts.webPreferences.preload = join(__dirname, "./preload.js");
       }
     }
 
@@ -103,6 +104,14 @@ electron.protocol.registerSchemesAsPrivileged([
   },
 ]);
 
+async function loadReactDevTools(): Promise<void> {
+  const rdtSetting = await getSetting("dev.replugged.Settings", "reactDevTools", false);
+
+  if (rdtSetting) {
+    void electron.session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
+  }
+}
+
 // Copied from old codebase
 electron.app.once("ready", () => {
   electron.session.defaultSession.webRequest.onBeforeRequest(
@@ -116,7 +125,8 @@ electron.app.once("ready", () => {
   // @todo: Whitelist a few domains instead of removing CSP altogether; See #386
   electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     if (!responseHeaders) {
-      return done({});
+      done({});
+      return;
     }
 
     const hasFrameOptions = Object.keys(responseHeaders).find((e) => /x-frame-options/i.test(e));
@@ -168,6 +178,8 @@ electron.app.once("ready", () => {
     }
     cb({ path: filePath });
   });
+
+  void loadReactDevTools();
 });
 
 // This module is required this way at runtime.

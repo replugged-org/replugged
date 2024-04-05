@@ -1,8 +1,10 @@
 import { virtualMerge } from "src/renderer/util";
 import { filters, getExportsForProps, waitForModule, waitForProps } from "../webpack";
 
-const ConstantsCommon = await waitForModule<Record<string, unknown>>(filters.bySource("BASE_URL:"));
-const Constants = await waitForModule<Record<string, unknown>>(filters.bySource("USER_PROFILE:"));
+type StringConcat = (...rest: string[]) => string;
+
+const ConstantsCommon = await waitForProps<Record<string, unknown>>("Links", "RPCCommands");
+const Constants = await waitForProps<Record<string, unknown>>("Endpoints", "Routes");
 export const raw = virtualMerge(ConstantsCommon, Constants);
 
 export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsCommon, [
@@ -42,7 +44,7 @@ export const ChannelTypes = getExportsForProps<Record<string, string | number>>(
   "DM",
   "GUILD_FORUM",
 ])!;
-export const Endpoints = getExportsForProps<Record<string, unknown>>(Constants, [
+export const Endpoints = getExportsForProps<Record<string, string | StringConcat>>(Constants, [
   "USERS",
   "INTEGRATIONS",
 ])!;
@@ -50,8 +52,15 @@ export const GuildFeatures = getExportsForProps<Record<string, string>>(Constant
   "VERIFIED",
   "ANIMATED_BANNER",
 ])!;
-export const Routes = getExportsForProps<Record<string, unknown>>(Constants, ["INDEX", "LOGIN"])!;
-export const UserFlags = getExportsForProps<Record<string, number>>(Constants, [
+export const MessageFlags = getExportsForProps<Record<string, number>>(Constants, [
+  "EPHEMERAL",
+  "LOADING",
+])!;
+export const Routes = getExportsForProps<Record<string, string | StringConcat>>(Constants, [
+  "INDEX",
+  "LOGIN",
+])!;
+export const UserFlags = getExportsForProps<Record<string, string | number>>(Constants, [
   "STAFF",
   "SPAMMER",
 ])!;
@@ -99,6 +108,7 @@ interface UnsafeRawColor {
 
 interface ColorMod {
   themes: Record<string, string>;
+  modules: Record<string, Record<string, number>>;
   colors: Record<string, Color>;
   spacing: Record<string, string>;
   radii: Record<string, number>;

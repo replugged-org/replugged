@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "fs/promises";
-import { join } from "path";
+import { resolve, sep } from "path";
 import { ipcMain, shell } from "electron";
 import { RepluggedIpcChannels } from "../../types";
 import type {
@@ -11,9 +11,19 @@ import { CONFIG_PATHS } from "src/util.mjs";
 
 const SETTINGS_DIR = CONFIG_PATHS.settings;
 
+export function getSettingsPath(namespace: string): string {
+  const resolved = resolve(SETTINGS_DIR, `${namespace}.json`);
+  if (!resolved.startsWith(`${SETTINGS_DIR}${sep}`)) {
+    // Ensure file changes are restricted to the base path
+    throw new Error("Invalid namespace");
+  }
+  return resolved;
+}
+
 async function readSettings(namespace: string): Promise<Map<string, unknown>> {
+  const path = getSettingsPath(namespace);
   try {
-    const data = await readFile(join(SETTINGS_DIR, `${namespace}.json`), "utf8");
+    const data = await readFile(path, "utf8");
     return new Map(Object.entries(JSON.parse(data)));
   } catch {
     return new Map();
@@ -22,13 +32,13 @@ async function readSettings(namespace: string): Promise<Map<string, unknown>> {
 
 function writeSettings(namespace: string, settings: SettingsMap): Promise<void> {
   return writeFile(
-    join(SETTINGS_DIR, `${namespace}.json`),
+    getSettingsPath(namespace),
     JSON.stringify(Object.fromEntries(settings.entries()), null, 2),
     "utf8",
   );
 }
 
-const locks: Record<string, Promise<unknown>> = {};
+const locks: Record<string, Promise<unknown> | undefined> = {};
 
 async function transaction<T>(namespace: string, handler: TransactionHandler<T>): Promise<T> {
   const lock = locks[namespace] ?? Promise.resolve();
@@ -54,15 +64,49 @@ export async function writeTransaction<T>(
   handler: SettingsTransactionHandler<T>,
 ): Promise<T> {
   return transaction(namespace, async () => {
+    const postHandlerTransform: Array<(settings: SettingsMap) => void | Promise<void>> = [];
+
     const settings = await readSettings(namespace);
+    if (namespace.toLowerCase() === "dev.replugged.settings") {
+      // Prevent the "apiUrl" setting from changing
+      const originalValue = settings.get("apiUrl");
+      postHandlerTransform.push((settings) => {
+        if (originalValue) {
+          settings.set("apiUrl", originalValue);
+        } else {
+          settings.delete("apiUrl");
+        }
+      });
+    }
+
     const res = await handler(settings);
+
+    for (const transform of postHandlerTransform) {
+      await transform(settings);
+    }
+
     await writeSettings(namespace, settings);
     return res;
   });
 }
 
+export async function getSetting<T>(namespace: string, key: string, fallback: T): Promise<T>;
+export async function getSetting<T>(
+  namespace: string,
+  key: string,
+  fallback?: T,
+): Promise<T | undefined>;
+export async function getSetting<T>(
+  namespace: string,
+  key: string,
+  fallback?: T,
+): Promise<T | undefined> {
+  const setting = (await readTransaction(namespace, (settings) => settings.get(key))) as T;
+  return setting ?? fallback;
+}
+
 ipcMain.handle(RepluggedIpcChannels.GET_SETTING, async (_, namespace: string, key: string) =>
-  readTransaction(namespace, (settings) => settings.get(key)),
+  getSetting(namespace, key),
 );
 
 ipcMain.handle(RepluggedIpcChannels.HAS_SETTING, async (_, namespace: string, key: string) =>
