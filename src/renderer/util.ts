@@ -1,6 +1,5 @@
 import { React, channels, fluxDispatcher, guilds, lodash } from "@common";
 import type { Fiber } from "react-reconciler";
-import type { ReactElement } from "react";
 import type { Jsonifiable } from "type-fest";
 import type { ObjectExports } from "../types";
 import { SettingsManager } from "./apis/settings";
@@ -186,10 +185,10 @@ type ValType<T> =
 
 type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
   ? K extends keyof T
-    ? NestedType<T[K], NestedKey>
+    ? NestedType<NonNullable<T[K]>, NestedKey>
     : undefined
   : P extends keyof T
-  ? T[P]
+  ? NonNullable<T[P]>
   : undefined;
 
 export function useSetting<
@@ -198,28 +197,27 @@ export function useSetting<
   K extends Extract<keyof T, string>,
   F extends NestedType<T, P> | T[K] | undefined,
   P extends `${K}.${string}` | K,
+  V extends P extends `${K}.${string}`
+    ? NonNullable<NestedType<T, P>>
+    : P extends D
+    ? NonNullable<T[P]>
+    : F extends null | undefined
+    ? T[P] | undefined
+    : NonNullable<T[P]> | F,
 >(
   settings: SettingsManager<T, D>,
   key: P,
   fallback?: F,
 ): {
-  value: NonNullable<NestedType<T, P>>;
-  onChange: (newValue: ValType<NonNullable<NestedType<T, P>>>) => void;
+  value: V;
+  onChange: (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => void;
 } {
-  const [initialKey, ...pathArray] = Object.keys(settings.all()).includes(key)
-    ? ([key] as [K])
-    : (key.split(".") as [K, ...string[]]);
-  const path = pathArray.join(".");
-  const initial = settings.get(initialKey, path.length ? ({} as T[K]) : (fallback as T[K]));
-  const [value, setValue] = React.useState<NonNullable<NestedType<T, P>>>(
-    path.length
-      ? (lodash.get(initial, path, fallback) as NonNullable<NestedType<T, P>>)
-      : (initial as NonNullable<NestedType<T, P>>),
-  );
+  const initial = settings.get(key as K) ?? lodash.get(settings.all(), key) ?? fallback;
+  const [value, setValue] = React.useState(initial as V);
 
   return {
     value,
-    onChange: (newValue: ValType<NonNullable<NestedType<T, P>>>) => {
+    onChange: (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => {
       const isObj = newValue && typeof newValue === "object";
       const value = isObj && "value" in newValue ? newValue.value : newValue;
       const checked = isObj && "checked" in newValue ? newValue.checked : undefined;
@@ -229,13 +227,19 @@ export function useSetting<
           : undefined;
       const targetValue = target && "value" in target ? target.value : undefined;
       const targetChecked = target && "checked" in target ? target.checked : undefined;
-      const finalValue = checked ?? targetChecked ?? targetValue ?? value ?? newValue;
+      const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
 
-      setValue(finalValue as NonNullable<NestedType<T, P>>);
-      settings.set(
-        initialKey,
-        path.length ? (lodash.set(initial!, path, finalValue) as T[K]) : (finalValue as T[K]),
-      );
+      // Update local state
+      setValue(finalValue as V);
+
+      // Update settings
+      if (settings.get(key as K)) {
+        settings.set(key as K, finalValue);
+      } else {
+        const [rootKey] = key.split(/[./-]/);
+        const setting = lodash.set(settings.all(), key, finalValue)[rootKey as K];
+        settings.set(rootKey as K, setting);
+      }
     },
   };
 }
@@ -246,14 +250,21 @@ export function useSettingArray<
   K extends Extract<keyof T, string>,
   F extends NestedType<T, P> | T[K] | undefined,
   P extends `${K}.${string}` | K,
+  V extends P extends `${K}.${string}`
+    ? NonNullable<NestedType<T, P>>
+    : P extends D
+    ? NonNullable<T[P]>
+    : F extends null | undefined
+    ? T[P] | undefined
+    : NonNullable<T[P]> | F,
 >(
   settings: SettingsManager<T, D>,
   key: P,
   fallback?: F,
-): [NonNullable<NestedType<T, P>>, (newValue: ValType<NonNullable<NestedType<T, P>>>) => void] {
+): [V, (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => void] {
   const { value, onChange } = useSetting(settings, key, fallback);
 
-  return [value, onChange];
+  return [value as V, onChange];
 }
 
 // Credit to @Vendicated - https://github.com/Vendicated/virtual-merge
@@ -294,7 +305,6 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
     "has",
     "set",
   ] as const) {
-    // @ts-expect-error Type is ok
     handler[method] = function (_: unknown, ...args: unknown[]) {
       if (method === "get" && args[0] === "all") {
         // Return function that returns all objects combined
@@ -372,11 +382,11 @@ export function findInTree(
  * @returns The component you are looking for
  */
 export function findInReactTree(
-  tree: Tree | ReactElement,
+  tree: Tree,
   searchFilter: TreeFilter,
   maxRecursion = 100,
-): Tree | ReactElement | null | undefined {
-  return findInTree(tree as Tree, searchFilter, {
+): Tree | null | undefined {
+  return findInTree(tree, searchFilter, {
     walkable: ["props", "children", "child", "sibling"],
     maxRecursion,
   });
