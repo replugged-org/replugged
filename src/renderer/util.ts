@@ -188,8 +188,8 @@ type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
     ? NestedType<NonNullable<T[K]>, NestedKey>
     : undefined
   : P extends keyof T
-  ? NonNullable<T[P]>
-  : undefined;
+    ? NonNullable<T[P]>
+    : undefined;
 
 export function useSetting<
   T extends Record<string, Jsonifiable>,
@@ -200,10 +200,10 @@ export function useSetting<
   V extends P extends `${K}.${string}`
     ? NonNullable<NestedType<T, P>>
     : P extends D
-    ? NonNullable<T[P]>
-    : F extends null | undefined
-    ? T[P] | undefined
-    : NonNullable<T[P]> | F,
+      ? NonNullable<T[P]>
+      : F extends null | undefined
+        ? T[P] | undefined
+        : NonNullable<T[P]> | F,
 >(
   settings: SettingsManager<T, D>,
   key: P,
@@ -253,10 +253,10 @@ export function useSettingArray<
   V extends P extends `${K}.${string}`
     ? NonNullable<NestedType<T, P>>
     : P extends D
-    ? NonNullable<T[P]>
-    : F extends null | undefined
-    ? T[P] | undefined
-    : NonNullable<T[P]> | F,
+      ? NonNullable<T[P]>
+      : F extends null | undefined
+        ? T[P] | undefined
+        : NonNullable<T[P]> | F,
 >(
   settings: SettingsManager<T, D>,
   key: P,
@@ -277,9 +277,8 @@ type UnionToIntersection<U> = (U extends never ? never : (k: U) => void) extends
 
 type ObjectType = Record<never, never>;
 
-type ExtractObjectType<O extends ObjectType[]> = O extends Array<infer T>
-  ? UnionToIntersection<T>
-  : never;
+type ExtractObjectType<O extends ObjectType[]> =
+  O extends Array<infer T> ? UnionToIntersection<T> : never;
 
 export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObjectType<O> {
   const fallback = {};
