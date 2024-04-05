@@ -6,7 +6,7 @@ import "./styles.css";
 import { AnyFunction } from "../../../types";
 
 import { generalSettings } from "../settings/pages";
-import {disable} from "../../managers/plugins";
+import { disable } from "../../managers/plugins";
 const injector = new Injector();
 
 // const URL_REGEX_FIND = /https:\/\/\S+/g;
@@ -85,9 +85,9 @@ export async function start(): Promise<void> {
       if (!children || !instance.state?.error) return;
 
       // I don't think this would fail..?
-      const pluginId = instance.state?.error?.stack.match(PLUGIN_ID_FIND_REGEX)
+      const pluginId = instance.state.error.stack.match(PLUGIN_ID_FIND_REGEX);
       if (pluginId) {
-        disable(pluginId[1]);
+        void disable(pluginId[1]);
       }
       // const Link = instance.state.error.stack.match(URL_REGEX_FIND);
       // this'll be used once I make a react decoder for errors. >:(
