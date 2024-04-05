@@ -3,12 +3,12 @@ import type { ValueOf } from "type-fest";
 import { CommandInteraction } from "../../renderer/apis/commands";
 import type {
   APIEmbed,
+  ApplicationCommandOptionType,
   CommandChoices,
   CommandOptionReturn,
   CommandOptions,
   StringOptions,
 } from "../discord";
-import { ApplicationCommandOptionType } from "../discord";
 
 interface OptionTypeMapping {
   [ApplicationCommandOptionType.String]: string;
@@ -28,7 +28,7 @@ type GetConditionallyOptional<T, Required extends boolean | undefined> = Require
 
 type GetType<T extends CommandOptions> = GetConditionallyOptional<
   T extends StringOptions
-    ? T["choices"] extends CommandChoices
+    ? T["choices"] extends readonly CommandChoices[]
       ? T["choices"][number]["value"]
       : OptionTypeMapping[T["type"]]
     : OptionTypeMapping[T["type"]],

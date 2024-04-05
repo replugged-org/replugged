@@ -1,3 +1,5 @@
+// WARNING: any imported files need to be added to files in package.json
+
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import prompts from "prompts";

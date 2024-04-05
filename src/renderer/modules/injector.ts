@@ -1,4 +1,5 @@
-import type { CommandOptions, RepluggedCommand } from "src/types";
+import type { CommandOptions } from "../../types/discord";
+import type { RepluggedCommand } from "../../types/coremods/commands";
 import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
 import type { GetButtonItem } from "../../types/coremods/message";
 import type { AnyFunction } from "../../types/util";
@@ -101,7 +102,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
       const injectionsForProp = objInjections.injections.get(funcName)!;
 
       for (const b of injectionsForProp.before) {
-        const newArgs = b(args, this);
+        const newArgs = b.call(this, args, this);
         if (Array.isArray(newArgs)) {
           args = newArgs;
         }
@@ -113,7 +114,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
         res = originalFunc.apply(this, args);
       } else {
         for (const i of injectionsForProp.instead) {
-          const newResult = i(args, originalFunc, this);
+          const newResult = i.call(this, args, originalFunc, this);
           if (newResult !== void 0) {
             res = newResult;
           }
@@ -121,7 +122,7 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
       }
 
       for (const a of injectionsForProp.after) {
-        const newResult = a(args, res, this);
+        const newResult = a.call(this, args, res, this);
         if (newResult !== void 0) {
           res = newResult;
         }

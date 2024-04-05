@@ -1,4 +1,4 @@
-import type { Channel, Guild } from "discord-types/general";
+import type { Channel, Guild, User } from "discord-types/general";
 import type {
   AnyRepluggedCommand,
   CommandOptionReturn,
@@ -10,18 +10,31 @@ import type {
   RepluggedCommandResult,
   RepluggedCommandSection,
 } from "../../types";
+// eslint-disable-next-line no-duplicate-imports
 import { ApplicationCommandOptionType } from "../../types";
 import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
-import { getByStoreName } from "../modules/webpack";
+import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
+
+let RepluggedUser: User | undefined;
 
 interface CommandsAndSection {
   section: RepluggedCommandSection;
   commands: Map<string, AnyRepluggedCommand>;
 }
+
+void waitForModule<typeof User>(filters.bySource(".isStaffPersonal=")).then((User) => {
+  RepluggedUser = new User({
+    avatar: "replugged",
+    id: "replugged",
+    bot: true,
+    username: "Replugged",
+    system: true,
+  });
+});
 
 export const commandAndSections = new Map<string, CommandsAndSection>();
 
@@ -43,7 +56,7 @@ export class CommandInteraction<T extends CommandOptionReturn> {
           channelId: string,
           optionName: string,
           draftType: 0,
-        ) => { uploadedFilename?: string; item?: { file: File } };
+        ) => { uploadedFilename?: string; item?: { file: File } } | undefined;
       }
     >("UploadAttachmentStore")!;
     this.options = props.options;
@@ -91,11 +104,6 @@ async function executeCommand<T extends CommandOptions>(
       loggingName: "Replugged",
     });
 
-    Object.assign(loadingMessage.author, {
-      username: "Replugged",
-      avatar: "replugged",
-    });
-
     Object.assign(loadingMessage, {
       flags: constants.MessageFlags.EPHEMERAL + constants.MessageFlags.LOADING, // adding loading too
       state: "SENDING", // Keep it a little faded
@@ -112,6 +120,7 @@ async function executeCommand<T extends CommandOptions>(
         name: command.displayName,
       },
       type: 20,
+      author: RepluggedUser ?? loadingMessage.author,
     });
     messages.receiveMessage(currentChannelId, loadingMessage, true);
     const interaction = new CommandInteraction({ options: args, ...currentInfo });
@@ -135,11 +144,6 @@ async function executeCommand<T extends CommandOptions>(
         loggingName: "Replugged",
       });
 
-      Object.assign(botMessage.author, {
-        username: "Replugged",
-        avatar: "replugged",
-      });
-
       Object.assign(botMessage, {
         interaction: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -154,23 +158,18 @@ async function executeCommand<T extends CommandOptions>(
           name: command.displayName,
         },
         type: 20,
+        author: RepluggedUser ?? botMessage.author,
       });
       messages.receiveMessage(currentChannelId, botMessage, true);
     }
   } catch (error) {
     logger.error(error);
     const currentChannelId = currentInfo.channel.id;
-    const botMessage = messages.createBotMessage?.({
+    const botMessage = messages.createBotMessage({
       channelId: currentChannelId,
       content: i18n.Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
       embeds: [],
       loggingName: "Replugged",
-    });
-    if (!botMessage) return;
-
-    Object.assign(botMessage.author, {
-      username: "Replugged",
-      avatar: "replugged",
     });
 
     Object.assign(botMessage, {
@@ -187,9 +186,10 @@ async function executeCommand<T extends CommandOptions>(
         name: command.displayName,
       },
       type: 20,
+      author: RepluggedUser ?? botMessage.author,
     });
 
-    messages?.receiveMessage?.(currentChannelId, botMessage, true);
+    messages.receiveMessage(currentChannelId, botMessage, true);
   }
 }
 
@@ -222,14 +222,13 @@ export class CommandManager {
     command.id ??= command.name;
 
     command.execute ??= (args, currentInfo) => {
-      void executeCommand(command.executor, args ?? [], currentInfo ?? {}, command);
+      void executeCommand(command.executor, args, currentInfo, command);
     };
 
     command.options?.map((option) => {
       option.serverLocalizedName ??= option.displayName;
       option.displayName ??= option.name;
       option.displayDescription ??= option.description;
-
       return option;
     });
 
@@ -246,6 +245,6 @@ export class CommandManager {
    * Code to unregister all slash commands registered with this class
    */
   public unregisterAllCommands(): void {
-    for (const unregister of this.#unregister) unregister?.();
+    for (const unregister of this.#unregister) unregister();
   }
 }

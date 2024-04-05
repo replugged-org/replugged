@@ -371,6 +371,12 @@ export interface MessageActions {
   ) => Promise<unknown | void>;
   sendBotMessage: (channelId: string, content: string, messageName?: string) => void;
   sendClydeError: (channelId: string, code?: number) => void;
+  sendClydeProfileOverride: (
+    channelId: string,
+    clydeProfileURL: string,
+    analyticsTriggeredFrom?: string,
+    suggestedInvite?: InviteSuggestion,
+  ) => Promise<unknown | void>;
   sendGreetMessage: (
     channelId: string,
     stickerId: string,

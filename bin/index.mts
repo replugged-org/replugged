@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+// WARNING: any imported files need to be added to files in package.json
+
 import asar from "@electron/asar";
 import {
   copyFileSync,
@@ -566,13 +569,13 @@ const { argv } = yargs(hideBin(process.argv))
         if (argv.all && isMonoRepo) return bundleAddons(buildPlugin, "plugins");
         else {
           const addon = isMonoRepo ? await selectAddon("plugins") : undefined;
-          bundleAddon(buildPlugin, addon?.name);
+          bundleAddon(buildPlugin, addon?.name, "plugins");
         }
       } else if (argv.addon === "theme") {
         if (argv.all && isMonoRepo) return bundleAddons(buildTheme, "themes");
         else {
           const addon = isMonoRepo ? await selectAddon("themes") : undefined;
-          bundleAddon(buildTheme, addon?.name);
+          bundleAddon(buildTheme, addon?.name, "themes");
         }
       } else {
         console.log("Invalid addon type.");

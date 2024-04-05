@@ -17,6 +17,7 @@ interface ModalRootProps extends Omit<React.ComponentPropsWithoutRef<"div">, "ch
   fullscreenOnMobile?: boolean;
   hideShadow?: boolean;
   onAnimationEnd?(): string;
+  returnRef?: React.Ref<unknown>;
 }
 
 interface ModalHeaderProps {
