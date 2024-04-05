@@ -77,8 +77,8 @@ export async function start(): Promise<void> {
     ErrorScreen.prototype,
     "render",
     (_args, res: React.ReactElement, instance: ErrorScreenInstance): void => {
-      startMainRecovery();
       if (generalSettings.get("automaticRecover")) {
+        startMainRecovery();
         instance.setState({ error: null, info: null });
       }
       const children = res.props?.action?.props?.children;
@@ -96,6 +96,7 @@ export async function start(): Promise<void> {
           <Button
             className={`recovery-button`}
             onClick={() => {
+              startMainRecovery();
               instance.setState({ error: null, info: null });
             }}>
             Recover Discord
