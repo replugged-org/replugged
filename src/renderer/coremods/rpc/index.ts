@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { Injector, Logger } from "@replugged";
-import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
+import { Injector } from "@replugged";
+import { filters, waitForModule, waitForProps } from "src/renderer/modules/webpack";
 import { Jsonifiable } from "type-fest";
 
 const injector = new Injector();
-
-const logger = Logger.coremod("RPC");
 
 type Socket = Record<string, unknown> & {
   authorization: Record<string, unknown> & {
@@ -40,16 +38,11 @@ type RPCMod = { commands: Commands };
 let commands: Commands = {};
 
 async function injectRpc(): Promise<void> {
-  const rpcValidatorMod = await waitForModule<
-    Record<string, (socket: Socket, client_id: string, origin: string) => Promise<void>>
-  >(filters.bySource("Invalid Client ID"));
-  const validatorFunctionKey = getFunctionKeyBySource(rpcValidatorMod, "Invalid Client ID");
-  if (!validatorFunctionKey) {
-    logger.error("Failed to find RPC validator function.");
-    return;
-  }
+  const rpcValidatorMod = await waitForProps<{
+    fetchApplicationsRPC: (socket: Socket, client_id: string, origin: string) => Promise<void>;
+  }>("fetchApplicationsRPC");
 
-  injector.instead(rpcValidatorMod, validatorFunctionKey, (args, fn) => {
+  injector.instead(rpcValidatorMod, "fetchApplicationsRPC", (args, fn) => {
     const [, clientId, origin] = args;
     const isRepluggedClient = clientId.startsWith("REPLUGGED-");
 

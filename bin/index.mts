@@ -12,6 +12,7 @@ import {
   rmSync,
   writeFileSync,
 } from "fs";
+import { cwd } from "process";
 import esbuild from "esbuild";
 import path from "path";
 import updateNotifier from "update-notifier";
@@ -39,6 +40,17 @@ export const directory = process.cwd();
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
+let extraESBuildConfig = new Promise<(current: esbuild.BuildOptions) => esbuild.BuildOptions>(
+  (resolve) => resolve((v) => v),
+);
+
+if (existsSync("./esbuild.extra.mjs")) {
+  extraESBuildConfig = new Promise((resolve) => {
+    import(path.join(cwd(), "esbuild.extra.mjs")).then((v) => {
+      resolve(v.default);
+    });
+  });
+}
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
   " → ",
@@ -382,13 +394,17 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
 
+  const overwrites = await extraESBuildConfig;
+
   if ("renderer" in manifest) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: [path.join(folderPath, manifest.renderer)],
-        outfile: `${distPath}/renderer.js`,
-      }),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [path.join(folderPath, manifest.renderer)],
+          outfile: `${distPath}/renderer.js`,
+        }),
+      ),
     );
 
     manifest.renderer = "renderer.js";
@@ -396,11 +412,13 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
 
   if ("plaintextPatches" in manifest) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
-        outfile: `${distPath}/plaintextPatches.js`,
-      }),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
+          outfile: `${distPath}/plaintextPatches.js`,
+        }),
+      ),
     );
 
     manifest.plaintextPatches = "plaintextPatches.js";
@@ -464,13 +482,17 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
 
+  const overwrites = await extraESBuildConfig;
+
   if (main) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: [main],
-        outfile: `${distPath}/main.css`,
-      }),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [main],
+          outfile: `${distPath}/main.css`,
+        }),
+      ),
     );
 
     manifest.main = "main.css";
@@ -478,11 +500,13 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (splash) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: [splash],
-        outfile: `${distPath}/splash.css`,
-      }),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [splash],
+          outfile: `${distPath}/splash.css`,
+        }),
+      ),
     );
 
     manifest.plaintextPatches = "splash.css";
@@ -569,13 +593,13 @@ const { argv } = yargs(hideBin(process.argv))
         if (argv.all && isMonoRepo) return bundleAddons(buildPlugin, "plugins");
         else {
           const addon = isMonoRepo ? await selectAddon("plugins") : undefined;
-          bundleAddon(buildPlugin, addon?.name);
+          bundleAddon(buildPlugin, addon?.name, "plugins");
         }
       } else if (argv.addon === "theme") {
         if (argv.all && isMonoRepo) return bundleAddons(buildTheme, "themes");
         else {
           const addon = isMonoRepo ? await selectAddon("themes") : undefined;
-          bundleAddon(buildTheme, addon?.name);
+          bundleAddon(buildTheme, addon?.name, "themes");
         }
       } else {
         console.log("Invalid addon type.");

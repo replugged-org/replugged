@@ -1,8 +1,6 @@
 import { Messages } from "@common/i18n";
 import { Text } from "@components";
 import { Injector } from "@replugged";
-import { filters, waitForModule } from "src/renderer/modules/webpack";
-import type { Section as SectionType } from "src/types/coremods/settings";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
@@ -10,32 +8,15 @@ const injector = new Injector();
 
 export { insertSections };
 
-interface VersionMod {
-  Z: () => SectionType[];
-}
-async function injectVersionInfo(): Promise<void> {
-  const mod = await waitForModule<VersionMod>(filters.bySource("().versionHash"), { raw: true });
-
-  injector.after(mod.exports, "Z", (_, sections: SectionType[]) => {
-    const lastSection = sections.at(-1)!;
-    const element = lastSection.element?.({});
-    if (!element) return;
-    element.props.children.push(
-      <Text
-        variant="text-xs/normal"
-        color="text-muted"
-        tag="span"
-        style={{ textTransform: "none" }}>
-        {Messages.REPLUGGED_VERSION.format({ version: window.RepluggedNative.getVersion() })}
-      </Text>,
-    );
-    lastSection.element = () => element;
-  });
+export function VersionInfo(): React.ReactElement {
+  return (
+    <Text variant="text-xs/normal" color="text-muted" tag="span" style={{ textTransform: "none" }}>
+      {Messages.REPLUGGED_VERSION.format({ version: window.RepluggedNative.getVersion() })}
+    </Text>
+  );
 }
 
 export function start(): void {
-  void injectVersionInfo();
-
   settingsTools.addAfter("Billing", [
     Divider(),
     Header("Replugged"),

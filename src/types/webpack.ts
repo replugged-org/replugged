@@ -15,8 +15,10 @@ export interface RawModule<T = unknown> {
   exports: T;
 }
 
+export type WebpackRawModules = Record<string | number, RawModule>;
+
 export type WebpackRequire = ((e: number) => unknown) & {
-  c: Record<string | number, RawModule>;
+  c?: WebpackRawModules;
   d: (module: unknown, exports: Record<string, () => unknown>) => void;
   m: WebpackChunk;
 };
@@ -27,14 +29,17 @@ export type WebpackModule = (
   wpRequire: WebpackRequire,
 ) => void;
 
-export type WebpackChunk = [Array<symbol | number>, Record<number, WebpackModule>];
+export type WebpackChunk = [
+  Array<symbol | number>,
+  Record<number, WebpackModule>,
+  ((r: WebpackRequire) => unknown)?,
+];
 
 // Do NOT put `WebpackChunk[]` first, otherwise TS
 // prioritizes Array.prototype.push over this custom
 // push method and starts producing errors.
 export type WebpackChunkGlobal = {
-  push(chunk: WebpackChunk): void;
-  push<T extends (r: WebpackRequire) => unknown>(chunk: [...WebpackChunk, T]): ReturnType<T>;
+  push(chunk: WebpackChunk): unknown;
 } & WebpackChunk[];
 
 export type Filter = (module: RawModule) => boolean | ModuleExports;
