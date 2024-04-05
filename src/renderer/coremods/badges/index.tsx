@@ -2,7 +2,7 @@ import React from "@common/react";
 import { Logger } from "@replugged";
 import type { User } from "discord-types/general";
 import { Injector } from "../../modules/injector";
-import { filters, getByProps, waitForModule } from "../../modules/webpack";
+import { getByProps, waitForProps } from "../../modules/webpack";
 import { generalSettings } from "../settings/pages/General";
 import { APIBadges, BadgeSizes, Custom, badgeElements, getBadgeSizeClass } from "./badge";
 
@@ -20,10 +20,12 @@ interface BadgeModArgs {
   size?: BadgeSizes;
 }
 
-type BadgeMod = (args: BadgeModArgs) => React.ReactElement<{
-  children: React.ReactElement[];
-  className: string;
-}>;
+type BadgeMod = (args: BadgeModArgs) =>
+  | React.ReactElement<{
+      children?: React.ReactElement[];
+      className: string;
+    }>
+  | undefined;
 
 interface BadgeCache {
   badges: APIBadges;
@@ -35,17 +37,13 @@ const cache = new Map<string, BadgeCache>();
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
 export async function start(): Promise<void> {
-  const mod = await waitForModule<Record<string, BadgeMod>>(filters.bySource("getBadges()"));
-  const fnPropName = Object.entries(mod).find(([_, v]) => typeof v === "function")?.[0];
-  if (!fnPropName) {
-    throw new Error("Could not find badges function");
-  }
+  const mod = await waitForProps<{ BadgeSizes: BadgeSizes; default: BadgeMod }>("BadgeSizes");
 
   const { containerWithContent } = getByProps<{ containerWithContent: "string" }>(
     "containerWithContent",
   )!;
 
-  injector.after(mod, fnPropName, ([props], res) => {
+  injector.after(mod, "default", ([props], res) => {
     let {
       user: { id },
       shrinkAtCount,
@@ -66,7 +64,7 @@ export async function start(): Promise<void> {
               await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${id}`)
                 .then(async (res) => {
                   const body = (await res.json()) as Record<string, unknown> & {
-                    badges: APIBadges;
+                    badges: APIBadges | undefined;
                   };
 
                   if (res.status === 200 || res.status === 404) {
@@ -95,8 +93,7 @@ export async function start(): Promise<void> {
       if (!badges) {
         return res;
       }
-
-      const children = res?.props?.children;
+      const children = res?.props.children;
       if (!children || !Array.isArray(children)) {
         logger.error("Error injecting badges: res.props.children is not an array", { children });
         return res;
@@ -111,7 +108,7 @@ export async function start(): Promise<void> {
       const sizeClass = getBadgeSizeClass(size);
 
       children.forEach((badge) => {
-        const elem: React.ReactElement = badge.props.children?.();
+        const elem: React.ReactElement | undefined = badge.props.children?.();
         if (elem) {
           elem.props.children.props.className = sizeClass;
           badge.props.children = (props: Record<string, unknown>) => {

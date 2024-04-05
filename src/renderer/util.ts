@@ -15,7 +15,7 @@ export const loadStyleSheet = (path: string): HTMLLinkElement => {
   const el = document.createElement("link");
   el.rel = "stylesheet";
   el.href = `${path}?t=${Date.now()}`;
-  document.head.appendChild(el);
+  document.body.appendChild(el);
 
   return el;
 };
@@ -86,6 +86,7 @@ export function forceUpdateElement(selector: string, all = false): void {
     all ? [...document.querySelectorAll(selector)] : [document.querySelector(selector)]
   ).filter(Boolean) as Element[];
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- May not actually have forceUpdate
   elements.forEach((element) => getOwnerInstance(element)?.forceUpdate());
 }
 
@@ -172,11 +173,11 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
 }
 
 export async function openExternal(url: string): Promise<void> {
-  const mod = getBySource<(url: string) => Promise<void>>('.target="_blank"');
+  const mod = getBySource<(url: string) => Promise<void>>(/href=\w,\w\.target="_blank"/);
   if (!mod) {
     throw new Error("Could not find openExternal");
   }
-  return await mod(url);
+  await mod(url);
 }
 
 type ValType<T> =
@@ -311,7 +312,7 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
   return new Proxy(fallback, handler) as ExtractObjectType<O>;
 }
 
-export type Tree = Record<string, unknown>;
+export type Tree = Record<string, unknown> | null;
 type TreeFilter = string | ((tree: Tree) => boolean);
 
 /**
@@ -331,7 +332,8 @@ export function findInTree(
   if (maxRecursion <= 0) return undefined;
 
   if (typeof searchFilter === "string") {
-    if (Object.prototype.hasOwnProperty.call(tree, searchFilter)) return tree[searchFilter] as Tree;
+    if (Object.prototype.hasOwnProperty.call(tree, searchFilter))
+      return tree?.[searchFilter] as Tree;
   } else if (searchFilter(tree)) {
     return tree;
   }

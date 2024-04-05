@@ -1,6 +1,5 @@
 import type React from "react";
-import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 const Aligns = {
   BOTTOM: "bottom",
@@ -38,7 +37,6 @@ interface BaseTooltipProps {
   allowOverflow?: boolean;
   disableTooltipPointerEvents?: boolean;
   forceOpen?: boolean;
-  hide?: boolean;
   hideOnClick?: boolean;
   clickableOnMobile?: boolean;
   shouldShow?: boolean;
@@ -59,15 +57,11 @@ interface TooltipCustom extends BaseTooltipProps {
   children: React.ReactNode;
 }
 
-type OriginalTooltipType = React.ComponentClass<TooltipFunctionChildren> & TooltipEnums;
+export type OriginalTooltipType = React.ComponentClass<TooltipFunctionChildren> & TooltipEnums;
 
 export type TooltipType = React.FC<TooltipCustom> & TooltipEnums;
 
-const tooltipRgx = /shouldShowTooltip:!1/;
-
-const TooltipMod = await waitForModule(filters.bySource(/tooltipTop,.{0,20}tooltipBottom/)).then(
-  (mod) => getFunctionBySource<OriginalTooltipType>(mod as ObjectExports, tooltipRgx)!,
-);
+const TooltipMod = components.Tooltip;
 
 const Tooltip: TooltipType = (props) => (
   <TooltipMod {...props}>

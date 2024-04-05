@@ -28,13 +28,13 @@ Object.defineProperty(global, "appSettings", {
 class BrowserWindow extends electron.BrowserWindow {
   public constructor(
     opts: electron.BrowserWindowConstructorOptions & {
-      webContents: electron.WebContents;
-      webPreferences: {
+      webContents?: electron.WebContents;
+      webPreferences?: {
         nativeWindowOpen: boolean;
       };
     },
   ) {
-    const originalPreload = opts.webPreferences.preload;
+    const originalPreload = opts.webPreferences?.preload;
 
     if (opts.webContents) {
       // General purpose pop-outs used by Discord
@@ -53,7 +53,7 @@ class BrowserWindow extends electron.BrowserWindow {
         // opts.webPreferences.contextIsolation = false; // shrug
       } else {
         // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
+        opts.webPreferences.preload = join(__dirname, "./preload.js");
       }
     }
 
@@ -125,7 +125,8 @@ electron.app.once("ready", () => {
   // @todo: Whitelist a few domains instead of removing CSP altogether; See #386
   electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     if (!responseHeaders) {
-      return done({});
+      done({});
+      return;
     }
 
     const hasFrameOptions = Object.keys(responseHeaders).find((e) => /x-frame-options/i.test(e));

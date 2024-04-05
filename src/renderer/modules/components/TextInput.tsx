@@ -1,5 +1,5 @@
 import type React from "react";
-import { filters, waitForModule } from "../webpack";
+import components from "../common/components";
 
 interface TextInputProps
   extends Omit<React.ComponentPropsWithoutRef<"input">, "size" | "onChange"> {
@@ -19,8 +19,4 @@ export type TextInputType = React.ComponentClass<TextInputProps> & {
   Sizes: Record<"DEFAULT" | "MINI", string>;
 };
 
-export default await waitForModule<Record<string, TextInputType>>(
-  filters.bySource(".getIsOverFlowing"),
-).then(
-  (mod) => Object.values(mod).find((x) => "defaultProps" in x && "maxLength" in x.defaultProps)!,
-);
+export default components.TextInput;

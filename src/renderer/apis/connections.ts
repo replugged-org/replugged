@@ -12,13 +12,8 @@ class ConnectionsAPI extends EventTarget {
     return this.connections.filter.bind(this.connections);
   }
 
-  public get(type: string): RepluggedConnection {
-    const connections: Record<string, RepluggedConnection> = {};
-    for (const element of this.connections) {
-      connections[element.type] = element;
-    }
-
-    return connections[type];
+  public get(type: string): RepluggedConnection | undefined {
+    return this.connections.find((c) => c.type === type);
   }
 
   public registerConnection(connection: RepluggedConnection): void {

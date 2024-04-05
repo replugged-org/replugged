@@ -1,4 +1,9 @@
-import type { WebpackChunk, WebpackChunkGlobal, WebpackRequire } from "../../../types";
+import type {
+  WebpackChunk,
+  WebpackChunkGlobal,
+  WebpackRawModules,
+  WebpackRequire,
+} from "../../../types";
 
 import { listeners } from "./lazy";
 
@@ -9,7 +14,8 @@ import { patchModuleSource } from "./plaintext-patch";
  * @internal
  * @hidden
  */
-export let wpRequire: WebpackRequire;
+export let wpRequire: WebpackRequire | undefined;
+export let webpackChunks: WebpackRawModules | undefined;
 
 let signalReady: () => void;
 let ready = false;
@@ -38,12 +44,38 @@ export let signalStart: () => void;
  */
 export const waitForStart = new Promise<void>((resolve) => (signalStart = resolve));
 
+const patchedModules = new Set<string>();
+
 /**
  * Original stringified module (without plaintext patches applied) for source searches
  * @internal
  * @hidden
  */
 export const sourceStrings: Record<number, string> = {};
+
+async function patchChunk(chunk: WebpackChunk): Promise<void> {
+  await waitForStart;
+  const modules = chunk[1];
+  for (const id in modules) {
+    if (patchedModules.has(id)) continue;
+    patchedModules.add(id);
+    const originalMod = modules[id];
+    sourceStrings[id] = originalMod.toString();
+    const mod = patchModuleSource(originalMod, id);
+    modules[id] = function (module, exports, require) {
+      mod(module, exports, require);
+
+      for (const [filter, callback] of listeners) {
+        try {
+          if (filter(module)) {
+            callback(module);
+          }
+        } catch {}
+      }
+    };
+    modules[id].toString = () => sourceStrings[id];
+  }
+}
 
 /**
  * Patch the push method of window.webpackChunkdiscord_app
@@ -54,26 +86,12 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
   let original = webpackChunk.push;
 
   async function handlePush(chunk: WebpackChunk): Promise<unknown> {
-    await waitForStart;
-
-    const modules = chunk[1];
-    for (const id in modules) {
-      const originalMod = modules[id];
-      sourceStrings[id] = originalMod.toString();
-      const mod = patchModuleSource(originalMod);
-      modules[id] = function (module, exports, require) {
-        mod(module, exports, require);
-
-        for (const [filter, callback] of listeners) {
-          if (filter(module)) {
-            callback(module);
-          }
-        }
-      };
-    }
-
+    await patchChunk(chunk);
     return original.call(webpackChunk, chunk);
   }
+
+  // https://github.com/Vendicated/Vencord/blob/e4701769a5b8e0a71dba0e26bc311ff6e34eadf7/src/webpack/patchWebpack.ts#L93-L98
+  handlePush.bind = (...args: unknown[]) => original.bind([...args]);
 
   Object.defineProperty(webpackChunk, "push", {
     get: () => handlePush,
@@ -87,24 +105,53 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
  * @param webpackChunk Webpack chunk global
  * @internal
  */
-function loadWebpackModules(webpackChunk: WebpackChunkGlobal): void {
-  wpRequire = webpackChunk.push([[Symbol("replugged")], {}, (r: WebpackRequire) => r]);
+function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
+  chunksGlobal.push([
+    [Symbol("replugged")],
+    {},
+    (r: WebpackRequire | undefined) => {
+      wpRequire = r!;
+      if (wpRequire.c && !webpackChunks) webpackChunks = wpRequire.c;
 
-  wpRequire.d = (module: unknown, exports: Record<string, () => unknown>) => {
-    for (const prop in exports) {
-      if (Object.hasOwnProperty.call(exports, prop) && !Object.hasOwnProperty.call(module, prop)) {
-        Object.defineProperty(module, prop, {
-          enumerable: true,
-          configurable: true,
-          get: () => exports[prop](),
-          set: (value) => (exports[prop] = () => value),
-        });
+      if (r) {
+        r.d = (module: unknown, exports: Record<string, () => unknown>) => {
+          for (const prop in exports) {
+            if (
+              Object.hasOwnProperty.call(exports, prop) &&
+              !Object.hasOwnProperty.call(module, prop)
+            ) {
+              Object.defineProperty(module, prop, {
+                enumerable: true,
+                configurable: true,
+                get: () => exports[prop](),
+                set: (value) => (exports[prop] = () => value),
+              });
+            }
+          }
+        };
+      }
+    },
+  ]);
+
+  // Patch previously loaded chunks
+  if (Array.isArray(chunksGlobal)) {
+    for (const loadedChunk of chunksGlobal) {
+      void patchChunk(loadedChunk);
+    }
+  }
+
+  patchPush(chunksGlobal);
+  signalReady();
+
+  // There is some kind of race condition where chunks are not patched ever, so this should make sure everything gets patched
+  // This is a temporary workaround that should be removed once we figure out the real cause
+  setInterval(() => {
+    if (Array.isArray(chunksGlobal)) {
+      for (const loadedChunk of chunksGlobal) {
+        void patchChunk(loadedChunk);
       }
     }
-  };
-
-  patchPush(webpackChunk);
-  signalReady();
+  }, 1000);
 }
 
 // Intercept the webpack chunk global as soon as Discord creates it
@@ -120,7 +167,11 @@ if (window.webpackChunkdiscord_app) {
   Object.defineProperty(window, "webpackChunkdiscord_app", {
     get: () => webpackChunk,
     set: (v) => {
-      if (!ready && v?.push !== Array.prototype.push) {
+      // Only modify if the global has actually changed
+      // We don't need to check if push is the special webpack push,
+      // because webpack will go over the previously loaded modules
+      // when it sets the custom push method.
+      if (v !== webpackChunk && !ready) {
         loadWebpackModules(v);
       }
       webpackChunk = v;

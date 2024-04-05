@@ -4,6 +4,7 @@
 node_modules
 result
 dist/
+dist-bundle/
 .parcel-cache
 yarn.lock
 package-lock.json
@@ -18,3 +19,5 @@ config.json
 
 /docs
 /*.asar
+/bin.mjs
+/*.d.ts

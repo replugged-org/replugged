@@ -1,5 +1,5 @@
 import type { Filter, GetModuleOptions, RawModule } from "src/types";
-import { wpRequire } from "./patch-load";
+import { webpackChunks, wpRequire } from "./patch-load";
 import { logError } from "./util";
 
 // Export-finding utilities
@@ -13,7 +13,7 @@ import { logError } from "./util";
 export function getExports<T>(m: RawModule): T | undefined {
   if (typeof m.exports === "object" && m.exports) {
     if (Object.keys(m.exports).length === 1) {
-      for (const key of ["Z", "ZP", "default"] as const) {
+      for (const key of ["default", "Z", "ZP"] as const) {
         if (key in m.exports) return (m.exports as Record<typeof key, T>)[key];
       }
     }
@@ -81,13 +81,14 @@ export function getById<T>(id: number, raw?: boolean): T | RawModule<T> | undefi
  * You should not use this function in production unless the ID is dynamically determined.
  */
 export function getById<T>(id: number, raw = false): T | RawModule<T> | undefined {
+  if (!wpRequire) throw new Error("Webpack not initialized");
   // Load the module if not already initialized
-  if (!(id in wpRequire.c)) {
+  if (!webpackChunks || !(id in webpackChunks)) {
     wpRequire(id);
   }
 
   // Get the module from the cache
-  const rawModule: RawModule | undefined = wpRequire.c[id];
+  const rawModule = webpackChunks?.[id];
 
   if (raw) {
     return rawModule as RawModule<T> | undefined;
@@ -151,7 +152,7 @@ export function getModule<T>(
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
   try {
     // Find nothing if webpack hasn't been started yet
-    if (typeof wpRequire?.c === "undefined") return options.all ? [] : undefined;
+    if (typeof webpackChunks === "undefined") return options.all ? [] : undefined;
 
     const wrappedFilter: Filter = (mod) => {
       try {
@@ -163,8 +164,8 @@ export function getModule<T>(
     };
 
     const modules = options.all
-      ? Object.values(wpRequire.c).filter(wrappedFilter)
-      : Object.values(wpRequire.c).find(wrappedFilter);
+      ? Object.values(webpackChunks).filter(wrappedFilter)
+      : Object.values(webpackChunks).find(wrappedFilter);
 
     if (options.raw) {
       return modules as RawModule<T> | Array<RawModule<T>> | undefined;
