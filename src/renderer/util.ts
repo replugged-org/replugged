@@ -183,7 +183,10 @@ type ValType<T> =
   | React.ChangeEvent<HTMLInputElement>
   | (Record<string, unknown> & { value?: T; checked?: T });
 
-type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
+type NestedType<T, P> = P extends
+  | `${infer K}.${infer NestedKey}`
+  | `${infer K}-${infer NestedKey}`
+  | `${infer K}/${infer NestedKey}`
   ? K extends keyof T
     ? NestedType<NonNullable<T[K]>, NestedKey>
     : undefined
@@ -196,8 +199,8 @@ export function useSetting<
   D extends keyof T,
   K extends Extract<keyof T, string>,
   F extends NestedType<T, P> | T[K] | undefined,
-  P extends `${K}.${string}` | K,
-  V extends P extends `${K}.${string}`
+  P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}` | K,
+  V extends P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}`
     ? NonNullable<NestedType<T, P>>
     : P extends D
       ? NonNullable<T[P]>
@@ -249,8 +252,8 @@ export function useSettingArray<
   D extends keyof T,
   K extends Extract<keyof T, string>,
   F extends NestedType<T, P> | T[K] | undefined,
-  P extends `${K}.${string}` | K,
-  V extends P extends `${K}.${string}`
+  P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}` | K,
+  V extends P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}`
     ? NonNullable<NestedType<T, P>>
     : P extends D
       ? NonNullable<T[P]>
