@@ -11,7 +11,7 @@ import { loadCommands, unloadCommands } from "./commands";
 const logger = Logger.api("Commands");
 const injector = new Injector();
 
-type commandState =
+type CommandState =
   | {
       fetchState: { fetching: boolean };
       result: {
@@ -27,8 +27,8 @@ type commandState =
   | undefined;
 
 interface ApplicationCommandIndexStore extends Store {
-  getContextState: (channel: Channel) => commandState;
-  getUserState: () => commandState;
+  getContextState: (channel: Channel) => CommandState;
+  getUserState: () => CommandState;
   query: (
     channel: Channel,
     queryOptions: {
@@ -57,7 +57,7 @@ interface ApplicationCommandIndexStoreMod {
     channel: Channel,
     allowCache: boolean,
     allowFetch: boolean,
-  ) => commandState;
+  ) => CommandState;
   useDiscoveryState: (
     channel: Channel,
     guild: Guild,
@@ -81,8 +81,8 @@ interface ApplicationCommandIndexStoreMod {
         sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
       }
     | undefined;
-  useGuildIndexState: (guildId: string, allowFetch: boolean) => commandState;
-  useUserIndexState: (allowCache: boolean, allowFetch: boolean) => commandState;
+  useGuildIndexState: (guildId: string, allowFetch: boolean) => CommandState;
+  useUserIndexState: (allowCache: boolean, allowFetch: boolean) => CommandState;
   default: ApplicationCommandIndexStore;
 }
 
