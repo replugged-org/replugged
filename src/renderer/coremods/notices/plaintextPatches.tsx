@@ -4,7 +4,7 @@ const coremodStr = "replugged.coremods.coremods.notices";
 
 export default [
   {
-    find: /\)\.content.+?hasNotice/,
+    find: /hasNotice:\w+,sidebarTheme:\w+/,
     replacements: [
       {
         match: /(\w+\.base,children:\[)(.+?}\)),/,
