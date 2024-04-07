@@ -11,35 +11,24 @@ import { loadCommands, unloadCommands } from "./commands";
 const logger = Logger.api("Commands");
 const injector = new Injector();
 
+type commandState =
+  | {
+      fetchState: { fetching: boolean };
+      result: {
+        sectionIdsByBotId: Record<string, string>;
+        sections: Record<
+          string,
+          { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
+        >;
+        version: string;
+      };
+      serverVersion: symbol | string;
+    }
+  | undefined;
+
 interface ApplicationCommandIndexStore extends Store {
-  getContextState: (channel: Channel) =>
-    | {
-        fetchState: { fetching: boolean };
-        result: {
-          sectionIdsByBotId: Record<string, string>;
-          sections: Record<
-            string,
-            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
-          >;
-          version: string;
-        };
-        serverVersion: symbol | string;
-      }
-    | undefined;
-  getUserState: () =>
-    | {
-        fetchState: { fetching: boolean };
-        result: {
-          sectionIdsByBotId: Record<string, string>;
-          sections: Record<
-            string,
-            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
-          >;
-          version: string;
-        };
-        serverVersion: symbol | string;
-      }
-    | undefined;
+  getContextState: (channel: Channel) => commandState;
+  getUserState: () => commandState;
   query: (
     channel: Channel,
     queryOptions: {
@@ -68,20 +57,7 @@ interface ApplicationCommandIndexStoreMod {
     channel: Channel,
     allowCache: boolean,
     allowFetch: boolean,
-  ) =>
-    | {
-        fetchState: { fetching: boolean };
-        result: {
-          sectionIdsByBotId: Record<string, string>;
-          sections: Record<
-            string,
-            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
-          >;
-          version: string;
-        };
-        serverVersion: symbol | string;
-      }
-    | undefined;
+  ) => commandState;
   useDiscoveryState: (
     channel: Channel,
     guild: Guild,
@@ -105,40 +81,8 @@ interface ApplicationCommandIndexStoreMod {
         sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
       }
     | undefined;
-  useGuildIndexState: (
-    guildId: string,
-    allowFetch: boolean,
-  ) =>
-    | {
-        fetchState: { fetching: boolean };
-        result: {
-          sectionIdsByBotId: Record<string, string>;
-          sections: Record<
-            string,
-            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
-          >;
-          version: string;
-        };
-        serverVersion: symbol | string;
-      }
-    | undefined;
-  useUserIndexState: (
-    allowCache: boolean,
-    allowFetch: boolean,
-  ) =>
-    | {
-        fetchState: { fetching: boolean };
-        result: {
-          sectionIdsByBotId: Record<string, string>;
-          sections: Record<
-            string,
-            { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
-          >;
-          version: string;
-        };
-        serverVersion: symbol | string;
-      }
-    | undefined;
+  useGuildIndexState: (guildId: string, allowFetch: boolean) => commandState;
+  useUserIndexState: (allowCache: boolean, allowFetch: boolean) => commandState;
   default: ApplicationCommandIndexStore;
 }
 
