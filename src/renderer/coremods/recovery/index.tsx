@@ -1,4 +1,4 @@
-import { fluxDispatcher, parser } from "@common";
+import { fluxDispatcher, parser, toast } from "@common";
 import { Button } from "@components";
 import { Injector, Logger } from "@replugged";
 import { filters, getByProps, waitForModule } from "@webpack";
@@ -11,7 +11,12 @@ const injector = new Injector();
 
 // const URL_REGEX_FIND = /https:\/\/\S+/g;
 const PLUGIN_ID_FIND_REGEX = /plugin\/(.*?)\.asar/;
+const FIND_ERROR_NUMBER = /invariant=(\d+)&/;
+const ReactErrorList =
+  "https://raw.githubusercontent.com/facebook/react/17.0.2/scripts/error-codes/codes.json";
 const logger = Logger.coremod("recovery");
+const ReactErrors: Array<string> = [];
+
 interface ErrorComponentState {
   error: {
     message: string;
@@ -72,7 +77,7 @@ export async function start(): Promise<void> {
   const ErrorScreen = await waitForModule<AnyFunction>(
     filters.bySource(".AnalyticEvents.APP_CRASHED"),
   );
-
+  void startErrors();
   injector.after(
     ErrorScreen.prototype,
     "render",
@@ -83,14 +88,18 @@ export async function start(): Promise<void> {
       }
       const children = res.props?.action?.props?.children;
       if (!children || !instance.state?.error) return;
-
+      const stackError = instance.state.error.stack;
       // I don't think this would fail..?
-      const pluginId = instance.state.error.stack.match(PLUGIN_ID_FIND_REGEX);
+      const pluginId = stackError.match(PLUGIN_ID_FIND_REGEX);
       if (pluginId) {
         void disable(pluginId[1]);
+        toast.toast(`Plugin: ${pluginId[1]} was disabled!`, toast.Kind.SUCCESS);
       }
       // const Link = instance.state.error.stack.match(URL_REGEX_FIND);
       // this'll be used once I make a react decoder for errors. >:(
+      // nevermind this idea is better.
+
+      const invar = stackError.match(FIND_ERROR_NUMBER);
       children.push(
         <>
           <Button
@@ -102,7 +111,9 @@ export async function start(): Promise<void> {
             Recover Discord
           </Button>
           <div className={"recovery-parse"}>
-            {parser.parse(`\`\`\`${instance.state.error.stack}\`\`\``)}
+            {parser.parse(
+              `\`\`\`${invar ? `${ReactErrors[invar[1] as any]  }\n\n${  stackError}` : stackError}\`\`\``,
+            )}
           </div>
         </>,
       );
@@ -112,4 +123,14 @@ export async function start(): Promise<void> {
 
 export function stop(): void {
   injector.uninjectAll();
+}
+
+export async function startErrors() {
+  return await fetch(ReactErrorList)
+    .then((json) => json.json())
+    .then((data) => {
+      for (const key in data) {
+        ReactErrors.push(data[key]);
+      }
+    });
 }
