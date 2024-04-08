@@ -102,6 +102,9 @@ const contexts = await Promise.all([
     target: `chrome${CHROME_VERSION}`,
     outfile: `${distDir}/renderer.js`,
     format: "esm",
+    loader: {
+      ".png": "dataurl",
+    },
   }),
 ]);
 await Promise.all(
