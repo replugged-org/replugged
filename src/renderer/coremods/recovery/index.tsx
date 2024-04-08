@@ -15,7 +15,7 @@ const FIND_ERROR_NUMBER = /invariant=(\d+)&/;
 const ReactErrorList =
   "https://raw.githubusercontent.com/facebook/react/17.0.2/scripts/error-codes/codes.json";
 const logger = Logger.coremod("recovery");
-const ReactErrors: Array<string> = [];
+let ReactErrors: Record<string, string> | undefined;
 
 interface ErrorComponentState {
   error: {
@@ -97,9 +97,10 @@ export async function start(): Promise<void> {
       }
       // const Link = instance.state.error.stack.match(URL_REGEX_FIND);
       // this'll be used once I make a react decoder for errors. >:(
-      // nevermind this idea is better.
+      // never mind this idea is better.
 
       const invar = stackError.match(FIND_ERROR_NUMBER);
+
       children.push(
         <>
           <Button
@@ -111,9 +112,7 @@ export async function start(): Promise<void> {
             Recover Discord
           </Button>
           <div className={"recovery-parse"}>
-            {parser.parse(
-              `\`\`\`${invar ? `${ReactErrors[invar[1] as any]  }\n\n${  stackError}` : stackError}\`\`\``,
-            )}
+            {parser.parse(`\`\`\`${invar ? ReactErrors?.[invar[1]] : ""}\n\n${stackError}\`\`\``)}
           </div>
         </>,
       );
@@ -125,12 +124,6 @@ export function stop(): void {
   injector.uninjectAll();
 }
 
-export async function startErrors() {
-  return await fetch(ReactErrorList)
-    .then((json) => json.json())
-    .then((data) => {
-      for (const key in data) {
-        ReactErrors.push(data[key]);
-      }
-    });
+export async function startErrors(): Promise<void> {
+  ReactErrors = await fetch(ReactErrorList).then((response) => response.json());
 }
