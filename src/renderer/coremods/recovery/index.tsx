@@ -13,7 +13,7 @@ const injector = new Injector();
 const PLUGIN_ID_FIND_REGEX = /plugin\/(.*?)\.asar/;
 const FIND_ERROR_NUMBER = /invariant=(\d+)&/;
 const ReactErrorList =
-  "https://raw.githubusercontent.com/facebook/react/17.0.2/scripts/error-codes/codes.json";
+  "https://raw.githubusercontent.com/facebook/react/v18.2.0/scripts/error-codes/codes.json";
 const logger = Logger.coremod("recovery");
 let ReactErrors: Record<string, string> | undefined;
 
@@ -89,7 +89,6 @@ export async function start(): Promise<void> {
       const children = res.props?.action?.props?.children;
       if (!children || !instance.state?.error) return;
       const stackError = instance.state.error.stack;
-      // I don't think this would fail..?
       const pluginId = stackError.match(PLUGIN_ID_FIND_REGEX);
       if (pluginId) {
         void disable(pluginId[1]);
