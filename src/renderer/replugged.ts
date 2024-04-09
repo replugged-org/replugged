@@ -16,6 +16,9 @@ export { Injector } from "./modules/injector";
 export * as logger from "./modules/logger";
 export { Logger } from "./modules/logger";
 
+export * as notification from "./apis/notification";
+export { NotificationAPI } from "./apis/notification";
+
 export * as webpack from "./modules/webpack";
 export * as common from "./modules/common";
 export * as components from "./modules/components";

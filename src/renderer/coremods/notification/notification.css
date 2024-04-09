@@ -1,0 +1,187 @@
+/*======== CSS Variables ========*/
+.theme-dark {
+  --replugged-notification-box-shadow: rgba(0, 0, 0, 0.2);
+  --replugged-notification-border: rgba(28, 36, 43, 0.6);
+}
+.theme-light {
+  --replugged-notification-box-shadow: rgba(255, 255, 255, 0.1);
+  --replugged-notification-border: rgba(199, 199, 199, 0.06);
+}
+/*======== Toast Styling ========*/
+
+.replugged-notification-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 999;
+}
+.replugged-notification {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--replugged-notification-border);
+  box-shadow: 0 8px 16px 0 var(--replugged-notification-box-shadow);
+  border-radius: 8px;
+  max-width: 600px;
+  min-width: 223px;
+  width: 320px;
+  position: relative;
+  animation:
+    slide-in 0.5s ease,
+    shake 1.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.replugged-notification .header {
+  display: flex;
+  color: var(--header-primary);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+  background-color: var(--background-primary);
+  border-radius: 8px 8px 0 0;
+  padding: 12px 20px;
+  justify-content: center;
+  align-items: center; /* Center items vertically */
+}
+
+.replugged-notification .header span:has(.icon) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  margin-top: 3px;
+}
+
+.replugged-notification .header .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.replugged-notification .header .icon img {
+  width: 18px;
+  height: 18px;
+}
+
+.replugged-notification .header .dismiss {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.replugged-notification .contents {
+  display: flex;
+  border-radius: 0 0 8px 8px;
+  text-align: center;
+  justify-content: flex-end;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.replugged-notification .contents .inner {
+  color: var(--text-normal);
+  font-size: 14px;
+  line-height: 1.4;
+  background-color: var(--background-tertiary);
+  border-bottom: 1px solid solid var(--replugged-notification-border);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 6px;
+}
+
+.replugged-notification .buttons {
+  display: flex;
+  flex-wrap: wrap;
+  width: 95%;
+  padding: 10px;
+}
+
+.replugged-notification .buttons button {
+  box-sizing: border-box;
+  min-width: calc(50% - 10px);
+  padding: 8px;
+  margin: 8px 4px;
+  flex: 1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.replugged-notification .buttons button[class*="lookGhost"] {
+  opacity: 0.8;
+  transition:
+    background-color 0.17s ease,
+    color 0.17s ease,
+    opacity 0.17s ease,
+    transform 0.17s ease;
+}
+
+.replugged-notification .buttons button[class*="lookGhost"]:hover {
+  opacity: 1;
+}
+
+.replugged-notification.leaving {
+  animation: slide-out 0.7s ease-out;
+}
+
+/*========= Header Types =========*/
+.replugged-notification.info .icon {
+  color: var(--blurple);
+}
+
+.replugged-notification.warning .icon {
+  color: var(--info-warning-foreground);
+}
+
+.replugged-notification.danger .icon {
+  color: var(--info-danger-foreground);
+}
+
+.replugged-notification.success .icon {
+  color: var(--info-positive-foreground);
+}
+
+/*========== Animations ==========*/
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    margin-right: -500px;
+    opacity: 0;
+  }
+}
+
+@keyframes slide-out {
+  to {
+    margin-right: -500px;
+    opacity: 0;
+  }
+}

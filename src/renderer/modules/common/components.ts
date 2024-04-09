@@ -1,4 +1,4 @@
-import type { LoaderType } from "@components";
+import type { LoaderType, ProgressType } from "@components";
 import type { ClickableCompType } from "@components/Clickable";
 import type { OriginalTextType } from "@components/Text";
 import type { ButtonType } from "../components/ButtonItem";
@@ -47,6 +47,7 @@ interface DiscordComponents {
   Select: SelectCompType;
   showToast: ShowToast;
   Slider: SliderCompType;
+  Progress: ProgressType;
   Spinner: LoaderType;
   Switch: SwitchType;
   Text: OriginalTextType;
