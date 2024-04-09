@@ -264,6 +264,31 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
     },
   );
 }
+async function injectCommandCache(): Promise<void> {
+  const mod = await waitForProps<{
+    getCachedCommand: (channel: Channel, id: string) => Promise<void>;
+  }>("getCachedCommand");
+  injector.after(
+    mod,
+    "getCachedCommand",
+    ([, id], res: { application?: RepluggedCommandSection; command?: AnyRepluggedCommand }) => {
+      const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
+        (commandAndSection) => commandAndSection.commands.size,
+      );
+      const rpCached = commandAndSectionsArray
+        .map((commandAndSection) => ({
+          application: commandAndSection.section,
+          command: Array.from(commandAndSection.commands.values()).find(
+            (command) => command.id === id,
+          ),
+        }))
+        .find((applicationAndCommand) => applicationAndCommand.command);
+      res.application ??= rpCached?.application;
+      res.command ??= rpCached?.command;
+      return res;
+    },
+  );
+}
 async function injectProfileFetch(): Promise<void> {
   const mod = await waitForProps<{
     fetchProfile: (id: string) => Promise<void>;
@@ -279,6 +304,7 @@ export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
   await injectRepluggedSectionIcon();
   await injectApplicationCommandIndexStore();
+  await injectCommandCache();
   await injectProfileFetch();
   loadCommands();
 }
