@@ -7,7 +7,7 @@ import { AnyFunction } from "../../../types";
 
 import { generalSettings } from "../settings/pages";
 import { disable } from "../../managers/plugins";
-import {findInTree, Tree} from "../../util";
+import { Tree, findInTree } from "../../util";
 const injector = new Injector();
 
 // const URL_REGEX_FIND = /https:\/\/\S+/g;
@@ -74,7 +74,7 @@ function startMainRecovery(): void {
   log("Ended main recovery.");
 }
 interface TreeNode {
-  children: Array<React.ReactElement>;
+  children: React.ReactElement[];
 }
 export async function start(): Promise<void> {
   const ErrorScreen = await waitForModule<AnyFunction>(
@@ -89,9 +89,13 @@ export async function start(): Promise<void> {
         startMainRecovery();
         instance.setState({ error: null, info: null });
       }
-      
-      const { props: {children} }: { props: TreeNode } = findInTree(res as unknown as Tree, x => Boolean(x?.action)) as { props: TreeNode };
-      if (!children || !instance.state?.error) return;
+
+      const {
+        props: { children },
+      }: { props: TreeNode } = findInTree(res as unknown as Tree, (x) => Boolean(x?.action)) as {
+        props: TreeNode;
+      };
+      if (!instance.state?.error) return;
       const stackError = instance.state.error.stack;
       const pluginId = stackError.match(PLUGIN_ID_FIND_REGEX);
       if (pluginId) {
