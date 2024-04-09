@@ -32,8 +32,8 @@ const findPathFromPaths = async (
   platform: DiscordPlatform,
   paths: string[],
 ): Promise<string | null> => {
-  let discordPath = paths.find((path) => existsSync(path));
-  if (!discordPath) {
+  let discordPaths = paths.filter((path) => existsSync(path));
+  if (discordPaths.length === 0) {
     const readlineInterface = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -46,7 +46,7 @@ const findPathFromPaths = async (
       "\n",
     );
     console.log(`Please provide the path of your ${PlatformNames[platform]} installation folder`);
-    discordPath = await askPath();
+    let discordPath = await askPath();
     readlineInterface.close();
 
     if (!existsSync(discordPath)) {
@@ -59,8 +59,16 @@ const findPathFromPaths = async (
     }
   }
 
-  const path = findAppAsarInDir(discordPath);
-  return path;
+  let path: string | null = null;
+  for (let discordPath of discordPaths) {
+    path = findAppAsarInDir(discordPath);
+    if (path !== null) return path;
+    else
+      console.log(
+        `Potential Discord directory ${discordPath} exists but does not contain a valid Discord installation. This may be remnants of an old installation, checking other potential locations...`,
+      );
+  }
+  return null;
 };
 
 const findAppDir = async (platform: DiscordPlatform): Promise<string> => {

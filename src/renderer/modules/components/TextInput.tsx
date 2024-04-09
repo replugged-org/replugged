@@ -1,5 +1,5 @@
 import type React from "react";
-import { waitForProps } from "../webpack";
+import components from "../common/components";
 
 interface TextInputProps
   extends Omit<React.ComponentPropsWithoutRef<"input">, "size" | "onChange"> {
@@ -19,6 +19,4 @@ export type TextInputType = React.ComponentClass<TextInputProps> & {
   Sizes: Record<"DEFAULT" | "MINI", string>;
 };
 
-export default await waitForProps<Record<"TextInput", TextInputType>>("TextInput").then(
-  (x) => x.TextInput,
-);
+export default components.TextInput;

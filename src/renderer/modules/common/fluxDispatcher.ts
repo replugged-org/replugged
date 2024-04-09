@@ -116,15 +116,27 @@ declare class ActionHandlersGraph {
   private _validateDependencies: (token: string) => void;
 }
 
+interface Breadcrumb {
+  category?: string;
+  data?: Record<string, unknown>;
+  message?: string;
+}
+
+interface SentryUtils {
+  addBreacrumb: (breadcrumb: Breadcrumb) => void;
+}
+
 export interface FluxDispatcher {
   _actionHandlers: ActionHandlersGraph;
   _currentDispatchActionType: string | null;
   _defaultBand: DispatchBand;
   _interceptors: Array<(...rest: unknown[]) => unknown>;
   _processingWaitQueue: boolean;
+  _sentryUtils: SentryUtils | null | undefined;
   _subscriptions: Record<string, Set<ActionHandler>>;
   _waitQueue: Array<(...rest: unknown[]) => unknown>;
   actionLogger: ActionLogger;
+  functionCache: Record<string, (action: Action) => void>;
 
   _dispatchWithDevtools: (action: Action) => void;
   _dispatchWithLogging: (action: Action) => void;

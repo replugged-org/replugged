@@ -22,7 +22,7 @@ import WebSocket from "ws";
 import { release } from "./release.mjs";
 import { logBuildPlugin } from "../src/util.mjs";
 import { sassPlugin } from "esbuild-sass-plugin";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 import { AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
 
 interface BaseArgs {
@@ -39,6 +39,20 @@ export const directory = process.cwd();
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
+
+const extraESBuildPath = path.join(directory, "esbuild.extra.mjs");
+const extraESBuildConfig = new Promise<(config: esbuild.BuildOptions) => esbuild.BuildOptions>(
+  (resolve) => {
+    if (existsSync(extraESBuildPath))
+      resolve(
+        import(pathToFileURL(extraESBuildPath).href).then((m) => m.default) as Promise<
+          (config: esbuild.BuildOptions) => esbuild.BuildOptions
+        >,
+      );
+
+    resolve((config: esbuild.BuildOptions) => config);
+  },
+);
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
   " → ",
@@ -382,13 +396,17 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
 
+  const overwrites = await extraESBuildConfig;
+
   if ("renderer" in manifest) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: [path.join(folderPath, manifest.renderer)],
-        outfile: `${distPath}/renderer.js`,
-      }),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [path.join(folderPath, manifest.renderer)],
+          outfile: `${distPath}/renderer.js`,
+        }),
+      ),
     );
 
     manifest.renderer = "renderer.js";
@@ -396,11 +414,13 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
 
   if ("plaintextPatches" in manifest) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
-        outfile: `${distPath}/plaintextPatches.js`,
-      }),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
+          outfile: `${distPath}/plaintextPatches.js`,
+        }),
+      ),
     );
 
     manifest.plaintextPatches = "plaintextPatches.js";
@@ -464,13 +484,17 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
 
+  const overwrites = await extraESBuildConfig;
+
   if (main) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: [main],
-        outfile: `${distPath}/main.css`,
-      }),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [main],
+          outfile: `${distPath}/main.css`,
+        }),
+      ),
     );
 
     manifest.main = "main.css";
@@ -478,11 +502,13 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (splash) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: [splash],
-        outfile: `${distPath}/splash.css`,
-      }),
+      esbuild.context(
+        overwrites({
+          ...common,
+          entryPoints: [splash],
+          outfile: `${distPath}/splash.css`,
+        }),
+      ),
     );
 
     manifest.plaintextPatches = "splash.css";

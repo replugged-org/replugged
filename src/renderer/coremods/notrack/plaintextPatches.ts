@@ -14,18 +14,31 @@ export default [
     ],
   },
   {
-    find: "TRACKING_URL:",
+    find: "window.DiscordSentry",
     replacements: [
       {
-        replace: "()=>{}",
+        match: /null!=window.DiscordSentry/g,
+        replace: "false",
       },
     ],
   },
   {
-    find: /this\.metrics\.push\(.\);/,
+    find: "crashReporter.updateCrashReporter",
+    replacements: [{ match: /updateCrashReporter\(\w+\){/, replace: "$&return;" }],
+  },
+  {
+    find: "TRACKING_URL:",
     replacements: [
       {
-        match: /this\.metrics\.push\(.\);/,
+        replace: "",
+      },
+    ],
+  },
+  {
+    find: /this\._metrics\.push\(.\);/,
+    replacements: [
+      {
+        match: /this\._metrics\.push\(.\);/,
         replace: "",
       },
     ],

@@ -4,10 +4,10 @@ const coremodStr = "replugged.coremods.coremods.notices";
 
 export default [
   {
-    find: /\)\.content.+?hasNotice/,
+    find: /hasNotice:\w+,sidebarTheme:\w+/,
     replacements: [
       {
-        match: /(\(\)\.base,children:\[)(.+?}\)),/,
+        match: /(\w+\.base,children:\[)(.+?}\)),/,
         replace: (_, prefix, noticeWrapper) =>
           `${prefix}${coremodStr}.AnnouncementContainer({originalRes:${noticeWrapper}}),`,
       },

@@ -1,5 +1,5 @@
-import { Injector, Logger } from "@replugged";
-import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
+import { Injector } from "@replugged";
+import { filters, waitForModule } from "src/renderer/modules/webpack";
 import { ObjectExports } from "src/types";
 import { registerRPCCommand } from "../rpc";
 import {
@@ -18,7 +18,6 @@ import { parser } from "@common";
 import { loadCommands } from "./commands";
 
 const injector = new Injector();
-const logger = Logger.coremod("Installer");
 
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
@@ -88,19 +87,14 @@ const triggerInstall = (
 };
 
 async function injectLinks(): Promise<void> {
-  const linkMod = await waitForModule(filters.bySource(".useDefaultUnderlineStyles"), {
+  const linkMod = await waitForModule(filters.bySource(",useDefaultUnderlineStyles:"), {
     raw: true,
   });
-  const exports = linkMod.exports as ObjectExports &
-    Record<string, React.FC<React.PropsWithChildren<AnchorProps>>>;
+  const exports = linkMod.exports as ObjectExports & {
+    default: React.FC<React.PropsWithChildren<AnchorProps>>;
+  };
 
-  const key = getFunctionKeyBySource(exports, ".useDefaultUnderlineStyles");
-  if (!key) {
-    logger.error("Failed to find link component.");
-    return;
-  }
-
-  injector.instead(exports, key, (args, fn) => {
+  injector.instead(exports, "default", (args, fn) => {
     const { href } = args[0];
     if (!href) return fn(...args);
     const installLink = parseInstallLink(href);

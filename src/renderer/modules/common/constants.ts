@@ -3,8 +3,8 @@ import { filters, getExportsForProps, waitForModule, waitForProps } from "../web
 
 type StringConcat = (...rest: string[]) => string;
 
-const ConstantsCommon = await waitForModule<Record<string, unknown>>(filters.bySource("BASE_URL:"));
-const Constants = await waitForModule<Record<string, unknown>>(filters.bySource("USER_PROFILE:"));
+const ConstantsCommon = await waitForProps<Record<string, unknown>>("Links", "RPCCommands");
+const Constants = await waitForProps<Record<string, unknown>>("Endpoints", "Routes");
 export const raw = virtualMerge(ConstantsCommon, Constants);
 
 export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsCommon, [
@@ -108,6 +108,7 @@ interface UnsafeRawColor {
 
 interface ColorMod {
   themes: Record<string, string>;
+  modules: Record<string, Record<string, number>>;
   colors: Record<string, Color>;
   spacing: Record<string, string>;
   radii: Record<string, number>;

@@ -35,12 +35,8 @@ interface BreadcrumbProps {
 const logger = Logger.coremod("AddonSettings");
 
 const Breadcrumbs = webpack.getBySource<React.ComponentClass<BreadcrumbProps>>(
-  "().breadcrumbFinalWrapper",
+  /\w+.breadcrumbFinalWrapper/,
 )!;
-const BreadcrumbClasses =
-  webpack.getByProps<Record<"breadcrumbActive" | "breadcrumbInactive" | "breadcrumbs", string>>(
-    "breadcrumbActive",
-  )!;
 
 export enum AddonType {
   Plugin = "plugin",
@@ -103,7 +99,7 @@ function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string,
 async function openUserProfile(id: string): Promise<void> {
   if (!users.getUser(id)) {
     try {
-      const { body } = await api.get({
+      const { body } = await api.HTTP.get({
         url: `/users/${id}/profile`,
         query: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -117,7 +113,7 @@ async function openUserProfile(id: string): Promise<void> {
       fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
     } catch {
       try {
-        const { body } = await api.get({
+        const { body } = await api.HTTP.get({
           url: `/users/${id}`,
         });
         fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
@@ -547,7 +543,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Flex align={Flex.Align.CENTER} className={BreadcrumbClasses.breadcrumbs}>
+        <Flex align={Flex.Align.CENTER} className={"replugged-addon-breadcrumbs"}>
           {section === `rp_${type}` ? (
             <Text.H2
               style={{
@@ -584,8 +580,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   color={active ? "header-primary" : "inherit"}
                   className={
                     active
-                      ? BreadcrumbClasses.breadcrumbActive
-                      : BreadcrumbClasses.breadcrumbInactive
+                      ? "replugged-addon-breadcrumbsActive"
+                      : "replugged-addon-breadcrumbsInactive"
                   }
                   style={{
                     // Do not turn "(num)" into a single symbol

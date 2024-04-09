@@ -1,5 +1,5 @@
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "src/renderer/modules/webpack";
+import { filters, waitForModule } from "src/renderer/modules/webpack";
 
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
@@ -52,13 +52,17 @@ interface NoticeMod {
   Notice: React.FC<React.PropsWithChildren<NoticeProps>>;
 }
 
-const mod = await waitForModule(filters.bySource("().colorPremiumTier1"));
+const mod = await waitForModule<
+  NoticeMod & {
+    default: React.FC<React.PropsWithChildren<NoticeProps>>;
+  }
+>(filters.bySource(".colorPremiumTier1,"));
 
 export default {
-  NoticeColors: getFunctionBySource(mod, "().colorDefault"),
-  NoticeButton: getFunctionBySource(mod, "().buttonMinor"),
-  PrimaryCTANoticeButton: getFunctionBySource(mod, "CTA"),
-  NoticeButtonAnchor: getFunctionBySource(mod, "href"),
-  NoticeCloseButton: getFunctionBySource(mod, "().closeButton"),
-  Notice: getFunctionBySource(mod, "().notice"),
+  NoticeColors: mod.NoticeColors,
+  NoticeButton: mod.NoticeButton,
+  PrimaryCTANoticeButton: mod.PrimaryCTANoticeButton,
+  NoticeButtonAnchor: mod.NoticeButtonAnchor,
+  NoticeCloseButton: mod.NoticeCloseButton,
+  Notice: mod.default,
 } as NoticeMod;

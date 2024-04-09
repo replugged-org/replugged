@@ -14,7 +14,7 @@ export const loadStyleSheet = (path: string): HTMLLinkElement => {
   const el = document.createElement("link");
   el.rel = "stylesheet";
   el.href = `${path}?t=${Date.now()}`;
-  document.head.appendChild(el);
+  document.body.appendChild(el);
 
   return el;
 };
@@ -172,7 +172,7 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
 }
 
 export async function openExternal(url: string): Promise<void> {
-  const mod = getBySource<(url: string) => Promise<void>>(/href=\w;\w\.target="_blank"/);
+  const mod = getBySource<(url: string) => Promise<void>>(/href=\w,\w\.target="_blank"/);
   if (!mod) {
     throw new Error("Could not find openExternal");
   }

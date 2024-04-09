@@ -35,12 +35,12 @@ interface HTTPRequest {
       interceptResponse?: HTTPRequest["interceptResponse"],
     ) => void,
     reject: (reason: Error) => void,
-  ) => void;
+  ) => boolean;
   onRequestCreated?: (request: Request) => void;
   onRequestProgress?: (progress: ProgressEvent) => void;
 }
 
-interface HTTPResponse<T = Record<string, unknown>> {
+export interface HTTPResponse<T = Record<string, unknown>> {
   body: T;
   headers: Record<string, string>;
   ok: boolean;
@@ -101,16 +101,28 @@ export declare class APIError {
   public hasFieldErrors: () => boolean;
 }
 
-export type API = Record<
-  "get" | "patch" | "post" | "put" | "delete",
+type HTTP = Record<
+  "get" | "post" | "put" | "patch" | "del",
   <T = Record<string, unknown>>(
     req: string | HTTPRequest,
     callback?: (response: HTTPResponse) => void,
   ) => Promise<HTTPResponse<T>>
-> & {
-  getAPIBaseURL: (version?: boolean) => string;
+>;
+
+interface RequestPatch {
+  prepareRequest: (request: Request) => void;
+  interceptResponse: Required<HTTPRequest["interceptResponse"]>;
+}
+
+export interface API {
+  INVALID_FORM_BODY_ERROR_CODE: number;
+  convertSkemaError: (response: Record<string, unknown>) => Record<string, unknown>;
   V6OrEarlierAPIError: typeof V6OrEarlierAPIError;
   V8APIError: typeof APIError;
-};
+  HTTP: HTTP;
+  getAPIBaseURL: (version?: boolean) => string;
+  setAwaitOnline: (callback: (url: string) => Promise<void>) => void;
+  setRequestPatch: (patch: RequestPatch) => void;
+}
 
-export default await waitForProps<API>("getAPIBaseURL", "get", "patch", "post", "put", "delete");
+export default await waitForProps<API>("getAPIBaseURL", "HTTP");
