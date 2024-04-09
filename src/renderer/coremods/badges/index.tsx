@@ -32,7 +32,9 @@ interface BadgeCache {
   badges: APIBadges;
   lastFetch: number;
 }
-
+interface TreeNode {
+  children: React.ReactElement[];
+}
 interface BadgeHighs {
   props: { children: { props: { children: React.ReactElement[] } } };
 }
@@ -99,23 +101,27 @@ export async function start(): Promise<void> {
       if (!badges) {
         return res;
       }
-      const { children } = res.props.children.props;
-      // Unnecessary conditional, value is always falsy ?
-      // if (!children) return res;
-      if (!Array.isArray(children)) {
-        logger.error("Error injecting badges: res.props.children is not an array", { children });
+
+      const props = util.findInTree(res as unknown as Tree, (x) => Boolean(x?.["aria-label"])) as
+        | TreeNode
+        | undefined;
+      if (!props || !Array.isArray(props.children)) {
+        logger.error(
+          "Error injecting badges: res.props.children.props.children is not an array",
+          props?.children,
+        );
         return res;
       }
 
       // Calculate badge size with new added badges
       const addedBadgesCount =
-        children.length + Object.values(badges).filter((value) => value).length;
+        props.children.length + Object.values(badges).filter((value) => value).length;
       size =
         shrinkAtCount && shrinkToSize && addedBadgesCount > shrinkAtCount ? shrinkToSize : size;
 
       const sizeClass = getBadgeSizeClass(size);
 
-      children.forEach((badge) => {
+      props.children.forEach((badge) => {
         const elem: React.ReactElement | undefined = badge.props.children?.();
         if (elem) {
           elem.props.children.props.className = sizeClass;
@@ -127,13 +133,15 @@ export async function start(): Promise<void> {
       });
 
       if (badges.custom?.name && badges.custom.icon) {
-        children.push(<Custom url={badges.custom.icon} name={badges.custom.name} size={size} />);
+        props.children.push(
+          <Custom url={badges.custom.icon} name={badges.custom.name} size={size} />,
+        );
       }
 
       badgeElements.forEach(({ type, component }) => {
         const value = badges[type];
         if (value) {
-          children.push(
+          props.children.push(
             React.createElement(component, {
               color: badges.custom?.color,
               size,
@@ -146,7 +154,7 @@ export async function start(): Promise<void> {
         Boolean(x?.className),
       ) as CombinedTree;
       if (!badgesClassName) return;
-      if (children.length > 0) {
+      if (props.children.length > 0) {
         if (!badgesClassName.className.includes(containerWithContent)) {
           badgesClassName.className += ` ${containerWithContent}`;
         }
