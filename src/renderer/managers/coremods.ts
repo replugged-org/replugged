@@ -6,6 +6,7 @@ import { default as notrackPlaintext } from "../coremods/notrack/plaintextPatche
 import { default as noDevtoolsWarningPlaintext } from "../coremods/noDevtoolsWarning/plaintextPatches";
 import { default as messagePopover } from "../coremods/messagePopover/plaintextPatches";
 import { default as notices } from "../coremods/notices/plaintextPatches";
+import { default as notification } from "../coremods/notification/plaintextPatches";
 import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches";
 import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
 import { default as commandsPlaintext } from "../coremods/commands/plaintextPatches";
@@ -28,6 +29,7 @@ export namespace coremods {
   export let installer: Coremod;
   export let messagePopover: Coremod;
   export let notices: Coremod;
+  export let notification: Coremod;
   export let contextMenu: Coremod;
   export let language: Coremod;
   export let rpc: Coremod;
@@ -53,6 +55,7 @@ export async function startAll(): Promise<void> {
   coremods.installer = await import("../coremods/installer");
   coremods.messagePopover = await import("../coremods/messagePopover");
   coremods.notices = await import("../coremods/notices");
+  coremods.notification = await import("../coremods/notification");
   coremods.contextMenu = await import("../coremods/contextMenu");
   coremods.language = await import("../coremods/language");
   coremods.rpc = await import("../coremods/rpc");
@@ -83,6 +86,7 @@ export function runPlaintextPatches(): Promise<void> {
       noDevtoolsWarningPlaintext,
       messagePopover,
       notices,
+      notification,
       contextMenu,
       languagePlaintext,
       commandsPlaintext,
