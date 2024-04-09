@@ -1,20 +1,18 @@
-.buttons_faceef {
+[class^="wrapper"] [class^="buttons_"] {
   flex-direction: column;
   align-items: center;
 }
-.buttons_faceef .button__581d0 {
+[class^="wrapper"] [class^="button"] {
   width: 400px;
   margin: 5px;
 }
-.recovery-button {
-  width: var(--custom-button-button-lg-width);
-  height: var(--custom-button-button-lg-height);
-  min-width: var(--custom-button-button-lg-width);
-  min-height: var(--custom-button-button-lg-height);
 
+.recovery-button {
+  width: 400px;
+  margin: 5px;
   background-color: var(--button-danger-background) !important;
 }
-.errorPage_a41002 [class^="scrollbarGhostHairline"] {
+[class^="wrapper"] [class^="scrollbarGhostHairline"] {
   white-space: break-spaces;
   width: 80vw;
   text-align: center;
