@@ -270,7 +270,8 @@ async function injectProfileFetch(): Promise<void> {
     fetchProfile: (id: string) => Promise<void>;
   }>("fetchProfile");
   injector.instead(mod, "fetchProfile", (args, res) => {
-    if (args[0] === "replugged") {
+    //69 is replugged user id
+    if (args[0] === "69") {
       return;
     }
     return res(...args);

@@ -26,10 +26,10 @@ interface CommandsAndSection {
   commands: Map<string, AnyRepluggedCommand>;
 }
 
-void waitForModule<typeof User>(filters.bySource(".isStaffPersonal=")).then((User) => {
+void waitForModule<typeof User>(filters.bySource('"isStaffPersonal",')).then((User) => {
   RepluggedUser = new User({
     avatar: "replugged",
-    id: "replugged",
+    id: "69",
     bot: true,
     username: "Replugged",
     system: true,
