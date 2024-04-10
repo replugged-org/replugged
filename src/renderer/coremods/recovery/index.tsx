@@ -103,7 +103,7 @@ export async function start(): Promise<void> {
         ?.action as {
         props: TreeNode;
       };
-      if (!instance.state?.error) return;
+      if (!instance.state.error) return;
       const stackError = instance.state.error.stack;
       const pluginId = stackError.match(PLUGIN_ID_FIND_REGEX);
       if (pluginId) {
