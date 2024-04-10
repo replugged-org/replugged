@@ -96,7 +96,7 @@ export async function start(): Promise<void> {
         startMainRecovery();
         instance.setState({ error: null, info: null });
       }
-
+      if (!instance.state?.error) return;
       const {
         props: { children },
       }: { props: TreeNode } = findInTree(res as unknown as Tree, (x) => Boolean(x?.action)) as {
