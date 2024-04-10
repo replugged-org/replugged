@@ -1,18 +1,20 @@
-[class^="wrapper"] [class^="buttons_"] {
+[class*="errorPage"] [class*="buttons_"] {
   flex-direction: column;
   align-items: center;
 }
-[class^="wrapper"] [class^="button"] {
+[class*="errorPage"] [class*="buttons_"] [class*="button__"] {
   width: 400px;
   margin: 5px;
 }
-
 .replugged-recovery-button {
-  width: 400px;
-  margin: 5px;
+  width: var(--custom-button-button-lg-width);
+  height: var(--custom-button-button-lg-height);
+  min-width: var(--custom-button-button-lg-width);
+  min-height: var(--custom-button-button-lg-height);
+
   background-color: var(--button-danger-background) !important;
 }
-[class^="wrapper"] [class^="scrollbarGhostHairline"] {
+[class*="errorPage"] [class*="scrollbarGhostHairline"] {
   white-space: break-spaces;
   width: 80vw;
   text-align: center;

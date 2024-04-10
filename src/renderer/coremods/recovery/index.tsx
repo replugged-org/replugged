@@ -142,8 +142,14 @@ export function stop(): void {
 }
 
 export async function startErrors(): Promise<void> {
-  ReactErrors =
-    (await fetch(ReactErrorList).then((response) => response.json())) ??
-    (await fetch(ReactErrorListFallback).then((response) => response.json())) ??
-    {};
+  ReactErrors = await fetch(ReactErrorList)
+    .then((response) => response.json())
+    .catch(async (error) => {
+      logger.error("ReactErrorList Fail:", error);
+      return await fetch(ReactErrorListFallback).then((response) => response.json());
+    })
+    .catch((error) => {
+      logger.error("ReactErrorListFallback Fail:", error, "\nFalling back to {}");
+      return {};
+    });
 }
