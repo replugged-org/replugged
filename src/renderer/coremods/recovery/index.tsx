@@ -99,7 +99,8 @@ export async function start(): Promise<void> {
       if (!instance.state?.error) return;
       const {
         props: { children },
-      }: { props: TreeNode } = findInTree(res as unknown as Tree, (x) => Boolean(x?.action)) as {
+      }: { props: TreeNode } = findInTree(res as unknown as Tree, (x) => Boolean(x?.action))
+        ?.action as {
         props: TreeNode;
       };
       if (!instance.state?.error) return;
