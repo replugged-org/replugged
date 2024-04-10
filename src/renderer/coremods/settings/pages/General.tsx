@@ -104,8 +104,8 @@ export const General = (): React.ReactElement => {
 
       <SwitchItem
         {...util.useSetting(generalSettings, "automaticRecover")}
-        note={Messages.REPLUGGED_SETTINGS_AUTOMATIC_RECOVERY_DESC}>
-        {Messages.REPLUGGED_SETTINGS_AUTOMATIC_RECOVERY}
+        note={"Allows Discord to try to automatically recover from a crash."}>
+        {"Automatic Recovery"}
       </SwitchItem>
 
       <SwitchItem
