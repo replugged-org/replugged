@@ -121,7 +121,9 @@ export async function start(): Promise<void> {
 
       const sizeClass = getBadgeSizeClass(size);
 
-      props.children.forEach((badge) => {
+      /* I don't even know what this is used for. */
+      /* props.children.forEach((badge) => {
+        console.log(props)
         const elem: React.ReactElement | undefined = badge.props.children?.();
         if (elem) {
           elem.props.children.props.className = sizeClass;
@@ -130,7 +132,7 @@ export async function start(): Promise<void> {
             return elem;
           };
         }
-      });
+      }); */
 
       if (badges.custom?.name && badges.custom.icon) {
         props.children.push(
