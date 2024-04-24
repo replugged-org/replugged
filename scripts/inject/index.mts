@@ -11,7 +11,7 @@ import * as linux from "./platforms/linux.mjs";
 import * as win32 from "./platforms/win32.mjs";
 import { DiscordPlatform } from "./types.mjs";
 import { existsSync } from "fs";
-import { createContext } from "@marshift/argus";
+import { createContext, getPositionalArg } from "@marshift/argus";
 
 const platformModules = {
   darwin,
@@ -50,7 +50,7 @@ let platform: DiscordPlatform | undefined;
 
 const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void> => {
   if (!platform) {
-    const platformArg = ctx.getPositionalArg(3).toLowerCase();
+    const platformArg = getPositionalArg(ctx.argv, 3, false)?.toLowerCase();
 
     if (platformArg) {
       const exists = checkPlatform(platformArg);
