@@ -1,6 +1,7 @@
 import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
+import { entryPoint as argEntryPoint } from "./index.mjs";
 import { AnsiEscapes, getCommand } from "./util.mjs";
 import { execSync } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
@@ -108,9 +109,9 @@ export const inject = async (
     return false;
   }
 
-  const entryPoint = prod
-    ? join(CONFIG_PATH, "replugged.asar")
-    : join(dirname, "..", "..", "dist/main.js");
+  const entryPoint =
+    argEntryPoint ??
+    (prod ? join(CONFIG_PATH, "replugged.asar") : join(dirname, "..", "..", "dist/main.js"));
   const entryPointDir = path.dirname(entryPoint);
 
   if (appDir.includes("flatpak")) {
