@@ -21,7 +21,7 @@ const platformModules = {
 
 const ctx = createContext(process.argv);
 
-const exitCode = ctx.hasOptionalArg(/--no-exit-codes/) ? 0 : 1;
+export const exitCode = ctx.hasOptionalArg(/--no-exit-codes/) ? 0 : 1;
 const prod = ctx.hasOptionalArg(/--production/);
 export const entryPoint = ctx.getOptionalArg(/--entryPoint/);
 
