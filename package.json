@@ -37,6 +37,7 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
+    "@marshift/argus": "^1.0.3",
     "@types/adm-zip": "^0.5.3",
     "@types/highlightjs": "^9.12.4",
     "@types/lodash": "^4.14.200",
