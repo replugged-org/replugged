@@ -5,6 +5,7 @@ import { execSync } from "child_process";
 import readline from "readline";
 import { DiscordPlatform } from "../types.mjs";
 import { AnsiEscapes, PlatformNames } from "../util.mjs";
+import { exitCode } from "../index.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -55,7 +56,7 @@ const findPathFromPaths = async (
         `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
       );
       console.log("The path you provided is invalid.");
-      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+      process.exit(exitCode);
     }
   }
 
@@ -126,7 +127,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
     const fromPath = await findPathFromPaths(platform, KnownLinuxPaths[platform]);
     if (!fromPath) {
       console.log("Failed to find Discord path");
-      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+      process.exit(exitCode);
     }
 
     return fromPath;
@@ -141,7 +142,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
     const fromPath = await findPathFromPaths(platform, KnownLinuxPaths[platform]);
     if (!fromPath) {
       console.log("Failed to find Discord path");
-      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+      process.exit(exitCode);
     }
 
     return fromPath;
