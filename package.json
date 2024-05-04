@@ -6,10 +6,10 @@
   "main": "dist/main.mjs",
   "types": "dist/renderer/replugged.d.ts",
   "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
+    "node": ">=21.0.0",
+    "pnpm": ">=9.0.0"
   },
-  "packageManager": "pnpm@8.6.1",
+  "packageManager": "pnpm@9.0.6",
   "scripts": {
     "build": "tsx scripts/build.mts",
     "bundle": "tsx scripts/build.mts --production",
@@ -37,6 +37,7 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
+    "@marshift/argus": "^1.0.3",
     "@types/adm-zip": "^0.5.3",
     "@types/highlightjs": "^9.12.4",
     "@types/lodash": "^4.14.200",
