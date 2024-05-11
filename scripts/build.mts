@@ -2,6 +2,7 @@ import esbuild from "esbuild";
 import path from "path";
 import { fileURLToPath } from "url";
 import asar from "@electron/asar";
+import { createContext } from "@marshift/argus";
 import {
   copyFileSync,
   existsSync,
@@ -16,8 +17,9 @@ import { logBuildPlugin } from "src/util.mjs";
 const NODE_VERSION = "14";
 const CHROME_VERSION = "91";
 
-const watch = process.argv.includes("--watch");
-const production = process.argv.includes("--production");
+const ctx = createContext(process.argv);
+const watch = ctx.hasOptionalArg(/--watch/);
+const production = ctx.hasOptionalArg(/--production/);
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -102,6 +104,9 @@ const contexts = await Promise.all([
     target: `chrome${CHROME_VERSION}`,
     outfile: `${distDir}/renderer.js`,
     format: "esm",
+    loader: {
+      ".png": "dataurl",
+    },
   }),
 ]);
 await Promise.all(
