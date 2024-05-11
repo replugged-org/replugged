@@ -309,6 +309,7 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
     "has",
     "set",
   ] as const) {
+    // @ts-expect-error Type is ok
     handler[method] = function (_: unknown, ...args: unknown[]) {
       if (method === "get" && args[0] === "all") {
         // Return function that returns all objects combined
