@@ -84,7 +84,7 @@ export function forceUpdateElement(selector: string, all = false): void {
   const elements = (
     all ? [...document.querySelectorAll(selector)] : [document.querySelector(selector)]
   ).filter(Boolean) as Element[];
-
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- May not actually have forceUpdate
   elements.forEach((element) => getOwnerInstance(element)?.forceUpdate());
 }
 
@@ -175,7 +175,7 @@ export async function openExternal(url: string): Promise<void> {
   if (!mod) {
     throw new Error("Could not find openExternal");
   }
-  return await mod(url);
+  await mod(url);
 }
 
 type ValType<T> =
