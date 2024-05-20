@@ -9,7 +9,13 @@ import { registerRPCCommand } from "../rpc";
 import { generalSettings } from "../settings/pages";
 import AddonEmbed from "./AddonEmbed";
 import { loadCommands } from "./commands";
-import { InstallerSource, installFlow, InstallLinkProps, InstallResponse, parseInstallLink } from "./util";
+import {
+  InstallLinkProps,
+  InstallResponse,
+  InstallerSource,
+  installFlow,
+  parseInstallLink,
+} from "./util";
 
 const injector = new Injector();
 
