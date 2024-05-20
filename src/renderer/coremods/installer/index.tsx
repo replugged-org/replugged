@@ -1,21 +1,15 @@
+import { parser } from "@common";
 import { Injector } from "@replugged";
+import type { Capture, DefaultInRule } from "simple-markdown";
+import { plugins } from "src/renderer/managers/plugins";
+import { themes } from "src/renderer/managers/themes";
 import { filters, waitForModule } from "src/renderer/modules/webpack";
 import { ObjectExports } from "src/types";
 import { registerRPCCommand } from "../rpc";
-import {
-  InstallLinkProps,
-  InstallResponse,
-  InstallerSource,
-  installFlow,
-  parseInstallLink,
-} from "./util";
-import { plugins } from "src/renderer/managers/plugins";
-import { themes } from "src/renderer/managers/themes";
-import AddonEmbed from "./AddonEmbed";
 import { generalSettings } from "../settings/pages";
-import type { Capture, DefaultInRule } from "simple-markdown";
-import { parser } from "@common";
+import AddonEmbed from "./AddonEmbed";
 import { loadCommands } from "./commands";
+import { InstallerSource, installFlow, InstallLinkProps, InstallResponse, parseInstallLink } from "./util";
 
 const injector = new Injector();
 
@@ -91,10 +85,10 @@ async function injectLinks(): Promise<void> {
     raw: true,
   });
   const exports = linkMod.exports as ObjectExports & {
-    default: React.FC<React.PropsWithChildren<AnchorProps>>;
+    Anchor: React.FC<React.PropsWithChildren<AnchorProps>>;
   };
 
-  injector.instead(exports, "default", (args, fn) => {
+  injector.instead(exports, "Anchor", (args, fn) => {
     const { href } = args[0];
     if (!href) return fn(...args);
     const installLink = parseInstallLink(href);
@@ -102,9 +96,7 @@ async function injectLinks(): Promise<void> {
 
     args[0].onClick = (e) => triggerInstall(installLink, e);
 
-    const res = fn(...args);
-
-    return res;
+    return fn(...args);
   });
 
   const defaultRules = parser.defaultRules as typeof parser.defaultRules & {
