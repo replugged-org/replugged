@@ -12,12 +12,10 @@ export type FormTextTypeKey =
   | "SUCCESS"
   | string;
 
-interface FormTextProps {
+interface FormTextProps extends React.ComponentPropsWithoutRef<"div"> {
   type?: string;
   disabled?: boolean;
   selectable?: boolean;
-  style?: React.CSSProperties;
-  className?: string;
 }
 
 export type FormTextCompType = React.FC<React.PropsWithChildren<FormTextProps>>;

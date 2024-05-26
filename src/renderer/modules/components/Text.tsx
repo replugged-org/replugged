@@ -59,6 +59,10 @@ export type Variant =
   | "redesign/message-preview/medium"
   | "redesign/message-preview/semibold"
   | "redesign/message-preview/bold"
+  | "redesign/channel-title/normal"
+  | "redesign/channel-title/medium"
+  | "redesign/channel-title/semibold"
+  | "redesign/channel-title/bold"
   | "display-sm"
   | "display-md"
   | "display-lg"
@@ -71,6 +75,7 @@ interface TextProps extends React.ComponentPropsWithoutRef<"div"> {
   selectable?: boolean;
   tabularNumbers?: boolean;
   lineClamp?: number;
+  scaleFontToUserSetting?: boolean;
 }
 
 interface CustomTextProps extends TextProps {

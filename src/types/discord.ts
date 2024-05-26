@@ -98,6 +98,9 @@ export enum MessageEmbedTypes {
   POST_PREVIEW = "post_preview",
   GIFT = "gift",
   SAFETY_POLICY_NOTICE = "safety_policy_notice",
+  SAFETY_SYSTEM_NOTIFICATION = "safety_system_notification",
+  VOICE_CHANNEL = "voice_channel",
+  GAMING_PROFILE = "gaming_profile",
 }
 
 export interface APIEmbed {

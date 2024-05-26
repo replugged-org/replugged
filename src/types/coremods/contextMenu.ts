@@ -29,16 +29,21 @@ export enum ContextMenuTypes {
   ActivityShelfItemContext = "activity-shelf-item-context",
   AddQuestions = "add-questions",
   ApplicationDirectoryProfile = "application-directory-profile",
+  AttachmentLinkContext = "attachment-link-context",
   /** Right-click mute or deafen buttons */
   AudioDeviceContext = "audio-device-context",
   AutomodRuleContext = "automod-rule-context",
   ChannelAttach = "channel-attach",
   ChannelAutocomplete = "channel-autocomplete",
   ChannelCallOverflowPopout = "channel-call-overflow-popout",
+  ChannelNotificationCustomSettingsItems = "ChannelNotificationCustomSettingsItems",
+  ClipsContext = "clips-context",
+  ClipsMoreOptions = "clips-more-options",
   /** Right-click channel */
   ChannelContext = "channel-context",
   /** Right-click a channel mention */
   ChannelMentionContext = "channel-mention-context",
+  ChannelSummariesContextMenu = "channel-summaries-context-menu",
   ComponentButton = "component-button",
   CopyId = "copy-id",
   /** Right-click a role */
@@ -79,8 +84,10 @@ export enum ContextMenuTypes {
   ManageMultiAccount = "manage-multi-account",
   ManageStreams = "manage-streams",
   MemberApplicationContextMenu = "member-application-context-menu",
+  MemberListSettingsMenu = "member-list-settings-menu",
   MemberSafetyFlags = "member-safety-flags",
-  MemberSafetyOptions = "member-safety-options",
+  MembersTableJoinMethodMenu = "members-table-join-method-menu",
+  MembersTableSortMenu = "members-table-sort-menu",
   MentionsFilter = "mentions-filter",
   /** Click the triple dots on a message popover */
   MessageActions = "message-actions",
@@ -92,7 +99,9 @@ export enum ContextMenuTypes {
   NowPlayingMenu = "now-playing-menu",
   Overlay = "overlay",
   PipMenu = "pip-menu",
+  PollMediaEditMenu = "poll-media-edit-menu",
   ProgressBarContext = "progress-bar-context",
+  QuestsEntry = "quests-entry",
   RecentsNotifications = "recents-notifications",
   RecentsThreadNotifications = "recents-thread-notifications",
   /** Right-click "Server Subscriptions" */
@@ -100,9 +109,11 @@ export enum ContextMenuTypes {
   RtcChannel = "rtc-channel",
   SearchResults = "search-results",
   SetImageForAction = "set-image-for-action",
+  SignupButtonContext = "signup-button-context",
   SortAndView = "sort-and-view",
   SoundButtonContext = "sound-button-context",
   StaffHelpPopout = "staff-help-popout",
+  StaffOnlyEntryDebug = "staff-only-entry-debug",
   StageChannelCallOverflowPopout = "stage-channel-call-overflow-popout",
   StatusPicker = "status-picker",
   StreamContext = "stream-context",
@@ -114,9 +125,13 @@ export enum ContextMenuTypes {
   /** Right-click a thread */
   ThreadContext = "thread-context",
   TransferMenu = "transfer-menu",
+  UnknownUserContext = "unknown-user-context",
   /** Right-click user */
   UserContext = "user-context",
   UserProfileActions = "user-profile-actions",
+  UserProfileFriendRequestButtons = "user-profile-friend-request-buttons",
+  UserProfileOverflowMenu = "user-profile-overflow-menu",
+  UserSettingsChangeAvatar = "user-settings-change-avatar",
   /** Right-click settings */
   UserSettingsCog = "user-settings-cog",
   VideoBackgroundContext = "video-background-context",

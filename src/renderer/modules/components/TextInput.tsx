@@ -2,7 +2,10 @@ import type React from "react";
 import components from "../common/components";
 
 interface TextInputProps
-  extends Omit<React.ComponentPropsWithoutRef<"input">, "size" | "onChange"> {
+  extends Omit<
+    React.ComponentPropsWithoutRef<"input">,
+    "size" | "onChange" | "onFocus" | "onBlur"
+  > {
   editable?: boolean;
   inputPrefix?: string;
   prefixElement?: React.ReactNode;
@@ -11,7 +14,10 @@ interface TextInputProps
   inputRef?: React.Ref<HTMLInputElement>;
   focusProps?: Record<string, unknown>;
   inputClassName?: string;
-  onChange?: (value: string) => void;
+  defaultDirty?: boolean;
+  onChange?: (value: string, name: string) => void;
+  onFocus?: (event: React.FocusEvent<HTMLInputElement>, name: string) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>, name: string) => void;
 }
 
 export type TextInputType = React.ComponentClass<TextInputProps> & {
