@@ -119,7 +119,7 @@ export async function start(): Promise<void> {
       size =
         shrinkAtCount && shrinkToSize && addedBadgesCount > shrinkAtCount ? shrinkToSize : size;
 
-      const sizeClass = getBadgeSizeClass(size);
+      /* const sizeClass = getBadgeSizeClass(size); */
 
       /* I don't even know what this is used for. */
       /* props.children.forEach((badge) => {
@@ -155,7 +155,6 @@ export async function start(): Promise<void> {
       const badgesClassName = util.findInTree(res as unknown as Tree, (x) =>
         Boolean(x?.className),
       ) as CombinedTree;
-      if (!badgesClassName) return;
       if (props.children.length > 0) {
         if (!badgesClassName.className.includes(containerWithContent)) {
           badgesClassName.className += ` ${containerWithContent}`;
