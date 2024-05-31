@@ -1,3 +1,4 @@
+import { WEBSITE_URL } from "src/constants";
 import type { Promisable } from "type-fest";
 
 export type SettingsMap = Map<string, unknown>;
@@ -16,7 +17,7 @@ export type GeneralSettings = {
 };
 
 export const defaultSettings = {
-  apiUrl: "https://replugged.dev",
+  apiUrl: WEBSITE_URL,
   experiments: false,
   badges: true,
   autoApplyQuickCss: false,

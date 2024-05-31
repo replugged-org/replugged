@@ -1,4 +1,4 @@
-.replugged-badges-container {
+[class*="containerWithContent"] {
   min-height: -webkit-fit-content;
   min-height: -moz-fit-content;
   min-height: fit-content;
