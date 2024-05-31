@@ -34,9 +34,9 @@ interface BreadcrumbProps {
 
 const logger = Logger.coremod("AddonSettings");
 
-const Breadcrumbs = webpack.getBySource<React.ComponentClass<BreadcrumbProps>>(
-  /\w+.breadcrumbFinalWrapper/,
-)!;
+const Breadcrumbs = await webpack.waitForModule<React.ComponentClass<BreadcrumbProps>>(
+  webpack.filters.bySource(/\w+.breadcrumbFinalWrapper/),
+);
 
 export enum AddonType {
   Plugin = "plugin",
