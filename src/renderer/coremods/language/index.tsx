@@ -13,7 +13,7 @@ export function Card(): React.ReactElement {
   return (
     <FormNotice
       title={Messages.REPLUGGED_I18N}
-      body={Messages.REPLUGGED_I18N_CONTRIBUTE.format({ WEBLATE_URL })}
+      body={Messages.REPLUGGED_I18N_CONTRIBUTE.format({ weblateUrl: WEBLATE_URL })}
       type={FormNotice.Types.PRIMARY}
       style={{ marginBottom: 20 }}
     />
