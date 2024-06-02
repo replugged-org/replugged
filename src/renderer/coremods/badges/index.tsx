@@ -58,13 +58,14 @@ const cache = new Map<string, BadgeCache>();
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
 const contributorsUrl = `${generalSettings.get("apiUrl")}/contributors`;
+const inviteUrl = `https://discord.gg/${DISCORD_INVITE}`;
 
 const badgeElements = [
   {
     id: "booster",
     description: Messages.REPLUGGED_BADGES_BOOSTER,
     component: Badges.Booster,
-    link: DISCORD_INVITE,
+    link: inviteUrl,
   },
   {
     id: "contributor",
@@ -84,13 +85,13 @@ const badgeElements = [
     id: "staff",
     description: Messages.REPLUGGED_BADGES_STAFF,
     component: Badges.Staff,
-    link: DISCORD_INVITE,
+    link: inviteUrl,
   },
   {
     id: "support",
     description: Messages.REPLUGGED_BADGES_SUPPORT,
     component: Badges.Support,
-    link: DISCORD_INVITE,
+    link: inviteUrl,
   },
   {
     id: "translator",
