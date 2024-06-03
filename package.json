@@ -1,6 +1,6 @@
 {
   "name": "replugged",
-  "version": "4.7.10",
+  "version": "4.7.11",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "dist/main.mjs",
