@@ -228,15 +228,41 @@ export async function checkAllUpdates(autoCheck = false, verbose = false): Promi
   updaterSettings.set("lastChecked", Date.now());
 }
 
+function compareVersions(newver, curver) {
+    // Split the version strings into arrays of integers
+    const vnew = newver.split('.').map(Number);
+    const vcur = curver.split('.').map(Number);
+
+    // Determine the longest length between the two arrays
+    const length = Math.max(vnew.length, vcur.length);
+
+    // Compare corresponding segments
+    for (let i = 0; i < length; i++) {
+        const vnewnum = vnew[i] !== undefined ? vnew[i] : 0;
+        const vcurnum = vcur[i] !== undefined ? vcur[i] : 0;
+
+        if (vnewnum > vcurnum) {
+            return true;  // store version is greater
+        } else if (vnewnum < vcurnum) {
+          return false;   // local version is greater
+        } else if (vnewnum == vcurnum) {
+          // same number, move to next decimal
+        }
+    }
+    return false; // Same or Newer version
+}
 export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {
   return Object.entries(updaterState.all())
     .map(([id, state]) => ({ ...state, id }))
     .filter(
-      (state) =>
-        (state.available || completedUpdates.has(state.id)) &&
-        ((state.id === REPLUGGED_ID && window.RepluggedNative.getVersion() !== "dev") ||
-          pluginManager.plugins.has(state.id) ||
-          themeManager.themes.has(state.id)),
+      (state) => {
+        debugger;
+        return (state.available || completedUpdates.has(state.id)) &&
+          ((state.id === REPLUGGED_ID && window.RepluggedNative.getVersion() !== "dev") ||
+            ((
+              (pluginManager.plugins.has(state.id) && compareVersions(state.version, replugged.plugins.plugins.get(state.id).manifest.version)) ||
+              (themeManager.themes.has(state.id) && compareVersions(state.version, replugged.themes.themes.get(state.id).manifest.version)))))
+        },
     );
 }
 

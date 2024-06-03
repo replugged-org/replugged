@@ -113,6 +113,7 @@ export const inject = async (
     argEntryPoint ??
     (prod ? join(CONFIG_PATH, "replugged.asar") : join(dirname, "..", "..", "dist/main.js"));
   const entryPointDir = path.dirname(entryPoint);
+  console.log(entryPointDir);
 
   if (appDir.includes("flatpak")) {
     const discordName = platform === "canary" ? "DiscordCanary" : "Discord";
@@ -124,6 +125,14 @@ export const inject = async (
       `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to Replugged files (${entryPointDir})${AnsiEscapes.RESET}`,
     );
     execSync(overrideCommand);
+    if(!prod) {
+      execSync(`${
+      appDir.startsWith("/var") ? "sudo flatpak override" : "flatpak override --user"
+    } com.discordapp.${discordName} --filesystem=${join(dirname, "..", "..")}`);
+    console.log(
+      `${AnsiEscapes.YELLOW}Flatpak Development detected, allowing Discord access to Replugged files (${join(dirname, "..", "..")})${AnsiEscapes.RESET}`,
+    );
+    }
     console.log("Done!");
   }
 
