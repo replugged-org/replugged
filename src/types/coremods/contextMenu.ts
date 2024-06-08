@@ -39,6 +39,7 @@ export enum ContextMenuTypes {
   ChannelNotificationCustomSettingsItems = "ChannelNotificationCustomSettingsItems",
   ClipsContext = "clips-context",
   ClipsMoreOptions = "clips-more-options",
+  CommandListSort = "command-list-sort",
   /** Right-click channel */
   ChannelContext = "channel-context",
   /** Right-click a channel mention */
@@ -115,7 +116,9 @@ export enum ContextMenuTypes {
   StaffHelpPopout = "staff-help-popout",
   StaffOnlyEntryDebug = "staff-only-entry-debug",
   StageChannelCallOverflowPopout = "stage-channel-call-overflow-popout",
+  StatusMobileWeb = "status-mobile-web",
   StatusPicker = "status-picker",
+  Status = "status",
   StreamContext = "stream-context",
   SubscriptionContext = "subscription-context",
   TestSkus = "test-skus",
