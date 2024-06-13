@@ -118,20 +118,20 @@ export interface APIEmbed {
   image?: {
     url: string;
     proxy_url?: string;
-    height?: number;
-    width?: number;
+    height: number;
+    width: number;
   };
   thumbnail?: {
     url: string;
     proxy_url?: string;
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
   };
   video?: {
     url?: string;
     proxy_url?: string;
-    height?: number;
-    width?: number;
+    height: number;
+    width: number;
   };
   provider?: {
     name?: string;
