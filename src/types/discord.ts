@@ -98,6 +98,9 @@ export enum MessageEmbedTypes {
   POST_PREVIEW = "post_preview",
   GIFT = "gift",
   SAFETY_POLICY_NOTICE = "safety_policy_notice",
+  SAFETY_SYSTEM_NOTIFICATION = "safety_system_notification",
+  VOICE_CHANNEL = "voice_channel",
+  GAMING_PROFILE = "gaming_profile",
 }
 
 export interface APIEmbed {
@@ -115,20 +118,20 @@ export interface APIEmbed {
   image?: {
     url: string;
     proxy_url?: string;
-    height?: number;
-    width?: number;
+    height: number;
+    width: number;
   };
   thumbnail?: {
     url: string;
     proxy_url?: string;
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
   };
   video?: {
     url?: string;
     proxy_url?: string;
-    height?: number;
-    width?: number;
+    height: number;
+    width: number;
   };
   provider?: {
     name?: string;
