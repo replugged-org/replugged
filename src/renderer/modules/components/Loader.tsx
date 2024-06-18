@@ -12,9 +12,7 @@ const Types = {
 
 interface GenericLoaderProps {
   animated?: boolean;
-  className?: string;
   itemClassName?: string;
-  style?: React.CSSProperties;
 }
 
 type LoaderProps = GenericLoaderProps & {

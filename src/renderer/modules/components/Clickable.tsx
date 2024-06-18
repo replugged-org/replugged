@@ -4,6 +4,8 @@ import components from "../common/components";
 // TODO: generic type for tags?
 type ClickableProps = React.ComponentPropsWithoutRef<"div"> & {
   tag?: keyof JSX.IntrinsicElements;
+  focusProps?: Record<string, unknown>;
+  innerRef?: React.Ref<HTMLDivElement>;
   ignoreKeyPress?: boolean;
 };
 

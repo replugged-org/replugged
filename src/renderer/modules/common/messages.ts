@@ -474,6 +474,7 @@ interface CreateMessageOptions {
   flags?: number;
   nonce?: string;
   poll?: Poll;
+  changelogId?: string;
 }
 
 interface UserServer {
@@ -488,7 +489,6 @@ interface UserServer {
 interface MessageUtils {
   createBotMessage: (options: CreateBotMessageOptions) => Message;
   createMessage: (options: CreateMessageOptions) => Message;
-  createNonce: () => string;
   userRecordToServer: (user: User) => UserServer;
 }
 
@@ -498,7 +498,6 @@ const MessageUtilsMod = await waitForModule(filters.bySource('username:"Clyde"')
 const MessageUtils = {
   createBotMessage: getFunctionBySource(MessageUtilsMod, 'username:"Clyde"'),
   createMessage: getFunctionBySource(MessageUtilsMod, "createMessage"),
-  createNonce: getFunctionBySource(MessageUtilsMod, "fromTimestamp"),
   userRecordToServer: getFunctionBySource(MessageUtilsMod, "global_name:"),
 } as MessageUtils;
 
