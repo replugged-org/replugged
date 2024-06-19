@@ -192,6 +192,9 @@ const SnapshotStoreClass = await waitForModule<typeof SnapshotStore>(
   filters.bySource("SnapshotStores"),
 );
 
+// Disabling FluxHooks search for now.
+// This and SnapshotStore really should be split off into separate modules.
+/*
 interface FluxHooks {
   useStateFromStores: <T>(
     stores: Store[],
@@ -221,7 +224,8 @@ const FluxHooks = {
   useStateFromStoresArray: FluxHooksMod.useStateFromStoresArray,
   useStateFromStoresObject: FluxHooksMod.useStateFromStoresObject,
 };
+*/
 
-export type Flux = FluxMod & { SnapshotStore: typeof SnapshotStore } & typeof FluxHooks;
+export type Flux = FluxMod & { SnapshotStore: typeof SnapshotStore } /* & typeof FluxHooks*/;
 
-export default { ...FluxMod, SnapshotStore: SnapshotStoreClass, ...FluxHooks } as Flux;
+export default { ...FluxMod, SnapshotStore: SnapshotStoreClass /*, ...FluxHooks*/ } as Flux;
