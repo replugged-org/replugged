@@ -1,8 +1,14 @@
+#rp-quickcss-tab,
+#replugged-quickcss-wrapper {
+  height: calc(100%)
+}
+
 #replugged-quickcss-wrapper .cm-editor {
   border: 1px solid transparent;
   border-radius: 4px;
   border: 1px solid var(--background-tertiary);
   outline: none !important;
+  height: calc(100% - 20px)
 }
 
 #replugged-quickcss-wrapper .cm-gutters {
@@ -25,4 +31,23 @@
 
 #replugged-quickcss-wrapper .cm-scroller {
   overflow: auto;
+}
+
+#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar {
+  width: var(--custom-scrollbar-scrollbar-width);
+  height: var(--custom-scrollbar-scrollbar-width);
+  margin: var(--custom-scrollbar-scrollbar-margin);
+}
+
+#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-auto-thumb);
+  border-radius: var(--custom-scrollbar-scrollbar-width);
+}
+
+#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-auto-track);
+}
+
+#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-corner {
+  background: var(--background-tertiary);
 }
