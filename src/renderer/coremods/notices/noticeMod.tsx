@@ -13,6 +13,7 @@ interface NoticeButtonProps extends React.ComponentPropsWithoutRef<"button"> {
 
 interface PrimaryCTANoticeButtonProps extends NoticeButtonProps {
   noticeType?: string;
+  additionalTrackingProps?: Record<string, unknown>;
 }
 
 interface NoticeButtonAnchorProps extends AnchorProps {}
@@ -52,17 +53,4 @@ interface NoticeMod {
   Notice: React.FC<React.PropsWithChildren<NoticeProps>>;
 }
 
-const mod = await waitForModule<
-  NoticeMod & {
-    default: React.FC<React.PropsWithChildren<NoticeProps>>;
-  }
->(filters.bySource(".colorPremiumTier1,"));
-
-export default {
-  NoticeColors: mod.NoticeColors,
-  NoticeButton: mod.NoticeButton,
-  PrimaryCTANoticeButton: mod.PrimaryCTANoticeButton,
-  NoticeButtonAnchor: mod.NoticeButtonAnchor,
-  NoticeCloseButton: mod.NoticeCloseButton,
-  Notice: mod.default,
-} as NoticeMod;
+export default await waitForModule<NoticeMod>(filters.bySource(".colorPremiumTier1,"));
