@@ -1,6 +1,7 @@
 import { generalSettings } from "../settings/pages/General";
 import { notices, util } from "@replugged";
 import { Messages } from "@common/i18n";
+import { DISCORD_INVITE } from "src/constants";
 
 export function start(): void {
   if (!generalSettings.get("showWelcomeNoticeOnOpen")) return;
@@ -9,7 +10,7 @@ export function start(): void {
     button: {
       text: Messages.REPLUGGED_NOTICES_JOIN_SERVER_BUTTON,
       onClick: () => {
-        void util.goToOrJoinServer("HnYFUhv4x4");
+        void util.goToOrJoinServer(DISCORD_INVITE);
         generalSettings.set("showWelcomeNoticeOnOpen", false);
       },
     },

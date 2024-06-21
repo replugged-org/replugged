@@ -1,10 +1,16 @@
 import { virtualMerge } from "src/renderer/util";
-import { filters, getExportsForProps, waitForModule, waitForProps } from "../webpack";
+import { filters, getExportsForProps, waitForModule } from "../webpack";
 
 type StringConcat = (...rest: string[]) => string;
 
-const ConstantsCommon = await waitForProps<Record<string, unknown>>("Links", "RPCCommands");
-const Constants = await waitForProps<Record<string, unknown>>("Endpoints", "Routes");
+//const ConstantsCommon = await waitForProps<Record<string, unknown>>("Links", "RPCCommands");
+const ConstantsCommon = await waitForModule<Record<string, unknown>>(
+  filters.bySource("dis.gd/request"),
+);
+//const Constants = await waitForProps<Record<string, unknown>>("Endpoints", "Routes");
+const Constants = await waitForModule<Record<string, unknown>>(
+  filters.bySource("users/@me/relationships"),
+);
 export const raw = virtualMerge(ConstantsCommon, Constants);
 
 export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsCommon, [
@@ -66,10 +72,16 @@ export const UserFlags = getExportsForProps<Record<string, string | number>>(Con
 ])!;
 
 // ThemeColor
+//Ambiguous: should this be the just-dashed-names or --var(css-var-strings)?
+// Go with the latter for now.
+/*
 export const CSSVariables = await waitForProps<Record<string, string>>(
   "TEXT_NORMAL",
   "BACKGROUND_PRIMARY",
 );
+*/
+// We *should* be able to do props, but there's so much extra junk with the current search implementation.
+export const CSSVariables = await waitForModule(filters.bySource('="var(--background-floating)"'));
 
 interface ColorResponse {
   hex: () => string;
@@ -117,6 +129,7 @@ interface ColorMod {
   unsafe_rawColors: Record<string, UnsafeRawColor>;
 }
 
+// This could really be a search by props, for unsafe_rawColors.
 export const ColorGenerator = await waitForModule<ColorMod>(
   filters.bySource(/\w+\.unsafe_rawColors\[\w+\]\.resolve\(\w+\)/),
 );

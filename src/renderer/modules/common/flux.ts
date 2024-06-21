@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { filters, waitForModule, waitForProps } from "../webpack";
 import type { DispatchBand, FluxDispatcher as Dispatcher } from "./fluxDispatcher";
+import { type FluxHooks, default as fluxHooks } from "./fluxHooks";
 
 type DispatchToken = string;
 type ActionType = string;
@@ -192,36 +193,9 @@ const SnapshotStoreClass = await waitForModule<typeof SnapshotStore>(
   filters.bySource("SnapshotStores"),
 );
 
-interface FluxHooks {
-  useStateFromStores: <T>(
-    stores: Store[],
-    callback: () => T,
-    deps?: React.DependencyList,
-    compare?:
-      | (<T extends []>(a: T, b: T) => boolean)
-      | (<T extends Record<string, unknown>>(a: T, b: T) => boolean),
-  ) => T;
-  statesWillNeverBeEqual: <T>(a: T, b: T) => boolean;
-  useStateFromStoresArray: <T>(
-    stores: Store[],
-    callback: () => T,
-    deps?: React.DependencyList,
-  ) => T;
-  useStateFromStoresObject: <T>(
-    stores: Store[],
-    callback: () => T,
-    deps?: React.DependencyList,
-  ) => T;
-}
+// In the future, fluxHooks will be removed from flux's exported object, as will SnapshotStore.
+// Meanwhile, it is available as a new common modules, fluxHooks. Developers should prefer using that over the hooks from here.
+// Merging distinct modules like this is a horrible idea, but *compatibility*. Yuck.
+export type Flux = FluxMod & { SnapshotStore: typeof SnapshotStore } & FluxHooks;
 
-const FluxHooksMod = await waitForProps<FluxHooks>("useStateFromStores");
-const FluxHooks = {
-  useStateFromStores: FluxHooksMod.useStateFromStores,
-  statesWillNeverBeEqual: FluxHooksMod.statesWillNeverBeEqual,
-  useStateFromStoresArray: FluxHooksMod.useStateFromStoresArray,
-  useStateFromStoresObject: FluxHooksMod.useStateFromStoresObject,
-};
-
-export type Flux = FluxMod & { SnapshotStore: typeof SnapshotStore } & typeof FluxHooks;
-
-export default { ...FluxMod, SnapshotStore: SnapshotStoreClass, ...FluxHooks } as Flux;
+export default { ...FluxMod, SnapshotStore: SnapshotStoreClass, ...fluxHooks } as Flux;
