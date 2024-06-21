@@ -1,9 +1,14 @@
 import type { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
 import type { Channel, Guild } from "discord-types/general";
-import type { Store } from "@common/flux";
+import flux, { type Store } from "@common/flux";
 import { Injector } from "../../modules/injector";
 import { Logger } from "../../modules/logger";
-import { waitForProps } from "../../modules/webpack";
+import {
+  filters,
+  getFunctionKeyBySource,
+  waitForModule,
+  waitForProps,
+} from "../../modules/webpack";
 
 import { commandAndSections, defaultSection } from "../../apis/commands";
 import { loadCommands, unloadCommands } from "./commands";
@@ -112,18 +117,29 @@ async function injectRepluggedSectionIcon(): Promise<void> {
 
 async function injectApplicationCommandIndexStore(): Promise<void> {
   // The module which contains the store
+  /*
   const ApplicationCommandIndexStoreMod = await waitForProps<ApplicationCommandIndexStoreMod>(
     "useContextIndexState",
     "useDiscoveryState",
     "useGuildIndexState",
     "useUserIndexState",
   );
+  */
+  const ApplicationCommandIndexStoreMod = await waitForModule<ApplicationCommandIndexStoreMod>(
+    filters.bySource("APPLICATION_COMMAND_INDEX"),
+  );
+
+  // This "as" hack is horrible.
+  const useDiscoveryStateKey = getFunctionKeyBySource(
+    ApplicationCommandIndexStoreMod,
+    "includeFrecency",
+  ) as "useDiscoveryState";
 
   // Base handler function for ApplicationCommandIndexStore which is ran to get the info in store
   // commands are mainly added here
   injector.after(
     ApplicationCommandIndexStoreMod,
-    "useDiscoveryState",
+    useDiscoveryStateKey,
     ([, , { commandType }], res) => {
       const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
         (commandAndSection) => commandAndSection.commands.size,
@@ -196,7 +212,10 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
   );
 
   // The store itself
-  const ApplicationCommandIndexStore = ApplicationCommandIndexStoreMod.default;
+  //const ApplicationCommandIndexStore = ApplicationCommandIndexStoreMod.default;
+  const ApplicationCommandIndexStore = Object.values(ApplicationCommandIndexStoreMod).find(
+    (v) => v instanceof flux.Store,
+  ) as ApplicationCommandIndexStore;
 
   // Slash command indexing patched to return our slash commands too
   // only those which match tho
@@ -266,10 +285,14 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
 }
 
 async function injectProfileFetch(): Promise<void> {
-  const mod = await waitForProps<{
-    fetchProfile: (id: string) => Promise<void>;
-  }>("fetchProfile");
-  injector.instead(mod, "fetchProfile", (args, res) => {
+  //const mod = await waitForProps<{
+  //  fetchProfile: (id: string) => Promise<void>;
+  //}>("fetchProfile");
+  const mod = await waitForModule<Record<string, (id: string) => Promise<void>>>(
+    filters.bySource("fetchProfile"),
+  );
+  const fetchProfileKey = getFunctionKeyBySource(mod, "fetchProfile")!;
+  injector.instead(mod, fetchProfileKey, (args, res) => {
     if (args[0] === "replugged") {
       return;
     }

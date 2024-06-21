@@ -1,15 +1,15 @@
 {
   "name": "replugged",
-  "version": "4.7.9",
+  "version": "4.8.0",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
   "main": "dist/main.mjs",
   "types": "dist/renderer/replugged.d.ts",
   "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
+    "node": ">=21.0.0",
+    "pnpm": ">=9.0.0"
   },
-  "packageManager": "pnpm@8.6.1",
+  "packageManager": "pnpm@9.0.6",
   "scripts": {
     "build": "tsx scripts/build.mts",
     "bundle": "tsx scripts/build.mts --production",
@@ -28,6 +28,7 @@
     "postinstall": "tsx scripts/build-bin.mts",
     "prepublishOnly": "rm -rf dist; tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json --outDir dist; rm -rf dist/scripts; mv dist/src/* dist; rm -rf dist/src; cp src/*.d.ts dist; tsx scripts/create-import-wrappers.mts",
     "postpublish": "rm -rf *.d.ts; rm -rf dist; npm run build",
+    "release": "np",
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
     "docs:watch": "pnpm run docs --watch"
   },
@@ -37,6 +38,7 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
+    "@marshift/argus": "^1.0.3",
     "@types/adm-zip": "^0.5.3",
     "@types/highlightjs": "^9.12.4",
     "@types/lodash": "^4.14.200",

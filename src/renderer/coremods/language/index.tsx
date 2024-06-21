@@ -1,11 +1,11 @@
 import { Messages } from "@common/i18n";
 import { Flex, FormNotice, Text } from "@components";
 import React from "react";
+import { WEBLATE_URL } from "src/constants";
 import i18n from "../../modules/common/i18n";
 import { messages } from "../../modules/i18n";
 
 const defaultLocale = "en-US";
-const weblateUrl = "https://i18n.replugged.dev";
 
 export const percentages = new Map<string, number>();
 
@@ -13,7 +13,7 @@ export function Card(): React.ReactElement {
   return (
     <FormNotice
       title={Messages.REPLUGGED_I18N}
-      body={Messages.REPLUGGED_I18N_CONTRIBUTE.format({ weblateUrl })}
+      body={Messages.REPLUGGED_I18N_CONTRIBUTE.format({ weblateUrl: WEBLATE_URL })}
       type={FormNotice.Types.PRIMARY}
       style={{ marginBottom: 20 }}
     />

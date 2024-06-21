@@ -22,7 +22,16 @@ interface TooltipEnums {
   Aligns: typeof Aligns;
   Positions: typeof Positions;
   Colors: Record<
-    "PRIMARY" | "BLACK" | "GREY" | "BRAND" | "GREEN" | "YELLOW" | "RED" | "CUSTOM" | "PREMIUM",
+    | "PRIMARY"
+    | "NESTED"
+    | "BLACK"
+    | "GREY"
+    | "BRAND"
+    | "GREEN"
+    | "YELLOW"
+    | "RED"
+    | "CUSTOM"
+    | "PREMIUM",
     string
   >;
 }
@@ -45,6 +54,7 @@ interface BaseTooltipProps {
   tooltipClassName?: string;
   tooltipContentClassName?: string;
   style?: React.CSSProperties;
+  tooltipStyle?: React.CSSProperties;
   onTooltipShow?: () => void;
   onAnimationRest?: (result: unknown, spring: unknown, item?: unknown) => void;
 }
