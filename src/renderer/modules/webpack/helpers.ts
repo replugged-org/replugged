@@ -255,9 +255,9 @@ export async function waitForStoreName<T extends Store>(
   name: string,
   options?: { timeout: number },
 ): Promise<T | undefined> {
-  const module = await waitForModule<{ default?: T; ZP?: T; Z?: T }>(
+  const module = await waitForModule<{ default?: T; ZP?: T; Z?: T } & T>(
     filters.byStoreName(name),
     options,
   );
-  return module.default ?? module.ZP ?? module.ZP;
+  return module.default ?? module.ZP ?? module.Z ?? module;
 }
