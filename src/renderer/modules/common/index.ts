@@ -82,6 +82,11 @@ importTimeout(
   (mod) => (fluxDispatcher = mod.default),
 );
 
+import type { FluxHooks } from "./fluxHooks";
+export type { FluxHooks };
+export let fluxHooks: FluxHooks;
+importTimeout("fluxHooks", import("./fluxHooks"), (mod) => (fluxHooks = mod.default));
+
 import type { I18n } from "./i18n";
 export type { I18n };
 export let i18n: I18n;
