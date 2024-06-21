@@ -5,19 +5,17 @@ import { waitForProps } from "../webpack";
 
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   look?: string;
-  size?: string;
   color?: string;
-  borderColor?: string;
-  hover?: string;
+  size?: string;
   fullWidth?: boolean;
   grow?: boolean;
   submitting?: boolean;
-  submittingStartedLabel?: string;
-  submittingFinishedLabel?: string;
+  wrapperClassName?: string;
+  innerClassName?: string;
   buttonRef?: React.Ref<HTMLButtonElement>;
   focusProps?: Record<string, unknown>;
-  innerClassName?: string;
-  wrapperClassName?: string;
+  submittingStartedLabel?: string;
+  submittingFinishedLabel?: string;
 }
 
 interface Path {
@@ -37,10 +35,8 @@ interface LinkProps extends Omit<React.ComponentPropsWithoutRef<"a">, "href"> {
 
 interface ButtonLinkProps extends LinkProps {
   look?: string;
-  size?: string;
   color?: string;
-  borderColor?: string;
-  hover?: string;
+  size?: string;
   fullWidth?: boolean;
   grow?: boolean;
   innerClassName?: string;
@@ -48,50 +44,20 @@ interface ButtonLinkProps extends LinkProps {
 
 export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
   Link: React.FC<React.PropsWithChildren<ButtonLinkProps>>;
-  Looks: Record<"FILLED" | "INVERTED" | "OUTLINED" | "LINK" | "BLANK", string>;
+  Looks: Record<"FILLED" | "OUTLINED" | "LINK" | "BLANK", string>;
   Colors: Record<
     | "BRAND"
+    | "BRAND_INVERTED"
     | "RED"
     | "GREEN"
-    | "YELLOW"
     | "PRIMARY"
     | "LINK"
     | "WHITE"
     | "TRANSPARENT"
-    | "BRAND_NEW"
     | "CUSTOM",
     string
   >;
-  BorderColors: Record<
-    | "BRAND"
-    | "RED"
-    | "GREEN"
-    | "YELLOW"
-    | "PRIMARY"
-    | "LINK"
-    | "WHITE"
-    | "BLACK"
-    | "TRANSPARENT"
-    | "BRAND_NEW",
-    string
-  >;
-  Hovers: Record<
-    | "DEFAULT"
-    | "BRAND"
-    | "RED"
-    | "GREEN"
-    | "YELLOW"
-    | "PRIMARY"
-    | "LINK"
-    | "WHITE"
-    | "BLACK"
-    | "TRANSPARENT",
-    string
-  >;
-  Sizes: Record<
-    "NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "XLARGE" | "MIN" | "MAX" | "ICON",
-    string
-  >;
+  Sizes: Record<"NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "MIN" | "MAX" | "ICON", string>;
 };
 
 export const { Button } = components;

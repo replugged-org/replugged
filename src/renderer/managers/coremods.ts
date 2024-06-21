@@ -10,6 +10,7 @@ import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches
 import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
 import { default as commandsPlaintext } from "../coremods/commands/plaintextPatches";
 import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
+import { default as badgesPlaintext } from "../coremods/badges/plaintextPatches";
 import { Logger } from "../modules/logger";
 
 const logger = Logger.api("Coremods");
@@ -59,6 +60,7 @@ export async function startAll(): Promise<void> {
   coremods.watcher = await import("../coremods/watcher");
   coremods.commands = await import("../coremods/commands");
   coremods.welcome = await import("../coremods/welcome");
+  coremods.notrack = await import("../coremods/notrack");
 
   await Promise.all(
     Object.entries(coremods).map(async ([name, mod]) => {
@@ -87,6 +89,7 @@ export function runPlaintextPatches(): Promise<void> {
       languagePlaintext,
       commandsPlaintext,
       settingsPlaintext,
+      badgesPlaintext,
     ].forEach(patchPlaintext);
     res();
   });
