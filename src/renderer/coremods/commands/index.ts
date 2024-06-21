@@ -1,6 +1,6 @@
 import type { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
 import type { Channel, Guild } from "discord-types/general";
-import type { Store } from "@common/flux";
+import flux, { type Store } from "@common/flux";
 import { Injector } from "../../modules/injector";
 import { Logger } from "../../modules/logger";
 import {
@@ -212,7 +212,10 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
   );
 
   // The store itself
-  const ApplicationCommandIndexStore = ApplicationCommandIndexStoreMod.default;
+  //const ApplicationCommandIndexStore = ApplicationCommandIndexStoreMod.default;
+  const ApplicationCommandIndexStore = Object.values(ApplicationCommandIndexStoreMod).find(
+    (v) => v instanceof flux.Store,
+  ) as ApplicationCommandIndexStore;
 
   // Slash command indexing patched to return our slash commands too
   // only those which match tho
