@@ -1,5 +1,6 @@
 import type React from "react";
-import { filters, waitForModule } from "src/renderer/modules/webpack";
+import { filters, getFunctionBySource, waitForModule } from "src/renderer/modules/webpack";
+import { ValueOf } from "type-fest";
 
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
@@ -53,4 +54,19 @@ interface NoticeMod {
   Notice: React.FC<React.PropsWithChildren<NoticeProps>>;
 }
 
-export default await waitForModule<NoticeMod>(filters.bySource(".colorPremiumTier1,"));
+const actualNoticeMod = await waitForModule<Record<string, ValueOf<NoticeMod>>>(
+  filters.bySource(".colorPremiumTier1,"),
+);
+
+const remappedNoticeMod: NoticeMod = {
+  NoticeColors: Object.values(actualNoticeMod).find(
+    (v) => typeof v === "object",
+  ) as NoticeMod["NoticeColors"],
+  NoticeButton: getFunctionBySource(actualNoticeMod, "buttonMinor")!,
+  PrimaryCTANoticeButton: getFunctionBySource(actualNoticeMod, "CTA")!,
+  NoticeButtonAnchor: getFunctionBySource(actualNoticeMod, ".Anchor")!,
+  NoticeCloseButton: getFunctionBySource(actualNoticeMod, "DISMISS")!,
+  Notice: getFunctionBySource(actualNoticeMod, "isMobile")!,
+};
+
+export default remappedNoticeMod;
