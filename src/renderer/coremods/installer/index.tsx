@@ -3,7 +3,7 @@ import { Injector } from "@replugged";
 import type { Capture, DefaultInRule } from "simple-markdown";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
-import { filters, waitForModule } from "src/renderer/modules/webpack";
+import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { ObjectExports } from "src/types";
 import { registerRPCCommand } from "../rpc";
 import { generalSettings } from "../settings/pages";
@@ -93,8 +93,8 @@ async function injectLinks(): Promise<void> {
   const exports = linkMod.exports as ObjectExports & {
     Anchor: React.FC<React.PropsWithChildren<AnchorProps>>;
   };
-
-  injector.instead(exports, "Anchor", (args, fn) => {
+  const anchorKey = getFunctionKeyBySource(exports, "")! as "Anchor"; // It's actually a mangled name, but TS can sit down and shut up
+  injector.instead(exports, anchorKey, (args, fn) => {
     const { href } = args[0];
     if (!href) return fn(...args);
     const installLink = parseInstallLink(href);

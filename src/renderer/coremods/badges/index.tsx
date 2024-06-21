@@ -1,7 +1,7 @@
 import { Messages } from "@common/i18n";
 import React from "@common/react";
 import { Logger } from "@replugged";
-import { filters, waitForModule, waitForProps } from "@webpack";
+import { filters, getFunctionKeyBySource, waitForModule } from "@webpack";
 import { DISCORD_BLURPLE, DISCORD_INVITE, WEBLATE_URL } from "src/constants";
 import type { Badge, DisplayProfile } from "src/types";
 import { Injector } from "../../modules/injector";
@@ -103,8 +103,9 @@ const badgeElements = [
 
 export async function start(): Promise<void> {
   const useBadgesMod = await waitForModule<UseBadgesMod>(filters.bySource(/:\w+\.getBadges\(\)/));
+  const defaultKey = getFunctionKeyBySource(useBadgesMod, "") as "default"; // It's actually Z, but shut up TS, nobody loves you
 
-  injector.after(useBadgesMod, "default", ([displayProfile], badges) => {
+  injector.after(useBadgesMod, defaultKey, ([displayProfile], badges) => {
     if (!generalSettings.get("badges")) return badges;
 
     try {
@@ -178,9 +179,17 @@ export async function start(): Promise<void> {
     }
   });
 
-  const userProfileConstantsMod = await waitForProps<UserProfileConstantsMod>("getBadgeAsset");
+  // TODO: patch badge components with our SVGs to make it actually fill in the badges.
+  //const userProfileConstantsMod = await waitForProps<UserProfileConstantsMod>("getBadgeAsset");
+  const userProfileConstantsMod = await waitForModule<UserProfileConstantsMod>(
+    filters.bySource('concat(n,"/badge-icons/"'),
+  );
+  const getBadgeAssetKey = getFunctionKeyBySource(
+    userProfileConstantsMod,
+    "badge-icons",
+  ) as "getBadgeAsset"; // I hate this hack by now
 
-  injector.instead(userProfileConstantsMod, "getBadgeAsset", (args, orig) => {
+  injector.instead(userProfileConstantsMod, getBadgeAssetKey, (args, orig) => {
     if (args[0].startsWith("replugged")) return args[0].replace("replugged", "");
     return orig(...args);
   });
