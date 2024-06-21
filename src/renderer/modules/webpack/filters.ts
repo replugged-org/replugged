@@ -69,9 +69,10 @@ export const byStoreName = (name: string) => {
     if (!m.exports || typeof m.exports !== "object" || typeof m.exports !== "object") {
       return false;
     }
-    return (
-      (m.exports as { default?: Store & { constructor: { displayName: string } } }).default
-        ?.constructor.displayName === name
+    return ["default", "Z", "ZP"].some(
+      (key) =>
+        (m.exports as { [key: string]: Store & { constructor: { displayName: string } } })[key]
+          ?.constructor.displayName === name,
     );
   };
 };
