@@ -2,10 +2,10 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
-    find: 'Error("Menu',
+    find: 'Error("Menu API',
     replacements: [
       {
-        match: /return(\(0,.\.jsx\)\(\w+.OnMenuSelectContext)/,
+        match: /return(\(0,.\.jsx\)\(\w+\.\w+\.Provider)/,
         replace: (_, suffix) =>
           `return replugged.coremods.coremods.contextMenu._buildPatchedMenu(arguments[0])??${suffix}`,
       },
