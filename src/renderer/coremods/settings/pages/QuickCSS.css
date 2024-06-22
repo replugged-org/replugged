@@ -1,6 +1,6 @@
 #rp-quickcss-tab,
 #replugged-quickcss-wrapper {
-  height: calc(100%)
+  height: calc(100%);
 }
 
 #replugged-quickcss-wrapper .cm-editor {
@@ -8,7 +8,7 @@
   border-radius: 4px;
   border: 1px solid var(--background-tertiary);
   outline: none !important;
-  height: calc(100% - 20px)
+  height: calc(100% - 20px);
 }
 
 #replugged-quickcss-wrapper .cm-gutters {
