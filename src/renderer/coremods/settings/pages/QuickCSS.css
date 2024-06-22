@@ -47,5 +47,5 @@
   border-radius: var(--custom-index-scrollbar-width);
 }
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-corner {
-  background: var(--background-tertiary);
+  background: transparent;
 }
