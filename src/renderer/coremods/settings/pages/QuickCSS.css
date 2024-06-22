@@ -42,6 +42,7 @@
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb {
   background: var(--scrollbar-auto-thumb);
   border-radius: var(--custom-scrollbar-scrollbar-width);
+  border: 2px solid var(--scrollbar-auto-track);
 }
 
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-track {
