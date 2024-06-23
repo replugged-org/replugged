@@ -33,7 +33,9 @@ rmSync("replugged.asar", { force: true });
 const preBundle: esbuild.Plugin = {
   name: "preBundle",
   setup: (build) => {
-    build.onEnd(() => {
+    build.onEnd((result) => {
+      if (result.errors.length > 0) return;
+
       if (!existsSync(`${distDir}/i18n`)) {
         mkdirSync(`${distDir}/i18n`);
       }
@@ -114,7 +116,7 @@ await Promise.all(
     if (watch) {
       await context.watch();
     } else {
-      await context.rebuild().catch(() => {});
+      await context.rebuild().catch(() => process.exit(1));
       context.dispose();
     }
   }),
