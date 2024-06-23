@@ -272,7 +272,7 @@ async function handleContexts(
       if (watch) {
         await context.watch();
       } else {
-        await context.rebuild().catch(() => {});
+        await context.rebuild().catch(() => process.exit(1));
         context.dispose();
       }
     }),
@@ -364,7 +364,9 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
   const install: esbuild.Plugin = {
     name: "install",
     setup: (build) => {
-      build.onEnd(async () => {
+      build.onEnd(async (result) => {
+        if (result.errors.length > 0) return;
+
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "plugins", manifest.id);
           if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
@@ -452,7 +454,9 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const install: esbuild.Plugin = {
     name: "install",
     setup: (build) => {
-      build.onEnd(async () => {
+      build.onEnd(async (result) => {
+        if (result.errors.length > 0) return;
+
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "themes", manifest.id);
           if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
