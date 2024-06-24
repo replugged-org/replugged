@@ -4,7 +4,6 @@ import electron from "electron";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
-
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 // require.main!.filename = discordMain;
@@ -170,10 +169,16 @@ electron.app.once("ready", () => {
         filePath = join(CONFIG_PATHS.quickcss, reqUrl.pathname);
         break;
       case "theme":
-        filePath = join(CONFIG_PATHS.themes, reqUrl.pathname);
+        filePath = join(
+          reqUrl.pathname.includes(".asar") ? CONFIG_PATHS.temp_themes : CONFIG_PATHS.themes,
+          reqUrl.pathname.replace(".asar", ""),
+        );
         break;
       case "plugin":
-        filePath = join(CONFIG_PATHS.plugins, reqUrl.pathname);
+        filePath = join(
+          reqUrl.pathname.includes(".asar") ? CONFIG_PATHS.temp_plugins : CONFIG_PATHS.plugins,
+          reqUrl.pathname.replace(".asar", ""),
+        );
         break;
     }
     cb({ path: filePath });
