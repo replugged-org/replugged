@@ -12,11 +12,16 @@ import type {
 } from "../../types";
 // eslint-disable-next-line no-duplicate-imports
 import { ApplicationCommandOptionType } from "../../types";
-import { constants, i18n, messages, users } from "../modules/common";
+import { constants, i18n, messages, users, fluxDispatcher } from "../modules/common";
+import type {
+  SendMessageForReplyOptions,
+  SendMessageOptionsForReply,
+} from "../modules/common/messages";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 import icon from "../assets/logo.png";
+
 const logger = Logger.api("Commands");
 
 let RepluggedUser: User | undefined;
@@ -97,7 +102,17 @@ async function executeCommand<T extends CommandOptions>(
   command: RepluggedCommand<T>,
 ): Promise<void> {
   try {
+    const PendingReplyStore = getByStoreName<
+      Store & {
+        getPendingReply: (channelId: string) => SendMessageForReplyOptions;
+      }
+    >("PendingReplyStore")!;
+
     const currentChannelId = currentInfo.channel.id;
+    const replyOptions: SendMessageOptionsForReply = messages.getSendMessageOptionsForReply(
+      PendingReplyStore.getPendingReply(currentChannelId),
+    );
+
     const loadingMessage = messages.createBotMessage({
       channelId: currentChannelId,
       content: "",
@@ -130,12 +145,19 @@ async function executeCommand<T extends CommandOptions>(
     if ((!result?.result && !result?.embeds) || !currentChannelId) return;
 
     if (result.send) {
-      void messages.sendMessage(currentChannelId, {
-        content: result.result!,
-        invalidEmojis: [],
-        validNonShortcutEmojis: [],
-        tts: false,
-      });
+      if (replyOptions?.messageReference)
+        fluxDispatcher.dispatch({ type: "DELETE_PENDING_REPLY", channelId: currentChannelId });
+      void messages.sendMessage(
+        currentChannelId,
+        {
+          content: result.result!,
+          invalidEmojis: [],
+          validNonShortcutEmojis: [],
+          tts: false,
+        },
+        undefined,
+        replyOptions,
+      );
     } else {
       const botMessage = messages.createBotMessage({
         channelId: currentChannelId,
