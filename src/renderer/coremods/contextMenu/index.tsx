@@ -9,7 +9,6 @@ import type {
 import { Logger } from "../../modules/logger";
 import { ContextMenu as ContextComponents } from "../../modules/components";
 
-
 const logger = Logger.api("ContextMenu");
 
 export const menuItems = {} as Record<
@@ -114,7 +113,6 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
   // Or MenuGroup Component is not available
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!menuItems[navId] || !MenuGroup) return <ContextMenu {...menu} plugged={true} />;
-
 
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
   const data = menu.data[0];
