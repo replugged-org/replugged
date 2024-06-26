@@ -7,6 +7,7 @@ import { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
 import notices from "../apis/notices";
 import * as common from "@common";
 import { waitForProps } from "../modules/webpack";
+import semver from "semver";
 
 const logger = Logger.coremod("Updater");
 
@@ -228,15 +229,26 @@ export async function checkAllUpdates(autoCheck = false, verbose = false): Promi
   updaterSettings.set("lastChecked", Date.now());
 }
 
+function compareVersions(newver, curver) {
+    if (semver.valid(newver) && semver.valid(curver)) {
+      return semver.gt(newver, curver);
+    } else {
+      return newver != curver;
+    }
+}
 export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {
   return Object.entries(updaterState.all())
     .map(([id, state]) => ({ ...state, id }))
     .filter(
-      (state) =>
-        (state.available || completedUpdates.has(state.id)) &&
-        ((state.id === REPLUGGED_ID && window.RepluggedNative.getVersion() !== "dev") ||
-          pluginManager.plugins.has(state.id) ||
-          themeManager.themes.has(state.id)),
+      (state) => {
+        return (state.available || completedUpdates.has(state.id)) &&
+          ((state.id === REPLUGGED_ID && window.RepluggedNative.getVersion() !== "dev") ||
+            (
+              (pluginManager.plugins.has(state.id) && compareVersions(state.version, replugged.plugins.plugins.get(state.id).manifest.version)) ||
+              (themeManager.themes.has(state.id) && compareVersions(state.version, replugged.themes.themes.get(state.id).manifest.version))
+            )
+          )
+        },
     );
 }
 
