@@ -5,7 +5,7 @@
 }
 #replugged-quickcss-wrapper .cm-editor {
   max-height: calc(100% - 20px);
-  background: var(--bg-overlay-2,var(--background-secondary));
+  background: var(--bg-overlay-2, var(--background-secondary));
   border: 1px solid var(--background-secondary-alt);
   border-radius: 4px;
   outline: none !important;
@@ -31,24 +31,37 @@
   border-radius: 8px;
 }
 #replugged-quickcss-wrapper:not([data-theme="light"]) .cm-scroller::-webkit-scrollbar-thumb {
-  background-image: linear-gradient(rgb(var(--bg-overlay-color-inverse)/var(--bg-overlay-opacity-4)),rgb(var(--bg-overlay-color-inverse)/var(--bg-overlay-opacity-4))),var(--custom-theme-background);
+  background-image: linear-gradient(
+      rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-4)),
+      rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-4))
+    ),
+    var(--custom-theme-background);
 }
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb {
-  background-image: rgb(var(--bg-overlay-color-inverse)/var(--bg-overlay-opacity-6)),rgb(var(--bg-overlay-color)/var(--bg-overlay-opacity-3));
+  background-image: rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-6)),
+    rgb(var(--bg-overlay-color) / var(--bg-overlay-opacity-3));
   background-color: var(--scrollbar-auto-thumb);
   background-clip: padding-box;
   border: 4px solid transparent;
   background-size: 100vh;
 }
 #replugged-quickcss-wrapper:not([data-theme="light"]) .cm-scroller::-webkit-scrollbar-track {
-  background-image: linear-gradient(rgb(var(--bg-overlay-color)/.6),rgb(var(--bg-overlay-color)/.6)),var(--custom-theme-background);
+  background-image: linear-gradient(
+      rgb(var(--bg-overlay-color) / 0.6),
+      rgb(var(--bg-overlay-color) / 0.6)
+    ),
+    var(--custom-theme-background);
 }
 #replugged-quickcss-wrapper:is([data-theme="dark"]) .cm-scroller::-webkit-scrollbar-track {
   background: var(--background-modifier-hover);
   background-clip: padding-box;
 }
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-track {
-  background-image: linear-gradient(rgb(var(--bg-overlay-color)/var(--bg-overlay-opacity-1)),rgb(var(--bg-overlay-color)/var(--bg-overlay-opacity-1))),var(--custom-theme-background);
+  background-image: linear-gradient(
+      rgb(var(--bg-overlay-color) / var(--bg-overlay-opacity-1)),
+      rgb(var(--bg-overlay-color) / var(--bg-overlay-opacity-1))
+    ),
+    var(--custom-theme-background);
   background: var(--scrollbar-auto-track);
   background-clip: padding-box;
   border: 4px solid transparent;
@@ -66,7 +79,7 @@
 
 /* Active line */
 #replugged-quickcss-wrapper .cm-activeLine,
-#replugged-quickcss-wrapper .cm-activeLineGutter{
+#replugged-quickcss-wrapper .cm-activeLineGutter {
   background-color: var(--background-modifier-hover);
 }
 
@@ -86,7 +99,7 @@
 
 /* Line gutter */
 #replugged-quickcss-wrapper .cm-gutters {
-  background: var(--bg-overlay-3,var(--channeltextarea-background));
+  background: var(--bg-overlay-3, var(--channeltextarea-background));
   border-right: 1px solid var(--background-secondary-alt);
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
@@ -112,12 +125,12 @@
 }
 #replugged-quickcss-wrapper .cm-gutterElement span[title="Fold line"]:before {
   content: "▼";
-  font-size: .5rem;
+  font-size: 0.5rem;
   margin-right: 2px;
 }
 #replugged-quickcss-wrapper .cm-gutterElement span[title="Unfold line"]:before {
   content: "▶";
-  font-size: .5rem;
+  font-size: 0.5rem;
   margin-right: 0.5px;
 }
 
@@ -126,7 +139,7 @@
   color: var(--interactive-normal);
 }
 #replugged-quickcss-wrapper .cm-panels {
-  background: var(--bg-overlay-2,var(--background-secondary));
+  background: var(--bg-overlay-2, var(--background-secondary));
   border-top: 1px solid var(--background-secondary-alt);
 }
 #replugged-quickcss-wrapper .cm-textfield,
@@ -148,23 +161,23 @@
 #replugged-quickcss-wrapper .cm-focused .cm-foldPlaceholder,
 #replugged-quickcss-wrapper .cm-selectionLayer .cm-selectionBackground,
 #replugged-quickcss-wrapper .cm-selectionBackground {
-  background-color: hsl(var(--blue-400-hsl) / .3);
+  background-color: hsl(var(--blue-400-hsl) / 0.3);
 }
 #replugged-quickcss-wrapper .cm-selectionMatch,
 #replugged-quickcss-wrapper .cm-focused .cm-matchingBracket {
-  background-color: hsl(var(--green-400-hsl) / .3);
+  background-color: hsl(var(--green-400-hsl) / 0.3);
 }
 #replugged-quickcss-wrapper .cm-focused .cm-nonmatchingBracket {
-  background-color: hsl(var(--red-400-hsl) / .3);
+  background-color: hsl(var(--red-400-hsl) / 0.3);
 }
 #replugged-quickcss-wrapper .cm-searchMatch {
-  background-color: hsl(var(--yellow-400-hsl) / .15);
+  background-color: hsl(var(--yellow-400-hsl) / 0.15);
 }
 #replugged-quickcss-wrapper .cm-searchMatch .cm-selectionMatch {
-  background-color: hsl(var(--yellow-400-hsl) / .3);
+  background-color: hsl(var(--yellow-400-hsl) / 0.3);
 }
 #replugged-quickcss-wrapper .cm-searchMatch.cm-searchMatch-selected {
-  background-color: hsl(var(--yellow-400-hsl) / .6);
+  background-color: hsl(var(--yellow-400-hsl) / 0.6);
 }
 #replugged-quickcss-wrapper .cm-trailingSpace,
 #replugged-quickcss-wrapper .cm-specialChar {
