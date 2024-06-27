@@ -1,4 +1,4 @@
-import { React, channels, fluxDispatcher, guilds } from "@common";
+import { React, channels, fluxDispatcher, guilds, lodash } from "@common";
 import type { Fiber } from "react-reconciler";
 import type { Jsonifiable } from "type-fest";
 import type { ObjectExports } from "../types";
@@ -14,7 +14,7 @@ export const loadStyleSheet = (path: string): HTMLLinkElement => {
   const el = document.createElement("link");
   el.rel = "stylesheet";
   el.href = `${path}?t=${Date.now()}`;
-  document.body.appendChild(el);
+  document.head.appendChild(el);
 
   return el;
 };
@@ -84,7 +84,6 @@ export function forceUpdateElement(selector: string, all = false): void {
   const elements = (
     all ? [...document.querySelectorAll(selector)] : [document.querySelector(selector)]
   ).filter(Boolean) as Element[];
-
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- May not actually have forceUpdate
   elements.forEach((element) => getOwnerInstance(element)?.forceUpdate());
 }
@@ -172,7 +171,7 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
 }
 
 export async function openExternal(url: string): Promise<void> {
-  const mod = getBySource<(url: string) => Promise<void>>(/href=\w,\w\.target="_blank"/);
+  const mod = getBySource<(url: string) => Promise<void>>('.target="_blank"');
   if (!mod) {
     throw new Error("Could not find openExternal");
   }
@@ -184,29 +183,44 @@ type ValType<T> =
   | React.ChangeEvent<HTMLInputElement>
   | (Record<string, unknown> & { value?: T; checked?: T });
 
+type NestedType<T, P> = P extends
+  | `${infer K}.${infer NestedKey}`
+  | `${infer K}-${infer NestedKey}`
+  | `${infer K}/${infer NestedKey}`
+  ? K extends keyof T
+    ? NestedType<NonNullable<T[K]>, NestedKey>
+    : undefined
+  : P extends keyof T
+  ? NonNullable<T[P]>
+  : undefined;
+
 export function useSetting<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
   K extends Extract<keyof T, string>,
-  F extends T[K] | undefined,
+  F extends NestedType<T, P> | T[K] | undefined,
+  P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}` | K,
+  V extends P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}`
+    ? NonNullable<NestedType<T, P>>
+    : P extends D
+    ? NonNullable<T[P]>
+    : F extends null | undefined
+    ? T[P] | undefined
+    : NonNullable<T[P]> | F,
 >(
   settings: SettingsManager<T, D>,
-  key: K,
+  key: P,
   fallback?: F,
 ): {
-  value: K extends D
-    ? NonNullable<T[K]>
-    : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F;
-  onChange: (newValue: ValType<T[K]>) => void;
+  value: V;
+  onChange: (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => void;
 } {
-  const initial = settings.get(key, fallback);
-  const [value, setValue] = React.useState(initial);
+  const initial = settings.get(key as K) ?? lodash.get(settings.all(), key) ?? fallback;
+  const [value, setValue] = React.useState(initial as V);
 
   return {
     value,
-    onChange: (newValue: ValType<T[K]>) => {
+    onChange: (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => {
       const isObj = newValue && typeof newValue === "object";
       const value = isObj && "value" in newValue ? newValue.value : newValue;
       const checked = isObj && "checked" in newValue ? newValue.checked : undefined;
@@ -218,32 +232,43 @@ export function useSetting<
       const targetChecked = target && "checked" in target ? target.checked : undefined;
       const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
 
-      // @ts-expect-error dumb
-      setValue(finalValue);
-      settings.set(key, finalValue);
+      // Update local state
+      setValue(finalValue as V);
+
+      // Update settings
+      if (settings.get(key as K)) {
+        settings.set(key as K, finalValue);
+      } else {
+        const [rootKey] = key.split(/[./-]/);
+        // without cloning this changes property in default settings
+        const setting = lodash.set(lodash.cloneDeep(settings.all()), key, finalValue)[rootKey as K];
+        settings.set(rootKey as K, setting);
+      }
     },
   };
 }
+
 export function useSettingArray<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
   K extends Extract<keyof T, string>,
-  F extends T[K] | undefined,
+  F extends NestedType<T, P> | T[K] | undefined,
+  P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}` | K,
+  V extends P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}`
+    ? NonNullable<NestedType<T, P>>
+    : P extends D
+    ? NonNullable<T[P]>
+    : F extends null | undefined
+    ? T[P] | undefined
+    : NonNullable<T[P]> | F,
 >(
   settings: SettingsManager<T, D>,
-  key: K,
+  key: P,
   fallback?: F,
-): [
-  K extends D
-    ? NonNullable<T[K]>
-    : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F,
-  (newValue: ValType<T[K]>) => void,
-] {
+): [V, (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => void] {
   const { value, onChange } = useSetting(settings, key, fallback);
 
-  return [value, onChange];
+  return [value as V, onChange];
 }
 
 // Credit to @Vendicated - https://github.com/Vendicated/virtual-merge
@@ -301,7 +326,7 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
   return new Proxy(fallback, handler) as ExtractObjectType<O>;
 }
 
-export type Tree = Record<string, unknown> | null;
+export type Tree = Record<string, unknown>;
 type TreeFilter = string | ((tree: Tree) => boolean);
 
 /**
@@ -321,8 +346,7 @@ export function findInTree(
   if (maxRecursion <= 0) return undefined;
 
   if (typeof searchFilter === "string") {
-    if (Object.prototype.hasOwnProperty.call(tree, searchFilter))
-      return tree?.[searchFilter] as Tree;
+    if (Object.prototype.hasOwnProperty.call(tree, searchFilter)) return tree[searchFilter] as Tree;
   } else if (searchFilter(tree)) {
     return tree;
   }
