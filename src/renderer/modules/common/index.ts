@@ -117,7 +117,7 @@ importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 /**
  * @see {@link https://highlightjs.org/usage/}
  */
-export let hljs: typeof import("highlightjs");
+export let hljs: typeof import("highlight.js").default;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
 /**
