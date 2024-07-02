@@ -15,7 +15,7 @@ import {
 import { logBuildPlugin } from "src/util.mjs";
 
 const NODE_VERSION = "20";
-const CHROME_VERSION = "120";
+const CHROME_VERSION = "124";
 
 const ctx = createContext(process.argv);
 const watch = ctx.hasOptionalArg(/--watch/);
