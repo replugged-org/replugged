@@ -7,9 +7,9 @@ export default [
     find: "getPredicateSections",
     replacements: [
       {
-        match: /this\.props\.sections\.filter\((.+?)\)}/,
-        replace: (_, sections) =>
-          `${coremodStr}.insertSections(this.props.sections.filter(${sections}))};`,
+        match: /(this\.props\.sections\.filter\(.+?\))}/,
+        replace: (_, filteredSections) =>
+          `${coremodStr}?.insertSections(${filteredSections}) ?? ${filteredSections}};`,
       },
     ],
   },
@@ -18,7 +18,7 @@ export default [
     replacements: [
       {
         match: /appArch,children:.{0,200}?className:\w+\.line,.{0,100}children:\w+}\):null/,
-        replace: `$&,${coremodStr}.VersionInfo()`,
+        replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
       },
     ],
   },

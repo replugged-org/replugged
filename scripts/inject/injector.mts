@@ -10,6 +10,7 @@ import {
   killProcessByPID,
   openProcess,
 } from "./util.mjs";
+import { entryPoint as argEntryPoint, exitCode } from "./index.mjs";
 import { execSync } from "child_process";
 import { DiscordPlatform, PlatformModule, ProcessInfo } from "./types.mjs";
 import { CONFIG_PATH } from "../../src/util.mjs";
@@ -117,9 +118,10 @@ export const inject = async (
     return false;
   }
 
-  const entryPoint = prod
-    ? join(CONFIG_PATH, "replugged.asar")
-    : join(dirname, "..", "..", "dist-bundle/main.js");
+  const entryPoint =
+    argEntryPoint ??
+    (prod ? join(CONFIG_PATH, "replugged.asar") : join(dirname, "..", "..", "dist/main.js"));
+
   const entryPointDir = path.dirname(entryPoint);
 
   if (appDir.includes("flatpak")) {
@@ -148,7 +150,7 @@ export const inject = async (
     console.error(
       `${AnsiEscapes.RED}Failed to rename app.asar while plugging. If Discord is open, make sure it is closed.${AnsiEscapes.RESET}`,
     );
-    process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+    process.exit(exitCode);
   }
 
   if (prod) {

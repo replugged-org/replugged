@@ -11,6 +11,7 @@ import * as linux from "./platforms/linux.mjs";
 import * as win32 from "./platforms/win32.mjs";
 import { DiscordPlatform } from "./types.mjs";
 import { existsSync } from "fs";
+import { createContext, getPositionalArg } from "@marshift/argus";
 
 const platformModules = {
   darwin,
@@ -18,10 +19,12 @@ const platformModules = {
   win32,
 };
 
-const exitCode = process.argv.includes("--no-exit-codes") ? 0 : 1;
-const prod = process.argv.includes("--production");
-const noRelaunch = process.argv.includes("--no-relaunch");
-const processArgs = process.argv.filter((v) => !v.startsWith("-"));
+const ctx = createContext(process.argv);
+
+export const exitCode = ctx.hasOptionalArg(/--no-exit-codes/) ? 0 : 1;
+const prod = ctx.hasOptionalArg(/--production/);
+const noRelaunch = ctx.hasOptionalArg(/--no-relaunch/);
+export const entryPoint = ctx.getOptionalArg(/--entryPoint/);
 
 if (!(process.platform in platformModules)) {
   console.error(
@@ -46,9 +49,9 @@ const checkInstalled = (appDir: string): boolean => existsSync(join(appDir, ".."
 
 let platform: DiscordPlatform | undefined;
 
-const run = async (cmd = processArgs[2], replug = false): Promise<void> => {
+const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void> => {
   if (!platform) {
-    const platformArg = processArgs[3]?.toLowerCase();
+    const platformArg = getPositionalArg(ctx.argv, 3, false)?.toLowerCase();
 
     if (platformArg) {
       const exists = checkPlatform(platformArg);

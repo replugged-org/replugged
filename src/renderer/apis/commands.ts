@@ -17,6 +17,7 @@ import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 import icon from "../assets/logo.png";
+import { REPLUGGED_CLYDE_ID } from "../../constants";
 const logger = Logger.api("Commands");
 
 let RepluggedUser: User | undefined;
@@ -26,10 +27,10 @@ interface CommandsAndSection {
   commands: Map<string, AnyRepluggedCommand>;
 }
 
-void waitForModule<typeof User>(filters.bySource(".isStaffPersonal=")).then((User) => {
+void waitForModule<typeof User>(filters.bySource("hasHadPremium(){")).then((User) => {
   RepluggedUser = new User({
     avatar: "replugged",
-    id: "replugged",
+    id: REPLUGGED_CLYDE_ID,
     bot: true,
     username: "Replugged",
     system: true,
