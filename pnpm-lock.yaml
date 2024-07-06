@@ -122,7 +122,7 @@ importers:
         version: 17.0.29
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.8.0
-        version: 6.8.0(@typescript-eslint/parser@6.8.0)(eslint@8.51.0)(typescript@5.2.2)
+        version: 6.8.0(@typescript-eslint/parser@6.8.0(eslint@8.51.0)(typescript@5.2.2))(eslint@8.51.0)(typescript@5.2.2)
       '@typescript-eslint/parser':
         specifier: ^6.8.0
         version: 6.8.0(eslint@8.51.0)(typescript@5.2.2)
@@ -137,7 +137,7 @@ importers:
         version: 8.51.0
       eslint-config-dmitmel:
         specifier: github:dmitmel/eslint-config-dmitmel
-        version: eslint-config-dmitmel@https://codeload.github.com/dmitmel/eslint-config-dmitmel/tar.gz/d97129ec35235415c6ae6a42299f55cdbb5d75fd(eslint@8.51.0)
+        version: https://codeload.github.com/dmitmel/eslint-config-dmitmel/tar.gz/d97129ec35235415c6ae6a42299f55cdbb5d75fd(eslint@8.51.0)
       eslint-plugin-node:
         specifier: ^11.1.0
         version: 11.1.0(eslint@8.51.0)
@@ -1518,7 +1518,6 @@ packages:
 
   eslint-config-dmitmel@https://codeload.github.com/dmitmel/eslint-config-dmitmel/tar.gz/d97129ec35235415c6ae6a42299f55cdbb5d75fd:
     resolution: {tarball: https://codeload.github.com/dmitmel/eslint-config-dmitmel/tar.gz/d97129ec35235415c6ae6a42299f55cdbb5d75fd}
-    name: eslint-config-dmitmel
     version: 8.3.0
     engines: {node: '>=8.10.0'}
     peerDependencies:
@@ -3768,6 +3767,7 @@ snapshots:
   '@samverschueren/stream-to-observable@0.3.1(rxjs@6.6.7)':
     dependencies:
       any-observable: 0.3.0(rxjs@6.6.7)
+    optionalDependencies:
       rxjs: 6.6.7
     transitivePeerDependencies:
       - zenObservable
@@ -3869,7 +3869,7 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.2
 
-  '@typescript-eslint/eslint-plugin@6.8.0(@typescript-eslint/parser@6.8.0)(eslint@8.51.0)(typescript@5.2.2)':
+  '@typescript-eslint/eslint-plugin@6.8.0(@typescript-eslint/parser@6.8.0(eslint@8.51.0)(typescript@5.2.2))(eslint@8.51.0)(typescript@5.2.2)':
     dependencies:
       '@eslint-community/regexpp': 4.9.1
       '@typescript-eslint/parser': 6.8.0(eslint@8.51.0)(typescript@5.2.2)
@@ -3884,6 +3884,7 @@ snapshots:
       natural-compare: 1.4.0
       semver: 7.5.4
       ts-api-utils: 1.0.3(typescript@5.2.2)
+    optionalDependencies:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
@@ -3896,6 +3897,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 6.8.0
       debug: 4.3.4
       eslint: 8.51.0
+    optionalDependencies:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
@@ -3912,6 +3914,7 @@ snapshots:
       debug: 4.3.4
       eslint: 8.51.0
       ts-api-utils: 1.0.3(typescript@5.2.2)
+    optionalDependencies:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
@@ -3927,6 +3930,7 @@ snapshots:
       is-glob: 4.0.3
       semver: 7.5.4
       ts-api-utils: 1.0.3(typescript@5.2.2)
+    optionalDependencies:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
@@ -4017,7 +4021,7 @@ snapshots:
   ansi-styles@6.2.1: {}
 
   any-observable@0.3.0(rxjs@6.6.7):
-    dependencies:
+    optionalDependencies:
       rxjs: 6.6.7
 
   anymatch@3.1.3:
@@ -4332,6 +4336,7 @@ snapshots:
       js-yaml: 4.1.0
       parse-json: 5.2.0
       path-type: 4.0.0
+    optionalDependencies:
       typescript: 5.2.2
 
   crelt@1.0.6: {}
@@ -4677,7 +4682,6 @@ snapshots:
   escape-string-regexp@5.0.0: {}
 
   eslint-config-dmitmel@https://codeload.github.com/dmitmel/eslint-config-dmitmel/tar.gz/d97129ec35235415c6ae6a42299f55cdbb5d75fd(eslint@8.51.0):
-    id: eslint-config-dmitmel@https://codeload.github.com/dmitmel/eslint-config-dmitmel/tar.gz/d97129ec35235415c6ae6a42299f55cdbb5d75fd
     dependencies:
       eslint: 8.51.0
 

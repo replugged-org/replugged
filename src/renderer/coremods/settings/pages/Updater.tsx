@@ -166,16 +166,15 @@ export const Updater = (): React.ReactElement => {
             </Text.Normal>
           ) : null}
         </Flex>
-        {!hasAnyUpdates ? (
-          <Button
-            className="replugged-updater-check"
-            onClick={checkForUpdates}
-            disabled={isAnyUpdating || isAnyComplete}
-            color={checking ? Button.Colors.PRIMARY : Button.Colors.BRAND}
-            submitting={checking}>
-            {Messages.REPLUGGED_UPDATES_CHECK}
-          </Button>
-        ) : isAllComplete && didInstallAll ? (
+        <Button
+          className="replugged-updater-check"
+          onClick={checkForUpdates}
+          disabled={isAnyUpdating || isAnyComplete}
+          color={checking ? Button.Colors.PRIMARY : Button.Colors.BRAND}
+          submitting={checking}>
+          {Messages.REPLUGGED_UPDATES_CHECK}
+        </Button>
+        {hasAnyUpdates ? isAllComplete && didInstallAll ? (
           <Button onClick={reload} color={Button.Colors.RED}>
             {Messages.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE}
           </Button>
@@ -187,7 +186,7 @@ export const Updater = (): React.ReactElement => {
             submitting={isAnyUpdating}>
             {Messages.REPLUGGED_UPDATES_UPDATE_ALL}
           </Button>
-        )}
+        ) : ()=>{}}
       </Flex>
       <Flex className="replugged-updater-items" direction={Flex.Direction.VERTICAL}>
         {updatesAvailable.map((update) => {
