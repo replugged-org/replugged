@@ -197,8 +197,8 @@ export function useSetting<
   value: K extends D
     ? NonNullable<T[K]>
     : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F;
+      ? T[K] | undefined
+      : NonNullable<T[K]> | F;
   onChange: (newValue: ValType<T[K]>) => void;
 } {
   const initial = settings.get(key, fallback);
@@ -218,7 +218,7 @@ export function useSetting<
       const targetChecked = target && "checked" in target ? target.checked : undefined;
       const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
 
-      // @ts-expect-error dumb
+      // @ts-expect-error ts doesn't understand
       setValue(finalValue);
       settings.set(key, finalValue);
     },
@@ -237,8 +237,8 @@ export function useSettingArray<
   K extends D
     ? NonNullable<T[K]>
     : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F,
+      ? T[K] | undefined
+      : NonNullable<T[K]> | F,
   (newValue: ValType<T[K]>) => void,
 ] {
   const { value, onChange } = useSetting(settings, key, fallback);
@@ -256,9 +256,8 @@ type UnionToIntersection<U> = (U extends never ? never : (k: U) => void) extends
 
 type ObjectType = Record<never, never>;
 
-type ExtractObjectType<O extends ObjectType[]> = O extends Array<infer T>
-  ? UnionToIntersection<T>
-  : never;
+type ExtractObjectType<O extends ObjectType[]> =
+  O extends Array<infer T> ? UnionToIntersection<T> : never;
 
 export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObjectType<O> {
   const fallback = {};
@@ -284,7 +283,6 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
     "has",
     "set",
   ] as const) {
-    // @ts-expect-error Type is ok
     handler[method] = function (_: unknown, ...args: unknown[]) {
       if (method === "get" && args[0] === "all") {
         // Return function that returns all objects combined
