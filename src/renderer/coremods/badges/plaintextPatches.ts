@@ -19,7 +19,7 @@ export default [
   },
   {
     // Edit the ProfileBadges component (new profile design)
-    find: /getBadgeAsset\)\(\w+\.icon\),className/,
+    find: /\.container,\w+\),"aria-label":\w+.\w+\.Messages\.PROFILE_USER_BADGES/,
     replacements: [
       // Add the "replugged-badge" class if it's our custom badge
       {

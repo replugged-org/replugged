@@ -9,6 +9,7 @@
     "automod",
     "autosize",
     "blurple",
+    "channeltextarea",
     "Chunkdiscord",
     "codemirror",
     "cooldown",
@@ -38,8 +39,10 @@
     "marshift",
     "metafile",
     "Millis",
+    "nonmatching",
     "notif",
     "notrack",
+    "olavwolfiken",
     "outfile",
     "popout",
     "Promisable",
@@ -62,7 +65,8 @@
     "Vendicated",
     "webauthn",
     "weblate",
-    "Withs"
+    "Withs",
+    "YofukashiNo"
   ],
   "ignoreWords": [],
   "import": [],
