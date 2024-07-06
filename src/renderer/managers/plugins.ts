@@ -93,7 +93,10 @@ export async function start(id: string): Promise<void> {
             }
 
             const el = loadStyleSheet(
-              `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
+              `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(
+                /\.js$/,
+                ".css",
+              )}`,
             );
             styleElements.set(plugin.manifest.id, el);
           }
