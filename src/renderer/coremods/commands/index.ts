@@ -294,7 +294,6 @@ async function injectProfileFetch(): Promise<void> {
   const fetchProfileKey = getFunctionKeyBySource(mod, "fetchProfile")!;
   injector.instead(mod, fetchProfileKey, (args, res) => {
     if (args[0] === "69") {
-
       return;
     }
     return res(...args);

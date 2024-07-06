@@ -26,7 +26,6 @@ interface CommandsAndSection {
   commands: Map<string, AnyRepluggedCommand>;
 }
 
-
 void waitForModule<typeof User>(filters.bySource("hasHadPremium(){")).then((User) => {
   RepluggedUser = new User({
     avatar: "replugged",
