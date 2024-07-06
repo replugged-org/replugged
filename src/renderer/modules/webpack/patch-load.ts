@@ -62,8 +62,8 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
     return original.call(webpackChunk, chunk);
   }
 
-  // https://github.com/Vendicated/Vencord/blob/e4701769a5b8e0a71dba0e26bc311ff6e34eadf7/src/webpack/patchWebpack.ts#L93-L98
-  handlePush.bind = (...args: unknown[]) => original.bind([...args]);
+  // From YofukashiNo: https://discord.com/channels/1000926524452647132/1000955965304221728/1258946431348375644
+  handlePush.bind = original.bind.bind(original);
 
   Object.defineProperty(webpackChunk, "push", {
     get: () => handlePush,
