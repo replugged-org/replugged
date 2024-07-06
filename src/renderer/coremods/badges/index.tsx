@@ -36,18 +36,9 @@ interface APIRepluggedBadges {
   custom: APIRepluggedCustomBadge;
 }
 
-interface UseBadgesMod {
-  QUEST_COMPLETED_BADGE: string;
-  default: (displayProfile: DisplayProfile | null) => Badge[];
-}
+type UseBadges = (displayProfile: DisplayProfile | null) => Badge[];
 
-interface UserProfileConstantsMod {
-  TrackUserProfileProperties: Record<string, string | number>;
-  USER_PROFILE_TOOLTIP_DELAY: number;
-  UserProfileSections: Record<string, string>;
-  UserProfileTypes: Record<string, string>;
-  getBadgeAsset: (icon: string) => string;
-}
+type GetBadgeAsset = (icon: string) => string;
 
 interface BadgeCache {
   badges: APIRepluggedBadges;
@@ -102,10 +93,12 @@ const badgeElements = [
 ];
 
 export async function start(): Promise<void> {
-  const useBadgesMod = await waitForModule<UseBadgesMod>(filters.bySource(/:\w+\.getBadges\(\)/));
-  const defaultKey = getFunctionKeyBySource(useBadgesMod, "") as "default"; // It's actually Z, but shut up TS, nobody loves you
+  const useBadgesMod = await waitForModule<Record<string, UseBadges>>(
+    filters.bySource(/:\w+\.getBadges\(\)/),
+  );
+  const useBadgesKey = getFunctionKeyBySource(useBadgesMod, "")!;
 
-  injector.after(useBadgesMod, defaultKey, ([displayProfile], badges) => {
+  injector.after(useBadgesMod, useBadgesKey, ([displayProfile], badges) => {
     if (!generalSettings.get("badges")) return badges;
 
     try {
@@ -179,15 +172,10 @@ export async function start(): Promise<void> {
     }
   });
 
-  // TODO: patch badge components with our SVGs to make it actually fill in the badges.
-  //const userProfileConstantsMod = await waitForProps<UserProfileConstantsMod>("getBadgeAsset");
-  const userProfileConstantsMod = await waitForModule<UserProfileConstantsMod>(
-    filters.bySource('concat(n,"/badge-icons/"'),
+  const userProfileConstantsMod = await waitForModule<Record<string, GetBadgeAsset>>(
+    filters.bySource(/concat\(\w+,"\/badge-icons\/"/),
   );
-  const getBadgeAssetKey = getFunctionKeyBySource(
-    userProfileConstantsMod,
-    "badge-icons",
-  ) as "getBadgeAsset"; // I hate this hack by now
+  const getBadgeAssetKey = getFunctionKeyBySource(userProfileConstantsMod, "badge-icons")!;
 
   injector.instead(userProfileConstantsMod, getBadgeAssetKey, (args, orig) => {
     if (args[0].startsWith("replugged")) return args[0].replace("replugged", "");
