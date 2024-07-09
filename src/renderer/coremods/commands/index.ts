@@ -12,6 +12,7 @@ import {
 
 import { commandAndSections, defaultSection } from "../../apis/commands";
 import { loadCommands, unloadCommands } from "./commands";
+import { REPLUGGED_CLYDE_ID } from "../../../constants";
 
 const logger = Logger.api("Commands");
 const injector = new Injector();
@@ -293,7 +294,7 @@ async function injectProfileFetch(): Promise<void> {
   );
   const fetchProfileKey = getFunctionKeyBySource(mod, "fetchProfile")!;
   injector.instead(mod, fetchProfileKey, (args, res) => {
-    if (args[0] === "replugged") {
+    if (args[0] === REPLUGGED_CLYDE_ID) {
       return;
     }
     return res(...args);
