@@ -256,7 +256,6 @@ export const smartInject = async (
             stdio: "ignore",
           });
           break;
-          s;
         case "darwin":
           openProcess(`open -a ${PlatformNames[platform]}`);
           break;
