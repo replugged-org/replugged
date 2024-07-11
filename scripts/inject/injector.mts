@@ -226,7 +226,7 @@ export const smartInject = async (
     result =
       cmd === "uninject"
         ? await uninject(platformModule, platform)
-        : inject(platformModule, platform, production);
+        : await inject(platformModule, platform, production);
   } else {
     const processName = PlatformNames[platform].replace(" ", "");
     try {
@@ -238,7 +238,7 @@ export const smartInject = async (
     result =
       cmd === "uninject"
         ? await uninject(platformModule, platform)
-        : inject(platformModule, platform, production);
+        : await inject(platformModule, platform, production);
     if (((replug && cmd !== "uninject") || !replug) && processInfo) {
       const appDir = await platformModule.getAppDir(platform);
       switch (process.platform) {
@@ -256,6 +256,7 @@ export const smartInject = async (
             stdio: "ignore",
           });
           break;
+          s;
         case "darwin":
           openProcess(`open -a ${PlatformNames[platform]}`);
           break;
