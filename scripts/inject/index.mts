@@ -104,6 +104,14 @@ const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void>
         `${AnsiEscapes.RED}An error occurred while trying to inject into Discord!${AnsiEscapes.RESET}`,
       );
       console.error(e);
+      if ((e as { code: string }).code === "EBUSY") {
+        console.log(
+          `\nYou now have to completely close the Discord client, from the system tray or through the task manager.\n
+To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
+            AnsiEscapes.GREEN
+          }${getCommand({ action: "unplug", prod })}${AnsiEscapes.RESET}`,
+        );
+      }
       process.exit(exitCode);
     }
     if (result) {
@@ -113,12 +121,6 @@ const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void>
           replug ? "replugged" : "plugged"
         } :D${AnsiEscapes.RESET}`,
         "\n",
-      );
-      console.log(
-        `You now have to completely close the Discord client, from the system tray or through the task manager.\n
-To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
-          AnsiEscapes.GREEN
-        }${getCommand({ action: replug ? "replug" : "plug", prod })}${AnsiEscapes.RESET}`,
       );
     } else {
       process.exit(exitCode);
@@ -131,6 +133,14 @@ To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}
         `${AnsiEscapes.RED}An error occurred while trying to uninject from Discord!${AnsiEscapes.RESET}`,
       );
       console.error(e);
+      if ((e as { code: string }).code === "EBUSY") {
+        console.log(
+          `\nYou now have to completely close the Discord client, from the system tray or through the task manager.\n
+To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
+            AnsiEscapes.GREEN
+          }${getCommand({ action: "unplug", prod })}${AnsiEscapes.RESET}`,
+        );
+      }
       process.exit(exitCode);
     }
     if (result) {
@@ -141,12 +151,6 @@ To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}
         console.log(
           `${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}Replugged has been successfully unplugged${AnsiEscapes.RESET}`,
           "\n",
-        );
-        console.log(
-          `You now have to completely close the Discord client, from the system tray or through the task manager.\n
-To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
-            AnsiEscapes.GREEN
-          }${getCommand({ action: "unplug", prod })}${AnsiEscapes.RESET}`,
         );
       }
     }
