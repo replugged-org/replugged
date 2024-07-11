@@ -101,7 +101,7 @@ export const inject = async (
     return false;
   }
 
-  const fileToCheck = join(dirname, "..", "..", prod ? "replugged.asar" : "dist-bundle/main.js");
+  const fileToCheck = join(dirname, "..", "..", prod ? "replugged.asar" : "dist/main.js");
   const fileToCheckExists = await stat(fileToCheck)
     .then(() => true)
     .catch(() => false);
