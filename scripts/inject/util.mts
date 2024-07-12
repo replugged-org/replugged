@@ -1,5 +1,5 @@
-import { SpawnOptions, execSync, spawn } from "child_process";
-import { DiscordPlatform, ProcessInfo, UserData } from "./types.mjs";
+import { type SpawnOptions, execSync, spawn } from "child_process";
+import type { DiscordPlatform, ProcessInfo, UserData } from "./types.mjs";
 
 export const AnsiEscapes = {
   RESET: "\x1b[0m",
@@ -31,32 +31,40 @@ export const getCommand = ({
   return cmd;
 };
 
-export const getProcessInfoByName = (processName: string): ProcessInfo | null => {
-  if (process.platform === "win32") {
-    const command = `tasklist /FI "IMAGENAME eq ${processName}.exe" /FO CSV`;
-    const output = execSync(command).toString().trim();
+export const getProcessInfoByName = (processName: string): ProcessInfo | ProcessInfo[] | null => {
+  try {
+    const isWindows = process.platform === "win32";
+    const command = isWindows
+      ? `wmic process where (Name="${processName}.exe") get ProcessId,ParentProcessId /FORMAT:CSV`
+      : `ps -eo cmd,ppid,pid | grep -E "(^|/)${processName}(\\s|$)" | grep -v grep`;
+    const output = execSync(command).toString();
 
-    const lines = output.split("\r\n");
-    if (lines.length <= 2) {
+    if (!output.trim()) {
       return null;
     }
 
-    const [_header, data] = lines.slice(0, 2);
-    const [name, pid] = data.split('","');
+    const lines = output
+      .trim()
+      .split(isWindows ? "\r\r\n" : "\n")
+      .slice(1);
+    const processInfo = lines.map((line) => {
+      const parts = isWindows ? line.split(",") : line.trim().split(/\s+/);
+      return {
+        ppid: parseInt(parts[1], 10),
+        pid: parseInt(parts[2], 10),
+      };
+    });
 
-    return { pid: Number(pid), cmd: name.substring(1).split(/\s+/) };
-  }
-  const command = `ps -eo pid,command | grep -E "(^|/)${processName}(\\s|$)" | grep -v grep`;
-
-  const output = execSync(command).toString().trim();
-
-  if (output.length === 0) {
+    if (isWindows) {
+      const parentPIDs = processInfo.map((process) => process.ppid);
+      const mainProcess = processInfo.find((process) => parentPIDs.includes(process.pid));
+      return mainProcess || null;
+    } else {
+      return processInfo || null;
+    }
+  } catch {
     return null;
   }
-
-  const [pid, ...cmd] = output.split(/\s+/);
-
-  return { pid: Number(pid), cmd };
 };
 
 export const killCheckProcessExists = (pid: number): boolean => {
@@ -91,7 +99,7 @@ export const openProcess = (command: string, args?: string[], options?: SpawnOpt
     : spawn(command, args ?? [], options ?? {}).unref());
 };
 
-export const GetUserData = (): UserData => {
+export const getUserData = (): UserData => {
   const name = execSync("logname", { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
   const env = Object.assign({}, process.env, { HOME: `/home/${name}` });
   const uid = execSync(`id -u ${name}`, { encoding: "utf8" }).toString().trim().replace(/\n$/, "");

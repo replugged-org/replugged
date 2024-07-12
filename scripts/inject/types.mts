@@ -8,7 +8,7 @@ export interface PlatformModule {
 
 export interface ProcessInfo {
   pid: number;
-  cmd: string[];
+  ppid: number;
 }
 
 export interface UserData {
