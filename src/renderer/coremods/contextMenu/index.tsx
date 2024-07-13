@@ -128,8 +128,8 @@ export function _buildPatchedMenu(menu: ContextMenuData): React.ReactElement | n
     menu.children.at(-1)?.props?.children?.props?.id?.startsWith("devmode-copy-id-") ||
     menu.children
       .at(-1)
-      ?.props?.children?.some?.(
-        (c: React.ReactElement | null) => c?.props?.id?.startsWith("devmode-copy-id-"),
+      ?.props?.children?.some?.((c: React.ReactElement | null) =>
+        c?.props?.id?.startsWith("devmode-copy-id-"),
       );
   if (!menu.children.some((child) => child?.props?.id === "replugged")) {
     //Add group only if it doesn't exist
