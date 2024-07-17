@@ -515,7 +515,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
       ),
     );
 
-    manifest.plaintextPatches = "splash.css";
+    manifest.splash = "splash.css";
   }
 
   if (!existsSync(distPath)) mkdirSync(distPath, { recursive: true });
