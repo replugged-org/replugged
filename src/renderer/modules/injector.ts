@@ -20,9 +20,9 @@ enum InjectionTypes {
  * @param self The module the injected function is on
  * @returns New arguments to pass to the original function, or undefined to leave them unchanged
  */
-export type BeforeCallback<A extends unknown[] = unknown[]> = (
+export type BeforeCallback<A extends unknown[] = unknown[], I = ObjectExports> = (
   args: A,
-  self: ObjectExports,
+  self: I,
 ) => A | undefined | void;
 
 /**
@@ -32,10 +32,10 @@ export type BeforeCallback<A extends unknown[] = unknown[]> = (
  * @param self The module the injected function is on
  * @returns New result to return
  */
-export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
+export type InsteadCallback<A extends unknown[] = unknown[], R = unknown, I = ObjectExports> = (
   args: A,
   orig: (...args: A) => R,
-  self: ObjectExports,
+  self: I,
 ) => R | void;
 
 /**
@@ -45,10 +45,10 @@ export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
  * @param self The module the injected function is on
  * @returns New result to return, or undefined to leave it unchanged
  */
-export type AfterCallback<A extends unknown[] = unknown[], R = unknown> = (
+export type AfterCallback<A extends unknown[] = unknown[], R = unknown, I = ObjectExports> = (
   args: A,
   res: R,
-  self: ObjectExports,
+  self: I,
 ) => R | undefined | void;
 
 interface ObjectInjections {
@@ -167,7 +167,8 @@ function before<
   T extends Record<U, AnyFunction>,
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
->(obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
+  I = T[U],
+>(obj: T, funcName: U, cb: BeforeCallback<A, I>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
   return inject(obj, funcName, cb as BeforeCallback, InjectionTypes.Before);
 }
@@ -177,7 +178,8 @@ function instead<
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
->(obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
+  I = T[U],
+>(obj: T, funcName: U, cb: InsteadCallback<A, R, I>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
   return inject(obj, funcName, cb, InjectionTypes.Instead);
 }
@@ -187,7 +189,8 @@ function after<
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
->(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
+  I = T[U],
+>(obj: T, funcName: U, cb: AfterCallback<A, R, I>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
   return inject(obj, funcName, cb, InjectionTypes.After);
 }
@@ -250,7 +253,8 @@ export class Injector {
     U extends keyof T & string,
     A extends unknown[] = Parameters<T[U]>,
     R = ReturnType<T[U]>,
-  >(obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
+    I = T[U],
+  >(obj: T, funcName: U, cb: InsteadCallback<A, R, I>): () => void {
     const uninjector = instead(obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
@@ -268,7 +272,8 @@ export class Injector {
     U extends keyof T & string,
     A extends unknown[] = Parameters<T[U]>,
     R = ReturnType<T[U]>,
-  >(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
+    I = T[U],
+  >(obj: T, funcName: U, cb: AfterCallback<A, R, I>): () => void {
     const uninjector = after(obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;

@@ -35,6 +35,7 @@ export namespace coremods {
   export let watcher: Coremod;
   export let commands: Coremod;
   export let welcome: Coremod;
+  export let recovery: Coremod;
 }
 
 export async function start(name: keyof typeof coremods): Promise<void> {
@@ -60,6 +61,7 @@ export async function startAll(): Promise<void> {
   coremods.watcher = await import("../coremods/watcher");
   coremods.commands = await import("../coremods/commands");
   coremods.welcome = await import("../coremods/welcome");
+  coremods.recovery = await import("../coremods/recovery");
   coremods.notrack = await import("../coremods/notrack");
 
   await Promise.all(
