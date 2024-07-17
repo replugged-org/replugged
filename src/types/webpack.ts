@@ -61,6 +61,7 @@ export interface PlaintextPatch {
 
 export interface RawPlaintextPatch {
   find?: string | RegExp;
+  id: string;
   check?: (source: string) => boolean;
   replacements: PlaintextReplacer[];
 }
