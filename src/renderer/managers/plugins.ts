@@ -176,6 +176,7 @@ export async function runPlaintextPatches(): Promise<void> {
               }?t=${Date.now()}`
             )
           ).default,
+          plugin.manifest.id,
         );
       }
     }),
