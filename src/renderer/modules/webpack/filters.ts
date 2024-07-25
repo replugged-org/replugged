@@ -1,6 +1,7 @@
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
 import type { RawModule } from "../../../types";
+import { Store } from "../common/flux";
 
 /**
  * Get a module that has all the given properties on one of its exports
@@ -56,5 +57,22 @@ export const byValue = (match: string | RegExp) => {
       } catch {}
     }
     return false;
+  };
+};
+
+/**
+ * Get a module that has the store with given name
+ * @param name Name of Store
+ */
+export const byStoreName = (name: string) => {
+  return (m: RawModule) => {
+    if (!m.exports || typeof m.exports !== "object" || typeof m.exports !== "object") {
+      return false;
+    }
+    return ["default", "Z", "ZP"].some(
+      (key) =>
+        (m.exports as { [key: string]: Store & { constructor: { displayName: string } } })[key]
+          ?.constructor.displayName === name,
+    );
   };
 };
