@@ -24,7 +24,6 @@ interface APIRepluggedCustomBadge {
 }
 
 interface APIRepluggedBadges {
-  [key: string]: boolean | APIRepluggedCustomBadge;
   developer: boolean;
   staff: boolean;
   support: boolean;
@@ -152,7 +151,7 @@ export async function start(): Promise<void> {
       }
 
       badgeElements.forEach((badgeElement) => {
-        if (badgeCache[badgeElement.id]) {
+        if (badgeElement.id in badgeCache) {
           const { component, ...props } = badgeElement;
           const badgeColor = badgeCache.custom.color;
 
