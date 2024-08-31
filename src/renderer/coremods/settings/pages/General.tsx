@@ -122,7 +122,7 @@ export const General = (): React.ReactElement => {
               titlebarOnChange(value);
               restartModal(false);
             }}
-            note={"Use custom window titlebars instead of the default OS titlebars"}>
+            note={"Use custom window titlebar instead of the default OS titlebar"}>
             Custom Titlebar
           </SwitchItem>
         )
