@@ -57,6 +57,10 @@ export const General = (): React.ReactElement => {
     "reactDevTools",
   );
 
+  const { value: titlebarValue, onChange: titlebarOnChange } = util.useSetting(
+    generalSettings,
+    "titlebar",
+  );
   const [kKeys, setKKeys] = React.useState<number[]>([]);
 
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
@@ -108,6 +112,21 @@ export const General = (): React.ReactElement => {
         note={Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC}>
         {Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY}
       </SwitchItem>
+
+      {
+        // TODO: i18n
+        DiscordNative.process.platform.includes("linux") && (
+          <SwitchItem
+            value={titlebarValue}
+            onChange={(value) => {
+              titlebarOnChange(value);
+              restartModal(false);
+            }}
+            note={"Use custom window titlebars instead of the default OS titlebars"}>
+            Custom Titlebar
+          </SwitchItem>
+        )
+      }
 
       <Category
         title={Messages.REPLUGGED_SETTINGS_ADVANCED}

@@ -11,6 +11,7 @@ import { default as languagePlaintext } from "../coremods/language/plaintextPatc
 import { default as commandsPlaintext } from "../coremods/commands/plaintextPatches";
 import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
 import { default as badgesPlaintext } from "../coremods/badges/plaintextPatches";
+import { default as titlebarPlaintext } from "../coremods/titlebar/plaintextPatches";
 import { Logger } from "../modules/logger";
 
 const logger = Logger.api("Coremods");
@@ -89,5 +90,6 @@ export function runPlaintextPatches(): void {
     commandsPlaintext,
     settingsPlaintext,
     badgesPlaintext,
+    titlebarPlaintext,
   ].forEach(patchPlaintext);
 }
