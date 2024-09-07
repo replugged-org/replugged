@@ -8,7 +8,6 @@ import { default as messagePopover } from "../coremods/messagePopover/plaintextP
 import { default as notices } from "../coremods/notices/plaintextPatches";
 import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches";
 import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
-import { default as commandsPlaintext } from "../coremods/commands/plaintextPatches";
 import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
 import { default as badgesPlaintext } from "../coremods/badges/plaintextPatches";
 import { Logger } from "../modules/logger";
@@ -86,7 +85,6 @@ export function runPlaintextPatches(): void {
     notices,
     contextMenu,
     languagePlaintext,
-    commandsPlaintext,
     settingsPlaintext,
     badgesPlaintext,
   ].forEach(patchPlaintext);

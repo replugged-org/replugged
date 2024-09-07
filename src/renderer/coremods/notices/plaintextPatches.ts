@@ -9,7 +9,7 @@ export default [
       {
         match: /(\w+\.base,children:\[)(.+?}\)),/,
         replace: (_, prefix, noticeWrapper) =>
-          `${prefix}${coremodStr}?.AnnouncementContainer({originalRes:${noticeWrapper}}) ?? ${noticeWrapper},`,
+          `${prefix}${coremodStr}?.AnnouncementContainer?${coremodStr}.AnnouncementContainer({originalRes:${noticeWrapper}}):${noticeWrapper},`,
       },
     ],
   },
