@@ -10,8 +10,11 @@ import { addButton } from "../coremods/messagePopover";
 
 enum InjectionTypes {
   Before,
+  BeforeAsync,
   Instead,
+  InsteadAsync,
   After,
+  AfterAsync,
 }
 
 /**
@@ -26,6 +29,17 @@ export type BeforeCallback<A extends unknown[] = unknown[]> = (
 ) => A | undefined | void;
 
 /**
+ * Code to run before the original function asynchronously
+ * @param args Arguments passed to the original function
+ * @param self The module the injected function is on
+ * @returns New arguments to pass to the original function, or undefined to leave them unchanged
+ */
+export type BeforeCallbackAsync<A extends unknown[] = unknown[]> = (
+  args: A,
+  self: ObjectExports,
+) => Promise<A | undefined | void>;
+
+/**
  * Code to run instead of the original function
  * @param args Arguments passed to the original function
  * @param orig The original function
@@ -33,6 +47,19 @@ export type BeforeCallback<A extends unknown[] = unknown[]> = (
  * @returns New result to return
  */
 export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
+  args: A,
+  orig: (...args: A) => R,
+  self: ObjectExports,
+) => R | void;
+
+/**
+ * Code to run instead of the original function asynchronously
+ * @param args Arguments passed to the original function
+ * @param orig The original function
+ * @param self The module the injected function is on
+ * @returns New result to return
+ */
+export type InsteadCallbackAsync<A extends unknown[] = unknown[], R = unknown> = (
   args: A,
   orig: (...args: A) => R,
   self: ObjectExports,
@@ -51,6 +78,19 @@ export type AfterCallback<A extends unknown[] = unknown[], R = unknown> = (
   self: ObjectExports,
 ) => R | undefined | void;
 
+/**
+ * Code to run after the original function asynchronously
+ * @param args Arguments passed to the original function
+ * @param res Result of the original function
+ * @param self The module the injected function is on
+ * @returns New result to return, or undefined to leave it unchanged
+ */
+export type AfterCallbackAsync<A extends unknown[] = unknown[], R = unknown> = (
+  args: A,
+  res: R,
+  self: ObjectExports,
+) => Promise<R | undefined | void>;
+
 interface ObjectInjections {
   injections: Map<
     string,
@@ -63,7 +103,21 @@ interface ObjectInjections {
   original: Map<string, AnyFunction>;
 }
 
+interface ObjectInjectionsAsync {
+  injections: Map<
+    string,
+    {
+      before: Set<BeforeCallbackAsync>;
+      instead: Set<InsteadCallbackAsync>;
+      after: Set<AfterCallbackAsync>;
+    }
+  >;
+  original: Map<string, AnyFunction>;
+}
+
 const injections = new WeakMap<ObjectExports, ObjectInjections>();
+
+const injectionsAsync = new WeakMap<ObjectExports, ObjectInjectionsAsync>();
 
 function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
@@ -136,6 +190,77 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
   }
 }
 
+function replaceMethodAsync<T extends Record<U, AnyFunction>, U extends keyof T & string>(
+  obj: T,
+  funcName: U,
+): void {
+  if (typeof obj[funcName] !== "function") {
+    throw new TypeError(`Value of '${funcName}' in object is not a function`);
+  }
+
+  let objInjections: ObjectInjectionsAsync;
+  if (injectionsAsync.has(obj)) {
+    objInjections = injectionsAsync.get(obj)!;
+  } else {
+    objInjections = {
+      injections: new Map(),
+      original: new Map(),
+    };
+    injectionsAsync.set(obj, objInjections);
+  }
+
+  if (!objInjections.injections.has(funcName)) {
+    objInjections.injections.set(funcName, {
+      before: new Set(),
+      instead: new Set(),
+      after: new Set(),
+    });
+  }
+
+  if (!objInjections.original.has(funcName)) {
+    objInjections.original.set(funcName, obj[funcName]);
+
+    const originalFunc = obj[funcName];
+
+    // @ts-expect-error https://github.com/microsoft/TypeScript/issues/48992
+    obj[funcName] = async function (...args: unknown[]): unknown {
+      const injectionsForProp = objInjections.injections.get(funcName)!;
+
+      for (const b of injectionsForProp.before) {
+        const newArgs = await b.call(this, args, this);
+        if (Array.isArray(newArgs)) {
+          args = newArgs;
+        }
+      }
+
+      let res: unknown;
+
+      if (injectionsForProp.instead.size === 0) {
+        res = await originalFunc.apply(this, args);
+      } else {
+        for (const i of injectionsForProp.instead) {
+          const newResult = await i.call(this, args, originalFunc, this);
+          if (newResult !== void 0) {
+            res = newResult;
+          }
+        }
+      }
+
+      for (const a of injectionsForProp.after) {
+        const newResult = await a.call(this, args, res, this);
+        if (newResult !== void 0) {
+          res = newResult;
+        }
+      }
+
+      return res;
+    };
+
+    Object.defineProperties(obj[funcName], Object.getOwnPropertyDescriptors(originalFunc));
+    obj[funcName].toString = originalFunc.toString.bind(originalFunc);
+  }
+}
+
 function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   obj: T,
   funcName: U,
@@ -163,6 +288,33 @@ function inject<T extends Record<U, AnyFunction>, U extends keyof T & string>(
   return () => void setRef.deref()?.delete(cb);
 }
 
+function injectAsync<T extends Record<U, AnyFunction>, U extends keyof T & string>(
+  obj: T,
+  funcName: U,
+  cb: BeforeCallbackAsync | InsteadCallbackAsync | AfterCallbackAsync,
+  type: InjectionTypes,
+): () => void {
+  replaceMethodAsync(obj, funcName);
+  const methodInjections = injectionsAsync.get(obj)!.injections.get(funcName)!;
+  let set: Set<BeforeCallbackAsync | InsteadCallbackAsync | AfterCallbackAsync>;
+  switch (type) {
+    case InjectionTypes.BeforeAsync:
+      set = methodInjections.before;
+      break;
+    case InjectionTypes.InsteadAsync:
+      set = methodInjections.instead;
+      break;
+    case InjectionTypes.AfterAsync:
+      set = methodInjections.after;
+      break;
+    default:
+      throw new Error(`Invalid injection type: ${type}`);
+  }
+  set.add(cb);
+  const setRef = new WeakRef(set);
+  return () => void setRef.deref()?.delete(cb);
+}
+
 function before<
   T extends Record<U, AnyFunction>,
   U extends keyof T & string,
@@ -170,6 +322,15 @@ function before<
 >(obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
   return inject(obj, funcName, cb as BeforeCallback, InjectionTypes.Before);
+}
+
+function beforeAsync<
+  T extends Record<U, AnyFunction>,
+  U extends keyof T & string,
+  A extends unknown[] = Parameters<T[U]>,
+>(obj: T, funcName: U, cb: BeforeCallbackAsync<A>): () => void {
+  // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
+  return injectAsync(obj, funcName, cb as BeforeCallbackAsync, InjectionTypes.BeforeAsync);
 }
 
 function instead<
@@ -182,6 +343,16 @@ function instead<
   return inject(obj, funcName, cb, InjectionTypes.Instead);
 }
 
+function insteadAsync<
+  T extends Record<U, AnyFunction>,
+  U extends keyof T & string,
+  A extends unknown[] = Parameters<T[U]>,
+  R = ReturnType<T[U]>,
+>(obj: T, funcName: U, cb: InsteadCallbackAsync<A, R>): () => void {
+  // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
+  return inject(obj, funcName, cb, InjectionTypes.InsteadAsync);
+}
+
 function after<
   T extends Record<U, AnyFunction>,
   U extends keyof T & string,
@@ -190,6 +361,16 @@ function after<
 >(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
   return inject(obj, funcName, cb, InjectionTypes.After);
+}
+
+function afterAsync<
+  T extends Record<U, AnyFunction>,
+  U extends keyof T & string,
+  A extends unknown[] = Parameters<T[U]>,
+  R = ReturnType<T[U]>,
+>(obj: T, funcName: U, cb: AfterCallbackAsync<A, R>): () => void {
+  // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
+  return inject(obj, funcName, cb, InjectionTypes.AfterAsync);
 }
 
 /**
@@ -239,6 +420,23 @@ export class Injector {
   }
 
   /**
+   * Run code before a native module asynchronously
+   * @param obj Module to inject to
+   * @param funcName Function name on that module to inject
+   * @param cb Code to run
+   * @returns Uninject function
+   */
+  public beforeAsync<
+    T extends Record<U, AnyFunction>,
+    U extends keyof T & string,
+    A extends unknown[] = Parameters<T[U]>,
+  >(obj: T, funcName: U, cb: BeforeCallbackAsync<A>): () => void {
+    const uninjector = beforeAsync(obj, funcName, cb);
+    this.#uninjectors.add(uninjector);
+    return uninjector;
+  }
+
+  /**
    * Run code instead of a native module
    * @param obj Module to inject to
    * @param funcName Function name on that module to inject
@@ -257,6 +455,24 @@ export class Injector {
   }
 
   /**
+   * Run code instead of a native module asynchronously
+   * @param obj Module to inject to
+   * @param funcName Function name on that module to inject
+   * @param cb Code to run
+   * @returns Uninject function
+   */
+  public insteadAsync<
+    T extends Record<U, AnyFunction>,
+    U extends keyof T & string,
+    A extends unknown[] = Parameters<T[U]>,
+    R = ReturnType<T[U]>,
+  >(obj: T, funcName: U, cb: InsteadCallbackAsync<A, R>): () => void {
+    const uninjector = insteadAsync(obj, funcName, cb);
+    this.#uninjectors.add(uninjector);
+    return uninjector;
+  }
+
+  /**
    * Run code after a native module
    * @param obj Module to inject to
    * @param funcName Function name on that module to inject
@@ -270,6 +486,24 @@ export class Injector {
     R = ReturnType<T[U]>,
   >(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
     const uninjector = after(obj, funcName, cb);
+    this.#uninjectors.add(uninjector);
+    return uninjector;
+  }
+
+  /**
+   * Run code after a native module asynchronously
+   * @param obj Module to inject to
+   * @param funcName Function name on that module to inject
+   * @param cb Code to run
+   * @returns Uninject function
+   */
+  public afterAsync<
+    T extends Record<U, AnyFunction>,
+    U extends keyof T & string,
+    A extends unknown[] = Parameters<T[U]>,
+    R = ReturnType<T[U]>,
+  >(obj: T, funcName: U, cb: AfterCallbackAsync<A, R>): () => void {
+    const uninjector = afterAsync(obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
   }
