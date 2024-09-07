@@ -2,13 +2,13 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
-    find: 'key:"copy-id"',
+    find: "Messages.MESSAGE_UTILITIES_A11Y_LABEL",
     replacements: [
       {
         match:
-          /(Fragment,{children:\[)(.{0,200}children:\[.{0,20}?(\w{1,3})\({.{0,5}\s?key:"copy-id".{0,20}channel:(.{1,3})[,}].{0,20}message:(.{1,3})[,}])/,
-        replace: (_, prefix, suffix, makeButton, channel, message) =>
-          `${prefix}...(replugged.coremods.coremods.messagePopover?._buildPopoverElements(${message},${channel},${makeButton}) ?? []),${suffix}`,
+          /(\.Fragment,{children:\[)(.{1,25}Fragment.{1,50}(\w+\.\w+),{label:\w+\.\w+\.Messages\.COPY_ID_MESSAGE)/,
+        replace: (_, prefix, suffix, makeButton) =>
+          `${prefix}...(replugged.coremods.coremods.messagePopover?._buildPopoverElements(arguments[0]?.message,arguments[0]?.channel,${makeButton}) ?? []),${suffix}`,
       },
     ],
   },

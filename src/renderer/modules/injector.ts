@@ -320,7 +320,7 @@ export class Injector {
      * By default, items are placed in a group for custom items, though that can be customized with `sectionId` and `indexInSection`
      * @param navId The id of the menu to add to
      * @param item The function that creates the item to add
-     * @param sectionId — The number of the section to add to. Defaults to replugged's section
+     * @param sectionId — The number of the section to add to. Defaults to Replugged's section
      * @param indexInSection — The index in the section to add to. Defaults to the end position
      * @returns A callback to de-register the function
      *
