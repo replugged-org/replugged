@@ -372,7 +372,7 @@ export class Injector {
      *
      * @example
      * ```
-     * import { Injector, components, types } from "replugged";
+     * import { Injector, types } from "replugged";
      *
      * const injector = new Injector();
      *
