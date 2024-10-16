@@ -206,8 +206,8 @@ export class CommandManager {
 
   /**
    * Code to register an slash command
-   * @param command Slash Command to be registered
-   * @returns An Callback to unregister the slash command
+   * @param command Slash command to be registered
+   * @returns A callback to unregister the slash command
    */
   public registerCommand<const T extends CommandOptions>(command: RepluggedCommand<T>): () => void {
     if (!commandAndSections.has(this.#section.id)) {
