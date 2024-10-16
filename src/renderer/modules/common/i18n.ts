@@ -225,7 +225,7 @@ export interface I18n extends EventEmitter {
   _loadMessagesForLocale: (locale?: string) => Promise<void>;
 }
 
-const i18n = await waitForModule<I18n>(filters.bySource("registerLocale:"));
+const i18n = await waitForModule<I18n>(filters.bySource(/getMessages:.{5,10}en-US/));
 
 export const { Messages } = i18n;
 
