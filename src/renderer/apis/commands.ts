@@ -205,7 +205,7 @@ export class CommandManager {
   }
 
   /**
-   * Code to register an slash command
+   * Code to register a slash command
    * @param command Slash command to be registered
    * @returns A callback to unregister the slash command
    */
