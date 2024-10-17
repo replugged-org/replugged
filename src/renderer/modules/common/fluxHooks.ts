@@ -24,30 +24,32 @@ export interface FluxHooks {
   ) => T;
 }
 
-type EqualityComparer = (a: unknown[], b: unknown[]) => boolean;
+type ShallowEqual = <T>(
+  a: T,
+  b: T,
+  excludeKeys?: string[],
+  callback?: (message: string) => void,
+) => boolean;
+type AreArraysShallowEqual = <T extends []>(a: T, b: T) => boolean;
 
-const FluxEquatorMod = await waitForModule(filters.bySource("shallowEqual: unequal key"));
-const isEqualObject = getFunctionBySource<EqualityComparer>(
-  FluxEquatorMod,
-  "shallowEqual: unequal key",
-)!;
-const isEqualArray = getFunctionBySource<EqualityComparer>(FluxEquatorMod, ".some")!;
+const shallowEqualMod = await waitForModule(filters.bySource("shallowEqual: unequal key"));
+const shallowEqual = getFunctionBySource<ShallowEqual>(shallowEqualMod, "shallowEqual")!;
+const areArraysShallowEqual = getFunctionBySource<AreArraysShallowEqual>(shallowEqualMod, ".some")!;
 
-//const fluxHooksMod = await waitForProps<FluxHooks>("useStateFromStores");
-const fluxHooksMod = await waitForModule<Record<string, ValueOf<FluxHooks>>>(
+const useStateFromStoresMod = await waitForModule<Record<string, ValueOf<FluxHooks>>>(
   filters.bySource("useStateFromStores"),
 );
 
-const useStateFromStores: FluxHooks["useStateFromStores"] = getFunctionBySource(
-  fluxHooksMod,
+const useStateFromStores = getFunctionBySource<FluxHooks["useStateFromStores"]>(
+  useStateFromStoresMod,
   "useStateFromStores",
 )!;
 
 export default {
   useStateFromStores,
-  statesWillNeverBeEqual: getFunctionBySource(fluxHooksMod, "return!1"),
+  statesWillNeverBeEqual: getFunctionBySource(useStateFromStoresMod, "return!1"),
   useStateFromStoresArray: (stores, callback, deps) =>
-    useStateFromStores(stores, callback, deps, isEqualArray),
+    useStateFromStores(stores, callback, deps, areArraysShallowEqual),
   useStateFromStoresObject: (stores, callback, deps) =>
-    useStateFromStores(stores, callback, deps, isEqualObject),
+    useStateFromStores(stores, callback, deps, shallowEqual),
 } as FluxHooks;

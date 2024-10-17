@@ -39,9 +39,6 @@ type RPCMod = { commands: Commands };
 let commands: Commands = {};
 
 async function injectRpc(): Promise<void> {
-  //const rpcValidatorMod = await waitForProps<{
-  //  fetchApplicationsRPC: (socket: Socket, client_id: string, origin: string) => Promise<void>;
-  //}>("fetchApplicationsRPC");
   const rpcValidatorMod = await waitForModule<
     Record<string, (socket: Socket, client_id: string, origin: string) => Promise<void>>
   >(filters.bySource("Invalid Client ID"));

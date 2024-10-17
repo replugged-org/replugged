@@ -1,13 +1,11 @@
 import { virtualMerge } from "src/renderer/util";
-import { filters, getExportsForProps, waitForModule } from "../webpack";
+import { filters, getExportsForProps, waitForModule, waitForProps } from "../webpack";
 
 type StringConcat = (...rest: string[]) => string;
 
-//const ConstantsCommon = await waitForProps<Record<string, unknown>>("Links", "RPCCommands");
 const ConstantsCommon = await waitForModule<Record<string, unknown>>(
   filters.bySource("dis.gd/request"),
 );
-//const Constants = await waitForProps<Record<string, unknown>>("Endpoints", "Routes");
 const Constants = await waitForModule<Record<string, unknown>>(
   filters.bySource("users/@me/relationships"),
 );
@@ -18,10 +16,7 @@ export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsC
   "MANAGE_GUILD",
 ]);
 // OAuth2Scopes
-export const Scopes = getExportsForProps<Record<string, string>>(ConstantsCommon, [
-  "BOT",
-  "GUILDS",
-])!;
+export const Scopes = await waitForProps<Record<string, string>>("BOT", "GUILDS");
 // RPCCloseCodes
 export const RPCErrors = getExportsForProps<Record<string, string | number>>(ConstantsCommon, [
   "RATELIMITED",
@@ -72,16 +67,10 @@ export const UserFlags = getExportsForProps<Record<string, string | number>>(Con
 ])!;
 
 // ThemeColor
-//Ambiguous: should this be the just-dashed-names or --var(css-var-strings)?
-// Go with the latter for now.
-/*
 export const CSSVariables = await waitForProps<Record<string, string>>(
   "TEXT_NORMAL",
   "BACKGROUND_PRIMARY",
 );
-*/
-// We *should* be able to do props, but there's so much extra junk with the current search implementation.
-export const CSSVariables = await waitForModule(filters.bySource('="var(--background-floating)"'));
 
 interface ColorResponse {
   hex: () => string;
@@ -127,11 +116,9 @@ interface ColorMod {
   shadows: Record<string, ShadowColor>;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   unsafe_rawColors: Record<string, UnsafeRawColor>;
+  layout: Record<string, string>;
 }
 
-// This could really be a search by props, for unsafe_rawColors.
-export const ColorGenerator = await waitForModule<ColorMod>(
-  filters.bySource(/\w+\.unsafe_rawColors\[\w+\]\.resolve\(\w+\)/),
-);
+export const ColorGenerator = await waitForProps<ColorMod>("unsafe_rawColors", "layout");
 
 export const Themes = ColorGenerator.themes;
