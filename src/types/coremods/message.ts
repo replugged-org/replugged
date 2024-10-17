@@ -7,19 +7,19 @@ interface ButtonPopoverProps extends React.ComponentPropsWithoutRef<"div"> {
   dangerous?: boolean;
 }
 
-export interface IconButtonProps extends Omit<ButtonPopoverProps, "onClick"> {
+export interface HoverBarButtonProps extends ButtonPopoverProps {
   label: string;
-  channel?: Channel;
-  message?: Message;
-  onClick: (channel: Channel, message: Message, event: React.MouseEvent<HTMLDivElement>) => void;
   ariaLabel?: string;
   tooltipText?: string;
   tooltipColor?: string;
   icon: React.ComponentType<unknown>;
   iconProps?: Record<string, unknown>;
-  key?: string;
+  onTooltipShow?: () => void;
+  onTooltipHide?: () => void;
   separator?: boolean;
   sparkle?: boolean;
+  showNewBadge?: boolean;
+  buttonClassName?: string;
 }
 
-export type GetButtonItem = (message: Message, channel: Channel) => IconButtonProps | null;
+export type GetButtonItem = (message: Message, channel: Channel) => HoverBarButtonProps | null;
