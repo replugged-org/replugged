@@ -1,5 +1,6 @@
+import { getBySource, getFunctionBySource } from "@webpack";
 import type { Channel, Message } from "discord-types/general";
-import type { GetButtonItem, IconButtonProps } from "../../../types/coremods/message";
+import type { GetButtonItem, HoverBarButtonProps } from "../../../types/coremods/message";
 import { Logger } from "../../modules/logger";
 
 const logger = Logger.api("MessagePopover");
@@ -27,16 +28,25 @@ export function removeButton(item: GetButtonItem): void {
   buttons.delete(item);
 }
 
+type HoverBarButton = React.FC<HoverBarButtonProps>;
+
 /**
  * @internal
  * @hidden
  */
-export function _buildPopoverElements(
-  msg: Message,
-  channel: Channel,
-  IconButton: React.FC<IconButtonProps>,
-): React.ReactElement[] {
-  const items = [] as React.ReactElement[];
+export function _buildPopoverElements(msg: Message, channel: Channel): React.ReactElement[] {
+  const items: React.ReactElement[] = [];
+
+  // Waiting for the module is not necessary, as it is already loaded by the time this function is called
+  const hoverBarButtonStr = ".hoverBarButton";
+  const HoverBarButton = getFunctionBySource<HoverBarButton>(
+    getBySource(hoverBarButtonStr),
+    hoverBarButtonStr,
+  );
+  if (!HoverBarButton) {
+    logger.error("Could not find HoverBarButton");
+    return items;
+  }
 
   buttons.forEach((key, getItem) => {
     try {
@@ -44,7 +54,7 @@ export function _buildPopoverElements(
       try {
         if (item) {
           item.key = key;
-          items.push(<IconButton {...item} />);
+          items.push(<HoverBarButton {...item} />);
         }
       } catch (err) {
         logger.error(`Error in making the button [${item?.key}]`, err, item);

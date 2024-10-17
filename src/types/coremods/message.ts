@@ -7,7 +7,7 @@ interface ButtonPopoverProps extends React.ComponentPropsWithoutRef<"div"> {
   dangerous?: boolean;
 }
 
-export interface IconButtonProps extends ButtonPopoverProps {
+export interface HoverBarButtonProps extends ButtonPopoverProps {
   label: string;
   ariaLabel?: string;
   tooltipText?: string;
@@ -22,4 +22,4 @@ export interface IconButtonProps extends ButtonPopoverProps {
   buttonClassName?: string;
 }
 
-export type GetButtonItem = (message: Message, channel: Channel) => IconButtonProps | null;
+export type GetButtonItem = (message: Message, channel: Channel) => HoverBarButtonProps | null;
