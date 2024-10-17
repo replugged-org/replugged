@@ -98,6 +98,12 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       <SwitchItem
+        {...util.useSetting(generalSettings, "automaticRecover")}
+        note={"Allows Discord to try to automatically recover from a crash."}>
+        {"Automatic Recovery"}
+      </SwitchItem>
+
+      <SwitchItem
         {...util.useSetting(generalSettings, "addonEmbeds")}
         note={Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC}>
         {Messages.REPLUGGED_SETTINGS_ADDON_EMBEDS}
