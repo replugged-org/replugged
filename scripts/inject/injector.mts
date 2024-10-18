@@ -231,7 +231,10 @@ export const smartInject = async (
 ): Promise<boolean> => {
   let result;
 
-  const processName = PlatformNames[platform].replace(" ", "");
+  const processName =
+    process.platform === "darwin"
+      ? PlatformNames[platform]
+      : PlatformNames[platform].replace(" ", "");
   if (!noRelaunch) {
     try {
       if ((replug && cmd === "uninject") || !replug) {
@@ -269,7 +272,7 @@ export const smartInject = async (
           });
           break;
         case "darwin":
-          openProcess(`open -a ${PlatformNames[platform]}`);
+          openProcess(`open -a "${join(appDir, "..", "..", "..")}"`);
           break;
       }
     }
