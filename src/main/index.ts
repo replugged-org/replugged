@@ -8,7 +8,10 @@ import { getSetting } from "./ipc/settings";
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 // require.main!.filename = discordMain;
-
+let customTitlebar: boolean;
+void getSetting("dev.replugged.Settings", "titlebar", false).then(
+  (titlebar) => (customTitlebar = titlebar),
+);
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
     // cspell:ignore youre
@@ -34,6 +37,8 @@ class BrowserWindow extends electron.BrowserWindow {
       };
     },
   ) {
+    if (opts.frame && process.platform.includes("linux") && customTitlebar) opts.frame = void 0;
+
     const originalPreload = opts.webPreferences?.preload;
 
     if (opts.webContents) {
