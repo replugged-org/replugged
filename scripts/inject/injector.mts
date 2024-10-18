@@ -272,7 +272,7 @@ export const smartInject = async (
           });
           break;
         case "darwin":
-          openProcess(`open -a "${join(appDir, "..", "..", "..")}"`);
+          openProcess(`open -a "${processName}.app"`);
           break;
       }
     }
