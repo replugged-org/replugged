@@ -151,7 +151,7 @@ export async function start(): Promise<void> {
       }
 
       badgeElements.forEach((badgeElement) => {
-        if (badgeElement.id in badgeCache) {
+        if (badgeCache[badgeElement.id as keyof APIRepluggedBadges]) {
           const { component, ...props } = badgeElement;
           const badgeColor = badgeCache.custom.color;
 
