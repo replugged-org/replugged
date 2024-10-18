@@ -13,6 +13,8 @@ type RadioOptionType = {
   tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   icon?: React.ComponentType<unknown>;
   collapsibleContent?: React.ReactNode;
+  radioItemIconClassName?: string;
+  radioBarClassName?: string;
 };
 
 interface RadioProps {
