@@ -1,23 +1,25 @@
-import type {
-  ContextMenuComponents,
-  ContextMenuElements,
-  ContextMenuProps,
-} from "../../renderer/modules/components/ContextMenu";
+import type { ContextMenuType, MenuProps } from "../../renderer/modules/components/ContextMenu";
+import type React from "react";
 
-export interface RawContextItem {
-  type: ContextMenuComponents[keyof ContextMenuComponents];
-  children?: Array<RawContextItem | ContextItem | undefined>;
-  action?(): unknown;
+type ContextMenuComponents = Omit<ContextMenuType, "ItemColors" | "ContextMenu">;
 
-  [key: string]: unknown;
+interface BaseRawContextItem<T> {
+  type: T;
 }
 
-export type ContextItem = ContextMenuElements[keyof ContextMenuElements];
+type WithRawChildren<T> = T extends { children: React.ReactNode }
+  ? Omit<T, "children"> & { children: RawContextItem | RawContextItem[] }
+  : T;
+
+export type RawContextItem<
+  T extends
+    ContextMenuComponents[keyof ContextMenuComponents] = ContextMenuComponents[keyof ContextMenuComponents],
+> = BaseRawContextItem<T> & WithRawChildren<React.ComponentProps<T>>;
 
 export type GetContextItem<T extends Record<string, unknown> = Record<string, unknown>> = (
   data: T,
-  menu: ContextMenuProps["ContextMenu"],
-) => RawContextItem | ContextItem | undefined | void;
+  menu: MenuProps,
+) => RawContextItem | React.ReactElement | undefined | void;
 
 /**
  * An enum for the navIds of context menus across Discord
