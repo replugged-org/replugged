@@ -110,8 +110,8 @@ export function getByProps<T, P extends PropertyKey = keyof T>(
   const raw = typeof args[0] === "string" ? false : (args[1] as GetModuleOptions | undefined)?.raw;
 
   const byPrototype =
-    typeof args[0] === "string" ? false : (args[1] as ByPropsOptions)?.byPrototype;
-  
+    typeof args[0] === "string" ? false : (args[1] as ByPropsOptions).byPrototype;
+
   const result =
     typeof args.at(-1) === "object"
       ? getModule<T>(filters.byProps(...props, { byPrototype }), args.at(-1) as GetModuleOptions)
@@ -156,9 +156,9 @@ export async function waitForProps<T, P extends PropertyKey = keyof T>(
 ): Promise<T | RawModule<T>> {
   const props = (typeof args[0] === "string" ? args : args[0]) as P[];
   const raw = typeof args[0] === "string" ? false : (args[1] as WaitForOptions | undefined)?.raw;
-    const byPrototype =
-    typeof args[0] === "string" ? false : (args[1] as ByPropsOptions)?.byPrototype;
-  
+  const byPrototype =
+    typeof args[0] === "string" ? false : (args[1] as ByPropsOptions).byPrototype;
+
   const result = await (typeof args.at(-1) === "object"
     ? waitForModule<T>(filters.byProps(...props, { byPrototype }), args.at(-1) as WaitForOptions)
     : waitForModule<T>(filters.byProps(...props, { byPrototype })));

@@ -78,7 +78,7 @@ export function getExportsForProps<T, P extends PropertyKey = keyof T>(
     if (
       props.every((p) =>
         options?.byPrototype
-          ? (exported?.prototype as Record<P, unknown>)?.[p]
+          ? (exported.prototype as Record<P, unknown>)[p]
           : p in (exported as Record<P, unknown>),
       )
     ) {

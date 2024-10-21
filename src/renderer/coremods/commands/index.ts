@@ -223,13 +223,13 @@ async function injectApplicationCommandSearchStore(): Promise<void> {
     );
     if (!commandAndSectionsArray.length) return;
     if (
-      !commandAndSectionsArray.every(
-        (commandAndSection) => res?.some((section) => section.id === commandAndSection.section.id),
+      !commandAndSectionsArray.every((commandAndSection) =>
+        res.some((section) => section.id === commandAndSection.section.id),
       )
     ) {
       const sectionsToAdd = commandAndSectionsArray
         .map((commandAndSection) => commandAndSection.section)
-        .filter((section) => res?.some((existingSections) => section.id === existingSections.id));
+        .filter((section) => res.some((existingSections) => section.id === existingSections.id));
       res.push(...sectionsToAdd);
     }
     return res;
