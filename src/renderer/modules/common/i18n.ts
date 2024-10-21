@@ -1,4 +1,4 @@
-import { waitForProps } from "../webpack";
+import { filters, waitForModule } from "../webpack";
 import type EventEmitter from "events";
 
 import type SimpleMarkdown from "simple-markdown";
@@ -225,7 +225,7 @@ export interface I18n extends EventEmitter {
   _loadMessagesForLocale: (locale?: string) => Promise<void>;
 }
 
-const i18n = await waitForProps<I18n>("Messages", "getLanguages");
+const i18n = await waitForModule<I18n>(filters.bySource(/getMessages:.{5,10}en-US/));
 
 export const { Messages } = i18n;
 

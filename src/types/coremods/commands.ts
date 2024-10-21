@@ -54,6 +54,7 @@ export type GetValueType<T extends CommandOptionReturn, D> = undefined extends T
   : T["value"];
 
 export interface InexecutableRepluggedCommand<T extends CommandOptions> {
+  section?: RepluggedCommandSection;
   applicationId?: string;
   type?: number;
   id?: string;

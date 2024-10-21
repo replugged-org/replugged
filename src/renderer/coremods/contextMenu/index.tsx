@@ -1,4 +1,4 @@
-import { React } from "@common";
+import { React, components } from "@common";
 import type { ContextMenuProps } from "@components/ContextMenu";
 import type {
   ContextItem,
@@ -7,7 +7,6 @@ import type {
   RawContextItem,
 } from "../../../types/coremods/contextMenu";
 import { Logger } from "../../modules/logger";
-import { getByProps } from "../../modules/webpack";
 
 const logger = Logger.api("ContextMenu");
 
@@ -100,12 +99,8 @@ export function _insertMenuItems(menu: ContextMenuData): void {
 
   // We delay getting the items until now, as importing at the start of the file causes Discord to hang
   // Using `await import(...)` is undesirable because the new items will only appear once the menu is interacted with
-  const { MenuGroup } = getByProps<Record<string, React.ComponentType>>([
-    "Menu",
-    "MenuItem",
-    "MenuGroup",
-  ]) || { MenuGroup: undefined };
-  if (!MenuGroup) return;
+  const { MenuGroup } = components;
+  //if (!MenuGroup) return;
 
   // The data as passed as Arguments from the calling function, so we just grab what we want from it
   const data = menu.data[0];

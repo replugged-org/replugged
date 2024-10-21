@@ -16,6 +16,7 @@ import * as util from "../../../util";
 import { Messages } from "@common/i18n";
 import { type GeneralSettings, defaultSettings } from "src/types";
 import { initWs, socket } from "../../devCompanion";
+import { WEBSITE_URL } from "src/constants";
 
 export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
@@ -90,12 +91,6 @@ export const General = (): React.ReactElement => {
 
       <Divider style={{ margin: "20px 0px" }} />
 
-      {/* <SwitchItem
-        {...util.useSetting(generalSettings, "pluginEmbeds", false)}
-        note="Enable embedding plugins in chat">
-        Plugin Embeds
-      </SwitchItem> */}
-
       <SwitchItem
         {...util.useSetting(generalSettings, "badges")}
         note={Messages.REPLUGGED_SETTINGS_BADGES_DESC}>
@@ -124,7 +119,7 @@ export const General = (): React.ReactElement => {
           style={{ marginBottom: "20px" }}>
           <TextInput
             {...util.useSetting(generalSettings, "apiUrl")}
-            placeholder="https://replugged.dev"
+            placeholder={WEBSITE_URL}
             disabled
           />
         </FormItem>

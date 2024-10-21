@@ -8,8 +8,7 @@ type DiscordSplashWindow = Window & {
 
 // Splash screen
 if ((window as DiscordSplashWindow).DiscordSplash) {
-  await replugged.ignition.startSplash();
+  void replugged.ignition.startSplash();
 } else {
-  await replugged.plugins.loadAll();
-  await replugged.ignition.ignite();
+  void replugged.ignition.ignite();
 }

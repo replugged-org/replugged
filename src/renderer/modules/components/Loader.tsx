@@ -1,5 +1,5 @@
 import type React from "react";
-import { filters, waitForModule } from "../webpack";
+import components from "../common/components";
 
 const Types = {
   WANDERING_CUBES: "wanderingCubes",
@@ -12,9 +12,7 @@ const Types = {
 
 interface GenericLoaderProps {
   animated?: boolean;
-  className?: string;
   itemClassName?: string;
-  style?: React.CSSProperties;
 }
 
 type LoaderProps = GenericLoaderProps & {
@@ -28,8 +26,4 @@ export type LoaderType = React.FC<LoaderProps | SpinningCircleLoaderProps> & {
   Type: typeof Types;
 };
 
-const Loader = await waitForModule<Record<string, LoaderType>>(
-  filters.bySource('"wanderingCubes"'),
-).then((mod) => Object.values(mod).find((x) => typeof x === "function")!);
-
-export default Loader;
+export default components.Spinner;
