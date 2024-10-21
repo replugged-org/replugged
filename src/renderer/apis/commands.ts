@@ -18,11 +18,10 @@ import type {
   SendMessageOptionsForReply,
 } from "../modules/common/messages";
 import icon from "../assets/logo.png";
-import { constants, i18n, messages, users } from "../modules/common";
+import { constants, fluxDispatcher, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
-
 
 const logger = Logger.api("Commands");
 
@@ -147,7 +146,7 @@ async function executeCommand<T extends CommandOptions>(
     if ((!result?.result && !result?.embeds) || !currentChannelId) return;
 
     if (result.send) {
-      if (replyOptions?.messageReference)
+      if (replyOptions.messageReference)
         fluxDispatcher.dispatch({ type: "DELETE_PENDING_REPLY", channelId: currentChannelId });
       void messages.sendMessage(
         currentChannelId,
