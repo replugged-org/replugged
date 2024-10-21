@@ -8,7 +8,6 @@ import { default as messagePopover } from "../coremods/messagePopover/plaintextP
 import { default as notices } from "../coremods/notices/plaintextPatches";
 import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches";
 import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
-import { default as commandsPlaintext } from "../coremods/commands/plaintextPatches";
 import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
 import { default as badgesPlaintext } from "../coremods/badges/plaintextPatches";
 import { Logger } from "../modules/logger";
@@ -25,7 +24,6 @@ export namespace coremods {
   export let noDevtoolsWarning: Coremod;
   export let settings: Coremod;
   export let badges: Coremod;
-  export let notrack: Coremod;
   export let installer: Coremod;
   export let messagePopover: Coremod;
   export let notices: Coremod;
@@ -60,7 +58,6 @@ export async function startAll(): Promise<void> {
   coremods.watcher = await import("../coremods/watcher");
   coremods.commands = await import("../coremods/commands");
   coremods.welcome = await import("../coremods/welcome");
-  coremods.notrack = await import("../coremods/notrack");
 
   await Promise.all(
     Object.entries(coremods).map(async ([name, mod]) => {
@@ -77,20 +74,16 @@ export async function stopAll(): Promise<void> {
   await Promise.allSettled(Object.values(coremods).map((c) => c.stop?.()));
 }
 
-export function runPlaintextPatches(): Promise<void> {
-  return new Promise<void>((res) => {
-    [
-      experimentsPlaintext,
-      notrackPlaintext,
-      noDevtoolsWarningPlaintext,
-      messagePopover,
-      notices,
-      contextMenu,
-      languagePlaintext,
-      commandsPlaintext,
-      settingsPlaintext,
-      badgesPlaintext,
-    ].forEach(patchPlaintext);
-    res();
-  });
+export function runPlaintextPatches(): void {
+  [
+    experimentsPlaintext,
+    notrackPlaintext,
+    noDevtoolsWarningPlaintext,
+    messagePopover,
+    notices,
+    contextMenu,
+    languagePlaintext,
+    settingsPlaintext,
+    badgesPlaintext,
+  ].forEach(patchPlaintext);
 }

@@ -22,16 +22,7 @@ interface TooltipEnums {
   Aligns: typeof Aligns;
   Positions: typeof Positions;
   Colors: Record<
-    | "PRIMARY"
-    | "NESTED"
-    | "BLACK"
-    | "GREY"
-    | "BRAND"
-    | "GREEN"
-    | "YELLOW"
-    | "RED"
-    | "CUSTOM"
-    | "PREMIUM",
+    "PRIMARY" | "NESTED" | "BLACK" | "GREY" | "BRAND" | "GREEN" | "YELLOW" | "RED" | "PREMIUM",
     string
   >;
 }
@@ -44,6 +35,7 @@ interface BaseTooltipProps {
   spacing?: number;
   delay?: number;
   allowOverflow?: boolean;
+  overflowOnly?: boolean;
   disableTooltipPointerEvents?: boolean;
   forceOpen?: boolean;
   hideOnClick?: boolean;
@@ -53,9 +45,11 @@ interface BaseTooltipProps {
   className?: string;
   tooltipClassName?: string;
   tooltipContentClassName?: string;
+  tooltipPointerClassName?: string;
   style?: React.CSSProperties;
   tooltipStyle?: React.CSSProperties;
   onTooltipShow?: () => void;
+  onTooltipHide?: () => void;
   onAnimationRest?: (result: unknown, spring: unknown, item?: unknown) => void;
 }
 

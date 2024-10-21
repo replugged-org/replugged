@@ -272,7 +272,7 @@ async function handleContexts(
       if (watch) {
         await context.watch();
       } else {
-        await context.rebuild().catch(() => {});
+        await context.rebuild().catch(() => process.exit(1));
         context.dispose();
       }
     }),
@@ -298,7 +298,7 @@ const CONFIG_PATH = (() => {
       return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
 })();
-const CHROME_VERSION = "91";
+const CHROME_VERSION = "124";
 
 function buildAddons(buildFn: (args: Args) => Promise<void>, args: Args, type: AddonType): void {
   const addons = getAddonFolder(type);
@@ -364,7 +364,9 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
   const install: esbuild.Plugin = {
     name: "install",
     setup: (build) => {
-      build.onEnd(async () => {
+      build.onEnd(async (result) => {
+        if (result.errors.length > 0) return;
+
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "plugins", manifest.id);
           if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
@@ -452,7 +454,9 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const install: esbuild.Plugin = {
     name: "install",
     setup: (build) => {
-      build.onEnd(async () => {
+      build.onEnd(async (result) => {
+        if (result.errors.length > 0) return;
+
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "themes", manifest.id);
           if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
@@ -511,7 +515,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
       ),
     );
 
-    manifest.plaintextPatches = "splash.css";
+    manifest.splash = "splash.css";
   }
 
   if (!existsSync(distPath)) mkdirSync(distPath, { recursive: true });

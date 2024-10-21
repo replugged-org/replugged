@@ -1,22 +1,20 @@
-import { signalStart, waitForReady } from "../modules/webpack/patch-load";
 import { error, log } from "../modules/logger";
-
 import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
-import * as i18n from "../modules/i18n";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
 import * as themes from "./themes";
 import * as quickCSS from "./quick-css";
 import { loadStyleSheet } from "../util";
 import { startAutoUpdateChecking } from "./updater";
+import { interceptChunksGlobal } from "../modules/webpack/patch-load";
 
 export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");
   const startTime = performance.now();
 
   loadStyleSheet("replugged://renderer.css");
-  i18n.load();
+  await import("../modules/i18n").then((i18n) => i18n.load());
 
   let started = false;
   await Promise.race([
@@ -83,26 +81,23 @@ Load order:
 
 export async function ignite(): Promise<void> {
   // This is the function that will be called when loading the window.
-  // Plaintext patches are executed before Discord's preload.
-  await coremods.runPlaintextPatches();
+  // Plaintext patches must run first.
+  interceptChunksGlobal();
+  coremods.runPlaintextPatches();
   await plugins.loadAll();
   await plugins.runPlaintextPatches();
-  // These next things will happen after Discord's preload is called.
-  // We schedule them here, but they cannot block the ignite function from returning.
-  (async () => {
-    await waitForReady;
-    signalStart();
-    await commonReady();
-    await componentsReady();
-    await start();
-  })();
+  // At this point, Discord's code should run.
+  // Wait for the designated common modules to load before continuing.
+  await Promise.all([commonReady(), componentsReady()]);
+  await start();
 }
 
 export async function startSplash(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
   const startTime = performance.now();
 
-  await themes.loadMissing().then(themes.loadAllSplash);
+  await themes.loadMissing();
+  themes.loadAllSplash();
 
   log(
     "Ignition",

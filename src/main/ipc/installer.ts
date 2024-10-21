@@ -48,7 +48,7 @@ async function github(
   } catch (err) {
     return {
       success: false,
-      // @ts-expect-error err tbd
+      // @ts-expect-error ts error tbd
       error: err,
     };
   }
