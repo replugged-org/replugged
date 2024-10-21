@@ -1,5 +1,5 @@
 import type React from "react";
-import { filters, waitForModule } from "../webpack";
+import components from "../common/components";
 
 interface TextAreaProps {
   autoFocus?: boolean;
@@ -11,6 +11,7 @@ interface TextAreaProps {
   autosize?: boolean;
   spellCheck?: boolean;
   showCharacterCount?: boolean;
+  showCharacterCountFullPadding?: boolean;
   showRemainingCharacterCount?: boolean;
   minLength?: number;
   maxLength?: number;
@@ -20,19 +21,19 @@ interface TextAreaProps {
   error?: string;
   value?: string;
   id?: string;
-  inputRef?: React.Ref<HTMLInputElement>;
+  defaultDirty?: boolean;
+  inputRef?: React.Ref<HTMLTextAreaElement>;
   className?: string;
-  onChange?: (value: string) => void;
-  onInvalid?: React.FormEventHandler<HTMLInputElement>;
-  onFocus?: React.FocusEventHandler<HTMLInputElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
+  onChange?: (value: string, name: string) => void;
+  onInvalid?: React.FormEventHandler<HTMLTextAreaElement>;
+  onFocus?: (event: React.FocusEvent<HTMLTextAreaElement>, name: string) => void;
+  onBlur?: (event: React.FocusEvent<HTMLTextAreaElement>, name: string) => void;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  "aria-labelledby"?: string;
 }
 
 export type TextAreaType = React.ComponentClass<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 
-export default await waitForModule<Record<string, TextAreaType>>(
-  filters.bySource(/.resizeable,/),
-).then((mod) => Object.values(mod).find((x) => x?.defaultProps && "resizeable" in x.defaultProps)!);
+export default components.TextArea;

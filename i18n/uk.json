@@ -233,5 +233,12 @@
     "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME": "аддон",
     "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC": "Ідентифікатор доповнення для встановлення з джерела",
     "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME": "джерело",
-    "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Успіх"
+    "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Успіх",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "ідентифікатор",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Якщо джерело має кілька аддонів, укажіть, який із них інсталювати",
+    "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Джерело, з якого інсталювати аддон",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Перелічити теми",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "Перелічити плагіни",
+    "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Плагін: {name}",
+    "REPLUGGED_STORE": "Магазин"
 }

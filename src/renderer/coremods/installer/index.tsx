@@ -1,7 +1,14 @@
-import { Injector, Logger } from "@replugged";
+import { parser } from "@common";
+import { Injector } from "@replugged";
+import type { Capture, DefaultInRule } from "simple-markdown";
+import { plugins } from "src/renderer/managers/plugins";
+import { themes } from "src/renderer/managers/themes";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { ObjectExports } from "src/types";
 import { registerRPCCommand } from "../rpc";
+import { generalSettings } from "../settings/pages";
+import AddonEmbed from "./AddonEmbed";
+import { loadCommands } from "./commands";
 import {
   InstallLinkProps,
   InstallResponse,
@@ -9,16 +16,8 @@ import {
   installFlow,
   parseInstallLink,
 } from "./util";
-import { plugins } from "src/renderer/managers/plugins";
-import { themes } from "src/renderer/managers/themes";
-import AddonEmbed from "./AddonEmbed";
-import { generalSettings } from "../settings/pages";
-import type { Capture, DefaultInRule } from "simple-markdown";
-import { parser } from "@common";
-import { loadCommands } from "./commands";
 
 const injector = new Injector();
-const logger = Logger.coremod("Installer");
 
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
@@ -88,19 +87,14 @@ const triggerInstall = (
 };
 
 async function injectLinks(): Promise<void> {
-  const linkMod = await waitForModule(filters.bySource(".useDefaultUnderlineStyles"), {
+  const linkMod = await waitForModule(filters.bySource(",useDefaultUnderlineStyles:"), {
     raw: true,
   });
-  const exports = linkMod.exports as ObjectExports &
-    Record<string, React.FC<React.PropsWithChildren<AnchorProps>>>;
-
-  const key = getFunctionKeyBySource(exports, ".useDefaultUnderlineStyles");
-  if (!key) {
-    logger.error("Failed to find link component.");
-    return;
-  }
-
-  injector.instead(exports, key, (args, fn) => {
+  const exports = linkMod.exports as ObjectExports & {
+    Anchor: React.FC<React.PropsWithChildren<AnchorProps>>;
+  };
+  const anchorKey = getFunctionKeyBySource(exports, "")! as "Anchor"; // It's actually a mangled name, but TS can sit down and shut up
+  injector.instead(exports, anchorKey, (args, fn) => {
     const { href } = args[0];
     if (!href) return fn(...args);
     const installLink = parseInstallLink(href);
@@ -108,9 +102,7 @@ async function injectLinks(): Promise<void> {
 
     args[0].onClick = (e) => triggerInstall(installLink, e);
 
-    const res = fn(...args);
-
-    return res;
+    return fn(...args);
   });
 
   const defaultRules = parser.defaultRules as typeof parser.defaultRules & {

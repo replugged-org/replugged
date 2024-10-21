@@ -5,6 +5,7 @@ import { execSync } from "child_process";
 import readline from "readline";
 import { DiscordPlatform } from "../types.mjs";
 import { AnsiEscapes, PlatformNames } from "../util.mjs";
+import { exitCode } from "../index.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -32,8 +33,8 @@ const findPathFromPaths = async (
   platform: DiscordPlatform,
   paths: string[],
 ): Promise<string | null> => {
-  let discordPath = paths.find((path) => existsSync(path));
-  if (!discordPath) {
+  let discordPaths = paths.filter((path) => existsSync(path));
+  if (discordPaths.length === 0) {
     const readlineInterface = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -46,7 +47,7 @@ const findPathFromPaths = async (
       "\n",
     );
     console.log(`Please provide the path of your ${PlatformNames[platform]} installation folder`);
-    discordPath = await askPath();
+    let discordPath = await askPath();
     readlineInterface.close();
 
     if (!existsSync(discordPath)) {
@@ -55,12 +56,20 @@ const findPathFromPaths = async (
         `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
       );
       console.log("The path you provided is invalid.");
-      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+      process.exit(exitCode);
     }
   }
 
-  const path = findAppAsarInDir(discordPath);
-  return path;
+  let path: string | null = null;
+  for (let discordPath of discordPaths) {
+    path = findAppAsarInDir(discordPath);
+    if (path !== null) return path;
+    else
+      console.log(
+        `Potential Discord directory ${discordPath} exists but does not contain a valid Discord installation. This may be remnants of an old installation, checking other potential locations...`,
+      );
+  }
+  return null;
 };
 
 const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
@@ -118,7 +127,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
     const fromPath = await findPathFromPaths(platform, KnownLinuxPaths[platform]);
     if (!fromPath) {
       console.log("Failed to find Discord path");
-      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+      process.exit(exitCode);
     }
 
     return fromPath;
@@ -133,7 +142,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
     const fromPath = await findPathFromPaths(platform, KnownLinuxPaths[platform]);
     if (!fromPath) {
       console.log("Failed to find Discord path");
-      process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+      process.exit(exitCode);
     }
 
     return fromPath;

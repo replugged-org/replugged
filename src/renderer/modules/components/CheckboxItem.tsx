@@ -1,6 +1,6 @@
 import type React from "react";
 import { Text } from ".";
-import { filters, waitForModule } from "../webpack";
+import components from "../common/components";
 
 interface CheckboxProps {
   disabled?: boolean;
@@ -30,11 +30,7 @@ export type CheckboxType = React.ComponentClass<React.PropsWithChildren<Checkbox
 
 export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
 
-export const Checkbox = await waitForModule<Record<string, CheckboxType>>(
-  filters.bySource(".getInputMode"),
-).then(
-  (mod) => Object.values(mod).find((x) => "defaultProps" in x && "displayOnly" in x.defaultProps)!,
-);
+export const { Checkbox } = components;
 
 export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
   return (

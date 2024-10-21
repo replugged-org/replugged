@@ -1,6 +1,7 @@
 import type React from "react";
 import { FormItem } from ".";
-import { filters, waitForModule, waitForProps } from "../webpack";
+import components from "../common/components";
+import { waitForProps } from "../webpack";
 
 const MarkerPositions = {
   ABOVE: 0,
@@ -39,13 +40,9 @@ interface SliderCompProps {
   getAriaValueText?: (value: number) => void;
 }
 
-type SliderCompType = React.ComponentClass<SliderCompProps>;
+export type SliderCompType = React.ComponentClass<SliderCompProps>;
 
-const SliderComp = await waitForModule<Record<string, SliderCompType>>(
-  filters.bySource(".moveGrabber="),
-).then(
-  (mod) => Object.values(mod).find((x) => x?.defaultProps && "stickToMarkers" in x.defaultProps)!,
-);
+const SliderComp = components.Slider;
 
 interface SliderProps extends SliderCompProps {
   value?: number;

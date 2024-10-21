@@ -8,11 +8,13 @@ export default [
     replacements: [
       {
         match: /(\.Messages\.LANGUAGE,)\s*children:((?:[^}]*?}){3}\))/,
-        replace: (_, prefix, ogChild) => `${prefix}children:[${coremodStr}.Card(),${ogChild}]`,
+        replace: (_, prefix, ogChild) =>
+          `${prefix}children:[${coremodStr}?.Card() ?? null,${ogChild}]`,
       },
       {
         match: /children:\[(.+?\.localeName[^\]]*?)]/,
-        replace: (_, ogChild) => `children:[${coremodStr}.Percentage(${ogChild})]`,
+        replace: (_, ogChild) =>
+          `children:${coremodStr}?.Percentage?${coremodStr}.Percentage(${ogChild}):[${ogChild}]`,
       },
     ],
   },

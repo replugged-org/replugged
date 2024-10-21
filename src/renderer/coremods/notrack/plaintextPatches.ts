@@ -2,30 +2,32 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
+    find: "AnalyticsActionHandlers.handleTrack",
     replacements: [
       {
-        match: /window\.DiscordSentry=function\(\){/,
-        replace: "$&return;",
-      },
-      {
-        match: /crossDomainError=function\(\){/,
-        replace: "$&return;",
+        match: /=>\w+\.AnalyticsActionHandlers\.handle\w+\([^)]*\)/g,
+        replace: "=>{}",
       },
     ],
   },
   {
-    find: "TRACKING_URL:",
+    find: "window.DiscordSentry",
     replacements: [
       {
-        replace: "()=>{}",
+        match: /\w+=window\.DiscordSentry/g,
+        replace: "false",
       },
     ],
   },
   {
-    find: /this\.metrics\.push\(.\);/,
+    find: "crashReporter.updateCrashReporter",
+    replacements: [{ match: /updateCrashReporter\(\w+\){/, replace: "$&return;" }],
+  },
+  {
+    find: /this\._metrics\.push\(.\),/,
     replacements: [
       {
-        match: /this\.metrics\.push\(.\);/,
+        match: /this\._metrics\.push\(.\),/,
         replace: "",
       },
     ],

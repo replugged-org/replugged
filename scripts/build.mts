@@ -2,6 +2,7 @@ import esbuild from "esbuild";
 import path from "path";
 import { fileURLToPath } from "url";
 import asar from "@electron/asar";
+import { createContext } from "@marshift/argus";
 import {
   copyFileSync,
   existsSync,
@@ -13,11 +14,12 @@ import {
 } from "fs";
 import { logBuildPlugin } from "src/util.mjs";
 
-const NODE_VERSION = "14";
-const CHROME_VERSION = "91";
+const NODE_VERSION = "20";
+const CHROME_VERSION = "124";
 
-const watch = process.argv.includes("--watch");
-const production = process.argv.includes("--production");
+const ctx = createContext(process.argv);
+const watch = ctx.hasOptionalArg(/--watch/);
+const production = ctx.hasOptionalArg(/--production/);
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -31,7 +33,9 @@ rmSync("replugged.asar", { force: true });
 const preBundle: esbuild.Plugin = {
   name: "preBundle",
   setup: (build) => {
-    build.onEnd(() => {
+    build.onEnd((result) => {
+      if (result.errors.length > 0) return;
+
       if (!existsSync(`${distDir}/i18n`)) {
         mkdirSync(`${distDir}/i18n`);
       }
@@ -102,6 +106,9 @@ const contexts = await Promise.all([
     target: `chrome${CHROME_VERSION}`,
     outfile: `${distDir}/renderer.js`,
     format: "esm",
+    loader: {
+      ".png": "dataurl",
+    },
   }),
 ]);
 await Promise.all(
@@ -109,7 +116,7 @@ await Promise.all(
     if (watch) {
       await context.watch();
     } else {
-      await context.rebuild().catch(() => {});
+      await context.rebuild().catch(() => process.exit(1));
       context.dispose();
     }
   }),

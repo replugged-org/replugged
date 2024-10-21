@@ -53,6 +53,11 @@ export type { API };
 export let api: API;
 importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
+import * as Components from "./components";
+export type { Components };
+export let components: typeof import("./components").default;
+importTimeout("components", import("./components"), (mod) => (components = mod.default));
+
 import * as Constants from "./constants";
 export type { Constants };
 export let constants: typeof Constants;
@@ -76,6 +81,11 @@ importTimeout(
   import("./fluxDispatcher"),
   (mod) => (fluxDispatcher = mod.default),
 );
+
+import type { FluxHooks } from "./fluxHooks";
+export type { FluxHooks };
+export let fluxHooks: FluxHooks;
+importTimeout("fluxHooks", import("./fluxHooks"), (mod) => (fluxHooks = mod.default));
 
 import type { I18n } from "./i18n";
 export type { I18n };
@@ -107,7 +117,7 @@ importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 /**
  * @see {@link https://highlightjs.org/usage/}
  */
-export let hljs: typeof import("highlightjs");
+export let hljs: typeof import("highlight.js").default;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
 /**
