@@ -9,7 +9,7 @@ import type { ByPropsOptions, RawModule } from "../../../types";
 export const byProps = <P extends PropertyKey = PropertyKey>(
   ...args: [...P[], ByPropsOptions] | P[]
 ): ((m: RawModule) => boolean) => {
-  if (typeof args.at(-1) === "object" && !Array.isArray(args.at(-1)) && args.at(-1) !== null) {
+  if (typeof args.at(-1) === "object" && !Array.isArray(args.at(-1)) && args.at(-1)) {
     const options = args.pop() as ByPropsOptions;
     return (m: RawModule) =>
       typeof getExportsForProps(m.exports, args as P[], options) !== "undefined";
