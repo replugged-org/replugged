@@ -11,6 +11,7 @@ type WithRawChildren<T> = T extends { children: React.ReactNode }
   ? Omit<T, "children"> & { children: RawContextItem | RawContextItem[] }
   : T;
 
+// TODO: Type is not correctly extending the props of the component based on the generic T
 export type RawContextItem<
   T extends
     ContextMenuComponents[keyof ContextMenuComponents] = ContextMenuComponents[keyof ContextMenuComponents],
