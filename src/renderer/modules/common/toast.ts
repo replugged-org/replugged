@@ -7,6 +7,10 @@ const Kind = {
   FAILURE: 2,
   CUSTOM: 3,
   CLIP: 4,
+  LINK: 5,
+  FORWARD: 6,
+  BOOKMARK: 7,
+  CLOCK: 8,
 } as const;
 
 const Position = {

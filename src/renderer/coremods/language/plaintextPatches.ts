@@ -13,7 +13,8 @@ export default [
       },
       {
         match: /children:\[(.+?\.localeName[^\]]*?)]/,
-        replace: (_, ogChild) => `children:[${coremodStr}?.Percentage(${ogChild}) ?? ${ogChild}]`,
+        replace: (_, ogChild) =>
+          `children:${coremodStr}?.Percentage?${coremodStr}.Percentage(${ogChild}):[${ogChild}]`,
       },
     ],
   },
