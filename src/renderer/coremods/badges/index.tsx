@@ -24,7 +24,6 @@ interface APIRepluggedCustomBadge {
 }
 
 interface APIRepluggedBadges {
-  [key: string]: boolean | APIRepluggedCustomBadge;
   developer: boolean;
   staff: boolean;
   support: boolean;
@@ -152,14 +151,17 @@ export async function start(): Promise<void> {
       }
 
       badgeElements.forEach((badgeElement) => {
-        if (badgeCache[badgeElement.id]) {
+        if (badgeCache[badgeElement.id as keyof APIRepluggedBadges]) {
           const { component, ...props } = badgeElement;
+          const badgeColor = badgeCache.custom.color;
 
           newBadges.push({
             ...props,
             icon: "replugged",
             component: React.createElement(component, {
-              color: badgeCache.custom.color ?? DISCORD_BLURPLE,
+              color:
+                (badgeColor && (badgeColor.startsWith("#") ? badgeColor : `#${badgeColor}`)) ??
+                DISCORD_BLURPLE,
             }),
           });
         }

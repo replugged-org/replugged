@@ -1,9 +1,3 @@
-[class*="containerWithContent"] {
-  min-height: -webkit-fit-content;
-  min-height: -moz-fit-content;
-  min-height: fit-content;
-}
-
 .replugged-badge {
   padding: 3px;
   box-sizing: border-box;

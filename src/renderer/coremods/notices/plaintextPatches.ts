@@ -7,9 +7,8 @@ export default [
     find: /hasNotice:\w+,sidebarTheme:\w+/,
     replacements: [
       {
-        match: /(\w+\.base,children:\[)(.+?}\)),/,
-        replace: (_, prefix, noticeWrapper) =>
-          `${prefix}${coremodStr}?.AnnouncementContainer({originalRes:${noticeWrapper}}) ?? ${noticeWrapper},`,
+        match: /\w+\.base,children:\[/,
+        replace: `$&${coremodStr}?.AnnouncementContainer?.(),`,
       },
     ],
   },

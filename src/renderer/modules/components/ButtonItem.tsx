@@ -18,22 +18,22 @@ interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   submittingFinishedLabel?: string;
 }
 
-interface Path {
+interface Location<S = unknown> {
   pathname?: string;
   search?: string;
+  state?: S;
   hash?: string;
+  key?: string;
 }
 
-interface LinkProps extends Omit<React.ComponentPropsWithoutRef<"a">, "href"> {
+interface LinkProps<S = unknown> extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  component?: React.ComponentType;
+  to: string | Location<S> | ((location: Location<S>) => string | Location<S>);
   replace?: boolean;
-  state?: unknown;
-  to: string | Path;
-  reloadDocument?: boolean;
-  preventScrollReset?: boolean;
-  relative?: "route" | "path";
+  innerRef?: React.Ref<HTMLAnchorElement>;
 }
 
-interface ButtonLinkProps extends LinkProps {
+interface ButtonLinkProps<S = unknown> extends LinkProps<S> {
   look?: string;
   color?: string;
   size?: string;
