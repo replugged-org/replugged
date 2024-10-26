@@ -2,7 +2,7 @@ import { Messages } from "@common/i18n";
 import { Text } from "@components";
 import { Injector } from "@replugged";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
+import { ConnectedQuickCSS, General, Plugins, Themes, Updater } from "./pages";
 
 const injector = new Injector();
 
@@ -28,7 +28,7 @@ export function start(): void {
     Section({
       name: "rp-quickcss",
       label: () => Messages.REPLUGGED_QUICKCSS,
-      elem: QuickCSS,
+      elem: ConnectedQuickCSS as unknown as (args: unknown) => React.ReactElement,
     }),
     Section({
       name: "rp-plugins",

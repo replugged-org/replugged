@@ -21,6 +21,10 @@
 /* Scrollbar */
 #replugged-quickcss-wrapper .cm-scroller {
   overflow: auto;
+  max-height: 75vh;
+}
+#replugged-quickcss-wrapper[data-popout="true"] .cm-scroller {
+  max-height: 100vh;
 }
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar {
   width: 16px;
@@ -182,4 +186,29 @@
 #replugged-quickcss-wrapper .cm-trailingSpace,
 #replugged-quickcss-wrapper .cm-specialChar {
   color: var(--red-400);
+}
+
+.replugged-quickcss-header {
+  height: 30px;
+  color: var(--text-normal);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 7px 15px;
+  background-color: var(--background-secondary);
+}
+
+#replugged-quickcss-wrapper[data-popout="true"] .replugged-quickcss-header {
+  height: 16px;
+}
+
+.replugged-quickcss-header span,
+.replugged-quickcss-header div,
+.replugged-quickcss-header svg {
+  width: 100%;
+  height: 100%;
+}
+[class^="content"]:has(> #replugged-quickcss-wrapper) {
+  display: block;
 }
