@@ -29,6 +29,9 @@ rules:
   node/no-unpublished-import: off
   node/no-unpublished-require: off
   node/shebang: off
+  node/no-extraneous-import:
+    - error
+    - allowModules: ["lodash"]
   no-process-exit: off
   no-undef: off
   no-undefined: off

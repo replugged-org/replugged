@@ -25,9 +25,17 @@ type ThemeModule = {
   removeChangeListener: (listener: () => unknown) => unknown;
 };
 
+type PopoutWindowType = React.ComponentType<{
+  ref: React.RefObject<unknown>;
+  withTitleBar: boolean;
+  windowKey: string;
+  title: string;
+  children: React.ReactNode;
+}>;
+
 const PopoutModule = await webpack.waitForModule(
   webpack.filters.bySource('type:"POPOUT_WINDOW_OPEN"'),
-)!;
+);
 const openPopout = webpack.getFunctionBySource<
   (key: string, render: React.ComponentType, features: Record<string, string>) => void
 >(PopoutModule, "POPOUT_WINDOW_OPEN")!;
@@ -46,7 +54,9 @@ const PopoutWindowStore = webpack.getByStoreName<
     getIsAlwaysOnTop: (key: string) => boolean;
   }
 >("PopoutWindowStore")!;
-let PopoutWindow = webpack.getBySource<React.ComponentType>(".EMBEDDED_ACTIVITIES_ARE_YOU_SURE_WANT_TO_LEAVE");
+let PopoutWindow = webpack.getBySource<PopoutWindowType>(
+  ".EMBEDDED_ACTIVITIES_ARE_YOU_SURE_WANT_TO_LEAVE",
+);
 
 function useTheme(): "light" | "dark" {
   const [theme, setTheme] = React.useState<"light" | "dark">("dark");
@@ -202,29 +212,33 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
       el.rel = "stylesheet";
       el.href = `replugged://renderer.css?t=${Date.now()}`;
       window.document.head.appendChild(el);
-    }, [])
+    }, []);
   }
   const [alwaysOnTop, setAlwaysOnTop_] = React.useState(props.popoutOnTop);
 
   return (
     <>
-      {!props.popout ? <>
-        <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-          <Text.H2>{Messages.REPLUGGED_QUICKCSS}</Text.H2>
-          <div style={{ display: "flex" }}>
-            {autoApply ? null : (
-              <Button onClick={reloadAndToast}>{Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}</Button>
-            )}
-            <Button
-              onClick={() => window.RepluggedNative.quickCSS.openFolder()}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
-              {Messages.REPLUGGED_QUICKCSS_FOLDER_OPEN}
-            </Button>
-          </div>
-        </Flex>
-        <Divider style={{ margin: "20px 0px" }} />
-      </> : null}
+      {!props.popout ? (
+        <>
+          <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
+            <Text.H2>{Messages.REPLUGGED_QUICKCSS}</Text.H2>
+            <div style={{ display: "flex" }}>
+              {autoApply ? null : (
+                <Button onClick={reloadAndToast}>
+                  {Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}
+                </Button>
+              )}
+              <Button
+                onClick={() => window.RepluggedNative.quickCSS.openFolder()}
+                color={Button.Colors.PRIMARY}
+                look={Button.Looks.LINK}>
+                {Messages.REPLUGGED_QUICKCSS_FOLDER_OPEN}
+              </Button>
+            </div>
+          </Flex>
+          <Divider style={{ margin: "20px 0px" }} />
+        </>
+      ) : null}
 
       {!props.popout && props.isPopoutOpen ? (
         <ButtonItem
@@ -252,18 +266,24 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
               <Tooltip text={Messages.POPOUT_PLAYER}>
                 <Clickable
                   onClick={() => {
-                    if (!PopoutWindow)
-                      PopoutWindow = webpack.getBySource(".EMBEDDED_ACTIVITIES_ARE_YOU_SURE_WANT_TO_LEAVE");
+                    let PopoutWindowComp: PopoutWindowType;
+                    if (!PopoutWindow) {
+                      PopoutWindowComp = webpack.getBySource(
+                        ".EMBEDDED_ACTIVITIES_ARE_YOU_SURE_WANT_TO_LEAVE",
+                      )!;
+                    } else {
+                      PopoutWindowComp = PopoutWindow;
+                    }
                     openPopout(
                       "DISCORD_REPLUGGED_QUICKCSS",
                       () => (
-                        <PopoutWindow
+                        <PopoutWindowComp
                           ref={React.createRef()}
                           withTitleBar={true}
                           windowKey="DISCORD_REPLUGGED_QUICKCSS"
                           title={Messages.REPLUGGED_QUICKCSS}>
                           <QuickCSS popout={true}></QuickCSS>
-                        </PopoutWindow>
+                        </PopoutWindowComp>
                       ),
                       {},
                     );
@@ -279,7 +299,7 @@ const QuickCSS = (props: { popout: boolean } & Record<string, boolean>): React.R
     </>
   );
 };
-console.log("omg")
+
 export const ConnectedQuickCSS = flux.connectStores<
   { popout: boolean },
   { popout: boolean; isPopoutOpen: boolean }
