@@ -418,7 +418,7 @@ function Cards({
               } catch (e) {
                 logger.error("Error enabling", addon, e);
                 toast.toast(
-                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS, {
+                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_FAILED, {
                     name: label(type),
                   }),
                   toast.Kind.FAILURE,

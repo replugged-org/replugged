@@ -210,6 +210,7 @@ export default defineMessages({
   REPLUGGED_SEARCH_FOR_ADDON: "Search for a {type}",
   REPLUGGED_TOAST_ADDON_DISABLE_FAILED: "Failed to disable {name}",
   REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS: "Disabled {name}",
+  REPLUGGED_TOAST_ADDON_ENABLE_FAILED: "Failed to enable {name}",
   REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS: "Enabled {name}",
   REPLUGGED_TOAST_ADDON_RELOAD_FAILED: "Failed to reload {name}",
   REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS: "Reloaded {name}",

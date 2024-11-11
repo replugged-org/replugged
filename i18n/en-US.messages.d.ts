@@ -1984,6 +1984,19 @@ declare const messages: {
    */
   'REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
+   * Key: `j+ClUl`
+   * 
+   * ### Definition
+   * ```text
+   * Failed to enable {name}
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `ar`, `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-ES`, `fi`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_TOAST_ADDON_ENABLE_FAILED': TypedIntlMessageGetter<{name: any}>,
+  /**
    * Key: `k0hIQ0`
    * 
    * ### Definition
