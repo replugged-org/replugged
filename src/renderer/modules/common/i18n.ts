@@ -45,16 +45,18 @@ export interface Hash {
   runtimeHashMessageKey: (key: string) => string;
 }
 
-const { getAvailableLocales, getLanguages, getSystemLocale, international, intl, t } =
-  await waitForProps<I18n>("getAvailableLocales", "intl");
-const { runtimeHashMessageKey } = await waitForProps<Hash>("runtimeHashMessageKey");
-
-export {
+const {
   getAvailableLocales,
   getLanguages,
   getSystemLocale,
   international,
   intl,
-  runtimeHashMessageKey,
-  t,
-};
+  t: discordT,
+} = await waitForProps<I18n>("getAvailableLocales", "intl");
+const { runtimeHashMessageKey } = await waitForProps<Hash>("runtimeHashMessageKey");
+
+export const t = new Proxy(discordT, {
+  get: (t, key: string) => t[runtimeHashMessageKey(key)],
+});
+
+export { getAvailableLocales, getLanguages, getSystemLocale, international, intl };

@@ -1,4 +1,4 @@
-import { t as discordT, intl, runtimeHashMessageKey } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
 import { Injector } from "@replugged";
 import { t } from "src/renderer/modules/i18n";
@@ -23,7 +23,7 @@ export function start(): void {
     Header("Replugged"),
     Section({
       name: "rp-general",
-      label: () => intl.string(discordT[runtimeHashMessageKey("SETTINGS_GENERAL")]),
+      label: () => intl.string(discordT.SETTINGS_GENERAL),
       elem: General,
     }),
     Section({

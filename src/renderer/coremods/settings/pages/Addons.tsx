@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { React, api, fluxDispatcher, modal, toast, users } from "@common";
-import { t as discordT, intl, runtimeHashMessageKey } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import {
   Button,
   Divider,
@@ -233,7 +233,7 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
       {author.discordID ? (
         <Tooltip
           text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
-            type: intl.string(discordT[runtimeHashMessageKey("NOTIFICATION_TITLE_DISCORD")]),
+            type: intl.string(discordT.NOTIFICATION_TITLE_DISCORD),
           })}
           className="replugged-addon-icon replugged-addon-icon-author">
           <a onClick={() => openUserProfile(author.discordID!)}>
@@ -449,10 +449,8 @@ function Cards({
             const confirmation = await modal.confirm({
               title: intl.format(t.REPLUGGED_ADDON_UNINSTALL, { name: addon.manifest.name }),
               body: intl.format(t.REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY, { type: label(type) }),
-              confirmText: intl.string(
-                discordT[runtimeHashMessageKey("APPLICATION_UNINSTALL_PROMPT_CONFIRM")],
-              ),
-              cancelText: intl.string(discordT[runtimeHashMessageKey("CANCEL")]),
+              confirmText: intl.string(discordT.APPLICATION_UNINSTALL_PROMPT_CONFIRM),
+              cancelText: intl.string(discordT.CANCEL),
               confirmColor: Button.Colors.RED,
             });
             if (!confirmation) return;
