@@ -1,13 +1,15 @@
-import { Messages } from "@common/i18n";
+import { intl } from "@common/i18n";
 import React from "@common/react";
 import { Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "@webpack";
 import { DISCORD_BLURPLE, DISCORD_INVITE, WEBLATE_URL } from "src/constants";
+import { t } from "src/renderer/modules/i18n";
 import type { Badge, DisplayProfile } from "src/types";
 import { Injector } from "../../modules/injector";
 import { generalSettings } from "../settings/pages";
-import "./badge.css";
 import Badges from "./badges";
+
+import "./badge.css";
 
 const injector = new Injector();
 
@@ -53,39 +55,43 @@ const inviteUrl = `https://discord.gg/${DISCORD_INVITE}`;
 const badgeElements = [
   {
     id: "booster",
-    description: Messages.REPLUGGED_BADGES_BOOSTER,
+    description: intl.string(t.REPLUGGED_BADGES_BOOSTER),
     component: Badges.Booster,
     link: inviteUrl,
   },
   {
     id: "contributor",
-    description: Messages.REPLUGGED_BADGES_CONTRIBUTOR,
+    description: intl.string(t.REPLUGGED_BADGES_CONTRIBUTOR),
     component: Badges.Contributor,
     link: contributorsUrl,
   },
   {
     id: "developer",
-    description: Messages.REPLUGGED_BADGES_DEVELOPER,
+    description: intl.string(t.REPLUGGED_BADGES_DEVELOPER),
     component: Badges.Developer,
     link: contributorsUrl,
   },
-  { id: "early", description: Messages.REPLUGGED_BADGES_EARLY, component: Badges.EarlyUser },
-  { id: "hunter", description: Messages.REPLUGGED_BADGES_HUNTER, component: Badges.BugHunter },
+  { id: "early", description: intl.string(t.REPLUGGED_BADGES_EARLY), component: Badges.EarlyUser },
+  {
+    id: "hunter",
+    description: intl.string(t.REPLUGGED_BADGES_HUNTER),
+    component: Badges.BugHunter,
+  },
   {
     id: "staff",
-    description: Messages.REPLUGGED_BADGES_STAFF,
+    description: intl.string(t.REPLUGGED_BADGES_STAFF),
     component: Badges.Staff,
     link: inviteUrl,
   },
   {
     id: "support",
-    description: Messages.REPLUGGED_BADGES_SUPPORT,
+    description: intl.string(t.REPLUGGED_BADGES_SUPPORT),
     component: Badges.Support,
     link: inviteUrl,
   },
   {
     id: "translator",
-    description: Messages.REPLUGGED_BADGES_TRANSLATOR,
+    description: intl.string(t.REPLUGGED_BADGES_TRANSLATOR),
     component: Badges.Translator,
     link: WEBLATE_URL,
   },

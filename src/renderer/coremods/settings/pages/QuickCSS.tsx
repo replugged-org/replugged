@@ -1,13 +1,15 @@
-import { React, toast } from "@common";
-import { Messages } from "@common/i18n";
-import { EditorView, basicSetup } from "codemirror";
-import { EditorState } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";
-import { githubDark, githubLight } from "./codemirror-github";
-import { webpack } from "@replugged";
+import { EditorState } from "@codemirror/state";
+import { React, toast } from "@common";
+import { intl } from "@common/i18n";
 import { Button, Divider, Flex, Text } from "@components";
-import "./QuickCSS.css";
+import { webpack } from "@replugged";
+import { EditorView, basicSetup } from "codemirror";
+import { t } from "src/renderer/modules/i18n";
+import { githubDark, githubLight } from "./codemirror-github";
 import { generalSettings } from "./General";
+
+import "./QuickCSS.css";
 
 interface UseCodeMirrorOptions {
   value?: string;
@@ -121,7 +123,7 @@ export const QuickCSS = (): React.ReactElement => {
   const reload = (): void => window.replugged.quickCSS.reload();
   const reloadAndToast = (): void => {
     reload();
-    toast.toast(Messages.REPLUGGED_TOAST_QUICKCSS_RELOAD);
+    toast.toast(intl.string(t.REPLUGGED_TOAST_QUICKCSS_RELOAD));
   };
 
   React.useEffect(() => {
@@ -172,16 +174,18 @@ export const QuickCSS = (): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{Messages.REPLUGGED_QUICKCSS}</Text.H2>
+        <Text.H2>{intl.string(t.REPLUGGED_QUICKCSS)}</Text.H2>
         <div style={{ display: "flex" }}>
           {autoApply ? null : (
-            <Button onClick={reloadAndToast}>{Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}</Button>
+            <Button onClick={reloadAndToast}>
+              {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
+            </Button>
           )}
           <Button
             onClick={() => window.RepluggedNative.quickCSS.openFolder()}
             color={Button.Colors.PRIMARY}
             look={Button.Looks.LINK}>
-            {Messages.REPLUGGED_QUICKCSS_FOLDER_OPEN}
+            {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
           </Button>
         </div>
       </Flex>

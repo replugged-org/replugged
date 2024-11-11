@@ -1,47 +1,25 @@
-import { i18n } from "@common";
-import type { RepluggedTranslations } from "../../types";
+import type { I18n } from "@common";
+import { loadAllMessagesInLocale } from "@discord/intl";
+import { waitForProps } from "@webpack";
+import { DEFAULT_LOCALE } from "src/constants";
+import messages from "../../../i18n/en-US.messages";
 
 export let locale: string | undefined;
-export const messages = new Map();
+export const t = messages;
 
 export async function load(): Promise<void> {
-  loadAllStrings(await RepluggedNative.i18n.getStrings());
+  const { intl } = await waitForProps<I18n>("getAvailableLocales", "intl");
 
-  locale = i18n._chosenLocale;
+  locale = intl.currentLocale || intl.defaultLocale || DEFAULT_LOCALE;
 
-  i18n.on("locale", (newLocale: string) => {
+  intl.onLocaleChange((newLocale) => {
     locale = newLocale;
-    void i18n.loadPromise.then(addRepluggedStrings);
+    addRepluggedStrings();
   });
-
-  void i18n.loadPromise.then(addRepluggedStrings);
-
-  addRepluggedStrings();
 }
 
 export function addRepluggedStrings(): void {
-  const { messages: DiscordMessages, defaultMessages } = i18n._provider._context;
-
-  i18n._applyMessagesForLocale(
-    Object.assign(DiscordMessages, messages.get(locale)),
-    locale,
-    Object.assign(defaultMessages, messages.get("en-US")),
-  );
-}
-
-export function loadAllStrings(strings: RepluggedTranslations): void {
-  Object.keys(strings).forEach((locale) => loadStrings(locale, strings[locale]));
-}
-
-export function loadStrings(locale: string, strings: RepluggedTranslations): void {
-  if (!messages.get(locale)) {
-    messages.set(locale, strings);
-  } else {
-    messages.set(locale, {
-      ...messages.get(locale),
-      ...strings,
-    });
+  if (locale) {
+    void loadAllMessagesInLocale(locale);
   }
-
-  addRepluggedStrings();
 }

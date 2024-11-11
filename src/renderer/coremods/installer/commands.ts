@@ -1,33 +1,34 @@
+import { intl } from "@common/i18n";
 import { Injector } from "@replugged";
+import { t } from "src/renderer/modules/i18n";
 import { ApplicationCommandOptionType } from "src/types";
 import { INSTALLER_SOURCES, InstallerSource, installFlow, parseInstallLink } from "./util";
-import { Messages } from "@common/i18n";
 
 /**
  * A map of display names for installer sources.
  */
 const sourceDisplayNames: Record<InstallerSource, string> = {
   github: "GitHub",
-  store: Messages.REPLUGGED_STORE,
+  store: intl.string(t.REPLUGGED_STORE),
 };
 
 export function loadCommands(injector: Injector): void {
   injector.utils.registerSlashCommand({
     name: "install",
-    displayName: Messages.REPLUGGED_COMMAND_INSTALL_NAME,
-    description: Messages.REPLUGGED_COMMAND_INSTALL_DESC,
+    displayName: intl.string(t.REPLUGGED_COMMAND_INSTALL_NAME),
+    description: intl.string(t.REPLUGGED_COMMAND_INSTALL_DESC),
     options: [
       {
         name: "addon",
-        displayName: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME,
-        description: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC,
+        displayName: intl.string(t.REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME),
+        description: intl.string(t.REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC),
         type: ApplicationCommandOptionType.String,
         required: true,
       },
       {
         name: "source",
-        displayName: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME,
-        description: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC,
+        displayName: intl.string(t.REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME),
+        description: intl.string(t.REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC),
         type: ApplicationCommandOptionType.String,
         required: false,
         choices: INSTALLER_SOURCES.map((v) => ({
@@ -38,8 +39,8 @@ export function loadCommands(injector: Injector): void {
       },
       {
         name: "id",
-        displayName: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME,
-        description: Messages.REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC,
+        displayName: intl.string(t.REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME),
+        description: intl.string(t.REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC),
         type: ApplicationCommandOptionType.String,
         required: false,
       },
@@ -61,19 +62,21 @@ export function loadCommands(injector: Injector): void {
       switch (resp.kind) {
         case "FAILED":
           return {
-            result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED,
+            result: intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED),
           };
         case "ALREADY_INSTALLED":
           return {
-            result: Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: resp.manifest.name }),
+            result: intl.formatToPlainString(t.REPLUGGED_ERROR_ALREADY_INSTALLED, {
+              name: resp.manifest.name,
+            }),
           };
         case "CANCELLED":
           return {
-            result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL,
+            result: intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL),
           };
         case "SUCCESS":
           return {
-            result: Messages.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS.format({
+            result: intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS, {
               name: resp.manifest.name,
             }),
           };
