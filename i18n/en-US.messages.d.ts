@@ -1550,10 +1550,8 @@ declare const messages: {
    * ### Problems
    * 
    * Missing translations: `bg`, `da`, `hi`
-   * 
-   * Spurious variables from translations:`$i` - `nl`, `sv-SE`
    */
-  'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC': TypedIntlMessageGetter<{$b?: HookFunction, $i?: HookFunction}>,
+  'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
    * Key: `V58dvb`
    * 
