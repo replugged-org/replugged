@@ -1,8 +1,11 @@
 import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
+import { createPackage, extractAll, statFile, uncache } from "@electron/asar";
 import { entryPoint as argEntryPoint, exitCode } from "./index.mjs";
+
 import { AnsiEscapes, getCommand } from "./util.mjs";
+
 import { execSync } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
 import { CONFIG_PATH } from "../../src/util.mjs";
@@ -57,7 +60,8 @@ export const correctMissingMainAsar = async (appDir: string): Promise<boolean> =
 
 export const isPlugged = async (appDir: string): Promise<boolean> => {
   try {
-    await stat(join(appDir, "..", "app.orig.asar"));
+    uncache(appDir);
+    await statFile(appDir, "app.orig");
     return true;
   } catch {
     return false;
@@ -112,19 +116,19 @@ export const inject = async (
   const entryPoint =
     argEntryPoint ??
     (prod ? join(CONFIG_PATH, "replugged.asar") : join(dirname, "..", "..", "dist/main.js"));
+
   const entryPointDir = path.dirname(entryPoint);
 
   if (appDir.includes("flatpak")) {
     const discordName = platform === "canary" ? "DiscordCanary" : "Discord";
     const overrideCommand = `${
       appDir.startsWith("/var") ? "sudo flatpak override" : "flatpak override --user"
-    } com.discordapp.${discordName} --filesystem=${entryPointDir}`;
+    } com.discordapp.${discordName} --filesystem=${prod ? entryPointDir : join(dirname, "..", "..")}`;
 
     console.log(
-      `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to Replugged files (${entryPointDir})${AnsiEscapes.RESET}`,
+      `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to Replugged files (${prod ? entryPointDir : join(dirname, "..", "..")})${AnsiEscapes.RESET}`,
     );
     execSync(overrideCommand);
-    console.log("Done!");
   }
 
   try {
@@ -154,22 +158,26 @@ export const inject = async (
       } catch {}
     }
   }
-
-  await mkdir(appDir);
+  const tempDir = join(appDir, "..", "temp");
+  await mkdir(tempDir);
   await Promise.all([
     writeFile(
-      join(appDir, "index.js"),
+      join(tempDir, "index.js"),
       `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}")`,
     ),
     writeFile(
-      join(appDir, "package.json"),
+      join(appDir, "..", "temp", "package.json"),
       JSON.stringify({
         main: "index.js",
         name: "discord",
       }),
     ),
+    extractAll(join(appDir, "..", "app.orig.asar"), join(tempDir, "app.orig")),
   ]);
 
+  await createPackage(tempDir, appDir);
+  await rm(join(appDir, "..", "app.orig.asar"), { recursive: true, force: true });
+  await rm(tempDir, { recursive: true, force: true });
   return true;
 };
 
@@ -190,9 +198,11 @@ export const uninject = async (
     );
     return false;
   }
-
+  const tempDir = join(appDir, "..", "temp");
+  await extractAll(appDir, tempDir);
   await rm(appDir, { recursive: true, force: true });
-  await rename(join(appDir, "..", "app.orig.asar"), appDir);
+  await createPackage(join(tempDir, "app.orig"), appDir);
+  await rm(tempDir, { recursive: true, force: true });
   // For discord_arch_electron
   if (existsSync(join(appDir, "..", "app.orig.asar.unpacked"))) {
     await rename(

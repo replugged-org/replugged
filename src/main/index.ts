@@ -6,7 +6,7 @@ import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
-const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
+const discordPath = join(dirname(require.main!.filename), "app.orig");
 const discordPackage = require(join(discordPath, "package.json"));
 require.main!.filename = join(discordPath, discordPackage.main);
 
