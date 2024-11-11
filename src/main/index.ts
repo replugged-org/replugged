@@ -8,7 +8,7 @@ import { getSetting } from "./ipc/settings";
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "app.orig");
 const discordPackage = require(join(discordPath, "package.json"));
-require.main!.filename = join(discordPath, discordPackage.main);
+require.main!.filename = join(discordPath, "..", discordPackage.main);
 
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
