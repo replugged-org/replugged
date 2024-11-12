@@ -13,6 +13,7 @@ import {
 import esbuild from "esbuild";
 import { readFileSync } from "node:fs";
 import { dirname, posix, relative, resolve } from "node:path";
+import { production } from "scripts/build.mjs";
 
 const FILE_PATH_SEPARATOR_MATCH = /[\\\\\\/]/g;
 const INTL_MESSAGES_REGEXP = /\.messages\.(js|json|jsona)$/;
@@ -59,17 +60,23 @@ export default {
           messageKeys = result.messageKeys;
         }
 
+        const transformedOutput = new MessageDefinitionsTransformer({
+          messageKeys: Object.fromEntries(
+            Object.entries(result.messageKeys).map(([_, key]) => [key, key]),
+          ),
+          localeMap: result.translationsLocaleMap,
+          defaultLocale: result.locale,
+          getTranslationImport: (importPath) => `import("${importPath}")`,
+          debug: !production,
+          preGenerateBinds: false,
+          getPrelude: () => `import {waitForProps} from '@webpack';`,
+        }).getOutput();
+
         return {
-          contents: new MessageDefinitionsTransformer({
-            messageKeys: Object.fromEntries(
-              Object.entries(result.messageKeys).map(([_, key]) => [key, key]),
-            ),
-            localeMap: result.translationsLocaleMap,
-            defaultLocale: result.locale,
-            getTranslationImport: (importPath) => `import("${importPath}")`,
-            debug: process.env.NODE_ENV === "development",
-            preGenerateBinds: false,
-          }).getOutput(),
+          contents: transformedOutput.replace(
+            /require\('@discord\/intl'\);/,
+            "await waitForProps('createLoader','IntlManager');",
+          ),
           loader: "js",
         };
       } else {

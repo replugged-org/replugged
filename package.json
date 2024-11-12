@@ -19,9 +19,9 @@
     "replug": "tsx scripts/inject/index.mts reinject",
     "typescript:check": "tsc --noEmit",
     "cspell:check": "cspell lint ./src/**/* ./scripts/**/* ./bin*",
-    "prettier:check": "prettier ./src ./scripts ./bin ./i18n --check",
+    "prettier:check": "prettier ./src ./scripts ./bin --check",
     "eslint:check": "eslint ./src ./scripts ./bin",
-    "prettier:fix": "prettier ./src ./scripts ./bin ./i18n --write",
+    "prettier:fix": "prettier ./src ./scripts ./bin --write",
     "eslint:fix": "eslint ./src ./scripts ./bin --fix",
     "lint": "pnpm run prettier:check && pnpm run eslint:check && pnpm run cspell:check && pnpm run typescript:check",
     "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix && pnpm run cspell:check && pnpm run typescript:check",
@@ -38,6 +38,7 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
+    "@discord/intl": "^0.13.0",
     "@discord/intl-loader-core": "^0.13.0",
     "@marshift/argus": "^1.2.1",
     "@types/adm-zip": "^0.5.6",
@@ -80,7 +81,6 @@
     "@codemirror/lang-css": "^6.3.0",
     "@codemirror/language": "^6.10.3",
     "@codemirror/state": "^6.4.1",
-    "@discord/intl": "^0.13.0",
     "@electron/asar": "^3.2.17",
     "@lezer/highlight": "^1.2.1",
     "@octokit/rest": "^21.0.2",

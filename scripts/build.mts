@@ -13,7 +13,7 @@ const CHROME_VERSION = "128";
 
 const ctx = createContext(process.argv);
 const watch = ctx.hasOptionalArg(/--watch/);
-const production = ctx.hasOptionalArg(/--production/);
+export const production = ctx.hasOptionalArg(/--production/);
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
