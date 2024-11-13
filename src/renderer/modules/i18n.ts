@@ -37,22 +37,3 @@ export async function addRepluggedStrings(): Promise<void> {
     void loadAllMessagesInLocale(locale);
   }
 }
-
-/**
- * Load custom strings into Replugged's translations, typically for plugins.
- */
-export function loadAllStrings(translations: Record<string, object>): void {
-  Object.keys(translations).forEach(async (locale) => {
-    const { default: originalStrings } = await messagesLoader.localeImportMap[locale]();
-    const strings = translations[locale];
-    const messages = { ...strings, ...originalStrings };
-
-    if (locale in messagesLoader.messages) messagesLoader.messages[locale] = messages;
-    messagesLoader.localeImportMap[locale] = () =>
-      new Promise((resolve) => {
-        resolve({ default: messages });
-      });
-    messagesLoader.messageKeys = [...messagesLoader.messageKeys, ...Object.keys(strings)];
-  });
-  void addRepluggedStrings();
-}

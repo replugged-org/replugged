@@ -65,7 +65,7 @@ importers:
     devDependencies:
       '@discord/intl':
         specifier: ^0.13.1
-        version: 0.13.1(react@18.3.1)(typescript@5.6.3)
+        version: 0.13.1(react@18.3.1)(typescript@5.4.5)
       '@discord/intl-loader-core':
         specifier: ^0.13.1
         version: 0.13.1
@@ -110,10 +110,10 @@ importers:
         version: 17.0.33
       '@typescript-eslint/eslint-plugin':
         specifier: ^7.18.0
-        version: 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)(typescript@5.6.3)
+        version: 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.4.5))(eslint@8.57.1)(typescript@5.4.5)
       '@typescript-eslint/parser':
         specifier: ^7.18.0
-        version: 7.18.0(eslint@8.57.1)(typescript@5.6.3)
+        version: 7.18.0(eslint@8.57.1)(typescript@5.4.5)
       cspell:
         specifier: ^8.16.0
         version: 8.16.0
@@ -137,7 +137,7 @@ importers:
         version: 2.30.1
       np:
         specifier: ^10.0.7
-        version: 10.0.7(typescript@5.6.3)
+        version: 10.0.7(typescript@5.4.5)
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -152,10 +152,10 @@ importers:
         version: 4.26.1
       typedoc:
         specifier: ^0.26.11
-        version: 0.26.11(typescript@5.6.3)
+        version: 0.26.11(typescript@5.4.5)
       typescript:
-        specifier: ^5.4.5
-        version: 5.6.3
+        specifier: ~5.4.5
+        version: 5.4.5
 
 packages:
 
@@ -3007,8 +3007,8 @@ packages:
     peerDependencies:
       typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x || 5.6.x
 
-  typescript@5.6.3:
-    resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
+  typescript@5.4.5:
+    resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -3483,11 +3483,11 @@ snapshots:
       '@discord/intl-message-database-win32-ia32-msvc': 0.13.1
       '@discord/intl-message-database-win32-x64-msvc': 0.13.1
 
-  '@discord/intl@0.13.1(react@18.3.1)(typescript@5.6.3)':
+  '@discord/intl@0.13.1(react@18.3.1)(typescript@5.4.5)':
     dependencies:
       '@discord/intl-ast': 0.13.1
       '@formatjs/icu-skeleton-parser': 1.8.2
-      '@formatjs/intl': 2.10.14(typescript@5.6.3)
+      '@formatjs/intl': 2.10.14(typescript@5.4.5)
       '@intrnl/xxhash64': 0.1.2
       intl-messageformat: 10.7.6
       react: 18.3.1
@@ -3718,7 +3718,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@formatjs/intl@2.10.14(typescript@5.6.3)':
+  '@formatjs/intl@2.10.14(typescript@5.4.5)':
     dependencies:
       '@formatjs/ecma402-abstract': 2.2.3
       '@formatjs/fast-memoize': 2.2.3
@@ -3728,7 +3728,7 @@ snapshots:
       intl-messageformat: 10.7.6
       tslib: 2.8.1
     optionalDependencies:
-      typescript: 5.6.3
+      typescript: 5.4.5
 
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
@@ -3965,34 +3965,34 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)(typescript@5.6.3)':
+  '@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.4.5))(eslint@8.57.1)(typescript@5.4.5)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.6.3)
+      '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.4.5)
       '@typescript-eslint/scope-manager': 7.18.0
-      '@typescript-eslint/type-utils': 7.18.0(eslint@8.57.1)(typescript@5.6.3)
-      '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.6.3)
+      '@typescript-eslint/type-utils': 7.18.0(eslint@8.57.1)(typescript@5.4.5)
+      '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.4.5)
       '@typescript-eslint/visitor-keys': 7.18.0
       eslint: 8.57.1
       graphemer: 1.4.0
       ignore: 5.3.2
       natural-compare: 1.4.0
-      ts-api-utils: 1.4.0(typescript@5.6.3)
+      ts-api-utils: 1.4.0(typescript@5.4.5)
     optionalDependencies:
-      typescript: 5.6.3
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3)':
+  '@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.4.5)':
     dependencies:
       '@typescript-eslint/scope-manager': 7.18.0
       '@typescript-eslint/types': 7.18.0
-      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.6.3)
+      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.4.5)
       '@typescript-eslint/visitor-keys': 7.18.0
       debug: 4.3.7
       eslint: 8.57.1
     optionalDependencies:
-      typescript: 5.6.3
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
@@ -4001,21 +4001,21 @@ snapshots:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
 
-  '@typescript-eslint/type-utils@7.18.0(eslint@8.57.1)(typescript@5.6.3)':
+  '@typescript-eslint/type-utils@7.18.0(eslint@8.57.1)(typescript@5.4.5)':
     dependencies:
-      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.6.3)
-      '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.6.3)
+      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.4.5)
+      '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.4.5)
       debug: 4.3.7
       eslint: 8.57.1
-      ts-api-utils: 1.4.0(typescript@5.6.3)
+      ts-api-utils: 1.4.0(typescript@5.4.5)
     optionalDependencies:
-      typescript: 5.6.3
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
   '@typescript-eslint/types@7.18.0': {}
 
-  '@typescript-eslint/typescript-estree@7.18.0(typescript@5.6.3)':
+  '@typescript-eslint/typescript-estree@7.18.0(typescript@5.4.5)':
     dependencies:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
@@ -4024,18 +4024,18 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.6.3
-      ts-api-utils: 1.4.0(typescript@5.6.3)
+      ts-api-utils: 1.4.0(typescript@5.4.5)
     optionalDependencies:
-      typescript: 5.6.3
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@7.18.0(eslint@8.57.1)(typescript@5.6.3)':
+  '@typescript-eslint/utils@7.18.0(eslint@8.57.1)(typescript@5.4.5)':
     dependencies:
       '@eslint-community/eslint-utils': 4.4.1(eslint@8.57.1)
       '@typescript-eslint/scope-manager': 7.18.0
       '@typescript-eslint/types': 7.18.0
-      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.6.3)
+      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.4.5)
       eslint: 8.57.1
     transitivePeerDependencies:
       - supports-color
@@ -4341,14 +4341,14 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  cosmiconfig@8.3.6(typescript@5.6.3):
+  cosmiconfig@8.3.6(typescript@5.4.5):
     dependencies:
       import-fresh: 3.3.0
       js-yaml: 4.1.0
       parse-json: 5.2.0
       path-type: 4.0.0
     optionalDependencies:
-      typescript: 5.6.3
+      typescript: 5.4.5
 
   crelt@1.0.6: {}
 
@@ -5318,11 +5318,11 @@ snapshots:
 
   normalize-path@3.0.0: {}
 
-  np@10.0.7(typescript@5.6.3):
+  np@10.0.7(typescript@5.4.5):
     dependencies:
       chalk: 5.3.0
       chalk-template: 1.1.0
-      cosmiconfig: 8.3.6(typescript@5.6.3)
+      cosmiconfig: 8.3.6(typescript@5.4.5)
       del: 7.1.0
       escape-goat: 4.0.0
       escape-string-regexp: 5.0.0
@@ -5940,9 +5940,9 @@ snapshots:
 
   trim-lines@3.0.1: {}
 
-  ts-api-utils@1.4.0(typescript@5.6.3):
+  ts-api-utils@1.4.0(typescript@5.4.5):
     dependencies:
-      typescript: 5.6.3
+      typescript: 5.4.5
 
   tslib@1.14.1: {}
 
@@ -5971,16 +5971,16 @@ snapshots:
 
   type-fest@4.26.1: {}
 
-  typedoc@0.26.11(typescript@5.6.3):
+  typedoc@0.26.11(typescript@5.4.5):
     dependencies:
       lunr: 2.3.9
       markdown-it: 14.1.0
       minimatch: 9.0.5
       shiki: 1.22.2
-      typescript: 5.6.3
+      typescript: 5.4.5
       yaml: 2.6.0
 
-  typescript@5.6.3: {}
+  typescript@5.4.5: {}
 
   uc.micro@2.1.0: {}
 
