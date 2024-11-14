@@ -1,4 +1,4 @@
-export { waitForModule } from "./lazy";
+export { waitForModule, waitForStore } from "./lazy";
 
 export { getFunctionBySource, getFunctionKeyBySource } from "./inner-search";
 
