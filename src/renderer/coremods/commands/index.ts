@@ -1,151 +1,104 @@
-import type { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
+import { type Store } from "@common/flux";
 import type { Channel, Guild } from "discord-types/general";
-import flux, { type Store } from "@common/flux";
+import { REPLUGGED_CLYDE_ID } from "../../../constants";
+import type { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
+import { commandAndSections, defaultSection } from "../../apis/commands";
 import { Injector } from "../../modules/injector";
-import { Logger } from "../../modules/logger";
 import {
   filters,
+  getByStoreName,
   getFunctionKeyBySource,
   waitForModule,
   waitForProps,
 } from "../../modules/webpack";
-
-import { commandAndSections, defaultSection } from "../../apis/commands";
 import { loadCommands, unloadCommands } from "./commands";
-import { REPLUGGED_CLYDE_ID } from "../../../constants";
 
-const logger = Logger.api("Commands");
 const injector = new Injector();
 
-type CommandState =
-  | {
-      fetchState: { fetching: boolean };
-      result: {
-        sectionIdsByBotId: Record<string, string>;
-        sections: Record<
-          string,
-          { commands: Record<string, AnyRepluggedCommand>; descriptor: RepluggedCommandSection }
-        >;
-        version: string;
-      };
-      serverVersion: symbol | string;
-    }
-  | undefined;
+interface QueryOptions {
+  commandTypes: number[];
+  applicationCommands?: boolean;
+  text?: string;
+  builtIns?: "allow" | "only_text" | "deny";
+}
+
+interface FetchOptions {
+  applicationId?: string;
+  allowFetch?: boolean;
+  scoreMethod?: "none" | "application_only" | "command_only" | "command_or_application";
+  allowEmptySections?: boolean;
+  allowApplicationState?: boolean;
+  sortOptions?: {
+    applications?: { useFrecency: boolean; useScore: boolean };
+    commands?: { useFrecency: boolean; useScore: boolean };
+  };
+  installOnDemand?: boolean;
+  includeFrecency?: boolean;
+}
+
+interface ApplicationCommandIndex {
+  descriptors: RepluggedCommandSection[];
+  commands: AnyRepluggedCommand[];
+  sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
+  loading: boolean;
+}
 
 interface ApplicationCommandIndexStore extends Store {
-  getContextState: (channel: Channel) => CommandState;
-  getUserState: () => CommandState;
   query: (
     channel: Channel,
-    queryOptions: {
-      commandType: number;
-      text: string;
-    },
-    fetchOptions: {
-      allowFetch: boolean;
-      limit: number;
-      includeFrecency?: boolean;
-      placeholderCount?: number;
-      scoreMethod?: string;
-    },
-  ) =>
-    | {
-        descriptors: RepluggedCommandSection[];
-        commands: AnyRepluggedCommand[];
-        sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
-        loading: boolean;
-      }
-    | undefined;
+    queryOptions: QueryOptions,
+    fetchOptions: FetchOptions,
+  ) => ApplicationCommandIndex;
 }
 
-interface ApplicationCommandIndexStoreMod {
-  useContextIndexState: (
-    channel: Channel,
-    allowCache: boolean,
-    allowFetch: boolean,
-  ) => CommandState;
-  useDiscoveryState: (
-    channel: Channel,
-    guild: Guild,
-    commandOptions: {
-      commandType: number;
-      applicationCommands?: boolean;
-      builtIns?: "allow" | "deny";
-    },
-    fetchOptions: {
-      allowFetch: boolean;
-      limit: number;
-      includeFrecency?: boolean;
-      placeholderCount?: number;
-      scoreMethod?: string;
-    },
-  ) =>
-    | {
-        descriptors: RepluggedCommandSection[];
-        commands: AnyRepluggedCommand[];
-        loading: boolean;
-        sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
-      }
-    | undefined;
-  useGuildIndexState: (guildId: string, allowFetch: boolean) => CommandState;
-  useUserIndexState: (allowCache: boolean, allowFetch: boolean) => CommandState;
-  default: ApplicationCommandIndexStore;
-}
+type UseDiscoveryState = (
+  channel: Channel,
+  guild: Guild,
+  queryOptions: QueryOptions,
+  fetchOptions: FetchOptions,
+) => ApplicationCommandIndex;
+
+type FetchProfile = (id: string) => Promise<void>;
 
 async function injectRepluggedBotIcon(): Promise<void> {
-  // Adds Avatar for replugged to default avatar to be used by system bot just like clyde
+  // Adds avatar for Replugged to be used by system bot just like Clyde
   // Ain't removing it on stop because we have checks here
-  const DefaultAvatars = await waitForProps<{
-    BOT_AVATARS: Record<string, string> | undefined;
+  const avatarUtilsMod = await waitForProps<{
+    BOT_AVATARS: Record<string, string>;
   }>("BOT_AVATARS");
-  if (DefaultAvatars.BOT_AVATARS) {
-    DefaultAvatars.BOT_AVATARS.replugged = defaultSection.icon;
-  } else {
-    logger.error("Error while injecting custom icon for slash command replies.");
-  }
+  avatarUtilsMod.BOT_AVATARS.replugged = defaultSection.icon;
 }
 
 async function injectRepluggedSectionIcon(): Promise<void> {
   // Patches the function which gets icon URL for slash command sections
   // makes it return the custom url if it's our section
-  const AssetsUtils = await waitForProps<{
+  const avatarUtilsMod = await waitForProps<{
     getApplicationIconURL: (args: { id: string; icon: string }) => string;
   }>("getApplicationIconURL");
-  injector.after(AssetsUtils, "getApplicationIconURL", ([section], res) =>
+  injector.after(avatarUtilsMod, "getApplicationIconURL", ([section], res) =>
     commandAndSections.has(section.id) ? commandAndSections.get(section.id)?.section.icon : res,
   );
 }
 
 async function injectApplicationCommandIndexStore(): Promise<void> {
-  // The module which contains the store
-  /*
-  const ApplicationCommandIndexStoreMod = await waitForProps<ApplicationCommandIndexStoreMod>(
-    "useContextIndexState",
-    "useDiscoveryState",
-    "useGuildIndexState",
-    "useUserIndexState",
-  );
-  */
-  const ApplicationCommandIndexStoreMod = await waitForModule<ApplicationCommandIndexStoreMod>(
+  const applicationCommandIndexStoreMod = await waitForModule<Record<string, UseDiscoveryState>>(
     filters.bySource("APPLICATION_COMMAND_INDEX"),
   );
-
-  // This "as" hack is horrible.
   const useDiscoveryStateKey = getFunctionKeyBySource(
-    ApplicationCommandIndexStoreMod,
+    applicationCommandIndexStoreMod,
     "includeFrecency",
-  ) as "useDiscoveryState";
+  )!;
 
   // Base handler function for ApplicationCommandIndexStore which is ran to get the info in store
   // commands are mainly added here
   injector.after(
-    ApplicationCommandIndexStoreMod,
+    applicationCommandIndexStoreMod,
     useDiscoveryStateKey,
-    ([, , { commandType }], res) => {
+    ([, , { commandTypes }], res) => {
       const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
         (commandAndSection) => commandAndSection.commands.size,
       );
-      if (!res || !commandAndSectionsArray.length || commandType !== 1) return res;
+      if (!commandAndSectionsArray.length || !commandTypes.includes(1)) return res;
       if (
         !Array.isArray(res.descriptors) ||
         !commandAndSectionsArray.every((commandAndSection) =>
@@ -212,11 +165,9 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
     },
   );
 
-  // The store itself
-  //const ApplicationCommandIndexStore = ApplicationCommandIndexStoreMod.default;
-  const ApplicationCommandIndexStore = Object.values(ApplicationCommandIndexStoreMod).find(
-    (v) => v instanceof flux.Store,
-  ) as ApplicationCommandIndexStore;
+  const ApplicationCommandIndexStore = getByStoreName<ApplicationCommandIndexStore>(
+    "ApplicationCommandIndexStore",
+  )!;
 
   // Slash command indexing patched to return our slash commands too
   // only those which match tho
@@ -234,7 +185,7 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
           ),
         }))
         .filter((commandAndSection) => commandAndSection.commands.length);
-      if (!res || !commandAndSectionsArray.length) return res;
+      if (!commandAndSectionsArray.length) return res;
 
       if (
         !Array.isArray(res.descriptors) ||
@@ -286,20 +237,17 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
 }
 
 async function injectProfileFetch(): Promise<void> {
-  //const mod = await waitForProps<{
-  //  fetchProfile: (id: string) => Promise<void>;
-  //}>("fetchProfile");
-  const mod = await waitForModule<Record<string, (id: string) => Promise<void>>>(
+  const userActionCreatorsMod = await waitForModule<Record<string, FetchProfile>>(
     filters.bySource("fetchProfile"),
   );
-  const fetchProfileKey = getFunctionKeyBySource(mod, "fetchProfile")!;
-  injector.instead(mod, fetchProfileKey, (args, res) => {
-    if (args[0] === REPLUGGED_CLYDE_ID) {
-      return;
-    }
-    return res(...args);
+  const fetchProfileKey = getFunctionKeyBySource(userActionCreatorsMod, "fetchProfile")!;
+
+  injector.instead(userActionCreatorsMod, fetchProfileKey, (args, orig) => {
+    if (args[0] === REPLUGGED_CLYDE_ID) return;
+    return orig(...args);
   });
 }
+
 export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
   await injectRepluggedSectionIcon();
@@ -307,6 +255,7 @@ export async function start(): Promise<void> {
   await injectProfileFetch();
   loadCommands();
 }
+
 export function stop(): void {
   injector.uninjectAll();
   unloadCommands();

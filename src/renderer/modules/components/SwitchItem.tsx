@@ -19,6 +19,7 @@ interface SwitchItemProps {
   note?: string;
   tooltipNote?: string;
   disabled?: boolean;
+  disabledText?: string;
   hideBorder?: boolean;
   style?: React.CSSProperties;
   className?: string;
