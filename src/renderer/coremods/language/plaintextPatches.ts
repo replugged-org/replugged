@@ -7,9 +7,8 @@ export default [
     find: "getAvailableLocales",
     replacements: [
       {
-        match: /(\.Messages\.LANGUAGE,)\s*children:((?:[^}]*?}){3}\))/,
-        replace: (_, prefix, ogChild) =>
-          `${prefix}children:[${coremodStr}?.Card() ?? null,${ogChild}]`,
+        match: /(\.H1,title:\w+\.intl\.string\(.+?\),children:)((?:[^}]*?}){3}\))/,
+        replace: (_, prefix, ogChild) => `${prefix}[${coremodStr}?.Card() ?? null,${ogChild}]`,
       },
       {
         match: /children:\[(.+?\.localeName[^\]]*?)]/,

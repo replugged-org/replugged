@@ -65,7 +65,7 @@ const remappedNoticeMod: NoticeMod = {
   NoticeButton: getFunctionBySource(actualNoticeMod, "buttonMinor")!,
   PrimaryCTANoticeButton: getFunctionBySource(actualNoticeMod, "CTA")!,
   NoticeButtonAnchor: getFunctionBySource(actualNoticeMod, ".Anchor")!,
-  NoticeCloseButton: getFunctionBySource(actualNoticeMod, "DISMISS")!,
+  NoticeCloseButton: getFunctionBySource(actualNoticeMod, "closeIcon")!,
   Notice: getFunctionBySource(actualNoticeMod, "isMobile")!,
 };
 

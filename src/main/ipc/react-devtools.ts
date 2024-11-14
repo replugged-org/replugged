@@ -1,7 +1,6 @@
 import AdmZip from "adm-zip";
 import { ipcMain } from "electron";
 import { existsSync, readFileSync, writeFileSync } from "fs";
-import fetch from "node-fetch";
 import { join } from "path";
 import { WEBSITE_URL } from "src/constants";
 import { CONFIG_PATHS } from "src/util.mjs";
