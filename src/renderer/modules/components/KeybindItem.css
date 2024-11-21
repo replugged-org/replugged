@@ -1,0 +1,90 @@
+.rp-keybind-container {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.rp-keybind-container:not(.recording) {
+  box-shadow: 0px 0px 2.5px #161616;
+}
+
+.rp-keybind-container:hover:not(.recording) {
+  border: 0px solid #ffffff;
+  box-shadow: 0px 0px 2.5px #ffffff;
+}
+
+.rp-keybind-container.recording > * {
+  border-color: #e73434;
+  box-shadow: 0px 0px 0.25px #e73434;
+}
+
+.rp-keybind-container .text {
+  margin-right: 10px;
+}
+
+.rp-keybind-container .text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  max-height: 2em;
+}
+
+.rp-keybind-container > .buttons {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.rp-keybind-container > .buttons .button {
+  height: 25px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+.rp-keybind-container > .buttons .button.recording:hover {
+  background-color: #e7343414;
+}
+
+.rp-keybind-container > .buttons .button:hover {
+  background-color: var(--background-secondary-alt);
+}
+
+.rp-keybind-container > .buttons .button .icon {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.rp-keybind-container > .buttons .button .button-text {
+  display: none;
+}
+
+.rp-keybind-container > .buttons .button:hover .icon {
+  display: none;
+}
+
+.rp-keybind-container > .buttons .button:hover .button-text {
+  display: inline-block;
+}
+
+.rp-keybind-container.recording .text,
+.rp-keybind-container.recording .button-text {
+  color: #e73434 !important;
+}
+
+.rp-keybind-container > .buttons .button {
+  transition: padding 0.2s ease;
+}
+
+.rp-keybind-container > .buttons .button:hover {
+  padding: 5px 15px;
+}
