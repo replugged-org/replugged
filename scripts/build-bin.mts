@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const NODE_VERSION = "14";
+const NODE_VERSION = "20";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 

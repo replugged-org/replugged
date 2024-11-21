@@ -7,11 +7,9 @@ import {
   InstallerType,
   RepluggedIpcChannels,
 } from "../../types";
-import { Octokit } from "@octokit/rest";
 import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
 import { readFile } from "fs/promises";
 import { writeFile as originalWriteFile } from "original-fs";
-import fetch from "node-fetch";
 import { join, resolve, sep } from "path";
 import { AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
 import { getSetting } from "./settings";
@@ -20,11 +18,23 @@ import { WEBSITE_URL } from "src/constants";
 
 const writeFile = promisify(originalWriteFile);
 
-const octokit = new Octokit({
-  request: {
-    fetch,
-  },
-});
+/* eslint-disable @typescript-eslint/naming-convention */
+interface ReleaseAsset {
+  url: string;
+  browser_download_url: string;
+  id: number;
+  node_id: string;
+  name: string;
+  label: string | null;
+  state: "uploaded" | "open";
+  content_type: string;
+  size: number;
+  download_count: number;
+  created_at: string;
+  updated_at: string;
+  uploader: Record<string, unknown>;
+}
+/* eslint-enable @typescript-eslint/naming-convention */
 
 async function github(
   identifier: string,
@@ -41,10 +51,9 @@ async function github(
   let res;
 
   try {
-    res = await octokit.rest.repos.getLatestRelease({
-      owner,
-      repo,
-    });
+    res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`).then((res) =>
+      res.json(),
+    );
   } catch (err) {
     return {
       success: false,
@@ -53,7 +62,7 @@ async function github(
     };
   }
 
-  const asset = res.data.assets.find((asset) =>
+  const asset = res.assets.find((asset: ReleaseAsset) =>
     id ? asset.name === `${id}.asar` : asset.name.endsWith(".asar"),
   );
 
@@ -64,8 +73,8 @@ async function github(
     };
   }
 
-  const manifestAsset = res.data.assets.find(
-    (manifestAsset) => manifestAsset.name === asset.name.replace(/\.asar$/, ".json"),
+  const manifestAsset = res.assets.find(
+    (manifestAsset: ReleaseAsset) => manifestAsset.name === asset.name.replace(/\.asar$/, ".json"),
   );
 
   if (!manifestAsset) {
@@ -91,7 +100,7 @@ async function github(
     manifest,
     name: asset.name,
     url: asset.browser_download_url,
-    webUrl: res.data.html_url,
+    webUrl: res.html_url,
   };
 }
 

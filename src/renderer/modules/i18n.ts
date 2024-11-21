@@ -1,47 +1,39 @@
-import { i18n } from "@common";
-import type { RepluggedTranslations } from "../../types";
+import type { I18n } from "@common";
+import type { loadAllMessagesInLocale as LoadAllMessagesInLocale } from "@discord/intl";
+import { waitForProps } from "@webpack";
+import { DEFAULT_LOCALE } from "src/constants";
+import type * as definitions from "../../../i18n/en-US.messages";
 
 export let locale: string | undefined;
-export const messages = new Map();
+export let t: typeof definitions.default;
+export let messagesLoader: typeof definitions.messagesLoader;
 
 export async function load(): Promise<void> {
-  loadAllStrings(await RepluggedNative.i18n.getStrings());
+  const { intl } = await waitForProps<I18n>("getAvailableLocales", "intl");
 
-  locale = i18n._chosenLocale;
-
-  i18n.on("locale", (newLocale: string) => {
-    locale = newLocale;
-    void i18n.loadPromise.then(addRepluggedStrings);
-  });
-
-  void i18n.loadPromise.then(addRepluggedStrings);
-
-  addRepluggedStrings();
-}
-
-export function addRepluggedStrings(): void {
-  const { messages: DiscordMessages, defaultMessages } = i18n._provider._context;
-
-  i18n._applyMessagesForLocale(
-    Object.assign(DiscordMessages, messages.get(locale)),
-    locale,
-    Object.assign(defaultMessages, messages.get("en-US")),
+  // ! HACK: This is a workaround until ignition issues are fixed.
+  // We need to delay the import of the messages for intl to be loaded and use that module instead of @discord/intl directly.
+  const { default: messages, messagesLoader: loader } = await import(
+    "../../../i18n/en-US.messages"
   );
+  t = messages;
+  messagesLoader = loader;
+
+  locale = intl.currentLocale || intl.defaultLocale || DEFAULT_LOCALE;
+
+  intl.onLocaleChange((newLocale) => {
+    locale = newLocale;
+    void addRepluggedStrings();
+  });
+  void addRepluggedStrings();
 }
 
-export function loadAllStrings(strings: RepluggedTranslations): void {
-  Object.keys(strings).forEach((locale) => loadStrings(locale, strings[locale]));
-}
+export async function addRepluggedStrings(): Promise<void> {
+  const { loadAllMessagesInLocale } = await waitForProps<{
+    loadAllMessagesInLocale: typeof LoadAllMessagesInLocale;
+  }>("loadAllMessagesInLocale");
 
-export function loadStrings(locale: string, strings: RepluggedTranslations): void {
-  if (!messages.get(locale)) {
-    messages.set(locale, strings);
-  } else {
-    messages.set(locale, {
-      ...messages.get(locale),
-      ...strings,
-    });
+  if (locale) {
+    void loadAllMessagesInLocale(locale);
   }
-
-  addRepluggedStrings();
 }
