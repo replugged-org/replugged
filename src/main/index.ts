@@ -1,10 +1,18 @@
 import { dirname, join } from "path";
-
 import electron from "electron";
-import { CONFIG_PATHS } from "src/util.mjs";
+import { CONFIG_PATHS, readSettingsSync } from "src/util.mjs";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
+// @ts-expect-error Type defs are obtained through @pyke/vibe
+import vibePath from "../vibe.node";
 
+let vibe: typeof import("@pyke/vibe");
+if (process.platform === "win32") {
+  vibe = require(vibePath) as unknown as typeof import("@pyke/vibe");
+  vibe.setup(electron.app);
+}
+
+const settings = readSettingsSync("dev.replugged.Settings");
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 // require.main!.filename = discordMain;
@@ -22,42 +30,91 @@ Object.defineProperty(global, "appSettings", {
   configurable: true,
 });
 
+enum DiscordWindowType {
+  UNKNOWN,
+  POP_OUT,
+  SPLASH_SCREEN,
+  OVERLAY,
+  DISCORD_CLIENT,
+}
+
+type InternalBrowserWindowConstructorOptions = electron.BrowserWindowConstructorOptions & {
+  webContents?: electron.WebContents;
+  webPreferences?: {
+    nativeWindowOpen: boolean;
+  };
+};
+
+function windowTypeFromOpts(opts: InternalBrowserWindowConstructorOptions): DiscordWindowType {
+  if (opts.webContents) {
+    return DiscordWindowType.POP_OUT;
+  } else if (opts.webPreferences?.nodeIntegration) {
+    return DiscordWindowType.SPLASH_SCREEN;
+  } else if (opts.webPreferences?.offscreen) {
+    return DiscordWindowType.OVERLAY;
+  } else if (opts.webPreferences?.preload) {
+    if (opts.webPreferences.nativeWindowOpen) {
+      return DiscordWindowType.DISCORD_CLIENT;
+    } else {
+      return DiscordWindowType.SPLASH_SCREEN;
+    }
+  }
+
+  return DiscordWindowType.UNKNOWN;
+}
+
 // This class has to be named "BrowserWindow" exactly
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  public constructor(
-    opts: electron.BrowserWindowConstructorOptions & {
-      webContents?: electron.WebContents;
-      webPreferences?: {
-        nativeWindowOpen: boolean;
-      };
-    },
-  ) {
+  public constructor(opts: InternalBrowserWindowConstructorOptions) {
     const originalPreload = opts.webPreferences?.preload;
 
-    if (opts.webContents) {
-      // General purpose pop-outs used by Discord
-    } else if (opts.webPreferences?.nodeIntegration) {
-      // Splash Screen
-      // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-    } else if (opts.webPreferences?.offscreen) {
-      // Overlay
-      //      originalPreload = opts.webPreferences.preload;
-      // opts.webPreferences.preload = join(__dirname, './preload.js');
-    } else if (opts.webPreferences?.preload) {
-      // originalPreload = opts.webPreferences.preload;
-      if (opts.webPreferences.nativeWindowOpen) {
-        // Discord Client
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
-        // opts.webPreferences.contextIsolation = false; // shrug
-      } else {
-        // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
+    const currentWindow = windowTypeFromOpts(opts);
+
+    switch (currentWindow) {
+      case DiscordWindowType.DISCORD_CLIENT: {
+        opts.webPreferences!.preload = join(__dirname, "./preload.js");
+
+        if (settings.get("transparentWindow")) {
+          switch (process.platform) {
+            case "win32":
+              // @todo: Menu bar will need to be remade
+              opts.autoHideMenuBar = true;
+              opts.show = false; // @todo: Unsure if this is needed everywhere
+              break;
+            case "linux":
+              opts.transparent = true;
+              break;
+          }
+          // @todo: Determine what `frame` value is needed on each platform
+          // @todo: Determine what `backgroundColor` is needed on each platform
+        }
+        break;
+      }
+      case DiscordWindowType.SPLASH_SCREEN: {
+        // opts.webPreferences.preload = join(__dirname, "./preloadSplash.js");
+        break;
+      }
+      case DiscordWindowType.OVERLAY: {
+        // opts.webPreferences.preload = join(__dirname, "./preload.js");
+        break;
       }
     }
 
     super(opts);
+
+    if (currentWindow === DiscordWindowType.DISCORD_CLIENT && settings.get("transparentWindow")) {
+      this.on("ready-to-show", () => {
+        // if (process.platform === "win32") {
+        //   vibe.applyEffect(this, "unified-acrylic");
+        //   vibe.forceTheme(this, "dark");
+        // }
+        // @todo: unsure if this is needed
+        this.setBackgroundColor("#00000000");
+      });
+    }
+
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
   }
 }

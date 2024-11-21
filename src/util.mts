@@ -1,6 +1,6 @@
 import esbuild from "esbuild";
 import { execSync } from "child_process";
-import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
+import { chownSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "fs";
 import path, { join } from "path";
 import chalk from "chalk";
 
@@ -145,3 +145,13 @@ export const logBuildPlugin: esbuild.Plugin = {
     });
   },
 };
+
+const SETTINGS_DIR = CONFIG_PATHS.settings;
+export function readSettingsSync(namespace: string): Map<string, unknown> {
+  try {
+    const data = readFileSync(join(SETTINGS_DIR, `${namespace}.json`), "utf8");
+    return new Map(Object.entries(JSON.parse(data)));
+  } catch {
+    return new Map();
+  }
+}

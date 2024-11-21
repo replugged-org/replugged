@@ -1,6 +1,6 @@
 # Replugged
 
-[Website](https://replugged.dev) | [Discord](https://discord.gg/replugged) |
+[Website](https://replugged.dev) | [Discord](https://discord.gg/HnYFUhv4x4) |
 [Developer Guide](https://guide.replugged.dev) | [API Docs](https://docs.replugged.dev)  
 (API docs will be replaced with the guide in the future)
 

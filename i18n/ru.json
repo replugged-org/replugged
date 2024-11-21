@@ -230,5 +230,7 @@
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME": "версия",
     "REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC": "Включить номер версий в список",
     "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "статус",
-    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Показывать ли включенные, отключенные или все дополнения"
+    "REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC": "Показывать ли включенные, отключенные или все дополнения",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME": "Список Тем",
+    "REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN": "Список Плагинов"
 }

@@ -7,6 +7,7 @@ import {
   Divider,
   Flex,
   FormItem,
+  Notice,
   SwitchItem,
   Text,
   TextInput,
@@ -54,6 +55,10 @@ export const General = (): React.ReactElement => {
   const { value: rdtValue, onChange: rdtOnChange } = util.useSetting(
     generalSettings,
     "reactDevTools",
+  );
+  const { value: transValue, onChange: transOnChange } = util.useSetting(
+    generalSettings,
+    "transparentWindow",
   );
 
   const [kKeys, setKKeys] = React.useState<number[]>([]);
@@ -112,6 +117,26 @@ export const General = (): React.ReactElement => {
         {...util.useSetting(generalSettings, "autoApplyQuickCss")}
         note={Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC}>
         {Messages.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY}
+      </SwitchItem>
+
+      <div style={{ marginBottom: "15px" }}>
+        {(DiscordNative.process.platform === "linux" ||
+          DiscordNative.process.platform === "win32") && (
+          <Notice messageType={Notice.Types.WARNING} className="">
+            {DiscordNative.process.platform === "linux"
+              ? Messages.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX.format()
+              : Messages.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS.format()}
+          </Notice>
+        )}
+      </div>
+      <SwitchItem
+        value={transValue}
+        onChange={(value) => {
+          transOnChange(value);
+          restartModal(true);
+        }}
+        note={Messages.REPLUGGED_SETTINGS_TRANSPARENT_DESC.format()}>
+        {Messages.REPLUGGED_SETTINGS_TRANSPARENT}
       </SwitchItem>
 
       <Category
