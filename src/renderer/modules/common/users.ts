@@ -33,6 +33,7 @@ export interface UserStore {
 }
 
 export interface GuildMemberStore {
+  getCachedSelfMember: (guildId: string) => GuildMember | null;
   getCommunicationDisabledUserMap: () => Record<string, string>;
   getCommunicationDisabledVersion: () => number;
   getMember: (guildId: string, userId: string) => GuildMember | null;

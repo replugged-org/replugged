@@ -7,11 +7,14 @@ import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
-// require.main!.filename = discordMain;
+const discordPackage = require(join(discordPath, "package.json"));
+require.main!.filename = join(discordPath, discordPackage.main);
+
 let customTitlebar: boolean;
 void getSetting("dev.replugged.Settings", "titlebar", false).then(
   (titlebar) => (customTitlebar = titlebar),
 );
+
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
     // cspell:ignore youre
@@ -190,4 +193,4 @@ electron.app.once("ready", () => {
 // This module is required this way at runtime.
 require("./ipc");
 
-require("module")._load(discordPath);
+require(discordPath);

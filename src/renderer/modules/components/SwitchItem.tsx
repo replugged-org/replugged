@@ -16,9 +16,10 @@ export type SwitchType = React.FC<SwitchProps>;
 interface SwitchItemProps {
   value?: boolean;
   onChange?: (value: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
-  note?: string;
+  note?: React.ReactNode;
   tooltipNote?: string;
   disabled?: boolean;
+  disabledText?: string;
   hideBorder?: boolean;
   style?: React.CSSProperties;
   className?: string;

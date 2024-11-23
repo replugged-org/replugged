@@ -1,5 +1,3 @@
-import { Message } from "@common/i18n";
-
 export enum ApplicationCommandOptionType {
   //Subcommand = 1,
   //SubcommandGroup = 2,
@@ -25,8 +23,8 @@ interface BaseCommandOptions<T extends ApplicationCommandOptionType> {
 }
 
 export interface CommandChoices {
-  name: string | Message;
-  displayName: string | Message;
+  name: string;
+  displayName: string;
   value: string | number;
 }
 
