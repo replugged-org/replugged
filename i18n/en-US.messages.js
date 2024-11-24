@@ -288,4 +288,7 @@ export default defineMessages({
     "****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
   REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME: "Plugin: {name}",
   REPLUGGED_STORE: "Store",
+  REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR: "Custom Title Bar",
+  REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC:
+    "Use Discord's custom title bar instead of the system title bar. **Requires restart**.",
 });

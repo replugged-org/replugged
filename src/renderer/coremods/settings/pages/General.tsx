@@ -114,20 +114,17 @@ export const General = (): React.ReactElement => {
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
 
-      {
-        // TODO: i18n
-        DiscordNative.process.platform.includes("linux") && (
-          <SwitchItem
-            value={titlebarValue}
-            onChange={(value) => {
-              titlebarOnChange(value);
-              restartModal(false);
-            }}
-            note={"Use custom window titlebar instead of the default OS titlebar"}>
-            Custom Titlebar
-          </SwitchItem>
-        )
-      }
+      {DiscordNative.process.platform.includes("linux") && (
+        <SwitchItem
+          value={titlebarValue}
+          onChange={(value) => {
+            titlebarOnChange(value);
+            restartModal(false);
+          }}
+          note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}>
+          {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+        </SwitchItem>
+      )}
 
       <Category
         title={intl.string(t.REPLUGGED_SETTINGS_ADVANCED)}
