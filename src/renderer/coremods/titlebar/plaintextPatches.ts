@@ -9,17 +9,13 @@ const generalSettings = await init<GeneralSettings, keyof typeof defaultSettings
 export default (DiscordNative.process.platform.includes("linux") && generalSettings.get("titlebar")
   ? [
       {
-        find: "macOSFrame:!0",
+        find: ".appAsidePanelWrapper,",
         replacements: [
           {
-            match: /\[.&&(null!=.\?)/,
-            replace: (_, suffix: string) => `[${suffix}`,
+            match: /\(0,.\.getPlatform\)\(\)/,
+            replace: `"WINDOWS"`,
           },
         ],
-      },
-      {
-        find: "renderWindow:window",
-        replacements: [{ match: /\(0,.\.getPlatform\)\(\)/, replace: () => `"WINDOWS"` }],
       },
     ]
   : []) as PlaintextPatch[];
