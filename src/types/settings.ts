@@ -14,7 +14,7 @@ export type GeneralSettings = {
   showWelcomeNoticeOnOpen?: boolean;
   addonEmbeds?: boolean;
   reactDevTools?: boolean;
-  titlebar?: boolean;
+  titleBar?: boolean;
 };
 
 export const defaultSettings = {
@@ -25,5 +25,5 @@ export const defaultSettings = {
   showWelcomeNoticeOnOpen: true,
   reactDevTools: false,
   addonEmbeds: true,
-  titlebar: false,
+  titleBar: false,
 } satisfies Partial<GeneralSettings>;

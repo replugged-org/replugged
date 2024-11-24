@@ -58,9 +58,9 @@ export const General = (): React.ReactElement => {
     "reactDevTools",
   );
 
-  const { value: titlebarValue, onChange: titlebarOnChange } = util.useSetting(
+  const { value: titleBarValue, onChange: titleBarOnChange } = util.useSetting(
     generalSettings,
-    "titlebar",
+    "titleBar",
   );
   const [kKeys, setKKeys] = React.useState<number[]>([]);
 
@@ -116,10 +116,10 @@ export const General = (): React.ReactElement => {
 
       {DiscordNative.process.platform.includes("linux") && (
         <SwitchItem
-          value={titlebarValue}
+          value={titleBarValue}
           onChange={(value) => {
-            titlebarOnChange(value);
-            restartModal(false);
+            titleBarOnChange(value);
+            restartModal(true);
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}>
           {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}

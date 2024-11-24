@@ -10,9 +10,9 @@ const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar")
 const discordPackage = require(join(discordPath, "package.json"));
 require.main!.filename = join(discordPath, discordPackage.main);
 
-let customTitlebar: boolean;
-void getSetting("dev.replugged.Settings", "titlebar", false).then(
-  (titlebar) => (customTitlebar = titlebar),
+let customTitleBar: boolean;
+void getSetting("dev.replugged.Settings", "titleBar", false).then(
+  (titleBar) => (customTitleBar = titleBar),
 );
 
 Object.defineProperty(global, "appSettings", {
@@ -40,7 +40,7 @@ class BrowserWindow extends electron.BrowserWindow {
       };
     },
   ) {
-    if (opts.frame && process.platform.includes("linux") && customTitlebar) opts.frame = void 0;
+    if (opts.frame && process.platform.includes("linux") && customTitleBar) opts.frame = void 0;
 
     const originalPreload = opts.webPreferences?.preload;
 

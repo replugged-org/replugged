@@ -6,7 +6,7 @@ const generalSettings = await init<GeneralSettings, keyof typeof defaultSettings
   defaultSettings,
 );
 
-export default (DiscordNative.process.platform.includes("linux") && generalSettings.get("titlebar")
+export default (DiscordNative.process.platform.includes("linux") && generalSettings.get("titleBar")
   ? [
       {
         find: ".appAsidePanelWrapper,",
