@@ -90,7 +90,7 @@ importTimeout("fluxHooks", import("./fluxHooks"), (mod) => (fluxHooks = mod.defa
 import type { I18n } from "./i18n";
 export type { I18n };
 export let i18n: I18n;
-importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod.default));
+importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod));
 
 import type { Modal } from "./modal";
 export type { Modal };
