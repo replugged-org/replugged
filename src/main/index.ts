@@ -7,7 +7,7 @@ import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 
-// This is for backwards compatibality, to be removed later.
+// This is for backwards compatibility, to be removed later.
 let discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 try {
   // If using older replugged file system
