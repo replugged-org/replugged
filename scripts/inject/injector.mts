@@ -29,29 +29,30 @@ export const isDiscordInstalled = async (appDir: string, silent?: boolean): Prom
 
 // If app.orig.asar but no app.asar, move app.orig.asar to app.asar
 // Fixes a case where app.asar was deleted (unplugged) but app.orig.asar couldn't be moved back
+// Fixes incase using old version of replugged
 export const correctMissingMainAsar = async (appDir: string): Promise<boolean> => {
   try {
     await stat(join(appDir, "..", "app.orig.asar"));
+    console.warn(
+      `${AnsiEscapes.YELLOW}Your Discord installation was not properly unplugged, attempting to fix...${AnsiEscapes.RESET}`,
+    );
     try {
       await stat(join(appDir, "..", "app.asar"));
-    } catch {
-      console.warn(
-        `${AnsiEscapes.YELLOW}Your Discord installation was not properly unplugged, attempting to fix...${AnsiEscapes.RESET}`,
+      await rm(join(appDir, "..", "app.asar"), { recursive: true, force: true });
+    } catch {}
+    try {
+      await rename(join(appDir, "..", "app.orig.asar"), join(appDir, "..", "app.asar"));
+      console.log(
+        `${AnsiEscapes.GREEN}Fixed your Discord installation successfully! Continuing with Replugged installation...${AnsiEscapes.RESET}`,
+        "\n",
       );
-      try {
-        await rename(join(appDir, "..", "app.orig.asar"), join(appDir, "..", "app.asar"));
-        console.log(
-          `${AnsiEscapes.GREEN}Fixed your Discord installation successfully! Continuing with Replugged installation...${AnsiEscapes.RESET}`,
-          "\n",
-        );
-      } catch {
-        console.error(
-          `${AnsiEscapes.RED}Failed to fix your Discord installation, please try unplugging and plugging again.${AnsiEscapes.RESET}`,
-          "\n",
-        );
-        console.error("If the error persists, please reinstall Discord and try again.");
-        return false;
-      }
+    } catch {
+      console.error(
+        `${AnsiEscapes.RED}Failed to fix your Discord installation, please try unplugging and plugging again.${AnsiEscapes.RESET}`,
+        "\n",
+      );
+      console.error("If the error persists, please reinstall Discord and try again.");
+      return false;
     }
   } catch {}
 
