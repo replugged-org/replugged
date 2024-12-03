@@ -1,8 +1,9 @@
-import { Messages } from "@common/i18n";
 import { React } from "@common";
+import { intl } from "@common/i18n";
 import { Button, Clickable, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { getByProps } from "@webpack";
+import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import { CheckResultSuccess } from "src/types";
 import { getSourceLink } from "../settings/pages";
@@ -156,7 +157,7 @@ const Embed = React.memo(
               <Clickable
                 className={`${copyLink} replugged-addon-embed-store-button`}
                 onClick={() => openExternal(props.url)}>
-                {Messages.REPLUGGED_INSTALLER_OPEN_STORE}
+                {intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE)}
               </Clickable>
               <Clickable
                 className={`${copyLink} replugged-addon-embed-copy-button${
@@ -165,8 +166,8 @@ const Embed = React.memo(
                 onClick={props.copyUrl}>
                 <Link className={copyLinkIcon} />
                 {props.onCooldown
-                  ? Messages.REPLUGGED_PLUGIN_EMBED_COPIED
-                  : Messages.REPLUGGED_PLUGIN_EMBED_COPY}
+                  ? intl.string(t.REPLUGGED_PLUGIN_EMBED_COPIED)
+                  : intl.string(t.REPLUGGED_PLUGIN_EMBED_COPY)}
               </Clickable>
             </>
           )}
@@ -203,7 +204,9 @@ const Embed = React.memo(
             <div className={buttonLoader} />
           ) : (
             <Tooltip
-              text={Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: props.name })}
+              text={intl.formatToPlainString(t.REPLUGGED_ERROR_ALREADY_INSTALLED, {
+                name: props.name,
+              })}
               className="replugged-addon-embed-button-tooltip"
               shouldShow={props.isInstalled ? undefined : false}
               hideOnClick={false}>
@@ -219,7 +222,7 @@ const Embed = React.memo(
                   props.isInstalled || props.isInstalling ? Button.Colors.TRANSPARENT : undefined
                 }
                 onClick={props.installClick}>
-                {Messages.REPLUGGED_CONFIRM_INSTALL}
+                {intl.string(t.REPLUGGED_CONFIRM_INSTALL)}
               </Button>
             </Tooltip>
           )}

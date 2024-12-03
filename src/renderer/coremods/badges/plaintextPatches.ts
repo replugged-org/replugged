@@ -3,7 +3,7 @@ import type { PlaintextPatch } from "src/types";
 export default [
   {
     // Edit the ProfileBadges component
-    find: /\.container,\w+\),"aria-label":\w+.\w+\.Messages\.PROFILE_USER_BADGES/,
+    find: /action:"PRESS_BADGE"/,
     replacements: [
       // Add the "replugged-badge" class if it's our custom badge
       {
