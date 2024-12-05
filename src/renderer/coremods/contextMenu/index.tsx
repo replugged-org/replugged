@@ -5,7 +5,7 @@ import type {
   GetContextItem,
   RawContextItem,
 } from "../../../types/coremods/contextMenu";
-import { Logger } from "../../modules/logger";
+import { Logger } from "@logger";
 
 const logger = Logger.api("ContextMenu");
 

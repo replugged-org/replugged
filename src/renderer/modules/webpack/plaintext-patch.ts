@@ -1,5 +1,5 @@
 import type { PlaintextPatch, RawPlaintextPatch, WebpackModule } from "../../../types";
-import { Logger } from "../logger";
+import { Logger } from "@logger";
 
 const logger = Logger.api("plaintext-patch");
 /**

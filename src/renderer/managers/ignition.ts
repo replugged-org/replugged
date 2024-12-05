@@ -1,4 +1,4 @@
-import { error, log } from "../modules/logger";
+import { error, log } from "@logger";
 import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
 import * as coremods from "./coremods";

@@ -1,9 +1,14 @@
 import { dirname, join } from "path";
-
 import electron from "electron";
 import { CONFIG_PATHS } from "src/util.mjs";
-import type { RepluggedWebContents } from "../types";
+import { RepluggedIpcChannels, type RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
+
+export const Logger = {
+  log: console.log,
+  warn: console.warn,
+  error: console.error,
+};
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
@@ -60,6 +65,10 @@ class BrowserWindow extends electron.BrowserWindow {
 
     super(opts);
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
+
+    Logger.log = (...args) => this.webContents.send(RepluggedIpcChannels.CONSOLE_LOG, ...args);
+    Logger.warn = (...args) => this.webContents.send(RepluggedIpcChannels.CONSOLE_WARN, ...args);
+    Logger.error = (...args) => this.webContents.send(RepluggedIpcChannels.CONSOLE_ERROR, ...args);
   }
 }
 

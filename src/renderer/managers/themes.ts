@@ -2,7 +2,7 @@ import { loadStyleSheet } from "../util";
 import type { RepluggedTheme } from "../../types";
 import type { AddonSettings } from "src/types/addon";
 import { init } from "../apis/settings";
-import * as logger from "../modules/logger";
+import * as logger from "@logger";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
