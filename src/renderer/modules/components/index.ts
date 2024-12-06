@@ -1,5 +1,5 @@
 import type { ModuleExports } from "../../../types";
-import { error } from "../logger";
+import { error } from "@logger";
 
 const modulePromises: Array<() => Promise<void>> = [];
 
