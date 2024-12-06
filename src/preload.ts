@@ -13,6 +13,7 @@ import type {
   InstallResultFailure,
   InstallResultSuccess,
   InstallerType,
+  PluginNativeMap,
   RepluggedPlugin,
   RepluggedTheme,
 } from "./types";
@@ -21,6 +22,24 @@ let version = "";
 void ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
   version = v;
 });
+
+const mapNative = (
+  nativeList: Record<string, Record<string, string>>,
+): Array<[string, PluginNativeMap]> => {
+  const pluginNatives = {} as Record<string, PluginNativeMap>;
+  for (const pluginId in nativeList) {
+    const methods = nativeList[pluginId];
+    const map = {} as Record<string, (...args: unknown[]) => Promise<unknown>>;
+    for (const methodName in methods) {
+      map[methodName] = (...args: unknown[]) =>
+        ipcRenderer.invoke(methods[methodName], ...args).catch((err) => {
+          throw new Error(err.message.split(": Error: ")[1]);
+        });
+    }
+    pluginNatives[pluginId] = map;
+  }
+  return Object.entries(pluginNatives);
+};
 
 const RepluggedNative = {
   themes: {
@@ -36,6 +55,8 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
     list: async (): Promise<RepluggedPlugin[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
+    listNative: async (): Promise<Array<[string, PluginNativeMap]>> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS_NATIVE).then(mapNative),
     uninstall: async (pluginPath: string): Promise<RepluggedPlugin> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginPath),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER),

@@ -16,6 +16,7 @@ interface PluginWrapper extends RepluggedPlugin {
 /**
  * @hidden
  */
+export const pluginNatives = new Map<string, Record<string, (...args: unknown[]) => unknown>>();
 export const plugins = new Map<string, PluginWrapper>();
 const running = new Set<string>();
 
@@ -48,6 +49,13 @@ function register(plugin: RepluggedPlugin): void {
   });
 }
 
+function registerNative([name, map]: [
+  string,
+  Record<string, (...args: unknown[]) => unknown>,
+]): void {
+  pluginNatives.set(name, map);
+}
+
 /**
  * Load all plugins
  *
@@ -56,6 +64,7 @@ function register(plugin: RepluggedPlugin): void {
  */
 export async function loadAll(): Promise<void> {
   (await window.RepluggedNative.plugins.list()).forEach(register);
+  (await RepluggedNative.plugins.listNative()).forEach(registerNative);
 }
 
 /**
