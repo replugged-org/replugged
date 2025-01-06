@@ -14,5 +14,5 @@ ipcMain.on(RepluggedIpcChannels.GET_DISCORD_PRELOAD, (event) => {
 });
 
 ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_RENDERER, (event) => {
-  event.returnValue = `try { (() => {\n${readFileSync(join(__dirname, "./renderer.js"), "utf-8")}\n})()\n} catch (err) { console.error(err); }\n\n//# sourceURL=RepluggedRenderer`;
+  event.returnValue = readFileSync(join(__dirname, "./renderer.js"), "utf-8");
 });

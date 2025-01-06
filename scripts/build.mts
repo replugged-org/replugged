@@ -68,6 +68,10 @@ const contexts = await Promise.all([
     entryPoints: ["src/renderer/index.ts"],
     platform: "browser",
     target: `chrome${CHROME_VERSION}`,
+    format: "iife",
+    footer: {
+      js: "//# sourceURL=RepluggedRenderer",
+    },
     outfile: `${distDir}/renderer.js`,
     loader: {
       ".png": "dataurl",
