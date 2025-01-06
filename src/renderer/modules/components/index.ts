@@ -6,7 +6,7 @@ const modulePromises: Array<() => Promise<void>> = [];
 function importTimeout<T extends ModuleExports>(
   name: string,
   moduleImport: Promise<T>,
-  cb: (mod: T) => void,
+  cb: (mod: T) => Promise<void>,
 ): void {
   modulePromises.push(
     () =>
@@ -16,9 +16,9 @@ function importTimeout<T extends ModuleExports>(
           rej(new Error(`Module not found: "${name}`));
         }, 10_000);
         void moduleImport
-          .then((mod) => {
+          .then(async (mod) => {
             clearTimeout(timeout);
-            cb(mod);
+            await cb(mod);
             res();
           })
           .catch((err) => {
@@ -32,136 +32,183 @@ function importTimeout<T extends ModuleExports>(
 import type { FlexType } from "./Flex";
 export type { FlexType };
 export let Flex: FlexType;
-importTimeout("Flex", import("./Flex"), (mod) => (Flex = mod.default));
+importTimeout("Flex", import("./Flex"), async (mod) => {
+  Flex = await mod.default;
+});
 
 import type { ContextMenuType } from "./ContextMenu";
 export type { ContextMenuType };
 export let ContextMenu: ContextMenuType;
-importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mod.default));
+importTimeout("ContextMenu", import("./ContextMenu"), async (mod) => {
+  ContextMenu = await mod.default;
+});
 
 import type { SwitchItemType, SwitchType } from "./SwitchItem";
-export type { SwitchType };
+export type { SwitchType, SwitchItemType };
 export let Switch: SwitchType;
-importTimeout("Switch", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
-
-export type { SwitchItemType };
 export let SwitchItem: SwitchItemType;
-importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.SwitchItem));
+importTimeout("SwitchItem", import("./SwitchItem"), async (mod) => {
+  const comps = await mod.default;
+  Switch = comps.Switch;
+  SwitchItem = comps.SwitchItem;
+});
 
 import type { RadioItemType, RadioType } from "./RadioItem";
-export type { RadioType };
+export type { RadioType, RadioItemType };
 export let Radio: RadioType;
-importTimeout("Radio", import("./RadioItem"), (mod) => (Radio = mod.Radio));
-
-export type { RadioItemType };
 export let RadioItem: RadioItemType;
-importTimeout("RadioItem", import("./RadioItem"), (mod) => (RadioItem = mod.RadioItem));
+
+importTimeout("RadioItem", import("./RadioItem"), async (mod) => {
+  const comps = await mod.default;
+  Radio = comps.Radio;
+  RadioItem = comps.RadioItem;
+});
 
 import type { SelectItemType, SelectType } from "./SelectItem";
-export type { SelectType };
+export type { SelectType, SelectItemType };
 export let Select: SelectType;
-importTimeout("Select", import("./SelectItem"), (mod) => (Select = mod.Select));
-
-export type { SelectItemType };
 export let SelectItem: SelectItemType;
-importTimeout("SelectItem", import("./SelectItem"), (mod) => (SelectItem = mod.SelectItem));
+importTimeout("SelectItem", import("./SelectItem"), async (mod) => {
+  const comps = await mod.default;
+  Select = comps.Select;
+  SelectItem = comps.SelectItem;
+});
 
 import type { ModalType } from "./Modal";
 export type { ModalType };
 export let Modal: ModalType;
-importTimeout("Modal", import("./Modal"), (mod) => (Modal = mod.default));
+importTimeout("Modal", import("./Modal"), async (mod) => {
+  Modal = await mod.default;
+});
 
 import type { DividerType } from "./Divider";
 export type { DividerType };
 export let Divider: DividerType;
-importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
+importTimeout("Divider", import("./Divider"), async (mod) => {
+  Divider = await mod.default;
+});
 
 import type { TooltipType } from "./Tooltip";
 export type { TooltipType };
 export let Tooltip: TooltipType;
-importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
+importTimeout("Tooltip", import("./Tooltip"), async (mod) => {
+  Tooltip = await mod.default;
+});
 
 import type { FormTextType } from "./FormText";
 export type { FormTextType };
 export let FormText: FormTextType;
-importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.FormText));
+importTimeout("FormText", import("./FormText"), (mod) => {
+  FormText = mod.FormText;
+  return Promise.resolve();
+});
 
 import type { FormItemType } from "./FormItem";
 export type { FormItemType };
 export let FormItem: FormItemType;
-importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
+importTimeout("FormItem", import("./FormItem"), async (mod) => {
+  FormItem = await mod.default;
+});
 
 import type { FormNoticeType } from "./FormNotice";
 export type { FormNoticeType };
 export let FormNotice: FormNoticeType;
-importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
+importTimeout("FormNotice", import("./FormNotice"), async (mod) => {
+  FormNotice = await mod.default;
+});
+
+import type { BreadcrumbType } from "./Breadcrumb";
+export type { BreadcrumbType };
+export let Breadcrumb: BreadcrumbType;
+importTimeout("Breadcrumb", import("./Breadcrumb"), async (mod) => {
+  Breadcrumb = await mod.default;
+});
 
 import type { ButtonItemType, ButtonType } from "./ButtonItem";
-export type { ButtonType };
+export type { ButtonType, ButtonItemType };
 export let Button: ButtonType;
-importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
-
-export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
-importTimeout("ButtonItem", import("./ButtonItem"), (mod) => (ButtonItem = mod.ButtonItem));
+importTimeout("ButtonItem", import("./ButtonItem"), async (mod) => {
+  const comps = await mod.default;
+  Button = comps.Button;
+  ButtonItem = comps.ButtonItem;
+});
 
 import type { ClickableType } from "./Clickable";
 export type { ClickableType };
 export let Clickable: ClickableType;
-importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
+importTimeout("Clickable", import("./Clickable"), async (mod) => {
+  Clickable = await mod.default;
+});
 
 import type { CategoryType } from "./Category";
 export type { CategoryType };
 export let Category: CategoryType;
-importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
+importTimeout("Category", import("./Category"), async (mod) => {
+  Category = await mod.default;
+});
 
 import type { TextInputType } from "./TextInput";
 export type { TextInputType };
 export let TextInput: TextInputType;
-importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
+importTimeout("TextInput", import("./TextInput"), async (mod) => {
+  TextInput = await mod.default;
+});
 
 import type { TextAreaType } from "./TextArea";
 export type { TextAreaType };
 export let TextArea: TextAreaType;
-importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default));
+importTimeout("TextArea", import("./TextArea"), async (mod) => {
+  TextArea = await mod.default;
+});
 
 import type { SliderItemType, SliderType } from "./SliderItem";
-export type { SliderType };
+export type { SliderType, SliderItemType };
 export let Slider: SliderType;
-importTimeout("Slider", import("./SliderItem"), (mod) => (Slider = mod.Slider));
-
-export type { SliderItemType };
 export let SliderItem: SliderItemType;
-importTimeout("SliderItem", import("./SliderItem"), (mod) => (SliderItem = mod.SliderItem));
+importTimeout("SliderItem", import("./SliderItem"), async (mod) => {
+  const comps = await mod.default;
+  Slider = comps.Slider;
+  SliderItem = comps.SliderItem;
+});
 
 import type { TextType } from "./Text";
 export type { TextType };
 export let Text: TextType;
-importTimeout("Text", import("./Text"), (mod) => (Text = mod.default));
+importTimeout("Text", import("./Text"), async (mod) => {
+  Text = await mod.default;
+});
 
 import type { ErrorBoundaryType } from "./ErrorBoundary";
 export type { ErrorBoundaryType };
 export let ErrorBoundary: ErrorBoundaryType;
-importTimeout("ErrorBoundary", import("./ErrorBoundary"), (mod) => (ErrorBoundary = mod.default));
+importTimeout("ErrorBoundary", import("./ErrorBoundary"), async (mod) => {
+  ErrorBoundary = await mod.default;
+});
 
 import type { LoaderType } from "./Loader";
 export type { LoaderType };
 export let Loader: LoaderType;
-importTimeout("Loader", import("./Loader"), (mod) => (Loader = mod.default));
+importTimeout("Loader", import("./Loader"), async (mod) => {
+  Loader = await mod.default;
+});
 
 import type { CheckboxItemType, CheckboxType } from "./CheckboxItem";
-export type { CheckboxType };
+export type { CheckboxType, CheckboxItemType };
 export let Checkbox: CheckboxType;
-importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
-
-export type { CheckboxItemType };
 export let CheckboxItem: CheckboxItemType;
-importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
+importTimeout("CheckboxItem", import("./CheckboxItem"), async (mod) => {
+  const comps = await mod.default;
+  Checkbox = comps.Checkbox;
+  CheckboxItem = comps.CheckboxItem;
+});
 
 import type { NoticeType } from "./Notice";
 export type { NoticeType };
 export let Notice: NoticeType;
-importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));
+importTimeout("Notice", import("./Notice"), async (mod) => {
+  Notice = await mod.default;
+});
 
 /**
  * @internal

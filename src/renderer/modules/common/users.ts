@@ -56,11 +56,14 @@ export interface GuildMemberStore {
 
 export type Users = UserStore & GuildMemberStore;
 
-export default virtualMerge(
-  (await waitForProps<UserStore>("getUser", "getCurrentUser").then(
-    Object.getPrototypeOf,
-  )) as UserStore,
-  (await waitForProps<GuildMemberStore>("getTrueMember", "getMember").then(
-    Object.getPrototypeOf,
-  )) as GuildMemberStore,
-);
+const getUsers = async (): Promise<ReturnType<typeof virtualMerge> & Users> =>
+  virtualMerge(
+    (await waitForProps<UserStore>("getUser", "getCurrentUser").then(
+      Object.getPrototypeOf,
+    )) as UserStore,
+    (await waitForProps<GuildMemberStore>("getTrueMember", "getMember").then(
+      Object.getPrototypeOf,
+    )) as GuildMemberStore,
+  );
+
+export default getUsers();

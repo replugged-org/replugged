@@ -1,11 +1,13 @@
-import { getLanguages, intl } from "@common/i18n";
+import { i18n } from "@common";
 import { Flex, FormNotice, Text } from "@components";
-import { messagesLoader } from "i18n/en-US.messages";
+import { messagesLoader } from "i18n/en-US.messages.js";
 import React from "react";
 import { WEBLATE_URL } from "src/constants";
 import { t } from "../../modules/i18n";
 
 export const percentages = new Map<string, number>();
+
+const { getLanguages, intl } = i18n;
 
 export function Card(): React.ReactElement {
   return (

@@ -13,12 +13,15 @@ export type ClickableCompType = React.ComponentClass<React.PropsWithChildren<Cli
   defaultProps: ClickableProps;
 };
 
-const { Clickable } = components;
-
 export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
 
-export default (props: React.PropsWithChildren<ClickableProps>): React.ReactElement => {
-  const style = props.style || {};
-  style.cursor = "pointer";
-  return <Clickable {...props} style={style} />;
+const getClickable = async (): Promise<ClickableType> => {
+  const { Clickable } = await components;
+  return (props: React.PropsWithChildren<ClickableProps>): React.ReactElement => {
+    const style = props.style || {};
+    style.cursor = "pointer";
+    return <Clickable {...props} style={style} />;
+  };
 };
+
+export default getClickable();

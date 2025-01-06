@@ -32,20 +32,23 @@ export interface GuildStore {
 
 export type Guilds = SelectedGuildStore & GuildStore;
 
-const GuildStore = await waitForProps<GuildStore & Store>("getGuild", "getGuildIds");
-const SelectedGuildStore = await waitForProps<SelectedGuildStore & Store>(
-  "getGuildId",
-  "getLastSelectedGuildId",
-);
+const getGuilds = async (): Promise<ReturnType<typeof virtualMerge> & Guilds> => {
+  const GuildStore = await waitForProps<GuildStore & Store>("getGuild", "getGuildIds");
+  const SelectedGuildStore = await waitForProps<SelectedGuildStore & Store>(
+    "getGuildId",
+    "getLastSelectedGuildId",
+  );
 
-export function getCurrentGuild(): Guild | undefined {
-  const guildId = SelectedGuildStore.getGuildId();
-  if (!guildId) return undefined;
-  return GuildStore.getGuild(guildId);
-}
+  function getCurrentGuild(): Guild | undefined {
+    const guildId = SelectedGuildStore.getGuildId();
+    if (!guildId) return undefined;
+    return GuildStore.getGuild(guildId);
+  }
+  return virtualMerge(
+    Object.getPrototypeOf(GuildStore) as GuildStore,
+    Object.getPrototypeOf(SelectedGuildStore) as SelectedGuildStore,
+    { getCurrentGuild },
+  );
+};
 
-export default virtualMerge(
-  Object.getPrototypeOf(GuildStore) as GuildStore,
-  Object.getPrototypeOf(SelectedGuildStore) as SelectedGuildStore,
-  { getCurrentGuild },
-);
+export default getGuilds();

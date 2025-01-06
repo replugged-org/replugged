@@ -26,4 +26,4 @@ export type LoaderType = React.FC<LoaderProps | SpinningCircleLoaderProps> & {
   Type: typeof Types;
 };
 
-export default components.Spinner;
+export default components.then((v) => v.Spinner);

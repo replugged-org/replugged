@@ -79,25 +79,26 @@ Load order:
 5. Start coremods, plugins, and themes
 */
 
-export async function ignite(): Promise<void> {
+export function ignite(): void {
   // This is the function that will be called when loading the window.
   // Plaintext patches must run first.
   interceptChunksGlobal();
   coremods.runPlaintextPatches();
-  await plugins.loadAll();
-  await plugins.runPlaintextPatches();
-  // At this point, Discord's code should run.
-  // Wait for the designated common modules to load before continuing.
-  await Promise.all([commonReady(), componentsReady()]);
-  await start();
+  (async () => {
+    await plugins.loadAll();
+    await plugins.runPlaintextPatches();
+    // At this point, Discord's code should run.
+    // Wait for the designated common modules to load before continuing.
+    await Promise.all([commonReady(), componentsReady()]);
+    await start();
+  })();
 }
 
-export async function startSplash(): Promise<void> {
+export function startSplash(): void {
   log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
   const startTime = performance.now();
 
-  await themes.loadMissing();
-  themes.loadAllSplash();
+  void themes.loadMissing().then(() => themes.loadAllSplash());
 
   log(
     "Ignition",

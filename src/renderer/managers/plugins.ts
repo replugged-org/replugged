@@ -7,7 +7,7 @@ import { init } from "../apis/settings";
 import type { AddonSettings } from "src/types/addon";
 
 const logger = Logger.api("Plugins");
-const settings = await init<AddonSettings>("plugins");
+const settings = init<AddonSettings>("plugins");
 
 interface PluginWrapper extends RepluggedPlugin {
   exports: PluginExports | undefined;

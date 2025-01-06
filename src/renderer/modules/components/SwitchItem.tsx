@@ -27,6 +27,9 @@ interface SwitchItemProps {
 
 export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;
 
-export const { Switch } = components;
+const getSwitchItem = async (): Promise<{ Switch: SwitchType; SwitchItem: SwitchItemType }> => ({
+  Switch: (await components).Switch,
+  SwitchItem: (await components).FormSwitch,
+});
 
-export const SwitchItem = components.FormSwitch;
+export default getSwitchItem();

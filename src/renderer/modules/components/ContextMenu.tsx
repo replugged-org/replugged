@@ -154,15 +154,15 @@ export interface ContextMenuType {
   MenuSeparator: React.FC;
 }
 
-const Menu = {
-  ContextMenu: components.Menu,
+const getMenu = async (): Promise<ContextMenuType> => ({
+  ContextMenu: (await components).Menu,
   ItemColors,
-  MenuCheckboxItem: components.MenuCheckboxItem,
-  MenuControlItem: components.MenuControlItem,
-  MenuGroup: components.MenuGroup,
-  MenuItem: components.MenuItem,
-  MenuRadioItem: components.MenuRadioItem,
-  MenuSeparator: components.MenuSeparator,
-} as ContextMenuType;
+  MenuCheckboxItem: (await components).MenuCheckboxItem,
+  MenuControlItem: (await components).MenuControlItem,
+  MenuGroup: (await components).MenuGroup,
+  MenuItem: (await components).MenuItem,
+  MenuRadioItem: (await components).MenuRadioItem,
+  MenuSeparator: (await components).MenuSeparator,
+});
 
-export default Menu;
+export default getMenu();

@@ -81,15 +81,15 @@ const RepluggedNative = {
 
   settings: {
     get: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_SETTING, namespace, key),
     set: (namespace: string, key: string, value: unknown) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.SET_SETTING, namespace, key, value), // invoke or send?
+      ipcRenderer.sendSync(RepluggedIpcChannels.SET_SETTING, namespace, key, value), // invoke or send?
     has: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.HAS_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.HAS_SETTING, namespace, key),
     delete: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
     all: (namespace: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
     startTransaction: (namespace: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
     endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>

@@ -36,4 +36,4 @@ export type TextAreaType = React.ComponentClass<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 
-export default components.TextArea;
+export default components.then((v) => v.TextArea);

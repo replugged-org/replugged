@@ -24,4 +24,4 @@ export type FormNoticeType = React.FC<FormNoticeProps> & {
   Types: Record<"PRIMARY" | "DANGER" | "WARNING" | "SUCCESS" | "BRAND" | "CUSTOM", string>;
 };
 
-export default components.FormNotice;
+export default components.then((v) => v.FormNotice);

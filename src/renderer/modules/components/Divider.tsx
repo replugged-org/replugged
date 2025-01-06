@@ -8,4 +8,4 @@ interface DividerProps {
 
 export type DividerType = React.FC<DividerProps>;
 
-export default components.FormDivider;
+export default components.then((v) => v.FormDivider);

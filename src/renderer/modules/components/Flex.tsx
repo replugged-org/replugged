@@ -29,6 +29,6 @@ export type FlexType = React.FC<React.PropsWithChildren<FlexProps>> & {
   };
 };
 
-export default await waitForModule<FlexType>(
+export default waitForModule<FlexType>(
   filters.bySource(/HORIZONTAL_REVERSE:\w+?\.horizontalReverse./),
 );

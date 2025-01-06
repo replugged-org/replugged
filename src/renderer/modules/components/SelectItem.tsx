@@ -43,8 +43,6 @@ interface SelectCompProps {
 
 export type SelectCompType = React.FC<SelectCompProps>;
 
-const SelectComp = components.Select;
-
 interface SelectProps extends SelectCompProps {
   onChange?: (value: string) => void;
   onSelect?: (value: string) => void;
@@ -57,21 +55,6 @@ export type SelectType = React.FC<React.PropsWithChildren<SelectProps>> & {
   Looks: typeof Looks;
 };
 
-export const Select = ((props) => {
-  if (!props.isSelected && props.value != null) props.isSelected = (value) => value === props.value;
-  if (!props.serialize) props.serialize = (value) => value;
-
-  return (
-    <SelectComp
-      isDisabled={props.disabled}
-      select={props.onChange || props.onSelect}
-      clear={props.onClear}
-      {...props}
-    />
-  );
-}) as SelectType;
-Select.Looks = Looks;
-
 interface SelectItemProps extends SelectProps {
   note?: string;
   style?: React.CSSProperties;
@@ -79,16 +62,44 @@ interface SelectItemProps extends SelectProps {
 
 export type SelectItemType = React.FC<React.PropsWithChildren<SelectItemProps>>;
 
-export const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): React.ReactElement => {
-  return (
-    <FormItem
-      title={props.children}
-      style={{ marginBottom: 20, ...props.style }}
-      note={props.note}
-      notePosition="after"
-      disabled={props.disabled}
-      divider>
-      <Select {...props} />
-    </FormItem>
-  );
+const getSelectItem = async (): Promise<{
+  SelectItem: SelectItemType;
+  Select: SelectType;
+}> => {
+  const SelectComp = (await components).Select;
+
+  const Select = ((props) => {
+    if (!props.isSelected && props.value != null)
+      props.isSelected = (value) => value === props.value;
+    if (!props.serialize) props.serialize = (value) => value;
+
+    return (
+      <SelectComp
+        isDisabled={props.disabled}
+        select={props.onChange || props.onSelect}
+        clear={props.onClear}
+        {...props}
+      />
+    );
+  }) as SelectType;
+
+  Select.Looks = Looks;
+
+  const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): React.ReactElement => {
+    return (
+      <FormItem
+        title={props.children}
+        style={{ marginBottom: 20, ...props.style }}
+        note={props.note}
+        notePosition="after"
+        disabled={props.disabled}
+        divider>
+        <Select {...props} />
+      </FormItem>
+    );
+  };
+
+  return { Select, SelectItem };
 };
+
+export default getSelectItem();

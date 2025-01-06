@@ -54,10 +54,12 @@ export interface ModalType {
   ModalCloseButton: React.FC<ModalCloseButtonProps>;
 }
 
-export default {
-  ModalRoot: components.ModalRoot,
-  ModalHeader: components.ModalHeader,
-  ModalContent: components.ModalContent,
-  ModalFooter: components.ModalFooter,
-  ModalCloseButton: components.ModalCloseButton,
-} as ModalType;
+const getModal = async (): Promise<ModalType> => ({
+  ModalRoot: (await components).ModalRoot,
+  ModalHeader: (await components).ModalHeader,
+  ModalContent: (await components).ModalContent,
+  ModalFooter: (await components).ModalFooter,
+  ModalCloseButton: (await components).ModalCloseButton,
+});
+
+export default getModal();

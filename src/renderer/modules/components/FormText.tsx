@@ -22,9 +22,6 @@ export type FormTextCompType = React.FC<React.PropsWithChildren<FormTextProps>>;
 
 export type FormTextType = Record<FormTextTypeKey, FormTextCompType>;
 
-const FormTextComp = components.FormText;
-const types = components.FormTextTypes;
-
 export const FormText: FormTextType = {
   DEFAULT: () => null,
   DESCRIPTION: () => null,
@@ -36,11 +33,17 @@ export const FormText: FormTextType = {
   SUCCESS: () => null,
 };
 
-if (typeof types === "object" && types !== null)
-  Object.keys(types).forEach((key) => {
-    FormText[key] = (props: React.PropsWithChildren<FormTextProps>) => (
-      <FormTextComp type={types[key]} {...props}>
-        {props.children}
-      </FormTextComp>
-    );
-  });
+const mapFormText = async (): Promise<void> => {
+  const FormTextComp = (await components).FormText;
+  const types = (await components).FormTextTypes;
+  if (typeof types === "object" && types !== null)
+    Object.keys(types).forEach((key) => {
+      FormText[key] = (props: React.PropsWithChildren<FormTextProps>) => (
+        <FormTextComp type={types[key]} {...props}>
+          {props.children}
+        </FormTextComp>
+      );
+    });
+};
+
+void mapFormText();

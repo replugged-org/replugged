@@ -2,7 +2,7 @@ import type { I18n } from "@common";
 import type { loadAllMessagesInLocale as LoadAllMessagesInLocale } from "@discord/intl";
 import { waitForProps } from "@webpack";
 import { DEFAULT_LOCALE } from "src/constants";
-import type * as definitions from "../../../i18n/en-US.messages";
+import type * as definitions from "../../../i18n/en-US.messages.js";
 
 export let locale: string | undefined;
 export let t: typeof definitions.default;
@@ -14,7 +14,7 @@ export async function load(): Promise<void> {
   // ! HACK: This is a workaround until ignition issues are fixed.
   // We need to delay the import of the messages for intl to be loaded and use that module instead of @discord/intl directly.
   const { default: messages, messagesLoader: loader } = await import(
-    "../../../i18n/en-US.messages"
+    "../../../i18n/en-US.messages.js"
   );
   t = messages;
   messagesLoader = loader;

@@ -492,22 +492,24 @@ interface MessageUtils {
   userRecordToServer: (user: User) => UserServer;
 }
 
-const MessageStore = await waitForProps<MessageStore>("getMessage", "getMessages");
-
-const MessageUtilsMod = await waitForModule(filters.bySource('username:"Clyde"'));
-const MessageUtils = {
-  createBotMessage: getFunctionBySource(MessageUtilsMod, 'username:"Clyde"'),
-  createMessage: getFunctionBySource(MessageUtilsMod, "createMessage"),
-  userRecordToServer: getFunctionBySource(MessageUtilsMod, "global_name:"),
-} as MessageUtils;
-
 export type Messages = PartialMessageStore & MessageActions & MessageUtils;
+const getMessages = async (): Promise<ReturnType<typeof virtualMerge> & Messages> => {
+  const MessageStore = await waitForProps<MessageStore>("getMessage", "getMessages");
 
-export default virtualMerge(
-  await waitForProps<MessageActions>("sendMessage", "editMessage", "deleteMessage"),
-  {
-    getMessage: MessageStore.getMessage,
-    getMessages: MessageStore.getMessages,
-  },
-  MessageUtils,
-);
+  const MessageUtilsMod = await waitForModule(filters.bySource('username:"Clyde"'));
+  const MessageUtils = {
+    createBotMessage: getFunctionBySource(MessageUtilsMod, 'username:"Clyde"'),
+    createMessage: getFunctionBySource(MessageUtilsMod, "createMessage"),
+    userRecordToServer: getFunctionBySource(MessageUtilsMod, "global_name:"),
+  } as MessageUtils;
+  return virtualMerge(
+    await waitForProps<MessageActions>("sendMessage", "editMessage", "deleteMessage"),
+    {
+      getMessage: MessageStore.getMessage,
+      getMessages: MessageStore.getMessages,
+    },
+    MessageUtils,
+  );
+};
+
+export default getMessages();
