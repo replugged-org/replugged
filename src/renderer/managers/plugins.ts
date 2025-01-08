@@ -1,6 +1,6 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
 import { loadStyleSheet } from "../util";
-import type { PluginExports, RepluggedPlugin } from "../../types";
+import type { PlaintextPatch, PluginExports, RepluggedPlugin } from "../../types";
 import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 import { init } from "../apis/settings";
@@ -54,8 +54,8 @@ function register(plugin: RepluggedPlugin): void {
  * @remarks
  * You may need to reload Discord after adding a new plugin before it's available.
  */
-export async function loadAll(): Promise<void> {
-  (await window.RepluggedNative.plugins.list()).forEach(register);
+export function loadAll(): void {
+  window.RepluggedNative.plugins.list().forEach(register);
 }
 
 /**
@@ -162,24 +162,51 @@ export async function stopAll(): Promise<void> {
  * @hidden
  * @internal
  */
-export async function runPlaintextPatches(): Promise<void> {
+export function runPlaintextPatches(): void {
   const disabled: string[] = settings.get("disabled", []);
   const list = [...plugins.values()].filter((x) => !disabled.includes(x.manifest.id));
-  await Promise.allSettled(
-    list.map(async (plugin) => {
-      if (plugin.manifest.plaintextPatches) {
-        patchPlaintext(
-          (
-            await import(
-              `replugged://plugin/${plugin.path}/${
-                plugin.manifest.plaintextPatches
-              }?t=${Date.now()}`
-            )
-          ).default,
-        );
+
+  const getPlaintextPatch = (pluginName: string): { default: PlaintextPatch[] } => {
+    const wrapModule = (code: string, pluginName: string): string => `((module) => {
+      ${code}\n//# sourceURL=replugged://plugin/${pluginName}/plaintextPatches.js?t=${Date.now()}\nreturn module.exports
+      })({exports:{}})`;
+
+    const code = RepluggedNative.plugins.readPlaintextPatch(pluginName);
+
+    if (code)
+      try {
+        // eslint-disable-next-line no-eval
+        return (0, eval)(wrapModule(code, pluginName));
+      } catch {
+        // CHANGED PLAINTEXT PATCHES TO CJS SO THIS CAN BE REMOVED!!!
+        const cjsCode = [
+          { match: /export\s+default\s+/g, replace: () => "module.exports = " },
+          {
+            match: /export[\s+]?\{([^}]+)\}[;]?/g,
+            replace: (_: string, exports: string) =>
+              exports
+                .split(",")
+                .map((exp) => exp.split(" as ").map((s) => s.trim()))
+                .map(([original, alias]) => `module.exports.${alias || original} = ${original};`)
+                .join("\n"),
+          },
+        ]
+          .reduce((code, { match, replace }) => code.replace(match, replace), code)
+          .trim();
+        try {
+          // eslint-disable-next-line no-eval
+          return (0, eval)(wrapModule(cjsCode, pluginName));
+        } catch (err) {
+          logger.error(`Error getting PlaintextPatches for ${pluginName}`, err);
+        }
       }
-    }),
-  );
+
+    return { default: [] };
+  };
+
+  list.forEach((plugin) => {
+    if (plugin.manifest.plaintextPatches) patchPlaintext(getPlaintextPatch(plugin.path).default);
+  });
 }
 
 /**
@@ -197,7 +224,7 @@ export async function reload(id: string): Promise<void> {
   }
   await stop(plugin.manifest.id);
   plugins.delete(plugin.manifest.id);
-  const newPlugin = await window.RepluggedNative.plugins.get(plugin.path);
+  const newPlugin = window.RepluggedNative.plugins.get(plugin.path);
   if (newPlugin) {
     register(newPlugin);
     await start(newPlugin.manifest.id);

@@ -419,6 +419,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
       esbuild.context(
         overwrites({
           ...common,
+          format: "cjs",
           entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
           outfile: `${distPath}/plaintextPatches.js`,
         }),

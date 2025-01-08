@@ -84,14 +84,12 @@ export function ignite(): void {
   // Plaintext patches must run first.
   interceptChunksGlobal();
   coremods.runPlaintextPatches();
-  void (async () => {
-    await plugins.loadAll();
-    await plugins.runPlaintextPatches();
-    // At this point, Discord's code should run.
-    // Wait for the designated common modules to load before continuing.
-    await Promise.all([commonReady(), componentsReady()]);
-    await start();
-  })();
+  plugins.loadAll();
+  plugins.runPlaintextPatches();
+
+  // At this point, Discord's code should run.
+  // Wait for the designated common modules to load before continuing.
+  void Promise.all([commonReady(), componentsReady()]).then(() => start());
 }
 
 export function startSplash(): void {
