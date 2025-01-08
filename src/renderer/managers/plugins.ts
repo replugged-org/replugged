@@ -168,8 +168,8 @@ export function runPlaintextPatches(): void {
 
   const getPlaintextPatch = (pluginName: string): { default: PlaintextPatch[] } => {
     const wrapModule = (code: string, pluginName: string): string => `((module) => {
-      ${code}\n//# sourceURL=replugged://plugin/${pluginName}/plaintextPatches.js?t=${Date.now()}\nreturn module.exports
-      })({exports:{}})`;
+      ${code}\nreturn module.exports
+      })({exports:{}})\n//# sourceURL=replugged://plugin/${pluginName}/plaintextPatches.js?t=${Date.now()}`;
 
     const code = RepluggedNative.plugins.readPlaintextPatch(pluginName);
 
