@@ -1,5 +1,5 @@
 import { Injector } from "@replugged";
-import { getByProps, getByStoreName } from "src/renderer/modules/webpack";
+import { filters, getByProps, getByStoreName, waitForModule } from "src/renderer/modules/webpack";
 import { users } from "@common";
 import type React from "react";
 import type { Store } from "src/renderer/modules/common/flux";
@@ -70,19 +70,14 @@ function nitroThemeClass(): void {
   onNitroThemeChange(ClientThemesBackgroundStore, ThemeIDMap);
 }
 
-function messageDataAttributes(): void {
-  const Message = getByProps<{
-    default: { type: (msg: { message: Message }) => React.ReactElement };
-    getElementFromMessage: unknown;
-  }>("getElementFromMessage");
+async function messageDataAttributes(): Promise<void> {
+  const Message = await waitForModule<{
+    ZP: { type: (msg: { message: Message }) => React.ReactElement };
+  }>(filters.bySource(/channel:{id:\w},compact:\w=!1,/i));
 
-  if (!Message) {
-    throw new Error("Failed to find Message module!");
-  }
-
-  inject.after(Message.default, "type", ([{ message }], res) => {
-    const props = res.props?.children?.props?.children?.props;
-    if (!props) return;
+  inject.after(Message.ZP, "type", ([{ message }], res) => {
+    const props = res.props?.children?.props?.children?.[1]?.props;
+    if (!props) return res;
     props["data-is-author-self"] = message.author.id === users.getCurrentUser().id;
     props["data-is-author-bot"] = message.author.bot;
     // webhooks are also considered bots
@@ -104,10 +99,10 @@ function addHtmlClasses(): void {
 
 let observer: MutationObserver;
 
-export function start(): void {
+export async function start(): Promise<void> {
   tabBarItemId();
   nitroThemeClass();
-  messageDataAttributes();
+  await messageDataAttributes();
 
   // generic stuff
   observer = new MutationObserver(addHtmlClasses);
