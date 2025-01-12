@@ -1,5 +1,5 @@
 import type { ProgressEvent, Request, Response } from "superagent";
-import { waitForProps } from "../webpack";
+import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 interface HTTPAttachment {
   file: string | Blob | Buffer;
@@ -35,12 +35,12 @@ interface HTTPRequest {
       interceptResponse?: HTTPRequest["interceptResponse"],
     ) => void,
     reject: (reason: Error) => void,
-  ) => void;
+  ) => boolean;
   onRequestCreated?: (request: Request) => void;
   onRequestProgress?: (progress: ProgressEvent) => void;
 }
 
-interface HTTPResponse<T = Record<string, unknown>> {
+export interface HTTPResponse<T = Record<string, unknown>> {
   body: T;
   headers: Record<string, string>;
   ok: boolean;
@@ -101,16 +101,65 @@ export declare class APIError {
   public hasFieldErrors: () => boolean;
 }
 
-export type API = Record<
-  "get" | "patch" | "post" | "put" | "delete",
+type HTTP = Record<
+  "get" | "post" | "put" | "patch" | "del",
   <T = Record<string, unknown>>(
     req: string | HTTPRequest,
     callback?: (response: HTTPResponse) => void,
   ) => Promise<HTTPResponse<T>>
-> & {
-  getAPIBaseURL: (version?: boolean) => string;
+>;
+
+interface RequestPatch {
+  prepareRequest: (request: Request) => void;
+  interceptResponse: Required<HTTPRequest["interceptResponse"]>;
+}
+
+export interface API {
+  INVALID_FORM_BODY_ERROR_CODE: number;
+  convertSkemaError: (response: Record<string, unknown>) => Record<string, unknown>;
   V6OrEarlierAPIError: typeof V6OrEarlierAPIError;
   V8APIError: typeof APIError;
-};
+  HTTP: HTTP;
+  getAPIBaseURL: (version?: boolean) => string;
+  setAwaitOnline: (callback: (url: string) => Promise<void>) => void;
+  setRequestPatch: (patch: RequestPatch) => void;
+}
 
-export default await waitForProps<API>("getAPIBaseURL", "get", "patch", "post", "put", "delete");
+const realApiModule = await waitForModule<Record<string, API[keyof API]>>(
+  filters.bySource("rateLimitExpirationHandler"),
+);
+const exportedValues = Object.values(realApiModule);
+
+type APIErrorClass = typeof V6OrEarlierAPIError | typeof APIError;
+const exportedClasses = exportedValues.filter((v) => typeof v === "function" && v.prototype);
+const v6ErrorClass = exportedClasses.find(
+  (c) => "getFieldMessage" in (c as APIErrorClass).prototype,
+) as typeof V6OrEarlierAPIError;
+const v8ErrorClass = exportedClasses.find(
+  (c) => "hasFieldErrors" in (c as APIErrorClass).prototype,
+) as typeof APIError;
+const http = exportedValues.find((v) => typeof v === "object") as HTTP;
+const invalidFormBodyErrorCode = exportedValues.find((v) => typeof v === "number") as number;
+
+const getAPIBaseURL = getFunctionBySource<API["getAPIBaseURL"]>(
+  realApiModule,
+  "GLOBAL_ENV.API_ENDPOINT",
+)!;
+const convertSkemaError = getFunctionBySource<API["convertSkemaError"]>(realApiModule, "message")!;
+// TODO: these suck. Make them better later.
+const setAwaitOnline = getFunctionBySource<API["setAwaitOnline"]>(realApiModule, /v\s*=\s*e/)!;
+const setRequestPatch = getFunctionBySource<API["setRequestPatch"]>(realApiModule, /g\s*=\s*e/)!;
+
+// "If only, if only," the woodpecker sighs...
+//export default await waitForProps<API>("getAPIBaseURL", "HTTP");
+
+export default {
+  INVALID_FORM_BODY_ERROR_CODE: invalidFormBodyErrorCode,
+  V6OrEarlierAPIError: v6ErrorClass,
+  V8APIError: v8ErrorClass,
+  HTTP: http,
+  getAPIBaseURL,
+  convertSkemaError,
+  setAwaitOnline,
+  setRequestPatch,
+} as API;

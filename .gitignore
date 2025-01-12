@@ -21,3 +21,4 @@ config.json
 /*.asar
 /bin.mjs
 /*.d.ts
+/i18n/*.map

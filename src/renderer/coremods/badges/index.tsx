@@ -1,71 +1,125 @@
+import { intl } from "@common/i18n";
 import React from "@common/react";
 import { Logger } from "@replugged";
-import type { User } from "discord-types/general";
+import { filters, getFunctionKeyBySource, waitForModule } from "@webpack";
+import { DISCORD_BLURPLE, DISCORD_INVITE, WEBLATE_URL } from "src/constants";
+import { t } from "src/renderer/modules/i18n";
+import type { Badge, DisplayProfile } from "src/types";
 import { Injector } from "../../modules/injector";
-import { getByProps, waitForProps } from "../../modules/webpack";
-import { generalSettings } from "../settings/pages/General";
-import { APIBadges, BadgeSizes, Custom, badgeElements, getBadgeSizeClass } from "./badge";
+import { generalSettings } from "../settings/pages";
+import Badges from "./badges";
+
+import "./badge.css";
 
 const injector = new Injector();
 
 const logger = Logger.coremod("Badges");
 
-interface BadgeModArgs {
-  user: User;
-  guildId: string;
-  className?: string;
-  shrinkAtCount?: number;
-  shrinkToSize?: number;
-  isTryItOutFlow?: boolean;
-  size?: BadgeSizes;
+type RepluggedBadge = Badge & {
+  component?: React.ReactElement;
+};
+
+interface APIRepluggedCustomBadge {
+  name: string | null;
+  icon: string | null;
+  color: string | null;
 }
 
-type BadgeMod = (args: BadgeModArgs) =>
-  | React.ReactElement<{
-      children?: React.ReactElement[];
-      className: string;
-    }>
-  | undefined;
+interface APIRepluggedBadges {
+  developer: boolean;
+  staff: boolean;
+  support: boolean;
+  contributor: boolean;
+  translator: boolean;
+  hunter: boolean;
+  early: boolean;
+  booster: boolean;
+  custom: APIRepluggedCustomBadge;
+}
+
+type UseBadges = (displayProfile: DisplayProfile | null) => Badge[];
+
+type GetBadgeAsset = (icon: string) => string;
 
 interface BadgeCache {
-  badges: APIBadges;
+  badges: APIRepluggedBadges;
   lastFetch: number;
 }
 
-// todo: guilds
 const cache = new Map<string, BadgeCache>();
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
+const contributorsUrl = `${generalSettings.get("apiUrl")}/contributors`;
+const inviteUrl = `https://discord.gg/${DISCORD_INVITE}`;
+
+const badgeElements = [
+  {
+    id: "booster",
+    description: intl.string(t.REPLUGGED_BADGES_BOOSTER),
+    component: Badges.Booster,
+    link: inviteUrl,
+  },
+  {
+    id: "contributor",
+    description: intl.string(t.REPLUGGED_BADGES_CONTRIBUTOR),
+    component: Badges.Contributor,
+    link: contributorsUrl,
+  },
+  {
+    id: "developer",
+    description: intl.string(t.REPLUGGED_BADGES_DEVELOPER),
+    component: Badges.Developer,
+    link: contributorsUrl,
+  },
+  { id: "early", description: intl.string(t.REPLUGGED_BADGES_EARLY), component: Badges.EarlyUser },
+  {
+    id: "hunter",
+    description: intl.string(t.REPLUGGED_BADGES_HUNTER),
+    component: Badges.BugHunter,
+  },
+  {
+    id: "staff",
+    description: intl.string(t.REPLUGGED_BADGES_STAFF),
+    component: Badges.Staff,
+    link: inviteUrl,
+  },
+  {
+    id: "support",
+    description: intl.string(t.REPLUGGED_BADGES_SUPPORT),
+    component: Badges.Support,
+    link: inviteUrl,
+  },
+  {
+    id: "translator",
+    description: intl.string(t.REPLUGGED_BADGES_TRANSLATOR),
+    component: Badges.Translator,
+    link: WEBLATE_URL,
+  },
+];
+
 export async function start(): Promise<void> {
-  const mod = await waitForProps<{ BadgeSizes: BadgeSizes; default: BadgeMod }>("BadgeSizes");
+  const useBadgesMod = await waitForModule<Record<string, UseBadges>>(
+    filters.bySource(/:\w+\.getBadges\(\)/),
+  );
+  const useBadgesKey = getFunctionKeyBySource(useBadgesMod, "")!;
 
-  const { containerWithContent } = getByProps<{ containerWithContent: "string" }>(
-    "containerWithContent",
-  )!;
-
-  injector.after(mod, "default", ([props], res) => {
-    let {
-      user: { id },
-      shrinkAtCount,
-      shrinkToSize,
-      size,
-    } = props;
+  injector.after(useBadgesMod, useBadgesKey, ([displayProfile], badges) => {
+    if (!generalSettings.get("badges")) return badges;
 
     try {
-      if (!generalSettings.get("badges")) return res;
+      const [currentCache, setCurrentCache] = React.useState<APIRepluggedBadges | undefined>();
+      const badgeCache = React.useMemo(() => {
+        if (!displayProfile) return currentCache;
 
-      const [currentCache, setCurrentCache] = React.useState<APIBadges | undefined>();
-      const badges = React.useMemo(() => {
+        const { userId } = displayProfile;
+
         (async () => {
-          if (!cache.has(id) || cache.get(id)!.lastFetch < Date.now() - REFRESH_INTERVAL) {
+          if (!cache.has(userId) || cache.get(userId)!.lastFetch < Date.now() - REFRESH_INTERVAL) {
             cache.set(
-              id,
-              // TODO: new backend
-              await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${id}`)
+              userId,
+              await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${userId}`)
                 .then(async (res) => {
-                  const body = (await res.json()) as Record<string, unknown> & {
-                    badges: APIBadges | undefined;
-                  };
+                  const body = await res.json();
 
                   if (res.status === 200 || res.status === 404) {
                     return {
@@ -74,7 +128,7 @@ export async function start(): Promise<void> {
                     };
                   }
 
-                  cache.delete(id);
+                  cache.delete(userId);
                   return {
                     badges: {},
                     lastFetch: Date.now(),
@@ -84,70 +138,56 @@ export async function start(): Promise<void> {
             );
           }
 
-          setCurrentCache(cache.get(id)?.badges);
+          setCurrentCache(cache.get(userId)?.badges);
         })();
 
         return currentCache;
-      }, [currentCache, id]);
+      }, [currentCache, displayProfile]);
 
-      if (!badges) {
-        return res;
-      }
-      const children = res?.props.children;
-      if (!children || !Array.isArray(children)) {
-        logger.error("Error injecting badges: res.props.children is not an array", { children });
-        return res;
-      }
+      if (!badgeCache) return badges;
 
-      // Calculate badge size with new added badges
-      const addedBadgesCount =
-        children.length + Object.values(badges).filter((value) => value).length;
-      size =
-        shrinkAtCount && shrinkToSize && addedBadgesCount > shrinkAtCount ? shrinkToSize : size;
+      let newBadges: RepluggedBadge[] = [];
 
-      const sizeClass = getBadgeSizeClass(size);
-
-      children.forEach((badge) => {
-        const elem: React.ReactElement | undefined = badge.props.children?.();
-        if (elem) {
-          elem.props.children.props.className = sizeClass;
-          badge.props.children = (props: Record<string, unknown>) => {
-            elem.props = { ...elem.props, ...props };
-            return elem;
-          };
-        }
-      });
-
-      if (badges.custom?.name && badges.custom.icon) {
-        children.push(<Custom url={badges.custom.icon} name={badges.custom.name} size={size} />);
+      if (badgeCache.custom.name && badgeCache.custom.icon) {
+        newBadges.push({
+          id: badgeCache.custom.name,
+          description: badgeCache.custom.name,
+          icon: `replugged${badgeCache.custom.icon}`,
+        });
       }
 
-      badgeElements.forEach(({ type, component }) => {
-        const value = badges[type];
-        if (value) {
-          children.push(
-            React.createElement(component, {
-              color: badges.custom?.color,
-              size,
+      badgeElements.forEach((badgeElement) => {
+        if (badgeCache[badgeElement.id as keyof APIRepluggedBadges]) {
+          const { component, ...props } = badgeElement;
+          const badgeColor = badgeCache.custom.color;
+
+          newBadges.push({
+            ...props,
+            icon: "replugged",
+            component: React.createElement(component, {
+              color:
+                (badgeColor && (badgeColor.startsWith("#") ? badgeColor : `#${badgeColor}`)) ??
+                DISCORD_BLURPLE,
             }),
-          );
+          });
         }
       });
 
-      if (children.length > 0) {
-        if (!res.props.className.includes(containerWithContent)) {
-          res.props.className += ` ${containerWithContent}`;
-        }
-        if (!res.props.className.includes("replugged-badges-container")) {
-          res.props.className += " replugged-badges-container";
-        }
-      }
-
-      return res;
+      return [...badges, ...newBadges];
     } catch (err) {
       logger.error(err);
-      return res;
+      return badges;
     }
+  });
+
+  const userProfileConstantsMod = await waitForModule<Record<string, GetBadgeAsset>>(
+    filters.bySource(/concat\(\w+,"\/badge-icons\/"/),
+  );
+  const getBadgeAssetKey = getFunctionKeyBySource(userProfileConstantsMod, "badge-icons")!;
+
+  injector.instead(userProfileConstantsMod, getBadgeAssetKey, (args, orig) => {
+    if (args[0].startsWith("replugged")) return args[0].replace("replugged", "");
+    return orig(...args);
   });
 }
 

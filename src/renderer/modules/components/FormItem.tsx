@@ -7,9 +7,12 @@ interface FormItemCompProps extends Omit<React.ComponentPropsWithoutRef<"div">, 
   children: React.ReactNode;
   title?: React.ReactNode;
   error?: React.ReactNode;
+  faded?: boolean;
   disabled?: boolean;
   required?: boolean;
   tag?: "h1" | "h2" | "h3" | "h4" | "h5" | "label" | "legend";
+  titleId?: string;
+  errorId?: string;
   titleClassName?: string;
 }
 

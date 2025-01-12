@@ -1,10 +1,23 @@
 import { waitForProps } from "../webpack";
-import type { GuildMember, User } from "discord-types/general";
+import type { Channel, GuildMember, User } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 
 interface PendingRoleUpdate {
   added: Record<string, string[]>;
   removed: Record<string, string[]>;
+}
+
+interface Cache {
+  initialGuildChannels: Channel[];
+  privateChannels: Channel[];
+  users?: User[];
+}
+
+interface Snapshot {
+  data: {
+    users: User[];
+  };
+  version: number;
 }
 
 export interface UserStore {
@@ -15,9 +28,12 @@ export interface UserStore {
   getUser: (userId: string) => User | undefined;
   getUsers: () => Record<string, User>;
   getUserStoreVersion: () => number;
+  handleLoadCache: (cache: Cache) => void;
+  takeSnapshot: () => Snapshot;
 }
 
 export interface GuildMemberStore {
+  getCachedSelfMember: (guildId: string) => GuildMember | null;
   getCommunicationDisabledUserMap: () => Record<string, string>;
   getCommunicationDisabledVersion: () => number;
   getMember: (guildId: string, userId: string) => GuildMember | null;

@@ -2,23 +2,24 @@ import type React from "react";
 import components from "../common/components";
 
 interface SwitchProps {
-  checked: boolean;
-  onChange: (value: boolean) => void;
+  checked?: boolean;
+  onChange?: (value: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   id?: string;
-  innerRef?: React.Ref<unknown>;
+  innerRef?: React.Ref<HTMLInputElement>;
   focusProps?: Record<string, unknown>;
   className?: string;
 }
 
-export type SwitchType = React.FC<React.PropsWithChildren<SwitchProps>>;
+export type SwitchType = React.FC<SwitchProps>;
 
 interface SwitchItemProps {
-  value: boolean;
-  onChange: (value: boolean) => void;
-  note?: string;
+  value?: boolean;
+  onChange?: (value: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
+  note?: React.ReactNode;
   tooltipNote?: string;
   disabled?: boolean;
+  disabledText?: string;
   hideBorder?: boolean;
   style?: React.CSSProperties;
   className?: string;

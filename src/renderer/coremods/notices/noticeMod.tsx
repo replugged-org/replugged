@@ -1,5 +1,6 @@
 import type React from "react";
-import { filters, waitForModule } from "src/renderer/modules/webpack";
+import { filters, getFunctionBySource, waitForModule } from "src/renderer/modules/webpack";
+import { ValueOf } from "type-fest";
 
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
@@ -13,6 +14,7 @@ interface NoticeButtonProps extends React.ComponentPropsWithoutRef<"button"> {
 
 interface PrimaryCTANoticeButtonProps extends NoticeButtonProps {
   noticeType?: string;
+  additionalTrackingProps?: Record<string, unknown>;
 }
 
 interface NoticeButtonAnchorProps extends AnchorProps {}
@@ -52,17 +54,19 @@ interface NoticeMod {
   Notice: React.FC<React.PropsWithChildren<NoticeProps>>;
 }
 
-const mod = await waitForModule<
-  NoticeMod & {
-    default: React.FC<React.PropsWithChildren<NoticeProps>>;
-  }
->(filters.bySource(".colorPremiumTier1,"));
+const actualNoticeMod = await waitForModule<Record<string, ValueOf<NoticeMod>>>(
+  filters.bySource(".colorPremiumTier1,"),
+);
 
-export default {
-  NoticeColors: mod.NoticeColors,
-  NoticeButton: mod.NoticeButton,
-  PrimaryCTANoticeButton: mod.PrimaryCTANoticeButton,
-  NoticeButtonAnchor: mod.NoticeButtonAnchor,
-  NoticeCloseButton: mod.NoticeCloseButton,
-  Notice: mod.default,
-} as NoticeMod;
+const remappedNoticeMod: NoticeMod = {
+  NoticeColors: Object.values(actualNoticeMod).find(
+    (v) => typeof v === "object",
+  ) as NoticeMod["NoticeColors"],
+  NoticeButton: getFunctionBySource(actualNoticeMod, "buttonMinor")!,
+  PrimaryCTANoticeButton: getFunctionBySource(actualNoticeMod, "CTA")!,
+  NoticeButtonAnchor: getFunctionBySource(actualNoticeMod, ".Anchor")!,
+  NoticeCloseButton: getFunctionBySource(actualNoticeMod, "closeIcon")!,
+  Notice: getFunctionBySource(actualNoticeMod, "isMobile")!,
+};
+
+export default remappedNoticeMod;

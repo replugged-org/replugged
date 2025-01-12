@@ -1,4 +1,4 @@
-import type { Guild } from "discord-types/general";
+import type { Guild, Role } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
 import { waitForProps } from "../webpack";
 import type { Store } from "./flux";
@@ -19,10 +19,14 @@ export interface SelectedGuildStore {
 }
 
 export interface GuildStore {
+  getAllGuildsRoles: () => Record<string, Record<string, Role>>;
+  getGeoRestrictedGuilds: () => string[];
   getGuild: (guildId: string) => Guild | undefined;
   getGuildCount: () => number;
   getGuildIds: () => string[];
   getGuilds: () => Record<string, Guild>;
+  getRole: (guildId: string, roleId: string) => Role | undefined;
+  getRoles: (guildId: string) => Record<string, Role>;
   isLoaded: () => boolean;
 }
 

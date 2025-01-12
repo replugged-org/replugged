@@ -1,4 +1,5 @@
 import type { Channel, Guild, User } from "discord-types/general";
+import { REPLUGGED_CLYDE_ID } from "../../constants";
 import type {
   AnyRepluggedCommand,
   CommandOptionReturn,
@@ -12,10 +13,12 @@ import type {
 } from "../../types";
 // eslint-disable-next-line no-duplicate-imports
 import { ApplicationCommandOptionType } from "../../types";
+import icon from "../assets/logo.png";
 import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
 import { Logger } from "../modules/logger";
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
+import { t } from "../modules/i18n";
 
 const logger = Logger.api("Commands");
 
@@ -26,10 +29,10 @@ interface CommandsAndSection {
   commands: Map<string, AnyRepluggedCommand>;
 }
 
-void waitForModule<typeof User>(filters.bySource(".isStaffPersonal=")).then((User) => {
+void waitForModule<typeof User>(filters.bySource("hasHadPremium(){")).then((User) => {
   RepluggedUser = new User({
     avatar: "replugged",
-    id: "replugged",
+    id: REPLUGGED_CLYDE_ID,
     bot: true,
     username: "Replugged",
     system: true,
@@ -42,7 +45,7 @@ export const defaultSection: RepluggedCommandSection = Object.freeze({
   id: "replugged",
   name: "Replugged",
   type: 1,
-  icon: "https://cdn.discordapp.com/attachments/1000955992068079716/1004196106055454820/Replugged-Logo.png",
+  icon,
 });
 
 export class CommandInteraction<T extends CommandOptionReturn> {
@@ -167,7 +170,7 @@ async function executeCommand<T extends CommandOptions>(
     const currentChannelId = currentInfo.channel.id;
     const botMessage = messages.createBotMessage({
       channelId: currentChannelId,
-      content: i18n.Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
+      content: i18n.intl.string(t.REPLUGGED_COMMAND_ERROR_GENERIC),
       embeds: [],
       loggingName: "Replugged",
     });
@@ -203,9 +206,9 @@ export class CommandManager {
   }
 
   /**
-   * Code to register an slash command
-   * @param cmd Slash Command to be registered
-   * @returns An Callback to unregister the slash command
+   * Code to register a slash command
+   * @param command Slash command to be registered
+   * @returns A callback to unregister the slash command
    */
   public registerCommand<const T extends CommandOptions>(command: RepluggedCommand<T>): () => void {
     if (!commandAndSections.has(this.#section.id)) {
@@ -214,8 +217,10 @@ export class CommandManager {
         commands: new Map<string, AnyRepluggedCommand>(),
       });
     }
-    const currentSection = commandAndSections.get(this.#section.id);
-    command.applicationId = currentSection?.section.id;
+
+    const currentSection = commandAndSections.get(this.#section.id)!; // Can't be undefined as we set it above
+    command.section = currentSection.section;
+    command.applicationId = currentSection.section.id;
     command.displayName ??= command.name;
     command.displayDescription ??= command.description;
     command.type = 2;
@@ -232,15 +237,16 @@ export class CommandManager {
       return option;
     });
 
-    currentSection?.commands.set(command.id, command as AnyRepluggedCommand);
+    currentSection.commands.set(command.id, command as AnyRepluggedCommand);
 
     const uninject = (): void => {
-      void currentSection?.commands.delete(command.id!);
+      void currentSection.commands.delete(command.id!);
       this.#unregister = this.#unregister.filter((u) => u !== uninject);
     };
     this.#unregister.push(uninject);
     return uninject;
   }
+
   /**
    * Code to unregister all slash commands registered with this class
    */

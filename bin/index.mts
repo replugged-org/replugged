@@ -12,7 +12,6 @@ import {
   rmSync,
   writeFileSync,
 } from "fs";
-import { cwd } from "process";
 import esbuild from "esbuild";
 import path from "path";
 import updateNotifier from "update-notifier";
@@ -23,7 +22,7 @@ import WebSocket from "ws";
 import { release } from "./release.mjs";
 import { logBuildPlugin } from "../src/util.mjs";
 import { sassPlugin } from "esbuild-sass-plugin";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 import { AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
 
 interface BaseArgs {
@@ -40,17 +39,20 @@ export const directory = process.cwd();
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
-let extraESBuildConfig = new Promise<(current: esbuild.BuildOptions) => esbuild.BuildOptions>(
-  (resolve) => resolve((v) => v),
-);
 
-if (existsSync("./esbuild.extra.mjs")) {
-  extraESBuildConfig = new Promise((resolve) => {
-    import(path.join(cwd(), "esbuild.extra.mjs")).then((v) => {
-      resolve(v.default);
-    });
-  });
-}
+const extraESBuildPath = path.join(directory, "esbuild.extra.mjs");
+const extraESBuildConfig = new Promise<(config: esbuild.BuildOptions) => esbuild.BuildOptions>(
+  (resolve) => {
+    if (existsSync(extraESBuildPath))
+      resolve(
+        import(pathToFileURL(extraESBuildPath).href).then((m) => m.default) as Promise<
+          (config: esbuild.BuildOptions) => esbuild.BuildOptions
+        >,
+      );
+
+    resolve((config: esbuild.BuildOptions) => config);
+  },
+);
 
 const updateMessage = `Update available ${chalk.dim("{currentVersion}")}${chalk.reset(
   " → ",
@@ -270,7 +272,7 @@ async function handleContexts(
       if (watch) {
         await context.watch();
       } else {
-        await context.rebuild().catch(() => {});
+        await context.rebuild().catch(() => process.exit(1));
         context.dispose();
       }
     }),
@@ -296,7 +298,7 @@ const CONFIG_PATH = (() => {
       return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
 })();
-const CHROME_VERSION = "91";
+const CHROME_VERSION = "124";
 
 function buildAddons(buildFn: (args: Args) => Promise<void>, args: Args, type: AddonType): void {
   const addons = getAddonFolder(type);
@@ -362,7 +364,9 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
   const install: esbuild.Plugin = {
     name: "install",
     setup: (build) => {
-      build.onEnd(async () => {
+      build.onEnd(async (result) => {
+        if (result.errors.length > 0) return;
+
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "plugins", manifest.id);
           if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
@@ -450,7 +454,9 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const install: esbuild.Plugin = {
     name: "install",
     setup: (build) => {
-      build.onEnd(async () => {
+      build.onEnd(async (result) => {
+        if (result.errors.length > 0) return;
+
         if (!noInstall) {
           const dest = path.join(CONFIG_PATH, "themes", manifest.id);
           if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
@@ -509,7 +515,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
       ),
     );
 
-    manifest.plaintextPatches = "splash.css";
+    manifest.splash = "splash.css";
   }
 
   if (!existsSync(distPath)) mkdirSync(distPath, { recursive: true });
