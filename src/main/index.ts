@@ -15,7 +15,8 @@ if (process.platform === "win32") {
 const settings = readSettingsSync("dev.replugged.Settings");
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
-// require.main!.filename = discordMain;
+const discordPackage = require(join(discordPath, "package.json"));
+require.main!.filename = join(discordPath, discordPackage.main);
 
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
@@ -242,4 +243,4 @@ electron.app.once("ready", () => {
 // This module is required this way at runtime.
 require("./ipc");
 
-require("module")._load(discordPath);
+require(discordPath);

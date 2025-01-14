@@ -16,7 +16,6 @@ import type {
   InstallerType,
   RepluggedPlugin,
   RepluggedTheme,
-  RepluggedTranslations,
 } from "./types";
 // Note that this may ONLY be used for types.
 import vibe from "@pyke/vibe";
@@ -99,11 +98,6 @@ const RepluggedNative = {
     endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
       ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER),
-  },
-
-  i18n: {
-    getStrings: (): Promise<RepluggedTranslations> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_STRINGS),
   },
 
   reactDevTools: {

@@ -1,13 +1,12 @@
 import type { WebContents } from "electron";
-import type { ConnectedAccount } from "./discord";
 import type { PluginManifest, ThemeManifest } from "./addon";
+import type { ConnectedAccount } from "./discord";
 
 export type RepluggedWebContents = WebContents & {
   originalPreload?: string;
 };
 
 export enum RepluggedIpcChannels {
-  GET_I18N_STRINGS = "REPLUGGED_GET_I18N_STRINGS",
   GET_DISCORD_PRELOAD = "REPLUGGED_GET_DISCORD_PRELOAD",
   GET_QUICK_CSS = "REPLUGGED_GET_QUICK_CSS",
   SAVE_QUICK_CSS = "REPLUGGED_SAVE_QUICK_CSS",
@@ -41,7 +40,7 @@ export enum RepluggedIpcChannels {
 
 export interface RepluggedAnnouncement {
   _dismissed?: boolean;
-  message: string;
+  message: React.ReactNode;
   color?: string;
   onClose?: () => void;
   button?: {
@@ -78,17 +77,13 @@ export interface RepluggedPlugin {
   hasCSS: boolean;
 }
 
-export interface RepluggedTranslations {
-  [key: string]: RepluggedTranslations;
-}
-
+export type { AnyAddonManifest, PluginExports, PluginManifest, ThemeManifest } from "./addon";
+export * from "./coremods/commands";
+export * from "./coremods/contextMenu";
+export * from "./coremods/message";
+export * from "./coremods/settings";
 export * from "./discord";
-export type { PluginExports, PluginManifest, ThemeManifest, AnyAddonManifest } from "./addon";
+export * from "./installer";
 export * from "./settings";
 export * from "./util";
 export * from "./webpack";
-export * from "./installer";
-export * from "./coremods/message";
-export * from "./coremods/settings";
-export * from "./coremods/contextMenu";
-export * from "./coremods/commands";
