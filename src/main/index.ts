@@ -3,14 +3,6 @@ import electron from "electron";
 import { CONFIG_PATHS, readSettingsSync } from "src/util.mjs";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
-// @ts-expect-error Type defs are obtained through @pyke/vibe
-import vibePath from "../vibe.node";
-
-let vibe: typeof import("@pyke/vibe");
-if (process.platform === "win32") {
-  vibe = require(vibePath) as unknown as typeof import("@pyke/vibe");
-  vibe.setup(electron.app);
-}
 
 const settings = readSettingsSync("dev.replugged.Settings");
 const electronPath = require.resolve("electron");
@@ -57,7 +49,8 @@ function windowTypeFromOpts(opts: InternalBrowserWindowConstructorOptions): Disc
     if (opts.webPreferences.nativeWindowOpen) {
       return DiscordWindowType.DISCORD_CLIENT;
     } else {
-      return DiscordWindowType.SPLASH_SCREEN;
+      // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
+      return DiscordWindowType.DISCORD_CLIENT;
     }
   }
 
@@ -80,16 +73,13 @@ class BrowserWindow extends electron.BrowserWindow {
         if (settings.get("transparentWindow")) {
           switch (process.platform) {
             case "win32":
-              // @todo: Menu bar will need to be remade
-              opts.autoHideMenuBar = true;
-              opts.show = false; // @todo: Unsure if this is needed everywhere
+              opts.transparent = true;
+              opts.backgroundColor = "#00000000";
               break;
             case "linux":
               opts.transparent = true;
               break;
           }
-          // @todo: Determine what `frame` value is needed on each platform
-          // @todo: Determine what `backgroundColor` is needed on each platform
         }
         break;
       }
@@ -105,18 +95,40 @@ class BrowserWindow extends electron.BrowserWindow {
 
     super(opts);
 
-    if (currentWindow === DiscordWindowType.DISCORD_CLIENT && settings.get("transparentWindow")) {
-      this.on("ready-to-show", () => {
-        // if (process.platform === "win32") {
-        //   vibe.applyEffect(this, "unified-acrylic");
-        //   vibe.forceTheme(this, "dark");
-        // }
-        // @todo: unsure if this is needed
-        this.setBackgroundColor("#00000000");
-      });
+    // Center the unmaximized location
+    if (settings.get("transparentWindow")) {
+      const currentDisplay = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
+      this.repluggedPreviousBounds.x = currentDisplay.workArea.width / 2 - this.repluggedPreviousBounds.width / 2;
+      this.repluggedPreviousBounds.y = currentDisplay.workArea.height / 2 - this.repluggedPreviousBounds.height / 2;
+      this.maximize = this.repluggedToggleMaximize;
+      this.unmaximize = this.repluggedToggleMaximize;
     }
 
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
+  }
+
+
+  private repluggedPreviousBounds: Electron.Rectangle = {
+    width: 1400,
+    height: 900,
+    x: 0,
+    y: 0
+  };
+
+  public repluggedToggleMaximize(): void {
+    // Determine whether the display is actually maximized already
+    let currentBounds = this.getBounds();
+    const currentDisplay = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint());
+    const workAreaSize = currentDisplay.workArea;
+    if (currentBounds.width === workAreaSize.width && currentBounds.height === workAreaSize.height) {
+      // Un-maximize
+      this.setBounds(this.repluggedPreviousBounds)
+      return;
+    }
+
+
+    this.repluggedPreviousBounds = this.getBounds()
+    this.setBounds({ x: workAreaSize.x + 1, y: workAreaSize.y + 1, width: workAreaSize.width, height: workAreaSize.height })
   }
 }
 

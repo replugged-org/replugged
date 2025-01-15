@@ -17,8 +17,6 @@ import type {
   RepluggedPlugin,
   RepluggedTheme,
 } from "./types";
-// Note that this may ONLY be used for types.
-import vibe from "@pyke/vibe";
 
 let version = "";
 void ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
@@ -106,10 +104,14 @@ const RepluggedNative = {
   },
 
   transparency: {
-    getEffect: (): Promise<Parameters<typeof vibe.applyEffect>[1]> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_TRANSPARENCY_EFFECT),
-    applyEffect: (effect: Parameters<typeof vibe.applyEffect>[1]): Promise<void> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.APPLY_TRANSPARENCY_EFFECT, effect),
+    getBackgroundMaterial: (): Promise<"auto" | "none" | "mica" | "acrylic" | "tabbed"> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_BACKGROUND_MATERIAL),
+    setBackgroundMaterial: (effect: "auto" | "none" | "mica" | "acrylic" | "tabbed"): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_MATERIAL, effect),
+    getBackgroundColor: (): Promise<string> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_BACKGROUND_COLOR),
+    setBackgroundColor: (color: string): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_COLOR, color),
     getVibrancy: (): Promise<Parameters<typeof BrowserWindow.prototype.setVibrancy>[0]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_VIBRANCY),
     setVibrancy: (
@@ -121,7 +123,7 @@ const RepluggedNative = {
   getVersion: () => version,
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later
+  openBrowserWindow: (opts: BrowserWindowConstructorOptions) => { }, // later
 
   // @todo: We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };

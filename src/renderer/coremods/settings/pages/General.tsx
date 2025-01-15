@@ -120,8 +120,8 @@ export const General = (): React.ReactElement => {
           DiscordNative.process.platform === "win32") && (
           <Notice messageType={Notice.Types.WARNING} className="">
             {DiscordNative.process.platform === "linux"
-              ? Messages.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX.format()
-              : Messages.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS.format()}
+              ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
+              : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
           </Notice>
         )}
       </div>
@@ -131,8 +131,8 @@ export const General = (): React.ReactElement => {
           transOnChange(value);
           restartModal(true);
         }}
-        note={Messages.REPLUGGED_SETTINGS_TRANSPARENT_DESC.format()}>
-        {Messages.REPLUGGED_SETTINGS_TRANSPARENT}
+        note={intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_DESC, {})}>
+        {intl.string(t.REPLUGGED_SETTINGS_TRANSPARENT)}
       </SwitchItem>
 
       <Category

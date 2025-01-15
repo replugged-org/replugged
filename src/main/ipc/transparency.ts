@@ -1,64 +1,32 @@
 import { BrowserWindow, ipcMain } from "electron";
 import { RepluggedIpcChannels } from "../../types";
-import os from "os";
-// @ts-expect-error Type defs are obtained through @pyke/vibe
-import vibePath from "../../vibe.node";
 
-let vibe: typeof import("@pyke/vibe");
-let release = os.release().split(".").map(Number);
-let usesVibe =
-  // Windows
-  process.platform === "win32" &&
-  // Before Electron 24
-  Number(process.versions.electron.split(".")[0]) < 24 &&
-  // Before Windows 11 22H2+
-  release[0] <= 10 && // 11 doesn't exist yet but it could.
-  release[1] < 22621;
-
-if (usesVibe) {
-  try {
-    vibe = require(vibePath) as unknown as typeof import("@pyke/vibe");
-  } catch (error) {
-    console.error("Failed to load vibe.", error);
-  }
-}
-
-let currentEffect: Parameters<typeof vibe.applyEffect>[1] | null = null;
+let backgroundMaterial: "auto" | "none" | "mica" | "acrylic" | "tabbed" | null = null;
 ipcMain.handle(
-  RepluggedIpcChannels.GET_TRANSPARENCY_EFFECT,
-  (): Parameters<typeof vibe.applyEffect>[1] | null => {
+  RepluggedIpcChannels.GET_BACKGROUND_MATERIAL,
+  (): "auto" | "none" | "mica" | "acrylic" | "tabbed" | null => {
     if (process.platform !== "win32") {
-      console.warn("GET_TRANSPARENCY_EFFECT only works on Windows");
+      console.warn("GET_BACKGROUND_MATERIAL only works on Windows");
     }
 
-    return currentEffect;
+    return backgroundMaterial;
   },
 );
 
 ipcMain.handle(
-  RepluggedIpcChannels.APPLY_TRANSPARENCY_EFFECT,
-  (_, effect: Parameters<typeof vibe.applyEffect>[1] | null) => {
+  RepluggedIpcChannels.SET_BACKGROUND_MATERIAL,
+  (_, material: "auto" | "none" | "mica" | "acrylic" | "tabbed" | null) => {
     if (process.platform !== "win32") {
-      console.warn("APPLY_TRANSPARENCY_EFFECT only works on Windows");
+      console.warn("SET_BACKGROUND_MATERIAL only works on Windows");
       return;
     }
 
     let windows = BrowserWindow.getAllWindows();
     windows.forEach((window) => {
-      if (!usesVibe) {
-        // The valid options for setBackgroundMaterial are "auto" | "none" | "mica" | "acrylic" | "tabbed".
-        // This goes against vibe which allows for "unified-acrylic" and "blurbehind".
-        // Also, vibe does not allow for "auto", "none" or "tabbed"
-
-        // @ts-expect-error Only exists in electron 24+, our types don't have this.
-        window.setBackgroundMaterial(effect === null ? "none" : effect); // NULL is used to disable.
-      } else if (effect === null) {
-        vibe.clearEffects(window);
-      } else {
-        vibe.applyEffect(window, effect);
-      }
+      // @ts-expect-error standalone-electron-types is not updated to have this.
+      window.setBackgroundMaterial(typeof material === "string" ? material : "none");
     });
-    currentEffect = effect;
+    backgroundMaterial = material;
   },
 );
 
@@ -75,5 +43,31 @@ ipcMain.handle(
 
     windows.forEach((window) => window.setVibrancy(vibrancy));
     currentVibrancy = vibrancy;
+  },
+);
+
+let currentBackgroundColor = "#00000000";
+ipcMain.handle(
+  RepluggedIpcChannels.GET_BACKGROUND_COLOR,
+  (): string => {
+    if (process.platform !== "win32") {
+      console.warn("SET_BACKGROUND_COLOR only works on Windows");
+    }
+
+    return currentBackgroundColor;
+  }
+)
+
+ipcMain.handle(
+  RepluggedIpcChannels.SET_BACKGROUND_COLOR,
+  (_, color: string | undefined) => {
+    if (process.platform !== "win32") {
+      console.warn("SET_BACKGROUND_COLOR only works on Windows");
+      return;
+    }
+
+    let windows = BrowserWindow.getAllWindows();
+    windows.forEach((window) => window.setBackgroundColor(color || "#00000000"));
+    currentBackgroundColor = color || "#00000000";
   },
 );

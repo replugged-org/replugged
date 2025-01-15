@@ -51,9 +51,6 @@ const contexts = await Promise.all([
     target: `node${NODE_VERSION}`,
     outfile: `${distDir}/main.js`,
     external: ["electron", "original-fs"],
-    loader: {
-      ".node": "file",
-    },
   }),
   // Preload
   esbuild.context({

@@ -97,9 +97,6 @@
     "yargs": "^17.7.2",
     "zod": "^3.23.8"
   },
-  "optionalDependencies": {
-    "@pyke/vibe": "^0.4.0"
-  },
   "bin": {
     "replugged": "bin.mjs"
   }
