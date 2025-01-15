@@ -106,8 +106,9 @@ const RepluggedNative = {
   transparency: {
     getBackgroundMaterial: (): Promise<"auto" | "none" | "mica" | "acrylic" | "tabbed"> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_BACKGROUND_MATERIAL),
-    setBackgroundMaterial: (effect: "auto" | "none" | "mica" | "acrylic" | "tabbed"): Promise<void> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_MATERIAL, effect),
+    setBackgroundMaterial: (
+      effect: "auto" | "none" | "mica" | "acrylic" | "tabbed",
+    ): Promise<void> => ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_MATERIAL, effect),
     getBackgroundColor: (): Promise<string> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_BACKGROUND_COLOR),
     setBackgroundColor: (color: string): Promise<void> =>
@@ -123,7 +124,7 @@ const RepluggedNative = {
   getVersion: () => version,
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  openBrowserWindow: (opts: BrowserWindowConstructorOptions) => { }, // later
+  openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later
 
   // @todo: We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };

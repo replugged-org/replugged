@@ -136,9 +136,9 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
         } else {
           res.commands = Array.isArray(res.commands)
             ? [
-              ...commandsToAdd,
-              ...res.commands.filter((command) => !commandsToAdd.includes(command)),
-            ]
+                ...commandsToAdd,
+                ...res.commands.filter((command) => !commandsToAdd.includes(command)),
+              ]
             : commandsToAdd;
         }
       }
@@ -211,9 +211,9 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
           .flat(10);
         res.commands = Array.isArray(res.commands)
           ? [
-            ...commandsToAdd,
-            ...res.commands.filter((command) => !commandsToAdd.includes(command)),
-          ]
+              ...commandsToAdd,
+              ...res.commands.filter((command) => !commandsToAdd.includes(command)),
+            ]
           : commandsToAdd;
       }
 

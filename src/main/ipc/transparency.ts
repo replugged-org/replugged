@@ -47,27 +47,21 @@ ipcMain.handle(
 );
 
 let currentBackgroundColor = "#00000000";
-ipcMain.handle(
-  RepluggedIpcChannels.GET_BACKGROUND_COLOR,
-  (): string => {
-    if (process.platform !== "win32") {
-      console.warn("SET_BACKGROUND_COLOR only works on Windows");
-    }
-
-    return currentBackgroundColor;
+ipcMain.handle(RepluggedIpcChannels.GET_BACKGROUND_COLOR, (): string => {
+  if (process.platform !== "win32") {
+    console.warn("SET_BACKGROUND_COLOR only works on Windows");
   }
-)
 
-ipcMain.handle(
-  RepluggedIpcChannels.SET_BACKGROUND_COLOR,
-  (_, color: string | undefined) => {
-    if (process.platform !== "win32") {
-      console.warn("SET_BACKGROUND_COLOR only works on Windows");
-      return;
-    }
+  return currentBackgroundColor;
+});
 
-    let windows = BrowserWindow.getAllWindows();
-    windows.forEach((window) => window.setBackgroundColor(color || "#00000000"));
-    currentBackgroundColor = color || "#00000000";
-  },
-);
+ipcMain.handle(RepluggedIpcChannels.SET_BACKGROUND_COLOR, (_, color: string | undefined) => {
+  if (process.platform !== "win32") {
+    console.warn("SET_BACKGROUND_COLOR only works on Windows");
+    return;
+  }
+
+  let windows = BrowserWindow.getAllWindows();
+  windows.forEach((window) => window.setBackgroundColor(color || "#00000000"));
+  currentBackgroundColor = color || "#00000000";
+});

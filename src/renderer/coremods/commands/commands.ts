@@ -352,8 +352,8 @@ export function loadCommands(): void {
               listType === "enabled"
                 ? enabledString
                 : listType === "disabled"
-                ? disabledString
-                : `${enabledString}\n\n${disabledString}`;
+                  ? disabledString
+                  : `${enabledString}\n\n${disabledString}`;
 
             return {
               send,
@@ -384,8 +384,8 @@ export function loadCommands(): void {
               listType === "enabled"
                 ? enabledString
                 : listType === "disabled"
-                ? disabledString
-                : `${enabledString}\n\n${disabledString}`;
+                  ? disabledString
+                  : `${enabledString}\n\n${disabledString}`;
 
             return {
               send,

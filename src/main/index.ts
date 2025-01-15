@@ -97,9 +97,13 @@ class BrowserWindow extends electron.BrowserWindow {
 
     // Center the unmaximized location
     if (settings.get("transparentWindow")) {
-      const currentDisplay = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
-      this.repluggedPreviousBounds.x = currentDisplay.workArea.width / 2 - this.repluggedPreviousBounds.width / 2;
-      this.repluggedPreviousBounds.y = currentDisplay.workArea.height / 2 - this.repluggedPreviousBounds.height / 2;
+      const currentDisplay = electron.screen.getDisplayNearestPoint(
+        electron.screen.getCursorScreenPoint(),
+      );
+      this.repluggedPreviousBounds.x =
+        currentDisplay.workArea.width / 2 - this.repluggedPreviousBounds.width / 2;
+      this.repluggedPreviousBounds.y =
+        currentDisplay.workArea.height / 2 - this.repluggedPreviousBounds.height / 2;
       this.maximize = this.repluggedToggleMaximize;
       this.unmaximize = this.repluggedToggleMaximize;
     }
@@ -107,28 +111,36 @@ class BrowserWindow extends electron.BrowserWindow {
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
   }
 
-
   private repluggedPreviousBounds: Electron.Rectangle = {
     width: 1400,
     height: 900,
     x: 0,
-    y: 0
+    y: 0,
   };
 
   public repluggedToggleMaximize(): void {
     // Determine whether the display is actually maximized already
     let currentBounds = this.getBounds();
-    const currentDisplay = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint());
+    const currentDisplay = electron.screen.getDisplayNearestPoint(
+      electron.screen.getCursorScreenPoint(),
+    );
     const workAreaSize = currentDisplay.workArea;
-    if (currentBounds.width === workAreaSize.width && currentBounds.height === workAreaSize.height) {
+    if (
+      currentBounds.width === workAreaSize.width &&
+      currentBounds.height === workAreaSize.height
+    ) {
       // Un-maximize
-      this.setBounds(this.repluggedPreviousBounds)
+      this.setBounds(this.repluggedPreviousBounds);
       return;
     }
 
-
-    this.repluggedPreviousBounds = this.getBounds()
-    this.setBounds({ x: workAreaSize.x + 1, y: workAreaSize.y + 1, width: workAreaSize.width, height: workAreaSize.height })
+    this.repluggedPreviousBounds = this.getBounds();
+    this.setBounds({
+      x: workAreaSize.x + 1,
+      y: workAreaSize.y + 1,
+      width: workAreaSize.width,
+      height: workAreaSize.height,
+    });
   }
 }
 

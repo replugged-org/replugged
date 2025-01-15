@@ -49,15 +49,17 @@ export function start(): void {
         switch (DiscordNative.process.platform) {
           case "win32": {
             const backgroundMaterial = getRootStringProperty("--window-background-material");
-            if (backgroundMaterial !== (await RepluggedNative.transparency.getBackgroundMaterial())) {
-              logger.log('Setting background material to:', backgroundMaterial);
+            if (
+              backgroundMaterial !== (await RepluggedNative.transparency.getBackgroundMaterial())
+            ) {
+              logger.log("Setting background material to:", backgroundMaterial);
               // @ts-expect-error @todo: Check if the transparency effect is valid?
               await RepluggedNative.transparency.setBackgroundMaterial(backgroundMaterial);
             }
 
             const backgroundColor = getRootProperty("--window-background-color");
             if (backgroundColor !== (await RepluggedNative.transparency.getBackgroundColor())) {
-              logger.log('Setting background color to:', backgroundColor);
+              logger.log("Setting background color to:", backgroundColor);
               await RepluggedNative.transparency.setBackgroundColor(backgroundColor);
             }
             break;
@@ -68,7 +70,7 @@ export function start(): void {
               break;
             }
 
-            logger.log('Setting vibrancy effect to:', vibrancy);
+            logger.log("Setting vibrancy effect to:", vibrancy);
             // @ts-expect-error @todo: Check if the vibrancy is valid?
             await RepluggedNative.transparency.setVibrancy(vibrancy);
             break;
