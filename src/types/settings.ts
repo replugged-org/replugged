@@ -15,6 +15,12 @@ export type GeneralSettings = {
   addonEmbeds?: boolean;
   reactDevTools?: boolean;
   transparentWindow?: boolean;
+  overrideWindowBackgroundColor?: boolean;
+  windowBackgroundColor?: string;
+  overrideWindowBackgroundMaterial?: boolean;
+  windowBackgroundMaterial?: string;
+  overrideWindowVibrancy?: boolean;
+  windowVibrancy?: string;
 };
 
 export const defaultSettings = {
@@ -26,4 +32,10 @@ export const defaultSettings = {
   transparentWindow: false,
   reactDevTools: false,
   addonEmbeds: true,
+  overrideWindowBackgroundColor: false,
+  windowBackgroundColor: "#00000000",
+  overrideWindowBackgroundMaterial: false,
+  windowBackgroundMaterial: "none",
+  overrideWindowVibrancy: false,
+  windowVibrancy: "appearance-based",
 } satisfies Partial<GeneralSettings>;

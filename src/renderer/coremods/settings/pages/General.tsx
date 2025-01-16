@@ -9,6 +9,7 @@ import {
   Flex,
   FormItem,
   Notice,
+  SelectItem,
   SwitchItem,
   Text,
   TextInput,
@@ -19,6 +20,14 @@ import { type GeneralSettings, defaultSettings } from "src/types";
 import * as settings from "../../../apis/settings";
 import * as util from "../../../util";
 import { initWs, socket } from "../../devCompanion";
+import ColorPicker from "@components/ColorPicker";
+import ColorPickerCustomButton from "@components/ColorPickerCustomButton";
+import ColorPickerDefaultButton from "@components/ColorPickerDefaultButton";
+import {
+  updateBackgroundColor,
+  updateBackgroundMaterial,
+  updateVibrancy,
+} from "../../transparency";
 
 export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
@@ -50,18 +59,30 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
 }
 
 export const General = (): React.ReactElement => {
-  const { value: expValue, onChange: expOnChange } = util.useSetting(
+  const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
+  const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
+  const [transValue, transOnChange] = util.useSettingArray(generalSettings, "transparentWindow");
+  const [overrideBgColValue, overrideBgColOnChange] = util.useSettingArray(
     generalSettings,
-    "experiments",
+    "overrideWindowBackgroundColor",
   );
-  const { value: rdtValue, onChange: rdtOnChange } = util.useSetting(
+  const [bgColValue, bgColOnChange] = util.useSettingArray(
     generalSettings,
-    "reactDevTools",
+    "windowBackgroundColor",
   );
-  const { value: transValue, onChange: transOnChange } = util.useSetting(
+  const [overrideBgMatValue, overrideBgMatOnChange] = util.useSettingArray(
     generalSettings,
-    "transparentWindow",
+    "overrideWindowBackgroundMaterial",
   );
+  const [bgMatValue, bgMatOnChange] = util.useSettingArray(
+    generalSettings,
+    "windowBackgroundMaterial",
+  );
+  const [overrideVibrancyValue, overrideVibrancyOnChange] = util.useSettingArray(
+    generalSettings,
+    "overrideWindowVibrancy",
+  );
+  const [vibrancyValue, vibrancyOnChange] = util.useSettingArray(generalSettings, "windowVibrancy");
 
   const [kKeys, setKKeys] = React.useState<number[]>([]);
 
@@ -115,25 +136,278 @@ export const General = (): React.ReactElement => {
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
 
-      <div style={{ marginBottom: "15px" }}>
-        {(DiscordNative.process.platform === "linux" ||
-          DiscordNative.process.platform === "win32") && (
-          <Notice messageType={Notice.Types.WARNING} className="">
-            {DiscordNative.process.platform === "linux"
-              ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
-              : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
-          </Notice>
+      <Category
+        // title={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY)}
+        title="Transparency"
+        // note={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENT_CATEGORY_DESC)}>
+        note="Window transparency settings">
+        <div style={{ marginBottom: "15px" }}>
+          {(DiscordNative.process.platform === "linux" ||
+            DiscordNative.process.platform === "win32") && (
+            <Notice messageType={Notice.Types.WARNING} className="">
+              {DiscordNative.process.platform === "linux"
+                ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
+                : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
+            </Notice>
+          )}
+        </div>
+        <SwitchItem
+          value={transValue}
+          onChange={(value) => {
+            transOnChange(value);
+            restartModal(true);
+          }}
+          note={intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_DESC, {})}>
+          {intl.string(t.REPLUGGED_SETTINGS_TRANSPARENT)}
+        </SwitchItem>
+
+        {DiscordNative.process.platform === "win32" && (
+          <>
+            <SwitchItem
+              value={overrideBgColValue}
+              onChange={(value) => {
+                overrideBgColOnChange(value);
+
+                if (value) {
+                  void RepluggedNative.transparency.setBackgroundColor(bgColValue);
+                } else {
+                  void updateBackgroundColor();
+                }
+              }}
+              disabled={!transValue}>
+              {/* {intl.string(t.REPLUGGED_SETTINGS_OVERRIDE_BG_COLOR)} */}
+              Override Window Background Color
+            </SwitchItem>
+            <FormItem title="Background Color" divider={true} style={{ marginBottom: "20px" }}>
+              <ColorPicker
+                defaultColor={10070709}
+                colors={[
+                  0x1abc9c00, 0x2ecc7100, 0x3498db00, 0x9b59b600, 0xe91e6300, 0xf1c40f00,
+                  0xe67e2200, 0xe74c3c00, 0x95a5a600, 0x607d8b00, 0x11806a00, 0x1f8b4c00,
+                  0x20669400, 0x71368a00, 0xad145700, 0xc27c0e00, 0xa8430000, 0x992d2200,
+                  0x979c9f00, 0x546e7a00,
+                ]}
+                value={Number.parseInt(bgColValue.slice(1), 16)}
+                onChange={(value) => {
+                  const newValue = `#${value.toString(16).padStart(6, "0").padEnd(8, "0")}`;
+                  bgColOnChange(newValue);
+                  void RepluggedNative.transparency.setBackgroundColor(newValue);
+                }}
+                disabled={!generalSettings.get("overrideWindowBackgroundColor") || !transValue}
+                customPickerPosition="right"
+                renderCustomButton={React.useCallback((props: object) => {
+                  const button = <ColorPickerCustomButton {...props} />;
+                  // return disabled ? button :
+                  return button;
+                }, [])}
+                renderDefaultButton={React.useCallback(
+                  (props: object) => (
+                    // <
+                    <ColorPickerDefaultButton {...props} aria-label="Custom Color" />
+                  ),
+                  [],
+                )}
+              />
+            </FormItem>
+
+            <SwitchItem
+              value={overrideBgMatValue}
+              onChange={(value) => {
+                overrideBgMatOnChange(value);
+                if (value) {
+                  void RepluggedNative.transparency.setBackgroundMaterial(
+                    bgMatValue as "none" | "acrylic" | "mica" | "tabbed",
+                  );
+                } else {
+                  // If this line is uncommented, coremods kinda die
+                  void updateBackgroundMaterial();
+                }
+              }}
+              disabled={!transValue}>
+              {/* {intl.string(t.REPLUGGED_SETTINGS_OVERRIDE_BG_MATERIAL)} */}
+              Override Window Background Material
+            </SwitchItem>
+            <SelectItem
+              value={bgMatValue}
+              onChange={(value) => {
+                bgMatOnChange(value);
+                void RepluggedNative.transparency.setBackgroundMaterial(
+                  value as "none" | "acrylic" | "mica" | "tabbed",
+                );
+              }}
+              disabled={!generalSettings.get("overrideWindowBackgroundMaterial") || !transValue}
+              options={[
+                {
+                  label: "None",
+                  value: "none",
+                },
+                {
+                  label: "Acrylic",
+                  value: "acrylic",
+                },
+                {
+                  label: "Mica",
+                  value: "mica",
+                },
+                {
+                  label: "Tabbed",
+                  value: "tabbed",
+                },
+              ]}>
+              Background Material
+            </SelectItem>
+          </>
         )}
-      </div>
-      <SwitchItem
-        value={transValue}
-        onChange={(value) => {
-          transOnChange(value);
-          restartModal(true);
-        }}
-        note={intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_DESC, {})}>
-        {intl.string(t.REPLUGGED_SETTINGS_TRANSPARENT)}
-      </SwitchItem>
+
+        {DiscordNative.process.platform === "darwin" && (
+          <>
+            {/* @todo: This should trigger the SelectItem's onChange with it's current value to apply the overridden material */}
+            <SwitchItem
+              value={overrideVibrancyValue}
+              onChange={(value) => {
+                overrideVibrancyOnChange(overrideVibrancyValue);
+                if (value) {
+                  void RepluggedNative.transparency.setVibrancy(
+                    vibrancyValue as
+                      | "appearance-based"
+                      | "light"
+                      | "dark"
+                      | "titlebar"
+                      | "selection"
+                      | "menu"
+                      | "popover"
+                      | "sidebar"
+                      | "medium-light"
+                      | "ultra-dark"
+                      | "header"
+                      | "sheet"
+                      | "window"
+                      | "hud"
+                      | "fullscreen-ui"
+                      | "tooltip"
+                      | "content"
+                      | "under-window"
+                      | "under-page",
+                  );
+                } else {
+                  void updateVibrancy();
+                }
+              }}
+              disabled={!transValue}>
+              {/* {intl.string(t.REPLUGGED_SETTINGS_OVERRIDE_VIBRANCY)} */}
+              Override Window Vibrancy
+            </SwitchItem>
+            <SelectItem
+              value={vibrancyValue}
+              onChange={(value) => {
+                vibrancyOnChange(value);
+                void RepluggedNative.transparency.setVibrancy(
+                  value as
+                    | "appearance-based"
+                    | "light"
+                    | "dark"
+                    | "titlebar"
+                    | "selection"
+                    | "menu"
+                    | "popover"
+                    | "sidebar"
+                    | "medium-light"
+                    | "ultra-dark"
+                    | "header"
+                    | "sheet"
+                    | "window"
+                    | "hud"
+                    | "fullscreen-ui"
+                    | "tooltip"
+                    | "content"
+                    | "under-window"
+                    | "under-page",
+                );
+              }}
+              disabled={!generalSettings.get("overrideWindowVibrancy") || !transValue}
+              options={[
+                {
+                  label: "Appearance-based",
+                  value: "appearance-based",
+                },
+                {
+                  label: "Light",
+                  value: "light",
+                },
+                {
+                  label: "Dark",
+                  value: "dark",
+                },
+                {
+                  label: "Titlebar",
+                  value: "titlebar",
+                },
+                {
+                  label: "Selection",
+                  value: "selection",
+                },
+                {
+                  label: "Menu",
+                  value: "menu",
+                },
+                {
+                  label: "Popover",
+                  value: "popover",
+                },
+                {
+                  label: "Sidebar",
+                  value: "sidebar",
+                },
+                {
+                  label: "Medium Light",
+                  value: "medium-light",
+                },
+                {
+                  label: "Ultra Dark",
+                  value: "ultra-dark",
+                },
+                {
+                  label: "Header",
+                  value: "header",
+                },
+                {
+                  label: "Sheet",
+                  value: "sheet",
+                },
+                {
+                  label: "Window",
+                  value: "window",
+                },
+                {
+                  label: "HUD",
+                  value: "hud",
+                },
+                {
+                  label: "Fullscreen UI",
+                  value: "fullscreen-ui",
+                },
+                {
+                  label: "Tooltip",
+                  value: "tooltip",
+                },
+                {
+                  label: "Content",
+                  value: "content",
+                },
+                {
+                  label: "Under Window",
+                  value: "under-window",
+                },
+                {
+                  label: "Under Page",
+                  value: "under-page",
+                },
+              ]}>
+              Vibrancy
+            </SelectItem>
+          </>
+        )}
+      </Category>
 
       <Category
         title={intl.string(t.REPLUGGED_SETTINGS_ADVANCED)}
