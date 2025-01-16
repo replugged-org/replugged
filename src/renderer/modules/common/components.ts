@@ -19,6 +19,9 @@ import type { TextInputType } from "../components/TextInput";
 import type { OriginalTooltipType } from "../components/Tooltip";
 import { waitForProps } from "../webpack";
 import type { CreateToast, ShowToast } from "./toast";
+import { ColorPickerType } from "@components/ColorPicker";
+import { ColorPickerCustomButtonType } from "@components/ColorPickerCustomButton";
+import { ColorPickerDefaultButtonType } from "@components/ColorPickerDefaultButton";
 
 // Expand this as needed
 interface DiscordComponents {
@@ -56,6 +59,9 @@ interface DiscordComponents {
   TextArea: TextAreaType;
   TextInput: TextInputType;
   Tooltip: OriginalTooltipType;
+  ColorPicker: ColorPickerType;
+  ColorPickerCustomButton: ColorPickerCustomButtonType;
+  ColorPickerDefaultButton: ColorPickerDefaultButtonType;
 }
 
 export default await waitForProps<DiscordComponents>("FormText", "MenuItem");
