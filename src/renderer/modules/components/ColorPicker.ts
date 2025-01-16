@@ -12,16 +12,16 @@ const Positions = {
 } as const;
 
 interface ColorPickerProps {
-  className?: string,
-  defaultColor?: number,
-  customColor?: number,
-  colors: number[],
-  value?: number,
-  disabled?: boolean,
+  className?: string;
+  defaultColor?: number;
+  customColor?: number;
+  colors: number[];
+  value?: number;
+  disabled?: boolean;
   onChange?: (value: number, name: string) => void;
-  renderDefaultButton: (props: object) => React.ReactElement,
-  renderCustomButton: (props: object) => React.ReactElement,
-  colorContainerClassName?: string
+  renderDefaultButton: (props: object) => React.ReactElement;
+  renderCustomButton: (props: object) => React.ReactElement;
+  colorContainerClassName?: string;
   customPickerPosition?: (typeof Positions)[keyof typeof Positions];
 }
 

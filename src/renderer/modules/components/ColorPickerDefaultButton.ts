@@ -2,9 +2,9 @@ import type React from "react";
 import components from "../common/components";
 
 interface ColorPickerDefaultButtonProps {
-  customColor?: number,
-  value?: number,
-  disabled?: boolean,
+  customColor?: number;
+  value?: number;
+  disabled?: boolean;
   "aria-label"?: string;
 }
 

@@ -2,9 +2,9 @@ import type React from "react";
 import components from "../common/components";
 
 interface ColorPickerCustomButtonProps {
-  color?: number,
-  value?: number,
-  disabled?: boolean,
+  color?: number;
+  value?: number;
+  disabled?: boolean;
   onChange?: (value: number, name: string) => void;
 }
 

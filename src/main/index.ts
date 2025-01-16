@@ -102,25 +102,30 @@ class BrowserWindow extends electron.BrowserWindow {
       let lastLastBounds = {
         width: primaryDisplaySize.width * 0.75,
         height: primaryDisplaySize.height * 0.75,
-        x: primaryDisplaySize.width / 2 - primaryDisplaySize.width * 0.75 / 2,
-        y: primaryDisplaySize.height / 2 - primaryDisplaySize.height * 0.75 / 2,
+        x: primaryDisplaySize.width / 2 - (primaryDisplaySize.width * 0.75) / 2,
+        y: primaryDisplaySize.height / 2 - (primaryDisplaySize.height * 0.75) / 2,
       };
       let lastResize = Date.now();
-      this.on('resize', () => {
+      this.on("resize", () => {
         const bounds = this.getBounds();
         lastLastBounds = lastBounds;
         lastBounds = bounds;
         lastResize = Date.now();
       });
 
-      this.on('maximize', () => {
+      this.on("maximize", () => {
         // Get the display at the center of the window
         const screenBounds = this.getBounds();
-        const windowDisplay = electron.screen.getDisplayNearestPoint({ x: screenBounds.x + screenBounds.width / 2, y: screenBounds.y + screenBounds.height / 2 });
+        const windowDisplay = electron.screen.getDisplayNearestPoint({
+          x: screenBounds.x + screenBounds.width / 2,
+          y: screenBounds.y + screenBounds.height / 2,
+        });
         const workAreaSize = windowDisplay.workArea;
 
-        const isSizeMaximized = lastBounds.width === workAreaSize.width && lastBounds.height === workAreaSize.height;
-        const isPositionMaximized = (lastBounds.x === workAreaSize.x + 1 && lastBounds.y === workAreaSize.y + 1);
+        const isSizeMaximized =
+          lastBounds.width === workAreaSize.width && lastBounds.height === workAreaSize.height;
+        const isPositionMaximized =
+          lastBounds.x === workAreaSize.x + 1 && lastBounds.y === workAreaSize.y + 1;
 
         // if we haven't resized in the last few ms, we probably didn't actually maximize and should instead unmaximize
         if (lastResize < Date.now() - 10 || (isSizeMaximized && isPositionMaximized)) {
