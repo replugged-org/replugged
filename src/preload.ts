@@ -1,4 +1,5 @@
 import {
+  BrowserWindow,
   type BrowserWindowConstructorOptions,
   contextBridge,
   ipcRenderer,
@@ -102,12 +103,30 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
   },
 
+  transparency: {
+    getBackgroundMaterial: (): Promise<"auto" | "none" | "mica" | "acrylic" | "tabbed"> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_BACKGROUND_MATERIAL),
+    setBackgroundMaterial: (
+      effect: "auto" | "none" | "mica" | "acrylic" | "tabbed",
+    ): Promise<void> => ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_MATERIAL, effect),
+    getBackgroundColor: (): Promise<string> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_BACKGROUND_COLOR),
+    setBackgroundColor: (color: string): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_COLOR, color),
+    getVibrancy: (): Promise<Parameters<typeof BrowserWindow.prototype.setVibrancy>[0]> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_VIBRANCY),
+    setVibrancy: (
+      vibrancy: Parameters<typeof BrowserWindow.prototype.setVibrancy>[0],
+    ): Promise<void> => ipcRenderer.invoke(RepluggedIpcChannels.SET_VIBRANCY, vibrancy),
+    // visualEffectState does not need to be implemented until https://github.com/electron/electron/issues/25513 is implemented.
+  },
+
   getVersion: () => version,
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later
 
-  // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
+  // @todo: We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };
 
 export type RepluggedNativeType = typeof RepluggedNative;

@@ -14,6 +14,13 @@ export type GeneralSettings = {
   showWelcomeNoticeOnOpen?: boolean;
   addonEmbeds?: boolean;
   reactDevTools?: boolean;
+  transparentWindow?: boolean;
+  overrideWindowBackgroundColor?: boolean;
+  windowBackgroundColor?: string;
+  overrideWindowBackgroundMaterial?: boolean;
+  windowBackgroundMaterial?: string;
+  overrideWindowVibrancy?: boolean;
+  windowVibrancy?: string;
 };
 
 export const defaultSettings = {
@@ -22,6 +29,13 @@ export const defaultSettings = {
   badges: true,
   autoApplyQuickCss: false,
   showWelcomeNoticeOnOpen: true,
+  transparentWindow: false,
   reactDevTools: false,
   addonEmbeds: true,
+  overrideWindowBackgroundColor: false,
+  windowBackgroundColor: "#00000000",
+  overrideWindowBackgroundMaterial: false,
+  windowBackgroundMaterial: "none",
+  overrideWindowVibrancy: false,
+  windowVibrancy: "appearance-based",
 } satisfies Partial<GeneralSettings>;
