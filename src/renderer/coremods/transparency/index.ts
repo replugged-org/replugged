@@ -1,4 +1,5 @@
 import { Logger } from "@replugged";
+import { generalSettings } from "../settings/pages/General";
 
 let observer: MutationObserver;
 
@@ -15,6 +16,38 @@ function getRootStringProperty(property: string): string {
 }
 
 const logger = Logger.coremod("Transparency");
+
+async function updateBackgroundMaterial(): Promise<void> {
+  if (generalSettings.get("overrideWindowBackgroundMaterial")) return;
+
+  const backgroundMaterial = getRootStringProperty("--window-background-material");
+  if (backgroundMaterial !== (await RepluggedNative.transparency.getBackgroundMaterial())) {
+    logger.log("Setting background material to:", backgroundMaterial);
+    // @ts-expect-error @todo: Check if the transparency effect is valid?
+    await RepluggedNative.transparency.setBackgroundMaterial(backgroundMaterial);
+  }
+}
+
+async function updateBackgroundColor(): Promise<void> {
+  if (generalSettings.get("overrideWindowBackgroundColor")) return;
+
+  const backgroundColor = getRootProperty("--window-background-color");
+  if (backgroundColor !== (await RepluggedNative.transparency.getBackgroundColor())) {
+    logger.log("Setting background color to:", backgroundColor);
+    await RepluggedNative.transparency.setBackgroundColor(backgroundColor);
+  }
+}
+
+async function updateVibrancy(): Promise<void> {
+  if (generalSettings.get("overrideWindowBackgroundMaterial")) return;
+
+  const vibrancy = getRootStringProperty("--window-vibrancy");
+  if (vibrancy !== (await RepluggedNative.transparency.getVibrancy())) {
+    logger.log("Setting vibrancy effect to:", vibrancy);
+    // @ts-expect-error @todo: Check if the vibrancy is valid?
+    await RepluggedNative.transparency.setVibrancy(vibrancy);
+  }
+}
 
 export function start(): void {
   let html = document.body.parentElement!;
@@ -41,38 +74,14 @@ export function start(): void {
     }
 
     if (cssModified) {
-      // Originally this used requestAnimationFrame but it took too long
-      // so instead we setTimeout and pray. The setTimeout could be
-      // shorter if we wanted, but it's hard to say if it would
-      // work as consistently.
       setTimeout(async () => {
         switch (DiscordNative.process.platform) {
           case "win32": {
-            const backgroundMaterial = getRootStringProperty("--window-background-material");
-            if (
-              backgroundMaterial !== (await RepluggedNative.transparency.getBackgroundMaterial())
-            ) {
-              logger.log("Setting background material to:", backgroundMaterial);
-              // @ts-expect-error @todo: Check if the transparency effect is valid?
-              await RepluggedNative.transparency.setBackgroundMaterial(backgroundMaterial);
-            }
-
-            const backgroundColor = getRootProperty("--window-background-color");
-            if (backgroundColor !== (await RepluggedNative.transparency.getBackgroundColor())) {
-              logger.log("Setting background color to:", backgroundColor);
-              await RepluggedNative.transparency.setBackgroundColor(backgroundColor);
-            }
+            await Promise.all([updateBackgroundMaterial(), updateBackgroundColor()]);
             break;
           }
           case "darwin": {
-            const vibrancy = getRootStringProperty("--window-vibrancy");
-            if (vibrancy === (await RepluggedNative.transparency.getVibrancy())) {
-              break;
-            }
-
-            logger.log("Setting vibrancy effect to:", vibrancy);
-            // @ts-expect-error @todo: Check if the vibrancy is valid?
-            await RepluggedNative.transparency.setVibrancy(vibrancy);
+            await updateVibrancy();
             break;
           }
         }
