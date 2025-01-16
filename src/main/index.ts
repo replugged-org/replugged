@@ -74,7 +74,6 @@ class BrowserWindow extends electron.BrowserWindow {
           switch (process.platform) {
             case "win32":
               opts.transparent = true;
-              opts.backgroundColor = "#00000000";
               break;
             case "linux":
               opts.transparent = true;
@@ -97,50 +96,57 @@ class BrowserWindow extends electron.BrowserWindow {
 
     // Center the unmaximized location
     if (settings.get("transparentWindow")) {
-      const currentDisplay = electron.screen.getDisplayNearestPoint(
-        electron.screen.getCursorScreenPoint(),
-      );
-      this.repluggedPreviousBounds.x =
-        currentDisplay.workArea.width / 2 - this.repluggedPreviousBounds.width / 2;
-      this.repluggedPreviousBounds.y =
-        currentDisplay.workArea.height / 2 - this.repluggedPreviousBounds.height / 2;
-      this.maximize = this.repluggedToggleMaximize;
-      this.unmaximize = this.repluggedToggleMaximize;
+      let lastBounds = this.getBounds();
+      // Default to the center of the screen at 1440x810 scale for a 1080p monitor (75%)
+      let primaryDisplaySize = electron.screen.getPrimaryDisplay().workAreaSize;
+      let lastLastBounds = {
+        width: primaryDisplaySize.width * 0.75,
+        height: primaryDisplaySize.height * 0.75,
+        x: primaryDisplaySize.width / 2 - primaryDisplaySize.width * 0.75 / 2,
+        y: primaryDisplaySize.height / 2 - primaryDisplaySize.height * 0.75 / 2,
+      };
+      let lastResize = Date.now();
+      this.on('resize', () => {
+        const bounds = this.getBounds();
+        lastLastBounds = lastBounds;
+        lastBounds = bounds;
+        lastResize = Date.now();
+      });
+
+      this.on('maximize', () => {
+        // Get the display at the center of the window
+        const screenBounds = this.getBounds();
+        const windowDisplay = electron.screen.getDisplayNearestPoint({ x: screenBounds.x + screenBounds.width / 2, y: screenBounds.y + screenBounds.height / 2 });
+        const workAreaSize = windowDisplay.workArea;
+
+        const isSizeMaximized = lastBounds.width === workAreaSize.width && lastBounds.height === workAreaSize.height;
+        const isPositionMaximized = (lastBounds.x === workAreaSize.x + 1 && lastBounds.y === workAreaSize.y + 1);
+
+        // if we haven't resized in the last few ms, we probably didn't actually maximize and should instead unmaximize
+        if (lastResize < Date.now() - 10 || (isSizeMaximized && isPositionMaximized)) {
+          // Calculate new x, y to be in the center of the monitor
+          this.setBounds({
+            x: workAreaSize.width / 2 - lastLastBounds.width / 2 + workAreaSize.x,
+            y: workAreaSize.height / 2 - lastLastBounds.height / 2 + workAreaSize.y,
+            width: lastLastBounds.width,
+            height: lastLastBounds.height,
+          });
+
+          lastResize = Date.now();
+          return;
+        }
+
+        // Move the window to 1,1 to mitigate the window going grey when maximized
+        this.setBounds({
+          x: workAreaSize.x + 1,
+          y: workAreaSize.y + 1,
+          width: screenBounds.width,
+          height: screenBounds.height,
+        });
+      });
     }
 
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
-  }
-
-  private repluggedPreviousBounds: Electron.Rectangle = {
-    width: 1400,
-    height: 900,
-    x: 0,
-    y: 0,
-  };
-
-  public repluggedToggleMaximize(): void {
-    // Determine whether the display is actually maximized already
-    let currentBounds = this.getBounds();
-    const currentDisplay = electron.screen.getDisplayNearestPoint(
-      electron.screen.getCursorScreenPoint(),
-    );
-    const workAreaSize = currentDisplay.workArea;
-    if (
-      currentBounds.width === workAreaSize.width &&
-      currentBounds.height === workAreaSize.height
-    ) {
-      // Un-maximize
-      this.setBounds(this.repluggedPreviousBounds);
-      return;
-    }
-
-    this.repluggedPreviousBounds = this.getBounds();
-    this.setBounds({
-      x: workAreaSize.x + 1,
-      y: workAreaSize.y + 1,
-      width: workAreaSize.width,
-      height: workAreaSize.height,
-    });
   }
 }
 
