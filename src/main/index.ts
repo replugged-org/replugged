@@ -137,6 +137,7 @@ class BrowserWindow extends electron.BrowserWindow {
         }
 
         // Move the window to 1,1 to mitigate the window going grey when maximized
+        // Note that the window doesn't seem to visually be at 1,1, but that's enough to prevent the greying
         this.setBounds({
           x: workAreaSize.x + 1,
           y: workAreaSize.y + 1,
