@@ -1,5 +1,11 @@
 import { Logger } from "@replugged";
-import { generalSettings } from "../settings/pages/General";
+import { type GeneralSettings, defaultSettings } from "src/types";
+import * as settings from "../../apis/settings";
+
+const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
+  "dev.replugged.Settings",
+  defaultSettings,
+);
 
 let observer: MutationObserver;
 
@@ -17,7 +23,7 @@ function getRootStringProperty(property: string): string {
 
 const logger = Logger.coremod("Transparency");
 
-async function updateBackgroundMaterial(): Promise<void> {
+export async function updateBackgroundMaterial(): Promise<void> {
   if (generalSettings.get("overrideWindowBackgroundMaterial")) return;
 
   const backgroundMaterial = getRootStringProperty("--window-background-material");
@@ -28,7 +34,7 @@ async function updateBackgroundMaterial(): Promise<void> {
   }
 }
 
-async function updateBackgroundColor(): Promise<void> {
+export async function updateBackgroundColor(): Promise<void> {
   if (generalSettings.get("overrideWindowBackgroundColor")) return;
 
   const backgroundColor = getRootProperty("--window-background-color");
@@ -38,7 +44,7 @@ async function updateBackgroundColor(): Promise<void> {
   }
 }
 
-async function updateVibrancy(): Promise<void> {
+export async function updateVibrancy(): Promise<void> {
   if (generalSettings.get("overrideWindowBackgroundMaterial")) return;
 
   const vibrancy = getRootStringProperty("--window-vibrancy");
