@@ -3,14 +3,14 @@ import { notices } from "@replugged";
 import { RepluggedAnnouncement } from "src/types";
 import NoticeMod from "./noticeMod";
 
-const { Notice, NoticeButton, NoticeButtonAnchor, NoticeCloseButton } = NoticeMod;
-
 function Announcement({
   message,
   button,
   color,
   onClose,
 }: RepluggedAnnouncement): React.ReactElement {
+  const { Notice, NoticeButton, NoticeButtonAnchor, NoticeCloseButton } = NoticeMod;
+
   return (
     <Notice className="replugged-notice" color={color}>
       <NoticeCloseButton
