@@ -30,6 +30,7 @@ export namespace coremods {
   export let contextMenu: Coremod;
   export let language: Coremod;
   export let rpc: Coremod;
+  export let rdtComponentSourceFix: Coremod;
   export let watcher: Coremod;
   export let commands: Coremod;
   export let welcome: Coremod;
@@ -55,6 +56,7 @@ export async function startAll(): Promise<void> {
   coremods.contextMenu = await import("../coremods/contextMenu");
   coremods.language = await import("../coremods/language");
   coremods.rpc = await import("../coremods/rpc");
+  coremods.rdtComponentSourceFix = await import("../coremods/rdtComponentSourceFix");
   coremods.watcher = await import("../coremods/watcher");
   coremods.commands = await import("../coremods/commands");
   coremods.welcome = await import("../coremods/welcome");
