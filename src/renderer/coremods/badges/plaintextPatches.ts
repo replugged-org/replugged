@@ -12,7 +12,7 @@ export default [
       },
       // Change to a div and add a children for our custom badge
       {
-        match: /"img",({.+?\((\w+)\.icon\),)/,
+        match: /"img",(.{20,50}?\((\w+)\.icon\),)/,
         replace: `$2.component?"div":"img",$1children:$2.component,`,
       },
     ],
