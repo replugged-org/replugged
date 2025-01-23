@@ -41,6 +41,10 @@ export const correctMissingMainAsar = async (appDir: string): Promise<boolean> =
       await rm(join(appDir, "..", "app.asar"), { recursive: true, force: true });
     } catch {}
     try {
+      await stat(join(appDir, "..", "temp"));
+      await rm(join(appDir, "..", "temp"), { recursive: true, force: true });
+    } catch {}
+    try {
       await rename(join(appDir, "..", "app.orig.asar"), join(appDir, "..", "app.asar"));
       console.log(
         `${AnsiEscapes.GREEN}Fixed your Discord installation successfully! Continuing with Replugged installation...${AnsiEscapes.RESET}`,
