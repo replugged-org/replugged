@@ -9,14 +9,11 @@ export function start(): void {
         ? (v?.prototype?.constructor ?? v)
         : v;
     },
+    configurable: true,
+    enumerable: true,
   });
 }
 
 export function stop(): void {
-  const $$type = window.$type;
-  Object.defineProperty(window, "$type", {
-    value: () => {
-      return $$type;
-    },
-  });
+  delete window.$type;
 }
