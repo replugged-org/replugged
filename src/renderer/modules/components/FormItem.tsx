@@ -18,8 +18,8 @@ interface FormItemCompProps extends Omit<React.ComponentPropsWithoutRef<"div">, 
 export type FormItemCompType = React.ForwardRefExoticComponent<FormItemCompProps> & {
   render: React.ForwardRefRenderFunction<unknown>;
 };
-const FormItemComp = await waitForModule<FormItemCompType>(filters.bySource(".fieldWrapper"));
-
+const FormItemCompMod = await waitForModule<FormItemCompType>(filters.bySource(".fieldWrapper"));
+const FormItemComp = Object.values(FormItemCompMod)[0];
 const classes = await waitForProps<Record<"dividerDefault", string>>("dividerDefault");
 
 interface FormItemProps extends FormItemCompProps {
