@@ -16,8 +16,8 @@ function importTimeout<T>(
         }, 10_000);
         void moduleImport
           .then(async (mod) => {
-            clearTimeout(timeout);
             await cb(mod);
+            clearTimeout(timeout);
             res();
           })
           .catch((err) => {
