@@ -60,7 +60,7 @@ export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
   Sizes: Record<"NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "MIN" | "MAX" | "ICON", string>;
 };
 
-export const Button = getFunctionBySource<ButtonType>(components, "button")!;
+export const Button = getFunctionBySource<ButtonType>(components, "Type.PULSING_ELLIPSIS")!;
 
 const classes =
   await waitForProps<Record<"dividerDefault" | "labelRow" | "note" | "title", string>>(

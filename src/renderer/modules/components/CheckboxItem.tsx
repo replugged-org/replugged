@@ -31,7 +31,7 @@ export type CheckboxType = React.ComponentClass<React.PropsWithChildren<Checkbox
 
 export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
 
-export const Checkbox = getFunctionBySource<CheckboxType>(components, "checkbox")!;
+export const Checkbox = getFunctionBySource<CheckboxType>(components, 'type:"checkbox"')!;
 
 export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
   return (
