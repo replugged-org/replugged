@@ -12,10 +12,10 @@ export default [
     ],
   },
   {
-    find: ".Menu,{",
+    find: "navId:",
     replacements: [
       {
-        match: /\.Menu,{/g,
+        match: /return\(0,\w+\.\w+\)\(\w+\.\w+,{/g,
         replace: (prefix) => `${prefix}data:arguments,`,
       },
     ],
