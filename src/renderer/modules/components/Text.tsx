@@ -90,7 +90,7 @@ export type OriginalTextType = React.FC<CustomTextProps>;
 export type TextType = OriginalTextType &
   Record<"Normal" | "H1" | "H2" | "H3" | "H4" | "Eyebrow", OriginalTextType>;
 
-const TextComp = components.Text;
+const { Text: TextComp } = components as { Text: TextType };
 
 function TextWithDefaultProps(defaultProps: CustomTextProps) {
   return (props: CustomTextProps) => {
