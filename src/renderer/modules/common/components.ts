@@ -58,6 +58,7 @@ type DiscordComponents = {
   | TextAreaType
   | TextInputType
   | OriginalTooltipType
+  | unknown
 >;
 
 export default await waitForProps<DiscordComponents>("ConfirmModal", "ToastPosition", "Text");

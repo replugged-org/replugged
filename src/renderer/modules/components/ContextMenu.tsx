@@ -170,7 +170,7 @@ const source = sourceStrings[rawMod?.id].matchAll(
   /if\(\w+\.type===\w+\.(\w+)(?:\.\w+)?\).+?type:"(.+?)"/gs,
 );
 
-const menuComponents = Object.entries(components)
+const menuComponents = Object.entries(components as Record<string, () => null>)
   .filter(([_, m]) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
   .reduce<Record<string, () => null>>((components, [name, component]) => {
     components[name.substring(0, 2)] = component;
