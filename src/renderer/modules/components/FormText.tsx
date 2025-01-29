@@ -1,5 +1,6 @@
 import type React from "react";
 import components from "../common/components";
+import { getExportsForProps, getFunctionBySource } from "@webpack";
 
 export type FormTextTypeKey =
   | "DEFAULT"
@@ -22,8 +23,11 @@ export type FormTextCompType = React.FC<React.PropsWithChildren<FormTextProps>>;
 
 export type FormTextType = Record<FormTextTypeKey, FormTextCompType>;
 
-const FormTextComp = components.FormText;
-const types = components.FormTextTypes;
+const FormTextComp = getFunctionBySource<FormTextCompType>(components, /type:\w+=\w+\.DEFAULT/)!;
+const types = getExportsForProps<Record<FormTextTypeKey, string>>(components, [
+  "LABEL_DESCRIPTOR",
+  "INPUT_PLACEHOLDER",
+]);
 
 export const FormText: FormTextType = {
   DEFAULT: () => null,

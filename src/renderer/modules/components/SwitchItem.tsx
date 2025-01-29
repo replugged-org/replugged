@@ -1,5 +1,6 @@
 import type React from "react";
 import components from "../common/components";
+import { getFunctionBySource } from "@webpack";
 
 interface SwitchProps {
   checked?: boolean;
@@ -27,6 +28,9 @@ interface SwitchItemProps {
 
 export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;
 
-export const { Switch } = components;
+export const Switch = getFunctionBySource<SwitchType>(components, "Switch")!;
 
-export const SwitchItem = components.FormSwitch;
+export const SwitchItem = getFunctionBySource<SwitchItemType>(
+  components,
+  /hideBorder:\w+=!1,tooltipNote:\w+,onChange/,
+)!;

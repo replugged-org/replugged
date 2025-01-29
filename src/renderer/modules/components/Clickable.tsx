@@ -1,5 +1,6 @@
 import type React from "react";
 import components from "../common/components";
+import { getFunctionBySource } from "@webpack";
 
 // TODO: generic type for tags?
 type ClickableProps = React.ComponentPropsWithoutRef<"div"> & {
@@ -13,7 +14,7 @@ export type ClickableCompType = React.ComponentClass<React.PropsWithChildren<Cli
   defaultProps: ClickableProps;
 };
 
-const { Clickable } = components;
+const Clickable = getFunctionBySource<ClickableType>(components, "this.renderNonInteractive()")!;
 
 export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
 

@@ -1,6 +1,7 @@
 import type React from "react";
 import { FormItem } from ".";
 import components from "../common/components";
+import { getFunctionBySource } from "@webpack";
 
 const Looks = {
   FILLED: 0,
@@ -43,7 +44,7 @@ interface SelectCompProps {
 
 export type SelectCompType = React.FC<SelectCompProps>;
 
-const SelectComp = components.Select;
+const SelectComp = getFunctionBySource<SelectCompType>(components, /maxVisibleItems:\w+=7/)!;
 
 interface SelectProps extends SelectCompProps {
   onChange?: (value: string) => void;

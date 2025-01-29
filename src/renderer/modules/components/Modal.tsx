@@ -1,5 +1,6 @@
 import type React from "react";
 import components from "../common/components";
+import { getFunctionBySource } from "@webpack";
 
 enum ModalTransitionState {
   ENTERING,
@@ -55,9 +56,9 @@ export interface ModalType {
 }
 
 export default {
-  ModalRoot: components.ModalRoot,
-  ModalHeader: components.ModalHeader,
-  ModalContent: components.ModalContent,
-  ModalFooter: components.ModalFooter,
-  ModalCloseButton: components.ModalCloseButton,
+  ModalRoot: getFunctionBySource(components, /\w+\.root/)!,
+  ModalHeader: getFunctionBySource(components, /\w+\.header/)!,
+  ModalContent: getFunctionBySource(components, /\w+\.content/)!,
+  ModalFooter: getFunctionBySource(components, /\w+\.footerSeparator/)!,
+  ModalCloseButton: getFunctionBySource(components, /\w+\.closeWithCircleBackground/)!,
 } as ModalType;

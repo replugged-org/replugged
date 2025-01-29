@@ -1,5 +1,6 @@
 import type React from "react";
 import components from "../common/components";
+import { getFunctionBySource } from "@webpack";
 
 interface TextAreaProps {
   autoFocus?: boolean;
@@ -36,4 +37,4 @@ export type TextAreaType = React.ComponentClass<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 
-export default components.TextArea;
+export default getFunctionBySource<TextAreaType>(components, "showCharacterCountFullPadding")!;

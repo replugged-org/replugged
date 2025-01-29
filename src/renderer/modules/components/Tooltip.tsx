@@ -1,5 +1,6 @@
 import type React from "react";
 import components from "../common/components";
+import { getFunctionBySource } from "@webpack";
 
 const Aligns = {
   BOTTOM: "bottom",
@@ -65,7 +66,7 @@ export type OriginalTooltipType = React.ComponentClass<TooltipFunctionChildren> 
 
 export type TooltipType = React.FC<TooltipCustom> & TooltipEnums;
 
-const TooltipMod = components.Tooltip;
+const TooltipMod = getFunctionBySource<OriginalTooltipType>(components, "shouldShowTooltip")!;
 
 const Tooltip: TooltipType = (props) => (
   <TooltipMod {...props}>
