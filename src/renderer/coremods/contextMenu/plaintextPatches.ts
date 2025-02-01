@@ -12,10 +12,10 @@ export default [
     ],
   },
   {
-    find: "navId:",
+    find: "navId",
     replacements: [
       {
-        match: /return\(0,\w+\.\w+\)\(\w+\.\w+,{/g,
+        match: /navId:".+?",/g,
         replace: (prefix) => `${prefix}data:arguments,`,
       },
     ],
