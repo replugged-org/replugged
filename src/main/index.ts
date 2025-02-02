@@ -120,10 +120,10 @@ electron.app.once("ready", () => {
       urls: [
         "https://*/api/v*/science",
         "https://*/api/v*/metrics",
-        "https://*/api/v*/science/*",
         "https://*/api/v*/metrics/*",
         "https://sentry.io/*",
         "https://discord.com/assets/sentry.*.js",
+        "https://*.discord.com/assets/sentry.*.js",
       ],
     },
     function (_details, callback) {

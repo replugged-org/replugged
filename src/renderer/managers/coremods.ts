@@ -29,7 +29,7 @@ export namespace coremods {
   export let notices: Coremod;
   export let contextMenu: Coremod;
   export let language: Coremod;
-  export let noTrack: Coremod;
+  export let notrack: Coremod;
   export let rpc: Coremod;
   export let watcher: Coremod;
   export let commands: Coremod;
@@ -55,7 +55,7 @@ export async function startAll(): Promise<void> {
   coremods.notices = await import("../coremods/notices");
   coremods.contextMenu = await import("../coremods/contextMenu");
   coremods.language = await import("../coremods/language");
-  coremods.noTrack = await import("../coremods/notrack");
+  coremods.notrack = await import("../coremods/notrack");
   coremods.rpc = await import("../coremods/rpc");
   coremods.watcher = await import("../coremods/watcher");
   coremods.commands = await import("../coremods/commands");
