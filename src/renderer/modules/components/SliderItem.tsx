@@ -1,7 +1,7 @@
+import { getFunctionBySource, waitForProps } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
 import components from "../common/components";
-import { getFunctionBySource, waitForProps } from "../webpack";
 
 const MarkerPositions = {
   ABOVE: 0,

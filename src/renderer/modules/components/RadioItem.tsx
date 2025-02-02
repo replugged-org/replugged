@@ -1,7 +1,7 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
 import components from "../common/components";
-import { getFunctionBySource } from "@webpack";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type RadioOptionType = {

@@ -1,7 +1,7 @@
-import components from "@common/components";
-import type React from "react";
-import type { Variant } from "./Text";
 import { getFunctionBySource } from "@webpack";
+import type React from "react";
+import components from "../common/components";
+import type { Variant } from "./Text";
 
 enum HelpMessageTypes {
   WARNING = 0,

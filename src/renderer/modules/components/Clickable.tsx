@@ -1,6 +1,6 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
-import { getFunctionBySource } from "@webpack";
 
 // TODO: generic type for tags?
 type ClickableProps = React.ComponentPropsWithoutRef<"div"> & {

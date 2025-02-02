@@ -1,6 +1,6 @@
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import components from "../common/components";
-import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import { sourceStrings } from "../webpack/patch-load";
 
 const ItemColors = {
@@ -156,7 +156,7 @@ export interface ContextMenuType {
   MenuSeparator: React.FC;
 }
 
-const componentMap: Record<string, keyof ContextMenuType> = {
+const componentMap: Record<string, keyof Omit<ContextMenuType, "ContextMenu" | "ItemColors">> = {
   separator: "MenuSeparator",
   checkbox: "MenuCheckboxItem",
   radio: "MenuRadioItem",
@@ -183,7 +183,6 @@ const Menu = {
 } as ContextMenuType;
 
 for (const [, identifier, type] of source) {
-  // @ts-expect-error Doesn't like that the generic changes
   Menu[componentMap[type]] = menuComponents[identifier];
 }
 

@@ -1,6 +1,6 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
-import { getFunctionBySource } from "@webpack";
 
 interface SwitchProps {
   checked?: boolean;
@@ -28,7 +28,7 @@ interface SwitchItemProps {
 
 export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;
 
-export const Switch = getFunctionBySource<SwitchType>(components, "Switch")!;
+export const Switch = getFunctionBySource<SwitchType>(components, "xMinYMid meet")!;
 
 export const SwitchItem = getFunctionBySource<SwitchItemType>(
   components,
