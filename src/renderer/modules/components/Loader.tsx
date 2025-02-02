@@ -1,3 +1,4 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
 
@@ -26,4 +27,4 @@ export type LoaderType = React.FC<LoaderProps | SpinningCircleLoaderProps> & {
   Type: typeof Types;
 };
 
-export default components.Spinner;
+export default getFunctionBySource<LoaderType>(components, "wanderingCubes")!;
