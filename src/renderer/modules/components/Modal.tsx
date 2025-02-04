@@ -54,18 +54,17 @@ export interface ModalType {
   ModalCloseButton: React.FC<ModalCloseButtonProps>;
 }
 
-
 const getModal = async (): Promise<ModalType> => {
-    const ModalComponents = await waitForModule<Record<string, ModalType[keyof ModalType]>>(
-  filters.bySource(/\w+\.withCircleBackground/),
-);
-    return{
-  ModalRoot: getFunctionBySource(ModalComponents, /\w+\.root/)!,
-  ModalHeader: getFunctionBySource(ModalComponents, /\w+\.header,/)!,
-  ModalContent: getFunctionBySource(ModalComponents, /\w+\.content/)!,
-  ModalFooter: getFunctionBySource(ModalComponents, /\w+\.footerSeparator/)!,
-  ModalCloseButton: getFunctionBySource(ModalComponents, /\w+\.closeWithCircleBackground/)!,
-} as ModalType
+  const ModalComponents = await waitForModule<Record<string, ModalType[keyof ModalType]>>(
+    filters.bySource(/\w+\.withCircleBackground/),
+  );
+  return {
+    ModalRoot: getFunctionBySource(ModalComponents, /\w+\.root/)!,
+    ModalHeader: getFunctionBySource(ModalComponents, /\w+\.header,/)!,
+    ModalContent: getFunctionBySource(ModalComponents, /\w+\.content/)!,
+    ModalFooter: getFunctionBySource(ModalComponents, /\w+\.footerSeparator/)!,
+    ModalCloseButton: getFunctionBySource(ModalComponents, /\w+\.closeWithCircleBackground/)!,
+  } as ModalType;
 };
 
 export default getModal();

@@ -26,5 +26,4 @@ export type TextInputType = React.ComponentClass<TextInputProps> & {
   Sizes: Record<"DEFAULT" | "MINI", string>;
 };
 
-
 export default components.then((v) => getFunctionBySource<TextInputType>(v, ".inputPrefix")!);

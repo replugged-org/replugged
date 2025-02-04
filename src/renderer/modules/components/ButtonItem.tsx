@@ -60,7 +60,6 @@ export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
   Sizes: Record<"NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "MIN" | "MAX" | "ICON", string>;
 };
 
-
 interface ButtonItemProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   button?: string;

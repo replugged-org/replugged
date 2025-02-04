@@ -42,10 +42,6 @@ interface SliderCompProps {
 
 export type SliderCompType = React.ComponentClass<SliderCompProps>;
 
-
-
-
-
 interface SliderProps extends SliderCompProps {
   value?: number;
   onChange?: (value: number) => void;
@@ -64,9 +60,9 @@ export type SliderItemType = React.FC<React.PropsWithChildren<SliderItemProps>>;
 
 const getSliderItem = async (): Promise<{ Slider: SliderType; SliderItem: SliderItemType }> => {
   const SliderComp = getFunctionBySource<SliderCompType>(
-  await components,
-  /initialValue!==\w+\.initialValueProp/,
-)!;
+    await components,
+    /initialValue!==\w+\.initialValueProp/,
+  )!;
 
   const Slider = ((props) => {
     return <SliderComp initialValue={props.value} onValueChange={props.onChange} {...props} />;

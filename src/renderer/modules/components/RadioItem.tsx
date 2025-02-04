@@ -39,9 +39,6 @@ export type RadioType = React.FC<RadioProps> & {
   Sizes: Record<"NOT_SET" | "NONE" | "SMALL" | "MEDIUM", string>;
 };
 
-
-
-
 interface RadioItemProps extends RadioProps {
   note?: string;
   style?: React.CSSProperties;

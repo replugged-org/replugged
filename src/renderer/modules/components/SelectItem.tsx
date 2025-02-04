@@ -44,8 +44,6 @@ interface SelectCompProps {
 
 export type SelectCompType = React.FC<SelectCompProps>;
 
-
-
 interface SelectProps extends SelectCompProps {
   onChange?: (value: string) => void;
   onSelect?: (value: string) => void;
@@ -69,7 +67,10 @@ const getSelectItem = async (): Promise<{
   SelectItem: SelectItemType;
   Select: SelectType;
 }> => {
- const SelectComp = getFunctionBySource<SelectCompType>(await components, /maxVisibleItems:\w+=7/)!;
+  const SelectComp = getFunctionBySource<SelectCompType>(
+    await components,
+    /maxVisibleItems:\w+=7/,
+  )!;
 
   const Select = ((props) => {
     if (!props.isSelected && props.value != null)

@@ -1,4 +1,4 @@
-import reactPromise from "@common";
+import reactPromise from "@common/react";
 import { waitForProps } from "@webpack";
 
 import { Divider, FormText } from ".";

@@ -66,11 +66,11 @@ export type OriginalTooltipType = React.ComponentClass<TooltipFunctionChildren> 
 
 export type TooltipType = React.FC<TooltipCustom> & TooltipEnums;
 
-
 const getTooltip = async (): Promise<TooltipType> => {
-
-const TooltipMod = getFunctionBySource<OriginalTooltipType>(components, "shouldShowTooltip")!;
-
+  const TooltipMod = getFunctionBySource<OriginalTooltipType>(
+    await components,
+    "shouldShowTooltip",
+  )!;
 
   const Tooltip: TooltipType = (props) => (
     <TooltipMod {...props}>

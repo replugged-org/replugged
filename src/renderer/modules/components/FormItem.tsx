@@ -19,10 +19,6 @@ export type FormItemCompType = React.ForwardRefExoticComponent<FormItemCompProps
   render: React.ForwardRefRenderFunction<unknown>;
 };
 
-
-
-
-
 interface FormItemProps extends FormItemCompProps {
   note?: string;
   notePosition?: "before" | "after";
@@ -34,14 +30,11 @@ interface FormItemProps extends FormItemCompProps {
 export type FormItemType = React.FC<FormItemProps>;
 
 const getFormItem = async (): Promise<FormItemType> => {
-  
-const formItemStr = ".fieldWrapper";
-  
-const FormItemComp = await waitForModule<Record<string, FormItemCompType>>(
-  filters.bySource(formItemStr),
-).then((mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!);
+  const formItemStr = ".fieldWrapper";
 
-
+  const FormItemComp = await waitForModule<Record<string, FormItemCompType>>(
+    filters.bySource(formItemStr),
+  ).then((mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!);
 
   const classes = await waitForProps<Record<"dividerDefault", string>>("dividerDefault");
   return (props) => {

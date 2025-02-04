@@ -31,13 +31,12 @@ export type CheckboxType = React.ComponentClass<React.PropsWithChildren<Checkbox
 
 export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
 
-
 const getCheckboxItem = async (): Promise<{
   Checkbox: CheckboxType;
   CheckboxItem: CheckboxItemType;
 }> => {
   const Checkbox = getFunctionBySource<CheckboxType>(await components, ".checkboxWrapper")!;
-  
+
   const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
     return (
       <Checkbox {...props}>

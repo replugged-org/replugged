@@ -61,5 +61,4 @@ type DiscordComponents = {
   | unknown
 >;
 
-
 export default waitForProps<DiscordComponents>("ConfirmModal", "ToastPosition", "Text");
