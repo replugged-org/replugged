@@ -1,3 +1,4 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
 
@@ -16,7 +17,7 @@ export type ClickableCompType = React.ComponentClass<React.PropsWithChildren<Cli
 export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
 
 const getClickable = async (): Promise<ClickableType> => {
-  const { Clickable } = await components;
+  const Clickable = getFunctionBySource<ClickableType>(await components, "this.renderNonInteractive()")!;
   return (props: React.PropsWithChildren<ClickableProps>): React.ReactElement => {
     const style = props.style || {};
     style.cursor = "pointer";

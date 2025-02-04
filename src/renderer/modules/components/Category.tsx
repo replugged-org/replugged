@@ -1,6 +1,7 @@
-import getReact from "@common/react";
+import reactPromise from "@common";
+import { waitForProps } from "@webpack";
+
 import { Divider, FormText } from ".";
-import { waitForProps } from "../webpack";
 
 interface CategoryProps {
   title: string;
@@ -13,7 +14,7 @@ interface CategoryProps {
 export type CategoryType = React.FC<React.PropsWithChildren<CategoryProps>>;
 
 const getCategory = async (): Promise<CategoryType> => {
-  const React = await getReact;
+  const React = await reactPromise;
   const classes =
     await waitForProps<Record<"labelRow" | "title" | "note" | "dividerDefault", string>>(
       "dividerDefault",

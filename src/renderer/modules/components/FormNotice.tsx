@@ -1,3 +1,4 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
 
@@ -24,4 +25,5 @@ export type FormNoticeType = React.FC<FormNoticeProps> & {
   Types: Record<"PRIMARY" | "DANGER" | "WARNING" | "SUCCESS" | "BRAND" | "CUSTOM", string>;
 };
 
-export default components.then((v) => v.FormNotice);
+
+export default components.then((v) =>  getFunctionBySource<FormNoticeType>(v, ".Types.DANGER")!);

@@ -1,3 +1,4 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
 import components from "../common/components";
@@ -38,6 +39,9 @@ export type RadioType = React.FC<RadioProps> & {
   Sizes: Record<"NOT_SET" | "NONE" | "SMALL" | "MEDIUM", string>;
 };
 
+
+
+
 interface RadioItemProps extends RadioProps {
   note?: string;
   style?: React.CSSProperties;
@@ -49,7 +53,7 @@ const getRadioItem = async (): Promise<{
   RadioItem: RadioItemType;
   Radio: RadioType;
 }> => {
-  const Radio = (await components).RadioGroup;
+  const Radio = getFunctionBySource<RadioType>(await components, "itemInfoClassName:")!;
 
   const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React.ReactElement => {
     return (

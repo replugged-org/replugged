@@ -1,5 +1,5 @@
+import { filters, waitForModule } from "@webpack";
 import type React from "react";
-import { filters, waitForModule } from "../webpack";
 
 interface FlexProps extends React.ComponentPropsWithoutRef<"div"> {
   direction?: string;

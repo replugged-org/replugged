@@ -1,7 +1,7 @@
+import { getFunctionBySource, waitForProps } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
 import components from "../common/components";
-import { waitForProps } from "../webpack";
 
 const MarkerPositions = {
   ABOVE: 0,
@@ -42,6 +42,10 @@ interface SliderCompProps {
 
 export type SliderCompType = React.ComponentClass<SliderCompProps>;
 
+
+
+
+
 interface SliderProps extends SliderCompProps {
   value?: number;
   onChange?: (value: number) => void;
@@ -59,7 +63,10 @@ interface SliderItemProps extends SliderProps {
 export type SliderItemType = React.FC<React.PropsWithChildren<SliderItemProps>>;
 
 const getSliderItem = async (): Promise<{ Slider: SliderType; SliderItem: SliderItemType }> => {
-  const SliderComp = (await components).Slider;
+  const SliderComp = getFunctionBySource<SliderCompType>(
+  await components,
+  /initialValue!==\w+\.initialValueProp/,
+)!;
 
   const Slider = ((props) => {
     return <SliderComp initialValue={props.value} onValueChange={props.onChange} {...props} />;

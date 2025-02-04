@@ -1,3 +1,4 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
 
@@ -27,9 +28,13 @@ interface SwitchItemProps {
 
 export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;
 
+
 const getSwitchItem = async (): Promise<{ Switch: SwitchType; SwitchItem: SwitchItemType }> => ({
-  Switch: (await components).Switch,
-  SwitchItem: (await components).FormSwitch,
+  Switch: getFunctionBySource<SwitchType>(await components, "xMinYMid meet")!,
+  SwitchItem: getFunctionBySource<SwitchItemType>(
+  await components,
+  /hideBorder:\w+=!1,tooltipNote:\w+,onChange/,
+)!,
 });
 
 export default getSwitchItem();
