@@ -1,8 +1,9 @@
 import { AnyFunction } from "src/types";
 
 function getOriginal(fn?: AnyFunction): AnyFunction | undefined {
-  return Function.toString.apply(fn).includes("objInjections.injections.get(funcName)")
-    ? (fn?.prototype?.constructor ?? fn)
+  return typeof fn === "function" &&
+    Function.toString.apply(fn).includes("objInjections.injections.get(funcName)")
+    ? (fn.prototype?.constructor ?? fn)
     : fn;
 }
 
