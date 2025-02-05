@@ -1,14 +1,25 @@
 import { dirname, join } from "path";
-
+import { statSync } from "fs";
 import electron from "electron";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
-const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
-const discordPackage = require(join(discordPath, "package.json"));
-require.main!.filename = join(discordPath, discordPackage.main);
+
+// This is for backwards compatibility, to be removed later.
+let discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
+try {
+  // If using older replugged file system
+  statSync(discordPath);
+  const discordPackage = require(join(discordPath, "package.json"));
+  require.main!.filename = join(discordPath, discordPackage.main);
+} catch {
+  // If using newer replugged file system
+  discordPath = join(dirname(require.main!.filename), "app.orig");
+  const discordPackage = require(join(discordPath, "package.json"));
+  require.main!.filename = join(discordPath, "..", discordPackage.main);
+}
 
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
