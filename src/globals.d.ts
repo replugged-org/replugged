@@ -19,6 +19,7 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     webpackChunkdiscord_app: WebpackChunkGlobal;
     _: typeof _;
+    $type?: (...args: unknown[]) => unknown;
   }
 
   export const RepluggedNative: RepluggedNativeType;
