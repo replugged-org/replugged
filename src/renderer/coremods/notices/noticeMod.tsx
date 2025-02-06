@@ -72,8 +72,8 @@ const mapNoticeMod = async (): Promise<void> => {
     (v) => typeof v === "object",
   ) as NoticeMod["NoticeColors"];
   remappedNoticeMod.NoticeButton = getFunctionBySource(actualNoticeMod, "buttonMinor")!;
-  remappedNoticeMod.PrimaryCTANoticeButton = getFunctionBySource(actualNoticeMod, "CTA")!;
-  remappedNoticeMod.NoticeButtonAnchor = getFunctionBySource(actualNoticeMod, ".Anchor")!;
+  remappedNoticeMod.PrimaryCTANoticeButton = getFunctionBySource(actualNoticeMod,  "additionalTrackingProps")!;
+  remappedNoticeMod.NoticeButtonAnchor = getFunctionBySource(actualNoticeMod, ".button,href:")!;
   remappedNoticeMod.NoticeCloseButton = getFunctionBySource(actualNoticeMod, "closeIcon")!;
   remappedNoticeMod.Notice = getFunctionBySource(actualNoticeMod, "isMobile")!;
 };
