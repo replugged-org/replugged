@@ -4,7 +4,7 @@ import { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
 import notices from "../apis/notices";
 import { init } from "../apis/settings";
 import { t } from "../modules/i18n";
-import { Logger } from "../modules/logger";
+import { Logger } from "@logger";
 import { waitForProps } from "../modules/webpack";
 import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
