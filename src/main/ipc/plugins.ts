@@ -9,9 +9,9 @@ import { extname, join, sep } from "path";
 import { ipcMain, shell } from "electron";
 import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
-import type { Dirent, Stats } from "fs";
+import { type Dirent, type Stats } from "fs";
 import { CONFIG_PATHS } from "src/util.mjs";
-
+import { getSetting } from "./settings";
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
 
 export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
@@ -49,16 +49,7 @@ async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
   return data;
 }
 
-ipcMain.handle(
-  RepluggedIpcChannels.GET_PLUGIN,
-  async (_, pluginName: string): Promise<RepluggedPlugin | undefined> => {
-    try {
-      return await getPlugin(pluginName);
-    } catch {}
-  },
-);
-
-ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlugin[]> => {
+async function listPlugins(): Promise<RepluggedPlugin[]> {
   const plugins = [];
 
   const pluginDirs = (
@@ -88,7 +79,56 @@ ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlu
   }
 
   return plugins;
+}
+
+ipcMain.handle(
+  RepluggedIpcChannels.GET_PLUGIN,
+  async (_, pluginName: string): Promise<RepluggedPlugin | undefined> => {
+    try {
+      return await getPlugin(pluginName);
+    } catch {}
+  },
+);
+
+ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlugin[]> => {
+  return await listPlugins();
 });
+
+ipcMain.handle(
+  RepluggedIpcChannels.LIST_PLUGINS_NATIVE,
+  async (): Promise<Record<string, Record<string, string>>> => {
+    const disabled = await getSetting<string[]>("plugins", "disabled", []);
+    const plugins = await listPlugins();
+
+    return plugins.reduce((acc: Record<string, Record<string, string>>, plugin) => {
+      try {
+        if (!plugin.manifest.native || disabled.includes(plugin.manifest.id)) return acc;
+        const nativePath = join(PLUGINS_DIR, plugin.path, plugin.manifest.native);
+        if (!nativePath.startsWith(`${PLUGINS_DIR}${sep}`)) {
+          // Ensure file changes are restricted to the base path
+          throw new Error("Invalid plugin name");
+        }
+
+        const entries = Object.entries<(...args: unknown[]) => unknown>(require(nativePath));
+        if (!entries.length) return acc;
+
+        const mappings: Record<string, string> = {};
+
+        for (const [methodName, method] of entries) {
+          const key = `Replugged_Plugin_Native_[${plugin.manifest.id}]_${methodName}`;
+          ipcMain.handle(key, (_, ...args) => method(...args) /* For easy type when importing */);
+          mappings[methodName] = key;
+        }
+        acc[plugin.manifest.id] = mappings;
+        return acc;
+      } catch (e) {
+        console.error(`Error Loading Plugin Native`, plugin.manifest);
+        console.error(e);
+        return acc;
+      }
+    }, {});
+  },
+);
 
 ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: string) => {
   const pluginPath = join(PLUGINS_DIR, pluginName);
