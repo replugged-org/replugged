@@ -1,3 +1,4 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
 
@@ -8,4 +9,4 @@ interface DividerProps {
 
 export type DividerType = React.FC<DividerProps>;
 
-export default components.FormDivider;
+export default getFunctionBySource<DividerType>(components, ".divider,")!;
