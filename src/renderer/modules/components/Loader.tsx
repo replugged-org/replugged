@@ -27,4 +27,4 @@ export type LoaderType = React.FC<LoaderProps | SpinningCircleLoaderProps> & {
   Type: typeof Types;
 };
 
-export default getFunctionBySource<LoaderType>(components, "wanderingCubes")!;
+export default components.then((v) => getFunctionBySource<LoaderType>(v, "wanderingCubes")!);

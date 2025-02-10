@@ -41,10 +41,13 @@ export interface ContextMenu {
   ) => void;
 }
 
-const mod = await waitForModule(filters.bySource('type:"CONTEXT_MENU_OPEN"'));
+const getContextMenu = async (): Promise<ContextMenu> => {
+  const mod = await waitForModule(filters.bySource('type:"CONTEXT_MENU_OPEN"'));
+  return {
+    open: getFunctionBySource(mod, "stopPropagation")!,
+    openLazy: getFunctionBySource(mod, (f) => f.toString().length < 50)!,
+    close: getFunctionBySource(mod, "CONTEXT_MENU_CLOSE")!,
+  };
+};
 
-export default {
-  open: getFunctionBySource(mod, "stopPropagation")!,
-  openLazy: getFunctionBySource(mod, (f) => f.toString().length < 50)!,
-  close: getFunctionBySource(mod, "CONTEXT_MENU_CLOSE")!,
-} as ContextMenu;
+export default getContextMenu();

@@ -1,9 +1,8 @@
 import { WEBSITE_URL } from "src/constants";
-import type { Promisable } from "type-fest";
 
 export type SettingsMap = Map<string, unknown>;
-export type TransactionHandler<T> = () => Promisable<T>;
-export type SettingsTransactionHandler<T> = (settings: SettingsMap) => Promisable<T>;
+export type TransactionHandler<T> = () => T;
+export type SettingsTransactionHandler<T> = (settings: SettingsMap) => T;
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type GeneralSettings = {
