@@ -92,6 +92,11 @@ export type { I18n };
 export let i18n: I18n;
 importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod));
 
+import type { LocalStorage } from "./localStorage";
+export type { LocalStorage };
+export let localStorage: LocalStorage;
+importTimeout("localStorage", import("./localStorage"), (mod) => (localStorage = mod.default));
+
 import type { Modal } from "./modal";
 export type { Modal };
 export let modal: Modal;
