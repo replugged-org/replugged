@@ -1,8 +1,7 @@
 import { dirname, join } from "path";
-
 import electron from "electron";
 import { CONFIG_PATHS } from "src/util.mjs";
-import type { RepluggedWebContents } from "../types";
+import { type RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");

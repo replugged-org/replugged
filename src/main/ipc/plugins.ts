@@ -11,6 +11,7 @@ import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
 import type { Dirent, Stats } from "fs";
 import { CONFIG_PATHS } from "src/util.mjs";
+import logger from "../logger";
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
 
@@ -82,8 +83,8 @@ ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlu
     try {
       plugins.push(await getPlugin(pluginDir.name));
     } catch (e) {
-      console.error(`Invalid plugin: ${pluginDir.name}`);
-      console.error(e);
+      logger.error(`Invalid plugin: ${pluginDir.name}`);
+      logger.error(e);
     }
   }
 

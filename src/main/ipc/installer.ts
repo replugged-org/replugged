@@ -15,6 +15,7 @@ import { AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addo
 import { getSetting } from "./settings";
 import { promisify } from "util";
 import { WEBSITE_URL } from "src/constants";
+import logger from "../logger";
 
 const writeFile = promisify(originalWriteFile);
 
@@ -226,7 +227,7 @@ ipcMain.handle(
       };
     }
 
-    console.log(url, filePath);
+    logger.log(url, filePath);
 
     try {
       await writeFile(filePath, buf);
