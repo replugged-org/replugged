@@ -39,8 +39,6 @@ export type RadioType = React.FC<RadioProps> & {
   Sizes: Record<"NOT_SET" | "NONE" | "SMALL" | "MEDIUM", string>;
 };
 
-export const Radio = getFunctionBySource<RadioType>(components, "itemInfoClassName:")!;
-
 interface RadioItemProps extends RadioProps {
   note?: string;
   style?: React.CSSProperties;
@@ -48,15 +46,25 @@ interface RadioItemProps extends RadioProps {
 
 export type RadioItemType = React.FC<React.PropsWithChildren<RadioItemProps>>;
 
-export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React.ReactElement => {
-  return (
-    <FormItem
-      title={props.children}
-      style={{ marginBottom: 20, ...props.style }}
-      note={props.note}
-      disabled={props.disabled}
-      divider>
-      <Radio {...props} />
-    </FormItem>
-  );
+const getRadioItem = async (): Promise<{
+  RadioItem: RadioItemType;
+  Radio: RadioType;
+}> => {
+  const Radio = getFunctionBySource<RadioType>(await components, "itemInfoClassName:")!;
+
+  const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React.ReactElement => {
+    return (
+      <FormItem
+        title={props.children}
+        style={{ marginBottom: 20, ...props.style }}
+        note={props.note}
+        disabled={props.disabled}
+        divider>
+        <Radio {...props} />
+      </FormItem>
+    );
+  };
+  return { Radio, RadioItem };
 };
+
+export default getRadioItem();

@@ -124,42 +124,48 @@ export interface API {
   setAwaitOnline: (callback: (url: string) => Promise<void>) => void;
   setRequestPatch: (patch: RequestPatch) => void;
 }
+const getAPI = async (): Promise<API> => {
+  const realApiModule = await waitForModule<Record<string, API[keyof API]>>(
+    filters.bySource("rateLimitExpirationHandler"),
+  );
+  const exportedValues = Object.values(realApiModule);
 
-const realApiModule = await waitForModule<Record<string, API[keyof API]>>(
-  filters.bySource("rateLimitExpirationHandler"),
-);
-const exportedValues = Object.values(realApiModule);
+  type APIErrorClass = typeof V6OrEarlierAPIError | typeof APIError;
+  const exportedClasses = exportedValues.filter((v) => typeof v === "function" && v.prototype);
+  const v6ErrorClass = exportedClasses.find(
+    (c) => "getFieldMessage" in (c as APIErrorClass).prototype,
+  ) as typeof V6OrEarlierAPIError;
+  const v8ErrorClass = exportedClasses.find(
+    (c) => "hasFieldErrors" in (c as APIErrorClass).prototype,
+  ) as typeof APIError;
+  const http = exportedValues.find((v) => typeof v === "object") as HTTP;
+  const invalidFormBodyErrorCode = exportedValues.find((v) => typeof v === "number") as number;
 
-type APIErrorClass = typeof V6OrEarlierAPIError | typeof APIError;
-const exportedClasses = exportedValues.filter((v) => typeof v === "function" && v.prototype);
-const v6ErrorClass = exportedClasses.find(
-  (c) => "getFieldMessage" in (c as APIErrorClass).prototype,
-) as typeof V6OrEarlierAPIError;
-const v8ErrorClass = exportedClasses.find(
-  (c) => "hasFieldErrors" in (c as APIErrorClass).prototype,
-) as typeof APIError;
-const http = exportedValues.find((v) => typeof v === "object") as HTTP;
-const invalidFormBodyErrorCode = exportedValues.find((v) => typeof v === "number") as number;
+  const getAPIBaseURL = getFunctionBySource<API["getAPIBaseURL"]>(
+    realApiModule,
+    "GLOBAL_ENV.API_ENDPOINT",
+  )!;
+  const convertSkemaError = getFunctionBySource<API["convertSkemaError"]>(
+    realApiModule,
+    "message",
+  )!;
+  // TODO: these suck. Make them better later.
+  const setAwaitOnline = getFunctionBySource<API["setAwaitOnline"]>(realApiModule, /v\s*=\s*e/)!;
+  const setRequestPatch = getFunctionBySource<API["setRequestPatch"]>(realApiModule, /g\s*=\s*e/)!;
 
-const getAPIBaseURL = getFunctionBySource<API["getAPIBaseURL"]>(
-  realApiModule,
-  "GLOBAL_ENV.API_ENDPOINT",
-)!;
-const convertSkemaError = getFunctionBySource<API["convertSkemaError"]>(realApiModule, "message")!;
-// TODO: these suck. Make them better later.
-const setAwaitOnline = getFunctionBySource<API["setAwaitOnline"]>(realApiModule, /v\s*=\s*e/)!;
-const setRequestPatch = getFunctionBySource<API["setRequestPatch"]>(realApiModule, /g\s*=\s*e/)!;
+  // "If only, if only," the woodpecker sighs...
+  //export default await waitForProps<API>("getAPIBaseURL", "HTTP");
 
-// "If only, if only," the woodpecker sighs...
-//export default await waitForProps<API>("getAPIBaseURL", "HTTP");
+  return {
+    INVALID_FORM_BODY_ERROR_CODE: invalidFormBodyErrorCode,
+    V6OrEarlierAPIError: v6ErrorClass,
+    V8APIError: v8ErrorClass,
+    HTTP: http,
+    getAPIBaseURL,
+    convertSkemaError,
+    setAwaitOnline,
+    setRequestPatch,
+  };
+};
 
-export default {
-  INVALID_FORM_BODY_ERROR_CODE: invalidFormBodyErrorCode,
-  V6OrEarlierAPIError: v6ErrorClass,
-  V8APIError: v8ErrorClass,
-  HTTP: http,
-  getAPIBaseURL,
-  convertSkemaError,
-  setAwaitOnline,
-  setRequestPatch,
-} as API;
+export default getAPI();

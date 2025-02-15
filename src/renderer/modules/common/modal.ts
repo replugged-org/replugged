@@ -63,38 +63,41 @@ export type Modal = {
   confirm: (props: AlertProps) => Promise<boolean | null>;
 } & ModalClasses;
 
-const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
-const alertMod = await waitForProps<AlertMod>("show", "close");
+const getModal = async (): Promise<Modal> => {
+  const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
+  const alertMod = await waitForProps<AlertMod>("show", "close");
 
-const classes = getBySource<ModalClasses>(".justifyStart")!;
+  const classes = getBySource<ModalClasses>(".justifyStart")!;
+  return {
+    openModal: getFunctionBySource<Modal["openModal"]>(mod, "onCloseRequest:null!=")!,
+    closeModal: getFunctionBySource<Modal["closeModal"]>(mod, "onCloseCallback&&")!,
+    Direction: classes?.Direction,
+    Align: classes?.Align,
+    Justify: classes?.Justify,
+    Wrap: classes?.Wrap,
+    alert: alertMod.show,
+    confirm: (props: AlertProps) =>
+      new Promise((resolve) => {
+        let didResolve = false;
+        const onConfirm = (): void => {
+          if (props.onConfirm) props.onConfirm();
+          didResolve = true;
+          resolve(true);
+        };
+        const onCancel = (): void => {
+          if (props.onCancel) props.onCancel();
+          didResolve = true;
+          resolve(false);
+        };
+        const onCloseCallback = (): void => {
+          if (props.onCloseCallback) props.onCloseCallback();
+          setTimeout(() => {
+            if (!didResolve) resolve(null);
+          }, 0);
+        };
+        alertMod.show({ ...defaultConfirmProps, ...props, onConfirm, onCancel, onCloseCallback });
+      }),
+  };
+};
 
-export default {
-  openModal: getFunctionBySource<Modal["openModal"]>(mod, "onCloseRequest:null!=")!,
-  closeModal: getFunctionBySource<Modal["closeModal"]>(mod, "onCloseCallback&&")!,
-  Direction: classes?.Direction,
-  Align: classes?.Align,
-  Justify: classes?.Justify,
-  Wrap: classes?.Wrap,
-  alert: alertMod.show,
-  confirm: (props: AlertProps) =>
-    new Promise((resolve) => {
-      let didResolve = false;
-      const onConfirm = (): void => {
-        if (props.onConfirm) props.onConfirm();
-        didResolve = true;
-        resolve(true);
-      };
-      const onCancel = (): void => {
-        if (props.onCancel) props.onCancel();
-        didResolve = true;
-        resolve(false);
-      };
-      const onCloseCallback = (): void => {
-        if (props.onCloseCallback) props.onCloseCallback();
-        setTimeout(() => {
-          if (!didResolve) resolve(null);
-        }, 0);
-      };
-      alertMod.show({ ...defaultConfirmProps, ...props, onConfirm, onCancel, onCloseCallback });
-    }),
-} as Modal;
+export default getModal();

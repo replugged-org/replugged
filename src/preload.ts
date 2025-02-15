@@ -32,10 +32,11 @@ const RepluggedNative = {
   },
 
   plugins: {
-    get: async (pluginPath: string): Promise<RepluggedPlugin | undefined> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
-    list: async (): Promise<RepluggedPlugin[]> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
+    get: (pluginPath: string): RepluggedPlugin | undefined =>
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
+    list: (): RepluggedPlugin[] => ipcRenderer.sendSync(RepluggedIpcChannels.LIST_PLUGINS),
+    readPlaintextPatch: (pluginPath: string): string | undefined =>
+      ipcRenderer.sendSync(RepluggedIpcChannels.READ_PLUGIN_PLAINTEXT_PATCHES, pluginPath),
     uninstall: async (pluginPath: string): Promise<RepluggedPlugin> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginPath),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER),
@@ -81,15 +82,15 @@ const RepluggedNative = {
 
   settings: {
     get: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_SETTING, namespace, key),
     set: (namespace: string, key: string, value: unknown) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.SET_SETTING, namespace, key, value), // invoke or send?
+      ipcRenderer.sendSync(RepluggedIpcChannels.SET_SETTING, namespace, key, value), // invoke or send?
     has: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.HAS_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.HAS_SETTING, namespace, key),
     delete: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
     all: (namespace: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
     startTransaction: (namespace: string) =>
       ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
     endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
@@ -115,7 +116,9 @@ export type RepluggedNativeType = typeof RepluggedNative;
 contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
-void webFrame.executeJavaScript('void import("replugged://renderer");');
+const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
+
+void webFrame.executeJavaScript(renderer);
 
 try {
   window.addEventListener("beforeunload", () => {
