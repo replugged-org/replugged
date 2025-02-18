@@ -38,8 +38,8 @@
     "url": "https://github.com/replugged-org/replugged/issues"
   },
   "devDependencies": {
-    "@discord/intl": "^0.13.1",
-    "@discord/intl-loader-core": "^0.13.1",
+    "@discord/intl": "^0.20.1",
+    "@discord/intl-loader-core": "^0.20.1",
     "@marshift/argus": "^1.2.1",
     "@types/adm-zip": "^0.5.6",
     "@types/lodash": "^4.17.13",
