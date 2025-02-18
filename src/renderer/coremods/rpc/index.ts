@@ -42,7 +42,7 @@ async function injectRpc(): Promise<void> {
   const rpcValidatorMod = await waitForModule<
     Record<string, (socket: Socket, client_id: string, origin: string) => Promise<void>>
   >(filters.bySource("Invalid Client ID"));
-  const fetchApplicationsRPCKey = getFunctionKeyBySource(rpcValidatorMod, "Invalid Client ID")!;
+  const fetchApplicationsRPCKey = getFunctionKeyBySource(rpcValidatorMod, "Invalid Origin")!;
 
   injector.instead(rpcValidatorMod, fetchApplicationsRPCKey, (args, fn) => {
     const [, clientId, origin] = args;
