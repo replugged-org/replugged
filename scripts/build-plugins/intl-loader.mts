@@ -68,7 +68,6 @@ export default {
           defaultLocale: result.locale,
           getTranslationImport: (importPath) => `import("${importPath}")`,
           debug: !production,
-          preGenerateBinds: false,
           getPrelude: () => `import {waitForProps} from '@webpack';`,
         }).getOutput();
 
