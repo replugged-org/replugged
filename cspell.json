@@ -63,6 +63,7 @@
     "signingkey",
     "Skema",
     "skus",
+    "uncache",
     "uninject",
     "uninjector",
     "uninjectors",
