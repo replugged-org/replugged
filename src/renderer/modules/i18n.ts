@@ -2,10 +2,14 @@ import type { loadAllMessagesInLocale as LoadAllMessagesInLocale } from "@discor
 import { i18n } from "@common";
 import { waitForProps } from "@webpack";
 import { DEFAULT_LOCALE } from "src/constants";
+import { messagesLoader, default as t } from "i18n/en-US.messages";
 export let locale: string | undefined;
-export { default as t, messagesLoader } from "i18n/en-US.messages";
+export { t, messagesLoader };
+
 export function load(): void {
+  void messagesLoader.waitForDefaultLocale(true);
   locale = i18n.intl.currentLocale || i18n.intl.defaultLocale || DEFAULT_LOCALE;
+
   i18n.intl.onLocaleChange((newLocale) => {
     locale = newLocale;
     void addRepluggedStrings();
