@@ -42,8 +42,6 @@ interface Language {
 export interface I18n {
   getAvailableLocales: () => Locale[];
   getLanguages: () => Language[];
-  getSystemLocale: (defaultLocale: string) => string;
-  international: MessagesBinds;
   intl: IntlManager & {
     format: FormatFunction<ReturnType<typeof makeReactFormatter>>;
     formatToPlainString: FormatFunction<typeof stringFormatter>;
@@ -57,12 +55,12 @@ export interface Hash {
   runtimeHashMessageKey: (key: string) => string;
 }
 
-const intlMod = await waitForModule<I18n>(filters.bySource(/new \w+\.IntlManager/))!;
+const intlMod = await waitForModule<I18n>(filters.bySource(/new \w+\.IntlManager/));
 const getAvailableLocales = getFunctionBySource<I18n["getAvailableLocales"]>(
   intlMod,
-  /{return \w+\(\d+\)}/,
+  ".runtimeHashMessageKey",
 )!;
-const getLanguages = getFunctionBySource<I18n["getLanguages"]>(intlMod, ".runtimeHashMessageKey")!;
+const getLanguages = getFunctionBySource<I18n["getLanguages"]>(intlMod, /{return \w+\(\d+\)}/)!;
 const intl = getExportsForProps<I18n["intl"]>(intlMod, ["defaultLocale", "currentLocale"])!;
 
 // For it to not break on stable
@@ -72,6 +70,6 @@ const { runtimeHashMessageKey } = await waitForProps<Hash>("runtimeHashMessageKe
 
 export const t = new Proxy(discordT.$$baseObject, {
   get: (_t, key: string) => discordT[runtimeHashMessageKey(key)],
-});
+}) as MessagesBindsProxy;
 
 export { getAvailableLocales, getLanguages, intl };
