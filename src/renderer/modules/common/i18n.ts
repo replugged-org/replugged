@@ -2,15 +2,27 @@ import type {
   FormatFunction,
   IntlManager,
   IntlMessageGetter,
+  MessageLoader,
   TypedIntlMessageGetter,
   astFormatter,
   makeReactFormatter,
   markdownFormatter,
   stringFormatter,
 } from "@discord/intl";
-import { waitForProps } from "../webpack";
+import {
+  filters,
+  getExportsForProps,
+  getFunctionBySource,
+  waitForModule,
+  waitForProps,
+} from "../webpack";
 
 type MessagesBinds = Record<string, TypedIntlMessageGetter<object>>;
+
+type MessagesBindsProxy = MessagesBinds & {
+  $$baseObject: MessagesBinds;
+  $$loader: MessageLoader;
+};
 
 interface Locale {
   value: string;
@@ -38,25 +50,28 @@ export interface I18n {
     formatToMarkdownString: FormatFunction<typeof markdownFormatter>;
     formatToParts: FormatFunction<typeof astFormatter>;
   };
-  t: MessagesBinds;
+  t: MessagesBindsProxy;
 }
 
 export interface Hash {
   runtimeHashMessageKey: (key: string) => string;
 }
 
-const {
-  getAvailableLocales,
-  getLanguages,
-  getSystemLocale,
-  international,
-  intl,
-  t: discordT,
-} = await waitForProps<I18n>("getAvailableLocales", "intl");
+const intlMod = await waitForModule<I18n>(filters.bySource(/new \w+\.IntlManager/))!;
+const getAvailableLocales = getFunctionBySource<I18n["getAvailableLocales"]>(
+  intlMod,
+  /{return \w+\(\d+\)}/,
+)!;
+const getLanguages = getFunctionBySource<I18n["getLanguages"]>(intlMod, ".runtimeHashMessageKey")!;
+const intl = getExportsForProps<I18n["intl"]>(intlMod, ["defaultLocale", "currentLocale"])!;
+
+// For it to not break on stable
+const discordT = intlMod.t ?? getExportsForProps<I18n["t"]>(intlMod, ["$$loader", "$$baseObject"])!;
+
 const { runtimeHashMessageKey } = await waitForProps<Hash>("runtimeHashMessageKey");
 
-export const t = new Proxy(discordT, {
-  get: (t, key: string) => t[runtimeHashMessageKey(key)],
+export const t = new Proxy(discordT.$$baseObject, {
+  get: (_t, key: string) => discordT[runtimeHashMessageKey(key)],
 });
 
-export { getAvailableLocales, getLanguages, getSystemLocale, international, intl };
+export { getAvailableLocales, getLanguages, intl };

@@ -68,14 +68,10 @@ export default {
           defaultLocale: result.locale,
           getTranslationImport: (importPath) => `import("${importPath}")`,
           debug: !production,
-          getPrelude: () => `import {waitForProps} from '@webpack';`,
         }).getOutput();
 
         return {
-          contents: transformedOutput.replace(
-            /require\('@discord\/intl'\);/,
-            "await waitForProps('createLoader','IntlManager');",
-          ),
+          contents: transformedOutput,
           loader: "js",
         };
       } else {

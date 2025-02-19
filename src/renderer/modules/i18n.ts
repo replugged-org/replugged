@@ -1,28 +1,12 @@
-import type { I18n } from "@common";
 import type { loadAllMessagesInLocale as LoadAllMessagesInLocale } from "@discord/intl";
+import { i18n } from "@common";
 import { waitForProps } from "@webpack";
 import { DEFAULT_LOCALE } from "src/constants";
-import type * as definitions from "i18n/en-US.messages";
-
 export let locale: string | undefined;
-export let t: typeof definitions.default & {
-  $$baseObject: typeof definitions.default;
-  $$loader: typeof definitions.messagesLoader;
-};
-export let messagesLoader: typeof definitions.messagesLoader;
-
-export async function load(): Promise<void> {
-  const { intl } = await waitForProps<I18n>("getAvailableLocales", "intl");
-
-  // ! HACK: This is a workaround until ignition issues are fixed.
-  // We need to delay the import of the messages for intl to be loaded and use that module instead of @discord/intl directly.
-  const { default: messages, messagesLoader: loader } = await import("i18n/en-US.messages");
-  t = messages as typeof t;
-  messagesLoader = loader;
-
-  locale = intl.currentLocale || intl.defaultLocale || DEFAULT_LOCALE;
-
-  intl.onLocaleChange((newLocale) => {
+export { default as t, messagesLoader } from "i18n/en-US.messages";
+export function load(): void {
+  locale = i18n.intl.currentLocale || i18n.intl.defaultLocale || DEFAULT_LOCALE;
+  i18n.intl.onLocaleChange((newLocale) => {
     locale = newLocale;
     void addRepluggedStrings();
   });
