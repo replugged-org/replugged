@@ -4,7 +4,7 @@ const coremodStr = "replugged.coremods.coremods.language";
 
 export default [
   {
-    find: "getAvailableLocales",
+    find: ".flagImage",
     replacements: [
       {
         match: /(\.H1,title:\w+\.intl\.string\(.+?\),children:)((?:[^}]*?}){3}\))/,

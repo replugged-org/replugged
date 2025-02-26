@@ -64,11 +64,11 @@ importers:
         version: 3.23.8
     devDependencies:
       '@discord/intl':
-        specifier: ^0.13.1
-        version: 0.13.1(react@18.3.1)(typescript@5.4.5)
+        specifier: ^0.20.1
+        version: 0.20.1(react@18.3.1)(typescript@5.4.5)
       '@discord/intl-loader-core':
-        specifier: ^0.13.1
-        version: 0.13.1
+        specifier: ^0.20.1
+        version: 0.20.1
       '@marshift/argus':
         specifier: ^1.2.1
         version: 1.2.1
@@ -167,8 +167,8 @@ packages:
     resolution: {integrity: sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==}
     engines: {node: '>=6.9.0'}
 
-  '@bufbuild/protobuf@2.2.2':
-    resolution: {integrity: sha512-UNtPCbrwrenpmrXuRwn9jYpPoweNXj8X5sMvYgsqYyaH8jQ6LfUJSk3dJLnBK+6sfYPrF4iAIo5sd5HQ+tg75A==}
+  '@bufbuild/protobuf@2.2.3':
+    resolution: {integrity: sha512-tFQoXHJdkEOSwj5tRIZSPNUuXK3RaR7T1nUrPgbYX1pUbvqqaaZAsfo+NXBPsz5rZMSKVFrgK1WL8Q/MSLvprg==}
 
   '@codemirror/autocomplete@6.18.3':
     resolution: {integrity: sha512-1dNIOmiM0z4BIBwxmxEfA1yoxh1MF/6KPBbh20a5vphGV0ictKlgQsbJs6D6SkR6iJpGbpwRsa6PFMNlg9T9pQ==}
@@ -412,72 +412,72 @@ packages:
     resolution: {integrity: sha512-zW+6hAieD/FjysfjY4mVv7iHWWasBP3ldj6L+xy2p4Kuax1nug7uuJqMHlAVude/OywNwENG0rYaP/P9Pg4O+w==}
     engines: {node: '>=18.0'}
 
-  '@discord/intl-ast@0.13.1':
-    resolution: {integrity: sha512-Nfly0mUxD6Bisy7UprnV8Vza+ooxla1P2b6ZMW4xKBF8kv/iXU+MdFTcCa3EDK4SOakNKWNZAY09A3Cm2IZDwg==}
+  '@discord/intl-ast@0.20.1':
+    resolution: {integrity: sha512-P70T35/QDWf/KcDPXnkLj3zC6/d3Y2LRMzttl5jp5bCQMZFhKFSAIem0QxWRgk0MLQXCDo6872dFVa7vvGy4tQ==}
 
-  '@discord/intl-loader-core@0.13.1':
-    resolution: {integrity: sha512-VAps2SX/0VcFMi21go1i9SOxAT35XW2neoAR5ZqSzmPxaewi+Bea72pBloUlPYr1Ms1Lt80OpYsLl/zpO0wdUw==}
+  '@discord/intl-loader-core@0.20.1':
+    resolution: {integrity: sha512-V5/B+DlqMJbGMnzzNmkz/RRzHaMQ4F/Kn5o+4X1/gRkpq9rQoNRlZLR1pXSb2Fmh2wX/Gahuueps3aWiIi5UWQ==}
 
-  '@discord/intl-message-database-darwin-arm64@0.13.1':
-    resolution: {integrity: sha512-N62+pBK065aQrTUuEM2IiFCtE09eAa0mn3DBd74/O0mtdXiASKEJSiKfYrjKEgXXw6WsfHgQleKhOfqWCbBsPQ==}
+  '@discord/intl-message-database-darwin-arm64@0.20.1':
+    resolution: {integrity: sha512-oablWsgJ69OCLr6TXQUuazCvpHEjh+UpMK31ubTfJ5t0S+Vv7148AAkR4xbp6AbCVplwwnC2j8Tn3efkBWUOFw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@discord/intl-message-database-darwin-x64@0.13.1':
-    resolution: {integrity: sha512-vp6dhGOzzxc2RlJtkQf1oGb2AMofwFG5BwUwgAHYKcN9leK6GkdEeINfsmvwJF9hUuZ5qILC9DnGqUZPqqXumw==}
+  '@discord/intl-message-database-darwin-x64@0.20.1':
+    resolution: {integrity: sha512-OeE8A69raetj+qvQ3aQ3bLAEooEN+NbLM5B6g6HX/nhT/BcSXAlfO9JzSz0G76EE2HvGM7iYu2A1j21DxRiv8A==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@discord/intl-message-database-linux-arm64-gnu@0.13.1':
-    resolution: {integrity: sha512-H6YGqoERMOVajv3MyMoe3Yho1+jwm7YgNpq0tnlJLXAI44+pDMRX9HT6VH11HaqfaRNePLmK1N6q4As5s6OYxA==}
+  '@discord/intl-message-database-linux-arm64-gnu@0.20.1':
+    resolution: {integrity: sha512-v+nNugcy4pER3opQdvhQSsN7Znaz99k0zpfJKtqn3quntkBArrCBIWj6DW25Ehxt3XI4c0VFbcCra/uQbdvAiw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@discord/intl-message-database-linux-arm64-musl@0.13.1':
-    resolution: {integrity: sha512-zDM5vgMgZ8xcx+50xb8F8knliMzGKs0ePG197cVklKexak24Wj3xKaSw7LHDjM4UwTrBldqSLpwnvwrurZHMdg==}
+  '@discord/intl-message-database-linux-arm64-musl@0.20.1':
+    resolution: {integrity: sha512-ij+sx9ZOfC36GtXnXzuMWtH88m/7cTh9mfP6PKctCEEwWywVGAaNAB0nZ6QCauPD+B5QNpqI8WtDwE2IUTLpFQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@discord/intl-message-database-linux-x64-gnu@0.13.1':
-    resolution: {integrity: sha512-NnsKA7fc0iusTkw25R96fsgUGbc+ndIPb8Qw2v7BeG+TMuw6Qcz3AH8kf+Ra57AL5hfJsctl6ADQOM684GexJw==}
+  '@discord/intl-message-database-linux-x64-gnu@0.20.1':
+    resolution: {integrity: sha512-TLNojT3aRc5xYoM/s+S/Cm917pu4dcCrZ3XnxUmAEahEeHDDjj21AWBRX0vBJ361TR9A/94IXEZQ/3RBJs3MkQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@discord/intl-message-database-linux-x64-musl@0.13.1':
-    resolution: {integrity: sha512-u6cAhF2warqevbhGxWAJ9H8AXRjJvVj9+8wbptRBbSYr3mq8EKQvsFHZKYPFVGBQGE2uWXG9fX+QGRiQ3TZrcw==}
+  '@discord/intl-message-database-linux-x64-musl@0.20.1':
+    resolution: {integrity: sha512-W076oL/M6HS5P1/WSeJlvYEVIpIdFe4qymn3zjUxnh4BQy4qRXh/5ek8kFku6HtGZhflgaAjzZn4xZ4wxVHVoQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@discord/intl-message-database-win32-arm64-msvc@0.13.1':
-    resolution: {integrity: sha512-j0rO9O/mbDwfrFki3n8hgm1bKEO+HDOLYK57RA0ukY8DwLKCNhcEvgbshURL/lxWIUhs3UMIGVT74fPMrw0pIQ==}
+  '@discord/intl-message-database-win32-arm64-msvc@0.20.1':
+    resolution: {integrity: sha512-49F3FvbB99jVQ1KvhlUyfEXDkYZF1iJSqMWurx6422G2N0gJiNfU38G/bg/4Z3ojHoR/gjQ5degbfqSzAw+mdw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@discord/intl-message-database-win32-ia32-msvc@0.13.1':
-    resolution: {integrity: sha512-vfEQAQjhb8Rqf+fY999xsCIbIHe9e8x7we29whjK/phmmCAk1+dY3mwe5wnRMEhwky0HLrd/J6kZ3M1X6tT/gg==}
+  '@discord/intl-message-database-win32-ia32-msvc@0.20.1':
+    resolution: {integrity: sha512-n0ygVUGxGY6dfeKpA/PSUhFL5Mz9HIjEjJMlMqxmtpfpxbJINJSpZuRNV/fSYwGGpbHYHotyAl2bpE2AWRcE+Q==}
     engines: {node: '>= 10'}
     cpu: [ia32]
     os: [win32]
 
-  '@discord/intl-message-database-win32-x64-msvc@0.13.1':
-    resolution: {integrity: sha512-9slLZ+AzF5XR5gyRuCW5cADtdd59zkK1dM4JzyZtAmxa5E+gAiWxsogfoCU8AWn1AiJqM8mHLnkVJQ7ahoUVkw==}
+  '@discord/intl-message-database-win32-x64-msvc@0.20.1':
+    resolution: {integrity: sha512-JmMXzLxA9wOAni5n+wnv17siX+3ENP5dxWYNl2dWwfm75rUqPt2iEgys2+hlTKFM35iqE1nTVGjQqhV4p5WUVQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
 
-  '@discord/intl-message-database@0.13.1':
-    resolution: {integrity: sha512-8e/LNaXU/fiU7N2i/P/1Deyo5zKyOy1DcRAj605+CIMLAOJCscT7FLoiqWYUj63/7f0lGwiGFg7sE8QzgC5Irg==}
+  '@discord/intl-message-database@0.20.1':
+    resolution: {integrity: sha512-OpPTiVTfdrlXQJrJT0+uO8pqdWCGlgjEr1Ut0t45KV32g5xsJTPq+5CfVGBqEMgFCpFd5MqMQsasrFVoFxMBCw==}
     engines: {node: '>= 10'}
 
-  '@discord/intl@0.13.1':
-    resolution: {integrity: sha512-9dLiblC6U2+l7uY9ophvYi/cmc0qq+RkMYJuJmlQo4S/TFXlPm4OY5bEhgmQvhwMpdBvlf6QxoooON8+WQu1sQ==}
+  '@discord/intl@0.20.1':
+    resolution: {integrity: sha512-+OCQubbdi5meMuxGtrTr2EA8qP773YqlvdA5ckyk6P1R8hsaHnrk4KouStpiKBBNlo+gWRzpzPrgrk02UQrZfg==}
     peerDependencies:
       react: '> 16'
 
@@ -1907,6 +1907,9 @@ packages:
   immutable@5.0.2:
     resolution: {integrity: sha512-1NU7hWZDkV7hJ4PJ9dur9gTNQ4ePNPN4k9/0YhwjzykTi/+3Q5pF93YU5QoVj8BuOnhLgaY8gs0U2pj4kSYVcw==}
 
+  immutable@5.0.3:
+    resolution: {integrity: sha512-P8IdPQHq3lA1xVeBRi5VPqUm5HDgKnx0Ru51wZz5mjxHr5n3RWhjIpOFU7ybkUxfB+5IToy+OLaHYDBIWsv+uw==}
+
   import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -3178,7 +3181,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.25.9': {}
 
-  '@bufbuild/protobuf@2.2.2': {}
+  '@bufbuild/protobuf@2.2.3': {}
 
   '@codemirror/autocomplete@6.18.3(@codemirror/language@6.10.3)(@codemirror/state@6.4.1)(@codemirror/view@6.34.2)(@lezer/common@1.2.3)':
     dependencies:
@@ -3434,58 +3437,58 @@ snapshots:
 
   '@cspell/url@8.16.0': {}
 
-  '@discord/intl-ast@0.13.1': {}
+  '@discord/intl-ast@0.20.1': {}
 
-  '@discord/intl-loader-core@0.13.1':
+  '@discord/intl-loader-core@0.20.1':
     dependencies:
-      '@discord/intl-message-database': 0.13.1
+      '@discord/intl-message-database': 0.20.1
       chokidar: 3.6.0
       debug: 4.3.7
     transitivePeerDependencies:
       - supports-color
 
-  '@discord/intl-message-database-darwin-arm64@0.13.1':
+  '@discord/intl-message-database-darwin-arm64@0.20.1':
     optional: true
 
-  '@discord/intl-message-database-darwin-x64@0.13.1':
+  '@discord/intl-message-database-darwin-x64@0.20.1':
     optional: true
 
-  '@discord/intl-message-database-linux-arm64-gnu@0.13.1':
+  '@discord/intl-message-database-linux-arm64-gnu@0.20.1':
     optional: true
 
-  '@discord/intl-message-database-linux-arm64-musl@0.13.1':
+  '@discord/intl-message-database-linux-arm64-musl@0.20.1':
     optional: true
 
-  '@discord/intl-message-database-linux-x64-gnu@0.13.1':
+  '@discord/intl-message-database-linux-x64-gnu@0.20.1':
     optional: true
 
-  '@discord/intl-message-database-linux-x64-musl@0.13.1':
+  '@discord/intl-message-database-linux-x64-musl@0.20.1':
     optional: true
 
-  '@discord/intl-message-database-win32-arm64-msvc@0.13.1':
+  '@discord/intl-message-database-win32-arm64-msvc@0.20.1':
     optional: true
 
-  '@discord/intl-message-database-win32-ia32-msvc@0.13.1':
+  '@discord/intl-message-database-win32-ia32-msvc@0.20.1':
     optional: true
 
-  '@discord/intl-message-database-win32-x64-msvc@0.13.1':
+  '@discord/intl-message-database-win32-x64-msvc@0.20.1':
     optional: true
 
-  '@discord/intl-message-database@0.13.1':
+  '@discord/intl-message-database@0.20.1':
     optionalDependencies:
-      '@discord/intl-message-database-darwin-arm64': 0.13.1
-      '@discord/intl-message-database-darwin-x64': 0.13.1
-      '@discord/intl-message-database-linux-arm64-gnu': 0.13.1
-      '@discord/intl-message-database-linux-arm64-musl': 0.13.1
-      '@discord/intl-message-database-linux-x64-gnu': 0.13.1
-      '@discord/intl-message-database-linux-x64-musl': 0.13.1
-      '@discord/intl-message-database-win32-arm64-msvc': 0.13.1
-      '@discord/intl-message-database-win32-ia32-msvc': 0.13.1
-      '@discord/intl-message-database-win32-x64-msvc': 0.13.1
+      '@discord/intl-message-database-darwin-arm64': 0.20.1
+      '@discord/intl-message-database-darwin-x64': 0.20.1
+      '@discord/intl-message-database-linux-arm64-gnu': 0.20.1
+      '@discord/intl-message-database-linux-arm64-musl': 0.20.1
+      '@discord/intl-message-database-linux-x64-gnu': 0.20.1
+      '@discord/intl-message-database-linux-x64-musl': 0.20.1
+      '@discord/intl-message-database-win32-arm64-msvc': 0.20.1
+      '@discord/intl-message-database-win32-ia32-msvc': 0.20.1
+      '@discord/intl-message-database-win32-x64-msvc': 0.20.1
 
-  '@discord/intl@0.13.1(react@18.3.1)(typescript@5.4.5)':
+  '@discord/intl@0.20.1(react@18.3.1)(typescript@5.4.5)':
     dependencies:
-      '@discord/intl-ast': 0.13.1
+      '@discord/intl-ast': 0.20.1
       '@formatjs/icu-skeleton-parser': 1.8.2
       '@formatjs/intl': 2.10.14(typescript@5.4.5)
       '@intrnl/xxhash64': 0.1.2
@@ -4924,6 +4927,8 @@ snapshots:
 
   immutable@5.0.2: {}
 
+  immutable@5.0.3: {}
+
   import-fresh@3.3.0:
     dependencies:
       parent-module: 1.0.1
@@ -5720,10 +5725,10 @@ snapshots:
 
   sass-embedded@1.80.7:
     dependencies:
-      '@bufbuild/protobuf': 2.2.2
+      '@bufbuild/protobuf': 2.2.3
       buffer-builder: 0.2.0
       colorjs.io: 0.5.2
-      immutable: 5.0.2
+      immutable: 5.0.3
       rxjs: 7.8.1
       supports-color: 8.1.1
       sync-child-process: 1.0.2
