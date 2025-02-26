@@ -35,20 +35,19 @@ export const getProcessInfoByName = (processName: string): ProcessInfo[] | null 
   try {
     const isWindows = process.platform === "win32";
     const command = isWindows
-      ? `Get-CimInstance Win32_Process | Where-Object { $_.Name -eq "${processName}.exe" } | Select-Object ParentProcessId,ProcessId | ConvertTo-Csv -NoTypeInformation`
+      ? `powershell -Command "(Get-CimInstance Win32_Process | Where-Object { $_.Name -eq '${processName}.exe' } | Select-Object ParentProcessId,ProcessId | ConvertTo-Csv -NoTypeInformation)"`
       : `ps -eo ppid,pid,command | grep -E "(^|/)${processName}(\\s|$)" | grep -v grep`;
     const output = execSync(command).toString().trim();
 
     if (!output) return null;
-
-    const lines = output.split(isWindows ? "\r\r\n" : "\n").slice(1);
+    const lines = output.split(isWindows ? "\r\n" : "\n").slice(1);
 
     const processInfo = lines.map((line) => {
       const [ppid, pid] = line.trim().split(isWindows ? "," : /\s+/);
 
       return {
-        ppid: Number(ppid),
-        pid: Number(pid),
+        ppid: Number(ppid.replaceAll('"', "")),
+        pid: Number(pid.replaceAll('"', "")),
       };
     });
 
