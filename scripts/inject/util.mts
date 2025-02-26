@@ -31,31 +31,31 @@ export const getCommand = ({
   return cmd;
 };
 
-export const getProcessInfoByName = (processName: string): ProcessInfo | null => {
-  if (process.platform === "win32") {
-    const command = `tasklist /FI "IMAGENAME eq ${processName}.exe" /FO CSV`;
-    const output = execSync(command).toString().trim().split("\r\n");
+export const getProcessInfoByName = (processName: string): ProcessInfo[] | null => {
+  try {
+    const isWindows = process.platform === "win32";
+    const command = isWindows
+      ? `wmic process where (Name="${processName}.exe") get ParentProcessId,ProcessId /FORMAT:CSV`
+      : `ps -eo ppid,pid,command | grep -E "(^|/)${processName}(\\s|$)" | grep -v grep`;
+    const output = execSync(command).toString().trim();
 
-    if (output.length <= 2) {
-      return null;
-    }
+    if (!output) return null;
 
-    const [name, pid] = output[1].split('","');
+    const lines = output.split(isWindows ? "\r\r\n" : "\n").slice(1);
 
-    return { pid: Number(pid), cmd: name.substring(1) };
-  }
+    const processInfo = lines.map((line) => {
+      const [ppid, pid] = line.trim().split(isWindows ? "," : /\s+/);
 
-  const command = `ps -eo pid,command | grep -E "(^|/)${processName}(\\s|$)" | grep -v grep`;
+      return {
+        ppid: Number(ppid),
+        pid: Number(pid),
+      };
+    });
 
-  const output = execSync(command).toString().trim();
-
-  if (output.length === 0) {
+    return processInfo || null;
+  } catch {
     return null;
   }
-
-  const [pid, cmd] = output.split(/\s+/);
-
-  return { pid: Number(pid), cmd };
 };
 
 export const killCheckProcessExists = (pid: number): boolean => {

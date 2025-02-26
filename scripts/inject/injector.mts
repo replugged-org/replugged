@@ -239,11 +239,7 @@ export const smartInject = async (
     try {
       if ((replug && cmd === "uninject") || !replug) {
         processInfo = getProcessInfoByName(processName)!;
-        if (Array.isArray(processInfo)) {
-          await Promise.all(processInfo.map((info) => killProcessByPID(info.pid)));
-        } else {
-          await killProcessByPID(processInfo?.pid);
-        }
+        await Promise.all(processInfo.map((info) => killProcessByPID(info.pid)));
       }
     } catch {}
   }
