@@ -1,7 +1,7 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
 import { loadStyleSheet } from "../util";
 import type { PluginExports, RepluggedPlugin } from "../../types";
-import { Logger } from "../modules/logger";
+import { Logger } from "@logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 import { init } from "../apis/settings";
 import type { AddonSettings } from "src/types/addon";
