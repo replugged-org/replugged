@@ -1,7 +1,7 @@
+import { getFunctionBySource, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, Flex, FormText, Tooltip } from ".";
 import components from "../common/components";
-import { waitForProps } from "../webpack";
 
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   look?: string;
@@ -60,7 +60,7 @@ export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
   Sizes: Record<"NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "MIN" | "MAX" | "ICON", string>;
 };
 
-export const { Button } = components;
+export const Button = getFunctionBySource<ButtonType>(components, "Type.PULSING_ELLIPSIS")!;
 
 const classes =
   await waitForProps<Record<"dividerDefault" | "labelRow" | "note" | "title", string>>(

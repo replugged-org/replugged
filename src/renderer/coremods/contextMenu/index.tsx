@@ -1,4 +1,5 @@
-import { React, components, lodash } from "@common";
+import { React, lodash } from "@common";
+import { ContextMenu } from "@components";
 import type { MenuProps } from "@components/ContextMenu";
 import type {
   ContextMenuTypes,
@@ -87,7 +88,7 @@ export function _insertMenuItems(props: ContextMenuProps): ContextMenuProps {
     children: lodash.cloneDeep(props.children),
   };
 
-  const { MenuGroup } = components;
+  const { MenuGroup } = ContextMenu;
   const repluggedGroup = <MenuGroup />;
   repluggedGroup.props.children = [];
 

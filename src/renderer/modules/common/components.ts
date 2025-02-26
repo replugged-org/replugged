@@ -19,43 +19,55 @@ import type { TextInputType } from "../components/TextInput";
 import type { OriginalTooltipType } from "../components/Tooltip";
 import { waitForProps } from "../webpack";
 import type { CreateToast, ShowToast } from "./toast";
+import { ColorPickerType } from "@components/ColorPicker";
+import { ColorPickerCustomButtonType } from "@components/ColorPickerCustomButton";
+import { ColorPickerDefaultButtonType } from "@components/ColorPickerDefaultButton";
 
 // Expand this as needed
-interface DiscordComponents {
-  Button: ButtonType;
-  Checkbox: CheckboxType;
-  Clickable: ClickableCompType;
+type DiscordComponents = {
   createToast: CreateToast;
-  FormDivider: DividerType;
-  FormItem: FormItemCompType;
-  FormNotice: FormNoticeType;
-  FormSwitch: SwitchItemType;
-  FormText: FormTextCompType;
-  FormTextTypes: Record<FormTextTypeKey, string>;
-  HelpMessage: NoticeType;
-  HelpMessageTypes: NoticeType["HelpMessageTypes"];
-  Menu: ContextMenuType["ContextMenu"];
-  MenuCheckboxItem: ContextMenuType["MenuCheckboxItem"];
-  MenuControlItem: ContextMenuType["MenuControlItem"];
-  MenuGroup: ContextMenuType["MenuGroup"];
-  MenuItem: ContextMenuType["MenuItem"];
-  MenuRadioItem: ContextMenuType["MenuRadioItem"];
-  MenuSeparator: ContextMenuType["MenuSeparator"];
-  ModalCloseButton: ModalType["ModalCloseButton"];
-  ModalContent: ModalType["ModalContent"];
-  ModalFooter: ModalType["ModalFooter"];
-  ModalHeader: ModalType["ModalHeader"];
-  ModalRoot: ModalType["ModalRoot"];
-  RadioGroup: RadioType;
-  Select: SelectCompType;
   showToast: ShowToast;
-  Slider: SliderCompType;
-  Spinner: LoaderType;
-  Switch: SwitchType;
   Text: OriginalTextType;
   TextArea: TextAreaType;
   TextInput: TextInputType;
   Tooltip: OriginalTooltipType;
-}
+  ColorPicker: ColorPickerType;
+  ColorPickerCustomButton: ColorPickerCustomButtonType;
+  ColorPickerDefaultButton: ColorPickerDefaultButtonType;
+} & Record<
+  string,
+  | ButtonType
+  | CheckboxType
+  | ClickableCompType
+  | DividerType
+  | FormItemCompType
+  | FormNoticeType
+  | SwitchItemType
+  | FormTextCompType
+  | Record<FormTextTypeKey, string>
+  | NoticeType
+  | NoticeType["HelpMessageTypes"]
+  | ContextMenuType["ContextMenu"]
+  | ContextMenuType["MenuCheckboxItem"]
+  | ContextMenuType["MenuControlItem"]
+  | ContextMenuType["MenuGroup"]
+  | ContextMenuType["MenuItem"]
+  | ContextMenuType["MenuRadioItem"]
+  | ContextMenuType["MenuSeparator"]
+  | ModalType["ModalCloseButton"]
+  | ModalType["ModalContent"]
+  | ModalType["ModalFooter"]
+  | ModalType["ModalHeader"]
+  | ModalType["ModalRoot"]
+  | RadioType
+  | SelectCompType
+  | SliderCompType
+  | LoaderType
+  | SwitchType
+  | TextAreaType
+  | TextInputType
+  | OriginalTooltipType
+  | unknown
+>;
 
-export default await waitForProps<DiscordComponents>("FormText", "MenuItem");
+export default await waitForProps<DiscordComponents>("ConfirmModal", "ToastPosition", "Text");

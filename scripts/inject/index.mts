@@ -3,15 +3,15 @@ import "./checks/elevate.mjs";
 import "./checks/env.mjs";
 
 import { join } from "path";
+import { smartInject } from "./injector.mjs";
 import { AnsiEscapes, getCommand } from "./util.mjs";
-import { inject, uninject } from "./injector.mjs";
 
+import { createContext, getPositionalArg } from "@marshift/argus";
+import { existsSync } from "fs";
 import * as darwin from "./platforms/darwin.mjs";
 import * as linux from "./platforms/linux.mjs";
 import * as win32 from "./platforms/win32.mjs";
-import { DiscordPlatform } from "./types.mjs";
-import { existsSync } from "fs";
-import { createContext, getPositionalArg } from "@marshift/argus";
+import type { DiscordPlatform } from "./types.mjs";
 
 const platformModules = {
   darwin,
@@ -23,6 +23,7 @@ const ctx = createContext(process.argv);
 
 export const exitCode = ctx.hasOptionalArg(/--no-exit-codes/) ? 0 : 1;
 const prod = ctx.hasOptionalArg(/--production/);
+const noRelaunch = ctx.hasOptionalArg(/--no-relaunch/);
 export const entryPoint = ctx.getOptionalArg(/--entryPoint/);
 
 if (!(process.platform in platformModules)) {
@@ -97,7 +98,7 @@ const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void>
 
   if (cmd === "inject") {
     try {
-      result = await inject(platformModule, platform, prod);
+      result = await smartInject(cmd, replug, platformModule, platform, prod, noRelaunch);
     } catch (e) {
       console.error(
         `${AnsiEscapes.RED}An error occurred while trying to inject into Discord!${AnsiEscapes.RESET}`,
@@ -114,7 +115,11 @@ const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void>
         "\n",
       );
       console.log(
-        `You now have to completely close the Discord client, from the system tray or through the task manager.\n
+        `${
+          noRelaunch
+            ? `You now have to completely close the Discord client, from the system tray or through the task manager.\n`
+            : "Your Discord client has been restarted automatically.\n"
+        }
 To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
           AnsiEscapes.GREEN
         }${getCommand({ action: replug ? "replug" : "plug", prod })}${AnsiEscapes.RESET}`,
@@ -124,7 +129,7 @@ To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}
     }
   } else if (cmd === "uninject") {
     try {
-      result = await uninject(platformModule, platform);
+      result = await smartInject(cmd, replug, platformModule, platform, prod, noRelaunch);
     } catch (e) {
       console.error(
         `${AnsiEscapes.RED}An error occurred while trying to uninject from Discord!${AnsiEscapes.RESET}`,
@@ -142,7 +147,11 @@ To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}
           "\n",
         );
         console.log(
-          `You now have to completely close the Discord client, from the system tray or through the task manager.\n
+          `${
+            noRelaunch
+              ? `You now have to completely close the Discord client, from the system tray or through the task manager.\n`
+              : "Your Discord client has been restarted automatically.\n"
+          }
 To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOLD}${
             AnsiEscapes.GREEN
           }${getCommand({ action: "unplug", prod })}${AnsiEscapes.RESET}`,

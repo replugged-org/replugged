@@ -1,10 +1,10 @@
 import { dirname, join } from "path";
-
 import electron from "electron";
-import { CONFIG_PATHS } from "src/util.mjs";
+import { CONFIG_PATHS, readSettingsSync } from "src/util.mjs";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
+const settings = readSettingsSync("dev.replugged.Settings");
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 const discordPackage = require(join(discordPath, "package.json"));
@@ -23,42 +23,135 @@ Object.defineProperty(global, "appSettings", {
   configurable: true,
 });
 
+enum DiscordWindowType {
+  UNKNOWN,
+  POP_OUT,
+  SPLASH_SCREEN,
+  OVERLAY,
+  DISCORD_CLIENT,
+}
+
+type InternalBrowserWindowConstructorOptions = electron.BrowserWindowConstructorOptions & {
+  webContents?: electron.WebContents;
+  webPreferences?: {
+    nativeWindowOpen: boolean;
+  };
+};
+
+function windowTypeFromOpts(opts: InternalBrowserWindowConstructorOptions): DiscordWindowType {
+  if (opts.webContents) {
+    return DiscordWindowType.POP_OUT;
+  } else if (opts.webPreferences?.nodeIntegration) {
+    return DiscordWindowType.SPLASH_SCREEN;
+  } else if (opts.webPreferences?.offscreen) {
+    return DiscordWindowType.OVERLAY;
+  } else if (opts.webPreferences?.preload) {
+    if (opts.webPreferences.nativeWindowOpen) {
+      return DiscordWindowType.DISCORD_CLIENT;
+    } else {
+      // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
+      return DiscordWindowType.DISCORD_CLIENT;
+    }
+  }
+
+  return DiscordWindowType.UNKNOWN;
+}
+
 // This class has to be named "BrowserWindow" exactly
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  public constructor(
-    opts: electron.BrowserWindowConstructorOptions & {
-      webContents?: electron.WebContents;
-      webPreferences?: {
-        nativeWindowOpen: boolean;
-      };
-    },
-  ) {
+  public constructor(opts: InternalBrowserWindowConstructorOptions) {
     const originalPreload = opts.webPreferences?.preload;
 
-    if (opts.webContents) {
-      // General purpose pop-outs used by Discord
-    } else if (opts.webPreferences?.nodeIntegration) {
-      // Splash Screen
-      // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-    } else if (opts.webPreferences?.offscreen) {
-      // Overlay
-      //      originalPreload = opts.webPreferences.preload;
-      // opts.webPreferences.preload = join(__dirname, './preload.js');
-    } else if (opts.webPreferences?.preload) {
-      // originalPreload = opts.webPreferences.preload;
-      if (opts.webPreferences.nativeWindowOpen) {
-        // Discord Client
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
-        // opts.webPreferences.contextIsolation = false; // shrug
-      } else {
-        // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
+    const currentWindow = windowTypeFromOpts(opts);
+
+    switch (currentWindow) {
+      case DiscordWindowType.DISCORD_CLIENT: {
+        opts.webPreferences!.preload = join(__dirname, "./preload.js");
+
+        if (settings.get("transparentWindow")) {
+          switch (process.platform) {
+            case "win32":
+              opts.transparent = true;
+              break;
+            case "linux":
+              opts.transparent = true;
+              break;
+          }
+        }
+        break;
+      }
+      case DiscordWindowType.SPLASH_SCREEN: {
+        // opts.webPreferences.preload = join(__dirname, "./preloadSplash.js");
+        break;
+      }
+      case DiscordWindowType.OVERLAY: {
+        // opts.webPreferences.preload = join(__dirname, "./preload.js");
+        break;
       }
     }
 
     super(opts);
+
+    // Center the unmaximized location
+    if (settings.get("transparentWindow")) {
+      let lastBounds = this.getBounds();
+      // Default to the center of the screen at 1440x810 scale for a 1080p monitor (75%)
+      let primaryDisplaySize = electron.screen.getPrimaryDisplay().workAreaSize;
+      let lastLastBounds = {
+        width: primaryDisplaySize.width * 0.75,
+        height: primaryDisplaySize.height * 0.75,
+        x: primaryDisplaySize.width / 2 - (primaryDisplaySize.width * 0.75) / 2,
+        y: primaryDisplaySize.height / 2 - (primaryDisplaySize.height * 0.75) / 2,
+      };
+      let lastResize = Date.now();
+      this.on("resize", () => {
+        const bounds = this.getBounds();
+        lastLastBounds = lastBounds;
+        lastBounds = bounds;
+        lastResize = Date.now();
+      });
+
+      this.on("maximize", () => {
+        // Get the display at the center of the window
+        const screenBounds = this.getBounds();
+        const windowDisplay = electron.screen.getDisplayNearestPoint({
+          x: screenBounds.x + screenBounds.width / 2,
+          y: screenBounds.y + screenBounds.height / 2,
+        });
+        const workAreaSize = windowDisplay.workArea;
+
+        const isSizeMaximized =
+          lastBounds.width === workAreaSize.width && lastBounds.height === workAreaSize.height;
+        const isPositionMaximized =
+          lastBounds.x === workAreaSize.x + 1 && lastBounds.y === workAreaSize.y + 1;
+
+        // if we haven't resized in the last few ms, we probably didn't actually maximize and should instead unmaximize
+        if (lastResize < Date.now() - 10 || (isSizeMaximized && isPositionMaximized)) {
+          // Calculate new x, y to be in the center of the monitor
+          this.setBounds({
+            x: workAreaSize.width / 2 - lastLastBounds.width / 2 + workAreaSize.x,
+            y: workAreaSize.height / 2 - lastLastBounds.height / 2 + workAreaSize.y,
+            width: lastLastBounds.width,
+            height: lastLastBounds.height,
+          });
+
+          lastResize = Date.now();
+          return;
+        }
+
+        // Move the window to 1,1 to mitigate the window going grey when maximized
+        // Note that the window doesn't seem to visually be at 1,1, but that's enough to prevent the greying
+        this.setBounds({
+          x: workAreaSize.x + 1,
+          y: workAreaSize.y + 1,
+          width: screenBounds.width,
+          height: screenBounds.height,
+        });
+      });
+    }
+
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
   }
 }
@@ -117,7 +210,14 @@ async function loadReactDevTools(): Promise<void> {
 electron.app.once("ready", () => {
   electron.session.defaultSession.webRequest.onBeforeRequest(
     {
-      urls: ["https://*/api/v*/science", "https://*/api/v*/metrics", "https://sentry.io/*"],
+      urls: [
+        "https://*/api/v*/science",
+        "https://*/api/v*/metrics",
+        "https://*/api/v*/metrics/*",
+        "https://sentry.io/*",
+        "https://discord.com/assets/sentry.*.js",
+        "https://*.discord.com/assets/sentry.*.js",
+      ],
     },
     function (_details, callback) {
       callback({ cancel: true });

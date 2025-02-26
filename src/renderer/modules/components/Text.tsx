@@ -68,7 +68,7 @@ export type Variant =
   | "display-lg"
   | "code";
 
-// TODO: generic type for tags?
+// @todo: generic type for tags?
 interface TextProps extends React.ComponentPropsWithoutRef<"div"> {
   variant?: Variant;
   tag?: keyof JSX.IntrinsicElements;

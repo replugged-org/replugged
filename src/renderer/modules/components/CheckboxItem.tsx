@@ -1,3 +1,4 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import { Text } from ".";
 import components from "../common/components";
@@ -30,7 +31,7 @@ export type CheckboxType = React.ComponentClass<React.PropsWithChildren<Checkbox
 
 export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
 
-export const { Checkbox } = components;
+export const Checkbox = getFunctionBySource<CheckboxType>(components, ".checkboxWrapper")!;
 
 export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
   return (

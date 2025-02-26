@@ -1,6 +1,6 @@
 /// <reference types="standalone-electron-types"/>
 
-// TODO: Scope global types to each component
+// @todo: Scope global types to each component
 
 import type { WebpackChunkGlobal } from "./types/discord";
 import * as replugged from "./renderer/replugged";
@@ -19,6 +19,7 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     webpackChunkdiscord_app: WebpackChunkGlobal;
     _: typeof _;
+    $type?: (...args: unknown[]) => unknown;
   }
 
   export const RepluggedNative: RepluggedNativeType;
@@ -36,6 +37,9 @@ declare global {
       cut: () => void;
       paste: () => void;
       read: () => string;
+    };
+    process: {
+      platform: string;
     };
   };
 
