@@ -24,6 +24,7 @@ import { logBuildPlugin } from "../src/util.mjs";
 import { sassPlugin } from "esbuild-sass-plugin";
 import { fileURLToPath, pathToFileURL } from "url";
 import { AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
+import { hostname, platform } from "os";
 
 interface BaseArgs {
   watch?: boolean;
@@ -80,11 +81,19 @@ let ws: WebSocket | undefined;
 let failed = false;
 let connectingPromise: Promise<WebSocket | undefined> | undefined;
 
+function isMac(): boolean {
+  return platform() === "darwin";
+}
+
 /**
  * Try to connect to RPC on a specific port and handle the READY event as well as errors and close events
  */
 function tryPort(port: number): Promise<WebSocket | undefined> {
-  ws = new WebSocket(`ws://127.0.0.1:${port}/?v=1&client_id=REPLUGGED-${random()}`);
+  ws = new WebSocket(
+    `ws://${
+      isMac() ? "localhost" : `${hostname()}.local`
+    }:${port}/?v=1&client_id=REPLUGGED-${random()}`,
+  );
   return new Promise((resolve, reject) => {
     let didFinish = false;
     ws?.on("message", (data) => {
