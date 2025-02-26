@@ -7,7 +7,8 @@ import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
-// require.main!.filename = discordMain;
+const discordPackage = require(join(discordPath, "package.json"));
+require.main!.filename = join(discordPath, discordPackage.main);
 
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
@@ -116,7 +117,14 @@ async function loadReactDevTools(): Promise<void> {
 electron.app.once("ready", () => {
   electron.session.defaultSession.webRequest.onBeforeRequest(
     {
-      urls: ["https://*/api/v*/science", "https://*/api/v*/metrics", "https://sentry.io/*"],
+      urls: [
+        "https://*/api/v*/science",
+        "https://*/api/v*/metrics",
+        "https://*/api/v*/metrics/*",
+        "https://sentry.io/*",
+        "https://discord.com/assets/sentry.*.js",
+        "https://*.discord.com/assets/sentry.*.js",
+      ],
     },
     function (_details, callback) {
       callback({ cancel: true });
@@ -185,4 +193,4 @@ electron.app.once("ready", () => {
 // This module is required this way at runtime.
 require("./ipc");
 
-require("module")._load(discordPath);
+require(discordPath);

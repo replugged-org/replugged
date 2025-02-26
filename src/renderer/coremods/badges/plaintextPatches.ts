@@ -3,7 +3,7 @@ import type { PlaintextPatch } from "src/types";
 export default [
   {
     // Edit the ProfileBadges component
-    find: /\.container,\w+\),"aria-label":\w+.\w+\.Messages\.PROFILE_USER_BADGES/,
+    find: /action:"PRESS_BADGE"/,
     replacements: [
       // Add the "replugged-badge" class if it's our custom badge
       {
@@ -12,7 +12,7 @@ export default [
       },
       // Change to a div and add a children for our custom badge
       {
-        match: /"img",({.+?\((\w+)\.icon\),)/,
+        match: /"img",(.{20,50}?\((\w+)\.icon\),)/,
         replace: `$2.component?"div":"img",$1children:$2.component,`,
       },
     ],

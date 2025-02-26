@@ -28,8 +28,8 @@ interface ModalClasses {
 }
 
 interface AlertProps {
-  title?: string;
-  body?: string | React.ReactElement;
+  title?: React.ReactNode;
+  body?: React.ReactNode;
   confirmColor?: string;
   confirmText?: string;
   cancelText?: string;

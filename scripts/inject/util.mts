@@ -36,7 +36,7 @@ export const getProcessInfoByName = (processName: string): ProcessInfo | Process
     const isWindows = process.platform === "win32";
     const command = isWindows
       ? `wmic process where (Name="${processName}.exe") get ProcessId,ParentProcessId /FORMAT:CSV`
-      : `ps -eo cmd,ppid,pid | grep -E "(^|/)${processName}(\\s|$)" | grep -v grep`;
+      : `ps -eo command,ppid,pid | grep -E "(^|/)${processName}(\\s|$)" | grep -v grep`;
     const output = execSync(command).toString();
 
     if (!output.trim()) {

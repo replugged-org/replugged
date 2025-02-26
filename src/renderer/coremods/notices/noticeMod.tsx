@@ -63,9 +63,9 @@ const remappedNoticeMod: NoticeMod = {
     (v) => typeof v === "object",
   ) as NoticeMod["NoticeColors"],
   NoticeButton: getFunctionBySource(actualNoticeMod, "buttonMinor")!,
-  PrimaryCTANoticeButton: getFunctionBySource(actualNoticeMod, "CTA")!,
-  NoticeButtonAnchor: getFunctionBySource(actualNoticeMod, ".Anchor")!,
-  NoticeCloseButton: getFunctionBySource(actualNoticeMod, "DISMISS")!,
+  PrimaryCTANoticeButton: getFunctionBySource(actualNoticeMod, "additionalTrackingProps")!,
+  NoticeButtonAnchor: getFunctionBySource(actualNoticeMod, ".button,href:")!,
+  NoticeCloseButton: getFunctionBySource(actualNoticeMod, "closeIcon")!,
   Notice: getFunctionBySource(actualNoticeMod, "isMobile")!,
 };
 
