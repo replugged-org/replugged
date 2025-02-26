@@ -43,11 +43,14 @@ export const getProcessInfoByName = (processName: string): ProcessInfo[] | null 
     const lines = output.split(isWindows ? "\r\n" : "\n").slice(1);
 
     const processInfo = lines.map((line) => {
-      const [ppid, pid] = line.trim().split(isWindows ? "," : /\s+/);
+      const [ppid, pid] = line
+        .trim()
+        .replaceAll('"', "")
+        .split(isWindows ? "," : /\s+/);
 
       return {
-        ppid: Number(ppid.replaceAll('"', "")),
-        pid: Number(pid.replaceAll('"', "")),
+        ppid: Number(ppid),
+        pid: Number(pid),
       };
     });
 
