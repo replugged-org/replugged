@@ -21,9 +21,11 @@ export type NoticeType = React.FC<HelpMessageProps> & {
   Types: typeof HelpMessageTypes; // for backwards compat
   HelpMessageTypes: typeof HelpMessageTypes;
 };
+const getNotice = async (): Promise<NoticeType> => {
+  const HelpMessage = getFunctionBySource<NoticeType>(await components, "messageType:")!;
+  HelpMessage.HelpMessageTypes = HelpMessageTypes;
+  HelpMessage.Types = HelpMessage.HelpMessageTypes;
+  return HelpMessage;
+};
 
-const HelpMessage = getFunctionBySource<NoticeType>(components, "messageType:")!;
-HelpMessage.HelpMessageTypes = HelpMessageTypes;
-HelpMessage.Types = HelpMessage.HelpMessageTypes;
-
-export default HelpMessage;
+export default getNotice();

@@ -97,4 +97,4 @@ export interface Parser {
   astParserFor(rules: SimpleMarkdown.ParserRules): ParseFn;
 }
 
-export default await waitForProps<Parser>("parse", "parseTopic");
+export default waitForProps<Parser>("parse", "parseTopic");

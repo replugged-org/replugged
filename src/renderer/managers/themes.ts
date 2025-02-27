@@ -11,7 +11,7 @@ const themeElements = new Map<string, HTMLLinkElement>();
  */
 export const themes = new Map<string, RepluggedTheme>();
 let disabled: string[];
-const settings = await init<AddonSettings>("themes");
+const settings = init<AddonSettings>("themes");
 
 /**
  * Load metadata for all themes that are added to the themes folder but not yet loaded, such as newly added themes.

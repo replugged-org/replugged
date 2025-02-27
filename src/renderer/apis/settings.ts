@@ -108,8 +108,8 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * Loads the latest stored settings for this namespace from the user's file system into this manager. This must be called
    * before managing any settings, unless you have created an instance using {@link init init()}, which calls this method.
    */
-  public async load(): Promise<void> {
-    this.#settings = await window.RepluggedNative.settings.all(this.namespace);
+  public load(): void {
+    this.#settings = window.RepluggedNative.settings.all(this.namespace);
   }
 
   /**
@@ -199,15 +199,15 @@ const managers = new Map<string, unknown>();
  * @param defaultSettings Default values for the settings in the namespace. These will be used if no value is set for a setting. Using the `fallback` parameter of {@link SettingsManager.get get()} will override these defaults.
  * @returns Manager for the namespace.
  */
-export async function init<T extends Record<string, Jsonifiable>, D extends keyof T = never>(
+export function init<T extends Record<string, Jsonifiable>, D extends keyof T = never>(
   namespace: string,
   defaultSettings?: Partial<T>,
-): Promise<SettingsManager<T, D>> {
+): SettingsManager<T, D> {
   if (managers.has(namespace)) {
     return managers.get(namespace)! as SettingsManager<T, D>;
   }
   const manager = new SettingsManager<T, D>(namespace, (defaultSettings || {}) as Partial<T>);
   managers.set(namespace, manager);
-  await manager.load();
+  manager.load();
   return manager;
 }

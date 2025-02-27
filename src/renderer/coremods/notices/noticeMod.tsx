@@ -54,19 +54,33 @@ interface NoticeMod {
   Notice: React.FC<React.PropsWithChildren<NoticeProps>>;
 }
 
-const actualNoticeMod = await waitForModule<Record<string, ValueOf<NoticeMod>>>(
-  filters.bySource(".colorPremiumTier1,"),
-);
-
 const remappedNoticeMod: NoticeMod = {
-  NoticeColors: Object.values(actualNoticeMod).find(
-    (v) => typeof v === "object",
-  ) as NoticeMod["NoticeColors"],
-  NoticeButton: getFunctionBySource(actualNoticeMod, "buttonMinor")!,
-  PrimaryCTANoticeButton: getFunctionBySource(actualNoticeMod, "additionalTrackingProps")!,
-  NoticeButtonAnchor: getFunctionBySource(actualNoticeMod, ".button,href:")!,
-  NoticeCloseButton: getFunctionBySource(actualNoticeMod, "closeIcon")!,
-  Notice: getFunctionBySource(actualNoticeMod, "isMobile")!,
+  NoticeColors: {} as NoticeMod["NoticeColors"],
+  NoticeButton: () => null,
+  PrimaryCTANoticeButton: () => null,
+  NoticeButtonAnchor: () => null,
+  NoticeCloseButton: () => null,
+  Notice: () => null,
 };
+
+const mapNoticeMod = async (): Promise<void> => {
+  const actualNoticeMod = await waitForModule<Record<string, ValueOf<NoticeMod>>>(
+    filters.bySource(".colorPremiumTier1,"),
+  );
+
+  remappedNoticeMod.NoticeColors = Object.values(actualNoticeMod).find(
+    (v) => typeof v === "object",
+  ) as NoticeMod["NoticeColors"];
+  remappedNoticeMod.NoticeButton = getFunctionBySource(actualNoticeMod, "buttonMinor")!;
+  remappedNoticeMod.PrimaryCTANoticeButton = getFunctionBySource(
+    actualNoticeMod,
+    "additionalTrackingProps",
+  )!;
+  remappedNoticeMod.NoticeButtonAnchor = getFunctionBySource(actualNoticeMod, ".button,href:")!;
+  remappedNoticeMod.NoticeCloseButton = getFunctionBySource(actualNoticeMod, "closeIcon")!;
+  remappedNoticeMod.Notice = getFunctionBySource(actualNoticeMod, "isMobile")!;
+};
+
+void mapNoticeMod();
 
 export default remappedNoticeMod;

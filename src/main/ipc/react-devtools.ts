@@ -11,7 +11,7 @@ const OUTPUT_PATH = join(CONFIG_PATHS["react-devtools"]);
 const ZIP_PATH = join(OUTPUT_PATH, "extension.zip");
 
 ipcMain.handle(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS, async () => {
-  const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
+  const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
   const REACT_DEVTOOLS_URL = `${apiUrl}/api/v1/react-devtools`;
 
   let buffer;

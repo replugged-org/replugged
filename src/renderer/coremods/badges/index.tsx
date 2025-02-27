@@ -1,5 +1,4 @@
-import { intl } from "@common/i18n";
-import React from "@common/react";
+import { React, i18n } from "@common";
 import { Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "@webpack";
 import { DISCORD_BLURPLE, DISCORD_INVITE, WEBLATE_URL } from "src/constants";
@@ -55,43 +54,47 @@ const inviteUrl = `https://discord.gg/${DISCORD_INVITE}`;
 const badgeElements = [
   {
     id: "booster",
-    description: intl.string(t.REPLUGGED_BADGES_BOOSTER),
+    description: i18n.intl.string(t.REPLUGGED_BADGES_BOOSTER),
     component: Badges.Booster,
     link: inviteUrl,
   },
   {
     id: "contributor",
-    description: intl.string(t.REPLUGGED_BADGES_CONTRIBUTOR),
+    description: i18n.intl.string(t.REPLUGGED_BADGES_CONTRIBUTOR),
     component: Badges.Contributor,
     link: contributorsUrl,
   },
   {
     id: "developer",
-    description: intl.string(t.REPLUGGED_BADGES_DEVELOPER),
+    description: i18n.intl.string(t.REPLUGGED_BADGES_DEVELOPER),
     component: Badges.Developer,
     link: contributorsUrl,
   },
-  { id: "early", description: intl.string(t.REPLUGGED_BADGES_EARLY), component: Badges.EarlyUser },
+  {
+    id: "early",
+    description: i18n.intl.string(t.REPLUGGED_BADGES_EARLY),
+    component: Badges.EarlyUser,
+  },
   {
     id: "hunter",
-    description: intl.string(t.REPLUGGED_BADGES_HUNTER),
+    description: i18n.intl.string(t.REPLUGGED_BADGES_HUNTER),
     component: Badges.BugHunter,
   },
   {
     id: "staff",
-    description: intl.string(t.REPLUGGED_BADGES_STAFF),
+    description: i18n.intl.string(t.REPLUGGED_BADGES_STAFF),
     component: Badges.Staff,
     link: inviteUrl,
   },
   {
     id: "support",
-    description: intl.string(t.REPLUGGED_BADGES_SUPPORT),
+    description: i18n.intl.string(t.REPLUGGED_BADGES_SUPPORT),
     component: Badges.Support,
     link: inviteUrl,
   },
   {
     id: "translator",
-    description: intl.string(t.REPLUGGED_BADGES_TRANSLATOR),
+    description: i18n.intl.string(t.REPLUGGED_BADGES_TRANSLATOR),
     component: Badges.Translator,
     link: WEBLATE_URL,
   },
