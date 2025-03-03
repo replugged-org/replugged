@@ -104,7 +104,7 @@ const RepluggedNative = {
 
   getVersion: () => version,
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
   openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
@@ -123,7 +123,7 @@ try {
   });
   // Get and execute Discord preload
   // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
-  const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
+  const preload: string = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
   if (preload) require(preload);
 } catch (err) {
   console.error("Error loading original preload", err);

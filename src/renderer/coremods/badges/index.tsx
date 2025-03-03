@@ -106,47 +106,40 @@ export async function start(): Promise<void> {
   injector.after(useBadgesMod, useBadgesKey, ([displayProfile], badges) => {
     if (!generalSettings.get("badges")) return badges;
 
-    try {
-      const [currentCache, setCurrentCache] = React.useState<APIRepluggedBadges | undefined>();
-      const badgeCache = React.useMemo(() => {
-        if (!displayProfile) return currentCache;
+    const [badgeCache, setBadgeCache] = React.useState<APIRepluggedBadges | undefined>();
 
-        const { userId } = displayProfile;
+    React.useEffect(() => {
+      if (!displayProfile) return;
 
-        (async () => {
-          if (!cache.has(userId) || cache.get(userId)!.lastFetch < Date.now() - REFRESH_INTERVAL) {
-            cache.set(
-              userId,
-              await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${userId}`)
-                .then(async (res) => {
-                  const body = await res.json();
+      const { userId } = displayProfile;
 
-                  if (res.status === 200 || res.status === 404) {
-                    return {
-                      badges: body.badges || {},
-                      lastFetch: Date.now(),
-                    };
-                  }
+      async function fetchBadges(): Promise<void> {
+        if (cache.has(userId) && cache.get(userId)!.lastFetch >= Date.now() - REFRESH_INTERVAL) {
+          setBadgeCache(cache.get(userId)!.badges);
+          return;
+        }
 
-                  cache.delete(userId);
-                  return {
-                    badges: {},
-                    lastFetch: Date.now(),
-                  };
-                })
-                .catch((e) => e),
-            );
-          }
+        try {
+          const response = await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${userId}`);
+          const body = await response.json();
 
-          setCurrentCache(cache.get(userId)?.badges);
-        })();
+          const badges: APIRepluggedBadges =
+            response.status === 200 || response.status === 404 ? body.badges || {} : {};
+          cache.set(userId, { badges, lastFetch: Date.now() });
 
-        return currentCache;
-      }, [currentCache, displayProfile]);
+          setBadgeCache(badges);
+        } catch (error) {
+          logger.error("Failed to fetch badges:", error);
+        }
+      }
 
-      if (!badgeCache) return badges;
+      void fetchBadges();
+    }, [displayProfile]);
 
-      let newBadges: RepluggedBadge[] = [];
+    const newBadges = React.useMemo(() => {
+      if (!badgeCache) return [];
+
+      const newBadges: RepluggedBadge[] = [];
 
       if (badgeCache.custom.name && badgeCache.custom.icon) {
         newBadges.push({
@@ -156,28 +149,27 @@ export async function start(): Promise<void> {
         });
       }
 
-      badgeElements.forEach((badgeElement) => {
-        if (badgeCache[badgeElement.id as keyof APIRepluggedBadges]) {
-          const { component, ...props } = badgeElement;
-          const badgeColor = badgeCache.custom.color;
-
+      badgeElements.forEach(({ component, ...props }) => {
+        if (badgeCache[props.id as keyof APIRepluggedBadges]) {
           newBadges.push({
             ...props,
             icon: "replugged",
             component: React.createElement(component, {
               color:
-                (badgeColor && (badgeColor.startsWith("#") ? badgeColor : `#${badgeColor}`)) ??
+                (badgeCache.custom.color &&
+                  (badgeCache.custom.color.startsWith("#")
+                    ? badgeCache.custom.color
+                    : `#${badgeCache.custom.color}`)) ??
                 DISCORD_BLURPLE,
             }),
           });
         }
       });
 
-      return [...badges, ...newBadges];
-    } catch (err) {
-      logger.error(err);
-      return badges;
-    }
+      return newBadges;
+    }, [badgeCache]);
+
+    return [...badges, ...newBadges];
   });
 
   const userProfileConstantsMod = await waitForModule<Record<string, GetBadgeAsset>>(
@@ -185,10 +177,9 @@ export async function start(): Promise<void> {
   );
   const getBadgeAssetKey = getFunctionKeyBySource(userProfileConstantsMod, "badge-icons")!;
 
-  injector.instead(userProfileConstantsMod, getBadgeAssetKey, (args, orig) => {
-    if (args[0].startsWith("replugged")) return args[0].replace("replugged", "");
-    return orig(...args);
-  });
+  injector.instead(userProfileConstantsMod, getBadgeAssetKey, ([icon], orig) =>
+    icon.startsWith("replugged") ? icon.replace("replugged", "") : orig(icon),
+  );
 }
 
 export function stop(): void {

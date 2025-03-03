@@ -1,13 +1,13 @@
+import { ipcMain, shell } from "electron";
 import { readFile, writeFile } from "fs/promises";
 import { resolve, sep } from "path";
-import { ipcMain, shell } from "electron";
+import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels } from "../../types";
 import type {
   SettingsMap,
   SettingsTransactionHandler,
   TransactionHandler,
 } from "../../types/settings";
-import { CONFIG_PATHS } from "src/util.mjs";
 
 const SETTINGS_DIR = CONFIG_PATHS.settings;
 
@@ -24,7 +24,8 @@ async function readSettings(namespace: string): Promise<Map<string, unknown>> {
   const path = getSettingsPath(namespace);
   try {
     const data = await readFile(path, "utf8");
-    return new Map(Object.entries(JSON.parse(data)));
+    const parsedData: Record<string, unknown> = JSON.parse(data);
+    return new Map(Object.entries(parsedData));
   } catch {
     return new Map();
   }
@@ -45,6 +46,7 @@ async function transaction<T>(namespace: string, handler: TransactionHandler<T>)
 
   const result = lock.then(() => handler());
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   locks[namespace] = result.catch(() => {});
   return result;
 }

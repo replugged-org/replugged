@@ -1,7 +1,7 @@
 import type { GetModuleOptions, RawModule, WaitForOptions } from "src/types";
-import { getExportsForProps, getModule } from "./get-modules";
-import * as filters from "./filters";
 import Flux, { Store } from "../common/flux";
+import * as filters from "./filters";
+import { getExportsForProps, getModule } from "./get-modules";
 import { waitForModule } from "./lazy";
 
 // Get by source

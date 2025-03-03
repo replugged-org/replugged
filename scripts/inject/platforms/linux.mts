@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
 import readline from "readline";
-import { DiscordPlatform } from "../types.mjs";
+import type { DiscordPlatform } from "../types.mjs";
 import { AnsiEscapes, PlatformNames } from "../util.mjs";
 import { exitCode } from "../index.mjs";
 
@@ -33,7 +33,7 @@ const findPathFromPaths = async (
   platform: DiscordPlatform,
   paths: string[],
 ): Promise<string | null> => {
-  let discordPaths = paths.filter((path) => existsSync(path));
+  const discordPaths = paths.filter((path) => existsSync(path));
   if (discordPaths.length === 0) {
     const readlineInterface = readline.createInterface({
       input: process.stdin,
@@ -47,7 +47,7 @@ const findPathFromPaths = async (
       "\n",
     );
     console.log(`Please provide the path of your ${PlatformNames[platform]} installation folder`);
-    let discordPath = await askPath();
+    const discordPath = await askPath();
     readlineInterface.close();
 
     if (!existsSync(discordPath)) {
@@ -61,7 +61,7 @@ const findPathFromPaths = async (
   }
 
   let path: string | null = null;
-  for (let discordPath of discordPaths) {
+  for (const discordPath of discordPaths) {
     path = findAppAsarInDir(discordPath);
     if (path !== null) return path;
     else

@@ -7,7 +7,9 @@ const NODE_VERSION = "20";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const packageJson = JSON.parse(readFileSync(path.join(dirname, "..", "package.json"), "utf-8"));
+const packageJson: { dependencies: Record<string, string> } = JSON.parse(
+  readFileSync(path.join(dirname, "..", "package.json"), "utf-8"),
+);
 const packageNames = Object.keys(packageJson.dependencies);
 
 const context = await esbuild.context({
@@ -25,4 +27,4 @@ const context = await esbuild.context({
 });
 
 await context.rebuild();
-context.dispose();
+void context.dispose();

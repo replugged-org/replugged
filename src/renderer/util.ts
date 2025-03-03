@@ -340,7 +340,7 @@ export function findInTree(
   let tempReturn;
   if (Array.isArray(tree)) {
     for (const value of tree) {
-      tempReturn = findInTree(value, searchFilter, {
+      tempReturn = findInTree(value as Tree, searchFilter, {
         walkable,
         ignore,
         maxRecursion: maxRecursion - 1,

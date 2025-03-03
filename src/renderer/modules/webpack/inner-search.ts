@@ -1,4 +1,4 @@
-import { UnknownFunction } from "src/types";
+import type { UnknownFunction } from "src/types";
 
 /**
  * Get a function in a module to inject into.

@@ -16,9 +16,9 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
             cb(mod);
             res();
           })
-          .catch((err) => {
+          .catch((err: unknown) => {
             error("CommonModules", name, void 0, `Failed to import module "${name}"`, err);
-            rej(err);
+            rej(err instanceof Error ? err : new Error(String(err)));
           });
       }),
   );

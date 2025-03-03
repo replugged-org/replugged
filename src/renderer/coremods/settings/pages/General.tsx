@@ -75,7 +75,7 @@ export const General = (): React.ReactElement => {
 
   const listener = (e: KeyboardEvent): void => {
     if (isEasterEgg) return;
-    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), e.keyCode]);
+    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), Number(e.code)]);
   };
 
   React.useEffect(() => {

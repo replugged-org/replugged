@@ -81,7 +81,7 @@ await Promise.all(
       await context.watch();
     } else {
       await context.rebuild().catch(() => process.exit(1));
-      context.dispose();
+      await context.dispose();
     }
   }),
 );
