@@ -1,5 +1,4 @@
-import { React } from "@common";
-import { intl } from "@common/i18n";
+import { React, i18n } from "@common";
 import { Button, Clickable, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { getByProps } from "@webpack";
@@ -10,6 +9,8 @@ import { getSourceLink } from "../settings/pages";
 import { InstallLinkProps, authorList, checkIsInstalled, getInfo, install } from "./util";
 
 import "./addonEmbed.css";
+
+const { intl } = i18n;
 
 const logger = Logger.coremod("AddonEmbed");
 

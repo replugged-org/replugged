@@ -1,5 +1,4 @@
-import { modal, toast } from "@common";
-import { intl } from "@common/i18n";
+import { i18n, modal, toast } from "@common";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
 import { setUpdaterState } from "src/renderer/managers/updater";
@@ -9,6 +8,8 @@ import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
 import { generalSettings, getAddonType, getSourceLink, label } from "../settings/pages";
 import { t } from "src/renderer/modules/i18n";
+
+const { intl } = i18n;
 
 const logger = Logger.coremod("Installer");
 
@@ -127,7 +128,7 @@ export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
   try {
     switch (data.manifest.type) {
       case "replugged-plugin":
-        await pluginManager.loadAll();
+        pluginManager.loadAll();
         await pluginManager.enable(data.manifest.id);
         return true;
       case "replugged-theme":

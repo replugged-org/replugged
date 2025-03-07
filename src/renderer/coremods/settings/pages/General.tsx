@@ -1,6 +1,4 @@
-import { modal, toast } from "@common";
-import { intl } from "@common/i18n";
-import React from "@common/react";
+import { React, i18n, modal, toast } from "@common";
 import {
   Button,
   ButtonItem,
@@ -19,7 +17,7 @@ import * as settings from "../../../apis/settings";
 import * as util from "../../../util";
 import { initWs, socket } from "../../devCompanion";
 
-export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
+export const generalSettings = settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
   defaultSettings,
 );
@@ -38,9 +36,9 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
   const restart = doRelaunch ? relaunch : reload;
   void modal
     .confirm({
-      title: intl.string(t.REPLUGGED_SETTINGS_RESTART_TITLE),
-      body: intl.string(t.REPLUGGED_SETTINGS_RESTART),
-      confirmText: intl.string(t.REPLUGGED_RESTART),
+      title: i18n.intl.string(t.REPLUGGED_SETTINGS_RESTART_TITLE),
+      body: i18n.intl.string(t.REPLUGGED_SETTINGS_RESTART),
+      confirmText: i18n.intl.string(t.REPLUGGED_RESTART),
       confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
@@ -87,35 +85,35 @@ export const General = (): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_GENERAL_SETTINGS)}</Text.H2>
+        <Text.H2>{i18n.intl.string(t.REPLUGGED_GENERAL_SETTINGS)}</Text.H2>
       </Flex>
 
       <Divider style={{ margin: "20px 0px" }} />
 
       <SwitchItem
         {...util.useSetting(generalSettings, "badges")}
-        note={intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}>
-        {intl.string(t.REPLUGGED_SETTINGS_BADGES)}
+        note={i18n.intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}>
+        {i18n.intl.string(t.REPLUGGED_SETTINGS_BADGES)}
       </SwitchItem>
 
       <SwitchItem
         {...util.useSetting(generalSettings, "addonEmbeds")}
-        note={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC)}>
-        {intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS)}
+        note={i18n.intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC)}>
+        {i18n.intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS)}
       </SwitchItem>
 
       <SwitchItem
         {...util.useSetting(generalSettings, "autoApplyQuickCss")}
-        note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
-        {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
+        note={i18n.intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
+        {i18n.intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
 
       <Category
-        title={intl.string(t.REPLUGGED_SETTINGS_ADVANCED)}
-        note={intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}>
+        title={i18n.intl.string(t.REPLUGGED_SETTINGS_ADVANCED)}
+        note={i18n.intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}>
         <FormItem
-          title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
-          note={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
+          title={i18n.intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
+          note={i18n.intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
           divider={true}
           style={{ marginBottom: "20px" }}>
           <TextInput
@@ -131,8 +129,8 @@ export const General = (): React.ReactElement => {
             expOnChange(value);
             restartModal(false);
           }}
-          note={intl.format(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC, {})}>
-          {intl.string(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS)}
+          note={i18n.intl.format(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC, {})}>
+          {i18n.intl.string(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS)}
         </SwitchItem>
 
         <SwitchItem
@@ -148,7 +146,7 @@ export const General = (): React.ReactElement => {
                 .catch(() => {
                   rdtOnChange(false); // Disable if failed
                   toast.toast(
-                    intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
+                    i18n.intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
                     toast.Kind.FAILURE,
                   );
                 });
@@ -157,18 +155,18 @@ export const General = (): React.ReactElement => {
               restartModal(true);
             }
           }}
-          note={intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}>
-          {intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
+          note={i18n.intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}>
+          {i18n.intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
         </SwitchItem>
 
         <ButtonItem
-          button={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT)}
-          note={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_DESC)}
+          button={i18n.intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT)}
+          note={i18n.intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_DESC)}
           onClick={() => {
             socket?.close(1000, "Reconnecting");
             initWs(true);
           }}>
-          {intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION)}
+          {i18n.intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION)}
         </ButtonItem>
       </Category>
 

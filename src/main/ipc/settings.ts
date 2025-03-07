@@ -1,4 +1,3 @@
-import { readFile, writeFile } from "fs/promises";
 import { resolve, sep } from "path";
 import { ipcMain, shell } from "electron";
 import { RepluggedIpcChannels } from "../../types";
@@ -8,6 +7,7 @@ import type {
   TransactionHandler,
 } from "../../types/settings";
 import { CONFIG_PATHS } from "src/util.mjs";
+import { readFileSync, writeFileSync } from "fs";
 
 const SETTINGS_DIR = CONFIG_PATHS.settings;
 
@@ -20,53 +20,49 @@ export function getSettingsPath(namespace: string): string {
   return resolved;
 }
 
-async function readSettings(namespace: string): Promise<Map<string, unknown>> {
+function readSettings(namespace: string): Map<string, unknown> {
   const path = getSettingsPath(namespace);
   try {
-    const data = await readFile(path, "utf8");
+    const data = readFileSync(path, "utf8");
     return new Map(Object.entries(JSON.parse(data)));
   } catch {
     return new Map();
   }
 }
 
-function writeSettings(namespace: string, settings: SettingsMap): Promise<void> {
-  return writeFile(
+function writeSettings(namespace: string, settings: SettingsMap): void {
+  writeFileSync(
     getSettingsPath(namespace),
     JSON.stringify(Object.fromEntries(settings.entries()), null, 2),
     "utf8",
   );
 }
 
-const locks: Record<string, Promise<unknown> | undefined> = {};
+const locks: Record<string, (() => unknown) | undefined> = {};
 
-async function transaction<T>(namespace: string, handler: TransactionHandler<T>): Promise<T> {
-  const lock = locks[namespace] ?? Promise.resolve();
+function transaction<T>(namespace: string, handler: TransactionHandler<T>): T {
+  const lock = locks[namespace];
 
-  const result = lock.then(() => handler());
+  if (lock) lock();
 
-  locks[namespace] = result.catch(() => {});
+  const result = handler();
+
+  locks[namespace] = () => result;
   return result;
 }
 
-export async function readTransaction<T>(
-  namespace: string,
-  handler: SettingsTransactionHandler<T>,
-): Promise<T> {
-  return transaction(namespace, async () => {
-    const settings = await readSettings(namespace);
+export function readTransaction<T>(namespace: string, handler: SettingsTransactionHandler<T>): T {
+  return transaction(namespace, () => {
+    const settings = readSettings(namespace);
     return handler(settings);
   });
 }
 
-export async function writeTransaction<T>(
-  namespace: string,
-  handler: SettingsTransactionHandler<T>,
-): Promise<T> {
-  return transaction(namespace, async () => {
-    const postHandlerTransform: Array<(settings: SettingsMap) => void | Promise<void>> = [];
+export function writeTransaction<T>(namespace: string, handler: SettingsTransactionHandler<T>): T {
+  return transaction(namespace, () => {
+    const postHandlerTransform: Array<(settings: SettingsMap) => void | void> = [];
 
-    const settings = await readSettings(namespace);
+    const settings = readSettings(namespace);
     if (namespace.toLowerCase() === "dev.replugged.settings") {
       // Prevent the "apiUrl" setting from changing
       const originalValue = settings.get("apiUrl");
@@ -79,52 +75,53 @@ export async function writeTransaction<T>(
       });
     }
 
-    const res = await handler(settings);
+    const res = handler(settings);
 
     for (const transform of postHandlerTransform) {
-      await transform(settings);
+      transform(settings);
     }
 
-    await writeSettings(namespace, settings);
+    writeSettings(namespace, settings);
     return res;
   });
 }
 
-export async function getSetting<T>(namespace: string, key: string, fallback: T): Promise<T>;
-export async function getSetting<T>(
-  namespace: string,
-  key: string,
-  fallback?: T,
-): Promise<T | undefined>;
-export async function getSetting<T>(
-  namespace: string,
-  key: string,
-  fallback?: T,
-): Promise<T | undefined> {
-  const setting = (await readTransaction(namespace, (settings) => settings.get(key))) as T;
+export function getSetting<T>(namespace: string, key: string, fallback: T): T;
+export function getSetting<T>(namespace: string, key: string, fallback?: T): T | undefined;
+export function getSetting<T>(namespace: string, key: string, fallback?: T): T | undefined {
+  const setting = readTransaction(namespace, (settings) => settings.get(key)) as T;
   return setting ?? fallback;
 }
 
-ipcMain.handle(RepluggedIpcChannels.GET_SETTING, async (_, namespace: string, key: string) =>
-  getSetting(namespace, key),
+ipcMain.on(
+  RepluggedIpcChannels.GET_SETTING,
+  (event, namespace: string, key: string) => (event.returnValue = getSetting(namespace, key)),
 );
 
-ipcMain.handle(RepluggedIpcChannels.HAS_SETTING, async (_, namespace: string, key: string) =>
-  readTransaction(namespace, (settings) => settings.has(key)),
+ipcMain.on(
+  RepluggedIpcChannels.HAS_SETTING,
+  (event, namespace: string, key: string) =>
+    (event.returnValue = readTransaction(namespace, (settings) => settings.has(key))),
 );
 
-ipcMain.handle(
+ipcMain.on(
   RepluggedIpcChannels.SET_SETTING,
-  (_, namespace: string, key: string, value: unknown) =>
-    void writeTransaction(namespace, (settings) => settings.set(key, value)),
+  (event, namespace: string, key: string, value: unknown) =>
+    (event.returnValue = writeTransaction(namespace, (settings) => settings.set(key, value))),
 );
 
-ipcMain.handle(RepluggedIpcChannels.DELETE_SETTING, (_, namespace: string, key: string) =>
-  writeTransaction(namespace, (settings) => settings.delete(key)),
+ipcMain.on(
+  RepluggedIpcChannels.DELETE_SETTING,
+  (event, namespace: string, key: string) =>
+    (event.returnValue = writeTransaction(namespace, (settings) => settings.delete(key))),
 );
 
-ipcMain.handle(RepluggedIpcChannels.GET_ALL_SETTINGS, async (_, namespace: string) =>
-  readTransaction(namespace, (settings) => Object.fromEntries(settings.entries())),
+ipcMain.on(
+  RepluggedIpcChannels.GET_ALL_SETTINGS,
+  (event, namespace: string) =>
+    (event.returnValue = readTransaction(namespace, (settings) =>
+      Object.fromEntries(settings.entries()),
+    )),
 );
 
 ipcMain.on(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER, () => shell.openPath(SETTINGS_DIR));

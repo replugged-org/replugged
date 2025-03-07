@@ -28,9 +28,12 @@ interface SwitchItemProps {
 
 export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;
 
-export const Switch = getFunctionBySource<SwitchType>(components, "xMinYMid meet")!;
+const getSwitchItem = async (): Promise<{ Switch: SwitchType; SwitchItem: SwitchItemType }> => ({
+  Switch: getFunctionBySource<SwitchType>(await components, "xMinYMid meet")!,
+  SwitchItem: getFunctionBySource<SwitchItemType>(
+    await components,
+    /hideBorder:\w+=!1,tooltipNote:\w+,onChange/,
+  )!,
+});
 
-export const SwitchItem = getFunctionBySource<SwitchItemType>(
-  components,
-  /hideBorder:\w+=!1,tooltipNote:\w+,onChange/,
-)!;
+export default getSwitchItem();

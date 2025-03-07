@@ -90,38 +90,45 @@ export type OriginalTextType = React.FC<CustomTextProps>;
 export type TextType = OriginalTextType &
   Record<"Normal" | "H1" | "H2" | "H3" | "H4" | "Eyebrow", OriginalTextType>;
 
-const TextComp = components.Text;
+const getText = async (): Promise<TextType> => {
+  const TextComp = (await components).Text;
 
-function TextWithDefaultProps(defaultProps: CustomTextProps) {
-  return (props: CustomTextProps) => {
-    props = { ...defaultProps, ...props };
-    const { children } = props;
-    const newChildren =
-      props.markdown && typeof children === "string"
-        ? parser.parse(children, true, {
-            allowLinks: props.allowMarkdownLinks,
-            allowHeading: props.allowMarkdownHeading,
-            allowList: props.allowMarkdownList,
-          })
-        : children;
-    delete props.markdown;
-    delete props.allowMarkdownLinks;
-    delete props.allowMarkdownHeading;
-    delete props.allowMarkdownList;
-    return <TextComp {...props}>{newChildren}</TextComp>;
-  };
-}
+  function TextWithDefaultProps(defaultProps: CustomTextProps) {
+    return (props: CustomTextProps) => {
+      props = { ...defaultProps, ...props };
+      const { children } = props;
+      const newChildren =
+        props.markdown && typeof children === "string"
+          ? parser.parse(children, true, {
+              allowLinks: props.allowMarkdownLinks,
+              allowHeading: props.allowMarkdownHeading,
+              allowList: props.allowMarkdownList,
+            })
+          : children;
+      delete props.markdown;
+      delete props.allowMarkdownLinks;
+      delete props.allowMarkdownHeading;
+      delete props.allowMarkdownList;
+      return <TextComp {...props}>{newChildren}</TextComp>;
+    };
+  }
 
-const Text = TextWithDefaultProps({}) as TextType;
-Text.Normal = TextWithDefaultProps({ variant: "text-sm/normal", tag: "span" });
-Text.H1 = TextWithDefaultProps({ variant: "heading-xl/bold", color: "header-primary", tag: "h1" });
-Text.H2 = TextWithDefaultProps({
-  variant: "heading-lg/semibold",
-  color: "header-primary",
-  tag: "h2",
-});
-Text.H3 = TextWithDefaultProps({ variant: "heading-md/bold", tag: "h3" });
-Text.H4 = TextWithDefaultProps({ variant: "heading-sm/bold", tag: "h4" });
-Text.Eyebrow = TextWithDefaultProps({ variant: "eyebrow" });
+  const Text = TextWithDefaultProps({}) as TextType;
+  Text.Normal = TextWithDefaultProps({ variant: "text-sm/normal", tag: "span" });
+  Text.H1 = TextWithDefaultProps({
+    variant: "heading-xl/bold",
+    color: "header-primary",
+    tag: "h1",
+  });
+  Text.H2 = TextWithDefaultProps({
+    variant: "heading-lg/semibold",
+    color: "header-primary",
+    tag: "h2",
+  });
+  Text.H3 = TextWithDefaultProps({ variant: "heading-md/bold", tag: "h3" });
+  Text.H4 = TextWithDefaultProps({ variant: "heading-sm/bold", tag: "h4" });
+  Text.Eyebrow = TextWithDefaultProps({ variant: "eyebrow" });
+  return Text;
+};
 
-export default Text;
+export default getText();

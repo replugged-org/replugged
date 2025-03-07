@@ -1,6 +1,4 @@
-import { toast } from "@common";
-import { intl } from "@common/i18n";
-import React from "@common/react";
+import { React, i18n, toast } from "@common";
 import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { plugins } from "src/renderer/managers/plugins";
@@ -19,6 +17,8 @@ import Icons from "../icons";
 import { getAddonType, label } from "./Addons";
 
 import "./Updater.css";
+
+const { intl } = i18n;
 
 const logger = Logger.coremod("Settings:Updater");
 

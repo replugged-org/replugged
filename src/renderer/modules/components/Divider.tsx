@@ -9,4 +9,4 @@ interface DividerProps {
 
 export type DividerType = React.FC<DividerProps>;
 
-export default getFunctionBySource<DividerType>(components, ".divider,")!;
+export default components.then((v) => getFunctionBySource<DividerType>(v, ".divider,")!);

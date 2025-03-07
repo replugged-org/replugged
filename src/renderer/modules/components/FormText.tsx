@@ -23,12 +23,6 @@ export type FormTextCompType = React.FC<React.PropsWithChildren<FormTextProps>>;
 
 export type FormTextType = Record<FormTextTypeKey, FormTextCompType>;
 
-const FormTextComp = getFunctionBySource<FormTextCompType>(components, /type:\w+=\w+\.DEFAULT/)!;
-const FormTextTypes = getExportsForProps<Record<FormTextTypeKey, string>>(components, [
-  "LABEL_DESCRIPTOR",
-  "INPUT_PLACEHOLDER",
-]);
-
 export const FormText: FormTextType = {
   DEFAULT: () => null,
   DESCRIPTION: () => null,
@@ -40,11 +34,23 @@ export const FormText: FormTextType = {
   SUCCESS: () => null,
 };
 
-if (typeof FormTextTypes === "object" && FormTextTypes !== null)
-  Object.keys(FormTextTypes).forEach((key) => {
-    FormText[key] = (props: React.PropsWithChildren<FormTextProps>) => (
-      <FormTextComp type={FormTextTypes[key]} {...props}>
-        {props.children}
-      </FormTextComp>
-    );
-  });
+const mapFormText = async (): Promise<void> => {
+  const FormTextComp = getFunctionBySource<FormTextCompType>(
+    await components,
+    /type:\w+=\w+\.DEFAULT/,
+  )!;
+  const FormTextTypes = getExportsForProps<Record<FormTextTypeKey, string>>(await components, [
+    "LABEL_DESCRIPTOR",
+    "INPUT_PLACEHOLDER",
+  ]);
+  if (typeof FormTextTypes === "object" && FormTextTypes !== null)
+    Object.keys(FormTextTypes).forEach((key) => {
+      FormText[key] = (props: React.PropsWithChildren<FormTextProps>) => (
+        <FormTextComp type={FormTextTypes[key]} {...props}>
+          {props.children}
+        </FormTextComp>
+      );
+    });
+};
+
+void mapFormText();

@@ -37,4 +37,6 @@ export type TextAreaType = React.ComponentClass<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 
-export default getFunctionBySource<TextAreaType>(components, "showCharacterCountFullPadding")!;
+export default components.then(
+  (v) => getFunctionBySource<TextAreaType>(v, "showCharacterCountFullPadding")!,
+);

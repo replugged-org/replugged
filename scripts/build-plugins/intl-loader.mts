@@ -69,13 +69,13 @@ export default {
           getTranslationImport: (importPath) => `import("${importPath}")`,
           debug: !production,
           preGenerateBinds: false,
-          getPrelude: () => `import {waitForProps} from '@webpack';`,
+          getPrelude: () => `import {getByProps} from '@webpack';`,
         }).getOutput();
 
         return {
           contents: transformedOutput.replace(
             /require\('@discord\/intl'\);/,
-            "await waitForProps('createLoader','IntlManager');",
+            "getByProps('createLoader','IntlManager');",
           ),
           loader: "js",
         };

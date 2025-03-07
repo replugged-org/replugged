@@ -66,32 +66,38 @@ export type OriginalTooltipType = React.ComponentClass<TooltipFunctionChildren> 
 
 export type TooltipType = React.FC<TooltipCustom> & TooltipEnums;
 
-const TooltipMod = getFunctionBySource<OriginalTooltipType>(components, "shouldShowTooltip")!;
+const getTooltip = async (): Promise<TooltipType> => {
+  const TooltipMod = getFunctionBySource<OriginalTooltipType>(
+    await components,
+    "shouldShowTooltip",
+  )!;
 
-const Tooltip: TooltipType = (props) => (
-  <TooltipMod {...props}>
-    {(tooltipProps) => {
-      if (props.className) {
-        if (tooltipProps.className) {
-          tooltipProps.className += ` ${props.className}`;
-        } else {
-          tooltipProps.className = props.className;
+  const Tooltip: TooltipType = (props) => (
+    <TooltipMod {...props}>
+      {(tooltipProps) => {
+        if (props.className) {
+          if (tooltipProps.className) {
+            tooltipProps.className += ` ${props.className}`;
+          } else {
+            tooltipProps.className = props.className;
+          }
         }
-      }
-      if (props.style) {
-        if (tooltipProps.style) {
-          tooltipProps.style = { ...tooltipProps.style, ...props.style };
-        } else {
-          tooltipProps.style = props.style;
+        if (props.style) {
+          if (tooltipProps.style) {
+            tooltipProps.style = { ...tooltipProps.style, ...props.style };
+          } else {
+            tooltipProps.style = props.style;
+          }
         }
-      }
 
-      return <span {...tooltipProps}>{props.children}</span>;
-    }}
-  </TooltipMod>
-);
-Tooltip.Aligns = Aligns;
-Tooltip.Colors = TooltipMod.Colors;
-Tooltip.Positions = Positions;
+        return <span {...tooltipProps}>{props.children}</span>;
+      }}
+    </TooltipMod>
+  );
+  Tooltip.Aligns = Aligns;
+  Tooltip.Colors = TooltipMod.Colors;
+  Tooltip.Positions = Positions;
+  return Tooltip;
+};
 
-export default Tooltip;
+export default getTooltip();

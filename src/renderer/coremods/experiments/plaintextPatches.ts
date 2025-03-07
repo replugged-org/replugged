@@ -2,7 +2,7 @@ import { init } from "src/renderer/apis/settings";
 import { type GeneralSettings, type PlaintextPatch, defaultSettings } from "src/types";
 
 // TODO: see if we can import this from General.tsx
-const generalSettings = await init<GeneralSettings, keyof typeof defaultSettings>(
+const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
   defaultSettings,
 );

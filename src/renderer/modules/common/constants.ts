@@ -3,75 +3,6 @@ import { filters, getExportsForProps, waitForModule, waitForProps } from "../web
 
 type StringConcat = (...rest: string[]) => string;
 
-const ConstantsCommon = await waitForModule<Record<string, unknown>>(
-  filters.bySource("dis.gd/request"),
-);
-const Constants = await waitForModule<Record<string, unknown>>(
-  filters.bySource("users/@me/relationships"),
-);
-export const raw = virtualMerge(ConstantsCommon, Constants);
-
-export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsCommon, [
-  "ADMINISTRATOR",
-  "MANAGE_GUILD",
-]);
-// OAuth2Scopes
-export const Scopes = await waitForProps<Record<string, string>>("BOT", "GUILDS");
-// RPCCloseCodes
-export const RPCErrors = getExportsForProps<Record<string, string | number>>(ConstantsCommon, [
-  "RATELIMITED",
-  "TOKEN_REVOKED",
-])!;
-export const RPCCommands = getExportsForProps<Record<string, string>>(ConstantsCommon, [
-  "AUTHENTICATE",
-  "AUTHORIZE",
-])!;
-export const RPCEvents = getExportsForProps<Record<string, string>>(ConstantsCommon, [
-  "GUILD_CREATE",
-  "ERROR",
-])!;
-// StatusTypes
-export const Status = getExportsForProps<Record<string, string>>(ConstantsCommon, [
-  "ONLINE",
-  "IDLE",
-])!;
-// WebRoutes
-export const Paths = getExportsForProps<Record<string, string>>(ConstantsCommon, [
-  "INDEX",
-  "DOWNLOADS",
-])!;
-
-export const ChannelTypes = getExportsForProps<Record<string, string | number>>(Constants, [
-  "DM",
-  "GUILD_FORUM",
-])!;
-export const Endpoints = getExportsForProps<Record<string, string | StringConcat>>(Constants, [
-  "USERS",
-  "INTEGRATIONS",
-])!;
-export const GuildFeatures = getExportsForProps<Record<string, string>>(Constants, [
-  "VERIFIED",
-  "ANIMATED_BANNER",
-])!;
-export const MessageFlags = getExportsForProps<Record<string, number>>(Constants, [
-  "EPHEMERAL",
-  "LOADING",
-])!;
-export const Routes = getExportsForProps<Record<string, string | StringConcat>>(Constants, [
-  "INDEX",
-  "LOGIN",
-])!;
-export const UserFlags = getExportsForProps<Record<string, string | number>>(Constants, [
-  "STAFF",
-  "SPAMMER",
-])!;
-
-// ThemeColor
-export const CSSVariables = await waitForProps<Record<string, string>>(
-  "TEXT_NORMAL",
-  "BACKGROUND_PRIMARY",
-);
-
 interface ColorResponse {
   hex: () => string;
   hsl: () => string;
@@ -119,6 +50,116 @@ interface ColorMod {
   layout: Record<string, string>;
 }
 
-export const ColorGenerator = await waitForProps<ColorMod>("unsafe_rawColors", "layout");
+interface returnType {
+  raw: ReturnType<typeof virtualMerge & Record<string, unknown>>;
+  Permissions: Record<string, bigint>;
+  Scopes: Record<string, string>;
+  RPCErrors: Record<string, string | number>;
+  RPCCommands: Record<string, string>;
+  RPCEvents: Record<string, string>;
+  Status: Record<string, string>;
+  Paths: Record<string, string>;
+  ChannelTypes: Record<string, string | number>;
+  Endpoints: Record<string, string | StringConcat>;
+  GuildFeatures: Record<string, string>;
+  MessageFlags: Record<string, number>;
+  Routes: Record<string, string | StringConcat>;
+  UserFlags: Record<string, string | number>;
+  CSSVariables: Record<string, string>;
+  ColorGenerator: ColorMod;
+  Themes: ColorMod["themes"];
+}
 
-export const Themes = ColorGenerator.themes;
+const getConstants = async (): Promise<returnType> => {
+  const ConstantsCommon = await waitForModule<Record<string, unknown>>(
+    filters.bySource("dis.gd/request"),
+  );
+  const Constants = await waitForModule<Record<string, unknown>>(
+    filters.bySource("users/@me/relationships"),
+  );
+  const raw = virtualMerge(ConstantsCommon, Constants);
+
+  const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsCommon, [
+    "ADMINISTRATOR",
+    "MANAGE_GUILD",
+  ])!;
+  // OAuth2Scopes
+  const Scopes = await waitForProps<Record<string, string>>("BOT", "GUILDS");
+  // RPCCloseCodes
+  const RPCErrors = getExportsForProps<Record<string, string | number>>(ConstantsCommon, [
+    "RATELIMITED",
+    "TOKEN_REVOKED",
+  ])!;
+  const RPCCommands = getExportsForProps<Record<string, string>>(ConstantsCommon, [
+    "AUTHENTICATE",
+    "AUTHORIZE",
+  ])!;
+  const RPCEvents = getExportsForProps<Record<string, string>>(ConstantsCommon, [
+    "GUILD_CREATE",
+    "ERROR",
+  ])!;
+  // StatusTypes
+  const Status = getExportsForProps<Record<string, string>>(ConstantsCommon, ["ONLINE", "IDLE"])!;
+  // WebRoutes
+  const Paths = getExportsForProps<Record<string, string>>(ConstantsCommon, [
+    "INDEX",
+    "DOWNLOADS",
+  ])!;
+
+  const ChannelTypes = getExportsForProps<Record<string, string | number>>(Constants, [
+    "DM",
+    "GUILD_FORUM",
+  ])!;
+  const Endpoints = getExportsForProps<Record<string, string | StringConcat>>(Constants, [
+    "USERS",
+    "INTEGRATIONS",
+  ])!;
+  const GuildFeatures = getExportsForProps<Record<string, string>>(Constants, [
+    "VERIFIED",
+    "ANIMATED_BANNER",
+  ])!;
+  const MessageFlags = getExportsForProps<Record<string, number>>(Constants, [
+    "EPHEMERAL",
+    "LOADING",
+  ])!;
+  const Routes = getExportsForProps<Record<string, string | StringConcat>>(Constants, [
+    "INDEX",
+    "LOGIN",
+  ])!;
+  const UserFlags = getExportsForProps<Record<string, string | number>>(Constants, [
+    "STAFF",
+    "SPAMMER",
+  ])!;
+
+  // ThemeColor
+  const CSSVariables = await waitForProps<Record<string, string>>(
+    "TEXT_NORMAL",
+    "BACKGROUND_PRIMARY",
+  );
+
+  const ColorGenerator = await waitForProps<ColorMod>("unsafe_rawColors", "layout");
+
+  const Themes = ColorGenerator.themes;
+
+  return {
+    raw,
+    Permissions,
+    Scopes,
+    RPCErrors,
+    RPCCommands,
+    RPCEvents,
+    Status,
+    Paths,
+    ChannelTypes,
+    Endpoints,
+    GuildFeatures,
+    MessageFlags,
+    Routes,
+    UserFlags,
+    CSSVariables,
+    ColorGenerator,
+    Themes,
+  };
+};
+
+export default getConstants();

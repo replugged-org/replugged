@@ -6,4 +6,4 @@ export type Typing = {
   stopTyping: (channelId: string) => void;
 };
 
-export default await waitForProps<Typing>("startTyping", "stopTyping");
+export default waitForProps<Typing>("startTyping", "stopTyping");

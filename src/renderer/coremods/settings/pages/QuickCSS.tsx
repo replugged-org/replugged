@@ -1,7 +1,6 @@
 import { css } from "@codemirror/lang-css";
 import { EditorState } from "@codemirror/state";
-import { React, toast } from "@common";
-import { intl } from "@common/i18n";
+import { React, i18n, toast } from "@common";
 import { Button, Divider, Flex, Text } from "@components";
 import { webpack } from "@replugged";
 import { EditorView, basicSetup } from "codemirror";
@@ -10,6 +9,8 @@ import { githubDark, githubLight } from "./codemirror-github";
 import { generalSettings } from "./General";
 
 import "./QuickCSS.css";
+
+const { intl } = i18n;
 
 interface UseCodeMirrorOptions {
   value?: string;
