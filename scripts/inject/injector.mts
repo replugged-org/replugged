@@ -1,6 +1,9 @@
+import { execSync } from "child_process";
+import { existsSync } from "fs";
 import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
+
 import { createPackage, extractAll, statFile, uncache } from "@electron/asar";
 import { entryPoint as argEntryPoint, exitCode } from "./index.mjs";
 
@@ -8,10 +11,22 @@ import { AnsiEscapes, getCommand } from "./util.mjs";
 
 import { execSync } from "child_process";
 import { DiscordPlatform, PlatformModule } from "./types.mjs";
+
 import { CONFIG_PATH } from "../../src/util.mjs";
-import { existsSync } from "fs";
+import { entryPoint as argEntryPoint, exitCode } from "./index.mjs";
+import type { DiscordPlatform, PlatformModule, ProcessInfo } from "./types.mjs";
+import {
+  AnsiEscapes,
+  PlatformNames,
+  getCommand,
+  getProcessInfoByName,
+  getUserData,
+  killProcessByPID,
+  openProcess,
+} from "./util.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
+let processInfo: ProcessInfo | ProcessInfo[] | null;
 
 export const isDiscordInstalled = async (appDir: string, silent?: boolean): Promise<boolean> => {
   try {
@@ -214,6 +229,64 @@ export const uninject = async (
       join(appDir, "..", "app.orig.asar.unpacked"),
       join(appDir, "..", "app.asar.unpacked"),
     );
+    process.exit(exitCode);
   }
+
   return true;
+};
+
+export const smartInject = async (
+  cmd: "uninject" | "inject",
+  replug: boolean,
+  platformModule: PlatformModule,
+  platform: DiscordPlatform,
+  production: boolean,
+  noRelaunch: boolean,
+): Promise<boolean> => {
+  let result;
+
+  const processName =
+    process.platform === "darwin"
+      ? PlatformNames[platform]
+      : PlatformNames[platform].replace(" ", "");
+  if (!noRelaunch) {
+    try {
+      if ((replug && cmd === "uninject") || !replug) {
+        processInfo = getProcessInfoByName(processName)!;
+        await Promise.all(processInfo.map((info) => killProcessByPID(info.pid)));
+      }
+    } catch {}
+  }
+
+  result =
+    cmd === "uninject"
+      ? await uninject(platformModule, platform)
+      : await inject(platformModule, platform, production);
+
+  if (!noRelaunch) {
+    if (((replug && cmd !== "uninject") || !replug) && processInfo) {
+      const appDir = await platformModule.getAppDir(platform);
+      switch (process.platform) {
+        case "win32":
+          openProcess(
+            join(appDir, "..", "..", "..", "Update"),
+            ["--processStart", `${processName}.exe`],
+            { detached: true, stdio: "ignore" },
+          );
+          break;
+        case "linux":
+          openProcess(join(appDir, "..", "..", processName), [], {
+            ...getUserData(),
+            detached: true,
+            stdio: "ignore",
+          });
+          break;
+        case "darwin":
+          openProcess(`open -a "${processName}.app"`);
+          break;
+      }
+    }
+  }
+
+  return result;
 };
