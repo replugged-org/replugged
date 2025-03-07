@@ -1,3 +1,6 @@
+// We Bundle it anyways so for reference and even plugin use this would be nice to be have.
+export * as Intl from "@discord/intl";
+
 export * as injector from "./modules/injector";
 export { Injector } from "./modules/injector";
 
