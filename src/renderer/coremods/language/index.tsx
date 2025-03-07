@@ -44,7 +44,7 @@ export function Percentage(
 }
 
 export function start(): void {
-  const totalStrCount = Object.keys(t).length;
+  const totalStrCount = Object.keys(messagesLoader.messages[messagesLoader.defaultLocale]).length;
 
   Object.entries(messagesLoader.localeImportMap).forEach(async ([locale, getStrings]) => {
     const strings = (await getStrings()).default;
