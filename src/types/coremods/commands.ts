@@ -53,8 +53,8 @@ export type GetValueType<T extends CommandOptionReturn, D> = undefined extends T
   ? Exclude<T["value"], undefined> | D
   : T["value"];
 
-export interface InexecutableRepluggedCommand<T extends CommandOptions> {
-  section?: RepluggedCommandSection;
+export interface InexecutableReCelledCommand<T extends CommandOptions> {
+  section?: ReCelledCommandSection;
   applicationId?: string;
   type?: number;
   id?: string;
@@ -66,12 +66,12 @@ export interface InexecutableRepluggedCommand<T extends CommandOptions> {
   options?: readonly T[];
 }
 
-export type RepluggedCommand<T extends CommandOptions> = InexecutableRepluggedCommand<T> &
+export type ReCelledCommand<T extends CommandOptions> = InexecutableReCelledCommand<T> &
   (
     | {
         executor: (
           interaction: CommandInteraction<GetCommandOptions<T>>,
-        ) => Promise<RepluggedCommandResult> | RepluggedCommandResult;
+        ) => Promise<ReCelledCommandResult> | ReCelledCommandResult;
         execute?: never;
       }
     | {
@@ -83,15 +83,15 @@ export type RepluggedCommand<T extends CommandOptions> = InexecutableRepluggedCo
       }
   );
 
-export type AnyRepluggedCommand = RepluggedCommand<CommandOptions>;
+export type AnyReCelledCommand = ReCelledCommand<CommandOptions>;
 
-export type RepluggedCommandResult = {
+export type ReCelledCommandResult = {
   send?: boolean;
   result?: string | null;
   embeds?: APIEmbed[];
 } | null;
 
-export interface RepluggedCommandSection {
+export interface ReCelledCommandSection {
   id: string;
   name: string;
   type?: 1;

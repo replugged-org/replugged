@@ -12,10 +12,10 @@ import {
   TextInput,
   Tooltip,
 } from "@components";
-import { Logger, plugins, themes } from "@replugged";
+import { Logger, plugins, themes } from "@recelled";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
-import type { RepluggedPlugin, RepluggedTheme } from "src/types";
+import type { ReCelledPlugin, ReCelledTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
 import Icons from "../icons";
 import { generalSettings } from "./General";
@@ -41,14 +41,14 @@ export function getAddonType(type: "replugged-plugin" | "replugged-theme"): Addo
   throw new Error("Invalid addon type");
 }
 
-function getRepluggedNative(
+function getReCelledNative(
   type: AddonType,
-): typeof window.RepluggedNative.plugins | typeof window.RepluggedNative.themes {
+): typeof window.ReCelledNative.plugins | typeof window.ReCelledNative.themes {
   if (type === AddonType.Plugin) {
-    return window.RepluggedNative.plugins;
+    return window.ReCelledNative.plugins;
   }
   if (type === AddonType.Theme) {
-    return window.RepluggedNative.themes;
+    return window.ReCelledNative.themes;
   }
   throw new Error("Invalid addon type");
 }
@@ -74,7 +74,7 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
   throw new Error("Invalid addon type");
 }
 
-function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string, RepluggedTheme> {
+function listAddons(type: AddonType): Map<string, ReCelledPlugin> | Map<string, ReCelledTheme> {
   if (type === AddonType.Plugin) {
     return plugins.plugins;
   }
@@ -107,7 +107,7 @@ async function openUserProfile(id: string): Promise<void> {
         fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
       } catch (e) {
         logger.error(`Failed to fetch user profile for ${id}`, e);
-        toast.toast(intl.string(t.REPLUGGED_TOAST_PROFILE_FETCH_FAILED), toast.Kind.FAILURE);
+        toast.toast(intl.string(t.RECELLED_TOAST_PROFILE_FETCH_FAILED), toast.Kind.FAILURE);
         return;
       }
     }
@@ -118,7 +118,7 @@ async function openUserProfile(id: string): Promise<void> {
   });
 }
 
-function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
+function getAuthors(addon: ReCelledPlugin | ReCelledTheme): Author[] {
   return [addon.manifest.author].flat();
 }
 
@@ -136,7 +136,7 @@ export function getSourceLink(addon: AnyAddonManifest): string | undefined {
 }
 
 function openFolder(type: AddonType): void {
-  getRepluggedNative(type).openFolder();
+  getReCelledNative(type).openFolder();
 }
 
 async function loadMissing(type: AddonType): Promise<void> {
@@ -174,10 +174,10 @@ export function label(
 
   let base = "";
   if (type === AddonType.Plugin) {
-    base = intl.string(t[`REPLUGGED_PLUGIN${plural ? "S" : ""}`]);
+    base = intl.string(t[`RECELLED_PLUGIN${plural ? "S" : ""}`]);
   }
   if (type === AddonType.Theme) {
-    base = intl.string(t[`REPLUGGED_THEME${plural ? "S" : ""}`]);
+    base = intl.string(t[`RECELLED_THEME${plural ? "S" : ""}`]);
   }
   if (caps === "lower") {
     base = base.toLowerCase();
@@ -206,7 +206,7 @@ function replaceVariable(
   return <>{els}</>;
 }
 
-function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactElement {
+function Authors({ addon }: { addon: ReCelledPlugin | ReCelledTheme }): React.ReactElement {
   const els = getAuthors(addon).map((author) => (
     <Flex
       key={JSON.stringify(author)}
@@ -218,10 +218,10 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
       <b>{author.name}</b>
       {author.discordID ? (
         <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+          text={intl.formatToPlainString(t.RECELLED_ADDON_PROFILE_OPEN, {
             type: intl.string(discordT.NOTIFICATION_TITLE_DISCORD),
           })}
-          className="replugged-addon-icon replugged-addon-icon-author">
+          className="recelled-addon-icon recelled-addon-icon-author">
           <a onClick={() => openUserProfile(author.discordID!)}>
             <Icons.Discord />
           </a>
@@ -229,8 +229,8 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
       ) : null}
       {author.github ? (
         <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, { type: "GitHub" })}
-          className="replugged-addon-icon replugged-addon-icon-author">
+          text={intl.formatToPlainString(t.RECELLED_ADDON_PROFILE_OPEN, { type: "GitHub" })}
+          className="recelled-addon-icon recelled-addon-icon-author">
           <a href={`https://github.com/${author.github}`} target="_blank" rel="noopener noreferrer">
             <Icons.GitHub />
           </a>
@@ -243,19 +243,19 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
 
   if (els.length === 1) {
     // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_ONE);
+    message = intl.string(t.RECELLED_ADDON_AUTHORS_ONE);
   }
   if (els.length === 2) {
     // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_TWO);
+    message = intl.string(t.RECELLED_ADDON_AUTHORS_TWO);
   }
   if (els.length === 3) {
     // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_THREE);
+    message = intl.string(t.RECELLED_ADDON_AUTHORS_THREE);
   }
   if (els.length > 3) {
     // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_MANY);
+    message = intl.string(t.RECELLED_ADDON_AUTHORS_MANY);
   }
 
   return replaceVariable(message, {
@@ -277,7 +277,7 @@ function Card({
   uninstall,
 }: {
   type: AddonType;
-  addon: RepluggedPlugin | RepluggedTheme;
+  addon: ReCelledPlugin | ReCelledTheme;
   disabled: boolean;
   hasSettings: boolean;
   openSettings: () => void;
@@ -288,7 +288,7 @@ function Card({
   const sourceLink = getSourceLink(addon.manifest);
 
   return (
-    <div className="replugged-addon-card">
+    <div className="recelled-addon-card">
       <Flex align={Flex.Align.START} justify={Flex.Justify.BETWEEN} style={{ marginBottom: "5px" }}>
         <span>
           <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
@@ -305,10 +305,10 @@ function Card({
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
           {sourceLink ? (
             <Tooltip
-              text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
+              text={intl.formatToPlainString(t.RECELLED_ADDON_PAGE_OPEN, {
                 type: label(type, { caps: "title" }),
               })}
-              className="replugged-addon-icon">
+              className="recelled-addon-icon">
               <a href={sourceLink} target="_blank" rel="noopener noreferrer">
                 <Icons.Link />
               </a>
@@ -316,30 +316,30 @@ function Card({
           ) : null}
           {hasSettings ? (
             <Tooltip
-              text={intl.formatToPlainString(t.REPLUGGED_ADDON_SETTINGS, {
+              text={intl.formatToPlainString(t.RECELLED_ADDON_SETTINGS, {
                 type: label(type, { caps: "title" }),
               })}
-              className="replugged-addon-icon">
+              className="recelled-addon-icon">
               <a onClick={() => openSettings()}>
                 <Icons.Settings />
               </a>
             </Tooltip>
           ) : null}
           <Tooltip
-            text={intl.formatToPlainString(t.REPLUGGED_ADDON_DELETE, {
+            text={intl.formatToPlainString(t.RECELLED_ADDON_DELETE, {
               type: label(type, { caps: "title" }),
             })}
-            className="replugged-addon-icon">
+            className="recelled-addon-icon">
             <a onClick={() => uninstall()}>
               <Icons.Trash />
             </a>
           </Tooltip>
           {disabled ? null : (
             <Tooltip
-              text={intl.formatToPlainString(t.REPLUGGED_ADDON_RELOAD, {
+              text={intl.formatToPlainString(t.RECELLED_ADDON_RELOAD, {
                 type: label(type, { caps: "title" }),
               })}
-              className="replugged-addon-icon">
+              className="recelled-addon-icon">
               <a onClick={() => reload()}>
                 <Icons.Reload />
               </a>
@@ -354,7 +354,7 @@ function Card({
       {addon.manifest.updater?.type !== "store" ? (
         <div style={{ marginTop: "8px" }}>
           <Notice messageType={Notice.Types.ERROR}>
-            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+            {intl.format(t.RECELLED_ADDON_NOT_REVIEWED_DESC, {
               type: label(type),
             })}
           </Notice>
@@ -376,11 +376,11 @@ function Cards({
   disabled: Set<string>;
   setSection: (section: string) => void;
   setDisabled: (disabled: Set<string>) => void;
-  list: Array<RepluggedPlugin | RepluggedTheme>;
+  list: Array<ReCelledPlugin | ReCelledTheme>;
   refreshList: () => void;
 }): React.ReactElement {
   return (
-    <div className="replugged-addon-cards">
+    <div className="recelled-addon-cards">
       {list.map((addon) => (
         <Card
           type={type}
@@ -397,14 +397,14 @@ function Cards({
                 await manager.enable(addon.manifest.id);
                 clonedDisabled.delete(addon.manifest.id);
                 toast.toast(
-                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS, {
+                  intl.formatToPlainString(t.RECELLED_TOAST_ADDON_ENABLE_SUCCESS, {
                     name: addon.manifest.name,
                   }),
                 );
               } catch (e) {
                 logger.error("Error enabling", addon, e);
                 toast.toast(
-                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_FAILED, {
+                  intl.formatToPlainString(t.RECELLED_TOAST_ADDON_ENABLE_FAILED, {
                     name: label(type),
                   }),
                   toast.Kind.FAILURE,
@@ -415,14 +415,14 @@ function Cards({
                 await manager.disable(addon.manifest.id);
                 clonedDisabled.add(addon.manifest.id);
                 toast.toast(
-                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS, {
+                  intl.formatToPlainString(t.RECELLED_TOAST_ADDON_DISABLE_SUCCESS, {
                     name: addon.manifest.name,
                   }),
                 );
               } catch (e) {
                 logger.error("Error disabling", addon, e);
                 toast.toast(
-                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_DISABLE_FAILED, {
+                  intl.formatToPlainString(t.RECELLED_TOAST_ADDON_DISABLE_FAILED, {
                     name: label(type),
                   }),
                   toast.Kind.FAILURE,
@@ -433,8 +433,8 @@ function Cards({
           }}
           uninstall={async () => {
             const confirmation = await modal.confirm({
-              title: intl.format(t.REPLUGGED_ADDON_UNINSTALL, { name: addon.manifest.name }),
-              body: intl.format(t.REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY, { type: label(type) }),
+              title: intl.format(t.RECELLED_ADDON_UNINSTALL, { name: addon.manifest.name }),
+              body: intl.format(t.RECELLED_ADDON_UNINSTALL_PROMPT_BODY, { type: label(type) }),
               confirmText: intl.string(discordT.APPLICATION_UNINSTALL_PROMPT_CONFIRM),
               cancelText: intl.string(discordT.CANCEL),
               confirmColor: Button.Colors.RED,
@@ -445,14 +445,14 @@ function Cards({
             try {
               await manager.uninstall(addon.manifest.id);
               toast.toast(
-                intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS, {
+                intl.formatToPlainString(t.RECELLED_TOAST_ADDON_UNINSTALL_SUCCESS, {
                   name: addon.manifest.name,
                 }),
               );
             } catch (e) {
               logger.error("Error uninstalling", addon, e);
               toast.toast(
-                intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED, {
+                intl.formatToPlainString(t.RECELLED_TOAST_ADDON_UNINSTALL_FAILED, {
                   name: addon.manifest.name,
                 }),
                 toast.Kind.FAILURE,
@@ -465,14 +465,14 @@ function Cards({
             try {
               await manager.reload(addon.manifest.id);
               toast.toast(
-                intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS, {
+                intl.formatToPlainString(t.RECELLED_TOAST_ADDON_RELOAD_SUCCESS, {
                   name: addon.manifest.name,
                 }),
               );
             } catch (e) {
               logger.error("Error reloading", addon, e);
               toast.toast(
-                intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_FAILED, {
+                intl.formatToPlainString(t.RECELLED_TOAST_ADDON_RELOAD_FAILED, {
                   name: addon.manifest.name,
                 }),
                 toast.Kind.FAILURE,
@@ -494,7 +494,7 @@ function Cards({
 export const Addons = (type: AddonType): React.ReactElement => {
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
-  const [list, setList] = React.useState<Array<RepluggedPlugin | RepluggedTheme> | null>();
+  const [list, setList] = React.useState<Array<ReCelledPlugin | ReCelledTheme> | null>();
   const [unfilteredCount, setUnfilteredCount] = React.useState(0);
   const [section, setSection] = React.useState(`rp_${type}`);
 
@@ -526,14 +526,14 @@ export const Addons = (type: AddonType): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Flex align={Flex.Align.CENTER} className={"replugged-addon-breadcrumbs"}>
+        <Flex align={Flex.Align.CENTER} className={"recelled-addon-breadcrumbs"}>
           {section === `rp_${type}` ? (
             <Text.H2
               style={{
                 // Do not turn "(num)" into a single symbol
                 fontVariantLigatures: "none",
               }}>
-              {intl.format(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+              {intl.format(t.RECELLED_ADDONS_TITLE_COUNT, {
                 type: label(type, { caps: "title", plural: true }),
                 count: unfilteredCount,
               })}
@@ -544,7 +544,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               breadcrumbs={[
                 {
                   id: `rp_${type}`,
-                  label: intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+                  label: intl.formatToPlainString(t.RECELLED_ADDONS_TITLE_COUNT, {
                     type: label(type, { caps: "title", plural: true }),
                     count: unfilteredCount,
                   }),
@@ -563,8 +563,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   color={active ? "header-primary" : "inherit"}
                   className={
                     active
-                      ? "replugged-addon-breadcrumbsActive"
-                      : "replugged-addon-breadcrumbsInactive"
+                      ? "recelled-addon-breadcrumbsActive"
+                      : "recelled-addon-breadcrumbsInactive"
                   }
                   style={{
                     // Do not turn "(num)" into a single symbol
@@ -579,7 +579,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
         {section === `rp_${type}` && (
           <div style={{ display: "flex" }}>
             <Button onClick={() => openFolder(type)}>
-              {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
+              {intl.format(t.RECELLED_ADDONS_FOLDER_OPEN, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
@@ -588,14 +588,14 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 try {
                   await loadMissing(type);
                   toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
+                    intl.formatToPlainString(t.RECELLED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
                       type: label(type, { plural: true }),
                     }),
                   );
                 } catch (e) {
                   logger.error("Error loading missing", e);
                   toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
+                    intl.formatToPlainString(t.RECELLED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
                       type: label(type, { plural: true }),
                     }),
                     toast.Kind.FAILURE,
@@ -606,7 +606,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               }}
               color={Button.Colors.PRIMARY}
               look={Button.Looks.LINK}>
-              {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
+              {intl.format(t.RECELLED_ADDONS_LOAD_MISSING, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
@@ -614,7 +614,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
               color={Button.Colors.PRIMARY}
               look={Button.Looks.LINK}>
-              {intl.format(t.REPLUGGED_ADDON_BROWSE, {
+              {intl.format(t.RECELLED_ADDON_BROWSE, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
@@ -625,7 +625,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
       {section === `rp_${type}` && unfilteredCount ? (
         <div style={{ marginBottom: "20px" }}>
           <TextInput
-            placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
+            placeholder={intl.formatToPlainString(t.RECELLED_SEARCH_FOR_ADDON, {
               type: label(type),
             })}
             onChange={(e) => setSearch(e)}
@@ -635,7 +635,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
       ) : null}
       {section === `rp_${type}` && search && list?.length ? (
         <Text variant="heading-md/bold" style={{ marginBottom: "10px" }}>
-          {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
+          {intl.format(t.RECELLED_LIST_RESULTS, { count: list.length })}
         </Text>
       ) : null}
       {section === `rp_${type}` ? (
@@ -653,8 +653,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
         ) : list ? (
           <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
             {unfilteredCount
-              ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
-              : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
+              ? intl.format(t.RECELLED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
+              : intl.format(t.RECELLED_NO_ADDONS_INSTALLED, {
                   type: label(type, { plural: true }),
                 })}
           </Text>

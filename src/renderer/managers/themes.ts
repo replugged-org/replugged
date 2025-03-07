@@ -1,5 +1,5 @@
 import { loadStyleSheet } from "../util";
-import type { RepluggedTheme } from "../../types";
+import type { ReCelledTheme } from "../../types";
 import type { AddonSettings } from "src/types/addon";
 import { init } from "../apis/settings";
 import * as logger from "../modules/logger";
@@ -9,7 +9,7 @@ const themeElements = new Map<string, HTMLLinkElement>();
 /**
  * @hidden
  */
-export const themes = new Map<string, RepluggedTheme>();
+export const themes = new Map<string, ReCelledTheme>();
 let disabled: string[];
 const settings = init<AddonSettings>("themes");
 
@@ -20,7 +20,7 @@ const settings = init<AddonSettings>("themes");
  * This does not apply the themes, only loads their metadata. You can call {@link load} or {@link loadAll} to apply a theme.
  */
 export async function loadMissing(): Promise<void> {
-  for (const theme of await window.RepluggedNative.themes.list()) {
+  for (const theme of await window.ReCelledNative.themes.list()) {
     themes.set(theme.manifest.id, theme);
   }
   disabled = settings.get("disabled", []);
@@ -53,7 +53,7 @@ export function load(id: string): void {
   }
   unload(id);
 
-  const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+  const el = loadStyleSheet(`recelled://theme/${theme.path}/${theme.manifest.main}`);
   themeElements.set(id, el);
 }
 
@@ -73,7 +73,7 @@ export function loadSplash(id: string): void {
   }
   unload(id);
 
-  const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.splash}`);
+  const el = loadStyleSheet(`recelled://theme/${theme.path}/${theme.manifest.splash}`);
   themeElements.set(id, el);
 }
 
@@ -114,7 +114,7 @@ export function unloadAll(): void {
  * @remarks
  * This may include themes that are not available until Discord is reloaded.
  */
-export async function get(path: string): Promise<RepluggedTheme | undefined> {
+export async function get(path: string): Promise<ReCelledTheme | undefined> {
   return await list().then((x) => x.find((p) => p.manifest.id === path));
 }
 
@@ -124,8 +124,8 @@ export async function get(path: string): Promise<RepluggedTheme | undefined> {
  * @remarks
  * This may include themes that are not available until Discord is reloaded.
  */
-export async function list(): Promise<RepluggedTheme[]> {
-  return await window.RepluggedNative.themes.list();
+export async function list(): Promise<ReCelledTheme[]> {
+  return await window.ReCelledNative.themes.list();
 }
 
 /**
@@ -172,7 +172,7 @@ export async function uninstall(id: string): Promise<void> {
   const theme = themes.get(id)!;
   unload(id);
   themes.delete(id);
-  await window.RepluggedNative.themes.uninstall(theme.path);
+  await window.ReCelledNative.themes.uninstall(theme.path);
 }
 
 export function getDisabled(): string[] {

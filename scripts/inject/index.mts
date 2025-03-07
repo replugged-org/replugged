@@ -28,7 +28,7 @@ export const entryPoint = ctx.getOptionalArg(/--entryPoint/);
 
 if (!(process.platform in platformModules)) {
   console.error(
-    `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
+    `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug ReCelled :(${AnsiEscapes.RESET}`,
     "\n",
   );
   console.error("It seems like your platform is not supported yet.", "\n");
@@ -36,7 +36,7 @@ if (!(process.platform in platformModules)) {
   console.error(
     `Make sure to mention the platform you are on is "${process.platform}" in your issue ticket.`,
   );
-  console.error("https://github.com/replugged-org/replugged/issues/new/choose");
+  console.error("https://github.com/recelled/recelled/issues/new/choose");
   process.exit(exitCode);
 }
 
@@ -109,7 +109,7 @@ const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void>
     if (result) {
       // @todo: prompt to (re)start automatically
       console.log(
-        `${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}Replugged has been successfully ${
+        `${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}ReCelled has been successfully ${
           replug ? "replugged" : "plugged"
         } :D${AnsiEscapes.RESET}`,
         "\n",
@@ -143,7 +143,7 @@ To plug into a different platform, use the following syntax: ${AnsiEscapes.BOLD}
       } else {
         // @todo: prompt to (re)start automatically
         console.log(
-          `${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}Replugged has been successfully unplugged${AnsiEscapes.RESET}`,
+          `${AnsiEscapes.BOLD}${AnsiEscapes.GREEN}ReCelled has been successfully unplugged${AnsiEscapes.RESET}`,
           "\n",
         );
         console.log(

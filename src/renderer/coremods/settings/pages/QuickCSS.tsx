@@ -2,7 +2,7 @@ import { css } from "@codemirror/lang-css";
 import { EditorState } from "@codemirror/state";
 import { React, i18n, toast } from "@common";
 import { Button, Divider, Flex, Text } from "@components";
-import { webpack } from "@replugged";
+import { webpack } from "@recelled";
 import { EditorView, basicSetup } from "codemirror";
 import { t } from "src/renderer/modules/i18n";
 import { githubDark, githubLight } from "./codemirror-github";
@@ -121,14 +121,14 @@ export const QuickCSS = (): React.ReactElement => {
 
   const autoApply = generalSettings.get("autoApplyQuickCss");
 
-  const reload = (): void => window.replugged.quickCSS.reload();
+  const reload = (): void => window.recelled.quickCSS.reload();
   const reloadAndToast = (): void => {
     reload();
-    toast.toast(intl.string(t.REPLUGGED_TOAST_QUICKCSS_RELOAD));
+    toast.toast(intl.string(t.RECELLED_TOAST_QUICKCSS_RELOAD));
   };
 
   React.useEffect(() => {
-    void window.RepluggedNative.quickCSS.get().then((val) => {
+    void window.ReCelledNative.quickCSS.get().then((val) => {
       setValue(val);
       setReady(true);
     });
@@ -165,7 +165,7 @@ export const QuickCSS = (): React.ReactElement => {
 
   React.useEffect(() => {
     if (!ready) return;
-    window.RepluggedNative.quickCSS.save(value);
+    window.ReCelledNative.quickCSS.save(value);
 
     // Debounce the auto reloading
     if (reloadTimer) clearTimeout(reloadTimer);
@@ -175,23 +175,23 @@ export const QuickCSS = (): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_QUICKCSS)}</Text.H2>
+        <Text.H2>{intl.string(t.RECELLED_QUICKCSS)}</Text.H2>
         <div style={{ display: "flex" }}>
           {autoApply ? null : (
             <Button onClick={reloadAndToast}>
-              {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
+              {intl.string(t.RECELLED_QUICKCSS_CHANGES_APPLY)}
             </Button>
           )}
           <Button
-            onClick={() => window.RepluggedNative.quickCSS.openFolder()}
+            onClick={() => window.ReCelledNative.quickCSS.openFolder()}
             color={Button.Colors.PRIMARY}
             look={Button.Looks.LINK}>
-            {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
+            {intl.string(t.RECELLED_QUICKCSS_FOLDER_OPEN)}
           </Button>
         </div>
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
-      <div ref={ref} id="replugged-quickcss-wrapper" />
+      <div ref={ref} id="recelled-quickcss-wrapper" />
     </>
   );
 };

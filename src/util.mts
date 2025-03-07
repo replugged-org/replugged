@@ -4,18 +4,18 @@ import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
 import path, { join } from "path";
 import chalk from "chalk";
 
-const REPLUGGED_FOLDER_NAME = "replugged";
+const RECELLED_FOLDER_NAME = "recelled";
 export const configPathFn = (): string => {
   const realUser = process.env.SUDO_USER || process.env.DOAS_USER;
   let home = process.env.HOME;
   switch (process.platform) {
     case "win32":
-      return join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
+      return join(process.env.APPDATA || "", RECELLED_FOLDER_NAME);
     case "darwin":
-      return join(home || "", "Library", "Application Support", REPLUGGED_FOLDER_NAME);
+      return join(home || "", "Library", "Application Support", RECELLED_FOLDER_NAME);
     default:
       if (process.env.XDG_CONFIG_HOME) {
-        return join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
+        return join(process.env.XDG_CONFIG_HOME, RECELLED_FOLDER_NAME);
       }
 
       if (realUser) {
@@ -39,7 +39,7 @@ export const configPathFn = (): string => {
           process.exit(1);
         }
       }
-      return join(home || "", ".config", REPLUGGED_FOLDER_NAME);
+      return join(home || "", ".config", RECELLED_FOLDER_NAME);
   }
 };
 

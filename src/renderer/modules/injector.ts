@@ -1,4 +1,4 @@
-import type { RepluggedCommand } from "../../types/coremods/commands";
+import type { ReCelledCommand } from "../../types/coremods/commands";
 import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
 import type { GetButtonItem } from "../../types/coremods/message";
 import type { CommandOptions } from "../../types/discord";
@@ -197,7 +197,7 @@ function after<
  *
  * @example
  * ```
- * import { Injector, webpack } from "replugged";
+ * import { Injector, webpack } from "recelled";
  *
  * const injector = new Injector();
  *
@@ -285,7 +285,7 @@ export class Injector {
      *
      * @example
      * ```
-     * import { Injector, webpack } from "replugged";
+     * import { Injector, webpack } from "recelled";
      *
      * const injector = new Injector();
      *
@@ -320,13 +320,13 @@ export class Injector {
      * By default, items are placed in a group for custom items, though that can be customized with `sectionId` and `indexInSection`
      * @param navId The id of the menu to add to
      * @param item The function that creates the item to add
-     * @param sectionId — The number of the section to add to. Defaults to Replugged's section
+     * @param sectionId — The number of the section to add to. Defaults to ReCelled's section
      * @param indexInSection — The index in the section to add to. Defaults to the end position
      * @returns A callback to de-register the function
      *
      * @example
      * ```
-     * import { Injector, components, types } from "replugged";
+     * import { Injector, components, types } from "recelled";
      * const { ContextMenu: { MenuItem } } = components;
      * const { ContextMenuTypes } = types;
      *
@@ -372,7 +372,7 @@ export class Injector {
      *
      * @example
      * ```
-     * import { Injector, types } from "replugged";
+     * import { Injector, types } from "recelled";
      *
      * const injector = new Injector();
      *
@@ -390,7 +390,7 @@ export class Injector {
      * }
      * ```
      */
-    registerSlashCommand: <const T extends CommandOptions>(cmd: RepluggedCommand<T>) => {
+    registerSlashCommand: <const T extends CommandOptions>(cmd: ReCelledCommand<T>) => {
       const uninjector = this.#slashCommandManager.registerCommand<T>(cmd);
       this.#uninjectors.add(uninjector);
       return uninjector;

@@ -1,6 +1,6 @@
 import { React } from "@common";
-import { notices } from "@replugged";
-import { RepluggedAnnouncement } from "src/types";
+import { notices } from "@recelled";
+import { ReCelledAnnouncement } from "src/types";
 import NoticeMod from "./noticeMod";
 
 function Announcement({
@@ -8,11 +8,11 @@ function Announcement({
   button,
   color,
   onClose,
-}: RepluggedAnnouncement): React.ReactElement {
+}: ReCelledAnnouncement): React.ReactElement {
   const { Notice, NoticeButton, NoticeButtonAnchor, NoticeCloseButton } = NoticeMod;
 
   return (
-    <Notice className="replugged-notice" color={color}>
+    <Notice className="recelled-notice" color={color}>
       <NoticeCloseButton
         onClick={() => {
           onClose?.();
@@ -38,7 +38,7 @@ function Announcement({
 }
 
 export function AnnouncementContainer(): React.ReactElement | undefined {
-  const [announcement, setAnnouncement] = React.useState<RepluggedAnnouncement | undefined>(
+  const [announcement, setAnnouncement] = React.useState<ReCelledAnnouncement | undefined>(
     undefined,
   );
 

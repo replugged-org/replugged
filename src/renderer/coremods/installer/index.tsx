@@ -1,5 +1,5 @@
 import { parser } from "@common";
-import { Injector } from "@replugged";
+import { Injector } from "@recelled";
 import type { Capture, DefaultInRule } from "simple-markdown";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
@@ -28,8 +28,9 @@ let uninjectFns: Array<() => void> = [];
 
 const modalFlows = new Map<string, Promise<InstallResponse>>();
 
-const scopes = ["REPLUGGED"];
-if (window.RepluggedNative.getVersion() === "dev") {
+const scopes = ["REPLUGGED", "RECELLED"];
+if (window.ReCelledNative.getVersion() === "dev") {
+  scopes.push("RECELLED_LOCAL");
   scopes.push("REPLUGGED_LOCAL");
 }
 

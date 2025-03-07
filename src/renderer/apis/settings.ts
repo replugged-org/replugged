@@ -109,7 +109,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * before managing any settings, unless you have created an instance using {@link init init()}, which calls this method.
    */
   public load(): void {
-    this.#settings = window.RepluggedNative.settings.all(this.namespace);
+    this.#settings = window.ReCelledNative.settings.all(this.namespace);
   }
 
   /**
@@ -128,9 +128,9 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
     this.#saveTimeout = setTimeout(() => {
       this.#queuedUpdates.forEach((u, k) => {
         if (u.type === "delete") {
-          void window.RepluggedNative.settings.delete(this.namespace, k);
+          void window.ReCelledNative.settings.delete(this.namespace, k);
         } else {
-          void window.RepluggedNative.settings.set(this.namespace, k, u.value);
+          void window.ReCelledNative.settings.set(this.namespace, k, u.value);
         }
       });
       this.#queuedUpdates.clear();
@@ -145,10 +145,10 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * @returns A tuple containing the current value of the setting, and a function to set the value. Works like `useState`.
    * @example
    * ```tsx
-   * import { components, settings } from "replugged";
+   * import { components, settings } from "recelled";
    * const { TextInput } = components;
    *
-   * const cfg = settings.init<{ hello: string }>("dev.replugged.Example");
+   * const cfg = settings.init<{ hello: string }>("dev.recelled.Example");
    *
    * export function Settings() {
    *  return <TextInput {...cfg.useSetting("hello", "world")} />;
@@ -170,14 +170,14 @@ const managers = new Map<string, unknown>();
  * Here's an example of how to use this in a plugin:
  *
  * ```ts
- * import { settings } from "replugged";
+ * import { settings } from "recelled";
  *
  * const defaultSettings = {
  *   hello: "world",
  * };
  *
  * const cfg = await settings.init<{ hello: string; something: string }, "something">(
- *   "dev.replugged.Example",
+ *   "dev.recelled.Example",
  *   { something: "everything" },
  * );
  *
@@ -195,7 +195,7 @@ const managers = new Map<string, unknown>();
  * @typeParam D Keys in `T` that will always have a value. These keys will not be nullable.
  * @param namespace Namespace to manage. A namespace is an ID (for example, the ID of a plugin) that uniquely identifies it.
  * All settings are grouped into namespaces.
- * Settings for a namespace are stored in `settings/NAMESPACE.json` within the [Replugged data folder](https://docs.replugged.dev/#installing-plugins-and-themes).
+ * Settings for a namespace are stored in `settings/NAMESPACE.json` within the [ReCelled data folder](https://docs.replugged.dev/#installing-plugins-and-themes).
  * @param defaultSettings Default values for the settings in the namespace. These will be used if no value is set for a setting. Using the `fallback` parameter of {@link SettingsManager.get get()} will override these defaults.
  * @returns Manager for the namespace.
  */

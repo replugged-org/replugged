@@ -1,6 +1,6 @@
 import { resolve, sep } from "path";
 import { ipcMain, shell } from "electron";
-import { RepluggedIpcChannels } from "../../types";
+import { ReCelledIpcChannels } from "../../types";
 import type {
   SettingsMap,
   SettingsTransactionHandler,
@@ -63,7 +63,7 @@ export function writeTransaction<T>(namespace: string, handler: SettingsTransact
     const postHandlerTransform: Array<(settings: SettingsMap) => void | void> = [];
 
     const settings = readSettings(namespace);
-    if (namespace.toLowerCase() === "dev.replugged.settings") {
+    if (namespace.toLowerCase() === "dev.recelled.settings") {
       // Prevent the "apiUrl" setting from changing
       const originalValue = settings.get("apiUrl");
       postHandlerTransform.push((settings) => {
@@ -94,34 +94,34 @@ export function getSetting<T>(namespace: string, key: string, fallback?: T): T |
 }
 
 ipcMain.on(
-  RepluggedIpcChannels.GET_SETTING,
+  ReCelledIpcChannels.GET_SETTING,
   (event, namespace: string, key: string) => (event.returnValue = getSetting(namespace, key)),
 );
 
 ipcMain.on(
-  RepluggedIpcChannels.HAS_SETTING,
+  ReCelledIpcChannels.HAS_SETTING,
   (event, namespace: string, key: string) =>
     (event.returnValue = readTransaction(namespace, (settings) => settings.has(key))),
 );
 
 ipcMain.on(
-  RepluggedIpcChannels.SET_SETTING,
+  ReCelledIpcChannels.SET_SETTING,
   (event, namespace: string, key: string, value: unknown) =>
     (event.returnValue = writeTransaction(namespace, (settings) => settings.set(key, value))),
 );
 
 ipcMain.on(
-  RepluggedIpcChannels.DELETE_SETTING,
+  ReCelledIpcChannels.DELETE_SETTING,
   (event, namespace: string, key: string) =>
     (event.returnValue = writeTransaction(namespace, (settings) => settings.delete(key))),
 );
 
 ipcMain.on(
-  RepluggedIpcChannels.GET_ALL_SETTINGS,
+  ReCelledIpcChannels.GET_ALL_SETTINGS,
   (event, namespace: string) =>
     (event.returnValue = readTransaction(namespace, (settings) =>
       Object.fromEntries(settings.entries()),
     )),
 );
 
-ipcMain.on(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER, () => shell.openPath(SETTINGS_DIR));
+ipcMain.on(ReCelledIpcChannels.OPEN_SETTINGS_FOLDER, () => shell.openPath(SETTINGS_DIR));

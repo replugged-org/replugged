@@ -1,7 +1,7 @@
 import { type Store } from "@common/flux";
 import type { Channel, Guild } from "discord-types/general";
-import { REPLUGGED_CLYDE_ID } from "../../../constants";
-import type { AnyRepluggedCommand, RepluggedCommandSection } from "../../../types";
+import { RECELLED_CLYDE_ID } from "../../../constants";
+import type { AnyReCelledCommand, ReCelledCommandSection } from "../../../types";
 import { commandAndSections, defaultSection } from "../../apis/commands";
 import { Injector } from "../../modules/injector";
 import {
@@ -37,9 +37,9 @@ interface FetchOptions {
 }
 
 interface ApplicationCommandIndex {
-  descriptors: RepluggedCommandSection[];
-  commands: AnyRepluggedCommand[];
-  sectionedCommands: Array<{ data: AnyRepluggedCommand[]; section: RepluggedCommandSection }>;
+  descriptors: ReCelledCommandSection[];
+  commands: AnyReCelledCommand[];
+  sectionedCommands: Array<{ data: AnyReCelledCommand[]; section: ReCelledCommandSection }>;
   loading: boolean;
 }
 
@@ -60,16 +60,16 @@ type UseDiscoveryState = (
 
 type FetchProfile = (id: string) => Promise<void>;
 
-async function injectRepluggedBotIcon(): Promise<void> {
-  // Adds avatar for Replugged to be used by system bot just like Clyde
+async function injectReCelledBotIcon(): Promise<void> {
+  // Adds avatar for ReCelled to be used by system bot just like Clyde
   // Ain't removing it on stop because we have checks here
   const avatarUtilsMod = await waitForProps<{
     BOT_AVATARS: Record<string, string>;
   }>("BOT_AVATARS");
-  avatarUtilsMod.BOT_AVATARS.replugged = defaultSection.icon;
+  avatarUtilsMod.BOT_AVATARS.recelled = defaultSection.icon;
 }
 
-async function injectRepluggedSectionIcon(): Promise<void> {
+async function injectReCelledSectionIcon(): Promise<void> {
   // Patches the function which gets icon URL for slash command sections
   // makes it return the custom url if it's our section
   const avatarUtilsMod = await waitForProps<{
@@ -243,14 +243,14 @@ async function injectProfileFetch(): Promise<void> {
   const fetchProfileKey = getFunctionKeyBySource(userActionCreatorsMod, "fetchProfile")!;
 
   injector.instead(userActionCreatorsMod, fetchProfileKey, (args, orig) => {
-    if (args[0] === REPLUGGED_CLYDE_ID) return;
+    if (args[0] === RECELLED_CLYDE_ID) return;
     return orig(...args);
   });
 }
 
 export async function start(): Promise<void> {
-  await injectRepluggedBotIcon();
-  await injectRepluggedSectionIcon();
+  await injectReCelledBotIcon();
+  await injectReCelledSectionIcon();
   await injectApplicationCommandIndexStore();
   await injectProfileFetch();
   loadCommands();

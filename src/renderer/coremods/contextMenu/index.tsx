@@ -48,7 +48,7 @@ function makeItem(raw: ReturnType<GetContextItem>): React.ReactElement | undefin
  * Add an item to any context menu
  * @param navId The id of the menu you want to insert to
  * @param getItem A function that creates and returns the menu item
- * @param sectionId The number of the section to add to. Defaults to Replugged's section
+ * @param sectionId The number of the section to add to. Defaults to ReCelled's section
  * @param indexInSection The index in the section to add to. Defaults to the end position
  * @returns A callback to de-register the function
  */
@@ -89,8 +89,8 @@ export function _insertMenuItems(props: ContextMenuProps): ContextMenuProps {
   };
 
   const { MenuGroup } = ContextMenu;
-  const repluggedGroup = <MenuGroup />;
-  repluggedGroup.props.children = [];
+  const recelledGroup = <MenuGroup />;
+  recelledGroup.props.children = [];
 
   if (!Array.isArray(props.children)) props.children = [props.children];
 
@@ -115,7 +115,7 @@ export function _insertMenuItems(props: ContextMenuProps): ContextMenuProps {
           typeof indexInSection === "function" ? indexInSection(props) : indexInSection;
         section.props.children.splice(indexInSection, 0, item);
       } else {
-        repluggedGroup.props.children.push(item);
+        recelledGroup.props.children.push(item);
       }
     } catch (e) {
       logger.error(`Failed to add item to menu ${props.navId}`, e);
@@ -126,9 +126,9 @@ export function _insertMenuItems(props: ContextMenuProps): ContextMenuProps {
     .at(-1)
     ?.props?.children?.props?.id?.startsWith("devmode-copy-id-");
   if (hasCopyId) {
-    props.children.splice(-1, 0, repluggedGroup);
+    props.children.splice(-1, 0, recelledGroup);
   } else {
-    props.children.push(repluggedGroup);
+    props.children.push(recelledGroup);
   }
 
   return props;

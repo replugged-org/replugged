@@ -1,6 +1,6 @@
 import * as common from "@common";
-import type { RepluggedPlugin, RepluggedTheme } from "src/types";
-import { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
+import type { ReCelledPlugin, ReCelledTheme } from "src/types";
+import { AnyAddonManifest, ReCelledEntity } from "src/types/addon";
 import notices from "../apis/notices";
 import { init } from "../apis/settings";
 import { t } from "../modules/i18n";
@@ -19,27 +19,26 @@ export type UpdateSettings = {
   webUrl?: string;
   lastChecked: number;
 };
-
-const REPLUGGED_ID = "dev.replugged.Replugged";
-const REPLUGGED_ENTITY: RepluggedEntity = {
+const RECELLED_ID = "dev.recelled.ReCelled";
+const RECELLED_ENTITY: ReCelledEntity = {
   manifest: {
-    id: REPLUGGED_ID,
-    name: "Replugged",
-    description: "Replugged itself",
+    id: RECELLED_ID,
+    name: "ReCelled",
+    description: "ReCelled itself",
     author: {
-      name: "replugged",
+      name: "recelled",
       discordID: "1000992611840049192",
-      github: "replugged-org",
+      github: "ReCelled",
     },
-    type: "replugged",
+    type: "recelled",
     updater: {
-      type: "store",
-      id: REPLUGGED_ID,
+      type: "github",
+      id: "ReCelled/recelled",
     },
-    version: window.RepluggedNative.getVersion(),
+    version: window.ReCelledNative.getVersion(),
     license: "MIT",
   },
-  path: "replugged.asar",
+  path: "recelled.asar",
 };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -56,11 +55,11 @@ const mainUpdaterDefaultSettings = {
 } satisfies Partial<MainUpdaterSettings>;
 
 export const updaterSettings = init<MainUpdaterSettings, keyof typeof mainUpdaterDefaultSettings>(
-  "dev.replugged.Updater",
+  "dev.recelled.Updater",
   mainUpdaterDefaultSettings,
 );
 
-const updaterState = init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
+const updaterState = init<Record<string, UpdateSettings>>("dev.recelled.Updater.State");
 
 const completedUpdates = new Set<string>();
 
@@ -91,11 +90,11 @@ export function setUpdaterState(id: string, state: UpdateSettings): void {
 
 async function getAddonFromManager(
   id: string,
-): Promise<RepluggedPlugin | RepluggedTheme | RepluggedEntity | undefined> {
-  if (id === REPLUGGED_ID) {
-    const version = window.RepluggedNative.getVersion();
+): Promise<ReCelledPlugin | ReCelledTheme | ReCelledEntity | undefined> {
+  if (id === RECELLED_ID) {
+    const version = window.ReCelledNative.getVersion();
     if (version === "dev") return undefined;
-    return REPLUGGED_ENTITY;
+    return RECELLED_ENTITY;
   }
 
   return pluginManager.plugins.get(id) || (await themeManager.get(id));
@@ -123,10 +122,10 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
     return;
   }
 
-  const res = await window.RepluggedNative.updater.check(
+  const res = await window.ReCelledNative.updater.check(
     updater.type,
     updater.id,
-    id === REPLUGGED_ID ? "replugged" : id,
+    id === RECELLED_ID ? "recelled" : id,
   );
 
   if (!res.success) {
@@ -182,7 +181,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
   }
 
   // install new
-  const res = await window.RepluggedNative.updater.install(
+  const res = await window.ReCelledNative.updater.install(
     entity.manifest.type,
     entity.path,
     updateSettings.url,
@@ -221,7 +220,7 @@ export async function checkAllUpdates(autoCheck = false, verbose = false): Promi
   logger.log("Checking for updates");
 
   await Promise.all([
-    checkUpdate(REPLUGGED_ID, verbose),
+    checkUpdate(RECELLED_ID, verbose),
     ...addons.map((addon) => checkUpdate(addon.manifest.id, verbose)),
   ]);
 
@@ -235,7 +234,7 @@ export function getAvailableUpdates(): Array<UpdateSettings & { id: string }> {
     .filter(
       (state) =>
         (state.available || completedUpdates.has(state.id)) &&
-        ((state.id === REPLUGGED_ID && window.RepluggedNative.getVersion() !== "dev") ||
+        ((state.id === RECELLED_ID && window.ReCelledNative.getVersion() !== "dev") ||
           pluginManager.plugins.has(state.id) ||
           themeManager.themes.has(state.id)),
     );
@@ -301,11 +300,11 @@ async function autoUpdateCheck(): Promise<void> {
 
     clearActiveNotification?.();
     clearActiveNotification = notices.sendAnnouncement({
-      message: intl.format(t.REPLUGGED_UPDATES_AVAILABLE, {
+      message: intl.format(t.RECELLED_UPDATES_AVAILABLE, {
         count: newUpdateCount,
       }),
       button: {
-        text: intl.formatToPlainString(t.REPLUGGED_VIEW_UPDATES, {
+        text: intl.formatToPlainString(t.RECELLED_VIEW_UPDATES, {
           count: newUpdateCount,
         }),
         onClick: () => open("rp-updater"),

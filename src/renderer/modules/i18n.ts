@@ -13,12 +13,12 @@ export function load(): void {
 
   i18n.intl.onLocaleChange((newLocale) => {
     locale = newLocale;
-    void addRepluggedStrings();
+    void addReCelledStrings();
   });
-  void addRepluggedStrings();
+  void addReCelledStrings();
 }
 
-export async function addRepluggedStrings(): Promise<void> {
+export async function addReCelledStrings(): Promise<void> {
   const { loadAllMessagesInLocale } = await waitForProps<{
     loadAllMessagesInLocale: typeof LoadAllMessagesInLocale;
   }>("loadAllMessagesInLocale");

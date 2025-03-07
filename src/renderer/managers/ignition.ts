@@ -10,10 +10,10 @@ import { startAutoUpdateChecking } from "./updater";
 import { interceptChunksGlobal } from "../modules/webpack/patch-load";
 
 export async function start(): Promise<void> {
-  log("Ignition", "Start", void 0, "Igniting Replugged...");
+  log("Ignition", "Start", void 0, "Igniting ReCelled...");
   const startTime = performance.now();
 
-  loadStyleSheet("replugged://renderer.css");
+  loadStyleSheet("recelled://renderer.css");
   await import("../modules/i18n").then((i18n) => i18n.load());
 
   let started = false;
@@ -23,7 +23,7 @@ export async function start(): Promise<void> {
       plugins.startAll(),
       themes.loadMissing().then(themes.loadAll),
     ]),
-    // Failsafe to ensure that we always start Replugged
+    // Failsafe to ensure that we always start ReCelled
     new Promise((resolve) =>
       setTimeout(() => {
         if (!started) {
@@ -45,12 +45,12 @@ export async function start(): Promise<void> {
     "Ignition",
     "Start",
     void 0,
-    `Finished igniting Replugged in ${(performance.now() - startTime).toFixed(2)}ms`,
+    `Finished igniting ReCelled in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
 
 export async function stop(): Promise<void> {
-  log("Ignition", "Stop", void 0, "De-igniting Replugged...");
+  log("Ignition", "Stop", void 0, "De-igniting ReCelled...");
   const startTime = performance.now();
 
   quickCSS.unload();
@@ -61,7 +61,7 @@ export async function stop(): Promise<void> {
     "Ignition",
     "Stop",
     void 0,
-    `Finished de-igniting Replugged in ${(performance.now() - startTime).toFixed(2)}ms`,
+    `Finished de-igniting ReCelled in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
 
@@ -93,7 +93,7 @@ export function ignite(): void {
 }
 
 export function startSplash(): void {
-  log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
+  log("Ignition", "Start", void 0, "Igniting ReCelled Splash Screen...");
   const startTime = performance.now();
 
   void themes.loadMissing().then(() => themes.loadAllSplash());
@@ -102,6 +102,6 @@ export function startSplash(): void {
     "Ignition",
     "Start",
     void 0,
-    `Finished igniting Replugged Splash Screen in ${performance.now() - startTime}ms`,
+    `Finished igniting ReCelled Splash Screen in ${performance.now() - startTime}ms`,
   );
 }

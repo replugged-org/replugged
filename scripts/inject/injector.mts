@@ -36,7 +36,7 @@ export const isDiscordInstalled = async (appDir: string, silent?: boolean): Prom
 
 // If app.orig.asar but no app.asar, move app.orig.asar to app.asar
 // Fixes a case where app.asar was deleted (unplugged) but app.orig.asar couldn't be moved back
-// Fixes incase using old version of replugged
+// Fixes incase using old version of recelled
 export const correctMissingMainAsar = async (appDir: string): Promise<boolean> => {
   try {
     await stat(join(appDir, "..", "app.orig.asar"));
@@ -54,7 +54,7 @@ export const correctMissingMainAsar = async (appDir: string): Promise<boolean> =
     try {
       await rename(join(appDir, "..", "app.orig.asar"), join(appDir, "..", "app.asar"));
       console.log(
-        `${AnsiEscapes.GREEN}Fixed your Discord installation successfully! Continuing with Replugged installation...${AnsiEscapes.RESET}`,
+        `${AnsiEscapes.GREEN}Fixed your Discord installation successfully! Continuing with ReCelled installation...${AnsiEscapes.RESET}`,
         "\n",
       );
     } catch {
@@ -95,11 +95,11 @@ export const inject = async (
      * @todo: prompt to automatically uninject and continue
      */
     console.error(
-      `${AnsiEscapes.RED}Looks like you already have an injector in place.${AnsiEscapes.RESET} If you already have BetterDiscord or another client mod injected, Replugged cannot run along with it! Please uninstall it before continuing.`,
+      `${AnsiEscapes.RED}Looks like you already have an injector in place.${AnsiEscapes.RESET} If you already have BetterDiscord or another client mod injected, ReCelled cannot run along with it! Please uninstall it before continuing.`,
       "\n",
     );
     console.error(
-      `If you already have Replugged installed and want to replace it, use ${
+      `If you already have ReCelled installed and want to replace it, use ${
         AnsiEscapes.GREEN
       }${getCommand({ action: "replug", prod, platform })}${
         AnsiEscapes.RESET
@@ -108,13 +108,13 @@ export const inject = async (
     return false;
   }
 
-  const fileToCheck = join(dirname, "..", "..", prod ? "replugged.asar" : "dist/main.js");
+  const fileToCheck = join(dirname, "..", "..", prod ? "recelled.asar" : "dist/main.js");
   const fileToCheckExists = await stat(fileToCheck)
     .then(() => true)
     .catch(() => false);
   if (!fileToCheckExists) {
     console.error(
-      `${AnsiEscapes.RED}Looks like you haven't built Replugged yet!${AnsiEscapes.RESET}`,
+      `${AnsiEscapes.RED}Looks like you haven't built ReCelled yet!${AnsiEscapes.RESET}`,
     );
     console.error(
       `To build for development, run ${AnsiEscapes.GREEN}pnpm run build${AnsiEscapes.RESET}`,
@@ -127,7 +127,7 @@ export const inject = async (
 
   const entryPoint =
     argEntryPoint ??
-    (prod ? join(CONFIG_PATH, "replugged.asar") : join(dirname, "..", "..", "dist/main.js"));
+    (prod ? join(CONFIG_PATH, "recelled.asar") : join(dirname, "..", "..", "dist/main.js"));
 
   const entryPointDir = path.dirname(entryPoint);
 
@@ -138,7 +138,7 @@ export const inject = async (
     } com.discordapp.${discordName} --filesystem=${prod ? entryPointDir : join(dirname, "..", "..")}`;
 
     console.log(
-      `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to Replugged files (${prod ? entryPointDir : join(dirname, "..", "..")})${AnsiEscapes.RESET}`,
+      `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to ReCelled files (${prod ? entryPointDir : join(dirname, "..", "..")})${AnsiEscapes.RESET}`,
     );
     execSync(overrideCommand);
   }
@@ -160,11 +160,11 @@ export const inject = async (
   }
 
   if (prod) {
-    await copyFile(join(dirname, "..", "..", "replugged.asar"), entryPoint);
+    await copyFile(join(dirname, "..", "..", "recelled.asar"), entryPoint);
     if (["linux", "darwin"].includes(process.platform)) {
       try {
         // Adjust ownership of config folder and asar file to match the parent config folder
-        // We want to make sure all Replugged files are owned by the user
+        // We want to make sure all ReCelled files are owned by the user
         const { uid, gid } = await stat(join(CONFIG_PATH, ".."));
         await chown(entryPoint, uid, gid);
       } catch {}

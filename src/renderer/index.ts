@@ -1,10 +1,11 @@
-import * as replugged from "./replugged";
+import * as recelled from "./recelled";
 
-window.replugged = replugged;
+window.replugged = recelled;
+window.recelled = recelled;
 
 // Splash screen
 if (window.location.href.endsWith("/app_bootstrap/splash/index.html")) {
-  replugged.ignition.startSplash();
+  recelled.ignition.startSplash();
 } else {
-  replugged.ignition.ignite();
+  recelled.ignition.ignite();
 }

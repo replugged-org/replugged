@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { Injector } from "@replugged";
+import { Injector } from "@recelled";
 import { BETA_WEBSITE_URL, WEBSITE_URL } from "src/constants";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import { Jsonifiable } from "type-fest";
@@ -46,22 +46,22 @@ async function injectRpc(): Promise<void> {
 
   injector.instead(rpcValidatorMod, fetchApplicationsRPCKey, (args, fn) => {
     const [, clientId, origin] = args;
-    const isRepluggedClient = clientId.startsWith("REPLUGGED-");
+    const isReCelledClient = clientId.startsWith("RECELLED-") || clientId.startsWith("REPLUGGED-");
 
     // From Replugged site
     if (origin === WEBSITE_URL || origin === BETA_WEBSITE_URL) {
-      args[0].authorization.scopes = ["REPLUGGED"];
+      args[0].authorization.scopes = ["REPLUGGED", "RECELLED"];
       return Promise.resolve();
     }
 
     // From localhost but for Replugged
-    if (isRepluggedClient && (!origin || new URL(origin).hostname === "localhost")) {
-      args[0].authorization.scopes = ["REPLUGGED_LOCAL"];
+    if (isReCelledClient && (!origin || new URL(origin).hostname === "localhost")) {
+      args[0].authorization.scopes = ["RECELLED_LOCAL"];
       return Promise.resolve();
     }
 
     // For Replugged but not from an allowed origin
-    if (isRepluggedClient) {
+    if (isReCelledClient) {
       throw new Error("Invalid Client ID");
     }
 
@@ -86,8 +86,8 @@ async function injectRpc(): Promise<void> {
  * @returns Unregister function
  */
 export function registerRPCCommand(name: string, command: RPCCommand): () => void {
-  if (!name.startsWith("REPLUGGED_"))
-    throw new Error("RPC command name must start with REPLUGGED_");
+  if (!name.startsWith("RECELLED") || name.startsWith("REPLUGGED"))
+    throw new Error("RPC command name must start with RECELLED");
   if (name in commands) throw new Error("RPC command already exists");
   commands[name] = command;
   return () => {
@@ -100,8 +100,8 @@ export function registerRPCCommand(name: string, command: RPCCommand): () => voi
  * @param name Command name
  */
 export function unregisterRPCCommand(name: string): void {
-  if (!name.startsWith("REPLUGGED_"))
-    throw new Error("RPC command name must start with REPLUGGED_");
+  if (!name.startsWith("RECELLED") || name.startsWith("REPLUGGED"))
+    throw new Error("RPC command name must start with RECELLED");
   // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
   delete commands[name];
 }

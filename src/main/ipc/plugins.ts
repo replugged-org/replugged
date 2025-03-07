@@ -1,13 +1,13 @@
 /*
 IPC events:
-- REPLUGGED_LIST_PLUGINS: returns an array of the names of all installed plugins
-- REPLUGGED_UNINSTALL_PLUGIN: returns whether a plugin by the provided name was successfully uninstalled
+- RECELLED_LIST_PLUGINS: returns an array of the names of all installed plugins
+- RECELLED_UNINSTALL_PLUGIN: returns whether a plugin by the provided name was successfully uninstalled
 */
 
 import { rm } from "fs/promises";
 import { extname, join, sep } from "path";
 import { ipcMain, shell } from "electron";
-import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
+import { ReCelledIpcChannels, type ReCelledPlugin } from "../../types";
 import { plugin } from "../../types/addon";
 import { type Dirent, type Stats, readFileSync, readdirSync, readlinkSync, statSync } from "fs";
 import { CONFIG_PATHS } from "src/util.mjs";
@@ -18,7 +18,7 @@ export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
   return f.isDirectory() || (f.isFile() && extname(name) === ".asar");
 };
 
-function getPlugin(pluginName: string): RepluggedPlugin {
+function getPlugin(pluginName: string): ReCelledPlugin {
   const manifestPath = join(PLUGINS_DIR, pluginName, "manifest.json");
   if (!manifestPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
@@ -49,13 +49,13 @@ function getPlugin(pluginName: string): RepluggedPlugin {
   return data;
 }
 
-ipcMain.on(RepluggedIpcChannels.GET_PLUGIN, (event, pluginName: string) => {
+ipcMain.on(ReCelledIpcChannels.GET_PLUGIN, (event, pluginName: string) => {
   try {
     event.returnValue = getPlugin(pluginName);
   } catch {}
 });
 
-ipcMain.on(RepluggedIpcChannels.LIST_PLUGINS, (event) => {
+ipcMain.on(ReCelledIpcChannels.LIST_PLUGINS, (event) => {
   const plugins = [];
 
   const pluginDirs = readdirSync(PLUGINS_DIR, {
@@ -87,7 +87,7 @@ ipcMain.on(RepluggedIpcChannels.LIST_PLUGINS, (event) => {
   event.returnValue = plugins;
 });
 
-ipcMain.on(RepluggedIpcChannels.READ_PLUGIN_PLAINTEXT_PATCHES, (event, pluginName) => {
+ipcMain.on(ReCelledIpcChannels.READ_PLUGIN_PLAINTEXT_PATCHES, (event, pluginName) => {
   const plugin = getPlugin(pluginName);
   if (!plugin.manifest.plaintextPatches) return;
 
@@ -100,7 +100,7 @@ ipcMain.on(RepluggedIpcChannels.READ_PLUGIN_PLAINTEXT_PATCHES, (event, pluginNam
   if (path) event.returnValue = readFileSync(path, "utf-8");
 });
 
-ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: string) => {
+ipcMain.handle(ReCelledIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: string) => {
   const pluginPath = join(PLUGINS_DIR, pluginName);
   if (!pluginPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
@@ -113,4 +113,4 @@ ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: stri
   });
 });
 
-ipcMain.on(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER, () => shell.openPath(PLUGINS_DIR));
+ipcMain.on(ReCelledIpcChannels.OPEN_PLUGINS_FOLDER, () => shell.openPath(PLUGINS_DIR));

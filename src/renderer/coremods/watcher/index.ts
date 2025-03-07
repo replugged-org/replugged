@@ -1,6 +1,6 @@
 import { i18n } from "@common";
 import toast from "@common/toast";
-import { Logger, plugins, themes } from "@replugged";
+import { Logger, plugins, themes } from "@recelled";
 import { t } from "src/renderer/modules/i18n";
 import { registerRPCCommand } from "../rpc";
 
@@ -43,7 +43,7 @@ export function start(): void {
         }
 
         toast.toast(
-          intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS, {
+          intl.formatToPlainString(t.RECELLED_TOAST_ADDON_RELOAD_SUCCESS, {
             name: addon.manifest.name,
           }),
         );
@@ -55,7 +55,7 @@ export function start(): void {
         logger.error(`Failed to reload ${addon.manifest.id}`, err);
 
         toast.toast(
-          intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_FAILED, {
+          intl.formatToPlainString(t.RECELLED_TOAST_ADDON_RELOAD_FAILED, {
             name: addon.manifest.name,
           }),
           toast.Kind.FAILURE,

@@ -3,7 +3,7 @@ import { type GeneralSettings, type PlaintextPatch, defaultSettings } from "src/
 
 // TODO: see if we can import this from General.tsx
 const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(
-  "dev.replugged.Settings",
+  "dev.recelled.Settings",
   defaultSettings,
 );
 

@@ -1,8 +1,8 @@
-import type { RepluggedConnection } from "../../types";
+import type { ReCelledConnection } from "../../types";
 import type { ConnectedAccount } from "../../types/discord";
 
 class ConnectionsAPI extends EventTarget {
-  public connections: RepluggedConnection[] = [];
+  public connections: ReCelledConnection[] = [];
 
   public get map(): typeof Array.prototype.map {
     return this.connections.map.bind(this.connections);
@@ -12,11 +12,11 @@ class ConnectionsAPI extends EventTarget {
     return this.connections.filter.bind(this.connections);
   }
 
-  public get(type: string): RepluggedConnection | undefined {
+  public get(type: string): ReCelledConnection | undefined {
     return this.connections.find((c) => c.type === type);
   }
 
-  public registerConnection(connection: RepluggedConnection): void {
+  public registerConnection(connection: ReCelledConnection): void {
     if (this.get(connection.type)) {
       throw new Error("This type of connection already exists!");
     }

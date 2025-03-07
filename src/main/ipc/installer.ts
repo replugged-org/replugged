@@ -5,13 +5,13 @@ import {
   InstallResultFailure,
   InstallResultSuccess,
   InstallerType,
-  RepluggedIpcChannels,
+  ReCelledIpcChannels,
 } from "../../types";
 import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
 import { readFile } from "fs/promises";
 import { writeFile as originalWriteFile } from "original-fs";
 import { join, resolve, sep } from "path";
-import { AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
+import { AnyAddonManifestOrReCelled, anyAddonOrReCelled } from "src/types/addon";
 import { getSetting } from "./settings";
 import { promisify } from "util";
 import { WEBSITE_URL } from "src/constants";
@@ -84,10 +84,10 @@ async function github(
     };
   }
 
-  let manifest: AnyAddonManifestOrReplugged;
+  let manifest: AnyAddonManifestOrReCelled;
   try {
     const json = await fetch(manifestAsset.browser_download_url).then((res) => res.json());
-    manifest = anyAddonOrReplugged.parse(json);
+    manifest = anyAddonOrReCelled.parse(json);
   } catch {
     return {
       success: false,
@@ -105,7 +105,7 @@ async function github(
 }
 
 async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
-  const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
+  const apiUrl = getSetting("dev.recelled.Settings", "apiUrl", WEBSITE_URL);
   const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
   const asarUrl = `${manifestUrl}.asar`;
@@ -120,7 +120,7 @@ async function store(id: string): Promise<CheckResultSuccess | CheckResultFailur
 
   let manifest;
   try {
-    manifest = anyAddonOrReplugged.parse(await res.json());
+    manifest = anyAddonOrReCelled.parse(await res.json());
   } catch {
     return {
       success: false,
@@ -145,7 +145,7 @@ const handlers: Record<
 };
 
 ipcMain.handle(
-  RepluggedIpcChannels.GET_ADDON_INFO,
+  ReCelledIpcChannels.GET_ADDON_INFO,
   async (
     _,
     type: string,
@@ -163,22 +163,22 @@ ipcMain.handle(
   },
 );
 
-const getBaseName = (type: InstallerType | "replugged"): string => {
+const getBaseName = (type: InstallerType | "recelled"): string => {
   switch (type) {
     case "replugged-plugin":
       return CONFIG_PATHS.plugins;
     case "replugged-theme":
       return CONFIG_PATHS.themes;
-    case "replugged":
+    case "recelled":
       return CONFIG_PATH;
   }
 };
 
 ipcMain.handle(
-  RepluggedIpcChannels.INSTALL_ADDON,
+  ReCelledIpcChannels.INSTALL_ADDON,
   async (
     _,
-    type: InstallerType | "replugged",
+    type: InstallerType | "recelled",
     path: string,
     url: string,
     update: boolean,
@@ -187,13 +187,6 @@ ipcMain.handle(
     const query = new URLSearchParams();
     query.set("type", update ? "update" : "install");
     if (version) query.set("version", version);
-
-    if (type === "replugged") {
-      // Manually set Path and URL for security purposes
-      path = "replugged.asar";
-      const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
-      url = `${apiUrl}/api/v1/store/dev.replugged.Replugged.asar`;
-    }
 
     let res;
     try {
@@ -243,7 +236,7 @@ ipcMain.handle(
   },
 );
 
-ipcMain.handle(RepluggedIpcChannels.GET_REPLUGGED_VERSION, async () => {
+ipcMain.handle(ReCelledIpcChannels.GET_RECELLED_VERSION, async () => {
   const path = join(__dirname, "package.json");
   try {
     const packageJson = JSON.parse(await readFile(path, "utf8"));

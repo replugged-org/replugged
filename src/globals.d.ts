@@ -3,8 +3,7 @@
 // TODO: Scope global types to each component
 
 import type { WebpackChunkGlobal } from "./types/discord";
-import * as replugged from "./renderer/replugged";
-import type { RepluggedNativeType } from "./preload";
+import type { ReCelledNativeType } from "./preload";
 
 import type Lodash from "lodash";
 declare global {
@@ -13,16 +12,21 @@ declare global {
   };
 
   interface Window {
-    RepluggedNative: RepluggedNativeType;
+    ReCelledNative: ReCelledNativeType;
+    RepluggedNative: ReCelledNativeType;
     DiscordNative: typeof DiscordNative;
-    replugged: typeof replugged;
+    replugged: typeof recelled;
+    recelled: typeof recelled;
     // eslint-disable-next-line @typescript-eslint/naming-convention
     webpackChunkdiscord_app: WebpackChunkGlobal;
     _: typeof _;
     $type?: (...args: unknown[]) => unknown;
   }
 
-  export const RepluggedNative: RepluggedNativeType;
+  export const ReCelledNative: ReCelledNativeType;
+  export const RepluggedNative: ReCelledNativeType;
+  export const replugged: typeof recelled;
+  export const recelled: typeof recelled;
 
   export const DiscordNative: {
     app: {

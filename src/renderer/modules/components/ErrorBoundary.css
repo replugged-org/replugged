@@ -1,4 +1,4 @@
-.replugged-error-boundary h1 {
+.recelled-error-boundary h1 {
   font-size: 24px;
   font-family: var(--font-display);
   font-weight: bold;
@@ -7,18 +7,18 @@
   margin-bottom: 16px;
 }
 
-.replugged-error-boundary h3 {
+.recelled-error-boundary h3 {
   font-size: 14px;
   font-family: var(--font-primary);
   font-weight: 500;
   color: var(--header-primary);
 }
 
-.replugged-error-boundary .replugged-error-boundary-plugin {
+.recelled-error-boundary .recelled-error-boundary-plugin {
   margin-bottom: 8px;
 }
 
-.replugged-error-boundary p {
+.recelled-error-boundary p {
   font-size: 16px;
   font-family: var(--font-primary);
   font-weight: normal;
@@ -27,7 +27,7 @@
   margin: 0px;
 }
 
-.replugged-error-boundary-collapsible {
+.recelled-error-boundary-collapsible {
   color: var(--header-primary);
   background-color: var(--background-secondary-alt);
   border-radius: 8px;
@@ -36,11 +36,11 @@
   margin-top: 16px;
 }
 
-.replugged-error-boundary-collapsible:active {
+.recelled-error-boundary-collapsible:active {
   background-color: var(--background-accent);
 }
 
-.replugged-error-boundary-collapsible-header {
+.recelled-error-boundary-collapsible-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -48,7 +48,7 @@
   cursor: pointer;
 }
 
-.replugged-error-boundary-collapsible-stack {
+.recelled-error-boundary-collapsible-stack {
   background-color: var(--background-secondary);
   color: var(--text-normal);
   border-radius: 5px;

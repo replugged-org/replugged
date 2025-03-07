@@ -14,7 +14,7 @@ export const buttons = new Map<GetButtonItem, string>();
  * @returns A callback to remove the button from set.
  */
 export function addButton(item: GetButtonItem, key?: string): () => void {
-  buttons.set(item, `${key || "repluggedButton"}-${Math.random().toString(36).substring(2)}`);
+  buttons.set(item, `${key || "recelledButton"}-${Math.random().toString(36).substring(2)}`);
 
   return () => removeButton(item);
 }

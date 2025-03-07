@@ -1,12 +1,12 @@
-.replugged-updater-header {
+.recelled-updater-header {
   margin-bottom: 10px;
 }
 
-.replugged-updater-items {
+.recelled-updater-items {
   gap: 8px;
 }
 
-.replugged-updater-item {
+.recelled-updater-item {
   background-color: var(--background-secondary);
   padding: 15px;
   border-radius: 5px;

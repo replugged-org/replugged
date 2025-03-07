@@ -1,6 +1,6 @@
 import getReact from "@common/react";
 import getI18n from "@common/i18n";
-import { plugins } from "@replugged";
+import { plugins } from "@recelled";
 import { t } from "../i18n";
 import { Logger } from "../logger";
 
@@ -36,8 +36,8 @@ const getErrorBoundary = async (): Promise<ErrorBoundaryType> => {
     const message = stack.split("\n")[0];
 
     return (
-      <div className="replugged-error-boundary-collapsible">
-        <div className="replugged-error-boundary-collapsible-header" onClick={() => setOpen(!open)}>
+      <div className="recelled-error-boundary-collapsible">
+        <div className="recelled-error-boundary-collapsible-header" onClick={() => setOpen(!open)}>
           <h3>{message}</h3>
           <svg
             width={24}
@@ -51,7 +51,7 @@ const getErrorBoundary = async (): Promise<ErrorBoundaryType> => {
           </svg>
         </div>
         <div style={{ display: open ? "block" : "none" }}>
-          <div className="replugged-error-boundary-collapsible-stack">
+          <div className="recelled-error-boundary-collapsible-stack">
             <code>{stack}</code>
           </div>
         </div>
@@ -68,7 +68,7 @@ const getErrorBoundary = async (): Promise<ErrorBoundaryType> => {
     public static getDerivedStateFromError(error: Error): ErrorState {
       let pluginName;
 
-      const pluginMatch = error?.stack?.match(/replugged:\/\/plugin\/([\w.]+)\//);
+      const pluginMatch = error?.stack?.match(/recelled:\/\/plugin\/([\w.]+)\//);
       if (pluginMatch) {
         const pluginId = pluginMatch[1];
         const plugin = plugins.plugins.get(pluginId);
@@ -95,14 +95,14 @@ const getErrorBoundary = async (): Promise<ErrorBoundaryType> => {
 
         return (
           this.props.fallback || (
-            <div className="replugged-error-boundary">
-              <h1>{intl.string(t.REPLUGGED_SETTINGS_ERROR_HEADER)}</h1>
+            <div className="recelled-error-boundary">
+              <h1>{intl.string(t.RECELLED_SETTINGS_ERROR_HEADER)}</h1>
               {pluginName && (
-                <p className="replugged-error-boundary-plugin">
-                  {intl.format(t.REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME, { name: pluginName })}
+                <p className="recelled-error-boundary-plugin">
+                  {intl.format(t.RECELLED_SETTINGS_ERROR_PLUGIN_NAME, { name: pluginName })}
                 </p>
               )}
-              <p>{intl.string(t.REPLUGGED_SETTINGS_ERROR_SUB_HEADER)}</p>
+              <p>{intl.string(t.RECELLED_SETTINGS_ERROR_SUB_HEADER)}</p>
               {error?.stack && (
                 <ErrorBoundary fallback={<></>}>
                   <CollapsibleErrorStack stack={error.stack} />

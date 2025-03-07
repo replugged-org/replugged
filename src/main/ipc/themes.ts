@@ -1,13 +1,13 @@
 /*
 IPC events:
-- REPLUGGED_LIST_THEMES: returns an array of all valid themes available
-- REPLUGGED_UNINSTALL_THEME: uninstalls a theme by name
+- RECELLED_LIST_THEMES: returns an array of all valid themes available
+- RECELLED_UNINSTALL_THEME: uninstalls a theme by name
 */
 
 import { readFile, readdir, readlink, rm, stat } from "fs/promises";
 import { extname, join, sep } from "path";
 import { ipcMain, shell } from "electron";
-import { RepluggedIpcChannels, type RepluggedTheme } from "../../types";
+import { ReCelledIpcChannels, type ReCelledTheme } from "../../types";
 import { theme } from "../../types/addon";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { Dirent, Stats } from "fs";
@@ -18,7 +18,7 @@ export const isFileATheme = (f: Dirent | Stats, name: string): boolean => {
   return f.isDirectory() || (f.isFile() && extname(name) === ".asar");
 };
 
-async function getTheme(path: string): Promise<RepluggedTheme> {
+async function getTheme(path: string): Promise<ReCelledTheme> {
   const manifestPath = join(THEMES_DIR, path, "manifest.json");
   if (!manifestPath.startsWith(`${THEMES_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
@@ -38,15 +38,15 @@ async function getTheme(path: string): Promise<RepluggedTheme> {
 }
 
 ipcMain.handle(
-  RepluggedIpcChannels.GET_THEME,
-  async (_, path: string): Promise<RepluggedTheme | undefined> => {
+  ReCelledIpcChannels.GET_THEME,
+  async (_, path: string): Promise<ReCelledTheme | undefined> => {
     try {
       return await getTheme(path);
     } catch {}
   },
 );
 
-ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedTheme[]> => {
+ipcMain.handle(ReCelledIpcChannels.LIST_THEMES, async (): Promise<ReCelledTheme[]> => {
   const themes = [];
 
   const themeDirs = (
@@ -77,7 +77,7 @@ ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedThem
   return themes;
 });
 
-ipcMain.handle(RepluggedIpcChannels.UNINSTALL_THEME, async (_, themeName: string) => {
+ipcMain.handle(ReCelledIpcChannels.UNINSTALL_THEME, async (_, themeName: string) => {
   const themePath = join(THEMES_DIR, themeName);
   if (!themePath.startsWith(`${THEMES_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
@@ -90,4 +90,4 @@ ipcMain.handle(RepluggedIpcChannels.UNINSTALL_THEME, async (_, themeName: string
   });
 });
 
-ipcMain.on(RepluggedIpcChannels.OPEN_THEMES_FOLDER, () => shell.openPath(THEMES_DIR));
+ipcMain.on(ReCelledIpcChannels.OPEN_THEMES_FOLDER, () => shell.openPath(THEMES_DIR));

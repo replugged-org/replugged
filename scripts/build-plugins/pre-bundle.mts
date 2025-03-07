@@ -15,11 +15,11 @@ export default {
         `${distDir}/package.json`,
         JSON.stringify({
           main: "main.js",
-          name: "replugged",
+          name: "recelled",
           version: mainPackage.version,
         }),
       );
-      asar.createPackage(`${distDir}`, "replugged.asar");
+      asar.createPackage(`${distDir}`, "recelled.asar");
     });
   },
 } as esbuild.Plugin;

@@ -10,7 +10,7 @@ export { Injector } from "./modules/injector";
  * simplify filtering items in the console and diagnosing issues.
  *
  * Messages printed using this module will be prefixed with a colorful string
- * in the following format: `[Replugged:Type:Name]`
+ * in the following format: `[ReCelled:Type:Name]`
  *
  * - The color of the prefix is blurple by default, but this can be customized.
  * - The "Type" portion of the prefix indicates the type of the message's origin--e.g. an API, a coremod, or a plugin.

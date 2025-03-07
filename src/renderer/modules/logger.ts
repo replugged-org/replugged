@@ -11,12 +11,12 @@ export type LoggerType =
   | "Components"
   | "Manager";
 
-const repluggedPrefix = (type: LoggerType, name: string): string => `%c[Replugged:${type}:${name}]`;
+const recelledPrefix = (type: LoggerType, name: string): string => `%c[ReCelled:${type}:${name}]`;
 
 const logColor = (color: string): string => `color: ${typeof color === "string" ? color : blurple}`;
 
 /**
- * Log a message to the console with a Replugged prefix.
+ * Log a message to the console with a ReCelled prefix.
  * @param type Type of the context of the message (e.g. API, Plugin, Coremod...)
  * @param name Name of the context of the message (e.g. Notices, SilentTyping, Badges...)
  * @param color Color of the prefix as hex or a CSS color
@@ -28,11 +28,11 @@ export function log(
   color: string = blurple,
   ...data: Parameters<typeof console.log>
 ): void {
-  console.log(repluggedPrefix(type, name), logColor(color), ...data);
+  console.log(recelledPrefix(type, name), logColor(color), ...data);
 }
 
 /**
- * Log a warning to the console with a Replugged prefix.
+ * Log a warning to the console with a ReCelled prefix.
  * @param type Type of the context of the warning (e.g. API, Plugin, Coremod...)
  * @param name Name of the context of the warning (e.g. Notices, SilentTyping, Badges...)
  * @param color Color of the prefix as hex or a CSS color
@@ -44,11 +44,11 @@ export function warn(
   color: string = blurple,
   ...data: Parameters<typeof console.warn>
 ): void {
-  console.warn(repluggedPrefix(type, name), logColor(color), ...data);
+  console.warn(recelledPrefix(type, name), logColor(color), ...data);
 }
 
 /**
- * Log an error to the console with a Replugged prefix.
+ * Log an error to the console with a ReCelled prefix.
  * @param type Type of the context of the error (e.g. API, Plugin, Coremod...)
  * @param name Name of the context of the error (e.g. Notices, SilentTyping, Badges...)
  * @param color Color of the prefix as hex or a CSS color
@@ -60,7 +60,7 @@ export function error(
   color: string = blurple,
   ...data: Parameters<typeof console.error>
 ): void {
-  console.error(repluggedPrefix(type, name), logColor(color), ...data);
+  console.error(recelledPrefix(type, name), logColor(color), ...data);
 }
 
 /**
@@ -76,10 +76,10 @@ export function error(
  *
  * Example usage:
  * ```ts
- * import { Logger } from "replugged";
+ * import { Logger } from "recelled";
  *
  * const pluginLogger = Logger.plugin("SilentTyping");
- * pluginLogger.log("Hello", "world"); // Logs `[Replugged:Plugin:SilentTyping] Hello world`
+ * pluginLogger.log("Hello", "world"); // Logs `[ReCelled:Plugin:SilentTyping] Hello world`
  * ```
  */
 export class Logger {

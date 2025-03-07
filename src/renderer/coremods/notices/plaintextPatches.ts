@@ -1,6 +1,6 @@
 import type { PlaintextPatch } from "src/types";
 
-const coremodStr = "replugged.coremods.coremods.notices";
+const coremodStr = "recelled.coremods.coremods.notices";
 
 export default [
   {

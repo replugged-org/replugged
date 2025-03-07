@@ -22,7 +22,7 @@ export const distDir = production ? "dist-bundle" : "dist";
 // Delete old builds to prevent issues/confusion from leftover files
 rmSync("dist", { recursive: true, force: true });
 rmSync("dist-bundle", { recursive: true, force: true });
-rmSync("replugged.asar", { force: true });
+rmSync("recelled.asar", { force: true });
 
 const plugins: esbuild.Plugin[] = [];
 
@@ -70,8 +70,8 @@ const contexts = await Promise.all([
     target: `chrome${CHROME_VERSION}`,
     format: "iife",
     footer: {
-      js: "//# sourceURL=replugged://RepluggedRenderer/renderer.js",
-      css: "/*# sourceURL=replugged://RepluggedRenderer/renderer.css */",
+      js: "//# sourceURL=recelled://ReCelledRenderer/renderer.js",
+      css: "/*# sourceURL=recelled://ReCelledRenderer/renderer.css */",
     },
     outfile: `${distDir}/renderer.js`,
     loader: {

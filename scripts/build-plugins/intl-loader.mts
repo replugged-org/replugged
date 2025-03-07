@@ -26,7 +26,7 @@ let hasInitializedAllDefinitions = false;
 let messageKeys: Record<string, string> = {};
 
 /**
- * Rewritten for esbuild. 1:1 copy of the original plugin, adapted for Replugged (doesn't hash keys).
+ * Rewritten for esbuild. 1:1 copy of the original plugin, adapted for Replugged/Recelled (doesn't hash keys).
  * @link https://github.com/discord/discord-intl
  * @copyright 2024 Discord, Inc.
  * @license MIT

@@ -1,9 +1,9 @@
-import type { RepluggedAnnouncement } from "../../types";
+import type { ReCelledAnnouncement } from "../../types";
 
 class NoticesAPI extends EventTarget {
-  private announcements: RepluggedAnnouncement[] = [];
+  private announcements: ReCelledAnnouncement[] = [];
 
-  public sendAnnouncement(props: RepluggedAnnouncement): () => void {
+  public sendAnnouncement(props: ReCelledAnnouncement): () => void {
     props._dismissed = false;
     this.announcements.push(props);
     this.dispatchEvent(new CustomEvent("rpAnnouncementUpdate"));
@@ -13,7 +13,7 @@ class NoticesAPI extends EventTarget {
     };
   }
 
-  public getAnnouncement(): RepluggedAnnouncement | undefined {
+  public getAnnouncement(): ReCelledAnnouncement | undefined {
     while (this.announcements[0]?._dismissed) {
       this.announcements.shift();
     }

@@ -2,7 +2,7 @@ import { dirname, join } from "path";
 import { statSync } from "fs";
 import electron from "electron";
 import { CONFIG_PATHS } from "src/util.mjs";
-import type { RepluggedWebContents } from "../types";
+import type { ReCelledWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
@@ -10,12 +10,12 @@ const electronPath = require.resolve("electron");
 // This is for backwards compatibility, to be removed later.
 let discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 try {
-  // If using older replugged file system
+  // If using older recelled file system
   statSync(discordPath);
   const discordPackage = require(join(discordPath, "package.json"));
   require.main!.filename = join(discordPath, discordPackage.main);
 } catch {
-  // If using newer replugged file system
+  // If using newer recelled file system
   discordPath = join(dirname(require.main!.filename), "app.orig");
   const discordPackage = require(join(discordPath, "package.json"));
   require.main!.filename = join(discordPath, "..", discordPackage.main);
@@ -70,7 +70,7 @@ class BrowserWindow extends electron.BrowserWindow {
     }
 
     super(opts);
-    (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
+    (this.webContents as ReCelledWebContents).originalPreload = originalPreload;
   }
 }
 
@@ -107,7 +107,7 @@ require.cache[electronPath]!.exports = electronExports;
 
 electron.protocol.registerSchemesAsPrivileged([
   {
-    scheme: "replugged",
+    scheme: "recelled",
     privileges: {
       standard: true,
       secure: true,
@@ -117,7 +117,7 @@ electron.protocol.registerSchemesAsPrivileged([
 ]);
 
 function loadReactDevTools(): void {
-  const rdtSetting = getSetting<boolean>("dev.replugged.Settings", "reactDevTools", false);
+  const rdtSetting = getSetting<boolean>("dev.recelled.Settings", "reactDevTools", false);
 
   if (rdtSetting) {
     void electron.session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
@@ -175,7 +175,7 @@ electron.app.once("ready", () => {
     done({ responseHeaders: headersWithoutCSP });
   });
 
-  electron.protocol.registerFileProtocol("replugged", (request, cb) => {
+  electron.protocol.registerFileProtocol("recelled", (request, cb) => {
     let filePath = "";
     const reqUrl = new URL(request.url);
     switch (reqUrl.hostname) {

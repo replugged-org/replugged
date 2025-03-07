@@ -79,7 +79,7 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
  */
 function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
   chunksGlobal.push([
-    [Symbol("replugged")],
+    [Symbol("recelled")],
     {},
     (r: WebpackRequire | undefined) => {
       wpRequire = r!;

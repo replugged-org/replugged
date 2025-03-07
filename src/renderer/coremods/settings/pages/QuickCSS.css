@@ -1,43 +1,43 @@
 /* Wrapper */
 #rp-quickcss-tab,
-#replugged-quickcss-wrapper {
+#recelled-quickcss-wrapper {
   height: 100%;
 }
-#replugged-quickcss-wrapper .cm-editor {
+#recelled-quickcss-wrapper .cm-editor {
   max-height: calc(100% - 20px);
   background: var(--bg-overlay-2, var(--background-secondary));
   border: 1px solid var(--background-secondary-alt);
   border-radius: 4px;
   outline: none !important;
 }
-#replugged-quickcss-wrapper .cm-content {
+#recelled-quickcss-wrapper .cm-content {
   padding: 0px;
 }
-#replugged-quickcss-wrapper .cm-content,
-#replugged-quickcss-wrapper .cm-gutter {
+#recelled-quickcss-wrapper .cm-content,
+#recelled-quickcss-wrapper .cm-gutter {
   min-height: 300px;
 }
 
 /* Scrollbar */
-#replugged-quickcss-wrapper .cm-scroller {
+#recelled-quickcss-wrapper .cm-scroller {
   overflow: auto;
 }
-#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar {
+#recelled-quickcss-wrapper .cm-scroller::-webkit-scrollbar {
   width: 16px;
   height: 16px;
 }
-#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb,
-#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-track {
+#recelled-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb,
+#recelled-quickcss-wrapper .cm-scroller::-webkit-scrollbar-track {
   border-radius: 8px;
 }
-#replugged-quickcss-wrapper:not([data-theme="light"]) .cm-scroller::-webkit-scrollbar-thumb {
+#recelled-quickcss-wrapper:not([data-theme="light"]) .cm-scroller::-webkit-scrollbar-thumb {
   background-image: linear-gradient(
       rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-4)),
       rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-4))
     ),
     var(--custom-theme-background);
 }
-#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb {
+#recelled-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb {
   background-image: rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-6)),
     rgb(var(--bg-overlay-color) / var(--bg-overlay-opacity-3));
   background-color: var(--scrollbar-auto-thumb);
@@ -45,18 +45,18 @@
   border: 4px solid transparent;
   background-size: 100vh;
 }
-#replugged-quickcss-wrapper:not([data-theme="light"]) .cm-scroller::-webkit-scrollbar-track {
+#recelled-quickcss-wrapper:not([data-theme="light"]) .cm-scroller::-webkit-scrollbar-track {
   background-image: linear-gradient(
       rgb(var(--bg-overlay-color) / 0.6),
       rgb(var(--bg-overlay-color) / 0.6)
     ),
     var(--custom-theme-background);
 }
-#replugged-quickcss-wrapper:is([data-theme="dark"]) .cm-scroller::-webkit-scrollbar-track {
+#recelled-quickcss-wrapper:is([data-theme="dark"]) .cm-scroller::-webkit-scrollbar-track {
   background: var(--background-modifier-hover);
   background-clip: padding-box;
 }
-#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-track {
+#recelled-quickcss-wrapper .cm-scroller::-webkit-scrollbar-track {
   background-image: linear-gradient(
       rgb(var(--bg-overlay-color) / var(--bg-overlay-opacity-1)),
       rgb(var(--bg-overlay-color) / var(--bg-overlay-opacity-1))
@@ -67,53 +67,53 @@
   border: 4px solid transparent;
   background-size: 200vh;
 }
-#replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-corner {
+#recelled-quickcss-wrapper .cm-scroller::-webkit-scrollbar-corner {
   background-color: transparent;
 }
 
 /* Fold "..." */
-#replugged-quickcss-wrapper .cm-foldPlaceholder {
+#recelled-quickcss-wrapper .cm-foldPlaceholder {
   background-color: transparent;
   border: 1px solid transparent;
 }
 
 /* Active line */
-#replugged-quickcss-wrapper .cm-activeLine,
-#replugged-quickcss-wrapper .cm-activeLineGutter {
+#recelled-quickcss-wrapper .cm-activeLine,
+#recelled-quickcss-wrapper .cm-activeLineGutter {
   background-color: var(--background-modifier-hover);
 }
 
 /* Auto-complete */
-#replugged-quickcss-wrapper .cm-tooltip [role="listbox"]::-webkit-scrollbar {
+#recelled-quickcss-wrapper .cm-tooltip [role="listbox"]::-webkit-scrollbar {
   width: 8px;
 }
-#replugged-quickcss-wrapper .cm-tooltip [role="listbox"]::-webkit-scrollbar-thumb {
+#recelled-quickcss-wrapper .cm-tooltip [role="listbox"]::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thin-thumb);
   border-radius: 8px;
   background-clip: padding-box;
   border: 2px solid transparent;
 }
-#replugged-quickcss-wrapper .cm-tooltip [role="listbox"] {
+#recelled-quickcss-wrapper .cm-tooltip [role="listbox"] {
   background-color: var(--background-floating);
 }
 
 /* Line gutter */
-#replugged-quickcss-wrapper .cm-gutters {
+#recelled-quickcss-wrapper .cm-gutters {
   background: var(--bg-overlay-3, var(--channeltextarea-background));
   border-right: 1px solid var(--background-secondary-alt);
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
-#replugged-quickcss-wrapper .cm-foldGutter:after {
+#recelled-quickcss-wrapper .cm-foldGutter:after {
   content: "|";
   width: 10px;
   font-size: 0rem;
 }
-#replugged-quickcss-wrapper .cm-gutterElement {
+#recelled-quickcss-wrapper .cm-gutterElement {
   margin: 0px;
 }
-#replugged-quickcss-wrapper .cm-gutterElement span[title="Fold line"],
-#replugged-quickcss-wrapper .cm-gutterElement span[title="Unfold line"] {
+#recelled-quickcss-wrapper .cm-gutterElement span[title="Fold line"],
+#recelled-quickcss-wrapper .cm-gutterElement span[title="Unfold line"] {
   font-size: 0;
   position: absolute;
   width: 100%;
@@ -123,63 +123,63 @@
   align-items: center;
   flex-direction: row-reverse;
 }
-#replugged-quickcss-wrapper .cm-gutterElement span[title="Fold line"]:before {
+#recelled-quickcss-wrapper .cm-gutterElement span[title="Fold line"]:before {
   content: "▼";
   font-size: 0.5rem;
   margin-right: 2px;
 }
-#replugged-quickcss-wrapper .cm-gutterElement span[title="Unfold line"]:before {
+#recelled-quickcss-wrapper .cm-gutterElement span[title="Unfold line"]:before {
   content: "▶";
   font-size: 0.5rem;
   margin-right: 0.5px;
 }
 
 /* Find "ctrl+f" */
-#replugged-quickcss-wrapper .cm-panels [name="close"] {
+#recelled-quickcss-wrapper .cm-panels [name="close"] {
   color: var(--interactive-normal);
 }
-#replugged-quickcss-wrapper .cm-panels {
+#recelled-quickcss-wrapper .cm-panels {
   background: var(--bg-overlay-2, var(--background-secondary));
   border-top: 1px solid var(--background-secondary-alt);
 }
-#replugged-quickcss-wrapper .cm-textfield,
-#replugged-quickcss-wrapper .cm-button {
+#recelled-quickcss-wrapper .cm-textfield,
+#recelled-quickcss-wrapper .cm-button {
   background-color: var(--background-tertiary);
   background-image: unset;
   border-radius: 4px;
 }
-#replugged-quickcss-wrapper label {
+#recelled-quickcss-wrapper label {
   vertical-align: middle;
 }
-#replugged-quickcss-wrapper label input {
+#recelled-quickcss-wrapper label input {
   margin: 1px 0.2em 1px;
   vertical-align: text-bottom;
 }
 
 /* Text highlight @olavwolfiken */
-#replugged-quickcss-wrapper .cm-content ::selection,
-#replugged-quickcss-wrapper .cm-focused .cm-foldPlaceholder,
-#replugged-quickcss-wrapper .cm-selectionLayer .cm-selectionBackground,
-#replugged-quickcss-wrapper .cm-selectionBackground {
+#recelled-quickcss-wrapper .cm-content ::selection,
+#recelled-quickcss-wrapper .cm-focused .cm-foldPlaceholder,
+#recelled-quickcss-wrapper .cm-selectionLayer .cm-selectionBackground,
+#recelled-quickcss-wrapper .cm-selectionBackground {
   background-color: hsl(var(--blue-400-hsl) / 0.3);
 }
-#replugged-quickcss-wrapper .cm-selectionMatch,
-#replugged-quickcss-wrapper .cm-focused .cm-matchingBracket {
+#recelled-quickcss-wrapper .cm-selectionMatch,
+#recelled-quickcss-wrapper .cm-focused .cm-matchingBracket {
   background-color: hsl(var(--green-400-hsl) / 0.3);
 }
-#replugged-quickcss-wrapper .cm-focused .cm-nonmatchingBracket {
+#recelled-quickcss-wrapper .cm-focused .cm-nonmatchingBracket {
   background-color: hsl(var(--red-400-hsl) / 0.3);
 }
-#replugged-quickcss-wrapper .cm-searchMatch {
+#recelled-quickcss-wrapper .cm-searchMatch {
   background-color: hsl(var(--yellow-400-hsl) / 0.15);
 }
-#replugged-quickcss-wrapper .cm-searchMatch .cm-selectionMatch {
+#recelled-quickcss-wrapper .cm-searchMatch .cm-selectionMatch {
   background-color: hsl(var(--yellow-400-hsl) / 0.3);
 }
-#replugged-quickcss-wrapper .cm-searchMatch.cm-searchMatch-selected {
+#recelled-quickcss-wrapper .cm-searchMatch.cm-searchMatch-selected {
   background-color: hsl(var(--yellow-400-hsl) / 0.6);
 }
-#replugged-quickcss-wrapper .cm-trailingSpace,
-#replugged-quickcss-wrapper .cm-specialChar {
+#recelled-quickcss-wrapper .cm-trailingSpace,
+#recelled-quickcss-wrapper .cm-specialChar {
   color: var(--red-400);
 }

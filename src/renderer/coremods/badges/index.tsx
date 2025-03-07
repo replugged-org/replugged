@@ -1,5 +1,5 @@
 import { React, i18n } from "@common";
-import { Logger } from "@replugged";
+import { Logger } from "@recelled";
 import { filters, getFunctionKeyBySource, waitForModule } from "@webpack";
 import { DISCORD_BLURPLE, DISCORD_INVITE, WEBLATE_URL } from "src/constants";
 import { t } from "src/renderer/modules/i18n";
@@ -14,17 +14,17 @@ const injector = new Injector();
 
 const logger = Logger.coremod("Badges");
 
-type RepluggedBadge = Badge & {
+type ReCelledBadge = Badge & {
   component?: React.ReactElement;
 };
 
-interface APIRepluggedCustomBadge {
+interface APIReCelledCustomBadge {
   name: string | null;
   icon: string | null;
   color: string | null;
 }
 
-interface APIRepluggedBadges {
+interface APIReCelledBadges {
   developer: boolean;
   staff: boolean;
   support: boolean;
@@ -33,7 +33,7 @@ interface APIRepluggedBadges {
   hunter: boolean;
   early: boolean;
   booster: boolean;
-  custom: APIRepluggedCustomBadge;
+  custom: APIReCelledCustomBadge;
 }
 
 type UseBadges = (displayProfile: DisplayProfile | null) => Badge[];
@@ -41,7 +41,7 @@ type UseBadges = (displayProfile: DisplayProfile | null) => Badge[];
 type GetBadgeAsset = (icon: string) => string;
 
 interface BadgeCache {
-  badges: APIRepluggedBadges;
+  badges: APIReCelledBadges;
   lastFetch: number;
 }
 
@@ -54,47 +54,47 @@ const inviteUrl = `https://discord.gg/${DISCORD_INVITE}`;
 const badgeElements = [
   {
     id: "booster",
-    description: i18n.intl.string(t.REPLUGGED_BADGES_BOOSTER),
+    description: i18n.intl.string(t.RECELLED_BADGES_BOOSTER),
     component: Badges.Booster,
     link: inviteUrl,
   },
   {
     id: "contributor",
-    description: i18n.intl.string(t.REPLUGGED_BADGES_CONTRIBUTOR),
+    description: i18n.intl.string(t.RECELLED_BADGES_CONTRIBUTOR),
     component: Badges.Contributor,
     link: contributorsUrl,
   },
   {
     id: "developer",
-    description: i18n.intl.string(t.REPLUGGED_BADGES_DEVELOPER),
+    description: i18n.intl.string(t.RECELLED_BADGES_DEVELOPER),
     component: Badges.Developer,
     link: contributorsUrl,
   },
   {
     id: "early",
-    description: i18n.intl.string(t.REPLUGGED_BADGES_EARLY),
+    description: i18n.intl.string(t.RECELLED_BADGES_EARLY),
     component: Badges.EarlyUser,
   },
   {
     id: "hunter",
-    description: i18n.intl.string(t.REPLUGGED_BADGES_HUNTER),
+    description: i18n.intl.string(t.RECELLED_BADGES_HUNTER),
     component: Badges.BugHunter,
   },
   {
     id: "staff",
-    description: i18n.intl.string(t.REPLUGGED_BADGES_STAFF),
+    description: i18n.intl.string(t.RECELLED_BADGES_STAFF),
     component: Badges.Staff,
     link: inviteUrl,
   },
   {
     id: "support",
-    description: i18n.intl.string(t.REPLUGGED_BADGES_SUPPORT),
+    description: i18n.intl.string(t.RECELLED_BADGES_SUPPORT),
     component: Badges.Support,
     link: inviteUrl,
   },
   {
     id: "translator",
-    description: i18n.intl.string(t.REPLUGGED_BADGES_TRANSLATOR),
+    description: i18n.intl.string(t.RECELLED_BADGES_TRANSLATOR),
     component: Badges.Translator,
     link: WEBLATE_URL,
   },
@@ -110,7 +110,7 @@ export async function start(): Promise<void> {
     if (!generalSettings.get("badges")) return badges;
 
     try {
-      const [currentCache, setCurrentCache] = React.useState<APIRepluggedBadges | undefined>();
+      const [currentCache, setCurrentCache] = React.useState<APIReCelledBadges | undefined>();
       const badgeCache = React.useMemo(() => {
         if (!displayProfile) return currentCache;
 
@@ -149,24 +149,24 @@ export async function start(): Promise<void> {
 
       if (!badgeCache) return badges;
 
-      let newBadges: RepluggedBadge[] = [];
+      let newBadges: ReCelledBadge[] = [];
 
       if (badgeCache.custom.name && badgeCache.custom.icon) {
         newBadges.push({
           id: badgeCache.custom.name,
           description: badgeCache.custom.name,
-          icon: `replugged${badgeCache.custom.icon}`,
+          icon: `recelled${badgeCache.custom.icon}`,
         });
       }
 
       badgeElements.forEach((badgeElement) => {
-        if (badgeCache[badgeElement.id as keyof APIRepluggedBadges]) {
+        if (badgeCache[badgeElement.id as keyof APIReCelledBadges]) {
           const { component, ...props } = badgeElement;
           const badgeColor = badgeCache.custom.color;
 
           newBadges.push({
             ...props,
-            icon: "replugged",
+            icon: "recelled",
             component: React.createElement(component, {
               color:
                 (badgeColor && (badgeColor.startsWith("#") ? badgeColor : `#${badgeColor}`)) ??
@@ -189,7 +189,7 @@ export async function start(): Promise<void> {
   const getBadgeAssetKey = getFunctionKeyBySource(userProfileConstantsMod, "badge-icons")!;
 
   injector.instead(userProfileConstantsMod, getBadgeAssetKey, (args, orig) => {
-    if (args[0].startsWith("replugged")) return args[0].replace("replugged", "");
+    if (args[0].startsWith("recelled")) return args[0].replace("recelled", "");
     return orig(...args);
   });
 }

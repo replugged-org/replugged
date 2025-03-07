@@ -1,6 +1,6 @@
 import { React, i18n } from "@common";
 import { Button, Clickable, Text, Tooltip } from "@components";
-import { Logger } from "@replugged";
+import { Logger } from "@recelled";
 import { getByProps } from "@webpack";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
@@ -152,23 +152,23 @@ const Embed = React.memo(
             <div className={barLoader} />
           ) : (
             <>
-              <Tooltip text={props.authors} className="replugged-addon-embed-title-tooltip">
-                <strong className={`${title} replugged-addon-embed-title`}>{props.authors}</strong>
+              <Tooltip text={props.authors} className="recelled-addon-embed-title-tooltip">
+                <strong className={`${title} recelled-addon-embed-title`}>{props.authors}</strong>
               </Tooltip>
               <Clickable
-                className={`${copyLink} replugged-addon-embed-store-button`}
+                className={`${copyLink} recelled-addon-embed-store-button`}
                 onClick={() => openExternal(props.url)}>
-                {intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE)}
+                {intl.string(t.RECELLED_INSTALLER_OPEN_STORE)}
               </Clickable>
               <Clickable
-                className={`${copyLink} replugged-addon-embed-copy-button${
+                className={`${copyLink} recelled-addon-embed-copy-button${
                   props.onCooldown ? ` ${copied} addon-embed-copied` : ""
                 }`}
                 onClick={props.copyUrl}>
                 <Link className={copyLinkIcon} />
                 {props.onCooldown
-                  ? intl.string(t.REPLUGGED_PLUGIN_EMBED_COPIED)
-                  : intl.string(t.REPLUGGED_PLUGIN_EMBED_COPY)}
+                  ? intl.string(t.RECELLED_PLUGIN_EMBED_COPIED)
+                  : intl.string(t.RECELLED_PLUGIN_EMBED_COPY)}
               </Clickable>
             </>
           )}
@@ -205,14 +205,14 @@ const Embed = React.memo(
             <div className={buttonLoader} />
           ) : (
             <Tooltip
-              text={intl.formatToPlainString(t.REPLUGGED_ERROR_ALREADY_INSTALLED, {
+              text={intl.formatToPlainString(t.RECELLED_ERROR_ALREADY_INSTALLED, {
                 name: props.name,
               })}
-              className="replugged-addon-embed-button-tooltip"
+              className="recelled-addon-embed-button-tooltip"
               shouldShow={props.isInstalled ? undefined : false}
               hideOnClick={false}>
               <Button
-                className={`${button} ${buttonSize} replugged-addon-embed-button`}
+                className={`${button} ${buttonSize} recelled-addon-embed-button`}
                 style={{
                   minWidth: "auto",
                   maxWidth: "auto",
@@ -223,7 +223,7 @@ const Embed = React.memo(
                   props.isInstalled || props.isInstalling ? Button.Colors.TRANSPARENT : undefined
                 }
                 onClick={props.installClick}>
-                {intl.string(t.REPLUGGED_CONFIRM_INSTALL)}
+                {intl.string(t.RECELLED_CONFIRM_INSTALL)}
               </Button>
             </Tooltip>
           )}
@@ -255,7 +255,7 @@ const AddonEmbed = React.memo(
     if (data === null) return fallback;
 
     const { manifest } = data;
-    if (manifest.type === "replugged") return fallback;
+    if (manifest.type === "recelled") return fallback;
 
     const authors = authorList([manifest.author].flat().map((x) => x.name));
     const url = getSourceLink(manifest)!; // URL should always exist since it's from store

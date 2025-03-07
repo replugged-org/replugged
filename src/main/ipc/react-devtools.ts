@@ -4,14 +4,14 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { WEBSITE_URL } from "src/constants";
 import { CONFIG_PATHS } from "src/util.mjs";
-import { RepluggedIpcChannels } from "../../types";
+import { ReCelledIpcChannels } from "../../types";
 import { getSetting } from "./settings";
 
 const OUTPUT_PATH = join(CONFIG_PATHS["react-devtools"]);
 const ZIP_PATH = join(OUTPUT_PATH, "extension.zip");
 
-ipcMain.handle(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS, async () => {
-  const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
+ipcMain.handle(ReCelledIpcChannels.DOWNLOAD_REACT_DEVTOOLS, async () => {
+  const apiUrl = getSetting("dev.recelled.Settings", "apiUrl", WEBSITE_URL);
   const REACT_DEVTOOLS_URL = `${apiUrl}/api/v1/react-devtools`;
 
   let buffer;

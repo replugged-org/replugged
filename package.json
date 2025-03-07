@@ -1,10 +1,10 @@
 {
-  "name": "replugged",
+  "name": "recelled",
   "version": "4.8.4",
-  "description": "A lightweight @discord client mod focused on simplicity and performance",
+  "description": "Recelled is a refined Replugged fork",
   "license": "MIT",
   "main": "dist/main.mjs",
-  "types": "dist/renderer/replugged.d.ts",
+  "types": "dist/renderer/recelled.d.ts",
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
@@ -29,13 +29,13 @@
     "prepublishOnly": "rm -rf dist && tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json --outDir dist && rm -rf dist/scripts && mv dist/src/* dist && rm -rf dist/src && cp src/*.d.ts dist && tsx scripts/create-import-wrappers.mts",
     "postpublish": "rm -rf *.d.ts && rm -rf dist && npm run build",
     "release": "np",
-    "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
+    "docs": "typedoc src/renderer/recelled.ts --excludeExternals",
     "docs:watch": "pnpm run docs --watch"
   },
-  "repository": "https://github.com/replugged-org/replugged.git",
-  "author": "Replugged",
+  "repository": "https://github.com/recelled-org/recelled.git",
+  "author": "Recelled",
   "bugs": {
-    "url": "https://github.com/replugged-org/replugged/issues"
+    "url": "https://github.com/recelled-org/recelled/issues"
   },
   "devDependencies": {
     "@discord/intl": "^0.20.1",
@@ -98,6 +98,6 @@
     "zod": "^3.23.8"
   },
   "bin": {
-    "replugged": "bin.mjs"
+    "recelled": "bin.mjs"
   }
 }

@@ -1,8 +1,8 @@
-.replugged-badge {
+.recelled-badge {
   padding: 3px;
   box-sizing: border-box;
 }
 
-.replugged-badge:before {
+.recelled-badge:before {
   display: none !important;
 }

@@ -1,6 +1,6 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
 import { loadStyleSheet } from "../util";
-import type { PlaintextPatch, PluginExports, RepluggedPlugin } from "../../types";
+import type { PlaintextPatch, PluginExports, ReCelledPlugin } from "../../types";
 import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 import { init } from "../apis/settings";
@@ -9,7 +9,7 @@ import type { AddonSettings } from "src/types/addon";
 const logger = Logger.api("Plugins");
 const settings = init<AddonSettings>("plugins");
 
-interface PluginWrapper extends RepluggedPlugin {
+interface PluginWrapper extends ReCelledPlugin {
   exports: PluginExports | undefined;
 }
 
@@ -29,8 +29,8 @@ const styleElements = new Map<string, HTMLLinkElement>();
  * @remarks
  * This is primarily intended to shorten plaintext patches that need to access exported
  * functions or variables from their respective plugins.
- * Instead of writing `replugged.plugins.plugins.get("id.here").exports`,
- * developers can write `replugged.plugins.getExports("id.here")`.
+ * Instead of writing `recelled.plugins.plugins.get("id.here").exports`,
+ * developers can write `recelled.plugins.getExports("id.here")`.
  */
 export function getExports(id: string): PluginExports | undefined {
   const plugin = plugins.get(id);
@@ -40,7 +40,7 @@ export function getExports(id: string): PluginExports | undefined {
   return plugin.exports;
 }
 
-function register(plugin: RepluggedPlugin): void {
+function register(plugin: ReCelledPlugin): void {
   const existingExports = plugins.get(plugin.manifest.id)?.exports;
   plugins.set(plugin.manifest.id, {
     ...plugin,
@@ -55,7 +55,7 @@ function register(plugin: RepluggedPlugin): void {
  * You may need to reload Discord after adding a new plugin before it's available.
  */
 export function loadAll(): void {
-  window.RepluggedNative.plugins.list().forEach(register);
+  window.ReCelledNative.plugins.list().forEach(register);
 }
 
 /**
@@ -82,7 +82,7 @@ export async function start(id: string): Promise<void> {
         ),
         (async () => {
           const pluginExports = await import(
-            `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}`
+            `recelled://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}`
           );
           plugin.exports = pluginExports;
           await pluginExports.start?.();
@@ -93,7 +93,7 @@ export async function start(id: string): Promise<void> {
             }
 
             const el = loadStyleSheet(
-              `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(
+              `recelled://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(
                 /\.js$/,
                 ".css",
               )}`,
@@ -169,9 +169,9 @@ export function runPlaintextPatches(): void {
   const getPlaintextPatch = (pluginName: string): { default: PlaintextPatch[] } => {
     const wrapModule = (code: string, pluginName: string): string => `((module) => {
       ${code}\nreturn module.exports
-      })({exports:{}})\n//# sourceURL=replugged://plugin/${pluginName}/plaintextPatches.js?t=${Date.now()}`;
+      })({exports:{}})\n//# sourceURL=recelled://plugin/${pluginName}/plaintextPatches.js?t=${Date.now()}`;
 
-    const code = RepluggedNative.plugins.readPlaintextPatch(pluginName);
+    const code = ReCelledNative.plugins.readPlaintextPatch(pluginName);
 
     if (code)
       try {
@@ -224,7 +224,7 @@ export async function reload(id: string): Promise<void> {
   }
   await stop(plugin.manifest.id);
   plugins.delete(plugin.manifest.id);
-  const newPlugin = window.RepluggedNative.plugins.get(plugin.path);
+  const newPlugin = window.ReCelledNative.plugins.get(plugin.path);
   if (newPlugin) {
     register(newPlugin);
     await start(newPlugin.manifest.id);
@@ -261,7 +261,7 @@ export async function uninstall(id: string): Promise<void> {
   const plugin = plugins.get(id)!;
   await stop(id);
   plugins.delete(id);
-  await window.RepluggedNative.plugins.uninstall(plugin.path);
+  await window.ReCelledNative.plugins.uninstall(plugin.path);
 }
 
 export function getDisabled(): string[] {

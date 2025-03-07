@@ -1,15 +1,15 @@
 import type { Channel, Guild, User } from "discord-types/general";
-import { REPLUGGED_CLYDE_ID } from "../../constants";
+import { RECELLED_CLYDE_ID } from "../../constants";
 import type {
-  AnyRepluggedCommand,
+  AnyReCelledCommand,
   CommandOptionReturn,
   CommandOptions,
   GetCommandOption,
   GetCommandOptions,
   GetValueType,
-  RepluggedCommand,
-  RepluggedCommandResult,
-  RepluggedCommandSection,
+  ReCelledCommand,
+  ReCelledCommandResult,
+  ReCelledCommandSection,
 } from "../../types";
 // eslint-disable-next-line no-duplicate-imports
 import { ApplicationCommandOptionType } from "../../types";
@@ -22,28 +22,28 @@ import { t } from "../modules/i18n";
 
 const logger = Logger.api("Commands");
 
-let RepluggedUser: User | undefined;
+let ReCelledUser: User | undefined;
 
 interface CommandsAndSection {
-  section: RepluggedCommandSection;
-  commands: Map<string, AnyRepluggedCommand>;
+  section: ReCelledCommandSection;
+  commands: Map<string, AnyReCelledCommand>;
 }
 
 void waitForModule<typeof User>(filters.bySource("hasHadPremium(){")).then((User) => {
-  RepluggedUser = new User({
-    avatar: "replugged",
-    id: REPLUGGED_CLYDE_ID,
+  ReCelledUser = new User({
+    avatar: "recelled",
+    id: RECELLED_CLYDE_ID,
     bot: true,
-    username: "Replugged",
+    username: "ReCelled",
     system: true,
   });
 });
 
 export const commandAndSections = new Map<string, CommandsAndSection>();
 
-export const defaultSection: RepluggedCommandSection = Object.freeze({
-  id: "replugged",
-  name: "Replugged",
+export const defaultSection: ReCelledCommandSection = Object.freeze({
+  id: "recelled",
+  name: "ReCelled",
   type: 1,
   icon,
 });
@@ -93,18 +93,18 @@ async function executeCommand<T extends CommandOptions>(
   cmdExecutor:
     | ((
         interaction: CommandInteraction<GetCommandOptions<T>>,
-      ) => Promise<RepluggedCommandResult> | RepluggedCommandResult)
+      ) => Promise<ReCelledCommandResult> | ReCelledCommandResult)
     | undefined,
   args: Array<GetCommandOptions<T>>,
   currentInfo: { guild: Guild; channel: Channel },
-  command: RepluggedCommand<T>,
+  command: ReCelledCommand<T>,
 ): Promise<void> {
   try {
     const currentChannelId = currentInfo.channel.id;
     const loadingMessage = messages.createBotMessage({
       channelId: currentChannelId,
       content: "",
-      loggingName: "Replugged",
+      loggingName: "ReCelled",
     });
 
     Object.assign(loadingMessage, {
@@ -123,7 +123,7 @@ async function executeCommand<T extends CommandOptions>(
         name: command.displayName,
       },
       type: 20,
-      author: RepluggedUser ?? loadingMessage.author,
+      author: ReCelledUser ?? loadingMessage.author,
     });
     messages.receiveMessage(currentChannelId, loadingMessage, true);
     const interaction = new CommandInteraction({ options: args, ...currentInfo });
@@ -144,7 +144,7 @@ async function executeCommand<T extends CommandOptions>(
         channelId: currentChannelId,
         content: result.result || "",
         embeds: result.embeds || [],
-        loggingName: "Replugged",
+        loggingName: "ReCelled",
       });
 
       Object.assign(botMessage, {
@@ -161,7 +161,7 @@ async function executeCommand<T extends CommandOptions>(
           name: command.displayName,
         },
         type: 20,
-        author: RepluggedUser ?? botMessage.author,
+        author: ReCelledUser ?? botMessage.author,
       });
       messages.receiveMessage(currentChannelId, botMessage, true);
     }
@@ -170,9 +170,9 @@ async function executeCommand<T extends CommandOptions>(
     const currentChannelId = currentInfo.channel.id;
     const botMessage = messages.createBotMessage({
       channelId: currentChannelId,
-      content: i18n.intl.string(t.REPLUGGED_COMMAND_ERROR_GENERIC),
+      content: i18n.intl.string(t.RECELLED_COMMAND_ERROR_GENERIC),
       embeds: [],
-      loggingName: "Replugged",
+      loggingName: "ReCelled",
     });
 
     Object.assign(botMessage, {
@@ -189,7 +189,7 @@ async function executeCommand<T extends CommandOptions>(
         name: command.displayName,
       },
       type: 20,
-      author: RepluggedUser ?? botMessage.author,
+      author: ReCelledUser ?? botMessage.author,
     });
 
     messages.receiveMessage(currentChannelId, botMessage, true);
@@ -197,7 +197,7 @@ async function executeCommand<T extends CommandOptions>(
 }
 
 export class CommandManager {
-  #section: RepluggedCommandSection;
+  #section: ReCelledCommandSection;
   #unregister: Array<() => void>;
   public constructor() {
     this.#section = defaultSection;
@@ -210,11 +210,11 @@ export class CommandManager {
    * @param command Slash command to be registered
    * @returns A callback to unregister the slash command
    */
-  public registerCommand<const T extends CommandOptions>(command: RepluggedCommand<T>): () => void {
+  public registerCommand<const T extends CommandOptions>(command: ReCelledCommand<T>): () => void {
     if (!commandAndSections.has(this.#section.id)) {
       commandAndSections.set(this.#section.id, {
         section: this.#section,
-        commands: new Map<string, AnyRepluggedCommand>(),
+        commands: new Map<string, AnyReCelledCommand>(),
       });
     }
 
@@ -237,7 +237,7 @@ export class CommandManager {
       return option;
     });
 
-    currentSection.commands.set(command.id, command as AnyRepluggedCommand);
+    currentSection.commands.set(command.id, command as AnyReCelledCommand);
 
     const uninject = (): void => {
       void currentSection.commands.delete(command.id!);

@@ -1,5 +1,5 @@
 import { i18n } from "@common";
-import { Injector, plugins, themes } from "@replugged";
+import { Injector, plugins, themes } from "@recelled";
 import { t } from "src/renderer/modules/i18n";
 import { ApplicationCommandOptionType } from "../../../types";
 
@@ -9,13 +9,13 @@ const { intl } = i18n;
 
 export function loadCommands(): void {
   injector.utils.registerSlashCommand({
-    name: intl.string(t.REPLUGGED_COMMAND_ENABLE_NAME),
-    description: intl.string(t.REPLUGGED_COMMAND_ENABLE_DESC),
+    name: intl.string(t.RECELLED_COMMAND_ENABLE_NAME),
+    description: intl.string(t.RECELLED_COMMAND_ENABLE_DESC),
     options: [
       {
         name: "addon",
-        displayName: intl.string(t.REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME),
-        description: intl.string(t.REPLUGGED_COMMAND_ADDONS_OPTION_ADDON_DESC),
+        displayName: intl.string(t.RECELLED_COMMAND_ENABLE_OPTION_ADDON_NAME),
+        description: intl.string(t.RECELLED_COMMAND_ADDONS_OPTION_ADDON_DESC),
         type: ApplicationCommandOptionType.String,
         required: true,
         get choices() {
@@ -33,7 +33,7 @@ export function loadCommands(): void {
             ...disabledPlugins
               .map((plugin) => ({
                 name: plugin.manifest.name,
-                displayName: `${intl.string(t.REPLUGGED_PLUGIN)}: ${plugin.manifest.name}`,
+                displayName: `${intl.string(t.RECELLED_PLUGIN)}: ${plugin.manifest.name}`,
                 value: plugin.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -42,7 +42,7 @@ export function loadCommands(): void {
             ...disabledThemes
               .map((theme) => ({
                 name: theme.manifest.name,
-                displayName: `${intl.string(t.REPLUGGED_THEME)}: ${theme.manifest.name}`,
+                displayName: `${intl.string(t.RECELLED_THEME)}: ${theme.manifest.name}`,
                 value: theme.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -65,11 +65,11 @@ export function loadCommands(): void {
           embeds: [
             {
               color: 0x1bbb1b,
-              title: intl.string(t.REPLUGGED_COMMAND_SUCCESS_GENERIC),
-              description: intl.formatToPlainString(t.REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED, {
+              title: intl.string(t.RECELLED_COMMAND_SUCCESS_GENERIC),
+              description: intl.formatToPlainString(t.RECELLED_COMMAND_ENABLE_MESSAGE_ENABLED, {
                 type: plugins.plugins.get(addonId)
-                  ? intl.string(t.REPLUGGED_PLUGIN)
-                  : intl.string(t.REPLUGGED_THEME),
+                  ? intl.string(t.RECELLED_PLUGIN)
+                  : intl.string(t.RECELLED_THEME),
                 name:
                   plugins.plugins.get(addonId)?.manifest.name ??
                   themes.themes.get(addonId)?.manifest.name,
@@ -83,7 +83,7 @@ export function loadCommands(): void {
           embeds: [
             {
               color: 0xdd2d2d,
-              title: intl.string(t.REPLUGGED_COMMAND_ERROR_GENERIC),
+              title: intl.string(t.RECELLED_COMMAND_ERROR_GENERIC),
               description: err as string,
             },
           ],
@@ -92,13 +92,13 @@ export function loadCommands(): void {
     },
   });
   injector.utils.registerSlashCommand({
-    name: intl.string(t.REPLUGGED_COMMAND_DISABLE_NAME),
-    description: intl.string(t.REPLUGGED_COMMAND_DISABLE_DESC),
+    name: intl.string(t.RECELLED_COMMAND_DISABLE_NAME),
+    description: intl.string(t.RECELLED_COMMAND_DISABLE_DESC),
     options: [
       {
         name: "addon",
-        displayName: intl.string(t.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME),
-        description: intl.string(t.REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_DESC),
+        displayName: intl.string(t.RECELLED_COMMAND_DISABLE_OPTION_ADDON_NAME),
+        description: intl.string(t.RECELLED_COMMAND_DISABLE_OPTION_ADDON_DESC),
         type: ApplicationCommandOptionType.String,
         required: true,
         get choices() {
@@ -116,7 +116,7 @@ export function loadCommands(): void {
             ...enabledPlugins
               .map((plugin) => ({
                 name: plugin.manifest.name,
-                displayName: `${intl.string(t.REPLUGGED_PLUGIN)}: ${plugin.manifest.name}`,
+                displayName: `${intl.string(t.RECELLED_PLUGIN)}: ${plugin.manifest.name}`,
                 value: plugin.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -125,7 +125,7 @@ export function loadCommands(): void {
             ...enabledThemes
               .map((theme) => ({
                 name: theme.manifest.name,
-                displayName: `${intl.string(t.REPLUGGED_THEME)}: ${theme.manifest.name}`,
+                displayName: `${intl.string(t.RECELLED_THEME)}: ${theme.manifest.name}`,
                 value: theme.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -148,11 +148,11 @@ export function loadCommands(): void {
           embeds: [
             {
               color: 0x1bbb1b,
-              title: intl.string(t.REPLUGGED_COMMAND_SUCCESS_GENERIC),
-              description: intl.formatToPlainString(t.REPLUGGED_COMMAND_DISABLE_MESSAGE_ENABLED, {
+              title: intl.string(t.RECELLED_COMMAND_SUCCESS_GENERIC),
+              description: intl.formatToPlainString(t.RECELLED_COMMAND_DISABLE_MESSAGE_ENABLED, {
                 type: plugins.plugins.get(addonId)
-                  ? intl.string(t.REPLUGGED_PLUGIN)
-                  : intl.string(t.REPLUGGED_THEME),
+                  ? intl.string(t.RECELLED_PLUGIN)
+                  : intl.string(t.RECELLED_THEME),
                 name:
                   plugins.plugins.get(addonId)?.manifest.name ??
                   themes.themes.get(addonId)?.manifest.name,
@@ -166,7 +166,7 @@ export function loadCommands(): void {
           embeds: [
             {
               color: 0xdd2d2d,
-              title: intl.string(t.REPLUGGED_COMMAND_ERROR_GENERIC),
+              title: intl.string(t.RECELLED_COMMAND_ERROR_GENERIC),
               description: err as string,
             },
           ],
@@ -175,13 +175,13 @@ export function loadCommands(): void {
     },
   });
   injector.utils.registerSlashCommand({
-    name: intl.string(t.REPLUGGED_COMMAND_RELOAD_NAME),
-    description: intl.string(t.REPLUGGED_COMMAND_RELOAD_DESC),
+    name: intl.string(t.RECELLED_COMMAND_RELOAD_NAME),
+    description: intl.string(t.RECELLED_COMMAND_RELOAD_DESC),
     options: [
       {
         name: "addon",
-        displayName: intl.string(t.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME),
-        description: intl.string(t.REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_DESC),
+        displayName: intl.string(t.RECELLED_COMMAND_RELOAD_OPTION_ADDON_NAME),
+        description: intl.string(t.RECELLED_COMMAND_RELOAD_OPTION_ADDON_DESC),
         type: ApplicationCommandOptionType.String,
         required: true,
         get choices() {
@@ -194,7 +194,7 @@ export function loadCommands(): void {
             ...enabledPlugins
               .map((plugin) => ({
                 name: plugin.manifest.name,
-                displayName: `${intl.string(t.REPLUGGED_PLUGIN)}: ${plugin.manifest.name}`,
+                displayName: `${intl.string(t.RECELLED_PLUGIN)}: ${plugin.manifest.name}`,
                 value: plugin.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -203,7 +203,7 @@ export function loadCommands(): void {
             ...enabledThemes
               .map((theme) => ({
                 name: theme.manifest.name,
-                displayName: `${intl.string(t.REPLUGGED_THEME)}: ${theme.manifest.name}`,
+                displayName: `${intl.string(t.RECELLED_THEME)}: ${theme.manifest.name}`,
                 value: theme.manifest.id,
               }))
               .sort((a, b) => a.name.localeCompare(b.name)),
@@ -226,11 +226,11 @@ export function loadCommands(): void {
           embeds: [
             {
               color: 0x1bbb1b,
-              title: intl.string(t.REPLUGGED_COMMAND_SUCCESS_GENERIC),
-              description: intl.formatToPlainString(t.REPLUGGED_COMMAND_RELOAD_MESSAGE_ENABLED, {
+              title: intl.string(t.RECELLED_COMMAND_SUCCESS_GENERIC),
+              description: intl.formatToPlainString(t.RECELLED_COMMAND_RELOAD_MESSAGE_ENABLED, {
                 type: plugins.plugins.get(addonId)
-                  ? intl.string(t.REPLUGGED_PLUGIN)
-                  : intl.string(t.REPLUGGED_THEME),
+                  ? intl.string(t.RECELLED_PLUGIN)
+                  : intl.string(t.RECELLED_THEME),
                 name:
                   plugins.plugins.get(addonId)?.manifest.name ??
                   themes.themes.get(addonId)?.manifest.name,
@@ -244,7 +244,7 @@ export function loadCommands(): void {
           embeds: [
             {
               color: 0xdd2d2d,
-              title: intl.string(t.REPLUGGED_COMMAND_ERROR_GENERIC),
+              title: intl.string(t.RECELLED_COMMAND_ERROR_GENERIC),
               description: err as string,
             },
           ],
@@ -253,62 +253,62 @@ export function loadCommands(): void {
     },
   });
   injector.utils.registerSlashCommand({
-    name: intl.string(t.REPLUGGED_COMMAND_LIST_NAME),
-    description: intl.string(t.REPLUGGED_COMMAND_LIST_DESC),
+    name: intl.string(t.RECELLED_COMMAND_LIST_NAME),
+    description: intl.string(t.RECELLED_COMMAND_LIST_DESC),
     options: [
       {
         name: "send",
-        displayName: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME),
-        description: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_SEND_DESC),
+        displayName: intl.string(t.RECELLED_COMMAND_LIST_OPTION_SEND_NAME),
+        description: intl.string(t.RECELLED_COMMAND_LIST_OPTION_SEND_DESC),
         type: ApplicationCommandOptionType.Boolean,
         required: false,
       },
       {
         name: "type",
-        displayName: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME),
-        description: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_TYPE_DESC),
+        displayName: intl.string(t.RECELLED_COMMAND_LIST_OPTION_TYPE_NAME),
+        description: intl.string(t.RECELLED_COMMAND_LIST_OPTION_TYPE_DESC),
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [
           {
-            name: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME),
-            displayName: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME),
+            name: intl.string(t.RECELLED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME),
+            displayName: intl.string(t.RECELLED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME),
             value: "theme",
           },
           {
-            name: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN),
-            displayName: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN),
+            name: intl.string(t.RECELLED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN),
+            displayName: intl.string(t.RECELLED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN),
             value: "plugin",
           },
         ],
       },
       {
         name: "version",
-        displayName: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME),
-        description: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC),
+        displayName: intl.string(t.RECELLED_COMMAND_LIST_OPTION_VERSION_NAME),
+        description: intl.string(t.RECELLED_COMMAND_LIST_OPTION_VERSION_DESC),
         type: ApplicationCommandOptionType.Boolean,
         required: false,
       },
       {
         name: "status",
-        displayName: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME),
-        description: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC),
+        displayName: intl.string(t.RECELLED_COMMAND_LIST_OPTION_STATUS_NAME),
+        description: intl.string(t.RECELLED_COMMAND_LIST_OPTION_STATUS_DESC),
         type: ApplicationCommandOptionType.String,
         required: false,
         choices: [
           {
-            name: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED),
-            displayName: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED),
+            name: intl.string(t.RECELLED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED),
+            displayName: intl.string(t.RECELLED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED),
             value: "enabled",
           },
           {
-            name: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED),
-            displayName: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED),
+            name: intl.string(t.RECELLED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED),
+            displayName: intl.string(t.RECELLED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED),
             value: "disabled",
           },
           {
-            name: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH),
-            displayName: intl.string(t.REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH),
+            name: intl.string(t.RECELLED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH),
+            displayName: intl.string(t.RECELLED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH),
             value: "default",
           },
         ],
@@ -339,14 +339,14 @@ export function loadCommands(): void {
 
             const enabledString = generateListString(
               enablePlugins,
-              intl.formatToPlainString(t.REPLUGGED_COMMAND_LIST_HEADER_ENABLED, {
-                type: intl.string(t.REPLUGGED_PLUGINS),
+              intl.formatToPlainString(t.RECELLED_COMMAND_LIST_HEADER_ENABLED, {
+                type: intl.string(t.RECELLED_PLUGINS),
               }),
             );
             const disabledString = generateListString(
               disabledPlugins,
-              intl.formatToPlainString(t.REPLUGGED_COMMAND_LIST_HEADER_DISABLED, {
-                type: intl.string(t.REPLUGGED_PLUGINS),
+              intl.formatToPlainString(t.RECELLED_COMMAND_LIST_HEADER_DISABLED, {
+                type: intl.string(t.RECELLED_PLUGINS),
               }),
             );
 
@@ -371,14 +371,14 @@ export function loadCommands(): void {
 
             const enabledString = generateListString(
               enableThemes,
-              intl.formatToPlainString(t.REPLUGGED_COMMAND_LIST_HEADER_ENABLED, {
-                type: intl.string(t.REPLUGGED_THEMES),
+              intl.formatToPlainString(t.RECELLED_COMMAND_LIST_HEADER_ENABLED, {
+                type: intl.string(t.RECELLED_THEMES),
               }),
             );
             const disabledString = generateListString(
               disabledThemes,
-              intl.formatToPlainString(t.REPLUGGED_COMMAND_LIST_HEADER_DISABLED, {
-                type: intl.string(t.REPLUGGED_THEMES),
+              intl.formatToPlainString(t.RECELLED_COMMAND_LIST_HEADER_DISABLED, {
+                type: intl.string(t.RECELLED_THEMES),
               }),
             );
 
@@ -397,7 +397,7 @@ export function loadCommands(): void {
           default:
             return {
               send: false,
-              result: intl.string(t.REPLUGGED_COMMAND_LIST_ERROR_SPECIFY),
+              result: intl.string(t.RECELLED_COMMAND_LIST_ERROR_SPECIFY),
             };
         }
       } catch (err) {
@@ -406,7 +406,7 @@ export function loadCommands(): void {
           embeds: [
             {
               color: 0xdd2d2d,
-              title: intl.string(t.REPLUGGED_COMMAND_ERROR_GENERIC),
+              title: intl.string(t.RECELLED_COMMAND_ERROR_GENERIC),
               description: err as string,
             },
           ],

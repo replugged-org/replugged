@@ -175,7 +175,7 @@ async function reload(id: string): Promise<void> {
 
   ws.send(
     JSON.stringify({
-      cmd: "REPLUGGED_ADDON_WATCHER",
+      cmd: "RECELLED_ADDON_WATCHER",
       args: {
         id,
       },
@@ -279,23 +279,23 @@ async function handleContexts(
   );
 }
 
-const REPLUGGED_FOLDER_NAME = "replugged";
+const RECELLED_FOLDER_NAME = "recelled";
 const CONFIG_PATH = (() => {
   switch (process.platform) {
     case "win32":
-      return path.join(process.env.APPDATA || "", REPLUGGED_FOLDER_NAME);
+      return path.join(process.env.APPDATA || "", RECELLED_FOLDER_NAME);
     case "darwin":
       return path.join(
         process.env.HOME || "",
         "Library",
         "Application Support",
-        REPLUGGED_FOLDER_NAME,
+        RECELLED_FOLDER_NAME,
       );
     default:
       if (process.env.XDG_CONFIG_HOME) {
-        return path.join(process.env.XDG_CONFIG_HOME, REPLUGGED_FOLDER_NAME);
+        return path.join(process.env.XDG_CONFIG_HOME, RECELLED_FOLDER_NAME);
       }
-      return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
+      return path.join(process.env.HOME || "", ".config", RECELLED_FOLDER_NAME);
   }
 })();
 const CHROME_VERSION = "124";
@@ -350,7 +350,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
       build.onLoad(
         {
           filter: /.*/,
-          namespace: "replugged",
+          namespace: "recelled",
         },
         (loadArgs) => {
           return {

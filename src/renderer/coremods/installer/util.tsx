@@ -1,6 +1,6 @@
 import { i18n, modal, toast } from "@common";
 import { Button, Notice } from "@components";
-import { Logger } from "@replugged";
+import { Logger } from "@recelled";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import { openExternal } from "src/renderer/util";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
@@ -85,7 +85,7 @@ export async function getInfo(
     return cached.data;
   }
 
-  const info = await RepluggedNative.installer.getInfo(source, identifier, id);
+  const info = await ReCelledNative.installer.getInfo(source, identifier, id);
   if (!info.success) {
     logger.error(`Failed to get info for ${identifier}: ${info.error}`);
     cache.set(cacheIdentifier, {
@@ -94,8 +94,8 @@ export async function getInfo(
     });
     return null;
   }
-  if (info.manifest.type === "replugged") {
-    logger.error("Cannot install Replugged itself");
+  if (info.manifest.type === "recelled") {
+    logger.error("Cannot install ReCelled itself");
     return null;
   }
 
@@ -108,8 +108,8 @@ export async function getInfo(
 }
 
 export function checkIsInstalled(data: CheckResultSuccess): boolean {
-  if (data.manifest.type === "replugged") {
-    throw new Error("Cannot check Replugged itself");
+  if (data.manifest.type === "recelled") {
+    throw new Error("Cannot check ReCelled itself");
   }
 
   switch (data.manifest.type) {
@@ -121,8 +121,8 @@ export function checkIsInstalled(data: CheckResultSuccess): boolean {
 }
 
 export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
-  if (data.manifest.type === "replugged") {
-    throw new Error("Cannot load Replugged itself");
+  if (data.manifest.type === "recelled") {
+    throw new Error("Cannot load ReCelled itself");
   }
 
   try {
@@ -144,8 +144,8 @@ export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
 }
 
 export async function install(data: CheckResultSuccess): Promise<boolean> {
-  if (data.manifest.type === "replugged") {
-    throw new Error("Cannot install Replugged itself");
+  if (data.manifest.type === "recelled") {
+    throw new Error("Cannot install ReCelled itself");
   }
 
   const {
@@ -154,7 +154,7 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
     manifest: { name, type, id, version },
   } = data;
 
-  const res = await RepluggedNative.installer.install(
+  const res = await ReCelledNative.installer.install(
     type,
     `${id}.asar`,
     url,
@@ -163,7 +163,7 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
   if (!res.success) {
     logger.error(`Failed to install ${name}: ${res.error}`);
     toast.toast(
-      intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED, { name }),
+      intl.formatToPlainString(t.RECELLED_TOAST_INSTALLER_ADDON_INSTALL_FAILED, { name }),
       toast.Kind.FAILURE,
     );
     return false;
@@ -181,14 +181,14 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
 
   if (!loaded) {
     toast.toast(
-      intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED, { name }),
+      intl.formatToPlainString(t.RECELLED_TOAST_INSTALLER_ADDON_LOAD_FAILED, { name }),
       toast.Kind.FAILURE,
     );
     return false;
   }
 
   toast.toast(
-    intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS, { name }),
+    intl.formatToPlainString(t.RECELLED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS, { name }),
     toast.Kind.SUCCESS,
   );
   return true;
@@ -196,25 +196,25 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
 
 export function authorList(authors: string[]): string {
   if (authors.length === 1) {
-    return intl.formatToPlainString(t.REPLUGGED_ADDON_AUTHORS_ONE, {
+    return intl.formatToPlainString(t.RECELLED_ADDON_AUTHORS_ONE, {
       author1: authors[0],
     });
   }
   if (authors.length === 2) {
-    return intl.formatToPlainString(t.REPLUGGED_ADDON_AUTHORS_TWO, {
+    return intl.formatToPlainString(t.RECELLED_ADDON_AUTHORS_TWO, {
       author1: authors[0],
       author2: authors[1],
     });
   }
   if (authors.length === 3) {
-    return intl.formatToPlainString(t.REPLUGGED_ADDON_AUTHORS_THREE, {
+    return intl.formatToPlainString(t.RECELLED_ADDON_AUTHORS_THREE, {
       author1: authors[0],
       author2: authors[1],
       author3: authors[2],
     });
   }
 
-  return intl.formatToPlainString(t.REPLUGGED_ADDON_AUTHORS_MANY, {
+  return intl.formatToPlainString(t.RECELLED_ADDON_AUTHORS_MANY, {
     author1: authors[0],
     author2: authors[1],
     author3: authors[2],
@@ -238,8 +238,8 @@ async function showInstallPrompt(
   }
   const authors = authorList([manifest.author].flat().map((a) => a.name));
 
-  const title = intl.format(t.REPLUGGED_INSTALL_MODAL_HEADER, { type });
-  const text = intl.format(t.REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY, {
+  const title = intl.format(t.RECELLED_INSTALL_MODAL_HEADER, { type });
+  const text = intl.format(t.RECELLED_INSTALLER_INSTALL_PROMPT_BODY, {
     name: manifest.name,
     authors,
   });
@@ -254,7 +254,7 @@ async function showInstallPrompt(
         {(source ?? DEFAULT_INSTALLER_SOURCE) !== "store" ? (
           <div style={{ marginTop: "16px" }}>
             <Notice messageType={Notice.Types.ERROR}>
-              {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+              {intl.format(t.RECELLED_ADDON_NOT_REVIEWED_DESC, {
                 type: label(getAddonType(manifest.type)),
               })}
             </Notice>
@@ -262,9 +262,9 @@ async function showInstallPrompt(
         ) : null}
       </>
     ),
-    confirmText: intl.string(t.REPLUGGED_CONFIRM),
-    cancelText: intl.string(t.REPLUGGED_CANCEL),
-    secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
+    confirmText: intl.string(t.RECELLED_CONFIRM),
+    cancelText: intl.string(t.RECELLED_CANCEL),
+    secondaryConfirmText: storeUrl ? intl.string(t.RECELLED_INSTALLER_OPEN_STORE) : undefined,
     onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : null),
   });
 
@@ -309,7 +309,7 @@ export async function installFlow(
   if (!info) {
     if (showToasts)
       toast.toast(
-        intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED),
+        intl.string(t.RECELLED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED),
         toast.Kind.FAILURE,
       );
     return {
@@ -317,14 +317,14 @@ export async function installFlow(
     };
   }
 
-  if (info.manifest.type === "replugged") {
-    throw new Error("Cannot install Replugged itself");
+  if (info.manifest.type === "recelled") {
+    throw new Error("Cannot install ReCelled itself");
   }
 
   if (checkIsInstalled(info)) {
     if (showToasts)
       toast.toast(
-        intl.formatToPlainString(t.REPLUGGED_ERROR_ALREADY_INSTALLED, { name: info.manifest.name }),
+        intl.formatToPlainString(t.RECELLED_ERROR_ALREADY_INSTALLED, { name: info.manifest.name }),
         toast.Kind.MESSAGE,
       );
     return {
@@ -340,7 +340,7 @@ export async function installFlow(
     if (confirm === false && showToasts) {
       // Do not show if null ("open in store" clicked)
       toast.toast(
-        intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL),
+        intl.string(t.RECELLED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL),
         toast.Kind.MESSAGE,
       );
     }
@@ -358,11 +358,11 @@ export async function installFlow(
   ) {
     void modal
       .confirm({
-        title: intl.string(t.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE),
-        body: intl.format(t.REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY, {
+        title: intl.string(t.RECELLED_UPDATES_AWAITING_RELOAD_TITLE),
+        body: intl.format(t.RECELLED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY, {
           name: info.manifest.name,
         }),
-        confirmText: intl.string(t.REPLUGGED_RELOAD),
+        confirmText: intl.string(t.RECELLED_RELOAD),
         confirmColor: Button.Colors.RED,
       })
       .then((answer) => {

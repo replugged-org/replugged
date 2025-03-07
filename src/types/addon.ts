@@ -39,14 +39,14 @@ export const common = z.object({
 
 export type Common = z.infer<typeof common>;
 
-export const repluggedManifest = common.extend({
-  type: z.literal("replugged"),
+export const recelledManifest = common.extend({
+  type: z.literal("recelled"),
 });
 
-export type RepluggedManifest = z.infer<typeof repluggedManifest>;
+export type ReCelledManifest = z.infer<typeof recelledManifest>;
 
-export interface RepluggedEntity {
-  manifest: RepluggedManifest;
+export interface ReCelledEntity {
+  manifest: ReCelledManifest;
   path: string;
 }
 
@@ -71,9 +71,9 @@ export const anyAddon = z.discriminatedUnion("type", [theme, plugin]);
 
 export type AnyAddonManifest = z.infer<typeof anyAddon>;
 
-export const anyAddonOrReplugged = z.discriminatedUnion("type", [repluggedManifest, theme, plugin]);
+export const anyAddonOrReCelled = z.discriminatedUnion("type", [recelledManifest, theme, plugin]);
 
-export type AnyAddonManifestOrReplugged = z.infer<typeof anyAddonOrReplugged>;
+export type AnyAddonManifestOrReCelled = z.infer<typeof anyAddonOrReCelled>;
 
 export interface PluginExports {
   start?: () => Promisable<void>;

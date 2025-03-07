@@ -1,6 +1,6 @@
 import { React, i18n, toast } from "@common";
 import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
-import { Logger } from "@replugged";
+import { Logger } from "@recelled";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import {
@@ -62,7 +62,7 @@ export const Updater = (): React.ReactElement => {
   const isAnyUpdating = hasAnyUpdates && updatesAvailable.some((u) => u.id in updatePromises);
   const isAllComplete = hasAnyUpdates && updatesAvailable.every((u) => !u.available);
   const isAnyComplete = hasAnyUpdates && updatesAvailable.some((u) => !u.available);
-  const isRepluggedDev = window.RepluggedNative.getVersion() === "dev";
+  const isReCelledDev = window.ReCelledNative.getVersion() === "dev";
 
   const checkForUpdates = async (): Promise<void> => {
     const previousUpdates = getAvailableUpdates();
@@ -75,11 +75,11 @@ export const Updater = (): React.ReactElement => {
     if (newUpdates.length > previousUpdates.length) {
       const count = newUpdates.length - previousUpdates.length;
       toast.toast(
-        intl.formatToPlainString(t.REPLUGGED_UPDATES_TOAST_NEW, { count }),
+        intl.formatToPlainString(t.RECELLED_UPDATES_TOAST_NEW, { count }),
         toast.Kind.SUCCESS,
       );
     } else {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_NO_NEW), toast.Kind.SUCCESS);
+      toast.toast(intl.string(t.RECELLED_UPDATES_TOAST_NO_NEW), toast.Kind.SUCCESS);
     }
   };
 
@@ -90,9 +90,9 @@ export const Updater = (): React.ReactElement => {
     const statuses = await Promise.allSettled(Object.values(promises));
     const didAllSucceed = statuses.every((s) => s.status === "fulfilled" && s.value);
     if (didAllSucceed) {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_SUCCESS_ALL), toast.Kind.SUCCESS);
+      toast.toast(intl.string(t.RECELLED_UPDATES_TOAST_SUCCESS_ALL), toast.Kind.SUCCESS);
     } else {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_FAILED_ALL), toast.Kind.FAILURE);
+      toast.toast(intl.string(t.RECELLED_UPDATES_TOAST_FAILED_ALL), toast.Kind.FAILURE);
     }
   };
 
@@ -102,9 +102,9 @@ export const Updater = (): React.ReactElement => {
     setUpdatePromises((prev) => ({ ...prev, [id]: promise }));
     const status = await promise.catch(() => false);
     if (status) {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_SUCCESS_ONE), toast.Kind.SUCCESS);
+      toast.toast(intl.string(t.RECELLED_UPDATES_TOAST_SUCCESS_ONE), toast.Kind.SUCCESS);
     } else {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_FAILED_ONE), toast.Kind.FAILURE);
+      toast.toast(intl.string(t.RECELLED_UPDATES_TOAST_FAILED_ONE), toast.Kind.FAILURE);
     }
   };
 
@@ -115,18 +115,18 @@ export const Updater = (): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_UPDATES_UPDATER)}</Text.H2>
+        <Text.H2>{intl.string(t.RECELLED_UPDATES_UPDATER)}</Text.H2>
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
       <SwitchItem
         {...useSetting(updaterSettings, "autoCheck")}
-        note={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}>
-        {intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO)}
+        note={intl.string(t.RECELLED_UPDATES_OPTS_AUTO_DESC)}>
+        {intl.string(t.RECELLED_UPDATES_OPTS_AUTO)}
       </SwitchItem>
       <SliderItem
         {...useSetting(updaterSettings, "checkIntervalMinutes")}
         disabled={!updaterSettings.get("autoCheck")}
-        note={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
+        note={intl.string(t.RECELLED_UPDATES_OPTS_INTERVAL_DESC)}
         markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
         equidistant={true}
         onMarkerRender={(value) => {
@@ -141,12 +141,12 @@ export const Updater = (): React.ReactElement => {
           return label;
         }}
         stickToMarkers={true}>
-        {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
+        {intl.string(t.RECELLED_UPDATES_OPTS_INTERVAL)}
       </SliderItem>
-      {isRepluggedDev && (
+      {isReCelledDev && (
         <div style={{ marginBottom: "16px" }}>
           <Notice messageType={Notice.Types.WARNING}>
-            {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
+            {intl.format(t.RECELLED_DEVELOPER_MODE_WARNING, {
               url: "https://replugged.dev/download",
             })}
           </Notice>
@@ -155,16 +155,16 @@ export const Updater = (): React.ReactElement => {
       <Flex
         justify={Flex.Justify.BETWEEN}
         align={Flex.Align.CENTER}
-        className="replugged-updater-header">
+        className="recelled-updater-header">
         <Flex justify={Flex.Justify.CENTER} direction={Flex.Direction.VERTICAL}>
           <Text variant="heading-md/bold" color="header-primary">
             {updatesAvailable.length
-              ? intl.format(t.REPLUGGED_UPDATES_AVAILABLE, { count: updatesAvailable.length })
-              : intl.string(t.REPLUGGED_UPDATES_UP_TO_DATE)}
+              ? intl.format(t.RECELLED_UPDATES_AVAILABLE, { count: updatesAvailable.length })
+              : intl.string(t.RECELLED_UPDATES_UP_TO_DATE)}
           </Text>
           {lastChecked ? (
             <Text.Normal style={{ marginTop: "5px" }}>
-              {intl.format(t.REPLUGGED_UPDATES_LAST_CHECKED, {
+              {intl.format(t.RECELLED_UPDATES_LAST_CHECKED, {
                 date: new Date(lastChecked).toLocaleString(intl.currentLocale),
               })}
             </Text.Normal>
@@ -172,16 +172,16 @@ export const Updater = (): React.ReactElement => {
         </Flex>
         {!hasAnyUpdates ? (
           <Button
-            className="replugged-updater-check"
+            className="recelled-updater-check"
             onClick={checkForUpdates}
             disabled={isAnyUpdating || isAnyComplete}
             color={checking ? Button.Colors.PRIMARY : Button.Colors.BRAND}
             submitting={checking}>
-            {intl.string(t.REPLUGGED_UPDATES_CHECK)}
+            {intl.string(t.RECELLED_UPDATES_CHECK)}
           </Button>
         ) : isAllComplete && didInstallAll ? (
           <Button onClick={reload} color={Button.Colors.RED}>
-            {intl.string(t.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE)}
+            {intl.string(t.RECELLED_UPDATES_AWAITING_RELOAD_TITLE)}
           </Button>
         ) : (
           <Button
@@ -189,22 +189,22 @@ export const Updater = (): React.ReactElement => {
             disabled={isAllComplete}
             color={isAllUpdating ? Button.Colors.PRIMARY : Button.Colors.BRAND}
             submitting={isAnyUpdating}>
-            {intl.string(t.REPLUGGED_UPDATES_UPDATE_ALL)}
+            {intl.string(t.RECELLED_UPDATES_UPDATE_ALL)}
           </Button>
         )}
       </Flex>
-      <Flex className="replugged-updater-items" direction={Flex.Direction.VERTICAL}>
+      <Flex className="recelled-updater-items" direction={Flex.Direction.VERTICAL}>
         {updatesAvailable.map((update) => {
-          const isReplugged = update.id === "dev.replugged.Replugged";
+          const isReCelled = update.id === "dev.recelled.ReCelled";
           const addon =
             plugins.get(update.id) ||
             themes.get(update.id) ||
-            (isReplugged
+            (isReCelled
               ? {
                   manifest: {
-                    type: "replugged",
-                    name: "Replugged",
-                    version: window.RepluggedNative.getVersion(),
+                    type: "recelled",
+                    name: "ReCelled",
+                    version: window.ReCelledNative.getVersion(),
                   },
                 }
               : null);
@@ -213,7 +213,7 @@ export const Updater = (): React.ReactElement => {
           const { manifest } = addon;
           const sourceLink = update.webUrl;
           return (
-            <div className="replugged-updater-item">
+            <div className="recelled-updater-item">
               <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
                 <div>
                   <Flex align={Flex.Align.CENTER} style={{ gap: "5px", marginBottom: "5px" }}>
@@ -225,10 +225,10 @@ export const Updater = (): React.ReactElement => {
                     </Text>
                     {sourceLink ? (
                       <Tooltip
-                        text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
-                          type: intl.string(t.REPLUGGED_UPDATES_UPDATE_NOUN),
+                        text={intl.formatToPlainString(t.RECELLED_ADDON_PAGE_OPEN, {
+                          type: intl.string(t.RECELLED_UPDATES_UPDATE_NOUN),
                         })}
-                        className="replugged-addon-icon replugged-addon-icon-md">
+                        className="recelled-addon-icon recelled-addon-icon-md">
                         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
                           <Icons.Link />
                         </a>
@@ -236,7 +236,7 @@ export const Updater = (): React.ReactElement => {
                     ) : null}
                   </Flex>
                   <Text.Normal>
-                    {intl.format(t.REPLUGGED_UPDATES_UPDATE_TO, { version: `v${update.version}` })}
+                    {intl.format(t.RECELLED_UPDATES_UPDATE_TO, { version: `v${update.version}` })}
                   </Text.Normal>
                 </div>
                 {update.available ? (
@@ -244,18 +244,18 @@ export const Updater = (): React.ReactElement => {
                     onClick={() => installOne(update.id)}
                     color={Button.Colors.PRIMARY}
                     submitting={isUpdating}>
-                    {intl.string(t.REPLUGGED_UPDATES_UPDATE)}
+                    {intl.string(t.RECELLED_UPDATES_UPDATE)}
                   </Button>
                 ) : didInstallAll ? null : (
                   <Button onClick={reload} color={Button.Colors.RED}>
-                    {intl.string(t.REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE)}
+                    {intl.string(t.RECELLED_UPDATES_AWAITING_RELOAD_TITLE)}
                   </Button>
                 )}
               </Flex>
-              {manifest.type !== "replugged" && manifest.updater?.type !== "store" ? (
+              {manifest.type !== "recelled" && manifest.updater?.type !== "store" ? (
                 <div style={{ marginTop: "8px" }}>
                   <Notice messageType={Notice.Types.ERROR}>
-                    {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+                    {intl.format(t.RECELLED_ADDON_NOT_REVIEWED_DESC, {
                       type: label(getAddonType(manifest.type)),
                     })}
                   </Notice>

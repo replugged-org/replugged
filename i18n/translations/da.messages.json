@@ -1,15 +1,15 @@
 {
-  "REPLUGGED_PLUGINS": "Plugins",
-  "REPLUGGED_ACCOUNT": "Replugged Konto",
-  "REPLUGGED_BADGES_CONTRIBUTOR": "Replugged Bidragyder",
-  "REPLUGGED_BADGES_DEVELOPER": "Replugged Udvikler",
-  "REPLUGGED_BADGES_EARLY": "Tidlig Bruger",
-  "REPLUGGED_BADGES_HUNTER": "Replugged Fejl Jæger",
-  "REPLUGGED_BADGES_STAFF": "Replugged Personale",
-  "REPLUGGED_BADGES_SUPPORT": "Replugged Support",
-  "REPLUGGED_BADGES_TRANSLATOR": "Replugged Oversætter",
-  "REPLUGGED_GENERAL_SETTINGS": "Generelle indstillinger",
-  "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% oversat",
-  "REPLUGGED_QUICKCSS": "Hurtig CSS",
-  "REPLUGGED_CONFIRM": "Bekræft"
+  "RECELLED_PLUGINS": "Plugins",
+  "RECELLED_ACCOUNT": "ReCelled Konto",
+  "RECELLED_BADGES_CONTRIBUTOR": "ReCelled Bidragyder",
+  "RECELLED_BADGES_DEVELOPER": "ReCelled Udvikler",
+  "RECELLED_BADGES_EARLY": "Tidlig Bruger",
+  "RECELLED_BADGES_HUNTER": "ReCelled Fejl Jæger",
+  "RECELLED_BADGES_STAFF": "ReCelled Personale",
+  "RECELLED_BADGES_SUPPORT": "ReCelled Support",
+  "RECELLED_BADGES_TRANSLATOR": "ReCelled Oversætter",
+  "RECELLED_GENERAL_SETTINGS": "Generelle indstillinger",
+  "RECELLED_I18N_TRANSLATED_PERCENTAGE": "ReCelled: {translated,number}% oversat",
+  "RECELLED_QUICKCSS": "Hurtig CSS",
+  "RECELLED_CONFIRM": "Bekræft"
 }

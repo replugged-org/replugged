@@ -1,47 +1,47 @@
-.replugged-addon-cards {
+.recelled-addon-cards {
   display: grid;
   gap: 20px;
 }
 
-.replugged-addon-card {
+.recelled-addon-card {
   background-color: var(--background-secondary);
   width: 100%;
   padding: 15px;
   border-radius: 5px;
 }
 
-.replugged-addon-icon,
-.replugged-addon-icon a {
+.recelled-addon-icon,
+.recelled-addon-icon a {
   display: flex;
 }
 
-.replugged-addon-icon svg {
+.recelled-addon-icon svg {
   color: var(--interactive-normal);
   height: 2ch;
 }
 
-.replugged-addon-icon-md svg {
+.recelled-addon-icon-md svg {
   height: 1.75ch;
 }
 
-.replugged-addon-icon-author svg {
+.recelled-addon-icon-author svg {
   height: 1.5ch;
 }
 
-.replugged-addon-icon:hover svg {
+.recelled-addon-icon:hover svg {
   color: var(--interactive-hover);
 }
 
-.replugged-addon-breadcrumbs {
+.recelled-addon-breadcrumbs {
   margin-bottom: 20px;
 }
-.replugged-addon-breadcrumbsActive {
+.recelled-addon-breadcrumbsActive {
   color: var(--header-primary);
 }
-.replugged-addon-breadcrumbsInactive {
+.recelled-addon-breadcrumbsInactive {
   cursor: pointer;
   color: var(--header-secondary);
 }
-.replugged-addon-breadcrumbsInactive:hover {
+.recelled-addon-breadcrumbsInactive:hover {
   color: var(--header-primary);
 }

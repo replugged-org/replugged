@@ -55,7 +55,7 @@ const findPathFromPaths = async (
     if (!existsSync(discordPath)) {
       console.log("");
       console.log(
-        `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
+        `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug ReCelled :(${AnsiEscapes.RESET}`,
       );
       console.log("The path you provided is invalid.");
       process.exit(exitCode);
