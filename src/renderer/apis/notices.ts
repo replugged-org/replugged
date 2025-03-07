@@ -6,10 +6,10 @@ class NoticesAPI extends EventTarget {
   public sendAnnouncement(props: ReCelledAnnouncement): () => void {
     props._dismissed = false;
     this.announcements.push(props);
-    this.dispatchEvent(new CustomEvent("rpAnnouncementUpdate"));
+    this.dispatchEvent(new CustomEvent("rcAnnouncementUpdate"));
     return () => {
       props._dismissed = true;
-      this.dispatchEvent(new CustomEvent("rpAnnouncementUpdate"));
+      this.dispatchEvent(new CustomEvent("rcAnnouncementUpdate"));
     };
   }
 
@@ -22,7 +22,7 @@ class NoticesAPI extends EventTarget {
 
   public closeActiveAnnouncement(): void {
     this.announcements.shift();
-    this.dispatchEvent(new CustomEvent("rpAnnouncementUpdate"));
+    this.dispatchEvent(new CustomEvent("rcAnnouncementUpdate"));
   }
 }
 

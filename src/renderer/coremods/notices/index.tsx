@@ -45,11 +45,11 @@ export function AnnouncementContainer(): React.ReactElement | undefined {
   const announcementUpdate = (): void => setAnnouncement(notices.getAnnouncement());
 
   React.useEffect(() => {
-    notices.addEventListener("rpAnnouncementUpdate", announcementUpdate);
+    notices.addEventListener("rcAnnouncementUpdate", announcementUpdate);
     announcementUpdate();
 
     return () => {
-      notices.removeEventListener("rpAnnouncementUpdate", announcementUpdate);
+      notices.removeEventListener("rcAnnouncementUpdate", announcementUpdate);
     };
   }, []);
 

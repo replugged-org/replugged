@@ -86,8 +86,8 @@ async function injectRpc(): Promise<void> {
  * @returns Unregister function
  */
 export function registerRPCCommand(name: string, command: RPCCommand): () => void {
-  if (!name.startsWith("RECELLED") || name.startsWith("REPLUGGED"))
-    throw new Error("RPC command name must start with RECELLED");
+  if (!name.startsWith("RECELLED") && !name.startsWith("REPLUGGED"))
+    throw new Error("RPC command name must start with RECELLED or REPLUGGED");
   if (name in commands) throw new Error("RPC command already exists");
   commands[name] = command;
   return () => {

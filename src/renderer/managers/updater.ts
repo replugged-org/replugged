@@ -307,7 +307,7 @@ async function autoUpdateCheck(): Promise<void> {
         text: intl.formatToPlainString(t.RECELLED_VIEW_UPDATES, {
           count: newUpdateCount,
         }),
-        onClick: () => open("rp-updater"),
+        onClick: () => open("rc-updater"),
       },
     });
   }

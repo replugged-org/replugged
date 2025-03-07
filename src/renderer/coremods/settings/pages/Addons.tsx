@@ -288,7 +288,7 @@ function Card({
   const sourceLink = getSourceLink(addon.manifest);
 
   return (
-    <div className="recelled-addon-card">
+    <div className="recelled-addon-card replugged-addon-card">
       <Flex align={Flex.Align.START} justify={Flex.Justify.BETWEEN} style={{ marginBottom: "5px" }}>
         <span>
           <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
@@ -308,7 +308,7 @@ function Card({
               text={intl.formatToPlainString(t.RECELLED_ADDON_PAGE_OPEN, {
                 type: label(type, { caps: "title" }),
               })}
-              className="recelled-addon-icon">
+              className="recelled-addon-icon replugged-addon-icon">
               <a href={sourceLink} target="_blank" rel="noopener noreferrer">
                 <Icons.Link />
               </a>
@@ -319,7 +319,7 @@ function Card({
               text={intl.formatToPlainString(t.RECELLED_ADDON_SETTINGS, {
                 type: label(type, { caps: "title" }),
               })}
-              className="recelled-addon-icon">
+              className="recelled-addon-icon replugged-addon-icon">
               <a onClick={() => openSettings()}>
                 <Icons.Settings />
               </a>
@@ -329,7 +329,7 @@ function Card({
             text={intl.formatToPlainString(t.RECELLED_ADDON_DELETE, {
               type: label(type, { caps: "title" }),
             })}
-            className="recelled-addon-icon">
+            className="recelled-addon-icon replugged-addon-icon">
             <a onClick={() => uninstall()}>
               <Icons.Trash />
             </a>
@@ -339,7 +339,7 @@ function Card({
               text={intl.formatToPlainString(t.RECELLED_ADDON_RELOAD, {
                 type: label(type, { caps: "title" }),
               })}
-              className="recelled-addon-icon">
+              className="recelled-addon-icon replugged-addon-icon">
               <a onClick={() => reload()}>
                 <Icons.Reload />
               </a>
@@ -380,7 +380,7 @@ function Cards({
   refreshList: () => void;
 }): React.ReactElement {
   return (
-    <div className="recelled-addon-cards">
+    <div className="recelled-addon-cards replugged-addon-cards">
       {list.map((addon) => (
         <Card
           type={type}
@@ -481,7 +481,7 @@ function Cards({
             refreshList();
           }}
           openSettings={() => {
-            setSection(`rp_plugin_${addon.manifest.id}`);
+            setSection(`rc_plugin_${addon.manifest.id}`);
 
             document.querySelector('div[class^="contentRegionScroller"]')!.scrollTo({ top: 0 });
           }}
@@ -496,7 +496,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
   const [search, setSearch] = React.useState("");
   const [list, setList] = React.useState<Array<ReCelledPlugin | ReCelledTheme> | null>();
   const [unfilteredCount, setUnfilteredCount] = React.useState(0);
-  const [section, setSection] = React.useState(`rp_${type}`);
+  const [section, setSection] = React.useState(`rc_${type}`);
 
   let SettingsElement: React.ComponentType | undefined;
 
@@ -526,8 +526,10 @@ export const Addons = (type: AddonType): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Flex align={Flex.Align.CENTER} className={"recelled-addon-breadcrumbs"}>
-          {section === `rp_${type}` ? (
+        <Flex
+          align={Flex.Align.CENTER}
+          className={"recelled-addon-breadcrumbs replugged-addon-breadcrumbs"}>
+          {section === `rc_${type}` ? (
             <Text.H2
               style={{
                 // Do not turn "(num)" into a single symbol
@@ -543,17 +545,17 @@ export const Addons = (type: AddonType): React.ReactElement => {
               activeId={section.toString()}
               breadcrumbs={[
                 {
-                  id: `rp_${type}`,
+                  id: `rc_${type}`,
                   label: intl.formatToPlainString(t.RECELLED_ADDONS_TITLE_COUNT, {
                     type: label(type, { caps: "title", plural: true }),
                     count: unfilteredCount,
                   }),
                 },
                 {
-                  id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
+                  id: `rc_${type}_${section.slice(`rc_${type}_`.length)}`,
                   label:
                     list?.filter?.(
-                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
+                      (x) => x.manifest.id === section.slice(`rc_${type}_`.length),
                     )?.[0]?.manifest.name || "",
                 },
               ]}
@@ -563,8 +565,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   color={active ? "header-primary" : "inherit"}
                   className={
                     active
-                      ? "recelled-addon-breadcrumbsActive"
-                      : "recelled-addon-breadcrumbsInactive"
+                      ? "recelled-addon-breadcrumbsActive replugged-addon-breadcrumbsActive"
+                      : "recelled-addon-breadcrumbsInactive replugged-addon-breadcrumbsInactive"
                   }
                   style={{
                     // Do not turn "(num)" into a single symbol
@@ -576,7 +578,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
             />
           )}
         </Flex>
-        {section === `rp_${type}` && (
+        {section === `rc_${type}` && (
           <div style={{ display: "flex" }}>
             <Button onClick={() => openFolder(type)}>
               {intl.format(t.RECELLED_ADDONS_FOLDER_OPEN, {
@@ -622,7 +624,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
         )}
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
-      {section === `rp_${type}` && unfilteredCount ? (
+      {section === `rc_${type}` && unfilteredCount ? (
         <div style={{ marginBottom: "20px" }}>
           <TextInput
             placeholder={intl.formatToPlainString(t.RECELLED_SEARCH_FOR_ADDON, {
@@ -633,12 +635,12 @@ export const Addons = (type: AddonType): React.ReactElement => {
           />
         </div>
       ) : null}
-      {section === `rp_${type}` && search && list?.length ? (
+      {section === `rc_${type}` && search && list?.length ? (
         <Text variant="heading-md/bold" style={{ marginBottom: "10px" }}>
           {intl.format(t.RECELLED_LIST_RESULTS, { count: list.length })}
         </Text>
       ) : null}
-      {section === `rp_${type}` ? (
+      {section === `rc_${type}` ? (
         list?.length ? (
           <>
             <Cards
@@ -660,7 +662,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Text>
         ) : null
       ) : (
-        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length), type)) && (
+        (SettingsElement = getSettingsElement(section.slice(`rc_${type}_`.length), type)) && (
           <ErrorBoundary>
             <SettingsElement />
           </ErrorBoundary>
