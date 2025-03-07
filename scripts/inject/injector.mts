@@ -3,16 +3,8 @@ import { existsSync } from "fs";
 import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
-
 import { createPackage, extractAll, statFile, uncache } from "@electron/asar";
-import { entryPoint as argEntryPoint, exitCode } from "./index.mjs";
-
-import { AnsiEscapes, getCommand } from "./util.mjs";
-
-import { execSync } from "child_process";
-import { DiscordPlatform, PlatformModule } from "./types.mjs";
-
-import { CONFIG_PATH } from "../../src/util.mjs";
+import { CONFIG_PATH } from "src/util.mjs";
 import { entryPoint as argEntryPoint, exitCode } from "./index.mjs";
 import type { DiscordPlatform, PlatformModule, ProcessInfo } from "./types.mjs";
 import {
