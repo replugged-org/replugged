@@ -1,3 +1,4 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
 
@@ -36,4 +37,4 @@ export type TextAreaType = React.ComponentClass<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 
-export default components.TextArea;
+export default getFunctionBySource<TextAreaType>(components, "showCharacterCountFullPadding")!;
