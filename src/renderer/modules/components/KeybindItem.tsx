@@ -89,4 +89,3 @@ export const KeybindItem = (
     </FormItem>
   );
 };
-return { Keybind, KeybindItem };
