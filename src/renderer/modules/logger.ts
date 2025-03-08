@@ -2,7 +2,14 @@
 
 const blurple = "#5865F2";
 
-export type LoggerType = "Plugin" | "Coremod" | "API" | "Ignition" | "CommonModules" | "Components";
+export type LoggerType =
+  | "Plugin"
+  | "Coremod"
+  | "API"
+  | "Ignition"
+  | "CommonModules"
+  | "Components"
+  | "Manager";
 
 const repluggedPrefix = (type: LoggerType, name: string): string => `%c[Replugged:${type}:${name}]`;
 

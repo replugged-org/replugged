@@ -1,12 +1,13 @@
-import { init } from "../apis/settings";
-import * as pluginManager from "./plugins";
-import * as themeManager from "./themes";
-import { Logger } from "../modules/logger";
+import * as common from "@common";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
 import notices from "../apis/notices";
-import * as common from "@common";
+import { init } from "../apis/settings";
+import { t } from "../modules/i18n";
+import { Logger } from "../modules/logger";
 import { waitForProps } from "../modules/webpack";
+import * as pluginManager from "./plugins";
+import * as themeManager from "./themes";
 
 const logger = Logger.coremod("Updater");
 
@@ -185,6 +186,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     entity.manifest.type,
     entity.path,
     updateSettings.url,
+    updateSettings.version,
   );
 
   if (!res.success) {
@@ -287,21 +289,23 @@ async function autoUpdateCheck(): Promise<void> {
   if (isAnUpdate && (areNewUpdates || isFirstRun)) {
     logger.log("Showing update notification");
 
-    const Messages = common.i18n?.Messages; // Weird hack due to circular dependency
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    const intl = common.i18n?.intl; // Weird hack due to circular dependency
     const { open } = await openSettingsModPromise;
 
-    if (!Messages) {
-      logger.error("Messages missing, cannot show update notification");
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!intl) {
+      logger.error("intl missing, cannot show update notification");
       return;
     }
 
     clearActiveNotification?.();
     clearActiveNotification = notices.sendAnnouncement({
-      message: Messages.REPLUGGED_UPDATES_AVAILABLE.format({
+      message: intl.format(t.REPLUGGED_UPDATES_AVAILABLE, {
         count: newUpdateCount,
       }),
       button: {
-        text: Messages.REPLUGGED_VIEW_UPDATES.format({
+        text: intl.formatToPlainString(t.REPLUGGED_VIEW_UPDATES, {
           count: newUpdateCount,
         }),
         onClick: () => open("rp-updater"),

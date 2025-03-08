@@ -1,6 +1,5 @@
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
-import { sourceStrings } from "../webpack/patch-load";
+import components from "../common/components";
 
 const ItemColors = {
   DEFAULT: "default",
@@ -11,55 +10,69 @@ const ItemColors = {
   SUCCESS: "success",
 } as const;
 
-interface MenuProps {
+export interface MenuProps {
   navId: string;
+  variant?: "fixed" | "flexible";
+  hideScroller?: boolean;
+  className?: string;
   children: React.ReactElement | React.ReactElement[];
   onClose: () => void;
-  variant?: "fixed" | "flexible";
-  className?: string;
-  style?: React.CSSProperties;
-  hideScroller?: boolean;
   onSelect?: () => void;
   "aria-label"?: string;
 }
 
-interface MenuGroupProps {
-  children?: React.ReactNode;
-  label?: string;
-  className?: string;
-  color?: (typeof ItemColors)[keyof typeof ItemColors];
+interface ItemProps {
+  "aria-expanded"?: boolean;
+  "aria-haspopup"?: boolean;
+  role: string;
+  id: string;
+  tabIndex: number;
+  onFocus: () => void;
+  onMouseEnter: () => void;
 }
 
-interface MenuItemProps {
+interface ExtraItemProps {
+  hasSubmenu?: boolean;
+  isFocused: boolean;
+  menuItemProps: ItemProps;
+  onClose?: () => void;
+}
+
+interface MenuCheckboxItemProps {
   id: string;
   color?: (typeof ItemColors)[keyof typeof ItemColors];
-  label?: string;
-  icon?: React.ComponentType<unknown>;
-  showIconFirst?: boolean;
-  imageUrl?: string;
-  hint?: React.ReactNode;
+  label?: React.FC<MenuCheckboxItemProps & ExtraItemProps> | React.ReactNode;
+  checked?: boolean;
   subtext?: React.ReactNode;
   disabled?: boolean;
   action?: React.MouseEventHandler<HTMLDivElement>;
-  onFocus?: () => void;
   className?: string;
   focusedClassName?: string;
-  subMenuIconClassName?: string;
-  dontCloseOnActionIfHoldingShiftKey?: boolean;
-  iconProps?: Record<string, unknown>;
-  sparkle?: boolean;
 }
 
-interface MenuSubmenuListItemProps extends MenuItemProps {
+interface MenuCompositeControlItemProps {
+  id: string;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
+  disabled?: boolean;
+  showDefaultFocus?: boolean;
   children: React.ReactNode;
-  childRowHeight: number;
-  onChildrenScroll?: () => void;
-  listClassName?: string;
+  interactive?: boolean;
 }
 
-interface MenuSubmenuItemProps extends MenuItemProps {
-  children: React.ReactNode;
-  subMenuClassName?: string;
+interface MenuControlItemProps {
+  id: string;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
+  label?: React.ReactNode;
+  control: (
+    data: {
+      onClose: () => void;
+      disabled: boolean | undefined;
+      isFocused: boolean;
+    },
+    ref?: React.Ref<{ activate: () => boolean; blur: () => void; focus: () => void }>,
+  ) => React.ReactElement;
+  disabled?: boolean;
+  showDefaultFocus?: boolean;
 }
 
 interface MenuCustomItemProps {
@@ -75,110 +88,81 @@ interface MenuCustomItemProps {
   keepItemStyles?: boolean;
   action?: React.MouseEventHandler<HTMLDivElement>;
   dontCloseOnActionIfHoldingShiftKey?: boolean;
+  dontCloseOnAction?: boolean;
 }
 
-interface MenuCheckboxItemProps {
+interface MenuGroupProps {
+  children?: React.ReactNode;
+  label?: string;
+  className?: string;
+  color?: (typeof ItemColors)[keyof typeof ItemColors];
+}
+
+interface MenuItemProps {
   id: string;
   color?: (typeof ItemColors)[keyof typeof ItemColors];
-  label?: string;
-  checked?: boolean;
-  subtext?: string;
+  label?: React.FC<MenuItemProps & ExtraItemProps> | React.ReactNode;
+  icon?: React.ComponentType<unknown>;
+  iconLeft?: React.FC<MenuItemProps & ExtraItemProps> | React.ReactNode;
+  iconLeftSize?: "xxs" | "xs" | "sm" | "md" | "lg" | "custom";
+  hint?: React.FC<MenuItemProps & ExtraItemProps> | React.ReactNode;
+  subtext?: React.ReactNode;
   disabled?: boolean;
   action?: React.MouseEventHandler<HTMLDivElement>;
+  onFocus?: () => void;
   className?: string;
   focusedClassName?: string;
+  subMenuIconClassName?: string;
+  dontCloseOnActionIfHoldingShiftKey?: boolean;
+  dontCloseOnAction?: boolean;
+  iconProps?: Record<string, unknown>;
+  sparkle?: boolean;
 }
 
 interface MenuRadioItemProps {
   id: string;
   color?: (typeof ItemColors)[keyof typeof ItemColors];
-  label?: string;
+  label?: React.FC<MenuRadioItemProps & ExtraItemProps> | React.ReactNode;
   checked?: boolean;
-  subtext?: string;
+  subtext?: React.ReactNode;
   disabled?: boolean;
   action?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-interface MenuControlItemProps {
-  id: string;
-  color?: (typeof ItemColors)[keyof typeof ItemColors];
-  label?: string;
-  control: (
-    data: {
-      onClose: () => void;
-      disabled: boolean;
-      isFocused: boolean;
-    },
-    ref?: React.Ref<{ activate: () => boolean; blur: () => void; focus: () => void }>,
-  ) => React.ReactElement;
-  disabled?: boolean;
-  showDefaultFocus?: boolean;
-}
-
-interface MenuCompositeControlItemProps {
-  id: string;
+interface MenuSubmenuItemProps extends MenuItemProps {
   children: React.ReactNode;
-  interactive?: boolean;
-  color?: (typeof ItemColors)[keyof typeof ItemColors];
-  disabled?: boolean;
-  showDefaultFocus?: boolean;
+  subMenuClassName?: string;
 }
 
-export interface ContextMenuProps {
-  ContextMenu: MenuProps;
-  MenuSeparator: unknown;
-  MenuGroup: MenuGroupProps;
-  MenuItem: MenuItemProps | MenuCustomItemProps | MenuSubmenuListItemProps | MenuSubmenuItemProps;
-  MenuCheckboxItem: MenuCheckboxItemProps;
-  MenuRadioItem: MenuRadioItemProps;
-  MenuControlItem: MenuControlItemProps | MenuCompositeControlItemProps;
+interface MenuSubmenuListItemProps extends MenuItemProps {
+  children: React.ReactNode;
+  childRowHeight: number;
+  onChildrenScroll?: () => void;
+  listClassName?: string;
 }
 
-export type ContextMenuComponents = {
-  [K in keyof ContextMenuProps]: React.FC<ContextMenuProps[K]>;
-};
-
-export type ContextMenuElements = {
-  [K in keyof ContextMenuProps]: React.ReactElement<ContextMenuProps[K]>;
-};
-
-export type ContextMenuType = ContextMenuComponents & {
+export interface ContextMenuType {
+  ContextMenu: React.FC<MenuProps>;
   ItemColors: typeof ItemColors;
-};
-
-const componentMap: Record<string, keyof ContextMenuComponents> = {
-  separator: "MenuSeparator",
-  checkbox: "MenuCheckboxItem",
-  radio: "MenuRadioItem",
-  control: "MenuControlItem",
-  groupstart: "MenuGroup",
-  customitem: "MenuItem",
-} as const;
-
-const menuMod = await waitForModule<Record<string, React.ComponentType>>(
-  filters.bySource("♫ ⊂(｡◕‿‿◕｡⊂) ♪"),
-);
-
-const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
-const source = sourceStrings[rawMod?.id].matchAll(
-  /if\(\w+\.type===(\w+)(?:\.\w+)?\).+?type:"(.+?)"/gs,
-);
-
-const menuComponents = Object.values(menuMod)
-  .filter((m) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
-  .reduce<Record<string, React.ComponentType>>((components, component) => {
-    components[component.name] = component;
-    return components;
-  }, {});
+  MenuCheckboxItem: React.FC<MenuCheckboxItemProps>;
+  MenuControlItem: React.FC<MenuControlItemProps | MenuCompositeControlItemProps>;
+  MenuGroup: React.FC<MenuGroupProps>;
+  MenuItem: React.FC<
+    MenuItemProps | MenuCustomItemProps | MenuSubmenuListItemProps | MenuSubmenuItemProps
+  >;
+  MenuRadioItem: React.FC<MenuRadioItemProps>;
+  MenuSeparator: React.FC;
+}
 
 const Menu = {
+  ContextMenu: components.Menu,
   ItemColors,
-  ContextMenu: getFunctionBySource(menuMod, "getContainerProps"),
+  MenuCheckboxItem: components.MenuCheckboxItem,
+  MenuControlItem: components.MenuControlItem,
+  MenuGroup: components.MenuGroup,
+  MenuItem: components.MenuItem,
+  MenuRadioItem: components.MenuRadioItem,
+  MenuSeparator: components.MenuSeparator,
 } as ContextMenuType;
-
-for (const [, identifier, type] of source) {
-  // @ts-expect-error Doesn't like that the generic changes
-  Menu[componentMap[type]] = menuComponents[identifier];
-}
 
 export default Menu;

@@ -25,3 +25,22 @@ div[class] .addon-embed-copied:hover {
 .replugged-addon-embed-button {
   flex: 1;
 }
+
+.replugged-addon-embed-title-tooltip {
+  overflow: hidden;
+}
+
+.replugged-addon-embed-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.replugged-addon-embed-store-button {
+  padding-right: 0px;
+  flex: none;
+}
+
+.replugged-addon-embed-copy-button {
+  flex: none;
+}

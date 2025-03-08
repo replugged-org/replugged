@@ -2,6 +2,7 @@ import { loadStyleSheet } from "../util";
 import type { RepluggedTheme } from "../../types";
 import type { AddonSettings } from "src/types/addon";
 import { init } from "../apis/settings";
+import * as logger from "../modules/logger";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
@@ -37,27 +38,63 @@ export function unload(id: string): void {
 }
 
 /**
- * Load a theme, adding its stylesheet to the DOM
+ * Load a theme's main variant, adding its stylesheet to the DOM
  * @param id Theme ID (RDNN)
  */
 export function load(id: string): void {
   if (!themes.has(id)) {
     throw new Error(`Theme not found: ${id}`);
   }
-  unload(id);
 
   const theme = themes.get(id)!;
+  if (!theme.manifest.main) {
+    logger.error("Manager", `Theme ${id} does not have a main variant.`);
+    return;
+  }
+  unload(id);
+
   const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
   themeElements.set(id, el);
 }
 
 /**
- * Load all themes, adding their stylesheets to the DOM. Disabled themes are not loaded.
+ * Load a theme's splash variant, adding its stylesheet to the DOM
+ * @param id Theme ID (RDNN)
+ */
+export function loadSplash(id: string): void {
+  if (!themes.has(id)) {
+    throw new Error(`Theme not found: ${id}`);
+  }
+
+  const theme = themes.get(id)!;
+  if (!theme.manifest.splash) {
+    logger.error("Manager", `Theme ${id} does not have a splash variant.`);
+    return;
+  }
+  unload(id);
+
+  const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.splash}`);
+  themeElements.set(id, el);
+}
+
+/**
+ * Load all themes' main variants, adding their stylesheets to the DOM. Disabled themes are not loaded.
  */
 export function loadAll(): void {
   for (const id of themes.keys()) {
-    if (!disabled.includes(id)) {
+    if (!disabled.includes(id) && themes.get(id)?.manifest.main) {
       load(id);
+    }
+  }
+}
+
+/**
+ * Load all themes' splash variants, adding their stylesheets to the DOM. Disabled themes are not loaded.
+ */
+export function loadAllSplash(): void {
+  for (const id of themes.keys()) {
+    if (!disabled.includes(id) && themes.get(id)?.manifest.splash) {
+      loadSplash(id);
     }
   }
 }
@@ -92,11 +129,19 @@ export async function list(): Promise<RepluggedTheme[]> {
 }
 
 /**
- * Reload a theme to apply changes
+ * Reload a theme's main variant to apply changes
  */
 export function reload(id: string): void {
   unload(id);
   load(id);
+}
+
+/**
+ * Reload a theme's splash variant to apply changes
+ */
+export function reloadSplash(id: string): void {
+  unload(id);
+  loadSplash(id);
 }
 
 export function enable(id: string): void {
