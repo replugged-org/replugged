@@ -1,62 +1,34 @@
+import { createContext } from "@marshift/argus";
 import esbuild from "esbuild";
+import { rmSync } from "fs";
 import path from "path";
+import { logBuildPlugin } from "src/util.mjs";
 import { fileURLToPath } from "url";
-import asar from "@electron/asar";
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from "fs";
+import intlPlugin from "./build-plugins/intl-loader.mjs";
+import intlTypeGeneratorPlugin from "./build-plugins/intl-type-generator.mjs";
+import preBundlePlugin from "./build-plugins/pre-bundle.mjs";
 
-const NODE_VERSION = "14";
-const CHROME_VERSION = "91";
+const NODE_VERSION = "20";
+const CHROME_VERSION = "128";
 
-const watch = process.argv.includes("--watch");
-const production = process.argv.includes("--production");
+const ctx = createContext(process.argv);
+const watch = ctx.hasOptionalArg(/--watch/);
+export const production = ctx.hasOptionalArg(/--production/);
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const preBundle: esbuild.Plugin = {
-  name: "preBundle",
-  setup: (build) => {
-    build.onEnd(() => {
-      if (!existsSync("dist/i18n")) {
-        mkdirSync("dist/i18n");
-      }
+export const distDir = production ? "dist-bundle" : "dist";
 
-      readdirSync("i18n").forEach((file) => {
-        if (file.endsWith(".json")) {
-          copyFileSync(`i18n/${file}`, `dist/i18n/${file}`);
-        }
-      });
-
-      const mainPackage = JSON.parse(readFileSync("package.json", "utf-8"));
-
-      writeFileSync(
-        "dist/package.json",
-        JSON.stringify({
-          main: "main.js",
-          name: "replugged",
-          version: mainPackage.version,
-        }),
-      );
-      asar.createPackage("dist", "replugged.asar");
-    });
-  },
-};
+// Delete old builds to prevent issues/confusion from leftover files
+rmSync("dist", { recursive: true, force: true });
+rmSync("dist-bundle", { recursive: true, force: true });
+rmSync("replugged.asar", { force: true });
 
 const plugins: esbuild.Plugin[] = [];
 
+if (!watch) plugins.push(logBuildPlugin);
 if (production) {
-  rmSync("dist", { recursive: true, force: true });
-  plugins.push(preBundle);
-} else {
-  rmSync("dist/i18n", { recursive: true, force: true });
-  rmSync("dist/package.json", { force: true });
+  plugins.push(preBundlePlugin);
 }
 
 const common: esbuild.BuildOptions = {
@@ -64,38 +36,52 @@ const common: esbuild.BuildOptions = {
   bundle: true,
   minify: production,
   sourcemap: !production,
-  format: "cjs" as esbuild.Format,
+  format: "cjs",
   logLevel: "info",
-  watch,
   plugins,
+  metafile: true,
 };
 
-Promise.all([
+const contexts = await Promise.all([
   // Main
-  esbuild.build({
+  esbuild.context({
     ...common,
     entryPoints: ["src/main/index.ts"],
     platform: "node",
     target: `node${NODE_VERSION}`,
-    outfile: "dist/main.js",
-    external: ["electron"],
+    outfile: `${distDir}/main.js`,
+    external: ["electron", "original-fs"],
   }),
   // Preload
-  esbuild.build({
+  esbuild.context({
     ...common,
     entryPoints: ["src/preload.ts"],
     platform: "node",
     target: [`node${NODE_VERSION}`, `chrome${CHROME_VERSION}`],
-    outfile: "dist/preload.js",
+    outfile: `${distDir}/preload.js`,
     external: ["electron"],
   }),
   // Renderer
-  esbuild.build({
+  esbuild.context({
     ...common,
+    plugins: [...plugins, intlTypeGeneratorPlugin, intlPlugin],
     entryPoints: ["src/renderer/index.ts"],
     platform: "browser",
     target: `chrome${CHROME_VERSION}`,
-    outfile: "dist/renderer.js",
+    outfile: `${distDir}/renderer.js`,
     format: "esm",
+    loader: {
+      ".png": "dataurl",
+    },
   }),
 ]);
+await Promise.all(
+  contexts.map(async (context) => {
+    if (watch) {
+      await context.watch();
+    } else {
+      await context.rebuild().catch(() => process.exit(1));
+      context.dispose();
+    }
+  }),
+);

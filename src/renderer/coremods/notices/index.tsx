@@ -37,11 +37,7 @@ function Announcement({
   );
 }
 
-export function AnnouncementContainer({
-  originalRes,
-}: {
-  originalRes: React.ReactElement;
-}): React.ReactElement | null {
+export function AnnouncementContainer(): React.ReactElement | undefined {
   const [announcement, setAnnouncement] = React.useState<RepluggedAnnouncement | undefined>(
     undefined,
   );
@@ -57,5 +53,5 @@ export function AnnouncementContainer({
     };
   }, []);
 
-  return announcement ? <Announcement {...announcement} /> : originalRes;
+  return announcement && <Announcement {...announcement} />;
 }

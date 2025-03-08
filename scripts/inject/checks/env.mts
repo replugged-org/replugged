@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import { existsSync, readFileSync } from "fs";
 import { execSync } from "child_process";
 import { AnsiEscapes } from "../util.mjs";
+import { exitCode } from "../index.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -35,7 +36,7 @@ if (dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
   console.log(
     `Try re-opening your command prompt ${AnsiEscapes.BOLD}without${AnsiEscapes.RESET} opening it as administrator.`,
   );
-  process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+  process.exit(exitCode);
 }
 
 // Verify if we're on node 10.x
@@ -47,7 +48,7 @@ if (!(await import("fs")).promises) {
   console.log("Replugged detected you're running an outdated version of NodeJS.");
   console.log("You must have at least NodeJS 10 installed for Replugged to function.", "\n");
   console.log("You can download the latest version of NodeJS at https://nodejs.org");
-  process.exit(process.argv.includes("--no-exit-codes") ? 0 : 1);
+  process.exit(exitCode);
 }
 
 // Verify if deps have been installed. If not, install them automatically

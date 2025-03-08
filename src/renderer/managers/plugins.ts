@@ -69,35 +69,39 @@ export async function start(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
     if (!plugin) {
-      throw new Error("Plugin does not exist or is not loaded");
+      throw new Error(`Plugin "${id}" does not exist or is not loaded`);
     }
     if (running.has(plugin.manifest.id)) {
-      throw new Error("Plugin is already running");
+      throw new Error(`Plugin "${id}" is already running`);
     }
 
     if (plugin.manifest.renderer) {
-      plugin.exports = await import(
-        `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}}`
-      );
-
       await Promise.race([
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Plugin took too long to start")), 5_000),
+          setTimeout(() => reject(new Error(`Plugin "${id}" took too long to start`)), 5_000),
         ),
-        plugin.exports!.start?.(),
+        (async () => {
+          const pluginExports = await import(
+            `replugged://plugin/${plugin.path}/${plugin.manifest.renderer}?t=${Date.now()}`
+          );
+          plugin.exports = pluginExports;
+          await pluginExports.start?.();
+          if (plugin.hasCSS) {
+            if (styleElements.has(plugin.manifest.id)) {
+              // Remove old style element in case it wasn't removed properly
+              styleElements.get(plugin.manifest.id)?.remove();
+            }
+
+            const el = loadStyleSheet(
+              `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(
+                /\.js$/,
+                ".css",
+              )}`,
+            );
+            styleElements.set(plugin.manifest.id, el);
+          }
+        })(),
       ]);
-    }
-
-    if (plugin.hasCSS) {
-      if (styleElements.has(plugin.manifest.id)) {
-        // Remove old style element in case it wasn't removed properly
-        styleElements.get(plugin.manifest.id)?.remove();
-      }
-
-      const el = loadStyleSheet(
-        `replugged://plugin/${plugin.path}/${plugin.manifest.renderer?.replace(/\.js$/, ".css")}`,
-      );
-      styleElements.set(plugin.manifest.id, el);
     }
 
     running.add(plugin.manifest.id);
@@ -127,10 +131,10 @@ export async function stop(id: string): Promise<void> {
   const plugin = plugins.get(id);
   try {
     if (!plugin) {
-      throw new Error("Plugin does not exist or is not loaded");
+      throw new Error(`Plugin "${id}" does not exist or is not loaded`);
     }
     if (!running.has(id)) {
-      throw new Error("Plugin is not running");
+      throw new Error(`Plugin "${id}" is not running`);
     }
 
     await plugin.exports?.stop?.();

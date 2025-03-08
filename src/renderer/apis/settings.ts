@@ -39,7 +39,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * settings from the file system.
    * @param namespace Namespace of settings to manage.
    */
-  public constructor(namespace: string, defaultSettings: Partial<T>) {
+  public constructor(namespace: string, defaultSettings: Partial<T> = {}) {
     this.namespace = namespace;
     this.#defaultSettings = defaultSettings;
     this.#queuedUpdates = new Map();
@@ -57,13 +57,13 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
   ): K extends D
     ? NonNullable<T[K]>
     : F extends null | undefined
-    ? T[K] | undefined
-    : NonNullable<T[K]> | F {
+      ? T[K] | undefined
+      : NonNullable<T[K]> | F {
     if (typeof this.#settings === "undefined") {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
     // @ts-expect-error It doesn't understand ig
-    return this.#settings[key] ?? fallback ?? this.#defaultSettings?.[key];
+    return this.#settings[key] ?? fallback ?? this.#defaultSettings[key];
   }
 
   /**

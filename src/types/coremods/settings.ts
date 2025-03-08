@@ -7,7 +7,7 @@ export interface Section {
   _id?: string;
   label?: string | LabelCallback;
   color?: string;
-  element?: React.FC;
+  element?: (args: unknown) => React.ReactElement;
   pos: number;
   fromEnd?: boolean;
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -22,7 +22,7 @@ export interface SettingsTools {
     _id?: string;
     label?: string | LabelCallback;
     color?: string;
-    elem: React.FC;
+    elem: (args: unknown) => React.ReactElement;
     pos?: number;
     fromEnd?: boolean;
   }) => Section;

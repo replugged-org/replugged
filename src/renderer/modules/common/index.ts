@@ -10,11 +10,16 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
           error("CommonModules", name, void 0, `Could not find module "${name}"`);
           rej(new Error(`Module not found: "${name}`));
         }, 10_000);
-        void moduleImport.then((mod) => {
-          clearTimeout(timeout);
-          cb(mod);
-          res();
-        });
+        void moduleImport
+          .then((mod) => {
+            clearTimeout(timeout);
+            cb(mod);
+            res();
+          })
+          .catch((err) => {
+            error("CommonModules", name, void 0, `Failed to import module "${name}"`, err);
+            rej(err);
+          });
       }),
   );
 }
@@ -48,6 +53,11 @@ export type { API };
 export let api: API;
 importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
+import * as Components from "./components";
+export type { Components };
+export let components: typeof import("./components").default;
+importTimeout("components", import("./components"), (mod) => (components = mod.default));
+
 import * as Constants from "./constants";
 export type { Constants };
 export let constants: typeof Constants;
@@ -72,10 +82,15 @@ importTimeout(
   (mod) => (fluxDispatcher = mod.default),
 );
 
+import type { FluxHooks } from "./fluxHooks";
+export type { FluxHooks };
+export let fluxHooks: FluxHooks;
+importTimeout("fluxHooks", import("./fluxHooks"), (mod) => (fluxHooks = mod.default));
+
 import type { I18n } from "./i18n";
 export type { I18n };
 export let i18n: I18n;
-importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod.default));
+importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod));
 
 import type { Modal } from "./modal";
 export type { Modal };
@@ -102,7 +117,7 @@ importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 /**
  * @see {@link https://highlightjs.org/usage/}
  */
-export let hljs: typeof import("highlightjs");
+export let hljs: typeof import("highlight.js").default;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
 /**

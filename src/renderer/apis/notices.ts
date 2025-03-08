@@ -14,10 +14,10 @@ class NoticesAPI extends EventTarget {
   }
 
   public getAnnouncement(): RepluggedAnnouncement | undefined {
-    while (this.announcements?.[0]?._dismissed) {
+    while (this.announcements[0]?._dismissed) {
       this.announcements.shift();
     }
-    return this.announcements?.[0];
+    return this.announcements[0];
   }
 
   public closeActiveAnnouncement(): void {

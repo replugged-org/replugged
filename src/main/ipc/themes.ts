@@ -5,7 +5,7 @@ IPC events:
 */
 
 import { readFile, readdir, readlink, rm, stat } from "fs/promises";
-import { extname, join } from "path";
+import { extname, join, sep } from "path";
 import { ipcMain, shell } from "electron";
 import { RepluggedIpcChannels, type RepluggedTheme } from "../../types";
 import { theme } from "../../types/addon";
@@ -19,8 +19,14 @@ export const isFileATheme = (f: Dirent | Stats, name: string): boolean => {
 };
 
 async function getTheme(path: string): Promise<RepluggedTheme> {
+  const manifestPath = join(THEMES_DIR, path, "manifest.json");
+  if (!manifestPath.startsWith(`${THEMES_DIR}${sep}`)) {
+    // Ensure file changes are restricted to the base path
+    throw new Error("Invalid theme name");
+  }
+
   const manifest: unknown = JSON.parse(
-    await readFile(join(THEMES_DIR, path, "manifest.json"), {
+    await readFile(manifestPath, {
       encoding: "utf-8",
     }),
   );
@@ -72,7 +78,13 @@ ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedThem
 });
 
 ipcMain.handle(RepluggedIpcChannels.UNINSTALL_THEME, async (_, themeName: string) => {
-  await rm(join(THEMES_DIR, themeName), {
+  const themePath = join(THEMES_DIR, themeName);
+  if (!themePath.startsWith(`${THEMES_DIR}${sep}`)) {
+    // Ensure file changes are restricted to the base path
+    throw new Error("Invalid theme name");
+  }
+
+  await rm(themePath, {
     recursive: true,
     force: true,
   });

@@ -6,6 +6,7 @@ import {
 } from "electron";
 
 import { RepluggedIpcChannels } from "./types";
+// eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
 import type {
   CheckResultFailure,
   CheckResultSuccess,
@@ -14,7 +15,6 @@ import type {
   InstallerType,
   RepluggedPlugin,
   RepluggedTheme,
-  RepluggedTranslations,
 } from "./types";
 
 let version = "";
@@ -52,8 +52,9 @@ const RepluggedNative = {
       type: InstallerType | "replugged",
       path: string,
       url: string,
+      version: string,
     ): Promise<InstallResultSuccess | InstallResultFailure> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url),
+      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, true, version),
   },
 
   installer: {
@@ -67,8 +68,9 @@ const RepluggedNative = {
       type: InstallerType,
       path: string,
       url: string,
+      version: string,
     ): Promise<InstallResultSuccess | InstallResultFailure> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url),
+      ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, false, version),
   },
 
   quickCSS: {
@@ -93,11 +95,6 @@ const RepluggedNative = {
     endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
       ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER),
-  },
-
-  i18n: {
-    getStrings: (): Promise<RepluggedTranslations> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_I18N_STRINGS),
   },
 
   reactDevTools: {
