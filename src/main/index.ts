@@ -116,7 +116,14 @@ async function loadReactDevTools(): Promise<void> {
 electron.app.once("ready", () => {
   electron.session.defaultSession.webRequest.onBeforeRequest(
     {
-      urls: ["https://*/api/v*/science", "https://*/api/v*/metrics", "https://sentry.io/*"],
+      urls: [
+        "https://*/api/v*/science",
+        "https://*/api/v*/metrics",
+        "https://*/api/v*/metrics/*",
+        "https://sentry.io/*",
+        "https://discord.com/assets/sentry.*.js",
+        "https://*.discord.com/assets/sentry.*.js",
+      ],
     },
     function (_details, callback) {
       callback({ cancel: true });
