@@ -5,6 +5,8 @@ import {
   webFrame,
 } from "electron";
 
+import { Logger } from "@logger";
+
 import { RepluggedIpcChannels } from "./types";
 // eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
 import type {
@@ -16,6 +18,12 @@ import type {
   RepluggedPlugin,
   RepluggedTheme,
 } from "./types";
+
+const MainLogger = new Logger("Preload", "Backend", "#ea5a5a");
+
+ipcRenderer.on(RepluggedIpcChannels.CONSOLE_LOG, (_event, ...args) => MainLogger.log(...args));
+ipcRenderer.on(RepluggedIpcChannels.CONSOLE_WARN, (_event, ...args) => MainLogger.warn(...args));
+ipcRenderer.on(RepluggedIpcChannels.CONSOLE_ERROR, (_event, ...args) => MainLogger.error(...args));
 
 let version = "";
 void ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
