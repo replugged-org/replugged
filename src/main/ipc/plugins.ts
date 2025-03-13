@@ -4,23 +4,31 @@ IPC events:
 - REPLUGGED_UNINSTALL_PLUGIN: returns whether a plugin by the provided name was successfully uninstalled
 */
 
-import { readFile, readdir, readlink, rm, stat } from "fs/promises";
+import { readFile, readdir, readlink, stat } from "fs/promises";
 import { extname, join, sep } from "path";
 import { ipcMain, shell } from "electron";
 import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
-import type { Dirent, Stats } from "fs";
-import { CONFIG_PATHS } from "src/util.mjs";
+import { type Dirent, type Stats, rmdirSync, unlinkSync } from "fs";
+import { CONFIG_PATHS, extractAddon } from "src/util.mjs";
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
+const TEMP_PLUGINS_DIR = CONFIG_PATHS.temp_plugins;
 
 export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
   return f.isDirectory() || (f.isFile() && extname(name) === ".asar");
 };
 
 async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
-  const manifestPath = join(PLUGINS_DIR, pluginName, "manifest.json");
-  if (!manifestPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
+  const isAsar = pluginName.includes(".asar");
+  const pluginPath = join(PLUGINS_DIR, pluginName);
+  const realPluginPath = isAsar
+    ? join(TEMP_PLUGINS_DIR, pluginName.replace(/\.asar$/, ""))
+    : pluginPath; // Remove ".asar" from the directory name
+  if (isAsar) await extractAddon(pluginPath, realPluginPath);
+
+  const manifestPath = join(realPluginPath, "manifest.json");
+  if (!manifestPath.startsWith(`${realPluginPath}${sep}`)) {
     // Ensure file changes are restricted to the base path
     throw new Error("Invalid plugin name");
   }
@@ -40,7 +48,7 @@ async function getPlugin(pluginName: string): Promise<RepluggedPlugin> {
   const cssPath = data.manifest.renderer?.replace(/\.js$/, ".css");
   const hasCSS =
     cssPath &&
-    (await stat(join(PLUGINS_DIR, pluginName, cssPath))
+    (await stat(join(realPluginPath, cssPath))
       .then(() => true)
       .catch(() => false));
 
@@ -90,17 +98,28 @@ ipcMain.handle(RepluggedIpcChannels.LIST_PLUGINS, async (): Promise<RepluggedPlu
   return plugins;
 });
 
-ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: string) => {
+ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, (_, pluginName: string) => {
+  const isAsar = pluginName.includes(".asar");
   const pluginPath = join(PLUGINS_DIR, pluginName);
-  if (!pluginPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
+  const realPluginPath = isAsar
+    ? join(TEMP_PLUGINS_DIR, pluginName.replace(".asar", ""))
+    : pluginPath; // Remove ".asar" from the directory name
+
+  if (!realPluginPath.startsWith(`${isAsar ? TEMP_PLUGINS_DIR : PLUGINS_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
     throw new Error("Invalid plugin name");
   }
 
-  await rm(pluginPath, {
-    recursive: true,
-    force: true,
-  });
+  if (isAsar) {
+    unlinkSync(pluginPath);
+    rmdirSync(realPluginPath, { recursive: true });
+  } else rmdirSync(pluginPath, { recursive: true });
 });
 
 ipcMain.on(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER, () => shell.openPath(PLUGINS_DIR));
+
+ipcMain.on(RepluggedIpcChannels.CLEAR_TEMP_THEME, () => {
+  try {
+    rmdirSync(TEMP_PLUGINS_DIR, { recursive: true });
+  } catch {}
+});
