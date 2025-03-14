@@ -24,7 +24,18 @@ export const generalSettings = await settings.init<GeneralSettings, keyof typeof
   defaultSettings,
 );
 
-const konamiCode = ["38", "38", "40", "40", "37", "39", "37", "39", "66", "65"];
+const konamiCode = [
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "KeyB",
+  "KeyA",
+];
 
 function reload(): void {
   setTimeout(() => window.location.reload(), 250);
@@ -58,10 +69,8 @@ export const General = (): React.ReactElement => {
     "reactDevTools",
   );
 
-  const [kKeys, setKKeys] = React.useState<number[]>([]);
-
+  const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
-
   const [hue, setHue] = React.useState(0);
 
   React.useEffect(() => {
@@ -75,7 +84,7 @@ export const General = (): React.ReactElement => {
 
   const listener = (e: KeyboardEvent): void => {
     if (isEasterEgg) return;
-    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), Number(e.code)]);
+    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), e.code]);
   };
 
   React.useEffect(() => {
