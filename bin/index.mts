@@ -301,7 +301,7 @@ const CONFIG_PATH = (() => {
       return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
 })();
-const CHROME_VERSION = "124";
+const CHROME_VERSION = "130";
 
 function buildAddons(buildFn: (args: Args) => Promise<void>, args: Args, type: AddonType): void {
   const addons = getAddonFolder(type);
