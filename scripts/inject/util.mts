@@ -36,7 +36,7 @@ export const getProcessInfoByName = (processName: string): ProcessInfo[] | null 
     const isWindows = process.platform === "win32";
     const command = isWindows
       ? `powershell -Command "(Get-CimInstance Win32_Process | Where-Object { $_.Name -eq '${processName}.exe' } | Select-Object ParentProcessId,ProcessId | ConvertTo-Csv -NoTypeInformation)"`
-      : `ps -eo ppid,pid,command | grep -E "${processName}.app" | grep -v grep`;
+      : `ps -eo ppid,pid,command | grep -E "${processName}${process.platform === "darwin" ? ".app" : " --type"}" | grep -v grep`;
     const output = execSync(command).toString().trim();
 
     if (!output) return null;
