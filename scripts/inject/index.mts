@@ -51,6 +51,7 @@ let platform: DiscordPlatform | undefined;
 
 const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void> => {
   if (!platform) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const platformArg = getPositionalArg(ctx.argv, 3, false)?.toLowerCase();
 
     if (platformArg) {
@@ -61,9 +62,9 @@ const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void>
         console.error(
           `${AnsiEscapes.RED}Platform you specified isn't valid, please specify a valid one.${
             AnsiEscapes.RESET
-          }\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map(
-            (x) => `${x}`,
-          ).join("\n")}${AnsiEscapes.RESET}`,
+          }\n\nList of valid platforms:\n${AnsiEscapes.GREEN}${VALID_PLATFORMS.map((x) => x).join(
+            "\n",
+          )}${AnsiEscapes.RESET}`,
         );
         process.exit(exitCode);
       } else {
@@ -167,4 +168,4 @@ To unplug from a different platform, use the following syntax: ${AnsiEscapes.BOL
   }
 };
 
-run();
+void run();

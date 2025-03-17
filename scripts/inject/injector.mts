@@ -229,8 +229,6 @@ export const smartInject = async (
   production: boolean,
   noRelaunch: boolean,
 ): Promise<boolean> => {
-  let result;
-
   const processName =
     process.platform === "darwin"
       ? PlatformNames[platform]
@@ -244,7 +242,7 @@ export const smartInject = async (
     } catch {}
   }
 
-  result =
+  const result =
     cmd === "uninject"
       ? await uninject(platformModule, platform)
       : await inject(platformModule, platform, production);
