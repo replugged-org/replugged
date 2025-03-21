@@ -7,7 +7,7 @@ export default [
     find: /hasNotice:\w+,sidebarTheme:\w+/,
     replacements: [
       {
-        match: /\w+\.base,children:\[/,
+        match: /\w+\.base,"data-fullscreen":\w+,children:\[/,
         replace: `$&${coremodStr}?.AnnouncementContainer?.(),`,
       },
     ],
