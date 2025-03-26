@@ -1,5 +1,5 @@
 import { resolve, sep } from "path";
-import { ipcMain, shell } from "electron";
+import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels } from "../../types";
 import type {
   SettingsMap,
@@ -25,6 +25,9 @@ function readSettings(namespace: string): Map<string, unknown> {
   try {
     const data = readFileSync(path, "utf8");
     return new Map(Object.entries(JSON.parse(data)));
+    const data = await readFile(path, "utf8");
+    const parsedData: Record<string, unknown> = JSON.parse(data);
+    return new Map(Object.entries(parsedData));
   } catch {
     return new Map();
   }
@@ -44,6 +47,7 @@ function transaction<T>(namespace: string, handler: TransactionHandler<T>): T {
   const lock = locks[namespace];
 
   if (lock) lock();
+
 
   const result = handler();
 

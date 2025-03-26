@@ -2,12 +2,12 @@ import { i18n, modal, toast } from "@common";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
 import { setUpdaterState } from "src/renderer/managers/updater";
+import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
 import { generalSettings, getAddonType, getSourceLink, label } from "../settings/pages";
-import { t } from "src/renderer/modules/i18n";
 
 const { intl } = i18n;
 
@@ -56,7 +56,7 @@ export function parseInstallLink(href: string): InstallLinkProps | null {
       };
     }
 
-    const storeMatch = url.pathname.match(/^\/store\/([^/]+)$/);
+    const storeMatch = /^\/store\/([^/]+)$/.exec(url.pathname);
     if (storeMatch) {
       const identifier = storeMatch[1];
       if (["plugins", "themes"].includes(identifier.toLowerCase())) return null;

@@ -1,6 +1,6 @@
 import * as common from "@common";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
-import { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
+import type { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
 import notices from "../apis/notices";
 import { init } from "../apis/settings";
 import { t } from "../modules/i18n";
@@ -317,7 +317,9 @@ async function autoUpdateCheck(): Promise<void> {
 // Check if updates need to be checked every minute
 export function startAutoUpdateChecking(): void {
   setInterval(() => {
-    autoUpdateCheck().catch((err) => logger.error("Error in update checking (loop)", err));
+    autoUpdateCheck().catch((err: unknown) => logger.error("Error in update checking (loop)", err));
   }, 60 * 1000);
-  autoUpdateCheck().catch((err) => logger.error("Error in update checking (initial)", err));
+  autoUpdateCheck().catch((err: unknown) =>
+    logger.error("Error in update checking (initial)", err),
+  );
 }

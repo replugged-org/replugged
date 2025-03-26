@@ -1,8 +1,8 @@
-import { loadStyleSheet } from "../util";
-import type { RepluggedTheme } from "../../types";
 import type { AddonSettings } from "src/types/addon";
+import type { RepluggedTheme } from "../../types";
 import { init } from "../apis/settings";
 import * as logger from "../modules/logger";
+import { loadStyleSheet } from "../util";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 

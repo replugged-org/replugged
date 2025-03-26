@@ -2,7 +2,7 @@
 import { Injector } from "@replugged";
 import { BETA_WEBSITE_URL, WEBSITE_URL } from "src/constants";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
-import { Jsonifiable } from "type-fest";
+import type { Jsonifiable } from "type-fest";
 
 const injector = new Injector();
 

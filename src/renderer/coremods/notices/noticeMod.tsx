@@ -1,6 +1,6 @@
 import type React from "react";
 import { filters, getFunctionBySource, waitForModule } from "src/renderer/modules/webpack";
-import { ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
@@ -17,7 +17,7 @@ interface PrimaryCTANoticeButtonProps extends NoticeButtonProps {
   additionalTrackingProps?: Record<string, unknown>;
 }
 
-interface NoticeButtonAnchorProps extends AnchorProps {}
+type NoticeButtonAnchorProps = AnchorProps;
 
 interface NoticeCloseButtonProps {
   onClick: () => void;
@@ -55,6 +55,7 @@ interface NoticeMod {
 }
 
 const remappedNoticeMod: NoticeMod = {
+
   NoticeColors: {} as NoticeMod["NoticeColors"],
   NoticeButton: () => null,
   PrimaryCTANoticeButton: () => null,

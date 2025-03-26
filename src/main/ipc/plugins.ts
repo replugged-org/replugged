@@ -6,11 +6,12 @@ IPC events:
 
 import { rm } from "fs/promises";
 import { extname, join, sep } from "path";
-import { ipcMain, shell } from "electron";
+import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
 import { type Dirent, type Stats, readFileSync, readdirSync, readlinkSync, statSync } from "fs";
 import { CONFIG_PATHS } from "src/util.mjs";
+
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
 

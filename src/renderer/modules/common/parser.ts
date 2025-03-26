@@ -1,5 +1,5 @@
-import { waitForProps } from "../webpack";
 import type SimpleMarkdown from "simple-markdown";
+import { waitForProps } from "../webpack";
 
 type DefaultRules = Pick<
   SimpleMarkdown.DefaultRules,

@@ -21,7 +21,7 @@ export default [
             replace: `$1true`,
           },
           {
-            match: /=\(0,\w+\.isStaffEnv\)\(\w+\.default\.getCurrentUser\(\)\)/,
+            match: /=\(0,\w+\.\w+\)\(\w+\.default\.getCurrentUser\(\)\)/,
             replace: "=true",
           },
         ]

@@ -1,6 +1,6 @@
-import { ValueOf } from "type-fest";
-import type { Store } from "./flux";
 import { filters, getFunctionBySource, waitForModule } from "@webpack";
+import type { ValueOf } from "type-fest";
+import type { Store } from "./flux";
 
 export interface FluxHooks {
   useStateFromStores: <T>(

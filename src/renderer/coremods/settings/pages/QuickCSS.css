@@ -31,14 +31,16 @@
   border-radius: 8px;
 }
 #replugged-quickcss-wrapper:not([data-theme="light"]) .cm-scroller::-webkit-scrollbar-thumb {
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-4)),
       rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-4))
     ),
     var(--custom-theme-background);
 }
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-thumb {
-  background-image: rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-6)),
+  background-image:
+    rgb(var(--bg-overlay-color-inverse) / var(--bg-overlay-opacity-6)),
     rgb(var(--bg-overlay-color) / var(--bg-overlay-opacity-3));
   background-color: var(--scrollbar-auto-thumb);
   background-clip: padding-box;
@@ -46,10 +48,8 @@
   background-size: 100vh;
 }
 #replugged-quickcss-wrapper:not([data-theme="light"]) .cm-scroller::-webkit-scrollbar-track {
-  background-image: linear-gradient(
-      rgb(var(--bg-overlay-color) / 0.6),
-      rgb(var(--bg-overlay-color) / 0.6)
-    ),
+  background-image:
+    linear-gradient(rgb(var(--bg-overlay-color) / 0.6), rgb(var(--bg-overlay-color) / 0.6)),
     var(--custom-theme-background);
 }
 #replugged-quickcss-wrapper:is([data-theme="dark"]) .cm-scroller::-webkit-scrollbar-track {
@@ -57,7 +57,8 @@
   background-clip: padding-box;
 }
 #replugged-quickcss-wrapper .cm-scroller::-webkit-scrollbar-track {
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       rgb(var(--bg-overlay-color) / var(--bg-overlay-opacity-1)),
       rgb(var(--bg-overlay-color) / var(--bg-overlay-opacity-1))
     ),

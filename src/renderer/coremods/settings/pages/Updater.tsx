@@ -45,7 +45,7 @@ export const Updater = (): React.ReactElement => {
           });
           setUpdatesAvailable(getAvailableUpdates());
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           if (cancelled) return;
           toast.toast("Update failed.", toast.Kind.FAILURE);
           logger.error(err);
@@ -213,7 +213,7 @@ export const Updater = (): React.ReactElement => {
           const { manifest } = addon;
           const sourceLink = update.webUrl;
           return (
-            <div className="replugged-updater-item">
+            <div className="replugged-updater-item" key={update.id}>
               <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
                 <div>
                   <Flex align={Flex.Align.CENTER} style={{ gap: "5px", marginBottom: "5px" }}>

@@ -71,7 +71,7 @@ export type Variant =
 // TODO: generic type for tags?
 interface TextProps extends React.ComponentPropsWithoutRef<"div"> {
   variant?: Variant;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: keyof React.JSX.IntrinsicElements;
   selectable?: boolean;
   tabularNumbers?: boolean;
   lineClamp?: number;

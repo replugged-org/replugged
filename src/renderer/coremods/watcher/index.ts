@@ -11,7 +11,7 @@ const uninjectors: Array<() => void> = [];
 const { intl } = i18n;
 
 export function start(): void {
-  let uninjectRpc = registerRPCCommand("REPLUGGED_ADDON_WATCHER", {
+  const uninjectRpc = registerRPCCommand("REPLUGGED_ADDON_WATCHER", {
     scope: "REPLUGGED_LOCAL",
     handler: async (data) => {
       const { id } = data.args;

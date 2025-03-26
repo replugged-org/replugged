@@ -107,9 +107,7 @@ interface ClearOptions {
   type: "all" | "user-data-only";
 }
 
-interface State {
-  [key: string]: any;
-}
+type State = Record<string, any>;
 
 type States = Record<string, State>;
 type Migration = () => void;

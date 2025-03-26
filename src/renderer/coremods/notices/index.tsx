@@ -1,6 +1,6 @@
 import { React } from "@common";
 import { notices } from "@replugged";
-import { RepluggedAnnouncement } from "src/types";
+import type { RepluggedAnnouncement } from "src/types";
 import NoticeMod from "./noticeMod";
 
 function Announcement({

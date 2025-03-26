@@ -1,14 +1,15 @@
-import { dirname, join } from "path";
-
 import electron from "electron";
+import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
+import type { PackageJson } from "type-fest";
+import { pathToFileURL } from "url";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
-const discordPackage = require(join(discordPath, "package.json"));
-require.main!.filename = join(discordPath, discordPackage.main);
+const discordPackage: PackageJson = require(join(discordPath, "package.json"));
+require.main!.filename = join(discordPath, discordPackage.main!);
 
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
@@ -164,7 +165,7 @@ electron.app.once("ready", () => {
     done({ responseHeaders: headersWithoutCSP });
   });
 
-  electron.protocol.registerFileProtocol("replugged", (request, cb) => {
+  electron.protocol.handle("replugged", (request) => {
     let filePath = "";
     const reqUrl = new URL(request.url);
     switch (reqUrl.hostname) {
@@ -184,7 +185,7 @@ electron.app.once("ready", () => {
         filePath = join(CONFIG_PATHS.plugins, reqUrl.pathname);
         break;
     }
-    cb({ path: filePath });
+    return electron.net.fetch(pathToFileURL(filePath).toString());
   });
 
   loadReactDevTools();

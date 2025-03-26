@@ -20,9 +20,9 @@ function importTimeout<T>(
             clearTimeout(timeout);
             res();
           })
-          .catch((err) => {
+          .catch((err: unknown) => {
             error("CommonModules", name, void 0, `Failed to import module "${name}"`, err);
-            rej(err);
+            rej(err instanceof Error ? err : new Error(String(err)));
           });
       }),
   );

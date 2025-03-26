@@ -69,7 +69,7 @@ export declare class Backoff {
   public succeed: () => void;
 }
 
-declare class V6OrEarlierAPIError {
+export declare class V6OrEarlierAPIError {
   public constructor(error: Record<string, unknown> | null, code: number, message?: string);
 
   public code: number;
@@ -124,6 +124,7 @@ export interface API {
   setAwaitOnline: (callback: (url: string) => Promise<void>) => void;
   setRequestPatch: (patch: RequestPatch) => void;
 }
+
 const getAPI = async (): Promise<API> => {
   const realApiModule = await waitForModule<Record<string, API[keyof API]>>(
     filters.bySource("rateLimitExpirationHandler"),

@@ -19,7 +19,7 @@ export default {
           version: mainPackage.version,
         }),
       );
-      asar.createPackage(`${distDir}`, "replugged.asar");
+      void asar.createPackage(distDir, "replugged.asar");
     });
   },
 } as esbuild.Plugin;

@@ -48,7 +48,6 @@ type DiscordComponents = {
   | ModalType["ModalCloseButton"]
   | ModalType["ModalContent"]
   | ModalType["ModalFooter"]
-  | ModalType["ModalHeader"]
   | ModalType["ModalRoot"]
   | RadioType
   | SelectCompType

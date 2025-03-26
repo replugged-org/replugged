@@ -1,13 +1,13 @@
-import { error, log } from "../modules/logger";
 import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
+import { error, log } from "../modules/logger";
+import { interceptChunksGlobal } from "../modules/webpack/patch-load";
+import { loadStyleSheet } from "../util";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
-import * as themes from "./themes";
 import * as quickCSS from "./quick-css";
-import { loadStyleSheet } from "../util";
+import * as themes from "./themes";
 import { startAutoUpdateChecking } from "./updater";
-import { interceptChunksGlobal } from "../modules/webpack/patch-load";
 
 export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");

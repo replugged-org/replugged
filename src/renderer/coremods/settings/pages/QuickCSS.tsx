@@ -61,7 +61,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
   const [value, setValue] = React.useState("");
   const [view, setView] = React.useState<EditorView | undefined>(undefined);
 
-  const [update, forceUpdate] = React.useReducer((x) => x + 1, 0);
+  const [update, forceUpdate] = React.useReducer((x: number) => x + 1, 0);
 
   React.useEffect(() => {
     if (initialValueParam) {
@@ -128,7 +128,7 @@ export const QuickCSS = (): React.ReactElement => {
   };
 
   React.useEffect(() => {
-    void window.RepluggedNative.quickCSS.get().then((val) => {
+    void window.RepluggedNative.quickCSS.get().then((val: string) => {
       setValue(val);
       setReady(true);
     });

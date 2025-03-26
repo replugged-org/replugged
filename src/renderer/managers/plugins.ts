@@ -1,10 +1,12 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
 import { loadStyleSheet } from "../util";
 import type { PlaintextPatch, PluginExports, RepluggedPlugin } from "../../types";
+import type { AddonSettings } from "src/types/addon";
+import type { PlaintextPatch, PluginExports, RepluggedPlugin } from "../../types";
+import { init } from "../apis/settings";
 import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
-import { init } from "../apis/settings";
-import type { AddonSettings } from "src/types/addon";
+import { loadStyleSheet } from "../util";
 
 const logger = Logger.api("Plugins");
 const settings = init<AddonSettings>("plugins");
@@ -165,6 +167,7 @@ export async function stopAll(): Promise<void> {
 export function runPlaintextPatches(): void {
   const disabled: string[] = settings.get("disabled", []);
   const list = [...plugins.values()].filter((x) => !disabled.includes(x.manifest.id));
+
 
   const getPlaintextPatch = (pluginName: string): { default: PlaintextPatch[] } => {
     const wrapModule = (code: string, pluginName: string): string => `((module) => {
