@@ -36,7 +36,7 @@ interface ModalContentProps extends React.ComponentPropsWithoutRef<"div"> {
   scrollbarType?: "auto" | "none" | "thin";
 }
 
-interface ModalFooterProps extends ModalHeaderProps {}
+type ModalFooterProps = ModalHeaderProps;
 
 interface ModalCloseButtonProps {
   onClick(): void;

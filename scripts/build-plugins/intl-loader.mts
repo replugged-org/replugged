@@ -1,4 +1,5 @@
 import {
+  // @ts-expect-error: ts doesn't like that this is a const enum
   IntlCompiledMessageFormat,
   MessageDefinitionsTransformer,
   findAllMessagesFiles,
@@ -56,7 +57,7 @@ export default {
           );
         }
 
-        if (Object.keys(messageKeys).length < Object.keys(result.messageKeys ?? {}).length) {
+        if (Object.keys(messageKeys).length < Object.keys(result.messageKeys).length) {
           messageKeys = result.messageKeys;
         }
 
@@ -79,6 +80,7 @@ export default {
         if (isMessageTranslationsFile(sourcePath)) {
           processTranslationsFile(sourcePath, source, { locale });
         } else if (forceTranslation) {
+          /* empty */
         } else {
           throw new Error(
             "Expected a translation file or the `forceTranslation` query parameter on this import, but none was found",
@@ -86,14 +88,15 @@ export default {
         }
 
         const compiledResult = precompileFileForLocale(sourcePath, locale, undefined, {
+          // @ts-expect-error: ts doesn't like that this is a const enum
           format: IntlCompiledMessageFormat.KeylessJson,
           bundleSecrets: false,
         });
+        const parsedMessage: Record<string, unknown> = JSON.parse(
+          compiledResult?.toString() ?? "{}",
+        );
         const patchedResult = Object.fromEntries(
-          Object.entries(JSON.parse(compiledResult?.toString() ?? "{}")).map(([hash, string]) => [
-            messageKeys[hash],
-            string,
-          ]),
+          Object.entries(parsedMessage).map(([hash, string]) => [messageKeys[hash], string]),
         );
 
         return {

@@ -1,5 +1,5 @@
-import type { ContextMenuType, MenuProps } from "../../renderer/modules/components/ContextMenu";
 import type React from "react";
+import type { ContextMenuType, MenuProps } from "../../renderer/modules/components/ContextMenu";
 
 type ContextMenuComponents = Omit<ContextMenuType, "ItemColors" | "ContextMenu">;
 

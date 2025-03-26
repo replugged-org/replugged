@@ -16,9 +16,9 @@ import { ApplicationCommandOptionType } from "../../types";
 import icon from "../assets/logo.png";
 import { constants, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
+import { t } from "../modules/i18n";
 import { Logger } from "../modules/logger";
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
-import { t } from "../modules/i18n";
 
 const logger = Logger.api("Commands");
 

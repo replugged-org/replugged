@@ -2,15 +2,15 @@ import type React from "react";
 import { components } from ".";
 
 const Kind = {
-  MESSAGE: 0,
-  SUCCESS: 1,
-  FAILURE: 2,
-  CUSTOM: 3,
-  CLIP: 4,
-  LINK: 5,
-  FORWARD: 6,
-  BOOKMARK: 7,
-  CLOCK: 8,
+  MESSAGE: "message",
+  SUCCESS: "success",
+  FAILURE: "failure",
+  CUSTOM: "custom",
+  CLIP: "clip",
+  LINK: "link",
+  FORWARD: "forward",
+  BOOKMARK: "bookmark",
+  CLOCK: "clock",
 } as const;
 
 const Position = {

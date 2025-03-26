@@ -1,7 +1,7 @@
 import { getLanguages, intl } from "@common/i18n";
 import { Flex, FormNotice, Text } from "@components";
 import { messagesLoader } from "i18n/en-US.messages";
-import React from "react";
+import type React from "react";
 import { WEBLATE_URL } from "src/constants";
 import { t } from "../../modules/i18n";
 

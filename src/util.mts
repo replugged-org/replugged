@@ -1,4 +1,4 @@
-import esbuild from "esbuild";
+import type esbuild from "esbuild";
 import { execSync } from "child_process";
 import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
 import path, { join } from "path";
