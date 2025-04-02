@@ -119,25 +119,23 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
 }
 
 // Intercept the webpack chunk global as soon as Discord creates it
-export function interceptChunksGlobal(): void {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (window.webpackChunkdiscord_app) {
-    loadWebpackModules(window.webpackChunkdiscord_app);
-  } else {
-    let webpackChunk: WebpackChunkGlobal | undefined;
-    Object.defineProperty(window, "webpackChunkdiscord_app", {
-      get: () => webpackChunk,
-      set: (v: WebpackChunkGlobal) => {
-        // Only modify if the global has actually changed
-        // We don't need to check if push is the special webpack push,
-        // because webpack will go over the previously loaded modules
-        // when it sets the custom push method.
-        if (v !== webpackChunk) {
-          loadWebpackModules(v);
-        }
-        webpackChunk = v;
-      },
-      configurable: true,
-    });
-  }
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+if (window.webpackChunkdiscord_app) {
+  loadWebpackModules(window.webpackChunkdiscord_app);
+} else {
+  let webpackChunk: WebpackChunkGlobal | undefined;
+  Object.defineProperty(window, "webpackChunkdiscord_app", {
+    get: () => webpackChunk,
+    set: (v: WebpackChunkGlobal) => {
+      // Only modify if the global has actually changed
+      // We don't need to check if push is the special webpack push,
+      // because webpack will go over the previously loaded modules
+      // when it sets the custom push method.
+      if (v !== webpackChunk) {
+        loadWebpackModules(v);
+      }
+      webpackChunk = v;
+    },
+    configurable: true,
+  });
 }

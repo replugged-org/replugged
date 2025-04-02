@@ -1,7 +1,6 @@
 import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
 import { error, log } from "../modules/logger";
-import { interceptChunksGlobal } from "../modules/webpack/patch-load";
 import { loadStyleSheet } from "../util";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
@@ -82,7 +81,6 @@ Load order:
 export async function ignite(): Promise<void> {
   // This is the function that will be called when loading the window.
   // Plaintext patches must run first.
-  interceptChunksGlobal();
   coremods.runPlaintextPatches();
   await plugins.loadAll();
   await plugins.runPlaintextPatches();
