@@ -97,13 +97,13 @@ async function injectLinks(): Promise<void> {
   const anchorKey = getFunctionKeyBySource(exports, "")! as "Anchor"; // It's actually a mangled name, but TS can sit down and shut up
   injector.instead(exports, anchorKey, (args, fn) => {
     const { href } = args[0];
-    if (!href) return fn(...args);
+    if (!href) return fn;
     const installLink = parseInstallLink(href);
-    if (!installLink) return fn(...args);
+    if (!installLink) return fn;
 
     args[0].onClick = (e) => triggerInstall(installLink, e);
 
-    return fn(...args);
+    return () => fn(...args);
   });
 
   const defaultRules = parser.defaultRules as typeof parser.defaultRules & {

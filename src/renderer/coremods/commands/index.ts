@@ -244,7 +244,7 @@ async function injectProfileFetch(): Promise<void> {
 
   injector.instead(userActionCreatorsMod, fetchProfileKey, (args, orig) => {
     if (args[0] === REPLUGGED_CLYDE_ID) return;
-    return orig(...args);
+    return orig;
   });
 }
 
