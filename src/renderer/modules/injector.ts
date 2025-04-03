@@ -32,11 +32,11 @@ export type BeforeCallback<A extends unknown[] = unknown[]> = (
  * @param self The module the injected function is on
  * @returns New result to return
  */
-export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
-  args: A,
-  orig: (...args: A) => R,
-  self: ObjectExports,
-) => R | void;
+export type InsteadCallback<
+  A extends unknown[] = unknown[],
+  R = unknown,
+  T extends AnyFunction = (...args: A) => R,
+> = (args: A, orig: T, self: ObjectExports) => T | void;
 
 /**
  * Code to run after the original function
@@ -113,12 +113,14 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
       if (injectionsForProp.instead.size === 0) {
         res = originalFunc.apply(this, args);
       } else {
+        let newFunc: AnyFunction = originalFunc;
         for (const i of injectionsForProp.instead) {
-          const newResult = i.call(this, args, originalFunc, this);
-          if (newResult !== void 0) {
-            res = newResult;
+          const newResult = i.call(this, args, newFunc, this);
+          if (typeof newResult === "function") {
+            newFunc = newResult;
           }
         }
+        res = newFunc.apply(this, args);
       }
 
       for (const a of injectionsForProp.after) {
