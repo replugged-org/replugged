@@ -17,12 +17,11 @@ interface UseCodeMirrorOptions {
   container?: HTMLDivElement | null;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type ThemeModule = {
+interface ThemeModule {
   theme: "light" | "dark";
   addChangeListener: (listener: () => unknown) => unknown;
   removeChangeListener: (listener: () => unknown) => unknown;
-};
+}
 
 function useTheme(): "light" | "dark" {
   const [theme, setTheme] = React.useState<"light" | "dark">("dark");

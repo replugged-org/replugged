@@ -21,7 +21,7 @@ import { waitForProps } from "../webpack";
 import type { CreateToast, ShowToast } from "./toast";
 
 // Expand this as needed
-type DiscordComponents = {
+export type DiscordComponents = {
   createToast: CreateToast;
   showToast: ShowToast;
   Text: OriginalTextType;
