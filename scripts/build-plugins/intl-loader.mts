@@ -75,10 +75,19 @@ export default {
         }).getOutput();
 
         return {
-          contents: transformedOutput.replace(
-            /require\('@discord\/intl'\);/,
-            "await waitForProps('createLoader','IntlManager');",
-          ),
+          // This has been made to not block the loading of Replugged
+          // by changing the transformed output to a function that
+          // loads the messages when the IntlManager is loaded.
+          contents: transformedOutput
+            .replace(
+              /const {createLoader} = require\('@discord\/intl'\);/,
+              "let messagesLoader,messages;waitForProps('createLoader','IntlManager').then(({createLoader,makeMessagesProxy})=>{",
+            )
+            .replace(/const {makeMessagesProxy} = require\('@discord\/intl'\);/, "")
+            .replace("const messagesLoader", "messagesLoader")
+            .replace("const binds", "messages")
+            .replace("export {messagesLoader};", "});export {messagesLoader,messages};")
+            .replace("export default binds;", ""),
           loader: "js",
         };
       } else {
