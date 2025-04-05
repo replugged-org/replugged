@@ -1,5 +1,6 @@
 import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
+import * as i18n from "../modules/i18n";
 import { error, log } from "../modules/logger";
 import { loadStyleSheet } from "../util";
 import * as coremods from "./coremods";
@@ -13,7 +14,7 @@ export async function start(): Promise<void> {
   const startTime = performance.now();
 
   loadStyleSheet("replugged://renderer.css");
-  await import("../modules/i18n").then((i18n) => i18n.load());
+  i18n.load();
 
   let started = false;
   await Promise.race([
@@ -68,15 +69,6 @@ export async function restart(): Promise<void> {
   await stop();
   await start();
 }
-
-/*
-Load order:
-1. Register all plaintext patches
-2. await waitForReady from webpack
-3. signalStart()
-4. await reactReady
-5. Start coremods, plugins, and themes
-*/
 
 export async function ignite(): Promise<void> {
   // This is the function that will be called when loading the window.

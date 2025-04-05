@@ -1,4 +1,4 @@
-import * as common from "@common";
+import { i18n } from "@common";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
 import notices from "../apis/notices";
@@ -289,23 +289,15 @@ async function autoUpdateCheck(): Promise<void> {
   if (isAnUpdate && (areNewUpdates || isFirstRun)) {
     logger.log("Showing update notification");
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const intl = common.i18n?.intl; // Weird hack due to circular dependency
     const { open } = await openSettingsModPromise;
-
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!intl) {
-      logger.error("intl missing, cannot show update notification");
-      return;
-    }
 
     clearActiveNotification?.();
     clearActiveNotification = notices.sendAnnouncement({
-      message: intl.format(t.REPLUGGED_UPDATES_AVAILABLE, {
+      message: i18n.intl.format(t.REPLUGGED_UPDATES_AVAILABLE, {
         count: newUpdateCount,
       }),
       button: {
-        text: intl.formatToPlainString(t.REPLUGGED_VIEW_UPDATES, {
+        text: i18n.intl.formatToPlainString(t.REPLUGGED_VIEW_UPDATES, {
           count: newUpdateCount,
         }),
         onClick: () => open("rp-updater"),
