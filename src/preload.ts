@@ -114,8 +114,12 @@ export type RepluggedNativeType = typeof RepluggedNative;
 
 contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 
+const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
+
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
-void webFrame.executeJavaScript('void import("replugged://renderer");');
+void webFrame.executeJavaScript(
+  `(async () => {${renderer}})();//# sourceURL=replugged://renderer.js`,
+);
 
 try {
   window.addEventListener("beforeunload", () => {
