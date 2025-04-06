@@ -1,9 +1,4 @@
-import {
-  type BrowserWindowConstructorOptions,
-  contextBridge,
-  ipcRenderer,
-  webFrame,
-} from "electron";
+import { contextBridge, ipcRenderer, webFrame } from "electron";
 
 import { RepluggedIpcChannels } from "./types";
 // eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
@@ -81,19 +76,15 @@ const RepluggedNative = {
 
   settings: {
     get: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_SETTING, namespace, key),
     set: (namespace: string, key: string, value: unknown) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.SET_SETTING, namespace, key, value), // invoke or send?
+      ipcRenderer.sendSync(RepluggedIpcChannels.SET_SETTING, namespace, key, value),
     has: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.HAS_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.HAS_SETTING, namespace, key),
     delete: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
     all: (namespace: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
-    startTransaction: (namespace: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
-    endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER),
   },
 
@@ -103,9 +94,6 @@ const RepluggedNative = {
   },
 
   getVersion: () => version,
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };
@@ -122,9 +110,6 @@ void webFrame.executeJavaScript(
 );
 
 try {
-  window.addEventListener("beforeunload", () => {
-    ipcRenderer.send(RepluggedIpcChannels.REGISTER_RELOAD);
-  });
   // Get and execute Discord preload
   // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
   const preload: string = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);

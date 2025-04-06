@@ -55,12 +55,12 @@ const mainUpdaterDefaultSettings = {
   lastChecked: 0,
 } satisfies Partial<MainUpdaterSettings>;
 
-export const updaterSettings = await init<
-  MainUpdaterSettings,
-  keyof typeof mainUpdaterDefaultSettings
->("dev.replugged.Updater", mainUpdaterDefaultSettings);
+export const updaterSettings = init<MainUpdaterSettings, keyof typeof mainUpdaterDefaultSettings>(
+  "dev.replugged.Updater",
+  mainUpdaterDefaultSettings,
+);
 
-const updaterState = await init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
+const updaterState = init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
 
 const completedUpdates = new Set<string>();
 

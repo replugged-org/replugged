@@ -71,7 +71,6 @@ export async function restart(): Promise<void> {
 }
 
 export async function ignite(): Promise<void> {
-  // This is the function that will be called when loading the window.
   // Plaintext patches must run first.
   coremods.runPlaintextPatches();
   await plugins.loadAll();

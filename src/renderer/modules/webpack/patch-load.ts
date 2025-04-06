@@ -109,7 +109,6 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
   patchPush(chunksGlobal);
 }
 
-// Intercept the webpack chunk global as soon as Discord creates it
 let webpackChunk: WebpackChunkGlobal | undefined;
 Object.defineProperty(window, "webpackChunkdiscord_app", {
   get: () => webpackChunk,
