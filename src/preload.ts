@@ -27,10 +27,11 @@ const RepluggedNative = {
   },
 
   plugins: {
-    get: async (pluginPath: string): Promise<RepluggedPlugin | undefined> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
-    list: async (): Promise<RepluggedPlugin[]> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
+    get: (pluginPath: string): RepluggedPlugin | undefined =>
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
+    getPlaintextPatches: (pluginName: string): string =>
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_PLUGIN_PLAINTEXT_PATCHES, pluginName),
+    list: (): RepluggedPlugin[] => ipcRenderer.sendSync(RepluggedIpcChannels.LIST_PLUGINS),
     uninstall: async (pluginPath: string): Promise<RepluggedPlugin> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginPath),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER),

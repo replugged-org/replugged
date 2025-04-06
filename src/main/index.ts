@@ -165,6 +165,7 @@ electron.app.once("ready", () => {
     done({ responseHeaders: headersWithoutCSP });
   });
 
+  // TODO: Eventually in the future, this should be migrated to IPC for better performance
   electron.protocol.handle("replugged", (request) => {
     let filePath = "";
     const reqUrl = new URL(request.url);
