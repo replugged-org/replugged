@@ -70,23 +70,21 @@ export async function restart(): Promise<void> {
   await start();
 }
 
-export async function ignite(): Promise<void> {
+export function ignite(): void {
   // Plaintext patches must run first.
   coremods.runPlaintextPatches();
   plugins.loadAll();
   plugins.runPlaintextPatches();
   // At this point, Discord's code should run.
   // Wait for the designated common modules to load before continuing.
-  await Promise.all([commonReady(), componentsReady()]);
-  await start();
+  void Promise.all([commonReady(), componentsReady()]).then(start);
 }
 
-export async function startSplash(): Promise<void> {
+export function startSplash(): void {
   log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
   const startTime = performance.now();
 
-  await themes.loadMissing();
-  themes.loadAllSplash();
+  void themes.loadMissing().then(themes.loadAllSplash);
 
   log(
     "Ignition",

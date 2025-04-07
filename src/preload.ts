@@ -106,9 +106,7 @@ contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
 
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
-void webFrame.executeJavaScript(
-  `(async () => {${renderer}})();//# sourceURL=replugged://renderer.js`,
-);
+void webFrame.executeJavaScript(`(() => {${renderer}})();//# sourceURL=replugged://renderer.js`);
 
 try {
   // Get and execute Discord preload
