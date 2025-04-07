@@ -31,7 +31,7 @@
     "unplug": "tsx scripts/inject/index.mts uninject --no-exit-codes",
     "replug": "tsx scripts/inject/index.mts reinject",
     "typescript:check": "tsc --noEmit",
-    "cspell:check": "cspell lint ./src/**/* ./scripts/**/* ./bin*",
+    "cspell:check": "cspell lint ./src/**/* ./scripts/**/* ./bin/**/*",
     "prettier:check": "prettier ./src ./scripts ./bin --check",
     "eslint:check": "eslint ./src ./scripts ./bin",
     "prettier:fix": "prettier ./src ./scripts ./bin --write",
