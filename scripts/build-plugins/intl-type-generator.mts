@@ -4,7 +4,7 @@ import {
   isMessageDefinitionsFile,
 } from "@discord/intl-loader-core";
 import chalk from "chalk";
-import esbuild from "esbuild";
+import type esbuild from "esbuild";
 import fs from "fs";
 
 let isFirstRun = true;

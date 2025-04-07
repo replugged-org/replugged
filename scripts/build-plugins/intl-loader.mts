@@ -11,7 +11,7 @@ import {
   processDefinitionsFile,
   processTranslationsFile,
 } from "@discord/intl-loader-core";
-import esbuild from "esbuild";
+import type esbuild from "esbuild";
 import { readFileSync } from "node:fs";
 import { dirname, posix, relative, resolve } from "node:path";
 import { production } from "scripts/build.mjs";

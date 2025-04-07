@@ -1,5 +1,5 @@
 import asar from "@electron/asar";
-import esbuild from "esbuild";
+import type esbuild from "esbuild";
 import { readFileSync, writeFileSync } from "node:fs";
 import { distDir } from "scripts/build.mjs";
 
