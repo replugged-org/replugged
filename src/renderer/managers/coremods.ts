@@ -1,15 +1,14 @@
 import type { Promisable } from "type-fest";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
-
-import { default as badgesPlaintext } from "../coremods/badges/plaintextPatches";
-import { default as contextMenu } from "../coremods/contextMenu/plaintextPatches";
-import { default as experimentsPlaintext } from "../coremods/experiments/plaintextPatches";
-import { default as languagePlaintext } from "../coremods/language/plaintextPatches";
-import { default as messagePopover } from "../coremods/messagePopover/plaintextPatches";
-import { default as noDevtoolsWarningPlaintext } from "../coremods/noDevtoolsWarning/plaintextPatches";
-import { default as notices } from "../coremods/notices/plaintextPatches";
-import { default as notrackPlaintext } from "../coremods/notrack/plaintextPatches";
-import { default as settingsPlaintext } from "../coremods/settings/plaintextPatches";
+import badgesPlaintext from "../coremods/badges/plaintextPatches";
+import contextMenu from "../coremods/contextMenu/plaintextPatches";
+import experimentsPlaintext from "../coremods/experiments/plaintextPatches";
+import languagePlaintext from "../coremods/language/plaintextPatches";
+import messagePopover from "../coremods/messagePopover/plaintextPatches";
+import noDevtoolsWarningPlaintext from "../coremods/noDevtoolsWarning/plaintextPatches";
+import notices from "../coremods/notices/plaintextPatches";
+import notrackPlaintext from "../coremods/notrack/plaintextPatches";
+import settingsPlaintext from "../coremods/settings/plaintextPatches";
 import { Logger } from "../modules/logger";
 
 const logger = Logger.api("Coremods");
