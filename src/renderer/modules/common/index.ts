@@ -16,9 +16,9 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
             cb(mod);
             res();
           })
-          .catch((err) => {
+          .catch((err: unknown) => {
             error("CommonModules", name, void 0, `Failed to import module "${name}"`, err);
-            rej(err);
+            rej(err instanceof Error ? err : new Error(String(err)));
           });
       }),
   );
@@ -90,7 +90,7 @@ importTimeout("fluxHooks", import("./fluxHooks"), (mod) => (fluxHooks = mod.defa
 import type { I18n } from "./i18n";
 export type { I18n };
 export let i18n: I18n;
-importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod.default));
+importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod));
 
 import type { Modal } from "./modal";
 export type { Modal };
@@ -117,7 +117,7 @@ importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 /**
  * @see {@link https://highlightjs.org/usage/}
  */
-export let hljs: typeof import("highlightjs");
+export let hljs: typeof import("highlight.js").default;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 
 /**

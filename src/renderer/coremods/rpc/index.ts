@@ -2,7 +2,7 @@
 import { Injector } from "@replugged";
 import { BETA_WEBSITE_URL, WEBSITE_URL } from "src/constants";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
-import { Jsonifiable } from "type-fest";
+import type { Jsonifiable } from "type-fest";
 
 const injector = new Injector();
 
@@ -39,13 +39,10 @@ type RPCMod = { commands: Commands };
 let commands: Commands = {};
 
 async function injectRpc(): Promise<void> {
-  //const rpcValidatorMod = await waitForProps<{
-  //  fetchApplicationsRPC: (socket: Socket, client_id: string, origin: string) => Promise<void>;
-  //}>("fetchApplicationsRPC");
   const rpcValidatorMod = await waitForModule<
     Record<string, (socket: Socket, client_id: string, origin: string) => Promise<void>>
   >(filters.bySource("Invalid Client ID"));
-  const fetchApplicationsRPCKey = getFunctionKeyBySource(rpcValidatorMod, "Invalid Client ID")!;
+  const fetchApplicationsRPCKey = getFunctionKeyBySource(rpcValidatorMod, "Invalid Origin")!;
 
   injector.instead(rpcValidatorMod, fetchApplicationsRPCKey, (args, fn) => {
     const [, clientId, origin] = args;

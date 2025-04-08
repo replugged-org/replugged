@@ -1,6 +1,6 @@
 import type { Channel, Guild } from "discord-types/general";
 import type { ValueOf } from "type-fest";
-import { CommandInteraction } from "../../renderer/apis/commands";
+import type { CommandInteraction } from "../../renderer/apis/commands";
 import type {
   APIEmbed,
   ApplicationCommandOptionType,
@@ -54,6 +54,7 @@ export type GetValueType<T extends CommandOptionReturn, D> = undefined extends T
   : T["value"];
 
 export interface InexecutableRepluggedCommand<T extends CommandOptions> {
+  section?: RepluggedCommandSection;
   applicationId?: string;
   type?: number;
   id?: string;

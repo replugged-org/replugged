@@ -21,9 +21,9 @@ function importTimeout<T extends ModuleExports>(
             cb(mod);
             res();
           })
-          .catch((err) => {
+          .catch((err: unknown) => {
             error("Components", name, void 0, `Failed to import component "${name}"`, err);
-            rej(err);
+            rej(err instanceof Error ? err : new Error(String(err)));
           });
       }),
   );

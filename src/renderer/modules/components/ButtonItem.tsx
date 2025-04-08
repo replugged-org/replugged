@@ -1,7 +1,7 @@
+import { getFunctionBySource, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, Flex, FormText, Tooltip } from ".";
 import components from "../common/components";
-import { waitForProps } from "../webpack";
 
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   look?: string;
@@ -18,22 +18,22 @@ interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   submittingFinishedLabel?: string;
 }
 
-interface Path {
+interface Location<S = unknown> {
   pathname?: string;
   search?: string;
+  state?: S;
   hash?: string;
+  key?: string;
 }
 
-interface LinkProps extends Omit<React.ComponentPropsWithoutRef<"a">, "href"> {
+interface LinkProps<S = unknown> extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  component?: React.ComponentType;
+  to: string | Location<S> | ((location: Location<S>) => string | Location<S>);
   replace?: boolean;
-  state?: unknown;
-  to: string | Path;
-  reloadDocument?: boolean;
-  preventScrollReset?: boolean;
-  relative?: "route" | "path";
+  innerRef?: React.Ref<HTMLAnchorElement>;
 }
 
-interface ButtonLinkProps extends LinkProps {
+interface ButtonLinkProps<S = unknown> extends LinkProps<S> {
   look?: string;
   color?: string;
   size?: string;
@@ -60,7 +60,7 @@ export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
   Sizes: Record<"NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "MIN" | "MAX" | "ICON", string>;
 };
 
-export const { Button } = components;
+export const Button = getFunctionBySource<ButtonType>(components, "Type.PULSING_ELLIPSIS")!;
 
 const classes =
   await waitForProps<Record<"dividerDefault" | "labelRow" | "note" | "title", string>>(

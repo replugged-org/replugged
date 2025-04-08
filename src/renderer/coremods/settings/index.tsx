@@ -1,6 +1,7 @@
-import { Messages } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
 import { Injector } from "@replugged";
+import { t } from "src/renderer/modules/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
@@ -11,7 +12,7 @@ export { insertSections };
 export function VersionInfo(): React.ReactElement {
   return (
     <Text variant="text-xs/normal" color="text-muted" tag="span" style={{ textTransform: "none" }}>
-      {Messages.REPLUGGED_VERSION.format({ version: window.RepluggedNative.getVersion() })}
+      {intl.format(t.REPLUGGED_VERSION, { version: window.RepluggedNative.getVersion() })}
     </Text>
   );
 }
@@ -22,27 +23,27 @@ export function start(): void {
     Header("Replugged"),
     Section({
       name: "rp-general",
-      label: () => Messages.SETTINGS_GENERAL,
+      label: () => intl.string(discordT.SETTINGS_GENERAL),
       elem: General,
     }),
     Section({
       name: "rp-quickcss",
-      label: () => Messages.REPLUGGED_QUICKCSS,
+      label: () => intl.string(t.REPLUGGED_QUICKCSS),
       elem: QuickCSS,
     }),
     Section({
       name: "rp-plugins",
-      label: () => Messages.REPLUGGED_PLUGINS,
+      label: () => intl.string(t.REPLUGGED_PLUGINS),
       elem: Plugins,
     }),
     Section({
       name: "rp-themes",
-      label: () => Messages.REPLUGGED_THEMES,
+      label: () => intl.string(t.REPLUGGED_THEMES),
       elem: Themes,
     }),
     Section({
       name: "rp-updater",
-      label: () => Messages.REPLUGGED_UPDATES_UPDATER,
+      label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
       elem: Updater,
     }),
   ]);
