@@ -12,7 +12,7 @@ function Announcement({
   onClose,
 }: RepluggedAnnouncement): React.ReactElement {
   return (
-    <Notice className="replugged-notice" color={color}>
+    <Notice color={color}>
       <NoticeCloseButton
         onClick={() => {
           onClose?.();
