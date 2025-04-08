@@ -154,7 +154,7 @@ export default function notificationContainer(): React.ReactElement | null {
 
   return (
     <div className="replugged-notification-container">
-      {Boolean(toasts.length) && toasts.map((props) => <Notification {...props} />)}
+      {Boolean(toasts.length) && toasts.map((props, i) => <Notification key={i} {...props} />)}
     </div>
   );
 }

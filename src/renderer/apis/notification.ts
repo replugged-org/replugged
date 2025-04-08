@@ -1,4 +1,4 @@
-import { ButtonItemProps } from "@components/ButtonItem";
+import type { ButtonItemProps } from "../modules/components/ButtonItem";
 export interface NotificationProps {
   id?: string;
   timeout: number;
@@ -63,9 +63,7 @@ export class NotificationAPI {
     notification.origin = this.origin;
     notification.type ??= "info";
     notification.color ??= this.color;
-    notification.id = `${this.origin}-${this.name}-${notification.header}-${
-      notification.type
-    } -${Date.now()}`;
+    notification.id = `${this.origin}-${this.name}-${notification.type} -${Date.now()}`;
     const dismiss = NotificationHandler.sendNotification(notification as NotificationPropsWithId);
     this.notifications.push(dismiss);
     return () => {
