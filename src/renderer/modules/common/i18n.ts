@@ -27,6 +27,9 @@ interface Language {
   enabledAPI?: boolean;
 }
 
+export interface Hash {
+  runtimeHashMessageKey: (key: string) => string;
+}
 export interface I18n {
   getAvailableLocales: () => Locale[];
   getLanguages: () => Language[];
@@ -38,11 +41,8 @@ export interface I18n {
     formatToMarkdownString: FormatFunction<typeof markdownFormatter>;
     formatToParts: FormatFunction<typeof astFormatter>;
   };
+  runtimeHashMessageKey: Hash["runtimeHashMessageKey"];
   t: MessagesBinds;
-}
-
-export interface Hash {
-  runtimeHashMessageKey: (key: string) => string;
 }
 
 const {
@@ -53,7 +53,8 @@ const {
   intl,
   t: discordT,
 } = await waitForProps<I18n>("getAvailableLocales", "intl");
-const { runtimeHashMessageKey } = await waitForProps<Hash>("runtimeHashMessageKey");
+
+export const { runtimeHashMessageKey } = await waitForProps<Hash>("runtimeHashMessageKey");
 
 export const t = new Proxy(discordT, {
   get: (t, key: string) => t[runtimeHashMessageKey(key)],
