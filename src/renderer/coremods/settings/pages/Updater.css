@@ -1,14 +1,13 @@
 .replugged-updater-header {
-  margin-bottom: var(--spacing-12);
+  margin-bottom: 10px;
 }
 
 .replugged-updater-items {
-  gap: var(--space-xs);
+  gap: 8px;
 }
 
 .replugged-updater-item {
-  background-color: var(--bg-base-secondary);
-  border: 1px solid var(--bg-mod-faint);
-  padding: var(--spacing-16);
-  border-radius: var(--radius-sm);
+  background-color: var(--background-secondary);
+  padding: 15px;
+  border-radius: 5px;
 }
