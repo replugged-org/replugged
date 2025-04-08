@@ -1,5 +1,6 @@
 import type React from "react";
 import components from "../common/components";
+import { getFunctionBySource } from "@webpack";
 
 interface ProgressProps {
   animate?: boolean;
@@ -11,4 +12,4 @@ interface ProgressProps {
 }
 
 export type ProgressType = React.FC<ProgressProps>;
-export default components.Progress;
+export default getFunctionBySource<ProgressType>(components, ".progressBar")!;

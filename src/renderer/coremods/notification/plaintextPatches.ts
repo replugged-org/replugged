@@ -5,7 +5,7 @@ export default [
     find: "Shakeable is shaken when not mounted",
     replacements: [
       {
-        match: /(\.DnDKeyboardHelpBar.{20,40})]/,
+        match: /(\.app,children:\[.+?)\]/,
         replace: (_, prefix) =>
           `${prefix},replugged.coremods?.coremods?.notification?._renderNotification?.()]`,
       },
