@@ -2,16 +2,15 @@
 import "./checks/elevate.mjs";
 import "./checks/env.mjs";
 
-import { join } from "path";
-import { smartInject } from "./injector.mjs";
-import { AnsiEscapes, getCommand } from "./util.mjs";
-
 import { createContext, getPositionalArg } from "@marshift/argus";
 import { existsSync } from "fs";
+import { join } from "path";
+import { smartInject } from "./injector.mjs";
 import * as darwin from "./platforms/darwin.mjs";
 import * as linux from "./platforms/linux.mjs";
 import * as win32 from "./platforms/win32.mjs";
 import type { DiscordPlatform } from "./types.mjs";
+import { AnsiEscapes, getCommand } from "./util.mjs";
 
 const platformModules = {
   darwin,

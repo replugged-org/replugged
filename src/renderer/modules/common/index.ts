@@ -53,12 +53,12 @@ export type { API };
 export let api: API;
 importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
-import * as Components from "./components";
-export type { Components };
-export let components: typeof import("./components").default;
+import type { DiscordComponents } from "./components";
+export type { DiscordComponents };
+export let components: DiscordComponents;
 importTimeout("components", import("./components"), (mod) => (components = mod.default));
 
-import * as Constants from "./constants";
+import type * as Constants from "./constants";
 export type { Constants };
 export let constants: typeof Constants;
 importTimeout("constants", import("./constants"), (mod) => (constants = mod));

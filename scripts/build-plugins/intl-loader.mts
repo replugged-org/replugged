@@ -11,7 +11,7 @@ import {
   processDefinitionsFile,
   processTranslationsFile,
 } from "@discord/intl-loader-core";
-import esbuild from "esbuild";
+import type esbuild from "esbuild";
 import { readFileSync } from "node:fs";
 import { dirname, posix, relative, resolve } from "node:path";
 import { production } from "scripts/build.mjs";
@@ -48,6 +48,7 @@ export default {
 
       if (isMessageDefinitionsFile(sourcePath) && !forceTranslation) {
         const result = processDefinitionsFile(sourcePath, source, { locale: "en-US" });
+        if (!result.succeeded) throw new Error(result.errors[0].message);
 
         result.translationsLocaleMap[result.locale] = `${sourcePath}?forceTranslation`;
         for (const locale in result.translationsLocaleMap) {
@@ -69,21 +70,31 @@ export default {
           defaultLocale: result.locale,
           getTranslationImport: (importPath) => `import("${importPath}")`,
           debug: !production,
-          preGenerateBinds: false,
+          bindMode: "proxy",
           getPrelude: () => `import {waitForProps} from '@webpack';`,
         }).getOutput();
 
         return {
-          contents: transformedOutput.replace(
-            /require\('@discord\/intl'\);/,
-            "await waitForProps('createLoader','IntlManager');",
-          ),
+          // This has been made to not block the loading of Replugged
+          // by changing the transformed output to a function that
+          // loads the messages when the IntlManager is loaded.
+          contents: transformedOutput
+            .replace(
+              /const {createLoader} = require\('@discord\/intl'\);/,
+              "let messagesLoader,messages;waitForProps('createLoader','IntlManager').then(({createLoader,makeMessagesProxy})=>{",
+            )
+            .replace(/const {makeMessagesProxy} = require\('@discord\/intl'\);/, "")
+            .replace("const messagesLoader", "messagesLoader")
+            .replace("const binds", "messages")
+            .replace("export {messagesLoader};", "});export {messagesLoader,messages};")
+            .replace("export default binds;", ""),
           loader: "js",
         };
       } else {
         const locale = forceTranslation ? "en-US" : getLocaleFromTranslationsFileName(sourcePath);
         if (isMessageTranslationsFile(sourcePath)) {
-          processTranslationsFile(sourcePath, source, { locale });
+          const result = processTranslationsFile(sourcePath, source, { locale });
+          if (!result.succeeded) throw new Error(result.errors[0].message);
         } else if (forceTranslation) {
           /* empty */
         } else {
