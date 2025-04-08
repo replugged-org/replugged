@@ -5,7 +5,7 @@
 
 .replugged-addon-card {
   background-color: var(--bg-base-secondary);
-  border: 1px solid var(--bg-mod-faint);
+  border: 1px solid var(--border-subtle);
   width: 100%;
   padding: var(--spacing-16);
   border-radius: var(--radius-sm);

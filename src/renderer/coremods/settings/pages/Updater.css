@@ -8,7 +8,7 @@
 
 .replugged-updater-item {
   background-color: var(--bg-base-secondary);
-  border: 1px solid var(--bg-mod-faint);
+  border: 1px solid var(--border-subtle);
   padding: var(--spacing-16);
   border-radius: var(--radius-sm);
 }
