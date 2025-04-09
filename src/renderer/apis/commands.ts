@@ -13,13 +13,13 @@ import type {
 } from "../../types";
 // eslint-disable-next-line no-duplicate-imports
 import { ApplicationCommandOptionType } from "../../types";
+import icon from "../assets/logo.png";
+import { constants, fluxDispatcher, i18n, messages, users } from "../modules/common";
+import type { Store } from "../modules/common/flux";
 import type {
   SendMessageForReplyOptions,
   SendMessageOptionsForReply,
 } from "../modules/common/messages";
-import icon from "../assets/logo.png";
-import { constants, fluxDispatcher, i18n, messages, users } from "../modules/common";
-import type { Store } from "../modules/common/flux";
 import { t } from "../modules/i18n";
 import { Logger } from "../modules/logger";
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
@@ -147,8 +147,6 @@ async function executeCommand<T extends CommandOptions>(
     if ((!result?.result && !result?.embeds) || !currentChannelId) return;
 
     if (result.send) {
-      if (replyOptions.messageReference)
-        fluxDispatcher.dispatch({ type: "DELETE_PENDING_REPLY", channelId: currentChannelId });
       void messages.sendMessage(
         currentChannelId,
         {
@@ -160,6 +158,9 @@ async function executeCommand<T extends CommandOptions>(
         undefined,
         replyOptions,
       );
+      if (replyOptions.messageReference) {
+        fluxDispatcher.dispatch({ type: "DELETE_PENDING_REPLY", channelId: currentChannelId });
+      }
     } else {
       const botMessage = messages.createBotMessage({
         channelId: currentChannelId,
