@@ -13,7 +13,6 @@ import notrackPlaintext from "../coremods/notrack/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
 
-
 const logger = Logger.api("Coremods");
 
 interface Coremod {
