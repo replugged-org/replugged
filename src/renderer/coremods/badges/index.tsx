@@ -1,13 +1,15 @@
-import { Messages } from "@common/i18n";
+import { intl } from "@common/i18n";
 import React from "@common/react";
 import { Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "@webpack";
 import { DISCORD_BLURPLE, DISCORD_INVITE, WEBLATE_URL } from "src/constants";
+import { t } from "src/renderer/modules/i18n";
 import type { Badge, DisplayProfile } from "src/types";
 import { Injector } from "../../modules/injector";
 import { generalSettings } from "../settings/pages";
-import "./badge.css";
 import Badges from "./badges";
+
+import "./badge.css";
 
 const injector = new Injector();
 
@@ -53,39 +55,43 @@ const inviteUrl = `https://discord.gg/${DISCORD_INVITE}`;
 const badgeElements = [
   {
     id: "booster",
-    description: Messages.REPLUGGED_BADGES_BOOSTER,
+    description: intl.string(t.REPLUGGED_BADGES_BOOSTER),
     component: Badges.Booster,
     link: inviteUrl,
   },
   {
     id: "contributor",
-    description: Messages.REPLUGGED_BADGES_CONTRIBUTOR,
+    description: intl.string(t.REPLUGGED_BADGES_CONTRIBUTOR),
     component: Badges.Contributor,
     link: contributorsUrl,
   },
   {
     id: "developer",
-    description: Messages.REPLUGGED_BADGES_DEVELOPER,
+    description: intl.string(t.REPLUGGED_BADGES_DEVELOPER),
     component: Badges.Developer,
     link: contributorsUrl,
   },
-  { id: "early", description: Messages.REPLUGGED_BADGES_EARLY, component: Badges.EarlyUser },
-  { id: "hunter", description: Messages.REPLUGGED_BADGES_HUNTER, component: Badges.BugHunter },
+  { id: "early", description: intl.string(t.REPLUGGED_BADGES_EARLY), component: Badges.EarlyUser },
+  {
+    id: "hunter",
+    description: intl.string(t.REPLUGGED_BADGES_HUNTER),
+    component: Badges.BugHunter,
+  },
   {
     id: "staff",
-    description: Messages.REPLUGGED_BADGES_STAFF,
+    description: intl.string(t.REPLUGGED_BADGES_STAFF),
     component: Badges.Staff,
     link: inviteUrl,
   },
   {
     id: "support",
-    description: Messages.REPLUGGED_BADGES_SUPPORT,
+    description: intl.string(t.REPLUGGED_BADGES_SUPPORT),
     component: Badges.Support,
     link: inviteUrl,
   },
   {
     id: "translator",
-    description: Messages.REPLUGGED_BADGES_TRANSLATOR,
+    description: intl.string(t.REPLUGGED_BADGES_TRANSLATOR),
     component: Badges.Translator,
     link: WEBLATE_URL,
   },
@@ -100,47 +106,40 @@ export async function start(): Promise<void> {
   injector.after(useBadgesMod, useBadgesKey, ([displayProfile], badges) => {
     if (!generalSettings.get("badges")) return badges;
 
-    try {
-      const [currentCache, setCurrentCache] = React.useState<APIRepluggedBadges | undefined>();
-      const badgeCache = React.useMemo(() => {
-        if (!displayProfile) return currentCache;
+    const [badgeCache, setBadgeCache] = React.useState<APIRepluggedBadges | undefined>();
 
-        const { userId } = displayProfile;
+    React.useEffect(() => {
+      if (!displayProfile) return;
 
-        (async () => {
-          if (!cache.has(userId) || cache.get(userId)!.lastFetch < Date.now() - REFRESH_INTERVAL) {
-            cache.set(
-              userId,
-              await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${userId}`)
-                .then(async (res) => {
-                  const body = await res.json();
+      const { userId } = displayProfile;
 
-                  if (res.status === 200 || res.status === 404) {
-                    return {
-                      badges: body.badges || {},
-                      lastFetch: Date.now(),
-                    };
-                  }
+      async function fetchBadges(): Promise<void> {
+        if (cache.has(userId) && cache.get(userId)!.lastFetch >= Date.now() - REFRESH_INTERVAL) {
+          setBadgeCache(cache.get(userId)!.badges);
+          return;
+        }
 
-                  cache.delete(userId);
-                  return {
-                    badges: {},
-                    lastFetch: Date.now(),
-                  };
-                })
-                .catch((e) => e),
-            );
-          }
+        try {
+          const response = await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${userId}`);
+          const body = await response.json();
 
-          setCurrentCache(cache.get(userId)?.badges);
-        })();
+          const badges: APIRepluggedBadges =
+            response.status === 200 || response.status === 404 ? body.badges || {} : {};
+          cache.set(userId, { badges, lastFetch: Date.now() });
 
-        return currentCache;
-      }, [currentCache, displayProfile]);
+          setBadgeCache(badges);
+        } catch (error) {
+          logger.error("Failed to fetch badges:", error);
+        }
+      }
 
-      if (!badgeCache) return badges;
+      void fetchBadges();
+    }, [displayProfile]);
 
-      let newBadges: RepluggedBadge[] = [];
+    const newBadges = React.useMemo(() => {
+      if (!badgeCache) return [];
+
+      const newBadges: RepluggedBadge[] = [];
 
       if (badgeCache.custom.name && badgeCache.custom.icon) {
         newBadges.push({
@@ -150,28 +149,27 @@ export async function start(): Promise<void> {
         });
       }
 
-      badgeElements.forEach((badgeElement) => {
-        if (badgeCache[badgeElement.id as keyof APIRepluggedBadges]) {
-          const { component, ...props } = badgeElement;
-          const badgeColor = badgeCache.custom.color;
-
+      badgeElements.forEach(({ component, ...props }) => {
+        if (badgeCache[props.id as keyof APIRepluggedBadges]) {
           newBadges.push({
             ...props,
             icon: "replugged",
             component: React.createElement(component, {
               color:
-                (badgeColor && (badgeColor.startsWith("#") ? badgeColor : `#${badgeColor}`)) ??
+                (badgeCache.custom.color &&
+                  (badgeCache.custom.color.startsWith("#")
+                    ? badgeCache.custom.color
+                    : `#${badgeCache.custom.color}`)) ??
                 DISCORD_BLURPLE,
             }),
           });
         }
       });
 
-      return [...badges, ...newBadges];
-    } catch (err) {
-      logger.error(err);
-      return badges;
-    }
+      return newBadges;
+    }, [badgeCache]);
+
+    return [...badges, ...newBadges];
   });
 
   const userProfileConstantsMod = await waitForModule<Record<string, GetBadgeAsset>>(
@@ -179,10 +177,9 @@ export async function start(): Promise<void> {
   );
   const getBadgeAssetKey = getFunctionKeyBySource(userProfileConstantsMod, "badge-icons")!;
 
-  injector.instead(userProfileConstantsMod, getBadgeAssetKey, (args, orig) => {
-    if (args[0].startsWith("replugged")) return args[0].replace("replugged", "");
-    return orig(...args);
-  });
+  injector.instead(userProfileConstantsMod, getBadgeAssetKey, ([icon], orig) =>
+    icon.startsWith("replugged") ? icon.replace("replugged", "") : orig(icon),
+  );
 }
 
 export function stop(): void {

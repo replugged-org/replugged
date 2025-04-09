@@ -20,6 +20,7 @@ import type {
 import icon from "../assets/logo.png";
 import { constants, fluxDispatcher, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
+import { t } from "../modules/i18n";
 import { Logger } from "../modules/logger";
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 
@@ -190,7 +191,7 @@ async function executeCommand<T extends CommandOptions>(
     const currentChannelId = currentInfo.channel.id;
     const botMessage = messages.createBotMessage({
       channelId: currentChannelId,
-      content: i18n.Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
+      content: i18n.intl.string(t.REPLUGGED_COMMAND_ERROR_GENERIC),
       embeds: [],
       loggingName: "Replugged",
     });

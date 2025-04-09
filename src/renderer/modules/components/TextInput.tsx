@@ -1,3 +1,4 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
 
@@ -25,4 +26,4 @@ export type TextInputType = React.ComponentClass<TextInputProps> & {
   Sizes: Record<"DEFAULT" | "MINI", string>;
 };
 
-export default components.TextInput;
+export default getFunctionBySource<TextInputType>(components, ".inputPrefix")!;
