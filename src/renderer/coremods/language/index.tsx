@@ -1,7 +1,7 @@
 import { getLanguages, intl } from "@common/i18n";
 import { Flex, FormNotice, Text } from "@components";
 import { messagesLoader } from "i18n/en-US.messages";
-import React from "react";
+import type React from "react";
 import { WEBLATE_URL } from "src/constants";
 import { t } from "../../modules/i18n";
 
@@ -42,7 +42,7 @@ export function Percentage(
 }
 
 export function start(): void {
-  const totalStrCount = Object.keys(t).length;
+  const totalStrCount = Object.keys(messagesLoader.messages[messagesLoader.defaultLocale]).length;
 
   Object.entries(messagesLoader.localeImportMap).forEach(async ([locale, getStrings]) => {
     const strings = (await getStrings()).default;

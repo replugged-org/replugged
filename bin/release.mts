@@ -1,11 +1,12 @@
 // WARNING: any imported files need to be added to files in package.json
 
+import chalk from "chalk";
+import { execSync } from "child_process";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import prompts from "prompts";
 import semver from "semver";
-import chalk from "chalk";
-import { execSync } from "child_process";
+import type { AnyAddonManifest } from "src/types";
 import { isMonoRepo, selectAddon } from "./mono.mjs";
 
 /**
@@ -94,7 +95,7 @@ export async function release(): Promise<void> {
     process.exit(1);
   }
   const manifestText = readFileSync(manifestPath, "utf8");
-  let manifest;
+  let manifest: AnyAddonManifest;
   try {
     manifest = JSON.parse(manifestText);
   } catch {
@@ -119,7 +120,7 @@ export async function release(): Promise<void> {
   // Prompt for version
 
   const { version } = manifest;
-  let nextVersion;
+  let nextVersion: string | null = null;
 
   const isValidSemver = Boolean(semver.valid(version));
   if (isValidSemver) {
@@ -170,7 +171,7 @@ export async function release(): Promise<void> {
     ));
   }
 
-  nextVersion = nextVersion.trim();
+  nextVersion = nextVersion?.trim() ?? "";
   const isNewValidSemver = Boolean(semver.valid(nextVersion));
   if (isValidSemver) {
     // If the existing version is not semver, don't bother with semver checks
@@ -180,7 +181,7 @@ export async function release(): Promise<void> {
       }
       const cleaned = semver.clean(nextVersion);
       if (cleaned !== nextVersion) {
-        let { clean } = await prompts({
+        const { clean } = await prompts({
           type: "confirm",
           name: "clean",
           message: `Convert ${nextVersion} to cleaned version ${cleaned}?`,
@@ -194,7 +195,7 @@ export async function release(): Promise<void> {
   }
 
   // Update manifest.json and package.json
-  manifest.version = nextVersion;
+  manifest.version = nextVersion!;
   if (packageJson) packageJson.version = nextVersion;
 
   // Write manifest.json and package.json (indent with 2 spaces and keep trailing newline)
@@ -234,7 +235,7 @@ export async function release(): Promise<void> {
       initial: isMonoRepo
         ? `v${nextVersion}-${manifest.name.replace(" ", "_")}`
         : `v${nextVersion}`,
-      validate: (value) => {
+      validate: (value: string) => {
         if (!value.trim()) return "Tag name is required";
 
         if (existingTags.includes(value)) return `Tag ${value} already exists`;

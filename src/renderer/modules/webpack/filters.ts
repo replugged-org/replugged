@@ -1,6 +1,6 @@
+import type { RawModule } from "../../../types";
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
-import type { RawModule } from "../../../types";
 
 /**
  * Get a module that has all the given properties on one of its exports

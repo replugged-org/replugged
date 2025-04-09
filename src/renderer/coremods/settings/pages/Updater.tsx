@@ -1,5 +1,5 @@
 import { toast } from "@common";
-import { intl } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
@@ -45,7 +45,7 @@ export const Updater = (): React.ReactElement => {
           });
           setUpdatesAvailable(getAvailableUpdates());
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           if (cancelled) return;
           toast.toast("Update failed.", toast.Kind.FAILURE);
           logger.error(err);
@@ -134,8 +134,12 @@ export const Updater = (): React.ReactElement => {
           const hours = Math.floor(value / 60);
           const minutes = value % 60;
 
-          const hourString = hours > 0 ? `${hours}h` : "";
-          const minuteString = minutes > 0 ? `${minutes}m` : "";
+          const hourString =
+            hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
+          const minuteString =
+            minutes > 0
+              ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes })
+              : "";
 
           const label = [hourString, minuteString].filter(Boolean).join(" ");
           return label;
@@ -213,7 +217,7 @@ export const Updater = (): React.ReactElement => {
           const { manifest } = addon;
           const sourceLink = update.webUrl;
           return (
-            <div className="replugged-updater-item">
+            <div className="replugged-updater-item" key={update.id}>
               <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
                 <div>
                   <Flex align={Flex.Align.CENTER} style={{ gap: "5px", marginBottom: "5px" }}>

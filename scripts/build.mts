@@ -2,14 +2,14 @@ import { createContext } from "@marshift/argus";
 import esbuild from "esbuild";
 import { rmSync } from "fs";
 import path from "path";
-import { logBuildPlugin } from "src/util.mjs";
 import { fileURLToPath } from "url";
 import intlPlugin from "./build-plugins/intl-loader.mjs";
 import intlTypeGeneratorPlugin from "./build-plugins/intl-type-generator.mjs";
+import logBuildPlugin from "./build-plugins/log-build.mjs";
 import preBundlePlugin from "./build-plugins/pre-bundle.mjs";
 
 const NODE_VERSION = "20";
-const CHROME_VERSION = "128";
+const CHROME_VERSION = "130";
 
 const ctx = createContext(process.argv);
 const watch = ctx.hasOptionalArg(/--watch/);
@@ -81,7 +81,7 @@ await Promise.all(
       await context.watch();
     } else {
       await context.rebuild().catch(() => process.exit(1));
-      context.dispose();
+      await context.dispose();
     }
   }),
 );
