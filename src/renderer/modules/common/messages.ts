@@ -60,14 +60,14 @@ interface FocusMessageOptions {
   messageId: string;
 }
 
-interface SendMessageForReplyOptions {
+export interface SendMessageForReplyOptions {
   channel: Channel;
   message: Message;
   shouldMention: boolean;
   showMentionToggle: boolean;
 }
 
-interface SendMessageOptionsForReply {
+export interface SendMessageOptionsForReply {
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
 }
