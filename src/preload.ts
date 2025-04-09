@@ -91,7 +91,7 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
   },
 
-  getVersion: () => version,
+  getVersion: (): string => version,
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };
