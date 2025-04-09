@@ -1,3 +1,4 @@
+import type { RawModule } from "../../../types";
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
 import type { ByPropsOptions, RawModule } from "../../../types";

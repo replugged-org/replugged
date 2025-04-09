@@ -6,7 +6,7 @@ import {MessageLoader, TypedIntlMessageGetter, HandlerFunction, HookFunction, Li
 
 export declare const messagesLoader: MessageLoader;
 
-declare const messages: {
+export declare const messages: {
   /**
    * Key: `Xyo9Z2`
    * 

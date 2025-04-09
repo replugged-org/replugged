@@ -1,6 +1,6 @@
 import React from "@common/react";
+import { waitForProps } from "@webpack";
 import { Divider, FormText } from ".";
-import { waitForProps } from "../webpack";
 
 const classes =
   await waitForProps<Record<"labelRow" | "title" | "note" | "dividerDefault", string>>(

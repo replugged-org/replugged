@@ -4,7 +4,7 @@ export default [
   {
     replacements: [
       {
-        match: /null!=\w+.SELF_XSS_HEADER/,
+        match: /null!=\w+\.\w+\.Messages\.SELF_XSS_HEADER/,
         replace: "false",
       },
     ],

@@ -1,13 +1,14 @@
 .replugged-addon-cards {
   display: grid;
-  gap: 20px;
+  gap: var(--space-md);
 }
 
 .replugged-addon-card {
-  background-color: var(--background-secondary);
+  background-color: var(--bg-base-secondary);
+  border: 1px solid var(--border-subtle);
   width: 100%;
-  padding: 15px;
-  border-radius: 5px;
+  padding: var(--spacing-16);
+  border-radius: var(--radius-sm);
 }
 
 .replugged-addon-icon,

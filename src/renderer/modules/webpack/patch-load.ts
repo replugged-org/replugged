@@ -4,9 +4,7 @@ import type {
   WebpackRawModules,
   WebpackRequire,
 } from "../../../types";
-
 import { listeners } from "./lazy";
-
 import { patchModuleSource } from "./plaintext-patch";
 
 /**
@@ -108,35 +106,21 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
     },
   ]);
 
-  // Patch previously loaded chunks
-  if (Array.isArray(chunksGlobal)) {
-    for (const loadedChunk of chunksGlobal) {
-      patchChunk(loadedChunk);
-    }
-  }
-
   patchPush(chunksGlobal);
 }
 
-// Intercept the webpack chunk global as soon as Discord creates it
-export function interceptChunksGlobal(): void {
-  if (window.webpackChunkdiscord_app) {
-    loadWebpackModules(window.webpackChunkdiscord_app);
-  } else {
-    let webpackChunk: WebpackChunkGlobal | undefined;
-    Object.defineProperty(window, "webpackChunkdiscord_app", {
-      get: () => webpackChunk,
-      set: (v) => {
-        // Only modify if the global has actually changed
-        // We don't need to check if push is the special webpack push,
-        // because webpack will go over the previously loaded modules
-        // when it sets the custom push method.
-        if (v !== webpackChunk) {
-          loadWebpackModules(v);
-        }
-        webpackChunk = v;
-      },
-      configurable: true,
-    });
-  }
-}
+let webpackChunk: WebpackChunkGlobal | undefined;
+Object.defineProperty(window, "webpackChunkdiscord_app", {
+  get: () => webpackChunk,
+  set: (v: WebpackChunkGlobal) => {
+    // Only modify if the global has actually changed
+    // We don't need to check if push is the special webpack push,
+    // because webpack will go over the previously loaded modules
+    // when it sets the custom push method.
+    if (v !== webpackChunk) {
+      loadWebpackModules(v);
+    }
+    webpackChunk = v;
+  },
+  configurable: true,
+});

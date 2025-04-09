@@ -1,9 +1,4 @@
-import {
-  type BrowserWindowConstructorOptions,
-  contextBridge,
-  ipcRenderer,
-  webFrame,
-} from "electron";
+import { contextBridge, ipcRenderer, webFrame } from "electron";
 
 import { RepluggedIpcChannels } from "./types";
 // eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
@@ -32,10 +27,11 @@ const RepluggedNative = {
   },
 
   plugins: {
-    get: async (pluginPath: string): Promise<RepluggedPlugin | undefined> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
-    list: async (): Promise<RepluggedPlugin[]> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.LIST_PLUGINS),
+    get: (pluginPath: string): RepluggedPlugin | undefined =>
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
+    getPlaintextPatches: (pluginName: string): string =>
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_PLUGIN_PLAINTEXT_PATCHES, pluginName),
+    list: (): RepluggedPlugin[] => ipcRenderer.sendSync(RepluggedIpcChannels.LIST_PLUGINS),
     uninstall: async (pluginPath: string): Promise<RepluggedPlugin> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginPath),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER),
@@ -81,19 +77,15 @@ const RepluggedNative = {
 
   settings: {
     get: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_SETTING, namespace, key),
     set: (namespace: string, key: string, value: unknown) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.SET_SETTING, namespace, key, value), // invoke or send?
+      ipcRenderer.sendSync(RepluggedIpcChannels.SET_SETTING, namespace, key, value),
     has: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.HAS_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.HAS_SETTING, namespace, key),
     delete: (namespace: string, key: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
+      ipcRenderer.sendSync(RepluggedIpcChannels.DELETE_SETTING, namespace, key),
     all: (namespace: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
-    startTransaction: (namespace: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.START_SETTINGS_TRANSACTION, namespace),
-    endTransaction: (namespace: string, settings: Record<string, unknown> | null) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.END_SETTINGS_TRANSACTION, namespace, settings),
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_ALL_SETTINGS, namespace),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER),
   },
 
@@ -104,9 +96,6 @@ const RepluggedNative = {
 
   getVersion: () => version,
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  openBrowserWindow: (opts: BrowserWindowConstructorOptions) => {}, // later
-
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };
 
@@ -114,16 +103,15 @@ export type RepluggedNativeType = typeof RepluggedNative;
 
 contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 
+const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
+
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
-void webFrame.executeJavaScript('void import("replugged://renderer");');
+void webFrame.executeJavaScript(`(() => {${renderer}})();//# sourceURL=replugged://renderer.js`);
 
 try {
-  window.addEventListener("beforeunload", () => {
-    ipcRenderer.send(RepluggedIpcChannels.REGISTER_RELOAD);
-  });
   // Get and execute Discord preload
   // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
-  const preload = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
+  const preload: string = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
   if (preload) require(preload);
 } catch (err) {
   console.error("Error loading original preload", err);

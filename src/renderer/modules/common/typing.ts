@@ -1,9 +1,8 @@
 import { waitForProps } from "../webpack";
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type Typing = {
+export interface Typing {
   startTyping: (channelId: string) => void;
   stopTyping: (channelId: string) => void;
-};
+}
 
 export default await waitForProps<Typing>("startTyping", "stopTyping");
