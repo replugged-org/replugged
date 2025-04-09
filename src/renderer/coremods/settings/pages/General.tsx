@@ -73,7 +73,8 @@ export const General = (): React.ReactElement => {
     generalSettings,
     "titleBar",
   );
-  const [kKeys, setKKeys] = React.useState<number[]>([]);
+
+  const [kKeys, setKKeys] = React.useState<string[]>([]);
 
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
   const [hue, setHue] = React.useState(0);
