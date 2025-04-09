@@ -12,10 +12,7 @@ import type {
   RepluggedTheme,
 } from "./types";
 
-let version = "";
-void ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
-  version = v;
-});
+const version = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_VERSION);
 
 const RepluggedNative = {
   themes: {
