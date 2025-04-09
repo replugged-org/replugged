@@ -3,7 +3,6 @@ import { getExportsForProps, getModule } from "./get-modules";
 import { flux } from "../common";
 import type { Store } from "../common/flux";
 import * as filters from "./filters";
-import { getExportsForProps, getModule } from "./get-modules";
 import { waitForModule } from "./lazy";
 
 // Get by source
