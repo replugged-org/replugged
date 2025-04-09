@@ -4,7 +4,8 @@ import {
   isMessageDefinitionsFile,
 } from "@discord/intl-loader-core";
 import chalk from "chalk";
-import esbuild from "esbuild";
+import type esbuild from "esbuild";
+import fs from "fs";
 
 let isFirstRun = true;
 
@@ -17,9 +18,20 @@ let isFirstRun = true;
 export default {
   name: "intlTypeGenerator",
   setup(build) {
+    const modifyGeneratedTypes = (filePath: string): void => {
+      const typeFilePath = `${filePath.substring(0, filePath.length - 3)}.d.ts`;
+
+      if (fs.existsSync(typeFilePath)) {
+        let content = fs.readFileSync(typeFilePath, "utf-8");
+        content = content.replace("declare const messages: {", "export declare const messages: {");
+        fs.writeFileSync(typeFilePath, content);
+      }
+    };
+
     const generateTypeDefinitionsFile = (filePath: string): number => {
       const start = performance.now();
       generateTypeDefinitions(filePath, undefined);
+      modifyGeneratedTypes(filePath);
       const end = performance.now();
 
       return end - start;

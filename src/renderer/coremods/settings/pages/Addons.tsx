@@ -158,7 +158,7 @@ async function loadMissing(type: AddonType): Promise<void> {
     const manager = plugins;
     const disabled = manager.getDisabled();
     const existingPlugins = new Set(manager.plugins.keys());
-    await manager.loadAll();
+    manager.loadAll();
     const newPlugins = Array.from(manager.plugins.keys()).filter(
       (x) => !existingPlugins.has(x) && !disabled.includes(x),
     );

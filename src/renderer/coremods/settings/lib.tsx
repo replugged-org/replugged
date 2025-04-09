@@ -1,9 +1,9 @@
+import type React from "react";
 import type {
   LabelCallback,
   Section as SectionType,
   SettingsTools,
 } from "../../../types/coremods/settings";
-import type React from "react";
 
 const getPos = (pos: number | undefined): number => pos ?? -4;
 
