@@ -19,7 +19,7 @@ import * as settings from "../../../apis/settings";
 import * as util from "../../../util";
 import { initWs, socket } from "../../devCompanion";
 
-export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
+export const generalSettings = settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
   defaultSettings,
 );
