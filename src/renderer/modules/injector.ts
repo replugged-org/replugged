@@ -1,11 +1,11 @@
-import type { CommandOptions } from "../../types/discord";
 import type { RepluggedCommand } from "../../types/coremods/commands";
 import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
 import type { GetButtonItem } from "../../types/coremods/message";
+import type { CommandOptions } from "../../types/discord";
 import type { AnyFunction } from "../../types/util";
 import type { ObjectExports } from "../../types/webpack";
 import { CommandManager } from "../apis/commands";
-import { addContextMenuItem } from "../coremods/contextMenu";
+import { type ContextMenuProps, addContextMenuItem } from "../coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
 
 enum InjectionTypes {
@@ -333,7 +333,7 @@ export class Injector {
      * const injector = new Injector();
      *
      * export function start() {
-     *   injector.utils.addMenuItem(ContextMenuTypes.UserContext,  // Right-clicking a user
+     *   injector.utils.addMenuItem(ContextMenuTypes.UserContext, // Right-clicking a user
      *     (data, menu) => {
      *       return <MenuItem
      *         id="my-item"
@@ -352,8 +352,8 @@ export class Injector {
     addMenuItem: <T extends Record<string, unknown> = Record<string, unknown>>(
       navId: ContextMenuTypes,
       item: GetContextItem<T>,
-      sectionId: number | undefined = undefined,
-      indexInSection = Infinity, // Last item
+      sectionId: number | ((props: ContextMenuProps) => number) | undefined = undefined,
+      indexInSection: number | ((props: ContextMenuProps) => number) = Infinity, // Last item
     ) => {
       const uninjector = addContextMenuItem(
         navId,

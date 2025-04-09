@@ -1,13 +1,15 @@
-import { React, toast } from "@common";
-import { Messages } from "@common/i18n";
-import { EditorView, basicSetup } from "codemirror";
-import { EditorState } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";
-import { githubDark, githubLight } from "./codemirror-github";
-import { webpack } from "@replugged";
+import { EditorState } from "@codemirror/state";
+import { React, toast } from "@common";
+import { intl } from "@common/i18n";
 import { Button, Divider, Flex, Text } from "@components";
-import "./QuickCSS.css";
+import { webpack } from "@replugged";
+import { EditorView, basicSetup } from "codemirror";
+import { t } from "src/renderer/modules/i18n";
+import { githubDark, githubLight } from "./codemirror-github";
 import { generalSettings } from "./General";
+
+import "./QuickCSS.css";
 
 interface UseCodeMirrorOptions {
   value?: string;
@@ -15,12 +17,11 @@ interface UseCodeMirrorOptions {
   container?: HTMLDivElement | null;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type ThemeModule = {
+interface ThemeModule {
   theme: "light" | "dark";
   addChangeListener: (listener: () => unknown) => unknown;
   removeChangeListener: (listener: () => unknown) => unknown;
-};
+}
 
 function useTheme(): "light" | "dark" {
   const [theme, setTheme] = React.useState<"light" | "dark">("dark");
@@ -58,7 +59,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
   const [value, setValue] = React.useState("");
   const [view, setView] = React.useState<EditorView | undefined>(undefined);
 
-  const [update, forceUpdate] = React.useReducer((x) => x + 1, 0);
+  const [update, forceUpdate] = React.useReducer((x: number) => x + 1, 0);
 
   React.useEffect(() => {
     if (initialValueParam) {
@@ -121,11 +122,11 @@ export const QuickCSS = (): React.ReactElement => {
   const reload = (): void => window.replugged.quickCSS.reload();
   const reloadAndToast = (): void => {
     reload();
-    toast.toast(Messages.REPLUGGED_TOAST_QUICKCSS_RELOAD);
+    toast.toast(intl.string(t.REPLUGGED_TOAST_QUICKCSS_RELOAD));
   };
 
   React.useEffect(() => {
-    void window.RepluggedNative.quickCSS.get().then((val) => {
+    void window.RepluggedNative.quickCSS.get().then((val: string) => {
       setValue(val);
       setReady(true);
     });
@@ -172,16 +173,18 @@ export const QuickCSS = (): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{Messages.REPLUGGED_QUICKCSS}</Text.H2>
+        <Text.H2>{intl.string(t.REPLUGGED_QUICKCSS)}</Text.H2>
         <div style={{ display: "flex" }}>
           {autoApply ? null : (
-            <Button onClick={reloadAndToast}>{Messages.REPLUGGED_QUICKCSS_CHANGES_APPLY}</Button>
+            <Button onClick={reloadAndToast}>
+              {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
+            </Button>
           )}
           <Button
             onClick={() => window.RepluggedNative.quickCSS.openFolder()}
             color={Button.Colors.PRIMARY}
             look={Button.Looks.LINK}>
-            {Messages.REPLUGGED_QUICKCSS_FOLDER_OPEN}
+            {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
           </Button>
         </div>
       </Flex>

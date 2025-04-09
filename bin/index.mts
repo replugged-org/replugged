@@ -3,6 +3,9 @@
 // WARNING: any imported files need to be added to files in package.json
 
 import asar from "@electron/asar";
+import chalk from "chalk";
+import esbuild from "esbuild";
+import { sassPlugin } from "esbuild-sass-plugin";
 import {
   copyFileSync,
   cpSync,
@@ -12,18 +15,16 @@ import {
   rmSync,
   writeFileSync,
 } from "fs";
-import esbuild from "esbuild";
 import path from "path";
+import type { PluginManifest, ThemeManifest } from "src/types";
 import updateNotifier from "update-notifier";
-import yargs, { ArgumentsCamelCase } from "yargs";
-import { hideBin } from "yargs/helpers";
-import chalk from "chalk";
-import WebSocket from "ws";
-import { release } from "./release.mjs";
-import { logBuildPlugin } from "../src/util.mjs";
-import { sassPlugin } from "esbuild-sass-plugin";
 import { fileURLToPath, pathToFileURL } from "url";
-import { AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
+import WebSocket from "ws";
+import yargs, { type ArgumentsCamelCase } from "yargs";
+import { hideBin } from "yargs/helpers";
+import logBuildPlugin from "../scripts/build-plugins/intl-loader.mjs";
+import { type AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
+import { release } from "./release.mjs";
 
 interface BaseArgs {
   watch?: boolean;
@@ -92,6 +93,7 @@ function tryPort(port: number): Promise<WebSocket | undefined> {
         return;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       const message = JSON.parse(data.toString());
       if (message.evt !== "READY") {
         return;
@@ -185,7 +187,7 @@ async function reload(id: string): Promise<void> {
 
   reloading = true;
 
-  await new Promise((resolve) => {
+  await new Promise<void>((resolve) => {
     /**
      *
      * @param {import('ws').RawData} data
@@ -201,7 +203,8 @@ async function reload(id: string): Promise<void> {
       reloading = false;
       if (reloadAgain) {
         reloadAgain = false;
-        resolve(await reload(id));
+        await reload(id);
+        resolve();
         return;
       }
 
@@ -257,7 +260,7 @@ async function bundleAddon(
   if (!existsSync("bundle")) {
     mkdirSync("bundle");
   }
-  asar.createPackage(distPath, `${outputName}.asar`);
+  await asar.createPackage(distPath, `${outputName}.asar`);
   copyFileSync(`${distPath}/manifest.json`, `${outputName}.json`);
 
   console.log(`Bundled ${manifest.name}`);
@@ -273,7 +276,7 @@ async function handleContexts(
         await context.watch();
       } else {
         await context.rebuild().catch(() => process.exit(1));
-        context.dispose();
+        await context.dispose();
       }
     }),
   );
@@ -298,13 +301,13 @@ const CONFIG_PATH = (() => {
       return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
 })();
-const CHROME_VERSION = "124";
+const CHROME_VERSION = "130";
 
 function buildAddons(buildFn: (args: Args) => Promise<void>, args: Args, type: AddonType): void {
   const addons = getAddonFolder(type);
 
   addons.forEach((addon) => {
-    buildFn({ ...args, addon });
+    void buildFn({ ...args, addon });
   });
 }
 
@@ -312,7 +315,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
   const manifestPath = addon
     ? path.join(directory, "plugins", addon, "manifest.json")
     : path.join(directory, "manifest.json");
-  const manifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const manifest: PluginManifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
   const distPath = addon ? `dist/${manifest.id}` : "dist";
   const folderPath = addon ? path.join(directory, "plugins", addon) : directory;
 
@@ -405,7 +408,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
       esbuild.context(
         overwrites({
           ...common,
-          entryPoints: [path.join(folderPath, manifest.renderer)],
+          entryPoints: [path.join(folderPath, manifest.renderer!)],
           outfile: `${distPath}/renderer.js`,
         }),
       ),
@@ -419,7 +422,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
       esbuild.context(
         overwrites({
           ...common,
-          entryPoints: [path.join(folderPath, manifest.plaintextPatches)],
+          entryPoints: [path.join(folderPath, manifest.plaintextPatches!)],
           outfile: `${distPath}/plaintextPatches.js`,
         }),
       ),
@@ -442,7 +445,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const manifestPath = addon
     ? path.join(directory, "themes", addon, "manifest.json")
     : "manifest.json";
-  const manifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const manifest: ThemeManifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
   const distPath = addon ? `dist/${manifest.id}` : "dist";
   const folderPath = addon ? path.join(directory, "themes", addon) : directory;
 
@@ -568,16 +571,20 @@ const { argv } = yargs(hideBin(process.argv))
     },
     async (argv) => {
       if (argv.addon === "plugin") {
-        if (argv.all && isMonoRepo) return buildAddons(buildPlugin, argv, "plugins");
-        else {
+        if (argv.all && isMonoRepo) {
+          buildAddons(buildPlugin, argv, "plugins");
+          return;
+        } else {
           const plugin = isMonoRepo ? await selectAddon("plugins") : undefined;
-          buildPlugin({ ...argv, addon: plugin?.name });
+          await buildPlugin({ ...argv, addon: plugin?.name });
         }
       } else if (argv.addon === "theme") {
-        if (argv.all && isMonoRepo) return buildAddons(buildTheme, argv, "themes");
-        else {
+        if (argv.all && isMonoRepo) {
+          buildAddons(buildTheme, argv, "themes");
+          return;
+        } else {
           const theme = isMonoRepo ? await selectAddon("themes") : undefined;
-          buildTheme({ ...argv, addon: theme?.name });
+          await buildTheme({ ...argv, addon: theme?.name });
         }
       } else {
         console.log("Invalid addon type.");
@@ -596,16 +603,20 @@ const { argv } = yargs(hideBin(process.argv))
     },
     async (argv) => {
       if (argv.addon === "plugin") {
-        if (argv.all && isMonoRepo) return bundleAddons(buildPlugin, "plugins");
-        else {
+        if (argv.all && isMonoRepo) {
+          bundleAddons(buildPlugin, "plugins");
+          return;
+        } else {
           const addon = isMonoRepo ? await selectAddon("plugins") : undefined;
-          bundleAddon(buildPlugin, addon?.name, "plugins");
+          await bundleAddon(buildPlugin, addon?.name, "plugins");
         }
       } else if (argv.addon === "theme") {
-        if (argv.all && isMonoRepo) return bundleAddons(buildTheme, "themes");
-        else {
+        if (argv.all && isMonoRepo) {
+          bundleAddons(buildTheme, "themes");
+          return;
+        } else {
           const addon = isMonoRepo ? await selectAddon("themes") : undefined;
-          bundleAddon(buildTheme, addon?.name, "themes");
+          await bundleAddon(buildTheme, addon?.name, "themes");
         }
       } else {
         console.log("Invalid addon type.");
@@ -613,6 +624,7 @@ const { argv } = yargs(hideBin(process.argv))
       sendUpdateNotification();
     },
   )
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   .command("release", "Interactively release a new version of an addon", () => {}, release)
   .parserConfiguration({
     "boolean-negation": false,
