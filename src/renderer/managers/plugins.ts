@@ -1,13 +1,13 @@
 // btw, pluginID is the directory name, not the RDNN. We really need a better name for this.
-import { loadStyleSheet } from "../util";
-import type { PluginExports, RepluggedPlugin } from "../../types";
+import type { AddonSettings } from "src/types/addon";
+import type { PlaintextPatch, PluginExports, RepluggedPlugin } from "../../types";
+import { init } from "../apis/settings";
 import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
-import { init } from "../apis/settings";
-import type { AddonSettings } from "src/types/addon";
+import { loadStyleSheet } from "../util";
 
 const logger = Logger.api("Plugins");
-const settings = await init<AddonSettings>("plugins");
+const settings = init<AddonSettings>("plugins");
 
 interface PluginWrapper extends RepluggedPlugin {
   exports: PluginExports | undefined;
@@ -54,8 +54,8 @@ function register(plugin: RepluggedPlugin): void {
  * @remarks
  * You may need to reload Discord after adding a new plugin before it's available.
  */
-export async function loadAll(): Promise<void> {
-  (await window.RepluggedNative.plugins.list()).forEach(register);
+export function loadAll(): void {
+  window.RepluggedNative.plugins.list().forEach(register);
 }
 
 /**
@@ -106,7 +106,7 @@ export async function start(id: string): Promise<void> {
 
     running.add(plugin.manifest.id);
     logger.log(`Plugin started: ${plugin.manifest.name}`);
-  } catch (e: unknown) {
+  } catch (e) {
     logger.error(`Error starting plugin ${plugin?.manifest.name}`, e);
   }
 }
@@ -146,7 +146,7 @@ export async function stop(id: string): Promise<void> {
 
     running.delete(plugin.manifest.id);
     logger.log(`Plugin stopped: ${plugin.manifest.name}`);
-  } catch (e: unknown) {
+  } catch (e) {
     logger.error(`Error stopping plugin ${plugin?.manifest.name}`, e);
   }
 }
@@ -162,24 +162,44 @@ export async function stopAll(): Promise<void> {
  * @hidden
  * @internal
  */
-export async function runPlaintextPatches(): Promise<void> {
+export function runPlaintextPatches(): void {
   const disabled: string[] = settings.get("disabled", []);
   const list = [...plugins.values()].filter((x) => !disabled.includes(x.manifest.id));
-  await Promise.allSettled(
-    list.map(async (plugin) => {
-      if (plugin.manifest.plaintextPatches) {
-        patchPlaintext(
-          (
-            await import(
-              `replugged://plugin/${plugin.path}/${
-                plugin.manifest.plaintextPatches
-              }?t=${Date.now()}`
-            )
-          ).default,
+
+  for (const plugin of list) {
+    if (!plugin.manifest.plaintextPatches) continue;
+
+    // This is a bit of a hack, plaintext patches are built in ESM, but we need to run it in a CJS context
+    try {
+      const code = RepluggedNative.plugins.getPlaintextPatches(plugin.path);
+      let patches: { default: PlaintextPatch[] } = { default: [] };
+
+      if (code) {
+        const wrap = (src: string): string =>
+          `((module) => {\n${src}return module.exports})({exports:{}})\n//# sourceURL=replugged://plugin/${plugin.manifest.id}/plaintextPatches.js?t=${Date.now()}`;
+
+        let codeCjs = code.replace(/export\s+default\s+/g, "module.exports = ");
+        codeCjs = codeCjs.replace(/export[\s+]?\{([^}]+)\}[;]?/g, (_: string, exports: string) =>
+          exports
+            .split(",")
+            .map((exp) => exp.split(" as ").map((x) => x.trim()))
+            .map(([orig, alias]) => `module.exports.${alias || orig} = ${orig};`)
+            .join("\n"),
         );
+
+        try {
+          // eslint-disable-next-line no-eval
+          patches = (0, eval)(wrap(codeCjs));
+        } catch (err) {
+          logger.error(`Error evaluating plaintext patches for ${plugin.manifest.id}`, err);
+        }
       }
-    }),
-  );
+
+      patchPlaintext(patches.default);
+    } catch (err) {
+      logger.error(`Error applying plaintext patches for ${plugin.manifest.id}`, err);
+    }
+  }
 }
 
 /**
@@ -197,7 +217,7 @@ export async function reload(id: string): Promise<void> {
   }
   await stop(plugin.manifest.id);
   plugins.delete(plugin.manifest.id);
-  const newPlugin = await window.RepluggedNative.plugins.get(plugin.path);
+  const newPlugin = window.RepluggedNative.plugins.get(plugin.path);
   if (newPlugin) {
     register(newPlugin);
     await start(newPlugin.manifest.id);

@@ -1,6 +1,6 @@
-import { waitForProps } from "../webpack";
 import type { Channel, GuildMember, User } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
+import { waitForProps } from "../webpack";
 
 interface PendingRoleUpdate {
   added: Record<string, string[]>;
@@ -33,6 +33,7 @@ export interface UserStore {
 }
 
 export interface GuildMemberStore {
+  getCachedSelfMember: (guildId: string) => GuildMember | null;
   getCommunicationDisabledUserMap: () => Record<string, string>;
   getCommunicationDisabledVersion: () => number;
   getMember: (guildId: string, userId: string) => GuildMember | null;

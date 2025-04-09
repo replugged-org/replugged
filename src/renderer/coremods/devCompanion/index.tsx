@@ -1,7 +1,7 @@
-import { Logger } from "../../modules/logger";
 import { getByProps, getBySource, getByValue, getModule } from "src/renderer/modules/webpack";
-import { Filter } from "src/types";
 import { sourceStrings } from "src/renderer/modules/webpack/patch-load";
+import type { Filter } from "src/types";
+import { Logger } from "../../modules/logger";
 
 const PORT = 8485;
 
@@ -118,7 +118,7 @@ export function initWs(isManual = false): void {
     let nonce: unknown, type: string, data: PatchData | FindData;
     try {
       // {nonce, type, data}=JSON.parse(e.data)
-      let rec = JSON.parse(e.data);
+      const rec = JSON.parse(e.data as string);
       nonce = rec.nonce;
       type = rec.type;
       data = rec.data;
@@ -184,7 +184,7 @@ export function initWs(isManual = false): void {
         }
 
         try {
-          let results = parseFind(type, parsedArgs) as unknown[];
+          const results = parseFind(type, parsedArgs) as unknown[];
           if (results.length === 0) throw new Error("No results");
           if (results.length > 1)
             throw new Error("Found more than one result! Make this filter more specific.");

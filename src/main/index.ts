@@ -1,17 +1,21 @@
-import { dirname, join } from "path";
-
 import electron from "electron";
+import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
+import type { PackageJson } from "type-fest";
+import { pathToFileURL } from "url";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
-// require.main!.filename = discordMain;
-let customTitlebar: boolean;
-void getSetting("dev.replugged.Settings", "titlebar", false).then(
-  (titlebar) => (customTitlebar = titlebar),
+const discordPackage: PackageJson = require(join(discordPath, "package.json"));
+require.main!.filename = join(discordPath, discordPackage.main!);
+
+let customTitleBar: boolean;
+void getSetting("dev.replugged.Settings", "titleBar", false).then(
+  (titleBar) => (customTitleBar = titleBar),
 );
+
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
     // cspell:ignore youre
@@ -37,7 +41,7 @@ class BrowserWindow extends electron.BrowserWindow {
       };
     },
   ) {
-    if (opts.frame && process.platform.includes("linux") && customTitlebar) opts.frame = void 0;
+    if (opts.frame && process.platform.includes("linux") && customTitleBar) opts.frame = void 0;
 
     const originalPreload = opts.webPreferences?.preload;
 
@@ -109,8 +113,8 @@ electron.protocol.registerSchemesAsPrivileged([
   },
 ]);
 
-async function loadReactDevTools(): Promise<void> {
-  const rdtSetting = await getSetting("dev.replugged.Settings", "reactDevTools", false);
+function loadReactDevTools(): void {
+  const rdtSetting = getSetting<boolean>("dev.replugged.Settings", "reactDevTools", false);
 
   if (rdtSetting) {
     void electron.session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
@@ -121,7 +125,14 @@ async function loadReactDevTools(): Promise<void> {
 electron.app.once("ready", () => {
   electron.session.defaultSession.webRequest.onBeforeRequest(
     {
-      urls: ["https://*/api/v*/science", "https://*/api/v*/metrics", "https://sentry.io/*"],
+      urls: [
+        "https://*/api/v*/science",
+        "https://*/api/v*/metrics",
+        "https://*/api/v*/metrics/*",
+        "https://sentry.io/*",
+        "https://discord.com/assets/sentry.*.js",
+        "https://*.discord.com/assets/sentry.*.js",
+      ],
     },
     function (_details, callback) {
       callback({ cancel: true });
@@ -161,13 +172,11 @@ electron.app.once("ready", () => {
     done({ responseHeaders: headersWithoutCSP });
   });
 
-  electron.protocol.registerFileProtocol("replugged", (request, cb) => {
+  // TODO: Eventually in the future, this should be migrated to IPC for better performance
+  electron.protocol.handle("replugged", (request) => {
     let filePath = "";
     const reqUrl = new URL(request.url);
     switch (reqUrl.hostname) {
-      case "renderer":
-        filePath = join(__dirname, "./renderer.js");
-        break;
       case "renderer.css":
         filePath = join(__dirname, "./renderer.css");
         break;
@@ -181,13 +190,13 @@ electron.app.once("ready", () => {
         filePath = join(CONFIG_PATHS.plugins, reqUrl.pathname);
         break;
     }
-    cb({ path: filePath });
+    return electron.net.fetch(pathToFileURL(filePath).toString());
   });
 
-  void loadReactDevTools();
+  loadReactDevTools();
 });
 
 // This module is required this way at runtime.
 require("./ipc");
 
-require("module")._load(discordPath);
+require(discordPath);

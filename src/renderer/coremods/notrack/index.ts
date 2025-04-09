@@ -1,21 +1,17 @@
-import { waitForProps } from "@webpack";
-import { Injector } from "@replugged";
+import { Injector } from "../../modules/injector";
+import { filters, getFunctionKeyBySource, waitForModule } from "../../modules/webpack";
 
-const inj = new Injector();
+const injector = new Injector();
 
 export async function start(): Promise<void> {
-  const { AnalyticsActionHandlers } = await waitForProps<{
-    AnalyticsActionHandlers: {
-      handleConnectionClosed: () => void;
-      handleConnectionOpen: (e: unknown) => void;
-      handleFingerprint: () => void;
-      handleTrack: (e: unknown) => void;
-    };
-  }>("AnalyticsActionHandlers");
+  const clientCheckerMod = await waitForModule<Record<string, () => boolean>>(
+    filters.bySource(".$||"),
+  );
+  const clientCheckerKey = getFunctionKeyBySource(clientCheckerMod, ".$||")!;
 
-  inj.instead(AnalyticsActionHandlers, "handleTrack", () => {});
+  injector.instead(clientCheckerMod, clientCheckerKey, () => false);
 }
 
 export function stop(): void {
-  inj.uninjectAll();
+  injector.uninjectAll();
 }

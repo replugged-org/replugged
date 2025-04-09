@@ -1,6 +1,6 @@
-import { waitForProps } from "../webpack";
 import type { Channel } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
+import { waitForProps } from "../webpack";
 
 interface LastChannelFollowingDestination {
   channelId: string;
@@ -29,6 +29,7 @@ export interface ChannelStore {
   getChannel(channelId: string): Channel | undefined;
   getChannelIds(guildId?: string): string[];
   getDebugInfo(): DebugInfo;
+  getDMChannelFromUserId(userId: string): Channel | undefined;
   getDMFromUserId(userId: string): string | undefined;
   getDMUserIds(): string[];
   getGuildChannelsVersion(guildId: string): number;

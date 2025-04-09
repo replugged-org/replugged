@@ -1,4 +1,4 @@
-import { React, channels, fluxDispatcher, guilds } from "@common";
+import { React, channels, flux, fluxDispatcher, guilds } from "@common";
 import type { Fiber } from "react-reconciler";
 import type { Jsonifiable } from "type-fest";
 import type { ObjectExports } from "../types";
@@ -105,15 +105,13 @@ interface ResolvedInvite {
   invite: Invite;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type GetInviteMod = {
+interface GetInviteMod {
   getInvite: (invite: string) => Invite | undefined;
-};
+}
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type ResolveInviteMod = {
+interface ResolveInviteMod {
   resolveInvite: (invite: string) => Promise<ResolvedInvite | undefined>;
-};
+}
 
 let getInvite: GetInviteMod["getInvite"] | undefined;
 let resolveInvite: ResolveInviteMod["resolveInvite"] | undefined;
@@ -287,7 +285,17 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
       if (method === "get" && args[0] === "all") {
         // Return function that returns all objects combined
         // For use in devtools to see everything available
-        return () => objects.reduce((acc, obj) => ({ ...acc, ...obj }), {});
+        return () =>
+          objects.reduce((acc: Record<string, unknown>, obj: Record<string, unknown>) => {
+            // Manually iterate over the property names of the object because the spread operator does not work with prototype objects, which are common for stores.
+            Object.getOwnPropertyNames(obj).forEach((key) => {
+              // Filter out keys that are common on all stores
+              if (!(obj instanceof flux.Store) || (key !== "initialize" && key !== "constructor")) {
+                acc[key] = obj[key];
+              }
+            });
+            return acc;
+          }, {});
       }
       return Reflect[method](
         findObjectByProp(args[0] as PropertyKey),
@@ -330,7 +338,7 @@ export function findInTree(
   let tempReturn;
   if (Array.isArray(tree)) {
     for (const value of tree) {
-      tempReturn = findInTree(value, searchFilter, {
+      tempReturn = findInTree(value as Tree, searchFilter, {
         walkable,
         ignore,
         maxRecursion: maxRecursion - 1,
