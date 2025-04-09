@@ -19,6 +19,20 @@ export type Author = z.infer<typeof author>;
 
 const urlType = z.string().url();
 
+const sourceType = z.enum(["store", "github"]);
+
+export const deprecated = z.object({
+  message: z.string().optional(),
+  replacement: z
+    .object({
+      id: z.string(),
+      source: sourceType,
+    })
+    .optional(),
+});
+
+export type Deprecated = z.infer<typeof deprecated>;
+
 export const common = z.object({
   // Should be in RDNN format
   id,
@@ -28,13 +42,14 @@ export const common = z.object({
   version: z.string(),
   updater: z
     .object({
-      type: z.enum(["store", "github"]),
       id: z.string(),
+      type: sourceType,
     })
     .optional(),
   license: z.string(),
   image: z.union([urlType, urlType.array().nonempty()]).optional(),
   source: urlType.optional(),
+  deprecated: z.union([z.boolean(), deprecated]).optional(),
 });
 
 export type Common = z.infer<typeof common>;
