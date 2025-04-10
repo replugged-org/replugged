@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import { readFile } from "fs/promises";
+import { readFileSync } from "fs";
 import { writeFile as originalWriteFile } from "original-fs";
 import { join, resolve, sep } from "path";
 import { WEBSITE_URL } from "src/constants";
@@ -244,14 +244,15 @@ ipcMain.handle(
   },
 );
 
-ipcMain.handle(RepluggedIpcChannels.GET_REPLUGGED_VERSION, async () => {
+ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_VERSION, (event) => {
   const path = join(__dirname, "package.json");
   try {
-    const packageJson = JSON.parse(await readFile(path, "utf8"));
-    return packageJson.version;
+    const packageJson = JSON.parse(readFileSync(path, "utf8"));
+    event.returnValue = packageJson.version;
   } catch (err) {
     if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
-      return "dev";
+      event.returnValue = "dev";
+      return;
     }
     throw err;
   }
