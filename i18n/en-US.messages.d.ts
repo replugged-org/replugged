@@ -1488,6 +1488,32 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_BADGES_DESC': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `5D5ltL`
+   * 
+   * ### Definition
+   * ```text
+   * Custom Title Bar
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `ar`, `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-ES`, `fi`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `x5PfoK`
+   * 
+   * ### Definition
+   * ```text
+   * Use Discord's custom title bar instead of the system title bar. **Requires restart**.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `ar`, `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-ES`, `fi`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
+  /**
    * Key: `RIDq4u`
    * 
    * ### Definition

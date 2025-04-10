@@ -68,6 +68,10 @@ export const General = (): React.ReactElement => {
     generalSettings,
     "reactDevTools",
   );
+  const { value: titleBarValue, onChange: titleBarOnChange } = util.useSetting(
+    generalSettings,
+    "titleBar",
+  );
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
@@ -118,6 +122,18 @@ export const General = (): React.ReactElement => {
         note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
+
+      {DiscordNative.process.platform === "linux" && (
+        <SwitchItem
+          value={titleBarValue}
+          onChange={(value) => {
+            titleBarOnChange(value);
+            restartModal(true);
+          }}
+          note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}>
+          {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+        </SwitchItem>
+      )}
 
       <Category
         title={intl.string(t.REPLUGGED_SETTINGS_ADVANCED)}
