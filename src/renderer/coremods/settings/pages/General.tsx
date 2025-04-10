@@ -68,14 +68,12 @@ export const General = (): React.ReactElement => {
     generalSettings,
     "reactDevTools",
   );
-
   const { value: titleBarValue, onChange: titleBarOnChange } = util.useSetting(
     generalSettings,
     "titleBar",
   );
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
-
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
   const [hue, setHue] = React.useState(0);
 
@@ -125,7 +123,7 @@ export const General = (): React.ReactElement => {
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
 
-      {DiscordNative.process.platform.includes("linux") && (
+      {DiscordNative.process.platform === "linux" && (
         <SwitchItem
           value={titleBarValue}
           onChange={(value) => {

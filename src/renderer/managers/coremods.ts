@@ -10,9 +10,9 @@ import messagePopoverPlaintext from "../coremods/messagePopover/plaintextPatches
 import noDevtoolsWarningPlaintext from "../coremods/noDevtoolsWarning/plaintextPatches";
 import noticesPlaintext from "../coremods/notices/plaintextPatches";
 import notrackPlaintext from "../coremods/notrack/plaintextPatches";
-import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
+import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 
 const logger = Logger.api("Coremods");
 
@@ -92,7 +92,6 @@ export function runPlaintextPatches(): void {
     notrackPlaintext,
     popoutThemingPlaintext,
     settingsPlaintext,
-    badgesPlaintext,
     titleBarPlaintext,
   ].forEach(patchPlaintext);
 }
