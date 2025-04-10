@@ -1,4 +1,4 @@
-import { type PlaintextPatch } from "src/types";
+import type { PlaintextPatch } from "src/types";
 
 export default [
   {
