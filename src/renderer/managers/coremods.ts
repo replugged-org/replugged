@@ -10,7 +10,9 @@ import messagePopoverPlaintext from "../coremods/messagePopover/plaintextPatches
 import noDevtoolsWarningPlaintext from "../coremods/noDevtoolsWarning/plaintextPatches";
 import noticesPlaintext from "../coremods/notices/plaintextPatches";
 import notrackPlaintext from "../coremods/notrack/plaintextPatches";
+import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
+import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 
 const logger = Logger.api("Coremods");
 
@@ -86,8 +88,10 @@ export function runPlaintextPatches(): void {
     { patch: messagePopoverPlaintext, name: "replugged.coremod.messagePopover" },
     { patch: noticesPlaintext, name: "replugged.coremod.notices" },
     { patch: contextMenuPlaintext, name: "replugged.coremod.contextMenu" },
+    { patch: popoutThemingPlaintext, name: "replugged.coremod.popoutTheming" },
     { patch: languagePlaintext, name: "replugged.coremod.language" },
     { patch: settingsPlaintext, name: "replugged.coremod.settings" },
+    { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },      
     { patch: badgesPlaintext, name: "replugged.coremod.badges" },
   ].forEach(({ patch, name }) => patchPlaintext(patch, name));
 }
