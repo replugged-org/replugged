@@ -91,7 +91,7 @@ export function runPlaintextPatches(): void {
     { patch: popoutThemingPlaintext, name: "replugged.coremod.popoutTheming" },
     { patch: languagePlaintext, name: "replugged.coremod.language" },
     { patch: settingsPlaintext, name: "replugged.coremod.settings" },
-    { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },      
+    { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },
     { patch: badgesPlaintext, name: "replugged.coremod.badges" },
   ].forEach(({ patch, name }) => patchPlaintext(patch, name));
 }
