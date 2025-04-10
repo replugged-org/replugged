@@ -33,5 +33,14 @@ export default (navigator.userAgent.includes("Linux") && generalSettings.get("ti
           },
         ],
       },
+      {
+        find: "platform-linux",
+        replacements: [
+          {
+            match: "platform-linux",
+            replace: "platform-linux platform-win",
+          },
+        ],
+      },
     ]
   : []) as PlaintextPatch[];
