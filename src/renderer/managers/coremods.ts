@@ -11,6 +11,7 @@ import noDevtoolsWarningPlaintext from "../coremods/noDevtoolsWarning/plaintextP
 import noticesPlaintext from "../coremods/notices/plaintextPatches";
 import notrackPlaintext from "../coremods/notrack/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
+import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
 
 const logger = Logger.api("Coremods");
@@ -89,6 +90,7 @@ export function runPlaintextPatches(): void {
     noDevtoolsWarningPlaintext,
     noticesPlaintext,
     notrackPlaintext,
+    popoutThemingPlaintext,
     settingsPlaintext,
     badgesPlaintext,
     titleBarPlaintext,
