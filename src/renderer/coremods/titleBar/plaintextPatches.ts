@@ -15,19 +15,15 @@ const replacements = [
 
 export default (navigator.userAgent.includes("Linux") && generalSettings.get("titleBar")
   ? [
-      // Pre Discord Refresh
       {
         find: ".appAsidePanelWrapper,",
         replacements,
       },
-      // Discord Refresh
       {
         find: ".winButtons",
         replacements,
       },
-      // Popouts
       { find: "this.registerPopoutGlobalKeybinds", replacements },
-      // Disabling Native Titlebar in popouts
       {
         find: "menubar:!1,toolbar:!1",
         replacements: [
