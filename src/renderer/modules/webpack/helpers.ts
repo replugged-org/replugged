@@ -1,8 +1,8 @@
-import type { GetModuleOptions, RawModule, WaitForOptions } from "src/types";
+import type { ByPropsOptions, GetModuleOptions, RawModule, WaitForOptions } from "src/types";
+import { getExportsForProps, getModule } from "./get-modules";
 import { flux } from "../common";
 import type { Store } from "../common/flux";
 import * as filters from "./filters";
-import { getExportsForProps, getModule } from "./get-modules";
 import { waitForModule } from "./lazy";
 
 // Get by source
@@ -61,39 +61,39 @@ export function getBySource<T>(
 
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options?: { all?: false; raw?: false },
+  options?: { all?: false; raw?: false } & ByPropsOptions,
 ): T | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { all: true; raw?: false },
+  options: { all: true; raw?: false } & ByPropsOptions,
 ): T[];
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { all?: false; raw: true },
+  options: { all?: false; raw: true } & ByPropsOptions,
 ): RawModule<T> | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { all: true; raw: true },
+  options: { all: true; raw: true } & ByPropsOptions,
 ): Array<RawModule<T>>;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options?: { all: true; raw?: boolean },
+  options?: { all: true; raw?: boolean } & ByPropsOptions,
 ): T[] | Array<RawModule<T>>;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { all?: false; raw?: boolean },
+  options: { all?: false; raw?: boolean } & ByPropsOptions,
 ): T | RawModule<T> | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: { all?: boolean; raw: true },
+  options: { all?: boolean; raw: true } & ByPropsOptions,
 ): RawModule<T> | Array<RawModule<T>> | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
-  props: P,
-  options: { all?: boolean; raw?: false },
+  props: P[],
+  options: { all?: boolean; raw?: false } & ByPropsOptions,
 ): T | T[] | undefined;
 export function getByProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options?: { all?: boolean; raw?: boolean },
+  options?: { all?: boolean; raw?: boolean } & ByPropsOptions,
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined;
 export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(...props: P): T | undefined;
 
@@ -104,15 +104,18 @@ export function getByProps<T, P extends PropertyKey[] = Array<keyof T>>(...props
  * @see {@link getModule}
  */
 export function getByProps<T, P extends PropertyKey = keyof T>(
-  ...args: [P[], GetModuleOptions] | P[]
+  ...args: [P[], GetModuleOptions & ByPropsOptions] | P[]
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
   const props = (typeof args[0] === "string" ? args : args[0]) as P[];
+
   const raw = typeof args[0] === "string" ? false : (args[1] as GetModuleOptions | undefined)?.raw;
+
+  const byPrototype = typeof args[0] === "string" ? false : (args[1] as ByPropsOptions).byPrototype;
 
   const result =
     typeof args.at(-1) === "object"
-      ? getModule<T>(filters.byProps(...props), args.at(-1) as GetModuleOptions)
-      : getModule<T>(filters.byProps(...props));
+      ? getModule<T>(filters.byProps(...props, { byPrototype }), args.at(-1) as GetModuleOptions)
+      : getModule<T>(filters.byProps(...props, { byPrototype }));
 
   if (raw || typeof result === "undefined") {
     return result as RawModule<T> | undefined;
@@ -120,25 +123,25 @@ export function getByProps<T, P extends PropertyKey = keyof T>(
 
   if (result instanceof Array) {
     // @ts-expect-error TypeScript isn't going to infer types based on the raw variable, so this is fine
-    return result.map((m) => getExportsForProps(m, props));
+    return result.map((m) => getExportsForProps(m, props, { byPrototype }));
   }
 
-  return getExportsForProps<T, P>(result, props);
+  return getExportsForProps<T, P>(result, props, { byPrototype });
 }
 
 // Wait for props
 
 export function waitForProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: WaitForOptions & { raw?: false },
+  options: WaitForOptions & ByPropsOptions & { raw?: false },
 ): Promise<T>;
 export function waitForProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options: WaitForOptions & { raw: true },
+  options: WaitForOptions & ByPropsOptions & { raw: true },
 ): Promise<RawModule<T>>;
 export function waitForProps<T, P extends PropertyKey = keyof T>(
   props: P[],
-  options?: WaitForOptions,
+  options?: WaitForOptions & ByPropsOptions,
 ): Promise<T | RawModule<T>>;
 export function waitForProps<T, P extends PropertyKey = keyof T>(...props: P[]): Promise<T>;
 
@@ -149,21 +152,22 @@ export function waitForProps<T, P extends PropertyKey = keyof T>(...props: P[]):
  * @see {@link waitForModule}
  */
 export async function waitForProps<T, P extends PropertyKey = keyof T>(
-  ...args: [P[], WaitForOptions] | P[]
+  ...args: [P[], WaitForOptions & ByPropsOptions] | P[]
 ): Promise<T | RawModule<T>> {
   const props = (typeof args[0] === "string" ? args : args[0]) as P[];
   const raw = typeof args[0] === "string" ? false : (args[1] as WaitForOptions | undefined)?.raw;
+  const byPrototype = typeof args[0] === "string" ? false : (args[1] as ByPropsOptions).byPrototype;
 
   const result = await (typeof args.at(-1) === "object"
-    ? waitForModule<T>(filters.byProps(...props), args.at(-1) as WaitForOptions)
-    : waitForModule<T>(filters.byProps(...props)));
+    ? waitForModule<T>(filters.byProps(...props, { byPrototype }), args.at(-1) as WaitForOptions)
+    : waitForModule<T>(filters.byProps(...props, { byPrototype })));
 
   if (raw) {
     return result as RawModule<T>;
   }
 
   // We know this will always exist since filters.byProps will always return a module that has the props
-  return getExportsForProps<T, P>(result as T, props)!;
+  return getExportsForProps<T, P>(result as T, props, { byPrototype })!;
 }
 
 // Get by value
