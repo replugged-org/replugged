@@ -11,8 +11,11 @@ import { extname, join, sep } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
+import type { UnknownFunction } from "../../types/util";
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
+
+const PluginIPC: Record<string, Record<string, string> | undefined> = {};
 
 export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
   return f.isDirectory() || (f.isFile() && extname(name) === ".asar");
@@ -91,6 +94,40 @@ ipcMain.on(RepluggedIpcChannels.LIST_PLUGINS, (event) => {
   }
 
   event.returnValue = plugins;
+});
+
+ipcMain.on(RepluggedIpcChannels.REGISTER_PLUGIN_NATIVE, (event, pluginName: string) => {
+  const plugin = getPlugin(pluginName);
+  if (!plugin.manifest.native) return;
+
+  const path = join(CONFIG_PATHS.plugins, pluginName, plugin.manifest.native);
+  if (!path.startsWith(`${PLUGINS_DIR}${sep}`)) {
+    // Ensure file changes are restricted to the base path
+    throw new Error("Invalid plugin name");
+  }
+  if (PluginIPC[plugin.manifest.id]) {
+    event.returnValue = PluginIPC[plugin.manifest.id];
+    return;
+  }
+  try {
+    const entries = Object.entries<UnknownFunction>(
+      require(path) as Record<string, UnknownFunction>,
+    );
+    if (!entries.length) return;
+
+    const mappings: Record<string, string> = {};
+
+    for (const [methodName, method] of entries) {
+      if (typeof method !== "function") continue;
+      const key = `Replugged_Plugin_Native_[${plugin.manifest.id}]_${methodName}`;
+      ipcMain.handle(key, async (_, ...args: unknown[]) => await method(...args));
+      mappings[methodName] = key;
+    }
+    PluginIPC[plugin.manifest.id] = mappings;
+    event.returnValue = mappings;
+  } catch (e) {
+    console.error(`Error Loading Plugin Native`, plugin.manifest, e);
+  }
 });
 
 ipcMain.handle(RepluggedIpcChannels.UNINSTALL_PLUGIN, async (_, pluginName: string) => {
