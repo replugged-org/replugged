@@ -36,6 +36,9 @@ class BrowserWindow extends electron.BrowserWindow {
       };
     },
   ) {
+    const titleBarSetting = getSetting<boolean>("dev.replugged.Settings", "titleBar", false);
+    if (opts.frame && process.platform === "linux" && titleBarSetting) opts.frame = void 0;
+
     const originalPreload = opts.webPreferences?.preload;
 
     if (opts.webContents) {
