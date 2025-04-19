@@ -4,11 +4,14 @@
   height: 100%;
 }
 #replugged-quickcss-wrapper .cm-editor {
-  max-height: calc(100% - var(--custom-app-top-bar-height) - 20px);
+  max-height: calc(100% - 20px);
   background: var(--bg-overlay-2, var(--background-secondary));
   border: 1px solid var(--background-secondary-alt);
   border-radius: 4px;
   outline: none !important;
+}
+.platform-win #replugged-quickss-wrapper .cm-editor {
+  max-height: calc(100% - var(--custom-app-top-bar-height) - 20px);
 }
 #replugged-quickcss-wrapper .cm-content {
   padding: 0px;
