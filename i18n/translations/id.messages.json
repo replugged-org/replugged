@@ -130,7 +130,7 @@
   "REPLUGGED_UPDATES_UPDATE_NOUN": "Pembaruan",
   "REPLUGGED_SETTINGS_BADGES": "Mengaktifkan Lencana Replugged",
   "REPLUGGED_SETTINGS_BADGES_DESC": "Tampilkan lencana Replugged khusus pada profil pengguna.",
-  "REPLUGGED_VERSION": "Replugged{version, select, dev {[DEV MODE]} other {v{version}}}",
+  "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other {v{version}}}",
   "REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_PROCESS_VERSIONS": "Versi Proses",
   "REPLUGGED_UPDATES_OPTS_DEBUG_LOCALE": "Lokal:",
   "REPLUGGED_UPDATES_OPTS_DEBUG_OS": "OS:",

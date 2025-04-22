@@ -176,7 +176,7 @@
   "REPLUGGED_UPDATES_UPDATE_NOUN": "Update",
   "REPLUGGED_I18N": "Replugged Vertalingen",
   "REPLUGGED_SETTINGS_BADGES_DESC": "Toon aangepaste Replugged profielbadges op gebruikersprofielen.",
-  "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other{v{version}}}",
+  "REPLUGGED_VERSION": "Replugged {version, select, dev {[DEV MODE]} other {v{version}}}",
   "REPLUGGED_SETTINGS_BADGES": "Toon Replugged-badges",
   "REPLUGGED_VIEW_UPDATES": "Bekijk {count, plural, =1 {# Update} other {# Updates}}"
 }

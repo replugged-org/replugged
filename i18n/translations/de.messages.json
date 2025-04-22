@@ -161,7 +161,7 @@
   "REPLUGGED_ADDONS_FOLDER_OPEN": "Öffne {type} Ordner",
   "REPLUGGED_UPDATES_UPDATE_NOUN": "Update",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED": "Fehler beim Laden von {type}",
-  "REPLUGGED_VERSION": "Neu angeschlossen {version , wählen, dev {[DEV-MODUS]} andere {v{{version}}}}",
+  "REPLUGGED_VERSION": "Neu angeschlossen {version, select, dev {[DEV-MODUS]} other {v{version}}}",
   "REPLUGGED_SETTINGS_BADGES": "Aktivere Replugged Abzeichen",
   "REPLUGGED_SETTINGS_BADGES_DESC": "Zeige custom Replugged Abzeichen bei Nutzerprofilen.",
   "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
