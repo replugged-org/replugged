@@ -229,10 +229,10 @@ async function showInstallPrompt(
   let type: string;
   switch (manifest.type) {
     case "replugged-plugin":
-      type = "plugin";
+      type = intl.string(t.REPLUGGED_PLUGIN);
       break;
     case "replugged-theme":
-      type = "theme";
+      type = intl.string(t.REPLUGGED_THEME);
       break;
   }
   const authors = authorList([manifest.author].flat().map((a) => a.name));
