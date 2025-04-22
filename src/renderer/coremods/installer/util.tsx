@@ -1,5 +1,5 @@
 import { modal, toast } from "@common";
-import { intl } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
 import { setUpdaterState } from "src/renderer/managers/updater";
@@ -261,8 +261,8 @@ async function showInstallPrompt(
         ) : null}
       </>
     ),
-    confirmText: intl.string(t.REPLUGGED_CONFIRM),
-    cancelText: intl.string(t.REPLUGGED_CANCEL),
+    confirmText: intl.string(discordT.CONFIRM),
+    cancelText: intl.string(discordT.CANCEL),
     secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
     onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : null),
   });
@@ -361,7 +361,7 @@ export async function installFlow(
         body: intl.format(t.REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY, {
           name: info.manifest.name,
         }),
-        confirmText: intl.string(t.REPLUGGED_RELOAD),
+        confirmText: intl.string(discordT.ERRORS_RELOAD),
         confirmColor: Button.Colors.RED,
       })
       .then((answer) => {

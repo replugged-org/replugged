@@ -1,5 +1,5 @@
 import { modal, toast } from "@common";
-import { intl } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import {
   Button,
@@ -51,7 +51,7 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
     .confirm({
       title: intl.string(t.REPLUGGED_SETTINGS_RESTART_TITLE),
       body: intl.string(t.REPLUGGED_SETTINGS_RESTART),
-      confirmText: intl.string(t.REPLUGGED_RESTART),
+      confirmText: intl.string(discordT.BUNDLE_READY_RESTART),
       confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
@@ -136,7 +136,7 @@ export const General = (): React.ReactElement => {
       )}
 
       <Category
-        title={intl.string(t.REPLUGGED_SETTINGS_ADVANCED)}
+        title={intl.string(discordT.ADVANCED_SETTINGS)}
         note={intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}>
         <FormItem
           title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
@@ -187,7 +187,7 @@ export const General = (): React.ReactElement => {
         </SwitchItem>
 
         <ButtonItem
-          button={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT)}
+          button={intl.string(discordT.RECONNECT)}
           note={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_DESC)}
           onClick={() => {
             socket?.close(1000, "Reconnecting");
