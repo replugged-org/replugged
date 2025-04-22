@@ -22,8 +22,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Hindrer Discord fra å fjerne din token fra localStorage, reduserer antallet uønskede ut-logginger.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Utrydd Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Erstatter [Clyde]({clydeUrl}) i Replugged kommandoer med forskjellige bilder og navn valgt av plug-in utviklere - tilbakestilles til \"Replugged\" automatisk.",
-  "REPLUGGED_SETTINGS_OVERLAY": "Overlay DevTools",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Åpner et DevTools vindu som lar deg inspisere hva som skjer inne i Discord sin in-game overlay.",
   "REPLUGGED_SETTINGS_RESTART": "Denne endringen krever at du starter Discord på nytt for at den skal bli tatt i bruk. Vil du starte Discord på nytt nå?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet Brukt",
   "REPLUGGED_SNIPPET_APPLY": "Bruk Snippet",

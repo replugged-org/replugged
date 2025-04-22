@@ -21,8 +21,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "מונע מדיסקורד מחיקה אוטומטית של הטוקן (אסימון) משתמש שלך מlocalStorage, מה שיפחית את כמות ההתנתקויות הלא רצויות.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "השמד את Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "מחליף את [Clyde]({clydeUrl}) בפקודות של ריפלגד במגוון אווטרים ושמות משתמשים שנבחרו ע\"י מפתחי תוספים של ריפלגד - \"Replugged\" כברירת מחדל.",
-  "REPLUGGED_SETTINGS_OVERLAY": "שכבת DevTools",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "פותח חלון של DevTools המאפשר לך לבדוק מה קורה מאחורי הקלעים בשכבת in-game של דיסקורד.",
   "REPLUGGED_SETTINGS_RESTART": "הגדרה זו דורשת להפעיל מחדש את דיסקורד כדי להיכנס לתוקף. האם ברצונך להפעיל מחדש את דיסקורד עכשיו?",
   "REPLUGGED_SNIPPET_APPLY": "החל קטע קוד",
   "REPLUGGED_SNIPPET_LINE1": "קטע קוד מ#css-snippets החיל את {date, date, medium} ב {date, time, medium}",

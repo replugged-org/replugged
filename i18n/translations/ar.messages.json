@@ -70,8 +70,6 @@
   "REPLUGGED_SETTINGS_BACKEND": "عنوان Backend",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "عنوان إليكتروني يستخدم لجلب بعض الملفات والإستعلام عن Replugged's REST API.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "تفعيل تجارب Discord",
-  "REPLUGGED_SETTINGS_OVERLAY": "Overlay DevTools",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "يفتح نافذة DevTools ألتي تتيح لك فحص ما بداخل Discord's in-game overlay.",
   "REPLUGGED_SETTINGS_RESTART": "يتطلب هذا الإعداد إعادة تشغيل Discord يعمل. هل تريد إعادة تشغيل Discord الآن؟",
   "REPLUGGED_SNIPPET_APPLIED": "تم تطبيق Snippet",
   "REPLUGGED_SNIPPET_APPLY": "تطبيق Snippet",

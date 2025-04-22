@@ -101,9 +101,6 @@ export default defineMessages({
   REPLUGGED_SETTINGS_NO_CLYDE: "Eradicate Clyde",
   REPLUGGED_SETTINGS_NO_CLYDE_DESC:
     'Replaces [Clyde]({clydeUrl}) in Replugged commands with a mixed range of avatars and usernames selected by plug-in developers - fallbacks to "Replugged" by default.',
-  REPLUGGED_SETTINGS_OVERLAY: "Overlay DevTools",
-  REPLUGGED_SETTINGS_OVERLAY_DESC:
-    "Opens a DevTools window that lets you inspect what's happening within Discord's in-game overlay.",
   REPLUGGED_SETTINGS_RESTART:
     "This setting requires you to restart Discord to take effect. Do you want to restart Discord now?",
   REPLUGGED_SNIPPET_APPLIED: "Snippet Applied",

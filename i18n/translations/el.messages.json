@@ -24,8 +24,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Αποτρέπει το Discord από το να αφαιρέσει το διακριτικό σας από το localStorage, μειώνοντας τον αριθμό των ανεπιθύμητων αποσυνδέσεων.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Εξάλειψη του Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Αντικαθιστά τον [Clyde]({clydeUrl}) στις εντολές του Replugged με ένα μικτό εύρος avatar και ονομάτων χρήστη που επιλέγονται από προγραμματιστές προσθέτων - χρησιμοποιείται το \"Replugged\" από προεπιλογή.",
-  "REPLUGGED_SETTINGS_OVERLAY": "Επικάλυψη DevTools",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Ανοίγει ένα παράθυρο DevTools που σας επιτρέπει να επιθεωρήσετε τι συμβαίνει στην επικάλυψη εντός παιχνιδιού του Discord.",
   "REPLUGGED_SETTINGS_RESTART": "Αυτή η ρύθμιση απαιτεί να κάνετε επανεκκίνηση του Discord για να τεθεί σε ισχύ. Θέλετε να επανεκκινήσετε το Discord τώρα;",
   "REPLUGGED_SNIPPET_APPLIED": "Το απόσπασμα εφαρμόστηκε",
   "REPLUGGED_SNIPPET_APPLY": "Εφαρμογή Αποσπάσματος",

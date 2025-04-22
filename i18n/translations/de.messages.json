@@ -22,8 +22,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Hindert Discord daran, deinen Token aus dem localStorage zu löschen. Dadurch wirst du selterner ungewollt abgemeldet.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Clyde auslöschen",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Ersetzt [Clyde]({clydeUrl}) in Replugged Befehlen mit einer Variation an Avataren und Nutzernamen, welche von Plugin-Entwicklern angegeben werden können - fällt standardmäßig auf \"Replugged\" zurück.",
-  "REPLUGGED_SETTINGS_OVERLAY": "DevTools Overlay",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Öffnet ein DevTools-Fenster, in dem du untersuchen kannst, was innerhalb des In-Game-Overlays von Discord geschieht.",
   "REPLUGGED_SETTINGS_RESTART": "Diese Einstellung benötigt ein Neuladen des Discord-Clients um zu funktionieren. Möchtest du Discord jetzt neustarten?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet angewandt",
   "REPLUGGED_SNIPPET_APPLY": "Snippet anwenden",

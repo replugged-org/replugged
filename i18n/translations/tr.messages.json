@@ -22,8 +22,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Discord'un token'inizi localStorage'dan kaldırmasını engeller, istenmeyen çıkışların sayısını azaltır.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Clyde'ı Yok Et",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "[Clyde'i]({clydeUrl}) eklenti geliştiricilerinin şeçtiği avatar ve isimlerle değiştirir - varsayılan olarak \"Replugged\" seçeneğine geri döner.",
-  "REPLUGGED_SETTINGS_OVERLAY": "DevTools Overlay",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Discord'un oyun içi arayüzünde neler olduğunu kontrol etmenizi sağlayan bir DevTools penceresi açar.",
   "REPLUGGED_SETTINGS_RESTART": "Bu ayarın etkili olması için Discord'u yeniden başlatmanızı gerektirir. Discord'u şimdi yeniden başlatmak istiyor musunuz?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet Uygulandı",
   "REPLUGGED_SNIPPET_APPLY": "Snippet Uygula",

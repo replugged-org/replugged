@@ -22,8 +22,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Keep token stored",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Prevents Discord from removing your token from localStorage, reducing the number of unwanted logouts.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Eradicate Clyde",
-  "REPLUGGED_SETTINGS_OVERLAY": "Overlay DevTools",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Opens a DevTools window that lets you inspect what's happening within Discord's in-game overlay.",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet Applied",
   "REPLUGGED_SNIPPET_APPLY": "Apply Snippet",
   "REPLUGGED_SNIPPET_LINE1": "Snippet from #css-snippets applied the {date, date, medium} at {date, time, medium}",

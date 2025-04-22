@@ -23,8 +23,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "防止Discord在本地存儲移除你的臨時令牌，減少不必要的登出次數。",
   "REPLUGGED_SETTINGS_NO_CLYDE": "拔除Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "將 Replugged 指令中的 [Clyde]({clydeUrl}) 替換為插件開發人員選擇的混合範圍的頭像和使用者名稱，默認情況下回退到「Replugged」。",
-  "REPLUGGED_SETTINGS_OVERLAY": "遊戲內覆蓋的開發工具",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "打開開發工具視窗並讓你查看Discord的遊戲內覆蓋中發生的事情。",
   "REPLUGGED_SETTINGS_RESTART": "此設置需要你重新啟動Discord才能生效。你想現在重啟Discord嗎？",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet 已應用",
   "REPLUGGED_SNIPPET_APPLY": "應用 Snippet",

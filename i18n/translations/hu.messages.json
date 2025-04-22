@@ -25,8 +25,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Megakadályozza a Discordot, hogy eltávolítsa a tokened a localStorage-ból, ezzel csökkentve a nem kívánatos kijelentkeztetések számát.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Clyde eltüntetése",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Lecseréli [Clyde-ot]{clydeUrl} a Replugged parancsoknál sokfajta avatár és felhasználónevekre a plug-in fejlesztői által válogatva - ez alaphelyzetben\"Replugged\".",
-  "REPLUGGED_SETTINGS_OVERLAY": "Fejlesztői eszközök overlay-je",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Kinyitja a Fejlesztői Eszközök ablakát, ami segít benézni a Discord játékbeli átfedése mögé.",
   "REPLUGGED_SETTINGS_RESTART": "Ez a beállítás a Discord újraindítását igényli. Szeretnéd most a Discord-ot újraindítani ?",
   "REPLUGGED_SNIPPET_APPLIED": "Töredék alkalmazva",
   "REPLUGGED_SNIPPET_APPLY": "Töredék alkalmazása",

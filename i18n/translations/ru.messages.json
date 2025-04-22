@@ -22,8 +22,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Предотвращает Discord от удаления вашего токена из localStorage, уменьшая количество нежелательных выходов.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Заменить Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Изменяет вид [Clyde]({clydeUrl}) в командах Replugged на один из выбранных разработчиками плагинов (по умолчанию \"Replugged\").",
-  "REPLUGGED_SETTINGS_OVERLAY": "Инструменты разработчика для оверлея",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Открывает окно с инструментами разработчика в игровом оверлее.",
   "REPLUGGED_SETTINGS_RESTART": "Этот параметр требует перезагрузки Discord, чтобы изменения вступили в силу. Вы хотите перезапустить Discord сейчас?",
   "REPLUGGED_SNIPPET_APPLIED": "Сниппет Применён",
   "REPLUGGED_SNIPPET_APPLY": "Применить Сниппет",

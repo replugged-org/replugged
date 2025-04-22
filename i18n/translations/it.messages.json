@@ -22,8 +22,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Impedisce a Discord di rimuovere il tuo token dal localStorage, riducendo il numero di disconnessioni non volute.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Eradica Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Rimpiazza [Clyde]({clydeUrl}) nei comandi Replugged con una gamma di avatar e nomi utente misti selezionati dagli sviluppatori di plug-in - ricade a \"Replugged\" come predefinito.",
-  "REPLUGGED_SETTINGS_OVERLAY": "DevTools Overlay",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Apre una finestra DevTools che permette di ispezionare cosa sta succedendo nell'overlay in gioco di Discord.",
   "REPLUGGED_SETTINGS_RESTART": "Questa impostazione necessita un riavvio di Discord per avere effetto. Vuoi riavviare Discord ora?",
   "REPLUGGED_SNIPPET_APPLIED": "Frammento applicato",
   "REPLUGGED_SNIPPET_APPLY": "Applica frammento",

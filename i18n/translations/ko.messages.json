@@ -23,8 +23,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "디스코드가 계정 토큰을 localStorage에서 제거하는 것을 방지해요. 갑자기 로그아웃되는 문제를 줄여줄 수 있어요.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Clyde 차단",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Replugged의 명령어 사용 시 나오는 [Clyde]({clydeUrl})를 플러그인 개발자가 설정한 아바타와 유저네임으로 바꿔요 - 기본값 \"Replugged\".",
-  "REPLUGGED_SETTINGS_OVERLAY": "개발자 도구 오버레이",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "디스코드의 게임 오버레이 요소를 검사할 수 있게 개발자 도구를 열어요.",
   "REPLUGGED_SETTINGS_RESTART": "이 설정은 디스코드를 재시작해야 활성화돼요. 지금 디스코드를 재시작할까요?",
   "REPLUGGED_SNIPPET_APPLIED": "스니펫 적용됨",
   "REPLUGGED_SNIPPET_APPLY": "스니펫 적용",

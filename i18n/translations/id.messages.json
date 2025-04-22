@@ -23,8 +23,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Mencegah Discord menghapus token Anda dari localStorage (Penyimpanan lokal), mengurangi jumlah logout yang tidak diinginkan.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Memberantas Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Ganti [Clyde]({clydeUrl}) di perintah Replugged dengan beragam avatar dan nama pengguna yang dipilih oleh pengembang plug-in - mundur ke \"Replugged\" secara default.",
-  "REPLUGGED_SETTINGS_OVERLAY": "Alat Dev Overlay",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Membuka jendela DevTools yang memungkinkan Anda memeriksa apa yang terjadi dalam overlay dalam game Discord.",
   "REPLUGGED_SETTINGS_RESTART": "Pengaturan ini mengharuskan Anda untuk memulai ulang Discord agar berlaku. Apakah Anda ingin memulai ulang Discord sekarang?",
   "REPLUGGED_SNIPPET_APPLIED": "Cuplikan Diterapkan",
   "REPLUGGED_SNIPPET_APPLY": "Terapkan Cuplikan",

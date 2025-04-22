@@ -1,5 +1,4 @@
 {
-  "REPLUGGED_SETTINGS_OVERLAY": "Overlay DevTools",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% översatt",
   "REPLUGGED_UPDATES_UPDATING_ITEM": "Uppdaterar…",
   "REPLUGGED_UPDATES_UPDATING": "Uppdaterar Replugged…",
@@ -54,7 +53,6 @@
   "REPLUGGED_ACCOUNT": "Replugged Konto",
   "REPLUGGED_BADGES_SUPPORT": "Replugged-supporten",
   "REPLUGGED_QUICKCSS": "Snabb-CSS",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Öppnar ett DevTools-fönster som låter dig inspektera vad som händer inom Discords in-game överlägg.",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet Applicerad",
   "REPLUGGED_SNIPPET_APPLY": "Applicera Snippet",
   "REPLUGGED_SNIPPET_LINE1": "Snippet från #css-snippets applicerade {date, date, medium} på {date, time, medium}",

@@ -24,8 +24,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Estää Discordia poistamasta tokeniasi localStoragesta, vähentäen ei-toivottujen uloskirjautumisten määrää.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Hävitä Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Vaihtaa [Clyden]({clydeUrl}) Replugged-komennoissa sekaiseen joukkoon avatareita ja käyttäjänimiä plug-in kehittäjien valitsemiin - oletuksena palautuu \"Replugged\".",
-  "REPLUGGED_SETTINGS_OVERLAY": "Peitetason DevTools",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Avaa DevTools-ikkunan, joka auttaa tutkimaan, mitä tapahtuu Discordin pelinsisäisessä peitetasossa.",
   "REPLUGGED_SETTINGS_RESTART": "Tämä asetus vaatii uudelleenkäynnistyksen vaikuttaakseen Discordia. Haluatko uudelleenkäynnistää nyt?",
   "REPLUGGED_SNIPPET_APPLIED": "Snipetti asetettu",
   "REPLUGGED_SNIPPET_APPLY": "Aseta snipetti",

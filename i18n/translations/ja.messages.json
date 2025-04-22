@@ -23,8 +23,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "DiscordがlocalStorageからトークンを削除するのを防ぎ、不要なログアウトの数を減らします。",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Clydeを削除する",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Repluggedコマンドの[Clyde]({clydeUrl})を、プラグイン開発者が選択した様々なアバターやユーザーネームに置き換えます - デフォルトでは\"Replugged\"にフォールバックします。",
-  "REPLUGGED_SETTINGS_OVERLAY": "オーバーレイDevTools",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Discordのゲーム内オーバーレイで起こっていることを検査するためのDevToolsウィンドウを開きます。",
   "REPLUGGED_SETTINGS_RESTART": "この設定を有効にするには、Discordを再起動する必要があります。今すぐDiscordを再起動しますか？",
   "REPLUGGED_SNIPPET_APPLIED": "スニペット適用済み",
   "REPLUGGED_SNIPPET_APPLY": "スニペット適用",

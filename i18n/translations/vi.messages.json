@@ -23,8 +23,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Ngăn Discord bỏ token của bạn khỏi localStorage, giảm bớt hiện tượng đăng xuất không mong muốn.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Diệt trừ Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Thay [Clyde]({clydeUrl}) trong các câu lệnh Replugged với những ảnh đại diện và tên khác nhau được lựa chọn bởi các nhà phát triển bổ sung - Mặc định là \"Replugged\".",
-  "REPLUGGED_SETTINGS_OVERLAY": "DevTools cho Overlay",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Mở một cửa sổ DevTools mới cho phép bạn quan sát được những gì diễn ra bên trong Overlay trong game của Discord.",
   "REPLUGGED_SETTINGS_RESTART": "Muốn chỉnh cài đăt này thì cần phải khởi động lại Discord. Bạn có muốn khởi động lại Discord không?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet đã được áp dụng",
   "REPLUGGED_SNIPPET_APPLY": "Áp dụng Snippet",

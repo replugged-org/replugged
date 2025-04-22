@@ -22,8 +22,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Zapobiega usuwaniu tokena przez Discorda z localStorage, zmniejszając liczbę niepożądanych wylogowań.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Zastąp Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Zastępuje [Clyde]({clydeUrl}) w poleceniach Replugged mieszanym zakresem awatarów i nazw użytkowników wybranych przez twórców wtyczek - domyślnie jest to \"Replugged\".",
-  "REPLUGGED_SETTINGS_OVERLAY": "DevTools nakładki gry",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Otwiera okno DevTools, które pozwala sprawdzić, co dzieje się w nakładce gry Discorda.",
   "REPLUGGED_SETTINGS_RESTART": "To ustawienie wymaga ponownego uruchomienia Discorda, aby było zastosowane. Czy chcesz teraz ponownie uruchomić Discorda?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet zastosowany",
   "REPLUGGED_SNIPPET_APPLY": "Zastosuj Snippet",

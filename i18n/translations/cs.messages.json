@@ -22,8 +22,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Zabrání Discordu odstranění tvého tokenu z localStorage, což snižuje počet nevyžádaných odhlášení.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Vyměnit Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Zamění [Clyde]({clydeUrl}) v příkazech Repluggedu za bohatou nabídku avatarů a uživatelských jmen vybranou vývojáři plug-inů - ve výchozím nastavení \"Replugged\".",
-  "REPLUGGED_SETTINGS_OVERLAY": "Nástroje pro vývojáře v překrytí",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Otevře okno s vývojářskými nástroji, které ti umožní zjistit, co se děje v herním překrytí Discordu.",
   "REPLUGGED_SETTINGS_RESTART": "Toto nastavení vyžaduje restart Discordu, aby se projevilo. Chceš restartovat Discord nyní?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet použit",
   "REPLUGGED_SNIPPET_APPLY": "Použít snippet",

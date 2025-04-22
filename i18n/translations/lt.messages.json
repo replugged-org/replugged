@@ -24,8 +24,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Neleidžia „Discord“ pašalinti tavo sesijos prieigos rakto (token) iš vietinės saugyklos ir sumažina nepageidaujamų atjungimų skaičių.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Pašalinti „Clyde“",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Pakeičia [„Clyde“]({clydeUrl}) „Replugged“ komandose. Vietoje jo, naudojami įvairūs avatarai ir slapyvardžiai, kuriuos sukūrė įskiepių kūrėjai. Jei toks įskiepyje neegzistuotų, tave pasitiktų „Replugged“.",
-  "REPLUGGED_SETTINGS_OVERLAY": "Persidengiantys kūrėjo įrankiai",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Atidaro kūrėjo įrankius, kurie leidžia pamatyti, kas vyksta „Discord“ žaidimų perdangoje.",
   "REPLUGGED_SETTINGS_RESTART": "Šiam nustatymui pakeisti būtina perkrauti „Discord“ aplikaciją. Ar nori tai padaryti dabar?",
   "REPLUGGED_SNIPPET_APPLIED": "Fragmentas pritaikytas",
   "REPLUGGED_SNIPPET_APPLY": "Pritaikyti fragmentą",

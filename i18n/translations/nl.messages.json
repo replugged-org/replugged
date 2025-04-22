@@ -18,8 +18,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Sla token op",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Houd Discord tegen van het verwijderen van je token uit localStorage, wat het aantal ongewenste afmeldingen vermindert.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Roei Clyde Uit",
-  "REPLUGGED_SETTINGS_OVERLAY": "Overlay DevTools",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Opent een DevTools-venster waarin je kunt zien wat er gebeurd in de in-game overlay van Discord.",
   "REPLUGGED_SETTINGS_RESTART": "Deze instelling vereist je om Discord te herstarten voordat deze effect heeft. Wil je Discord nu herstarten?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet Toegepast",
   "REPLUGGED_SNIPPET_APPLY": "Pas Snippet Toe",

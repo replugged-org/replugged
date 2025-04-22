@@ -1696,32 +1696,6 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_NO_CLYDE_DESC': TypedIntlMessageGetter<{$link?: LinkFunction, clydeUrl: any}>,
   /**
-   * Key: `1VHQaG`
-   * 
-   * ### Definition
-   * ```text
-   * Overlay DevTools
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`
-   */
-  'REPLUGGED_SETTINGS_OVERLAY': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `PS+ccX`
-   * 
-   * ### Definition
-   * ```text
-   * Opens a DevTools window that lets you inspect what's happening within Discord's in-game overlay.
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`
-   */
-  'REPLUGGED_SETTINGS_OVERLAY_DESC': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `eXvP6O`
    * 
    * ### Definition
