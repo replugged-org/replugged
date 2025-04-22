@@ -57,6 +57,5 @@
   "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Prikaži sloj preko klijenta koji kaže da se provjeravaju ažuriranja, a ako se ažuriranja pronađu, traži da ažurirate. Primjenjuje se samo ako je ažuriranje u pozadini onemogućeno.",
   "REPLUGGED_UPDATES_UPDATING": "Ažuriranje Repluggeda…",
   "REPLUGGED_UPDATES_UPDATING_ITEM": "Ažuriranje…",
-  "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged je ažuran.",
-  "REPLUGGED_UPDATES_UPDATE": "Ažurirajte Sada"
+  "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged je ažuran."
 }
