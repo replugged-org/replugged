@@ -330,19 +330,6 @@ export declare const messages: {
    */
   'REPLUGGED_BADGES_TRANSLATOR': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `7g6vZG`
-   * 
-   * ### Definition
-   * ```text
-   * Got It
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hr`
-   */
-  'REPLUGGED_BUTTON_GOT_IT': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `nnLVsb`
    * 
    * ### Definition
@@ -368,19 +355,6 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `hr`
    */
   'REPLUGGED_BUTTON_INSTALLER_INSTALLED': TypedIntlMessageGetter<{type: any}>,
-  /**
-   * Key: `Jbffz8`
-   * 
-   * ### Definition
-   * ```text
-   * Cancel
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hr`
-   */
-  'REPLUGGED_CANCEL': TypedIntlMessageGetter<{}>,
   /**
    * Key: `j9kNoq`
    * 
@@ -941,19 +915,6 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_SUCCESS_GENERIC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `/QavUl`
-   * 
-   * ### Definition
-   * ```text
-   * Confirm
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `hr`
-   */
-  'REPLUGGED_CONFIRM': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `zENqYW`
    * 
    * ### Definition
@@ -1188,19 +1149,6 @@ export declare const messages: {
    */
   'REPLUGGED_NO_ADDON_RESULTS': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `9+yBFh`
-   * 
-   * ### Definition
-   * ```text
-   * OK
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hr`, `no`
-   */
-  'REPLUGGED_OK': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `nrTCTU`
    * 
    * ### Definition
@@ -1226,32 +1174,6 @@ export declare const messages: {
    * Missing translations: `hi`
    */
   'REPLUGGED_PLUGINS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `ibSpio`
-   * 
-   * ### Definition
-   * ```text
-   * Copied!
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`, `hr`, `no`
-   */
-  'REPLUGGED_PLUGIN_EMBED_COPIED': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `IlKRVF`
-   * 
-   * ### Definition
-   * ```text
-   * Copy Link
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`, `hr`, `no`
-   */
-  'REPLUGGED_PLUGIN_EMBED_COPY': TypedIntlMessageGetter<{}>,
   /**
    * Key: `sl1Dvb`
    * 
@@ -1345,32 +1267,6 @@ export declare const messages: {
    */
   'REPLUGGED_QUICKCSS_FOLDER_OPEN': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `gJM35e`
-   * 
-   * ### Definition
-   * ```text
-   * Reload
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
-   */
-  'REPLUGGED_RELOAD': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `kkhJpa`
-   * 
-   * ### Definition
-   * ```text
-   * Restart
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `zh-CN`
-   */
-  'REPLUGGED_RESTART': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `e5G3RE`
    * 
    * ### Definition
@@ -1409,19 +1305,6 @@ export declare const messages: {
    * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `PdrtPz`
-   * 
-   * ### Definition
-   * ```text
-   * Advanced Settings
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
-   */
-  'REPLUGGED_SETTINGS_ADVANCED': TypedIntlMessageGetter<{}>,
   /**
    * Key: `vdzF9v`
    * 
@@ -1539,19 +1422,6 @@ export declare const messages: {
    * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
    */
   'REPLUGGED_SETTINGS_DEV_COMPANION_DESC': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `SPo+8/`
-   * 
-   * ### Definition
-   * ```text
-   * Reconnect
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
-   */
-  'REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT': TypedIntlMessageGetter<{}>,
   /**
    * Key: `ObxHdn`
    * 
@@ -1695,32 +1565,6 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `hi`
    */
   'REPLUGGED_SETTINGS_NO_CLYDE_DESC': TypedIntlMessageGetter<{$link?: LinkFunction, clydeUrl: any}>,
-  /**
-   * Key: `1VHQaG`
-   * 
-   * ### Definition
-   * ```text
-   * Overlay DevTools
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`
-   */
-  'REPLUGGED_SETTINGS_OVERLAY': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `PS+ccX`
-   * 
-   * ### Definition
-   * ```text
-   * Opens a DevTools window that lets you inspect what's happening within Discord's in-game overlay.
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`
-   */
-  'REPLUGGED_SETTINGS_OVERLAY_DESC': TypedIntlMessageGetter<{}>,
   /**
    * Key: `eXvP6O`
    * 
@@ -2580,32 +2424,6 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_CONNECTIONS': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `IlS5Nj`
-   * 
-   * ### Definition
-   * ```text
-   * Copied!
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_COPIED': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `ORcmoK`
-   * 
-   * ### Definition
-   * ```text
-   * Copy
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_COPY': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `sNWpYW`
    * 
    * ### Definition
@@ -3087,19 +2905,6 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_TOAST_SUCCESS_ONE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `V+pee3`
-   * 
-   * ### Definition
-   * ```text
-   * Update
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `da`, `hi`
-   */
-  'REPLUGGED_UPDATES_UPDATE': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `DIZGSk`
    * 
    * ### Definition
@@ -3125,19 +2930,6 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
    */
   'REPLUGGED_UPDATES_UPDATE_ALL': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `yiTLZG`
-   * 
-   * ### Definition
-   * ```text
-   * Update
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
-   */
-  'REPLUGGED_UPDATES_UPDATE_NOUN': TypedIntlMessageGetter<{}>,
   /**
    * Key: `JdG85+`
    * 

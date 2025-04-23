@@ -17,12 +17,8 @@ export default defineMessages({
   REPLUGGED_BADGES_SUPPORT: "Replugged Support",
   REPLUGGED_BADGES_TRANSLATOR: "Replugged Translator",
   REPLUGGED_BADGES_BOOSTER: "Replugged Server Booster",
-  REPLUGGED_BUTTON_GOT_IT: "Got It",
   REPLUGGED_BUTTON_INSTALLER_INSTALLED: "{type} Installed",
   REPLUGGED_BUTTON_INSTALLER_DOWNLOAD: "Download {type}",
-  REPLUGGED_CANCEL: "Cancel",
-  REPLUGGED_CONFIRM: "Confirm",
-  REPLUGGED_OK: "OK",
   REPLUGGED_COMMAND_ERROR_GENERIC:
     "Something went wrong, please try again later. If this issue persists, please contact the Replugged team.",
   REPLUGGED_COMMAND_SUCCESS_GENERIC: "Success",
@@ -101,9 +97,6 @@ export default defineMessages({
   REPLUGGED_SETTINGS_NO_CLYDE: "Eradicate Clyde",
   REPLUGGED_SETTINGS_NO_CLYDE_DESC:
     'Replaces [Clyde]({clydeUrl}) in Replugged commands with a mixed range of avatars and usernames selected by plug-in developers - fallbacks to "Replugged" by default.',
-  REPLUGGED_SETTINGS_OVERLAY: "Overlay DevTools",
-  REPLUGGED_SETTINGS_OVERLAY_DESC:
-    "Opens a DevTools window that lets you inspect what's happening within Discord's in-game overlay.",
   REPLUGGED_SETTINGS_RESTART:
     "This setting requires you to restart Discord to take effect. Do you want to restart Discord now?",
   REPLUGGED_SNIPPET_APPLIED: "Snippet Applied",
@@ -145,8 +138,6 @@ export default defineMessages({
   REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_ID: "Build ID:",
   REPLUGGED_UPDATES_OPTS_DEBUG_EXPERIMENTS: "Experiments:",
   REPLUGGED_UPDATES_OPTS_DEBUG_COMMANDS: "Commands:",
-  REPLUGGED_UPDATES_OPTS_DEBUG_COPIED: "Copied!",
-  REPLUGGED_UPDATES_OPTS_DEBUG_COPY: "Copy",
   REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS: "Settings:",
   REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS: "Plugins:",
   REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_LESS: "Show less",
@@ -182,13 +173,10 @@ export default defineMessages({
   REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC:
     "Show an overlay over the client which says updates are being checked for, and if updates are found, prompt you to update. Only applies if update in background is disabled.",
   REPLUGGED_UPDATES_UPDATER: "Updater",
-  REPLUGGED_UPDATES_UPDATE: "Update",
   REPLUGGED_UPDATES_UPDATING: "Updating Replugged…",
   REPLUGGED_UPDATES_UPDATING_ITEM: "Updating…",
   REPLUGGED_UPDATES_UP_TO_DATE: "Everything is up to date.",
-  REPLUGGED_PLUGIN_EMBED_COPY: "Copy Link",
   REPLUGGED_PLUGIN_EMBED_VIEW_REPO: "View Repo",
-  REPLUGGED_PLUGIN_EMBED_COPIED: "Copied!",
   REPLUGGED_PLUGIN_EMBED_WHATISTHIS: "What is this?",
   REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT:
     "This is a Replugged feature. It allows you to install plugins or themes straight from chat.\nSimply hit the install button on the embed.",
@@ -248,8 +236,6 @@ export default defineMessages({
   REPLUGGED_UPDATES_TOAST_SUCCESS_ALL: "All updates completed successfully.",
   REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY:
     "{name} requires a reload to work properly. Reload now?",
-  REPLUGGED_RELOAD: "Reload",
-  REPLUGGED_UPDATES_UPDATE_NOUN: "Update",
   REPLUGGED_VERSION: "Replugged {version, select, dev {[DEV MODE]} other {v{version}}}",
   REPLUGGED_SETTINGS_BADGES: "Enable Replugged Badges",
   REPLUGGED_SETTINGS_BADGES_DESC: "Show custom Replugged badges on user profiles.",
@@ -267,8 +253,6 @@ export default defineMessages({
   REPLUGGED_SETTINGS_DEV_COMPANION: "Reconnect Dev Companion",
   REPLUGGED_SETTINGS_DEV_COMPANION_DESC:
     "Reconnects the Dev Companion coremod to the VSCode extension.",
-  REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT: "Reconnect",
-  REPLUGGED_SETTINGS_ADVANCED: "Advanced Settings",
   REPLUGGED_SETTINGS_REACT_DEVTOOLS: "Enable React DevTools",
   REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC:
     "Loads the React DevTools extension, allowing you to inspect the React tree and debug more easily. **Requires restart**.",
@@ -277,7 +261,6 @@ export default defineMessages({
   REPLUGGED_SETTINGS_ADDON_EMBEDS: "Show Addon Embeds",
   REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC:
     "Show a card with information on an addon when a store/install link is shared in chat.",
-  REPLUGGED_RESTART: "Restart",
   REPLUGGED_SETTINGS_RESTART_TITLE: "Restart Required",
   REPLUGGED_SETTINGS_TRANSPARENT: "Transparent Window",
   REPLUGGED_SETTINGS_TRANSPARENT_DESC:

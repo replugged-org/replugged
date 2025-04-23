@@ -22,8 +22,6 @@
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Sprječava Discord da ukloni vaš token iz localStoragea, smanjujući broj neželjenih odjava.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Iskorijeniti Clydea",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Zamjenjuje [Clyde]({clydeUrl}) u naredbama Replugged s mješovitim rasponom avatara i korisničkih imena koje su odabrali programeri dodataka - prema zadanim postavkama vraća se na \"Replugged\".",
-  "REPLUGGED_SETTINGS_OVERLAY": "Prekrivanje DevTools",
-  "REPLUGGED_SETTINGS_OVERLAY_DESC": "Otvara DevTools prozor koji vam omogućuje da pregledate što se događa unutar Discordovog preklapanja u igri.",
   "REPLUGGED_SETTINGS_RESTART": "Ova postavka zahtijeva ponovno pokretanje Discorda kako bi stupila na snagu. Želite li sada ponovo pokrenuti Discord?",
   "REPLUGGED_SNIPPET_APPLIED": "Isječak Primijenjen",
   "REPLUGGED_SNIPPET_APPLY": "Primijeni Isječak",
@@ -59,6 +57,5 @@
   "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC": "Prikaži sloj preko klijenta koji kaže da se provjeravaju ažuriranja, a ako se ažuriranja pronađu, traži da ažurirate. Primjenjuje se samo ako je ažuriranje u pozadini onemogućeno.",
   "REPLUGGED_UPDATES_UPDATING": "Ažuriranje Repluggeda…",
   "REPLUGGED_UPDATES_UPDATING_ITEM": "Ažuriranje…",
-  "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged je ažuran.",
-  "REPLUGGED_UPDATES_UPDATE": "Ažurirajte Sada"
+  "REPLUGGED_UPDATES_UP_TO_DATE": "Replugged je ažuran."
 }
