@@ -4,7 +4,7 @@ import {
   isMessageDefinitionsFile,
 } from "@discord/intl-loader-core";
 import chalk from "chalk";
-import type esbuild from "esbuild";
+import type { Plugin } from "esbuild";
 import fs from "fs";
 
 let isFirstRun = true;
@@ -59,4 +59,4 @@ export default {
       }
     });
   },
-} as esbuild.Plugin;
+} as Plugin;
