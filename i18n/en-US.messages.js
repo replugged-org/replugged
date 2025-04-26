@@ -1,12 +1,5 @@
 import { defineMessages } from "@discord/intl";
 
-export const meta = {
-  translationsPath: "./translations",
-  secret: false,
-  translate: true,
-};
-
-// @ts-expect-error: This is a valid export
 export default defineMessages({
   REPLUGGED_ACCOUNT: "Replugged Account",
   REPLUGGED_BADGES_CONTRIBUTOR: "Replugged Contributor",
