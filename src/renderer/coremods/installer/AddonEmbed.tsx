@@ -1,5 +1,5 @@
 import { React } from "@common";
-import { intl } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import { Button, Clickable, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { getByProps } from "@webpack";
@@ -166,8 +166,8 @@ const Embed = React.memo(
                 onClick={props.copyUrl}>
                 <Link className={copyLinkIcon} />
                 {props.onCooldown
-                  ? intl.string(t.REPLUGGED_PLUGIN_EMBED_COPIED)
-                  : intl.string(t.REPLUGGED_PLUGIN_EMBED_COPY)}
+                  ? intl.string(discordT.BUILD_OVERRIDE_LINK_COPIED)
+                  : intl.string(discordT.BUILD_OVERRIDE_LINK_COPY)}
               </Clickable>
             </>
           )}
