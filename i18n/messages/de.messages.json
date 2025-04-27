@@ -226,5 +226,5 @@
   "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Quelle zur Installation des Addons von",
   "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "Identifikation",
   "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Wenn die Quelle mehrere Addons enthält, geben Sie an, welches Addon installiert werden soll",
-  "REPLUGGED_STORE": "speichern"
+  "REPLUGGED_STORE": "Speichern"
 }

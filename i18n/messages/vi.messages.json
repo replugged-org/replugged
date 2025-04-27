@@ -150,7 +150,7 @@
   "REPLUGGED_ADDON_AUTHORS_ONE": "bởi {author1}",
   "REPLUGGED_ADDON_AUTHORS_TWO": "bởi {author1} và {author2}",
   "REPLUGGED_ADDON_AUTHORS_THREE": "bởi {author1}, {author2}, và {author3}",
-  "REPLUGGED_CONFIRM_INSTALL": "cài đặt",
+  "REPLUGGED_CONFIRM_INSTALL": "Cài đặt",
   "REPLUGGED_ADDON_AUTHORS_MANY": "bởi {author1}, {author2}, {author3}, và {count, plural, =1 {# other} other {# others}}",
   "REPLUGGED_UPDATES_UPDATE_ALL": "Cập nhật tất cả",
   "REPLUGGED_UPDATES_UPDATE_TO": "Cập nhật lên {version}",
