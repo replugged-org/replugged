@@ -3,7 +3,7 @@ name: Update Messages
 on:
   push:
     paths:
-      - "i18n/messages/en-US.messages.json"
+      - "i18n/messages/*.messages.json"
 
 permissions:
   contents: write
