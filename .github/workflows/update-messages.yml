@@ -2,6 +2,8 @@ name: Update Messages
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "i18n/messages/*.messages.json"
 
@@ -29,5 +31,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
 
           git add i18n
-          git diff-index --quiet HEAD || git commit -m "chore(i18n): update en-US.messages.js [skip ci]"
+          git diff-index --quiet HEAD || git commit -m "chore(i18n): update message definitions [skip ci]"
           git push
