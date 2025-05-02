@@ -60,6 +60,16 @@ type UseDiscoveryState = (
 
 type FetchProfile = (id: string) => Promise<void>;
 
+type CommandAuth = ({
+  applicationId,
+  channel,
+  commandIntegrationTypes,
+}: {
+  applicationId: string;
+  channel: Channel;
+  commandIntegrationTypes?: number;
+}) => Promise<{ isAuthorized: boolean }>;
+
 async function injectRepluggedBotIcon(): Promise<void> {
   // Adds avatar for Replugged to be used by system bot just like Clyde
   // Ain't removing it on stop because we have checks here
@@ -248,11 +258,24 @@ async function injectProfileFetch(): Promise<void> {
   });
 }
 
+async function injectCommandAuthorization(): Promise<void> {
+  const commandAuthorizationMod = await waitForModule<Record<string, CommandAuth>>(
+    filters.bySource("isAuthorized:!0"),
+  );
+  const authorizationKey = getFunctionKeyBySource(commandAuthorizationMod, "isAuthorized:!0")!;
+
+  injector.instead(commandAuthorizationMod, authorizationKey, (args, orig) => {
+    if (args[0].applicationId === "replugged") return Promise.resolve({ isAuthorized: true });
+    return orig(...args);
+  });
+}
+
 export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
   await injectRepluggedSectionIcon();
   await injectApplicationCommandIndexStore();
   await injectProfileFetch();
+  await injectCommandAuthorization();
   loadCommands();
 }
 

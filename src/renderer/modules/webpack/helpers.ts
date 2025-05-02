@@ -1,7 +1,8 @@
 import type { GetModuleOptions, RawModule, WaitForOptions } from "src/types";
-import { getExportsForProps, getModule } from "./get-modules";
+import { flux } from "../common";
+import type { Store } from "../common/flux";
 import * as filters from "./filters";
-import Flux, { Store } from "../common/flux";
+import { getExportsForProps, getModule } from "./get-modules";
 import { waitForModule } from "./lazy";
 
 // Get by source
@@ -247,6 +248,6 @@ export function getByValue<T>(
 }
 
 export function getByStoreName<T extends Store>(name: string): T | undefined {
-  const stores = Flux.Store.getAll();
+  const stores = flux.Store.getAll();
   return stores.find((store) => store.getName() === name) as T | undefined;
 }

@@ -1,18 +1,19 @@
 import { parser } from "@common";
 import { Injector } from "@replugged";
+import type React from "react";
 import type { Capture, DefaultInRule } from "simple-markdown";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
-import { ObjectExports } from "src/types";
+import type { ObjectExports } from "src/types";
 import { registerRPCCommand } from "../rpc";
 import { generalSettings } from "../settings/pages";
 import AddonEmbed from "./AddonEmbed";
 import { loadCommands } from "./commands";
 import {
-  InstallLinkProps,
-  InstallResponse,
-  InstallerSource,
+  type InstallLinkProps,
+  type InstallResponse,
+  type InstallerSource,
   installFlow,
   parseInstallLink,
 } from "./util";
@@ -24,7 +25,7 @@ interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   focusProps?: Record<string, unknown>;
 }
 
-let uninjectFns: Array<() => void> = [];
+const uninjectFns: Array<() => void> = [];
 
 const modalFlows = new Map<string, Promise<InstallResponse>>();
 
@@ -112,7 +113,7 @@ async function injectLinks(): Promise<void> {
   defaultRules.repluggedInstallLink = {
     order: defaultRules.autolink.order - 0.5,
     match: (source: string) => {
-      const match = source.match(/^<?(https?:\/\/[^\s<]+[^<>.,:; "'\]\s])>?/);
+      const match = /^<?(https?:\/\/[^\s<]+[^<>.,:; "'\]\s])>?/.exec(source);
       if (!match) return null;
       const installLink = parseInstallLink(match[1]);
       if (!installLink) return null;

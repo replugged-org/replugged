@@ -4,11 +4,13 @@ import components from "../common/components";
 import type { Variant } from "./Text";
 
 enum HelpMessageTypes {
-  WARNING = 0,
-  INFO,
-  ERROR,
-  POSITIVE,
+  WARNING = "warn",
+  INFO = "info",
+  ERROR = "danger",
+  POSITIVE = "positive",
+  PREVIEW = "preview",
 }
+
 interface HelpMessageProps {
   children: React.ReactNode;
   messageType: (typeof HelpMessageTypes)[keyof typeof HelpMessageTypes];
