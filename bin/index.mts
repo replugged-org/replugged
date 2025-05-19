@@ -22,7 +22,7 @@ import { fileURLToPath, pathToFileURL } from "url";
 import WebSocket from "ws";
 import yargs, { type ArgumentsCamelCase } from "yargs";
 import { hideBin } from "yargs/helpers";
-import logBuildPlugin from "../scripts/build-plugins/intl-loader.mjs";
+import logBuildPlugin from "../scripts/build-plugins/log-build.mjs";
 import { type AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
 import { release } from "./release.mjs";
 
