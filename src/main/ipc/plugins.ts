@@ -98,7 +98,11 @@ ipcMain.on(RepluggedIpcChannels.LIST_PLUGINS, (event) => {
 
 ipcMain.on(RepluggedIpcChannels.REGISTER_PLUGIN_NATIVE, (event, pluginName: string) => {
   const plugin = getPlugin(pluginName);
-  if (!plugin.manifest.native) return;
+
+  if (!plugin.manifest.native) {
+    event.returnValue = null;
+    return;
+  }
 
   const path = join(CONFIG_PATHS.plugins, pluginName, plugin.manifest.native);
   if (!path.startsWith(`${PLUGINS_DIR}${sep}`)) {
@@ -109,11 +113,15 @@ ipcMain.on(RepluggedIpcChannels.REGISTER_PLUGIN_NATIVE, (event, pluginName: stri
     event.returnValue = PluginIPC[plugin.manifest.id];
     return;
   }
+
   try {
     const entries = Object.entries<UnknownFunction>(
       require(path) as Record<string, UnknownFunction>,
     );
-    if (!entries.length) return;
+    if (!entries.length) {
+      PluginIPC[plugin.manifest.id] = {};
+      event.returnValue = {};
+    }
 
     const mappings: Record<string, string> = {};
 
