@@ -44,7 +44,7 @@ export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule
     return (0, eval)(
       `${
         patchedSource.startsWith("function(") ? `0,${patchedSource}` : patchedSource
-      }\n//# sourceURL=PatchedWebpack-${id}`,
+      }\n//# sourceURL=/assets/PatchedWebpack-${id}`,
     );
   } catch (err) {
     logger.error(`PatchedWebpack-${id}`, err);
