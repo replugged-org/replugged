@@ -10,6 +10,9 @@
   border-radius: 4px;
   outline: none !important;
 }
+.platform-win #replugged-quickcss-wrapper .cm-editor {
+  max-height: calc(100% - var(--custom-app-top-bar-height) - 20px);
+}
 #replugged-quickcss-wrapper .cm-content {
   padding: 0px;
 }

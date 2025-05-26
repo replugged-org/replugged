@@ -43,7 +43,8 @@
     "postpublish": "rm -rf *.d.ts && rm -rf dist && npm run build",
     "release": "np",
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
-    "docs:watch": "pnpm run docs --watch"
+    "docs:watch": "pnpm run docs --watch",
+    "generate-messages": "tsx scripts/generate-messages.mts && pnpm run build"
   },
   "packageManager": "pnpm@10.7.1",
   "types": "dist/renderer/replugged.d.ts",
