@@ -1,10 +1,10 @@
 // https://github.com/uiwjs/react-codemirror/blob/master/themes/github/src/index.ts
 // https://github.com/uiwjs/react-codemirror/blob/master/themes/theme/src/index.tsx
 
-import { EditorView } from "codemirror";
-import type { Extension } from "@codemirror/state";
 import { HighlightStyle, type TagStyle, syntaxHighlighting } from "@codemirror/language";
+import type { Extension } from "@codemirror/state";
 import { tags as t } from "@lezer/highlight";
+import { EditorView } from "codemirror";
 import type { StyleSpec } from "style-mod";
 
 export interface CreateThemeOptions {
@@ -100,7 +100,7 @@ export const createTheme = ({
       borderLeftColor: settings.caret,
     };
   }
-  let activeLineGutterStyle: StyleSpec = {};
+  const activeLineGutterStyle: StyleSpec = {};
   if (settings.gutterActiveForeground) {
     activeLineGutterStyle.color = settings.gutterActiveForeground;
   }

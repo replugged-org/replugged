@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from "fs";
 import { execSync } from "child_process";
 import { AnsiEscapes } from "../util.mjs";
 import { exitCode } from "../index.mjs";
+import type { PackageJson } from "type-fest";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -40,6 +41,7 @@ if (dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
 }
 
 // Verify if we're on node 10.x
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 if (!(await import("fs")).promises) {
   console.log(
     `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
@@ -55,21 +57,25 @@ if (!(await import("fs")).promises) {
 if (!existsSync(nodeModulesPath)) {
   installDeps();
 } else {
-  const { dependencies } = JSON.parse(
+  const packageJson: PackageJson = JSON.parse(
     readFileSync(join(rootPath, "package.json"), { encoding: "utf8" }),
   );
-  for (const dependency in dependencies) {
+  for (const dependency in packageJson.dependencies) {
     const depPath = join(nodeModulesPath, dependency);
     if (!existsSync(depPath)) {
       installDeps();
       break;
     }
 
-    const depPackage = JSON.parse(
+    const depPackage: PackageJson = JSON.parse(
       readFileSync(join(depPath, "package.json"), { encoding: "utf8" }),
     );
-    const expectedVerInt = parseInt(dependencies[dependency].replace(/[^\d]/g, ""), 10);
-    const installedVerInt = parseInt(depPackage.version.replace(/[^\d]/g, ""), 10);
+    const expectedVerInt = packageJson.dependencies[dependency]
+      ? parseInt(packageJson.dependencies[dependency].replace(/[^\d]/g, ""), 10)
+      : 0;
+    const installedVerInt = depPackage.version
+      ? parseInt(depPackage.version.replace(/[^\d]/g, ""), 10)
+      : 0;
     if (installedVerInt < expectedVerInt) {
       installDeps();
       break;
