@@ -134,7 +134,6 @@ export const inject = async (
     const discordName = platform === "canary" ? "DiscordCanary" : "Discord";
     const overrideCommand = `${
       appDir.startsWith("/var") ? "sudo flatpak override" : "flatpak override --user"
-      // xdg-config/replugged instead of join(dirname, "..", "..")?
     } com.discordapp.${discordName} --filesystem=${prod ? repluggedConfigDir : join(dirname, "..", "..")}`;
 
     console.log(
