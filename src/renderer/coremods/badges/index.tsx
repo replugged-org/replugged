@@ -178,7 +178,7 @@ export async function start(): Promise<void> {
   const getBadgeAssetKey = getFunctionKeyBySource(userProfileConstantsMod, "badge-icons")!;
 
   injector.instead(userProfileConstantsMod, getBadgeAssetKey, ([icon], orig) =>
-    icon.startsWith("replugged") ? icon.replace("replugged", "") : orig(icon),
+    icon.startsWith("replugged") ? () => icon.replace("replugged", "") : orig,
   );
 }
 
