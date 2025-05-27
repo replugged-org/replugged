@@ -1,22 +1,19 @@
 import { dirname, join } from "path";
 import { statSync } from "fs";
 import electron from "electron";
-import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
-import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 
-
 // This is for backwards compatibility, to be removed later.
 let discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 try {
   // If using older replugged file system
   statSync(discordPath);
-  const discordPackage = require(join(discordPath, "package.json"));
+  const discordPackage: Record<string, string> = require(join(discordPath, "package.json"));
   require.main!.filename = join(discordPath, discordPackage.main);
 } catch {
   // If using newer replugged file system

@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 import { existsSync } from "fs";
-import { chown, copyFile, mkdir, rename, rm, stat, writeFile } from "fs/promises";
+import { chown, copyFile, rename, rm, stat, writeFile } from "fs/promises";
 import path, { join, sep } from "path";
 import { fileURLToPath } from "url";
 import { createPackage, extractAll, statFile, uncache } from "@electron/asar";
@@ -70,10 +70,10 @@ export const correctMissingMainAsar = async (appDir: string): Promise<boolean> =
   return true;
 };
 
-export const isPlugged = async (appDir: string): Promise<boolean> => {
+export const isPlugged = (appDir: string): boolean => {
   try {
     uncache(appDir);
-    await statFile(appDir, join("app_bootstrap", "index.orig.js"));
+    statFile(appDir, join("app_bootstrap", "index.orig.js"));
     return true;
   } catch {
     return false;
@@ -89,7 +89,7 @@ export const inject = async (
   if (!(await correctMissingMainAsar(appDir))) return false;
   if (!(await isDiscordInstalled(appDir))) return false;
 
-  if (await isPlugged(appDir)) {
+  if (isPlugged(appDir)) {
     /*
      * @todo: verify if there is nothing in discord_desktop_core as well
      * @todo: prompt to automatically uninject and continue
@@ -198,14 +198,14 @@ export const uninject = async (
   )
     return false;
 
-  if (!(await isPlugged(appDir))) {
+  if (!isPlugged(appDir)) {
     console.error(
       `${AnsiEscapes.BOLD}${AnsiEscapes.RED}There is nothing to unplug. You are already running Discord without mods.${AnsiEscapes.RESET}`,
     );
     return false;
   }
   const tempDir = join(appDir, "..", "temp");
-  await extractAll(appDir, tempDir);
+  extractAll(appDir, tempDir);
   await rm(appDir, { recursive: true, force: true });
   await rm(join(tempDir, "app_bootstrap", "index.js"));
   await rename(
