@@ -16,9 +16,7 @@ try {
   require.main!.filename = join(discordPath, discordPackage.main);
 } catch {
   // If using newer replugged file system
-  discordPath = join(dirname(require.main!.filename), "app.orig");
-  const discordPackage = require(join(discordPath, "package.json"));
-  require.main!.filename = join(discordPath, "..", discordPackage.main);
+  discordPath = join(dirname(require.main!.filename), "app_bootstrap", "index.orig.js");
 }
 
 Object.defineProperty(global, "appSettings", {

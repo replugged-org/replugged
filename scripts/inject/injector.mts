@@ -73,7 +73,7 @@ export const correctMissingMainAsar = async (appDir: string): Promise<boolean> =
 export const isPlugged = async (appDir: string): Promise<boolean> => {
   try {
     uncache(appDir);
-    await statFile(appDir, "app.orig");
+    await statFile(appDir, join("app_bootstrap", "index.orig.js"));
     return true;
   } catch {
     return false;
@@ -135,6 +135,7 @@ export const inject = async (
     const discordName = platform === "canary" ? "DiscordCanary" : "Discord";
     const overrideCommand = `${
       appDir.startsWith("/var") ? "sudo flatpak override" : "flatpak override --user"
+      // xdg-config/replugged instead of join(dirname, "..", "..")?
     } com.discordapp.${discordName} --filesystem=${prod ? entryPointDir : join(dirname, "..", "..")}`;
 
     console.log(
@@ -171,22 +172,15 @@ export const inject = async (
     }
   }
   const tempDir = join(appDir, "..", "temp");
-  await mkdir(tempDir);
-  await Promise.all([
-    writeFile(
-      join(tempDir, "index.js"),
-      `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}")`,
-    ),
-    writeFile(
-      join(appDir, "..", "temp", "package.json"),
-      JSON.stringify({
-        main: "index.js",
-        name: "discord",
-      }),
-    ),
-    extractAll(join(appDir, "..", "app.orig.asar"), join(tempDir, "app.orig")),
-  ]);
-
+  extractAll(join(appDir, "..", "app.orig.asar"), tempDir);
+  await rename(
+    join(tempDir, "app_bootstrap", "index.js"),
+    join(tempDir, "app_bootstrap", "index.orig.js"),
+  );
+  await writeFile(
+    join(tempDir, "app_bootstrap", "index.js"),
+    `require("${entryPoint.replace(RegExp(sep.repeat(2), "g"), "/")}")`,
+  );
   await createPackage(tempDir, appDir);
   await rm(join(appDir, "..", "app.orig.asar"), { recursive: true, force: true });
   await rm(tempDir, { recursive: true, force: true });
@@ -213,7 +207,13 @@ export const uninject = async (
   const tempDir = join(appDir, "..", "temp");
   await extractAll(appDir, tempDir);
   await rm(appDir, { recursive: true, force: true });
-  await createPackage(join(tempDir, "app.orig"), appDir);
+  await rm(join(tempDir, "app_bootstrap", "index.js"));
+  await rename(
+    join(tempDir, "app_bootstrap", "index.orig.js"),
+    join(tempDir, "app_bootstrap", "index.js"),
+  );
+
+  await createPackage(tempDir, appDir);
   await rm(tempDir, { recursive: true, force: true });
   // For discord_arch_electron
   if (existsSync(join(appDir, "..", "app.orig.asar.unpacked"))) {
