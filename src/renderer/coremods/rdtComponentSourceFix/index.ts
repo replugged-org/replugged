@@ -1,4 +1,4 @@
-import { AnyFunction } from "src/types";
+import type { AnyFunction } from "src/types";
 
 function getOriginal(fn?: AnyFunction): AnyFunction | undefined {
   return typeof fn === "function" &&
@@ -13,7 +13,7 @@ export function start(): void {
     get: () => {
       return $$type;
     },
-    set: (v) => {
+    set: (v: AnyFunction) => {
       $$type = getOriginal(v);
     },
     configurable: true,

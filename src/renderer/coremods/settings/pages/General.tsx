@@ -1,5 +1,5 @@
 import { modal, toast } from "@common";
-import { intl } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import {
   Button,
@@ -19,12 +19,23 @@ import * as settings from "../../../apis/settings";
 import * as util from "../../../util";
 import { initWs, socket } from "../../devCompanion";
 
-export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
+export const generalSettings = settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
   defaultSettings,
 );
 
-const konamiCode = ["38", "38", "40", "40", "37", "39", "37", "39", "66", "65"];
+const konamiCode = [
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "KeyB",
+  "KeyA",
+];
 
 function reload(): void {
   setTimeout(() => window.location.reload(), 250);
@@ -40,7 +51,7 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
     .confirm({
       title: intl.string(t.REPLUGGED_SETTINGS_RESTART_TITLE),
       body: intl.string(t.REPLUGGED_SETTINGS_RESTART),
-      confirmText: intl.string(t.REPLUGGED_RESTART),
+      confirmText: intl.string(discordT.BUNDLE_READY_RESTART),
       confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
@@ -57,11 +68,13 @@ export const General = (): React.ReactElement => {
     generalSettings,
     "reactDevTools",
   );
+  const { value: titleBarValue, onChange: titleBarOnChange } = util.useSetting(
+    generalSettings,
+    "titleBar",
+  );
 
-  const [kKeys, setKKeys] = React.useState<number[]>([]);
-
+  const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
-
   const [hue, setHue] = React.useState(0);
 
   React.useEffect(() => {
@@ -75,7 +88,7 @@ export const General = (): React.ReactElement => {
 
   const listener = (e: KeyboardEvent): void => {
     if (isEasterEgg) return;
-    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), e.keyCode]);
+    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), e.code]);
   };
 
   React.useEffect(() => {
@@ -110,8 +123,20 @@ export const General = (): React.ReactElement => {
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
 
+      {DiscordNative.process.platform === "linux" && (
+        <SwitchItem
+          value={titleBarValue}
+          onChange={(value) => {
+            titleBarOnChange(value);
+            restartModal(true);
+          }}
+          note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}>
+          {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+        </SwitchItem>
+      )}
+
       <Category
-        title={intl.string(t.REPLUGGED_SETTINGS_ADVANCED)}
+        title={intl.string(discordT.ADVANCED_SETTINGS)}
         note={intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}>
         <FormItem
           title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
@@ -162,7 +187,7 @@ export const General = (): React.ReactElement => {
         </SwitchItem>
 
         <ButtonItem
-          button={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT)}
+          button={intl.string(discordT.RECONNECT)}
           note={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_DESC)}
           onClick={() => {
             socket?.close(1000, "Reconnecting");
