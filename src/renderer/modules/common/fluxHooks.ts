@@ -47,12 +47,12 @@ const areArraysShallowEqual = getFunctionBySource<AreArraysShallowEqual>(
 )!;
 
 const useStateFromStoresMod = await waitForModule<Record<string, ValueOf<FluxHooks>>>(
-  filters.bySource("useStateFromStores"),
+  filters.bySource('.attach("useStateFromStores")'),
 );
 
 const useStateFromStores = getFunctionBySource<FluxHooks["useStateFromStores"]>(
   useStateFromStoresMod,
-  '.attach("useStateFromStores")',
+  "useStateFromStores",
 )!;
 
 export default {
