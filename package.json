@@ -39,7 +39,7 @@
     "lint": "pnpm run prettier:check && pnpm run eslint:check && pnpm run cspell:check && pnpm run typescript:check",
     "lint:fix": "pnpm run prettier:fix && pnpm run eslint:fix && pnpm run cspell:check && pnpm run typescript:check",
     "postinstall": "tsx scripts/build-bin.mts",
-    "prepublishOnly": "rm -rf dist && tsc --declaration --emitDeclarationOnly --noEmit false -p tsconfig.json && rm -rf dist/scripts && mv dist/src/* dist && rm -rf dist/src && cp src/*.d.ts dist && tsx scripts/create-import-wrappers.mts",
+    "prepublishOnly": "rm -rf dist && tsc --declaration --emitDeclarationOnly --noEmit false --allowJs false -p tsconfig.json && rm -rf dist/scripts && mv dist/src/* dist && rm -rf dist/src && cp src/*.d.ts dist && tsx scripts/create-import-wrappers.mts",
     "postpublish": "rm -rf *.d.ts && rm -rf dist && npm run build",
     "release": "np",
     "docs": "typedoc src/renderer/replugged.ts --excludeExternals",
