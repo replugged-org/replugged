@@ -40,6 +40,9 @@ const common: esbuild.BuildOptions = {
   logLevel: "info",
   plugins,
   metafile: true,
+  jsx: "transform",
+  jsxFactory: "window.replugged.common.React.createElement",
+  jsxFragment: "window.replugged.common.React.Fragment",
 };
 
 const contexts = await Promise.all([
