@@ -335,14 +335,45 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
           };
         }
 
+        if (manifest.native && args.importer.startsWith(path.resolve(manifest.native))) {
+          return {
+            errors: [
+              {
+                text: `Unsupported import: ${args.path}\nOnly Native lib imports are supported in native files.`,
+              },
+            ],
+          };
+        }
         return {
           path: args.path,
           namespace: "replugged",
         };
       });
 
+      build.onResolve(
+        { filter: new RegExp(`.*?/${manifest.native?.split("/").pop()?.replace(/\..+/, "")}`) },
+        (args) => {
+          if (args.kind !== "import-statement") return undefined;
+
+          return {
+            path: `replugged.plugins.pluginNatives.get("${manifest.id}")`,
+            namespace: "replugged",
+          };
+        },
+      );
+
       build.onResolve({ filter: /^react$/ }, (args) => {
         if (args.kind !== "import-statement") return undefined;
+
+        if (manifest.native && args.importer.startsWith(path.resolve(manifest.native))) {
+          return {
+            errors: [
+              {
+                text: `Unsupported import: ${args.path}\nOnly Native lib imports are supported in native files.`,
+              },
+            ],
+          };
+        }
 
         return {
           path: "replugged/common/React",
@@ -429,6 +460,21 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
     );
 
     manifest.plaintextPatches = "plaintextPatches.js";
+  }
+  if ("native" in manifest) {
+    targets.push(
+      esbuild.context(
+        overwrites({
+          ...common,
+          platform: "node",
+          format: "cjs",
+          entryPoints: [path.join(folderPath, manifest.native!)],
+          outfile: `${distPath}/native.js`,
+        }),
+      ),
+    );
+
+    manifest.native = "native.js";
   }
 
   if (!existsSync(distPath)) mkdirSync(distPath, { recursive: true });
