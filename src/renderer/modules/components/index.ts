@@ -110,6 +110,19 @@ export type { ClickableType };
 export let Clickable: ClickableType;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
+import type { ColorPickerItemType, ColorPickerType } from "./ColorPickerItem";
+export type { ColorPickerType };
+export let ColorPicker: ColorPickerType;
+importTimeout("ColorPicker", import("./ColorPickerItem"), (mod) => (ColorPicker = mod.ColorPicker));
+
+export type { ColorPickerItemType };
+export let ColorPickerItem: ColorPickerItemType;
+importTimeout(
+  "ColorPickerItem",
+  import("./ColorPickerItem"),
+  (mod) => (ColorPickerItem = mod.ColorPickerItem),
+);
+
 import type { CategoryType } from "./Category";
 export type { CategoryType };
 export let Category: CategoryType;
