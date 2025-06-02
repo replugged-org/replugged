@@ -57,14 +57,13 @@ export interface ChannelOptions extends BaseCommandOptions<ApplicationCommandOpt
   channel_types?: readonly number[];
 }
 
-export interface OtherCommandOptions
-  extends BaseCommandOptions<
-    | ApplicationCommandOptionType.Attachment
-    | ApplicationCommandOptionType.Boolean
-    | ApplicationCommandOptionType.Mentionable
-    | ApplicationCommandOptionType.Role
-    | ApplicationCommandOptionType.User
-  > {}
+export type OtherCommandOptions = BaseCommandOptions<
+  | ApplicationCommandOptionType.Attachment
+  | ApplicationCommandOptionType.Boolean
+  | ApplicationCommandOptionType.Mentionable
+  | ApplicationCommandOptionType.Role
+  | ApplicationCommandOptionType.User
+>;
 
 export interface CommandOptionReturn<T = unknown> {
   name: string;
