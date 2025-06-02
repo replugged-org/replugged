@@ -6,7 +6,7 @@ export declare class LocalStorage {
   public remove: (key: string) => void;
   public clear: () => void;
   public stringify: () => string;
-  public asyncGetRaw: <T>(key: string, defaultValue?: T) => Promise<string | null>;
+  public asyncGetRaw: (key: string) => Promise<string | null>;
   public setRaw: (key: string, value: string) => void;
   public getAfterRefresh: <T>(key: string) => Promise<T>;
 }
