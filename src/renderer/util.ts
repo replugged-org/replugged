@@ -105,15 +105,13 @@ interface ResolvedInvite {
   invite: Invite;
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type GetInviteMod = {
+interface GetInviteMod {
   getInvite: (invite: string) => Invite | undefined;
-};
+}
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type ResolveInviteMod = {
+interface ResolveInviteMod {
   resolveInvite: (invite: string) => Promise<ResolvedInvite | undefined>;
-};
+}
 
 let getInvite: GetInviteMod["getInvite"] | undefined;
 let resolveInvite: ResolveInviteMod["resolveInvite"] | undefined;
@@ -340,7 +338,7 @@ export function findInTree(
   let tempReturn;
   if (Array.isArray(tree)) {
     for (const value of tree) {
-      tempReturn = findInTree(value, searchFilter, {
+      tempReturn = findInTree(value as Tree, searchFilter, {
         walkable,
         ignore,
         maxRecursion: maxRecursion - 1,

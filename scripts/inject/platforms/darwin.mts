@@ -1,4 +1,4 @@
-import { DiscordPlatform } from "../types.mjs";
+import type { DiscordPlatform } from "../types.mjs";
 
 const PATHS = {
   stable: "/Applications/Discord.app/Contents/Resources/app.asar",
