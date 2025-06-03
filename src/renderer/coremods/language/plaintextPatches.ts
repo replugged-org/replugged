@@ -4,10 +4,10 @@ const coremodStr = "replugged.coremods.coremods.language";
 
 export default [
   {
-    find: "getAvailableLocales",
+    find: ".flagImage",
     replacements: [
       {
-        match: /(\.H1,title:\w+\.intl\.string\(.+?\),children:)((?:[^}]*?}){3}\))/,
+        match: /(\.H1,title:\w+\.\w+\.string\(.+?\),children:)((?:[^}]*?}){3}\))/,
         replace: (_, prefix, ogChild) => `${prefix}[${coremodStr}?.Card() ?? null,${ogChild}]`,
       },
       {
