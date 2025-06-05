@@ -20,6 +20,7 @@ export enum RepluggedIpcChannels {
   GET_THEME = "REPLUGGED_GET_THEME",
   UNINSTALL_THEME = "REPLUGGED_UNINSTALL_THEME",
   LIST_PLUGINS = "REPLUGGED_LIST_PLUGINS",
+  REGISTER_PLUGIN_NATIVE = "REPLUGGED_REGISTER_PLUGIN_NATIVE",
   GET_PLUGIN = "REPLUGGED_GET_PLUGIN",
   GET_PLUGIN_PLAINTEXT_PATCHES = "REPLUGGED_GET_PLUGIN_PLAINTEXT_PATCHES",
   UNINSTALL_PLUGIN = "REPLUGGED_UNINSTALL_PLUGIN",
@@ -72,7 +73,13 @@ export interface RepluggedPlugin {
   hasCSS: boolean;
 }
 
-export type { AnyAddonManifest, PluginExports, PluginManifest, ThemeManifest } from "./addon";
+export type {
+  AnyAddonManifest,
+  PluginExports,
+  PluginNativeMap,
+  PluginManifest,
+  ThemeManifest,
+} from "./addon";
 export * from "./coremods/commands";
 export * from "./coremods/contextMenu";
 export * from "./coremods/message";

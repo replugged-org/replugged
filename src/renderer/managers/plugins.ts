@@ -16,6 +16,7 @@ interface PluginWrapper extends RepluggedPlugin {
 /**
  * @hidden
  */
+export const pluginNatives = new Map<string, Record<string, (...args: unknown[]) => unknown>>();
 export const plugins = new Map<string, PluginWrapper>();
 const running = new Set<string>();
 
@@ -54,6 +55,7 @@ function register(plugin: RepluggedPlugin): void {
  * @remarks
  * You may need to reload Discord after adding a new plugin before it's available.
  */
+
 export function loadAll(): void {
   window.RepluggedNative.plugins.list().forEach(register);
 }
@@ -74,6 +76,9 @@ export async function start(id: string): Promise<void> {
     if (running.has(plugin.manifest.id)) {
       throw new Error(`Plugin "${id}" is already running`);
     }
+
+    if (plugin.manifest.native)
+      pluginNatives.set(plugin.manifest.id, RepluggedNative.plugins.getNative(plugin.path));
 
     if (plugin.manifest.renderer) {
       await Promise.race([
