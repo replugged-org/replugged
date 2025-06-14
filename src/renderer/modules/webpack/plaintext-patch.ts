@@ -46,7 +46,7 @@ export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule
     return (0, eval)(
       `${
         patchedSource.startsWith("function(") ? `0,${patchedSource}` : patchedSource
-      }\n// Patched by: ${patchedBy.filter(Boolean).join(", ")}\n//# sourceURL=https://discord.com/assets/patched/PatchedWebpack-${id}`,
+      }\n// Patched by: ${patchedBy.filter(Boolean).join(", ")}\n//# sourceURL=${window.location.origin}/assets/patched/PatchedWebpack-${id}`,
     );
   } catch (err) {
     logger.error(`PatchedWebpack-${id}`, err);
