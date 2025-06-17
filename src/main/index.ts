@@ -28,38 +28,18 @@ Object.defineProperty(global, "appSettings", {
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  public constructor(
-    opts: electron.BrowserWindowConstructorOptions & {
-      webContents?: electron.WebContents;
-      webPreferences?: {
-        nativeWindowOpen: boolean;
-      };
-    },
-  ) {
+  public constructor(opts: electron.BrowserWindowConstructorOptions) {
     const titleBarSetting = getSetting<boolean>("dev.replugged.Settings", "titleBar", false);
     if (opts.frame && process.platform === "linux" && titleBarSetting) opts.frame = void 0;
 
     const originalPreload = opts.webPreferences?.preload;
 
-    if (opts.webContents) {
-      // General purpose pop-outs used by Discord
-    } else if (opts.webPreferences?.nodeIntegration) {
-      // Splash Screen
-      // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-    } else if (opts.webPreferences?.offscreen) {
-      // Overlay
-      //      originalPreload = opts.webPreferences.preload;
-      // opts.webPreferences.preload = join(__dirname, './preload.js');
-    } else if (opts.webPreferences?.preload) {
-      // originalPreload = opts.webPreferences.preload;
-      if (opts.webPreferences.nativeWindowOpen) {
-        // Discord Client
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
-        // opts.webPreferences.contextIsolation = false; // shrug
-      } else {
-        // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
-      }
+    // Load our preload script if it's the main window or the splash screen
+    if (
+      opts.webPreferences?.preload &&
+      (opts.title || opts.webPreferences.preload.includes("splash"))
+    ) {
+      opts.webPreferences.preload = join(__dirname, "./preload.js");
     }
 
     super(opts);
