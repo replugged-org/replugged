@@ -1,4 +1,10 @@
-import electron, { app, net, protocol, session } from "electron";
+import electron, {
+  type BrowserWindowConstructorOptions,
+  app,
+  net,
+  protocol,
+  session,
+} from "electron";
 import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
@@ -28,7 +34,7 @@ Object.defineProperty(global, "appSettings", {
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  public constructor(opts: electron.BrowserWindowConstructorOptions) {
+  public constructor(opts: BrowserWindowConstructorOptions) {
     const titleBarSetting = getSetting<boolean>("dev.replugged.Settings", "titleBar", false);
     if (opts.frame && process.platform === "linux" && titleBarSetting) opts.frame = void 0;
 
