@@ -104,10 +104,7 @@ function loadReactDevTools(): void {
 }
 
 function patchPermissionHandler(): void {
-  // TODO: import different things from electron not just default
-  const {
-    session: { defaultSession },
-  } = electron;
+  const { defaultSession } = session;
   const originalSetHandler = defaultSession.setPermissionRequestHandler.bind(defaultSession);
   defaultSession.setPermissionRequestHandler = (cb) => {
     originalSetHandler((webContents, permission, callback, details) => {
