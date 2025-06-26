@@ -97,6 +97,23 @@ function loadReactDevTools(): void {
   }
 }
 
+function patchPermissionHandler(): void {
+  // TODO: import different things from electron not just default
+  const {
+    session: { defaultSession },
+  } = electron;
+  const originalSetHandler = defaultSession.setPermissionRequestHandler.bind(defaultSession);
+  defaultSession.setPermissionRequestHandler = (cb) => {
+    originalSetHandler((webContents, permission, callback, details) => {
+      if (permission === "media") {
+        callback(true);
+        return;
+      }
+      cb?.(webContents, permission, callback, details);
+    });
+  };
+}
+
 // Copied from old codebase
 electron.app.once("ready", () => {
   electron.session.defaultSession.webRequest.onBeforeRequest(
@@ -173,6 +190,7 @@ electron.app.once("ready", () => {
   });
 
   loadReactDevTools();
+  patchPermissionHandler();
 });
 
 // This module is required this way at runtime.
