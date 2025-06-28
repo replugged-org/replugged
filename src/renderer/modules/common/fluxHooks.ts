@@ -24,20 +24,30 @@ export interface FluxHooks {
   ) => T;
 }
 
+interface ShallowEqualOptions {
+  shouldWarnLargeObjects?: boolean;
+  logCallback?: (message: string) => void;
+}
+
 type ShallowEqual = <T>(
   a: T,
   b: T,
   excludeKeys?: string[],
-  callback?: (message: string) => void,
+  options?: ShallowEqualOptions,
 ) => boolean;
-type AreArraysShallowEqual = <T extends []>(a: T, b: T) => boolean;
+type AreArraysShallowEqual = <T extends []>(a: T, b: T, options?: ShallowEqualOptions) => boolean;
 
-const shallowEqualMod = await waitForModule(filters.bySource("shallowEqual: unequal key"));
-const shallowEqual = getFunctionBySource<ShallowEqual>(shallowEqualMod, "shallowEqual")!;
-const areArraysShallowEqual = getFunctionBySource<AreArraysShallowEqual>(shallowEqualMod, ".some")!;
+const shallowEqualMod = await waitForModule(
+  filters.bySource(/{shouldWarnLargeObjects:\w+,logCallback:\w+}/),
+);
+const shallowEqual = getFunctionBySource<ShallowEqual>(shallowEqualMod, "Object.keys")!;
+const areArraysShallowEqual = getFunctionBySource<AreArraysShallowEqual>(
+  shallowEqualMod,
+  ".every",
+)!;
 
 const useStateFromStoresMod = await waitForModule<Record<string, ValueOf<FluxHooks>>>(
-  filters.bySource("useStateFromStores"),
+  filters.bySource('.attach("useStateFromStores")'),
 );
 
 const useStateFromStores = getFunctionBySource<FluxHooks["useStateFromStores"]>(

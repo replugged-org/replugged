@@ -72,7 +72,7 @@ const useSyncMessages = getFunctionBySource<I18n["useSyncMessages"]>(
 // In case the name gets mangled
 const discordT = intlMod.t ?? getExportsForProps<I18n["t"]>(intlMod, ["$$loader", "$$baseObject"])!;
 
-const { runtimeHashMessageKey } = await waitForProps<Hash>("runtimeHashMessageKey");
+export const { runtimeHashMessageKey } = await waitForProps<Hash>("runtimeHashMessageKey");
 
 export const t = new Proxy(discordT.$$baseObject, {
   get: (_t, key: string) => discordT[runtimeHashMessageKey(key)],
