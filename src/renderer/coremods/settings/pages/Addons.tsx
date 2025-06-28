@@ -204,29 +204,12 @@ export function label(
   return base;
 }
 
-function replaceVariable(
-  str: string,
-  variables: Record<string, React.ReactElement | string>,
-): React.ReactElement {
-  const els: Array<React.ReactElement | string> = [];
-  let last = 0;
-  for (const [match, el] of Object.entries(variables)) {
-    const index = str.indexOf(`{${match}}`, last);
-    if (index === -1) continue;
-    els.push(<>{str.slice(last, index)}</>);
-    els.push(el);
-    last = index + match.length + 2;
-  }
-  els.push(<>{str.slice(last)}</>);
-  return <>{els}</>;
-}
-
 function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactElement {
   const els = getAuthors(addon).map((author) => (
     <a
       key={JSON.stringify(author)}
       onClick={() => author.discordID && openUserProfile(author.discordID)}
-      onContextMenu={(event) => {
+      onContextMenu={(event: React.MouseEvent) => {
         if (!author.github && !author.discordID) return;
         contextMenu.open(event, (props) => (
           <ContextMenu.ContextMenu {...props} onClose={contextMenu.close} navId="rp-addon-authors">
@@ -259,30 +242,12 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
     </a>
   ));
 
-  let message = "";
-
-  if (els.length === 1) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_ONE);
-  }
-  if (els.length === 2) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_TWO);
-  }
-  if (els.length === 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_THREE);
-  }
-  if (els.length > 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_MANY);
-  }
-
-  return replaceVariable(message, {
+  return intl.format(t.REPLUGGED_ADDON_AUTHORS, {
     author1: els[0],
     author2: els[1],
     author3: els[2],
-    count: (els.length - 3).toString(),
+    count: els.length.toString(),
+    others: (els.length - 3).toString(),
   });
 }
 
