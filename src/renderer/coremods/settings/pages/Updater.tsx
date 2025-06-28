@@ -230,7 +230,7 @@ export const Updater = (): React.ReactElement => {
                     {sourceLink ? (
                       <Tooltip
                         text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
-                          type: intl.string(t.REPLUGGED_UPDATES_UPDATE_NOUN),
+                          type: intl.string(discordT.UPDATE_BADGE_HEADER),
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
                         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
@@ -248,7 +248,7 @@ export const Updater = (): React.ReactElement => {
                     onClick={() => installOne(update.id)}
                     color={Button.Colors.PRIMARY}
                     submitting={isUpdating}>
-                    {intl.string(t.REPLUGGED_UPDATES_UPDATE)}
+                    {intl.string(discordT.UPDATE)}
                   </Button>
                 ) : didInstallAll ? null : (
                   <Button onClick={reload} color={Button.Colors.RED}>

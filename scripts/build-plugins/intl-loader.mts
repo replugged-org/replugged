@@ -11,9 +11,9 @@ import {
   processDefinitionsFile,
   processTranslationsFile,
 } from "@discord/intl-loader-core";
-import type esbuild from "esbuild";
+import type { Plugin } from "esbuild";
 import { readFileSync } from "node:fs";
-import { dirname, posix, relative, resolve } from "node:path";
+import { dirname, posix, relative } from "node:path";
 import { production } from "scripts/build.mjs";
 
 const FILE_PATH_SEPARATOR_MATCH = /[\\\\\\/]/g;
@@ -26,28 +26,43 @@ export function makePosixRelativePath(source: string, file: string): string {
 let hasInitializedAllDefinitions = false;
 let messageKeys: Record<string, string> = {};
 
+interface IntlLoaderOptions {
+  format?: IntlCompiledMessageFormat;
+  bundleSecrets?: boolean;
+  bindMode?: "proxy" | "literal";
+  watchFolders?: string[];
+  sourceLocale?: string;
+}
+
 /**
  * Rewritten for esbuild. 1:1 copy of the original plugin, adapted for Replugged (doesn't hash keys).
  * @link https://github.com/discord/discord-intl
  * @copyright 2024 Discord, Inc.
  * @license MIT
  */
-export default {
+export default (options: IntlLoaderOptions = {}): Plugin => ({
   name: "intlLoader",
   setup(build) {
     build.onLoad({ filter: INTL_MESSAGES_REGEXP }, (args) => {
       const sourcePath = args.path;
       const source = readFileSync(sourcePath, "utf-8");
       const forceTranslation = args.suffix === "?forceTranslation";
-      const i18nPath = resolve("./i18n/");
+      const {
+        bundleSecrets = false,
+        // @ts-expect-error: ts doesn't like that this is a const enum
+        format = IntlCompiledMessageFormat.KeylessJson,
+        bindMode = "proxy",
+        watchFolders = [process.cwd()],
+        sourceLocale = "en-US",
+      } = options;
 
       if (!hasInitializedAllDefinitions) {
-        processAllMessagesFiles(findAllMessagesFiles([i18nPath]));
+        processAllMessagesFiles(findAllMessagesFiles(watchFolders));
         hasInitializedAllDefinitions = true;
       }
 
       if (isMessageDefinitionsFile(sourcePath) && !forceTranslation) {
-        const result = processDefinitionsFile(sourcePath, source, { locale: "en-US" });
+        const result = processDefinitionsFile(sourcePath, source, { locale: sourceLocale });
         if (!result.succeeded) throw new Error(result.errors[0].message);
 
         result.translationsLocaleMap[result.locale] = `${sourcePath}?forceTranslation`;
@@ -58,9 +73,7 @@ export default {
           );
         }
 
-        if (Object.keys(messageKeys).length < Object.keys(result.messageKeys).length) {
-          messageKeys = result.messageKeys;
-        }
+        messageKeys = result.messageKeys;
 
         const transformedOutput = new MessageDefinitionsTransformer({
           messageKeys: Object.fromEntries(
@@ -70,7 +83,7 @@ export default {
           defaultLocale: result.locale,
           getTranslationImport: (importPath) => `import("${importPath}")`,
           debug: !production,
-          bindMode: "proxy",
+          bindMode,
           getPrelude: () => `import {waitForProps} from '@webpack';`,
         }).getOutput();
 
@@ -104,9 +117,8 @@ export default {
         }
 
         const compiledResult = precompileFileForLocale(sourcePath, locale, undefined, {
-          // @ts-expect-error: ts doesn't like that this is a const enum
-          format: IntlCompiledMessageFormat.KeylessJson,
-          bundleSecrets: false,
+          format,
+          bundleSecrets,
         });
         const parsedMessage: Record<string, unknown> = JSON.parse(
           compiledResult?.toString() ?? "{}",
@@ -122,4 +134,4 @@ export default {
       }
     });
   },
-} as esbuild.Plugin;
+});
