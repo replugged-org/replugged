@@ -95,14 +95,6 @@ protocol.registerSchemesAsPrivileged([
   },
 ]);
 
-function loadReactDevTools(): void {
-  const rdtSetting = getSetting<boolean>("dev.replugged.Settings", "reactDevTools", false);
-
-  if (rdtSetting) {
-    void session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
-  }
-}
-
 // Copied from old codebase
 app.once("ready", () => {
   session.defaultSession.webRequest.onBeforeRequest(
@@ -178,7 +170,23 @@ app.once("ready", () => {
     return net.fetch(pathToFileURL(filePath).toString());
   });
 
-  loadReactDevTools();
+  const defaultPermissionRequestHandler = session.defaultSession.setPermissionRequestHandler.bind(
+    session.defaultSession,
+  );
+  session.defaultSession.setPermissionRequestHandler = (cb) => {
+    defaultPermissionRequestHandler((webContents, permission, callback, details) => {
+      if (permission === "media") {
+        callback(true);
+        return;
+      }
+      cb?.(webContents, permission, callback, details);
+    });
+  };
+
+  const rdtSetting = getSetting<boolean>("dev.replugged.Settings", "reactDevTools", false);
+  if (rdtSetting) {
+    void session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
+  }
 });
 
 // This module is required this way at runtime.
