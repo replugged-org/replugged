@@ -20,8 +20,8 @@ import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
 import Icons from "../icons";
 import { generalSettings } from "./General";
-
 import "./Addons.css";
+import type { ReactIntlMessage } from "@discord/intl";
 
 interface Breadcrumb {
   id: string;
@@ -204,7 +204,7 @@ export function label(
   return base;
 }
 
-function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactElement {
+function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): ReactIntlMessage {
   const els = getAuthors(addon).map((author) => (
     <a
       key={JSON.stringify(author)}
