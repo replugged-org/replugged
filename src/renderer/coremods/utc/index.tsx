@@ -6,7 +6,7 @@ const classMap = new Map<string, string>();
  * @hidden
  */
 
-export function _getUnifiedClassName(input: string): string {
+export function _getClassName(input: string): string {
   if (classMap.has(input)) return classMap.get(input)!;
 
   const baseClasses = input.includes("utc_") ? input.replaceAll(/utc_\S+\s*/g, "").trim() : input;

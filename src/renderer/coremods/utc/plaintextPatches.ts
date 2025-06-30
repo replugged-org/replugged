@@ -7,7 +7,7 @@ export default [
       {
         match: /return{\$\$typeof:\w+,type:(\w+).+?props:(\w+)/,
         replace: (suffix, type, props) =>
-          ` ${props}.className && ${type} !== "html" && (${props}.className = replugged.coremods.coremods.utc?._getUnifiedClassName(${props}.className));${suffix}`,
+          ` ${props}.className && ${type} !== "html" && (${props}.className = replugged.coremods.coremods.utc?._getClassName(${props}.className));${suffix}`,
       },
     ],
   },
