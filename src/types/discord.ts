@@ -73,13 +73,6 @@ export interface CommandOptionReturn<T = unknown> {
 
 export type CommandOptions = StringOptions | NumberOptions | ChannelOptions | OtherCommandOptions;
 
-export interface ConnectedAccount {
-  type: string;
-  name: string;
-  id: string;
-  verified: boolean;
-}
-
 export enum MessageEmbedTypes {
   IMAGE = "image",
   VIDEO = "video",
@@ -151,6 +144,13 @@ interface ApplicationRoleConnection {
   platform_name: string | null;
   platform_username: string | null;
   metadata: Record<string, number | string>;
+}
+
+interface ConnectedAccount {
+  type: string;
+  name: string;
+  id: string;
+  verified: boolean;
 }
 
 export interface Badge {
