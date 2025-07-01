@@ -9,7 +9,7 @@ const logger = Logger.coremod("Watcher");
 const uninjectors: Array<() => void> = [];
 
 export function start(): void {
-  let uninjectRpc = registerRPCCommand("REPLUGGED_ADDON_WATCHER", {
+  const uninjectRpc = registerRPCCommand("REPLUGGED_ADDON_WATCHER", {
     scope: "REPLUGGED_LOCAL",
     handler: async (data) => {
       const { id } = data.args;

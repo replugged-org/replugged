@@ -60,7 +60,7 @@ export function addContextMenuItem(
 ): () => void {
   menuItems[navId] ||= [];
 
-  menuItems[navId]?.push({ getItem, sectionId, indexInSection });
+  menuItems[navId].push({ getItem, sectionId, indexInSection });
   return () => removeContextMenuItem(navId, getItem);
 }
 

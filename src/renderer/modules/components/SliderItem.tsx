@@ -1,3 +1,4 @@
+import { classNames } from "@common";
 import { getFunctionBySource, waitForProps } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
@@ -81,9 +82,7 @@ export const SliderItem = (props: React.PropsWithChildren<SliderItemProps>): Rea
       disabled={props.disabled}
       divider>
       <Slider
-        className={`${props.markers && !props.note ? classes.marginTop20 : ""}${
-          className ? ` ${className}` : ""
-        }`}
+        className={classNames({ [classes.marginTop20]: props.markers && !props.note }, className)}
         {...compProps}
       />
     </FormItem>

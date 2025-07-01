@@ -1,21 +1,22 @@
 import { ipcMain } from "electron";
+import { readFileSync } from "fs";
+import { writeFile as originalWriteFile } from "original-fs";
+import { join, resolve, sep } from "path";
+import { WEBSITE_URL } from "src/constants";
+import { type AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
+import { promisify } from "util";
 import {
-  CheckResultFailure,
-  CheckResultSuccess,
-  InstallResultFailure,
-  InstallResultSuccess,
-  InstallerType,
+  type CheckResultFailure,
+  type CheckResultSuccess,
+  type InstallResultFailure,
+  type InstallResultSuccess,
+  type InstallerType,
   RepluggedIpcChannels,
 } from "../../types";
 import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
-import { readFile } from "fs/promises";
-import { writeFile as originalWriteFile } from "original-fs";
-import { join, resolve, sep } from "path";
-import { AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
 import { getSetting } from "./settings";
-import { promisify } from "util";
-import { WEBSITE_URL } from "src/constants";
 import logger from "../logger";
+
 
 const writeFile = promisify(originalWriteFile);
 
@@ -49,7 +50,8 @@ async function github(
     };
   }
 
-  let res;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  let res: { assets: ReleaseAsset[]; html_url: string };
 
   try {
     res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`).then((res) =>
@@ -106,7 +108,7 @@ async function github(
 }
 
 async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
-  const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
+  const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
   const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
   const asarUrl = `${manifestUrl}.asar`;
@@ -192,7 +194,7 @@ ipcMain.handle(
     if (type === "replugged") {
       // Manually set Path and URL for security purposes
       path = "replugged.asar";
-      const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
+      const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
       url = `${apiUrl}/api/v1/store/dev.replugged.Replugged.asar`;
     }
 
@@ -244,14 +246,15 @@ ipcMain.handle(
   },
 );
 
-ipcMain.handle(RepluggedIpcChannels.GET_REPLUGGED_VERSION, async () => {
+ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_VERSION, (event) => {
   const path = join(__dirname, "package.json");
   try {
-    const packageJson = JSON.parse(await readFile(path, "utf8"));
-    return packageJson.version;
+    const packageJson = JSON.parse(readFileSync(path, "utf8"));
+    event.returnValue = packageJson.version;
   } catch (err) {
     if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
-      return "dev";
+      event.returnValue = "dev";
+      return;
     }
     throw err;
   }
