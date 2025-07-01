@@ -49,5 +49,26 @@ export default (generalSettings.get("experiments")
           },
         ],
       },
+      {
+        // Patch the StaffHelpButton component to always show the "Toggle DevTools" button
+        find: `staff-help-popout`,
+        replacements: [
+          {
+            match: /isDiscordDeveloper:\w+/,
+            replace: `$&=true`,
+          },
+        ],
+      },
+      {
+        // Set the resulting experiment configuration of the bug reporter to be always true
+        // This is necessary to ensure the StaffHelpButton is shown instead of the classic HelpButton
+        find: /hasBugReporterAccess:\w+}=\w+\.\w+\.useExperiment/,
+        replacements: [
+          {
+            match: /hasBugReporterAccess:\w+/,
+            replace: `_$&=true`,
+          },
+        ],
+      },
     ]
   : []) as PlaintextPatch[];
