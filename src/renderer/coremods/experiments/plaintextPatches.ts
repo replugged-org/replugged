@@ -7,24 +7,47 @@ const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(
   defaultSettings,
 );
 
-export default [
-  {
-    find: /"displayName","(Developer)?ExperimentStore"/,
-    replacements: generalSettings.get("experiments")
-      ? [
+export default (generalSettings.get("experiments")
+  ? [
+      {
+        find: /"displayName","(Developer)?ExperimentStore"/,
+        replacements: [
+          // Patch the ExperimentStore to force the release channel to 'staging'
           {
             match: /window\.GLOBAL_ENV\.RELEASE_CHANNEL/g,
             replace: `"staging"`,
           },
+          // Patch the DeveloperExperimentStore to force the 'isDeveloper' property to true
           {
             match: /(isDeveloper:{configurable:!1,get:\(\)=>)\w+/g,
             replace: `$1true`,
           },
+          // Patch the DeveloperExperimentStore to set the result of 'isStaffEnv' to be always true
           {
             match: /=\(0,\w+\.\w+\)\(\w+\.default\.getCurrentUser\(\)\)/,
             replace: "=true",
           },
-        ]
-      : [],
-  },
-] as PlaintextPatch[];
+        ],
+      },
+      {
+        // Always return true for the 'isStaff' property in SettingRendererUtils
+        find: `header:"Developer Only"`,
+        replacements: [
+          {
+            match: /isStaff:\w+/,
+            replace: `$&||true`,
+          },
+        ],
+      },
+      {
+        // Add developer only settings to the UserSettingsCogContextMenu
+        find: `layoutDebuggingEnabled,isStaff:`,
+        replacements: [
+          {
+            match: /isStaff\(\)\)===!0/,
+            replace: `$&||true`,
+          },
+        ],
+      },
+    ]
+  : []) as PlaintextPatch[];
