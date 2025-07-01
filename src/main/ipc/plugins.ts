@@ -13,7 +13,6 @@ import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
 import logger from "../logger";
 
-
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
 
 export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {

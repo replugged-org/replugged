@@ -17,7 +17,6 @@ import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
 import { getSetting } from "./settings";
 import logger from "../logger";
 
-
 const writeFile = promisify(originalWriteFile);
 
 /* eslint-disable @typescript-eslint/naming-convention */

@@ -13,7 +13,6 @@ import { RepluggedIpcChannels, type RepluggedTheme } from "../../types";
 import { theme } from "../../types/addon";
 import logger from "../logger";
 
-
 const THEMES_DIR = CONFIG_PATHS.themes;
 
 export const isFileATheme = (f: Dirent | Stats, name: string): boolean => {
