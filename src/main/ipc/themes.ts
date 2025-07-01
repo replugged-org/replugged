@@ -11,6 +11,7 @@ import { extname, join, sep } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels, type RepluggedTheme } from "../../types";
 import { theme } from "../../types/addon";
+import logger from "../logger";
 
 const THEMES_DIR = CONFIG_PATHS.themes;
 
@@ -70,7 +71,7 @@ ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedThem
     try {
       themes.push(await getTheme(themeDir.name));
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
   }
 

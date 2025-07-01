@@ -1,7 +1,7 @@
+import { error, log } from "@logger";
 import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
 import * as i18n from "../modules/i18n";
-import { error, log } from "../modules/logger";
 import { loadStyleSheet } from "../util";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";

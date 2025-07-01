@@ -15,6 +15,7 @@ import {
 } from "../../types";
 import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
 import { getSetting } from "./settings";
+import logger from "../logger";
 
 const writeFile = promisify(originalWriteFile);
 
@@ -227,7 +228,7 @@ ipcMain.handle(
       };
     }
 
-    console.log(url, filePath);
+    logger.log(url, filePath);
 
     try {
       await writeFile(filePath, buf);
