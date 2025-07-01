@@ -122,8 +122,8 @@ importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 /**
  * @see {@link https://github.com/JedWatson/classnames}
  */
-export let classnames: typeof import("classnames").default;
-importTimeout("classnames", import("./classnames"), (mod) => (classnames = mod.default));
+export let classNames: typeof import("classnames").default;
+importTimeout("classnames", import("./classnames"), (mod) => (classNames = mod.default));
 
 /**
  * @see {@link https://highlightjs.org/}
