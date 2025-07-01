@@ -1,5 +1,7 @@
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import components from "../common/components";
+import { sourceStrings } from "../webpack/patch-load";
 
 const ItemColors = {
   DEFAULT: "default",
@@ -15,7 +17,9 @@ export interface MenuProps {
   variant?: "fixed" | "flexible";
   hideScroller?: boolean;
   className?: string;
-  children: React.ReactElement | React.ReactElement[];
+  // Menus can have various children types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children: React.ReactElement<any> | Array<React.ReactElement<any>>;
   onClose: () => void;
   onSelect?: () => void;
   "aria-label"?: string;
@@ -154,15 +158,34 @@ export interface ContextMenuType {
   MenuSeparator: React.FC;
 }
 
+const componentMap: Record<string, keyof Omit<ContextMenuType, "ContextMenu" | "ItemColors">> = {
+  separator: "MenuSeparator",
+  checkbox: "MenuCheckboxItem",
+  radio: "MenuRadioItem",
+  control: "MenuControlItem",
+  groupstart: "MenuGroup",
+  customitem: "MenuItem",
+} as const;
+
+const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
+const source = sourceStrings[rawMod?.id].matchAll(
+  /if\(\w+\.type===\w+\.(\w+)(?:\.\w+)?\).+?type:"(.+?)"/gs,
+);
+
+const menuComponents = Object.entries(components as Record<string, () => null>)
+  .filter(([_, m]) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
+  .reduce<Record<string, () => null>>((components, [name, component]) => {
+    components[name.substring(0, 2)] = component;
+    return components;
+  }, {});
+
 const Menu = {
-  ContextMenu: components.Menu,
   ItemColors,
-  MenuCheckboxItem: components.MenuCheckboxItem,
-  MenuControlItem: components.MenuControlItem,
-  MenuGroup: components.MenuGroup,
-  MenuItem: components.MenuItem,
-  MenuRadioItem: components.MenuRadioItem,
-  MenuSeparator: components.MenuSeparator,
+  ContextMenu: getFunctionBySource(components, "getContainerProps"),
 } as ContextMenuType;
+
+for (const [, identifier, type] of source) {
+  Menu[componentMap[type]] = menuComponents[identifier];
+}
 
 export default Menu;
