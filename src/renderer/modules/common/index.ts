@@ -120,6 +120,12 @@ importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 // External Libraries
 
 /**
+ * @see {@link https://github.com/JedWatson/classnames#readme/}
+ */
+export let classnames: typeof import("classnames").default;
+importTimeout("classnames", import("./classnames"), (mod) => (classnames = mod.default));
+
+/**
  * @see {@link https://highlightjs.org/usage/}
  */
 export let hljs: typeof import("highlight.js").default;
