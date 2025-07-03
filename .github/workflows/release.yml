@@ -5,26 +5,20 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: write
+
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - name: Check out Git repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - uses: pnpm/action-setup@v4
-
-      - name: Install Node.js dependencies
-        run: pnpm install
+      - name: Install
+        uses: ./.github/actions/install
 
       - name: Build TypeScript and bundle into asar
         run: pnpm run bundle
