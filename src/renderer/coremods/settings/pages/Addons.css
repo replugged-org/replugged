@@ -45,3 +45,15 @@
 .replugged-addon-breadcrumbsInactive:hover {
   color: var(--header-primary);
 }
+
+.replugged-addon-reload-message {
+  z-index: 999;
+  background: var(--background-base-lowest);
+  position: sticky;
+  width: 100%;
+  margin-top: 2.5em;
+  bottom: 4.5em;
+}
+.replugged-addon-reload-message div {
+  align-items: center;
+}
