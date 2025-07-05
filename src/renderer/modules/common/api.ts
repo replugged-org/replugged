@@ -69,7 +69,7 @@ export declare class Backoff {
   public succeed: () => void;
 }
 
-declare class V6OrEarlierAPIError {
+export declare class V6OrEarlierAPIError {
   public constructor(error: Record<string, unknown> | null, code: number, message?: string);
 
   public code: number;
@@ -138,8 +138,8 @@ const v6ErrorClass = exportedClasses.find(
 const v8ErrorClass = exportedClasses.find(
   (c) => "hasFieldErrors" in (c as APIErrorClass).prototype,
 ) as typeof APIError;
-const http = exportedValues.find((v) => typeof v === "object") as HTTP;
-const invalidFormBodyErrorCode = exportedValues.find((v) => typeof v === "number") as number;
+const http = exportedValues.find((v) => typeof v === "object")!;
+const invalidFormBodyErrorCode = exportedValues.find((v) => typeof v === "number")!;
 
 const getAPIBaseURL = getFunctionBySource<API["getAPIBaseURL"]>(
   realApiModule,
