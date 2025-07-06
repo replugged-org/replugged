@@ -1,5 +1,5 @@
 import { toast } from "@common";
-import { intl } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
@@ -45,7 +45,7 @@ export const Updater = (): React.ReactElement => {
           });
           setUpdatesAvailable(getAvailableUpdates());
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           if (cancelled) return;
           toast.toast("Update failed.", toast.Kind.FAILURE);
           logger.error(err);
@@ -128,19 +128,23 @@ export const Updater = (): React.ReactElement => {
         disabled={!updaterSettings.get("autoCheck")}
         note={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
         markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
-        equidistant={true}
+        equidistant
         onMarkerRender={(value) => {
           // Format as xh and/or xm
           const hours = Math.floor(value / 60);
           const minutes = value % 60;
 
-          const hourString = hours > 0 ? `${hours}h` : "";
-          const minuteString = minutes > 0 ? `${minutes}m` : "";
+          const hourString =
+            hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
+          const minuteString =
+            minutes > 0
+              ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes })
+              : "";
 
           const label = [hourString, minuteString].filter(Boolean).join(" ");
           return label;
         }}
-        stickToMarkers={true}>
+        stickToMarkers>
         {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
       </SliderItem>
       {isRepluggedDev && (
@@ -213,7 +217,7 @@ export const Updater = (): React.ReactElement => {
           const { manifest } = addon;
           const sourceLink = update.webUrl;
           return (
-            <div className="replugged-updater-item">
+            <div className="replugged-updater-item" key={update.id}>
               <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
                 <div>
                   <Flex align={Flex.Align.CENTER} style={{ gap: "5px", marginBottom: "5px" }}>
@@ -226,7 +230,7 @@ export const Updater = (): React.ReactElement => {
                     {sourceLink ? (
                       <Tooltip
                         text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
-                          type: intl.string(t.REPLUGGED_UPDATES_UPDATE_NOUN),
+                          type: intl.string(discordT.UPDATE_BADGE_HEADER),
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
                         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
@@ -244,7 +248,7 @@ export const Updater = (): React.ReactElement => {
                     onClick={() => installOne(update.id)}
                     color={Button.Colors.PRIMARY}
                     submitting={isUpdating}>
-                    {intl.string(t.REPLUGGED_UPDATES_UPDATE)}
+                    {intl.string(discordT.UPDATE)}
                   </Button>
                 ) : didInstallAll ? null : (
                   <Button onClick={reload} color={Button.Colors.RED}>

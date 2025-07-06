@@ -1,6 +1,6 @@
 import type React from "react";
 import { filters, getFunctionBySource, waitForModule } from "src/renderer/modules/webpack";
-import { ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
@@ -17,7 +17,7 @@ interface PrimaryCTANoticeButtonProps extends NoticeButtonProps {
   additionalTrackingProps?: Record<string, unknown>;
 }
 
-interface NoticeButtonAnchorProps extends AnchorProps {}
+type NoticeButtonAnchorProps = AnchorProps;
 
 interface NoticeCloseButtonProps {
   onClick: () => void;
@@ -59,9 +59,7 @@ const actualNoticeMod = await waitForModule<Record<string, ValueOf<NoticeMod>>>(
 );
 
 const remappedNoticeMod: NoticeMod = {
-  NoticeColors: Object.values(actualNoticeMod).find(
-    (v) => typeof v === "object",
-  ) as NoticeMod["NoticeColors"],
+  NoticeColors: Object.values(actualNoticeMod).find((v) => typeof v === "object")!,
   NoticeButton: getFunctionBySource(actualNoticeMod, "buttonMinor")!,
   PrimaryCTANoticeButton: getFunctionBySource(actualNoticeMod, "additionalTrackingProps")!,
   NoticeButtonAnchor: getFunctionBySource(actualNoticeMod, ".button,href:")!,

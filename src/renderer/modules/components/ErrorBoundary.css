@@ -49,10 +49,10 @@
 }
 
 .replugged-error-boundary-collapsible-stack {
-  background-color: var(--background-secondary);
-  color: var(--text-normal);
+  background-color: var(--background-base-lower);
+  color: var(--text-default);
   border-radius: 5px;
-  border: 1px solid var(--background-tertiary);
+  border: 1px solid var(--background-base-lowest);
   margin: 10px 0px;
   padding: 12px;
   user-select: text;
