@@ -1,3 +1,4 @@
+import { React } from "@common";
 import type { Jsonifiable } from "type-fest";
 
 type SettingsUpdate<T> =
@@ -156,7 +157,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
     this.#queuedUpdates.set(key, update);
     this.#saveTimeout = setTimeout(() => {
       this.#queuedUpdates.forEach((u, k) => {
-        if (this.#listeners.has(k)) this.#listeners.get(k)!.forEach((c) => c?.());
+        if (this.#listeners.has(k)) this.#listeners.get(k)!.forEach((c) => c());
         if (u.type === "delete") {
           void window.RepluggedNative.settings.delete(this.namespace, k);
         } else {
