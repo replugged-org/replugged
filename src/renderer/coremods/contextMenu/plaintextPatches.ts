@@ -15,7 +15,7 @@ export default [
     find: "navId",
     replacements: [
       {
-        match: /navId:(?![^}]*}=)[^)]*\)/g,
+        match: /navId:(?![^(})]*?}=)[^)]*?\)/g,
         replace: (suffix) => `data:arguments,${suffix}`,
       },
     ],

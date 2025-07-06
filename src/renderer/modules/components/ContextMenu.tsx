@@ -17,7 +17,9 @@ export interface MenuProps {
   variant?: "fixed" | "flexible";
   hideScroller?: boolean;
   className?: string;
-  children: React.ReactElement | React.ReactElement[];
+  // Menus can have various children types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children: React.ReactElement<any> | Array<React.ReactElement<any>>;
   onClose: () => void;
   onSelect?: () => void;
   "aria-label"?: string;

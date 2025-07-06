@@ -1,6 +1,6 @@
 import type { Channel, Guild } from "discord-types/general";
 import type { ValueOf } from "type-fest";
-import { CommandInteraction } from "../../renderer/apis/commands";
+import type { CommandInteraction } from "../../renderer/apis/commands";
 import type {
   APIEmbed,
   ApplicationCommandOptionType,
