@@ -524,27 +524,6 @@ function Cards({
   );
 }
 
-export const ReloadRequired = ({ ids }: { ids: Set<string> }): React.ReactElement | null => {
-  if (!ids.size) return null;
-  // TODO: i18n
-  return (
-    <div className="replugged-addon-reload-message">
-      <Notice messageType={Notice.Types.WARNING}>
-        <Flex justify={Flex.Justify.BETWEEN}>
-          <Text.Normal>Reload might be required to apply changes!</Text.Normal>
-          <Button
-            color={Button.Colors.RED}
-            look={Button.Looks.OUTLINED}
-            size={Button.Sizes.TINY}
-            onClick={() => setTimeout(() => window.location.reload(), 250)}>
-            RELOAD
-          </Button>
-        </Flex>
-      </Notice>
-    </div>
-  );
-};
-
 export const Addons = (type: AddonType): React.ReactElement => {
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
@@ -722,7 +701,21 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </ErrorBoundary>
         )
       )}
-      <ReloadRequired ids={requiresReload} />
+      {requiresReload.size && (
+        // TODO: i18n
+        <Notice className="replugged-addon-reload-notice" messageType={Notice.Types.WARNING}>
+          <Flex justify={Flex.Justify.BETWEEN}>
+            <Text.Normal>Reload might be required to apply changes!</Text.Normal>
+            <Button
+              color={Button.Colors.RED}
+              look={Button.Looks.OUTLINED}
+              size={Button.Sizes.TINY}
+              onClick={() => setTimeout(() => window.location.reload(), 250)}>
+              RELOAD
+            </Button>
+          </Flex>
+        </Notice>
+      )}
     </>
   );
 };
