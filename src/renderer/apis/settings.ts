@@ -25,6 +25,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
   #saveTimeout: ReturnType<typeof setTimeout> | undefined;
   #queuedUpdates: Map<Extract<keyof T, string>, SettingsUpdate<T>>;
   #defaultSettings: Partial<T>;
+  #listeners = new Map<keyof T, Set<() => void>>();
 
   /**
    * Namespace for these settings.
@@ -64,6 +65,34 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
     }
     // @ts-expect-error It doesn't understand ig
     return this.#settings[key] ?? fallback ?? this.#defaultSettings[key];
+  }
+
+  /**
+   * Use a setting's value in react.
+   * @param key Key of the setting to retrieve.
+   * @param fallback Value to return if the key does not already exist.
+   * @returns
+   */
+  public use<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
+    key: K,
+    fallback?: F,
+  ): K extends D
+    ? NonNullable<T[K]>
+    : F extends null | undefined
+      ? T[K] | undefined
+      : NonNullable<T[K]> | F {
+    const [setting, setSetting] = React.useState(this.get(key, fallback));
+    if (!this.#listeners.has(key)) this.#listeners.set(key, new Set());
+    const listeners = this.#listeners.get(key)!;
+    React.useEffect(() => {
+      const cb = (): void => setSetting(this.get(key, fallback));
+      listeners.add(cb);
+      return () => {
+        listeners.delete(cb);
+        if (!listeners.size) this.#listeners.delete(key);
+      };
+    }, []);
+    return setting;
   }
 
   /**
@@ -127,6 +156,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
     this.#queuedUpdates.set(key, update);
     this.#saveTimeout = setTimeout(() => {
       this.#queuedUpdates.forEach((u, k) => {
+        if (this.#listeners.has(k)) this.#listeners.get(k)!.forEach((c) => c?.());
         if (u.type === "delete") {
           void window.RepluggedNative.settings.delete(this.namespace, k);
         } else {
