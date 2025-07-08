@@ -74,7 +74,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * @param fallback Value to return if the key does not already exist.
    * @returns
    */
-  public use<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
+  public useValue<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
     key: K,
     fallback?: F,
   ): K extends D
