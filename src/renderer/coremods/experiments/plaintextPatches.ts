@@ -70,5 +70,15 @@ export default (generalSettings.get("experiments")
           },
         ],
       },
+      {
+        // Always show the ExperimentEmbed
+        find: "dev://experiment/",
+        replacements: [
+          {
+            match: ".isStaffPersonal())",
+            replace: `$&||true`,
+          },
+        ],
+      },
     ]
   : []) as PlaintextPatch[];
