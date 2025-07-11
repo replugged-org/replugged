@@ -182,10 +182,7 @@ type ValType<T> =
   | React.ChangeEvent<HTMLInputElement>
   | (Record<string, unknown> & { value?: T; checked?: T });
 
-type NestedType<T, P> = P extends
-  | `${infer K}.${infer NestedKey}`
-  | `${infer K}-${infer NestedKey}`
-  | `${infer K}/${infer NestedKey}`
+type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
   ? K extends keyof T
     ? NestedType<NonNullable<T[K]>, NestedKey>
     : undefined
@@ -198,8 +195,8 @@ export function useSetting<
   D extends keyof T,
   K extends Extract<keyof T, string>,
   F extends NestedType<T, P> | T[K] | undefined,
-  P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}` | K,
-  V extends P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}`
+  P extends `${K}.${string}` | K,
+  V extends P extends `${K}.${string}`
     ? NonNullable<NestedType<T, P>>
     : P extends D
       ? NonNullable<T[P]>
@@ -238,8 +235,9 @@ export function useSetting<
       if (settings.get(key as K)) {
         settings.set(key as K, finalValue);
       } else {
-        const [rootKey] = key.split(/[./-]/);
+        const [rootKey] = key.split(".");
         // without cloning this changes property in default settings
+        // cloneDeep should be used in settings.all instead of spread?
         const setting = lodash.set(lodash.cloneDeep(settings.all()), key, finalValue)[rootKey as K];
         settings.set(rootKey as K, setting);
       }
@@ -252,8 +250,8 @@ export function useSettingArray<
   D extends keyof T,
   K extends Extract<keyof T, string>,
   F extends NestedType<T, P> | T[K] | undefined,
-  P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}` | K,
-  V extends P extends `${K}.${string}` | `${K}-${string}` | `${K}/${string}`
+  P extends `${K}.${string}` | K,
+  V extends P extends `${K}.${string}`
     ? NonNullable<NestedType<T, P>>
     : P extends D
       ? NonNullable<T[P]>
