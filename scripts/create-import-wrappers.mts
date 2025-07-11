@@ -1,5 +1,5 @@
 import { writeFileSync } from "node:fs";
-import { basename, join } from "node:path";
+import { basename, posix } from "node:path";
 
 type LocationsRegistry =
   | string[]
@@ -19,7 +19,7 @@ const locations = {
 function createWrappers(currentPath: string[], subpaths: LocationsRegistry): void {
   if (Array.isArray(subpaths)) {
     for (const subpath of subpaths) {
-      const fullPath = join(...currentPath, subpath);
+      const fullPath = posix.join(...currentPath, subpath);
       const dtsContents = `export * from "./${fullPath}";`;
       writeFileSync(`${basename(fullPath)}.d.ts`, dtsContents);
     }

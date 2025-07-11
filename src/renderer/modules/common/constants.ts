@@ -3,8 +3,12 @@ import { filters, getExportsForProps, waitForModule, waitForProps } from "../web
 
 type StringConcat = (...rest: string[]) => string;
 
-const ConstantsCommon = await waitForProps<Record<string, unknown>>("Links", "RPCCommands");
-const Constants = await waitForProps<Record<string, unknown>>("Endpoints", "Routes");
+const ConstantsCommon = await waitForModule<Record<string, unknown>>(
+  filters.bySource("dis.gd/request"),
+);
+const Constants = await waitForModule<Record<string, unknown>>(
+  filters.bySource("users/@me/relationships"),
+);
 export const raw = virtualMerge(ConstantsCommon, Constants);
 
 export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsCommon, [
@@ -12,10 +16,7 @@ export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsC
   "MANAGE_GUILD",
 ]);
 // OAuth2Scopes
-export const Scopes = getExportsForProps<Record<string, string>>(ConstantsCommon, [
-  "BOT",
-  "GUILDS",
-])!;
+export const Scopes = await waitForProps<Record<string, string>>("BOT", "GUILDS");
 // RPCCloseCodes
 export const RPCErrors = getExportsForProps<Record<string, string | number>>(ConstantsCommon, [
   "RATELIMITED",
@@ -115,10 +116,9 @@ interface ColorMod {
   shadows: Record<string, ShadowColor>;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   unsafe_rawColors: Record<string, UnsafeRawColor>;
+  layout: Record<string, string>;
 }
 
-export const ColorGenerator = await waitForModule<ColorMod>(
-  filters.bySource(/\w+\.unsafe_rawColors\[\w+\]\.resolve\(\w+\)/),
-);
+export const ColorGenerator = await waitForProps<ColorMod>("unsafe_rawColors", "layout");
 
 export const Themes = ColorGenerator.themes;

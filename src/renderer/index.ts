@@ -2,14 +2,9 @@ import * as replugged from "./replugged";
 
 window.replugged = replugged;
 
-type DiscordSplashWindow = Window & {
-  DiscordSplash?: object;
-};
-
-// Splash screen
-if ((window as DiscordSplashWindow).DiscordSplash) {
-  await replugged.ignition.startSplash();
+const allowedHosts = ["discord.com", "discordapp.com"];
+if (allowedHosts.some((host) => window.location.hostname.endsWith(host))) {
+  replugged.ignition.ignite();
 } else {
-  await replugged.plugins.loadAll();
-  await replugged.ignition.ignite();
+  replugged.ignition.startSplash();
 }

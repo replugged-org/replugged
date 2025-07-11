@@ -1,7 +1,8 @@
+import { classNames } from "@common";
+import { getFunctionBySource, waitForProps } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
 import components from "../common/components";
-import { waitForProps } from "../webpack";
 
 const MarkerPositions = {
   ABOVE: 0,
@@ -42,7 +43,10 @@ interface SliderCompProps {
 
 export type SliderCompType = React.ComponentClass<SliderCompProps>;
 
-const SliderComp = components.Slider;
+const SliderComp = getFunctionBySource<SliderCompType>(
+  components,
+  /initialValue!==\w+\.initialValueProp/,
+)!;
 
 interface SliderProps extends SliderCompProps {
   value?: number;
@@ -78,9 +82,7 @@ export const SliderItem = (props: React.PropsWithChildren<SliderItemProps>): Rea
       disabled={props.disabled}
       divider>
       <Slider
-        className={`${props.markers && !props.note ? classes.marginTop20 : ""}${
-          className ? ` ${className}` : ""
-        }`}
+        className={classNames({ [classes.marginTop20]: props.markers && !props.note }, className)}
         {...compProps}
       />
     </FormItem>

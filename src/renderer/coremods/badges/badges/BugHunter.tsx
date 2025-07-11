@@ -1,6 +1,6 @@
 import React from "@common/react";
 
-export default React.memo((props) => (
+export default React.memo((props: React.ComponentPropsWithoutRef<"svg">) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
     <path
       fill="currentColor"

@@ -123,7 +123,7 @@ interface Breadcrumb {
 }
 
 interface SentryUtils {
-  addBreacrumb: (breadcrumb: Breadcrumb) => void;
+  addBreadcrumb: (breadcrumb: Breadcrumb) => void;
 }
 
 export interface FluxDispatcher {

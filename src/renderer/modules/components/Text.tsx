@@ -59,6 +59,10 @@ export type Variant =
   | "redesign/message-preview/medium"
   | "redesign/message-preview/semibold"
   | "redesign/message-preview/bold"
+  | "redesign/channel-title/normal"
+  | "redesign/channel-title/medium"
+  | "redesign/channel-title/semibold"
+  | "redesign/channel-title/bold"
   | "display-sm"
   | "display-md"
   | "display-lg"
@@ -67,10 +71,11 @@ export type Variant =
 // TODO: generic type for tags?
 interface TextProps extends React.ComponentPropsWithoutRef<"div"> {
   variant?: Variant;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: keyof React.JSX.IntrinsicElements;
   selectable?: boolean;
   tabularNumbers?: boolean;
   lineClamp?: number;
+  scaleFontToUserSetting?: boolean;
 }
 
 interface CustomTextProps extends TextProps {

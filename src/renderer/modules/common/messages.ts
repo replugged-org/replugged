@@ -60,14 +60,14 @@ interface FocusMessageOptions {
   messageId: string;
 }
 
-interface SendMessageForReplyOptions {
+export interface SendMessageForReplyOptions {
   channel: Channel;
   message: Message;
   shouldMention: boolean;
   showMentionToggle: boolean;
 }
 
-interface SendMessageOptionsForReply {
+export interface SendMessageOptionsForReply {
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
 }
@@ -340,8 +340,6 @@ export interface MessageStore {
   whenReady: (channelId: string, callback: () => void) => void;
 }
 
-export type PartialMessageStore = Pick<MessageStore, "getMessage" | "getMessages">;
-
 export interface MessageActions {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => Promise<unknown | void>;
@@ -474,6 +472,7 @@ interface CreateMessageOptions {
   flags?: number;
   nonce?: string;
   poll?: Poll;
+  changelogId?: string;
 }
 
 interface UserServer {
@@ -488,27 +487,27 @@ interface UserServer {
 interface MessageUtils {
   createBotMessage: (options: CreateBotMessageOptions) => Message;
   createMessage: (options: CreateMessageOptions) => Message;
-  createNonce: () => string;
   userRecordToServer: (user: User) => UserServer;
 }
 
+const MessageActionCreators = await waitForProps<MessageActions>(
+  "sendMessage",
+  "editMessage",
+  "deleteMessage",
+);
 const MessageStore = await waitForProps<MessageStore>("getMessage", "getMessages");
 
 const MessageUtilsMod = await waitForModule(filters.bySource('username:"Clyde"'));
 const MessageUtils = {
   createBotMessage: getFunctionBySource(MessageUtilsMod, 'username:"Clyde"'),
   createMessage: getFunctionBySource(MessageUtilsMod, "createMessage"),
-  createNonce: getFunctionBySource(MessageUtilsMod, "fromTimestamp"),
   userRecordToServer: getFunctionBySource(MessageUtilsMod, "global_name:"),
 } as MessageUtils;
 
-export type Messages = PartialMessageStore & MessageActions & MessageUtils;
+export type Messages = MessageActions & MessageStore & MessageUtils;
 
 export default virtualMerge(
-  await waitForProps<MessageActions>("sendMessage", "editMessage", "deleteMessage"),
-  {
-    getMessage: MessageStore.getMessage,
-    getMessages: MessageStore.getMessages,
-  },
+  MessageActionCreators,
+  Object.getPrototypeOf(MessageStore),
   MessageUtils,
-);
+) as Messages;

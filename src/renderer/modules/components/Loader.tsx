@@ -1,31 +1,35 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
+import type { ScreamingSnakeCase } from "type-fest";
 import components from "../common/components";
 
-const Types = {
-  WANDERING_CUBES: "wanderingCubes",
-  CHASING_DOTS: "chasingDots",
-  PULSING_ELLIPSIS: "pulsingEllipsis",
-  SPINNING_CIRCLE: "spinningCircle",
-  SPINNING_CIRCLE_SIMPLE: "spinningCircleSimple",
-  LOW_MOTION: "lowMotion",
-} as const;
+type Types =
+  | "wanderingCubes"
+  | "chasingDots"
+  | "pulsingEllipsis"
+  | "spinningCircle"
+  | "spinningCircleSimple"
+  | "lowMotion";
 
-interface GenericLoaderProps {
-  animated?: boolean;
-  className?: string;
-  itemClassName?: string;
-  style?: React.CSSProperties;
-}
-
-type LoaderProps = GenericLoaderProps & {
-  type?: (typeof Types)[keyof typeof Types];
-} & React.ComponentPropsWithoutRef<"span">;
-type SpinningCircleLoaderProps = GenericLoaderProps & {
-  type?: (typeof Types)["SPINNING_CIRCLE"] | (typeof Types)["SPINNING_CIRCLE_SIMPLE"];
-} & React.ComponentPropsWithoutRef<"div">;
-
-export type LoaderType = React.FC<LoaderProps | SpinningCircleLoaderProps> & {
-  Type: typeof Types;
+export type LoaderTypes = {
+  [K in Types as ScreamingSnakeCase<K>]: K;
 };
 
-export default components.Spinner;
+interface CommonLoaderProps {
+  type?: Types;
+  animated?: boolean;
+  itemClassName?: string;
+}
+
+interface SpinningCircleProps extends CommonLoaderProps, React.ComponentPropsWithoutRef<"div"> {
+  type?: Extract<Types, "spinningCircle" | "spinningCircleSimple">;
+}
+interface OtherLoaderProps extends CommonLoaderProps, React.ComponentPropsWithoutRef<"span"> {
+  type?: Exclude<Types, "spinningCircle" | "spinningCircleSimple">;
+}
+
+export type LoaderType = React.FC<SpinningCircleProps | OtherLoaderProps> & {
+  Type: LoaderTypes;
+};
+
+export default getFunctionBySource<LoaderType>(components, "wanderingCubes")!;

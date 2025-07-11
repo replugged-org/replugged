@@ -1,14 +1,12 @@
-import { signalStart, waitForReady } from "../modules/webpack/patch-load";
-import { error, log } from "../modules/logger";
-
 import { ready as commonReady } from "@common";
 import { ready as componentsReady } from "../modules/components";
 import * as i18n from "../modules/i18n";
+import { error, log } from "../modules/logger";
+import { loadStyleSheet } from "../util";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
-import * as themes from "./themes";
 import * as quickCSS from "./quick-css";
-import { loadStyleSheet } from "../util";
+import * as themes from "./themes";
 import { startAutoUpdateChecking } from "./updater";
 
 export async function start(): Promise<void> {
@@ -72,37 +70,21 @@ export async function restart(): Promise<void> {
   await start();
 }
 
-/*
-Load order:
-1. Register all plaintext patches
-2. await waitForReady from webpack
-3. signalStart()
-4. await reactReady
-5. Start coremods, plugins, and themes
-*/
-
-export async function ignite(): Promise<void> {
-  // This is the function that will be called when loading the window.
-  // Plaintext patches are executed before Discord's preload.
-  await coremods.runPlaintextPatches();
-  await plugins.loadAll();
-  await plugins.runPlaintextPatches();
-  // These next things will happen after Discord's preload is called.
-  // We schedule them here, but they cannot block the ignite function from returning.
-  (async () => {
-    await waitForReady;
-    signalStart();
-    await commonReady();
-    await componentsReady();
-    await start();
-  })();
+export function ignite(): void {
+  // Plaintext patches must run first.
+  coremods.runPlaintextPatches();
+  plugins.loadAll();
+  plugins.runPlaintextPatches();
+  // At this point, Discord's code should run.
+  // Wait for the designated common modules to load before continuing.
+  void Promise.all([commonReady(), componentsReady()]).then(start);
 }
 
-export async function startSplash(): Promise<void> {
+export function startSplash(): void {
   log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
   const startTime = performance.now();
 
-  await themes.loadMissing().then(themes.loadAllSplash);
+  void themes.loadMissing().then(themes.loadAllSplash);
 
   log(
     "Ignition",
