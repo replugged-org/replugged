@@ -182,6 +182,11 @@ type ValType<T> =
   | React.ChangeEvent<HTMLInputElement>
   | (Record<string, unknown> & { value?: T; checked?: T });
 
+type Path<T> =
+  T extends Record<string, unknown>
+    ? { [K in keyof T]-?: K extends string ? `${K}` | `${K}.${Path<T[K]>}` : never }[keyof T]
+    : never;
+
 type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
   ? K extends keyof T
     ? NestedType<NonNullable<T[K]>, NestedKey>
@@ -195,7 +200,7 @@ export function useSetting<
   D extends keyof T,
   K extends Extract<keyof T, string>,
   F extends NestedType<T, P> | T[K] | undefined,
-  P extends `${K}.${string}` | K,
+  P extends Path<T>,
   V extends P extends `${K}.${string}`
     ? NonNullable<NestedType<T, P>>
     : P extends D
@@ -211,7 +216,7 @@ export function useSetting<
   value: V;
   onChange: (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => void;
 } {
-  const initial = settings.get(key as K) ?? lodash.get(settings.all(), key) ?? fallback;
+  const initial = settings.get(key) ?? lodash.get(settings.all(), key) ?? fallback;
   const [value, setValue] = React.useState(initial as V);
 
   return {
@@ -226,20 +231,20 @@ export function useSetting<
           : undefined;
       const targetValue = target && "value" in target ? target.value : undefined;
       const targetChecked = target && "checked" in target ? target.checked : undefined;
-      const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
+      const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[P];
 
       // Update local state
       setValue(finalValue as V);
 
       // Update settings
-      if (settings.get(key as K)) {
-        settings.set(key as K, finalValue);
+      if (settings.get(key)) {
+        settings.set(key, finalValue);
       } else {
-        const [rootKey] = key.split(".");
+        const [rootKey] = key.split(".") as [K];
         // without cloning this changes property in default settings
         // cloneDeep should be used in settings.all instead of spread?
-        const setting = lodash.set(lodash.cloneDeep(settings.all()), key, finalValue)[rootKey as K];
-        settings.set(rootKey as K, setting);
+        const setting = lodash.set(lodash.cloneDeep(settings.all()), key, finalValue)[rootKey];
+        settings.set(rootKey, setting);
       }
     },
   };
@@ -250,7 +255,7 @@ export function useSettingArray<
   D extends keyof T,
   K extends Extract<keyof T, string>,
   F extends NestedType<T, P> | T[K] | undefined,
-  P extends `${K}.${string}` | K,
+  P extends Path<T>,
   V extends P extends `${K}.${string}`
     ? NonNullable<NestedType<T, P>>
     : P extends D
