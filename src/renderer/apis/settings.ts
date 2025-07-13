@@ -1,3 +1,4 @@
+import { lodash } from "@common";
 import type { Jsonifiable } from "type-fest";
 
 type SettingsUpdate<T> =
@@ -8,6 +9,24 @@ type SettingsUpdate<T> =
   | {
       type: "delete";
     };
+
+export type ValType<T> =
+  | T
+  | React.ChangeEvent<HTMLInputElement>
+  | (Record<string, unknown> & { value?: T; checked?: T });
+
+export type Path<T> =
+  T extends Record<string, unknown>
+    ? { [K in keyof T]-?: K extends string ? `${K}` | `${K}.${Path<T[K]>}` : never }[keyof T]
+    : never;
+
+export type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
+  ? K extends keyof T
+    ? NestedType<NonNullable<T[K]>, NestedKey>
+    : undefined
+  : P extends keyof T
+    ? NonNullable<T[P]>
+    : undefined;
 
 /**
  * Manages settings for a given namespace.
@@ -51,19 +70,25 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * @param fallback Value to return if the key does not already exist.
    * @returns
    */
-  public get<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
-    key: K,
+  public get<
+    K extends Extract<keyof T, string>,
+    F extends NestedType<T, P> | T[K] | undefined,
+    P extends Path<T>,
+  >(
+    key: P,
     fallback?: F,
-  ): K extends D
-    ? NonNullable<T[K]>
-    : F extends null | undefined
-      ? T[K] | undefined
-      : NonNullable<T[K]> | F {
+  ): P extends `${K}.${string}`
+    ? NonNullable<NestedType<T, P>>
+    : P extends D
+      ? NonNullable<T[P]>
+      : F extends null | undefined
+        ? T[P] | undefined
+        : NonNullable<T[P]> | F {
     if (typeof this.#settings === "undefined") {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
     // @ts-expect-error It doesn't understand ig
-    return this.#settings[key] ?? fallback ?? this.#defaultSettings[key];
+    return lodash.get(this.#settings, key) ?? fallback ?? lodash.get(this.#defaultSettings, key);
   }
 
   /**
@@ -71,12 +96,13 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * @param key Key of the setting to set.
    * @param value Value to set for the setting.
    */
-  public set<K extends Extract<keyof T, string>>(key: K, value: T[K]): void {
+  public set<P extends Path<T>>(key: P, value: T[P]): void {
     if (typeof this.#settings === "undefined") {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
-    this.#settings[key] = value;
-    this.#queueUpdate(key, { type: "set", value });
+    lodash.set(this.#settings, key, value);
+    key = this.#getRootKey(key);
+    this.#queueUpdate(key, { type: "set", value: this.#settings[key] });
   }
 
   /**
@@ -84,11 +110,11 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * @param key Key to look for.
    * @returns Whether the setting already exists for this namespace.
    */
-  public has(key: Extract<keyof T, string>): boolean {
+  public has(key: Path<T>): boolean {
     if (typeof this.#settings === "undefined") {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
-    return key in this.#settings;
+    return lodash.has(this.#settings, key);
   }
 
   /**
@@ -96,12 +122,18 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * @param key Key of the setting to delete.
    * @returns Whether the setting was successfully deleted.
    */
-  public delete(key: Extract<keyof T, string>): boolean {
+  public delete(key: Path<T>): boolean {
     if (typeof this.#settings === "undefined") {
       throw new Error(`Settings not loaded for namespace ${this.namespace}`);
     }
-    this.#queueUpdate(key, { type: "delete" });
-    return Reflect.deleteProperty(this.#settings, key);
+    if (key in this.#settings) {
+      this.#queueUpdate(key, { type: "delete" });
+      return Reflect.deleteProperty(this.#settings, key);
+    }
+    const ret = lodash.unset(this.#settings, key);
+    key = this.#getRootKey(key);
+    if (this.#settings[key]) this.#queueUpdate(key, { type: "set", value: this.#settings[key] });
+    return ret;
   }
 
   /**
@@ -117,7 +149,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * @returns Current values of all settings in this manager's namespace.
    */
   public all(): T {
-    return { ...this.#settings } as T;
+    return lodash.cloneDeep(this.#settings)!;
   }
 
   #queueUpdate<K extends Extract<keyof T, string>>(key: K, update: SettingsUpdate<T>): void {
@@ -136,6 +168,10 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
       this.#queuedUpdates.clear();
       this.#saveTimeout = void 0;
     }); // Add a delay of 1 or 2 seconds?
+  }
+
+  #getRootKey<K extends Extract<keyof T, string>>(string: string): K {
+    return string.split(".")[0] as K;
   }
 
   /**
