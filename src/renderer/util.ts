@@ -177,51 +177,80 @@ export async function openExternal(url: string): Promise<void> {
   await mod(url);
 }
 
-type ValType<T> =
+type InputType<T> =
   | T
   | React.ChangeEvent<HTMLInputElement>
   | (Record<string, unknown> & { value?: T; checked?: T });
 
-type Path<T> =
+type ObjectPath<T> =
   T extends Record<string, unknown>
-    ? { [K in keyof T]-?: K extends string ? `${K}` | `${K}.${Path<T[K]>}` : never }[keyof T]
+    ? {
+        [K in keyof T]-?: K extends string ? `${K}` | `${K}.${ObjectPath<T[K]>}` : never;
+      }[keyof T]
     : never;
 
-type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
+type ValueAtPath<T, P> = P extends `${infer K}.${infer NestedKey}`
   ? K extends keyof T
-    ? NestedType<NonNullable<T[K]>, NestedKey>
+    ? ValueAtPath<NonNullable<T[K]>, NestedKey>
     : undefined
   : P extends keyof T
     ? NonNullable<T[P]>
     : undefined;
 
-export function useSetting<
+type InferredPath<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
   K extends Extract<keyof T, string>,
-  F extends NestedType<T, P> | T[K] | undefined,
-  P extends Path<T>,
-  V extends P extends `${K}.${string}`
-    ? NonNullable<NestedType<T, P>>
-    : P extends D
-      ? NonNullable<T[P]>
-      : F extends null | undefined
-        ? T[P] | undefined
-        : NonNullable<T[P]> | F,
+  P extends ObjectPath<T>,
+  F extends ValueAtPath<T, P> | T[K] | undefined,
+> = P extends `${K}.${string}`
+  ? NonNullable<ValueAtPath<T, P>>
+  : P extends D
+    ? NonNullable<T[P]>
+    : F extends null | undefined
+      ? T[P] | undefined
+      : NonNullable<T[P]> | F;
+
+/**
+ * React hook for managing settings.
+ * @param key Key of the setting to manage.
+ * @param fallback Value to return if the key does not already exist.
+ * @returns A tuple containing the current value of the setting, and a function to set the value. Works like `useState`.
+ * @example
+ * ```tsx
+ * import { components, settings } from "replugged";
+ * const { TextInput } = components;
+ *
+ * const cfg = settings.init<{ hello: string }>("dev.replugged.Example");
+ *
+ * export function Settings() {
+ *  return <TextInput {...cfg.useSetting("hello", "world")} />;
+ * }
+ * ```
+ */
+export function useSetting<
+  Settings extends Record<string, Jsonifiable>,
+  Defaults extends keyof Settings,
+  PathKey extends Extract<keyof Settings, string>,
+  Fallback extends ValueAtPath<Settings, Path> | Settings[PathKey] | undefined,
+  Path extends ObjectPath<Settings>,
+  Value extends InferredPath<Settings, Defaults, PathKey, Path, Fallback>,
 >(
-  settings: SettingsManager<T, D>,
-  key: P,
-  fallback?: F,
+  settings: SettingsManager<Settings, Defaults>,
+  key: Path,
+  fallback?: Fallback,
 ): {
-  value: V;
-  onChange: (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => void;
+  value: Value;
+  onChange: (
+    newValue: InputType<ValueAtPath<Settings, Path>> | InputType<Settings[PathKey]>,
+  ) => void;
 } {
   const initial = settings.get(key) ?? lodash.get(settings.all(), key) ?? fallback;
-  const [value, setValue] = React.useState(initial as V);
+  const [value, setValue] = React.useState(initial as Value);
 
   return {
     value,
-    onChange: (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => {
+    onChange: (newValue: InputType<ValueAtPath<Settings, Path>> | InputType<Settings[PathKey]>) => {
       const isObj = newValue && typeof newValue === "object";
       const value = isObj && "value" in newValue ? newValue.value : newValue;
       const checked = isObj && "checked" in newValue ? newValue.checked : undefined;
@@ -231,18 +260,21 @@ export function useSetting<
           : undefined;
       const targetValue = target && "value" in target ? target.value : undefined;
       const targetChecked = target && "checked" in target ? target.checked : undefined;
-      const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[P];
+      const finalValue = (checked ??
+        targetChecked ??
+        targetValue ??
+        value ??
+        newValue) as Settings[Path];
 
       // Update local state
-      setValue(finalValue as V);
+      setValue(finalValue as Value);
 
       // Update settings
       if (settings.get(key)) {
         settings.set(key, finalValue);
       } else {
-        const [rootKey] = key.split(".") as [K];
-        // without cloning this changes property in default settings
-        // cloneDeep should be used in settings.all instead of spread?
+        const [rootKey] = key.split(".") as [PathKey];
+        // Without cloning this changes property in default settings
         const setting = lodash.set(lodash.cloneDeep(settings.all()), key, finalValue)[rootKey];
         settings.set(rootKey, setting);
       }
@@ -251,26 +283,23 @@ export function useSetting<
 }
 
 export function useSettingArray<
-  T extends Record<string, Jsonifiable>,
-  D extends keyof T,
-  K extends Extract<keyof T, string>,
-  F extends NestedType<T, P> | T[K] | undefined,
-  P extends Path<T>,
-  V extends P extends `${K}.${string}`
-    ? NonNullable<NestedType<T, P>>
-    : P extends D
-      ? NonNullable<T[P]>
-      : F extends null | undefined
-        ? T[P] | undefined
-        : NonNullable<T[P]> | F,
+  Settings extends Record<string, Jsonifiable>,
+  Defaults extends keyof Settings,
+  PathKey extends Extract<keyof Settings, string>,
+  Fallback extends ValueAtPath<Settings, Path> | Settings[PathKey] | undefined,
+  Path extends ObjectPath<Settings>,
+  Value extends InferredPath<Settings, Defaults, PathKey, Path, Fallback>,
 >(
-  settings: SettingsManager<T, D>,
-  key: P,
-  fallback?: F,
-): [V, (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => void] {
+  settings: SettingsManager<Settings, Defaults>,
+  key: Path,
+  fallback?: Fallback,
+): [
+  Value,
+  (newValue: InputType<ValueAtPath<Settings, Path>> | InputType<Settings[PathKey]>) => void,
+] {
   const { value, onChange } = useSetting(settings, key, fallback);
 
-  return [value as V, onChange];
+  return [value as Value, onChange];
 }
 
 // Credit to @Vendicated - https://github.com/Vendicated/virtual-merge
