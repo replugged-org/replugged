@@ -213,6 +213,7 @@ type InferredPath<
 
 /**
  * React hook for managing settings.
+ * @param settings Settings manager to use.
  * @param key Key of the setting to manage.
  * @param fallback Value to return if the key does not already exist.
  * @returns A tuple containing the current value of the setting, and a function to set the value. Works like `useState`.
