@@ -1,8 +1,8 @@
-import { React, channels, flux, fluxDispatcher, guilds } from "@common";
+import { React, channels, flux, fluxDispatcher, guilds, lodash } from "@common";
 import type { Fiber } from "react-reconciler";
 import type { Jsonifiable } from "type-fest";
 import type { ObjectExports } from "../types";
-import type { NestedType, Path, SettingsManager, ValType } from "./apis/settings";
+import { SettingsManager } from "./apis/settings";
 import { getByProps, getBySource, getFunctionBySource } from "./modules/webpack";
 
 /**
@@ -177,6 +177,24 @@ export async function openExternal(url: string): Promise<void> {
   await mod(url);
 }
 
+type ValType<T> =
+  | T
+  | React.ChangeEvent<HTMLInputElement>
+  | (Record<string, unknown> & { value?: T; checked?: T });
+
+type Path<T> =
+  T extends Record<string, unknown>
+    ? { [K in keyof T]-?: K extends string ? `${K}` | `${K}.${Path<T[K]>}` : never }[keyof T]
+    : never;
+
+type NestedType<T, P> = P extends `${infer K}.${infer NestedKey}`
+  ? K extends keyof T
+    ? NestedType<NonNullable<T[K]>, NestedKey>
+    : undefined
+  : P extends keyof T
+    ? NonNullable<T[P]>
+    : undefined;
+
 export function useSetting<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
@@ -198,7 +216,7 @@ export function useSetting<
   value: V;
   onChange: (newValue: ValType<NestedType<T, P>> | ValType<T[K]>) => void;
 } {
-  const initial = settings.get(key, fallback);
+  const initial = settings.get(key) ?? lodash.get(settings.all(), key) ?? fallback;
   const [value, setValue] = React.useState(initial as V);
 
   return {
@@ -219,8 +237,15 @@ export function useSetting<
       setValue(finalValue as V);
 
       // Update settings
-
-      settings.set(key, finalValue);
+      if (settings.get(key)) {
+        settings.set(key, finalValue);
+      } else {
+        const [rootKey] = key.split(".") as [K];
+        // without cloning this changes property in default settings
+        // cloneDeep should be used in settings.all instead of spread?
+        const setting = lodash.set(lodash.cloneDeep(settings.all()), key, finalValue)[rootKey];
+        settings.set(rootKey, setting);
+      }
     },
   };
 }
