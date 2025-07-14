@@ -226,5 +226,9 @@
   "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Sorgente da cui installare l'addon",
   "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "id",
   "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Se la sorgente ha più addon, specifica quale installare",
-  "REPLUGGED_STORE": "Store"
+  "REPLUGGED_STORE": "Store",
+  "REPLUGGED_TOAST_ADDON_ENABLE_FAILED": "Impossibile abilitare {name}",
+  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Barra del titolo personalizzata",
+  "REPLUGGED_TOAST_ADDON_DISABLE_FAILED": "Impossibile disabilitare {name}",
+  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC": "Utilizza la barra del titolo personalizzata di Discord invece della barra del titolo di sistema. **Necessita di un riavvio**."
 }

@@ -226,5 +226,8 @@
   "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Quelle zur Installation des Addons von",
   "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "Identifikation",
   "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Wenn die Quelle mehrere Addons enthält, geben Sie an, welches Addon installiert werden soll",
-  "REPLUGGED_STORE": "speichern"
+  "REPLUGGED_STORE": "Speichern",
+  "REPLUGGED_TOAST_ADDON_DISABLE_FAILED": "{name} konnte nicht deaktiviert werden",
+  "REPLUGGED_TOAST_ADDON_ENABLE_FAILED": "{name} konnte nicht aktiviert werden",
+  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Benutzerdefinierte titelleiste"
 }

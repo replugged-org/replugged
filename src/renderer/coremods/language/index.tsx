@@ -19,11 +19,11 @@ export function Card(): React.ReactElement {
 }
 
 export function Percentage(
-  localeName: React.ReactElement,
+  localeName: React.ReactElement<{ className: string; children: string }>,
   localizedName: React.ReactElement,
   flag: React.ReactElement,
 ): React.ReactElement {
-  const name = localeName.props.children as string;
+  const name = localeName.props.children;
   const locale = getLanguages().find((language) => language.name === name)!.code;
   const percentage = percentages.get(locale);
 

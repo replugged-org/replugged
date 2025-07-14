@@ -141,7 +141,7 @@ export const General = (): React.ReactElement => {
         <FormItem
           title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
           note={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
-          divider={true}
+          divider
           style={{ marginBottom: "20px" }}>
           <TextInput
             {...util.useSetting(generalSettings, "apiUrl")}

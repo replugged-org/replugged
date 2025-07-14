@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import type esbuild from "esbuild";
+import type { Plugin } from "esbuild";
 import path from "path";
 
 export const formatBytes = (bytes: number): string => {
@@ -63,4 +63,4 @@ export default {
       console.log(`⚡ ${chalk.green(`Done in ${time.toLocaleString()}ms`)}`);
     });
   },
-} as esbuild.Plugin;
+} as Plugin;

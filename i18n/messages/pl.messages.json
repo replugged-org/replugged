@@ -226,5 +226,9 @@
   "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Źródło, z którego ma zostać zainstalowany dodatek",
   "REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME": "identyfikator",
   "REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC": "Jeśli źródło zawiera wiele dodatków, określ, który z nich ma zostać zainstalowany",
-  "REPLUGGED_STORE": "Sklep"
+  "REPLUGGED_STORE": "Sklep",
+  "REPLUGGED_TOAST_ADDON_DISABLE_FAILED": "Nie udało się wyłączyć {name}",
+  "REPLUGGED_TOAST_ADDON_ENABLE_FAILED": "Nie udało się włączyć {name}",
+  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Niestandardowy pasek tytułu",
+  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC": "Użyj niestandardowego paska tytułu Discorda zamiast systemowego paska tytułu. **Wymaga ponownego uruchomienia**."
 }
