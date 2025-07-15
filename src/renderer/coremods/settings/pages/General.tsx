@@ -73,6 +73,11 @@ export const General = (): React.ReactElement => {
     "titleBar",
   );
 
+  const { value: winUpdaterValue, onChange: winUpdaterOnChange } = util.useSetting(
+    generalSettings,
+    "winUpdater",
+  );
+
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
   const [hue, setHue] = React.useState(0);
@@ -132,6 +137,17 @@ export const General = (): React.ReactElement => {
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}>
           {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+        </SwitchItem>
+      )}
+
+      {DiscordNative.process.platform === "win32" && (
+        <SwitchItem
+          value={winUpdaterValue}
+          onChange={(value) => {
+            winUpdaterOnChange(value);
+          }}
+          note={intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER_DESC)}>
+          {intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER)}
         </SwitchItem>
       )}
 

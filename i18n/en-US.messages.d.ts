@@ -1725,6 +1725,32 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
+   * Key: `fXfpW1`
+   * 
+   * ### Definition
+   * ```text
+   * Auto Replug
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_WIN_UPDATER': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `0ljedn`
+   * 
+   * ### Definition
+   * ```text
+   * Automatically Replug discord when discord updates.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_WIN_UPDATER_DESC': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `b2oqX1`
    * 
    * ### Definition

@@ -1,13 +1,15 @@
 import { basename, join } from "path";
 import { cpSync, existsSync, readdirSync, renameSync } from "fs";
+import { getSetting } from "./ipc/settings";
 
 function getVersionFromName(name: string): number[] {
   return name.replace("app-", "").split(".").map(Number);
 }
 
-export default function addUpdateListener(): void {
-  if (process.platform !== "win32") return;
-  // app-x.x.x/resources/asar/app_bootstrap/index.js
+export default function patchAutoStartUpdate(): void {
+  const replugSetting = getSetting<boolean>("dev.replugged.Settings", "winUpdater", false);
+  if (process.platform !== "win32" || !replugSetting) return;
+  // require.main!.filename -> %localappdata%/discord/app-x.x.x/resources/asar/app_bootstrap/index.js
   const origAsarPath = join(require.main!.filename, "..", "..");
   const currentAsarDir = join(origAsarPath, "..", "app.asar");
   const currentVersion = basename(join(origAsarPath, "..", ".."));
