@@ -12,10 +12,7 @@ import type {
   RepluggedTheme,
 } from "./types";
 
-let version = "";
-void ipcRenderer.invoke(RepluggedIpcChannels.GET_REPLUGGED_VERSION).then((v) => {
-  version = v;
-});
+const version = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_VERSION);
 
 const RepluggedNative = {
   themes: {
@@ -94,7 +91,7 @@ const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
   },
 
-  getVersion: () => version,
+  getVersion: (): string => version,
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };

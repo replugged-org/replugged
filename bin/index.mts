@@ -2,7 +2,7 @@
 
 // WARNING: any imported files need to be added to files in package.json
 
-import asar from "@electron/asar";
+import { createPackage } from "@electron/asar";
 import chalk from "chalk";
 import esbuild from "esbuild";
 import { sassPlugin } from "esbuild-sass-plugin";
@@ -22,7 +22,7 @@ import { fileURLToPath, pathToFileURL } from "url";
 import WebSocket from "ws";
 import yargs, { type ArgumentsCamelCase } from "yargs";
 import { hideBin } from "yargs/helpers";
-import logBuildPlugin from "../scripts/build-plugins/intl-loader.mjs";
+import logBuildPlugin from "../scripts/build-plugins/log-build.mjs";
 import { type AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
 import { release } from "./release.mjs";
 
@@ -260,7 +260,7 @@ async function bundleAddon(
   if (!existsSync("bundle")) {
     mkdirSync("bundle");
   }
-  await asar.createPackage(distPath, `${outputName}.asar`);
+  await createPackage(distPath, `${outputName}.asar`);
   copyFileSync(`${distPath}/manifest.json`, `${outputName}.json`);
 
   console.log(`Bundled ${manifest.name}`);
@@ -487,6 +487,9 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
     plugins,
     sourcemap: !production,
     target: `chrome${CHROME_VERSION}`,
+    jsx: "transform",
+    jsxFactory: "window.replugged.common.React.createElement",
+    jsxFragment: "window.replugged.common.React.Fragment",
   };
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];

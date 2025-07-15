@@ -14,8 +14,12 @@ import type {
 // eslint-disable-next-line no-duplicate-imports
 import { ApplicationCommandOptionType } from "../../types";
 import icon from "../assets/logo.png";
-import { constants, i18n, messages, users } from "../modules/common";
+import { constants, fluxDispatcher, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
+import type {
+  SendMessageForReplyOptions,
+  SendMessageOptionsForReply,
+} from "../modules/common/messages";
 import { t } from "../modules/i18n";
 import { Logger } from "../modules/logger";
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
@@ -100,7 +104,17 @@ async function executeCommand<T extends CommandOptions>(
   command: RepluggedCommand<T>,
 ): Promise<void> {
   try {
+    const PendingReplyStore = getByStoreName<
+      Store & {
+        getPendingReply: (channelId: string) => SendMessageForReplyOptions;
+      }
+    >("PendingReplyStore")!;
+
     const currentChannelId = currentInfo.channel.id;
+    const replyOptions: SendMessageOptionsForReply = messages.getSendMessageOptionsForReply(
+      PendingReplyStore.getPendingReply(currentChannelId),
+    );
+
     const loadingMessage = messages.createBotMessage({
       channelId: currentChannelId,
       content: "",
@@ -133,12 +147,20 @@ async function executeCommand<T extends CommandOptions>(
     if ((!result?.result && !result?.embeds) || !currentChannelId) return;
 
     if (result.send) {
-      void messages.sendMessage(currentChannelId, {
-        content: result.result!,
-        invalidEmojis: [],
-        validNonShortcutEmojis: [],
-        tts: false,
-      });
+      void messages.sendMessage(
+        currentChannelId,
+        {
+          content: result.result!,
+          invalidEmojis: [],
+          validNonShortcutEmojis: [],
+          tts: false,
+        },
+        undefined,
+        replyOptions,
+      );
+      if (replyOptions.messageReference) {
+        fluxDispatcher.dispatch({ type: "DELETE_PENDING_REPLY", channelId: currentChannelId });
+      }
     } else {
       const botMessage = messages.createBotMessage({
         channelId: currentChannelId,
