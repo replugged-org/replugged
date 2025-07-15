@@ -12,7 +12,7 @@ export default function addUpdateListener(): void {
   const currentAsarDir = join(origAsarPath, "..", "app.asar");
   const currentVersion = basename(join(origAsarPath, "..", ".."));
   const discordPath = join(origAsarPath, "..", "..", "..");
-  const autoStartPath = join(origAsarPath, "autoStart", "index.js");
+  const autoStartPath = join(origAsarPath, "app_bootstrap", "autoStart", "index.js");
   const { update } = require(autoStartPath);
 
   require.cache[autoStartPath]!.exports.update = async (cb?: () => unknown) => {
