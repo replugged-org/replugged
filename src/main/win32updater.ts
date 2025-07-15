@@ -37,8 +37,4 @@ export default function addUpdateListener(): void {
       cb?.();
     });
   };
-
-  /*  updater.prependListener("host-updated", () => {
-    
-  }); */
 }
