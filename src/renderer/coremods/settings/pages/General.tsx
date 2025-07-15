@@ -63,11 +63,7 @@ export const General = (): React.ReactElement => {
   const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
   const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
   const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
-
-  const { value: winUpdaterValue, onChange: winUpdaterOnChange } = util.useSetting(
-    generalSettings,
-    "winUpdater",
-  );
+  const [winUpdaterValue, winUpdaterOnChange] = util.useSettingArray(generalSettings, "winUpdater");
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
