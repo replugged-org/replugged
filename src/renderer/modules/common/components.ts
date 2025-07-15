@@ -1,4 +1,4 @@
-import type { LoaderType } from "@components";
+import type { LoaderType, ProgressType } from "@components";
 import type { ClickableCompType } from "@components/Clickable";
 import type { NoticeType } from "@components/Notice";
 import type { OriginalTextType } from "@components/Text";
@@ -55,6 +55,7 @@ export type DiscordComponents = {
   | TextAreaType
   | TextInputType
   | OriginalTooltipType
+  | ProgressType
   | unknown
 >;
 
