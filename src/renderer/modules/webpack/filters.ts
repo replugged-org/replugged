@@ -1,6 +1,6 @@
+import type { RawModule } from "../../../types";
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
-import type { RawModule } from "../../../types";
 
 /**
  * Get a module that has all the given properties on one of its exports
@@ -14,7 +14,7 @@ export const byProps = <P extends PropertyKey = PropertyKey>(
 
 /**
  * Get a function that has all the given properties on its prototype
- * @param props List of property names
+ * @param props List of property names to check on the prototype
  */
 export const byPrototype = <P extends PropertyKey = PropertyKey>(
   ...args: P[]

@@ -1,8 +1,8 @@
 import type { GetModuleOptions, RawModule, WaitForOptions } from "src/types";
-import { getExportsForProps, getModule } from "./get-modules";
 import { flux } from "../common";
 import type { Store } from "../common/flux";
 import * as filters from "./filters";
+import { getExportsForProps, getModule } from "./get-modules";
 import { waitForModule } from "./lazy";
 
 // Get by source
@@ -107,7 +107,6 @@ export function getByProps<T, P extends PropertyKey = keyof T>(
   ...args: [P[], GetModuleOptions] | P[]
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
   const props = (typeof args[0] === "string" ? args : args[0]) as P[];
-
   const raw = typeof args[0] === "string" ? false : (args[1] as GetModuleOptions | undefined)?.raw;
 
   const result =
@@ -219,7 +218,6 @@ export function getByPrototype<T, P extends PropertyKey = keyof T>(
   ...args: [P[], GetModuleOptions] | P[]
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
   const props = (typeof args[0] === "string" ? args : args[0]) as P[];
-
   const raw = typeof args[0] === "string" ? false : (args[1] as GetModuleOptions | undefined)?.raw;
 
   const result =
