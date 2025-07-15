@@ -60,18 +60,9 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
 }
 
 export const General = (): React.ReactElement => {
-  const { value: expValue, onChange: expOnChange } = util.useSetting(
-    generalSettings,
-    "experiments",
-  );
-  const { value: rdtValue, onChange: rdtOnChange } = util.useSetting(
-    generalSettings,
-    "reactDevTools",
-  );
-  const { value: titleBarValue, onChange: titleBarOnChange } = util.useSetting(
-    generalSettings,
-    "titleBar",
-  );
+  const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
+  const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
+  const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
 
   const { value: winUpdaterValue, onChange: winUpdaterOnChange } = util.useSetting(
     generalSettings,
