@@ -1,4 +1,4 @@
-import type { ByPropsOptions, Filter, GetModuleOptions, RawModule } from "src/types";
+import type { Filter, GetModuleOptions, RawModule } from "src/types";
 import { webpackChunks, wpRequire } from "./patch-load";
 import { logError } from "./util";
 
@@ -63,21 +63,21 @@ function* iterateModuleExports(
  * Find an object in a module that has all the given properties. You will usually not need this function.
  * @param m Module to search
  * @param props Array of prop names
- * @param options object containing option on whether to look in prototype or not
- * @returns Object that contains all the given properties (and any others), or undefined if not found
+ * @param byPrototype boolean whether to look in prototype or not
+ * @returns Object/Function that contains all the given properties (and any others), or undefined if not found
  */
 export function getExportsForProps<T, P extends PropertyKey = keyof T>(
   m: unknown,
   props: P[],
-  options?: ByPropsOptions,
+  byPrototype?: boolean,
 ): T | undefined {
   // Loop over the module and its exports at the top level
   // Return the first thing that has all the indicated props
   // Checks only in prototypes if specified, usually to look for functions
-  for (const exported of iterateModuleExports(m, options?.byPrototype)) {
+  for (const exported of iterateModuleExports(m, byPrototype)) {
     if (
       props.every((p) =>
-        options?.byPrototype
+        byPrototype
           ? (exported.prototype as Record<P, unknown>)[p]
           : p in (exported as Record<P, unknown>),
       )

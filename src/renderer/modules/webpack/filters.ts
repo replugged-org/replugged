@@ -1,20 +1,25 @@
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
-import type { ByPropsOptions, RawModule } from "../../../types";
+import type { RawModule } from "../../../types";
 
 /**
  * Get a module that has all the given properties on one of its exports
  * @param props List of property names
  */
 export const byProps = <P extends PropertyKey = PropertyKey>(
-  ...args: [...P[], ByPropsOptions] | P[]
+  ...args: P[]
 ): ((m: RawModule) => boolean) => {
-  if (typeof args.at(-1) === "object" && !Array.isArray(args.at(-1)) && args.at(-1)) {
-    const options = args.pop() as ByPropsOptions;
-    return (m: RawModule) =>
-      typeof getExportsForProps(m.exports, args as P[], options) !== "undefined";
-  }
-  return (m: RawModule) => typeof getExportsForProps(m.exports, args as P[]) !== "undefined";
+  return (m: RawModule) => typeof getExportsForProps(m.exports, args) !== "undefined";
+};
+
+/**
+ * Get a function that has all the given properties on its prototype
+ * @param props List of property names
+ */
+export const byPrototype = <P extends PropertyKey = PropertyKey>(
+  ...args: P[]
+): ((m: RawModule) => boolean) => {
+  return (m: RawModule) => typeof getExportsForProps(m.exports, args, true) !== "undefined";
 };
 
 /**

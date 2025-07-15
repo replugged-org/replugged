@@ -79,8 +79,3 @@ export interface WaitForOptions {
   /** If nothing is found after this delay (ms), stop and throw an error. */
   timeout?: number;
 }
-
-export interface ByPropsOptions {
-  /** searches inside the prototype if getting by props */
-  byPrototype?: boolean;
-}
