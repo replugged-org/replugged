@@ -13,23 +13,32 @@ export default function addUpdateListener(): void {
   const discordPath = join(origAsarPath, "..", "..", "..");
   const updater = require(join(origAsarPath, "common", "updater")).Updater;
 
-  updater.prependListener("host-updated", () => {
-    const newVersion = readdirSync(discordPath).reduce((oldVersionString, newVersionString) => {
-      if (!newVersionString.startsWith("app-")) return oldVersionString;
-      const oldVersion = getVersionFromName(oldVersionString);
-      const newVersion = getVersionFromName(newVersionString);
-      if (newVersion.some((n, i) => n > oldVersion[i])) return newVersionString;
-      return oldVersionString;
-    }, currentVersion);
+  const defaultUpdaterOn = updater.on.bind(updater);
+  updater.on = (event: string, cb?: () => unknown) => {
+    if (event !== "host-updated") return defaultUpdaterOn(event, cb);
+    defaultUpdaterOn(event, () => {
+      const newVersion = readdirSync(discordPath).reduce((oldVersionString, newVersionString) => {
+        if (!newVersionString.startsWith("app-")) return oldVersionString;
+        const oldVersion = getVersionFromName(oldVersionString);
+        const newVersion = getVersionFromName(newVersionString);
+        if (newVersion.some((n, i) => n > oldVersion[i])) return newVersionString;
+        return oldVersionString;
+      }, currentVersion);
 
-    if (newVersion === currentVersion) return;
+      if (newVersion === currentVersion) return;
 
-    const newResources = join(discordPath, newVersion, "resources");
+      const newResources = join(discordPath, newVersion, "resources");
 
-    const asar = join(newResources, "app.asar");
-    const origAsar = join(newResources, "app.orig.asar");
-    if (!existsSync(origAsar)) renameSync(asar, origAsar);
+      const asar = join(newResources, "app.asar");
+      const origAsar = join(newResources, "app.orig.asar");
+      if (!existsSync(origAsar)) renameSync(asar, origAsar);
 
-    cpSync(currentAsarDir, asar, { recursive: true });
-  });
+      cpSync(currentAsarDir, asar, { recursive: true });
+      cb?.();
+    });
+  };
+
+  /*  updater.prependListener("host-updated", () => {
+    
+  }); */
 }
