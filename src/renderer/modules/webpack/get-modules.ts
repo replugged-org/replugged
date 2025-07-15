@@ -45,7 +45,7 @@ function* iterateModuleExports(
           if (secondLevel && typeof val === "object") {
             for (const subKey in val) {
               const subVal = (val as Record<PropertyKey, unknown>)[subKey];
-              if (subVal && (typeof val === "object" || typeof val === "function")) {
+              if (subVal && (typeof subVal === "object" || typeof subVal === "function")) {
                 yield subVal as Record<PropertyKey, unknown>;
                 continue;
               }
@@ -78,7 +78,7 @@ export function getExportsForProps<T, P extends PropertyKey = keyof T>(
     if (
       props.every((p) =>
         byPrototype
-          ? (exported.prototype as Record<P, unknown>)[p]
+          ? exported.prototype && p in (exported.prototype as Record<P, unknown>)
           : p in (exported as Record<P, unknown>),
       )
     ) {
