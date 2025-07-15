@@ -13,8 +13,8 @@ export { Injector } from "./modules/injector";
  * - The "Type" portion of the prefix indicates the type of the message's origin--e.g. an API, a coremod, or a plugin.
  * - The "Name" portion of the prefix specifies the origin of the message--the name of the API/coremod/plugin.
  */
-export * as logger from "./modules/logger";
-export { Logger } from "./modules/logger";
+export * as logger from "@logger";
+export { Logger } from "@logger";
 
 export * as webpack from "./modules/webpack";
 export * as common from "./modules/common";

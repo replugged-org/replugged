@@ -21,7 +21,8 @@ import type {
   SendMessageOptionsForReply,
 } from "../modules/common/messages";
 import { t } from "../modules/i18n";
-import { Logger } from "../modules/logger";
+import { Logger } from "@logger";
+
 import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
