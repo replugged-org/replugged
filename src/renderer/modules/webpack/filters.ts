@@ -7,9 +7,9 @@ import { sourceStrings } from "./patch-load";
  * @param props List of property names
  */
 export const byProps = <P extends PropertyKey = PropertyKey>(
-  ...args: P[]
+  ...props: P[]
 ): ((m: RawModule) => boolean) => {
-  return (m: RawModule) => typeof getExportsForProps(m.exports, args) !== "undefined";
+  return (m: RawModule) => typeof getExportsForProps(m.exports, props) !== "undefined";
 };
 
 /**
@@ -17,9 +17,9 @@ export const byProps = <P extends PropertyKey = PropertyKey>(
  * @param props List of property names to check on the prototype
  */
 export const byPrototype = <P extends PropertyKey = PropertyKey>(
-  ...args: P[]
+  ...props: P[]
 ): ((m: RawModule) => boolean) => {
-  return (m: RawModule) => typeof getExportsForProps(m.exports, args, true) !== "undefined";
+  return (m: RawModule) => typeof getExportsForProps(m.exports, props, true) !== "undefined";
 };
 
 /**
