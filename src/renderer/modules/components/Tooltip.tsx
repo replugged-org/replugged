@@ -22,10 +22,7 @@ const Positions = {
 interface TooltipEnums {
   Aligns: typeof Aligns;
   Positions: typeof Positions;
-  Colors: Record<
-    "PRIMARY" | "NESTED" | "BLACK" | "GREY" | "BRAND" | "GREEN" | "YELLOW" | "RED" | "PREMIUM",
-    string
-  >;
+  Colors: Record<"PRIMARY" | "GREY" | "BRAND" | "GREEN" | "RED", string>;
 }
 
 interface BaseTooltipProps {
