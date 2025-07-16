@@ -1,5 +1,3 @@
-import { Message } from "@common/i18n";
-
 export enum ApplicationCommandOptionType {
   //Subcommand = 1,
   //SubcommandGroup = 2,
@@ -25,8 +23,8 @@ interface BaseCommandOptions<T extends ApplicationCommandOptionType> {
 }
 
 export interface CommandChoices {
-  name: string | Message;
-  displayName: string | Message;
+  name: string;
+  displayName: string;
   value: string | number;
 }
 
@@ -59,14 +57,13 @@ export interface ChannelOptions extends BaseCommandOptions<ApplicationCommandOpt
   channel_types?: readonly number[];
 }
 
-export interface OtherCommandOptions
-  extends BaseCommandOptions<
-    | ApplicationCommandOptionType.Attachment
-    | ApplicationCommandOptionType.Boolean
-    | ApplicationCommandOptionType.Mentionable
-    | ApplicationCommandOptionType.Role
-    | ApplicationCommandOptionType.User
-  > {}
+export type OtherCommandOptions = BaseCommandOptions<
+  | ApplicationCommandOptionType.Attachment
+  | ApplicationCommandOptionType.Boolean
+  | ApplicationCommandOptionType.Mentionable
+  | ApplicationCommandOptionType.Role
+  | ApplicationCommandOptionType.User
+>;
 
 export interface CommandOptionReturn<T = unknown> {
   name: string;
@@ -75,13 +72,6 @@ export interface CommandOptionReturn<T = unknown> {
 }
 
 export type CommandOptions = StringOptions | NumberOptions | ChannelOptions | OtherCommandOptions;
-
-export interface ConnectedAccount {
-  type: string;
-  name: string;
-  id: string;
-  verified: boolean;
-}
 
 export enum MessageEmbedTypes {
   IMAGE = "image",
@@ -154,6 +144,13 @@ interface ApplicationRoleConnection {
   platform_name: string | null;
   platform_username: string | null;
   metadata: Record<string, number | string>;
+}
+
+interface ConnectedAccount {
+  type: string;
+  name: string;
+  id: string;
+  verified: boolean;
 }
 
 export interface Badge {

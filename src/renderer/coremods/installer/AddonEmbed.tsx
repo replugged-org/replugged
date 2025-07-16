@@ -1,12 +1,13 @@
-import { Messages } from "@common/i18n";
-import { React } from "@common";
+import { React, classNames } from "@common";
+import { t as discordT, intl } from "@common/i18n";
 import { Button, Clickable, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { getByProps } from "@webpack";
+import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
-import { CheckResultSuccess } from "src/types";
+import type { CheckResultSuccess } from "src/types";
 import { getSourceLink } from "../settings/pages";
-import { InstallLinkProps, authorList, checkIsInstalled, getInfo, install } from "./util";
+import { type InstallLinkProps, authorList, checkIsInstalled, getInfo, install } from "./util";
 
 import "./addonEmbed.css";
 
@@ -49,7 +50,7 @@ function Link({ className }: { className?: string }): React.ReactElement {
       width="24"
       height="24"
       viewBox="0 0 24 24">
-      <g fill="none" fill-rule="evenodd">
+      <g fill="none" fillRule="evenodd">
         <path
           fill="currentColor"
           d="M10.59 13.41c.41.39.41 1.03 0 1.42-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0 5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24 2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24zm2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0 5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24 2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24.973.973 0 0 1 0-1.42z"></path>
@@ -151,22 +152,25 @@ const Embed = React.memo(
           ) : (
             <>
               <Tooltip text={props.authors} className="replugged-addon-embed-title-tooltip">
-                <strong className={`${title} replugged-addon-embed-title`}>{props.authors}</strong>
+                <strong className={classNames(title, "replugged-addon-embed-title")}>
+                  {props.authors}
+                </strong>
               </Tooltip>
               <Clickable
-                className={`${copyLink} replugged-addon-embed-store-button`}
+                className={classNames(copyLink, "replugged-addon-embed-store-button")}
                 onClick={() => openExternal(props.url)}>
-                {Messages.REPLUGGED_INSTALLER_OPEN_STORE}
+                {intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE)}
               </Clickable>
               <Clickable
-                className={`${copyLink} replugged-addon-embed-copy-button${
-                  props.onCooldown ? ` ${copied} addon-embed-copied` : ""
-                }`}
+                className={classNames(copyLink, "replugged-addon-embed-copy-button", {
+                  [copied]: props.onCooldown,
+                  "addon-embed-copied": props.onCooldown,
+                })}
                 onClick={props.copyUrl}>
                 <Link className={copyLinkIcon} />
                 {props.onCooldown
-                  ? Messages.REPLUGGED_PLUGIN_EMBED_COPIED
-                  : Messages.REPLUGGED_PLUGIN_EMBED_COPY}
+                  ? intl.string(discordT.BUILD_OVERRIDE_LINK_COPIED)
+                  : intl.string(discordT.BUILD_OVERRIDE_LINK_COPY)}
               </Clickable>
             </>
           )}
@@ -174,10 +178,10 @@ const Embed = React.memo(
         <div className={content}>
           <div className="addon-embed-main-content">
             <Icon className={icon} />
-            <div className={`${buildInfo} addon-embed-build-info`}>
+            <div className={classNames(buildInfo, "addon-embed-build-info")}>
               {props.loading ? (
                 <div className={subHead}>
-                  <div className={`${barLoader} ${barTitle}`} />
+                  <div className={classNames(barLoader, barTitle)} />
                 </div>
               ) : (
                 <Text className={subHead} variant={"text-sm/semibold"}>
@@ -203,12 +207,14 @@ const Embed = React.memo(
             <div className={buttonLoader} />
           ) : (
             <Tooltip
-              text={Messages.REPLUGGED_ERROR_ALREADY_INSTALLED.format({ name: props.name })}
+              text={intl.formatToPlainString(t.REPLUGGED_ERROR_ALREADY_INSTALLED, {
+                name: props.name,
+              })}
               className="replugged-addon-embed-button-tooltip"
               shouldShow={props.isInstalled ? undefined : false}
               hideOnClick={false}>
               <Button
-                className={`${button} ${buttonSize} replugged-addon-embed-button`}
+                className={classNames(button, buttonSize, "replugged-addon-embed-button")}
                 style={{
                   minWidth: "auto",
                   maxWidth: "auto",
@@ -219,7 +225,7 @@ const Embed = React.memo(
                   props.isInstalled || props.isInstalling ? Button.Colors.TRANSPARENT : undefined
                 }
                 onClick={props.installClick}>
-                {Messages.REPLUGGED_CONFIRM_INSTALL}
+                {intl.string(t.REPLUGGED_CONFIRM_INSTALL)}
               </Button>
             </Tooltip>
           )}

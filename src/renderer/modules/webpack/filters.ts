@@ -1,13 +1,25 @@
+import type { RawModule } from "../../../types";
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
-import type { RawModule } from "../../../types";
 
 /**
  * Get a module that has all the given properties on one of its exports
  * @param props List of property names
  */
-export const byProps = <P extends PropertyKey = PropertyKey>(...props: P[]) => {
-  return (m: RawModule) => typeof getExportsForProps(m.exports, props) !== "undefined";
+export const byProps = <P extends PropertyKey = PropertyKey>(
+  ...args: P[]
+): ((m: RawModule) => boolean) => {
+  return (m: RawModule) => typeof getExportsForProps(m.exports, args) !== "undefined";
+};
+
+/**
+ * Get a function that has all the given properties on its prototype
+ * @param props List of property names to check on the prototype
+ */
+export const byPrototype = <P extends PropertyKey = PropertyKey>(
+  ...args: P[]
+): ((m: RawModule) => boolean) => {
+  return (m: RawModule) => typeof getExportsForProps(m.exports, args, true) !== "undefined";
 };
 
 /**

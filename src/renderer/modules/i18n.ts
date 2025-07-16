@@ -1,47 +1,28 @@
 import { i18n } from "@common";
-import type { RepluggedTranslations } from "../../types";
+import type { loadAllMessagesInLocale as LoadAllMessagesInLocale } from "@discord/intl";
+import { waitForProps } from "@webpack";
+import { DEFAULT_LOCALE } from "src/constants";
+
+export { messagesLoader, messages as t } from "i18n/en-US.messages";
 
 export let locale: string | undefined;
-export const messages = new Map();
 
-export async function load(): Promise<void> {
-  loadAllStrings(await RepluggedNative.i18n.getStrings());
+export function load(): void {
+  locale = i18n.intl.currentLocale || i18n.intl.defaultLocale || DEFAULT_LOCALE;
 
-  locale = i18n._chosenLocale;
-
-  i18n.on("locale", (newLocale: string) => {
+  i18n.intl.onLocaleChange((newLocale) => {
     locale = newLocale;
-    void i18n.loadPromise.then(addRepluggedStrings);
+    void addRepluggedStrings();
   });
-
-  void i18n.loadPromise.then(addRepluggedStrings);
-
-  addRepluggedStrings();
+  void addRepluggedStrings();
 }
 
-export function addRepluggedStrings(): void {
-  const { messages: DiscordMessages, defaultMessages } = i18n._provider._context;
+export async function addRepluggedStrings(): Promise<void> {
+  const { loadAllMessagesInLocale } = await waitForProps<{
+    loadAllMessagesInLocale: typeof LoadAllMessagesInLocale;
+  }>("loadAllMessagesInLocale");
 
-  i18n._applyMessagesForLocale(
-    Object.assign(DiscordMessages, messages.get(locale)),
-    locale,
-    Object.assign(defaultMessages, messages.get("en-US")),
-  );
-}
-
-export function loadAllStrings(strings: RepluggedTranslations): void {
-  Object.keys(strings).forEach((locale) => loadStrings(locale, strings[locale]));
-}
-
-export function loadStrings(locale: string, strings: RepluggedTranslations): void {
-  if (!messages.get(locale)) {
-    messages.set(locale, strings);
-  } else {
-    messages.set(locale, {
-      ...messages.get(locale),
-      ...strings,
-    });
+  if (locale) {
+    void loadAllMessagesInLocale(locale);
   }
-
-  addRepluggedStrings();
 }

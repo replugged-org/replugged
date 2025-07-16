@@ -16,9 +16,9 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
             cb(mod);
             res();
           })
-          .catch((err) => {
+          .catch((err: unknown) => {
             error("CommonModules", name, void 0, `Failed to import module "${name}"`, err);
-            rej(err);
+            rej(err instanceof Error ? err : new Error(String(err)));
           });
       }),
   );
@@ -53,12 +53,12 @@ export type { API };
 export let api: API;
 importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
-import * as Components from "./components";
-export type { Components };
-export let components: typeof import("./components").default;
+import type { DiscordComponents } from "./components";
+export type { DiscordComponents };
+export let components: DiscordComponents;
 importTimeout("components", import("./components"), (mod) => (components = mod.default));
 
-import * as Constants from "./constants";
+import type * as Constants from "./constants";
 export type { Constants };
 export let constants: typeof Constants;
 importTimeout("constants", import("./constants"), (mod) => (constants = mod));
@@ -90,7 +90,12 @@ importTimeout("fluxHooks", import("./fluxHooks"), (mod) => (fluxHooks = mod.defa
 import type { I18n } from "./i18n";
 export type { I18n };
 export let i18n: I18n;
-importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod.default));
+importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod));
+
+import type { LocalStorage } from "./localStorage";
+export type { LocalStorage };
+export let localStorage: LocalStorage;
+importTimeout("localStorage", import("./localStorage"), (mod) => (localStorage = mod.default));
 
 import type { Modal } from "./modal";
 export type { Modal };
@@ -115,7 +120,13 @@ importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 // External Libraries
 
 /**
- * @see {@link https://highlightjs.org/usage/}
+ * @see {@link https://github.com/JedWatson/classnames}
+ */
+export let classNames: typeof import("classnames").default;
+importTimeout("classnames", import("./classnames"), (mod) => (classNames = mod.default));
+
+/**
+ * @see {@link https://highlightjs.org/}
  */
 export let hljs: typeof import("highlight.js").default;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));

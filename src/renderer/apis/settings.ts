@@ -1,13 +1,6 @@
 import type { Jsonifiable } from "type-fest";
 
-type SettingsUpdate<T> =
-  | {
-      type: "set";
-      value: T[keyof T];
-    }
-  | {
-      type: "delete";
-    };
+type SettingsUpdate<T> = { type: "set"; value: T[keyof T] } | { type: "delete" };
 
 /**
  * Manages settings for a given namespace.
@@ -15,7 +8,7 @@ type SettingsUpdate<T> =
  * This class should not be instantiated directly; use {@link init init()} for convenience and reliability.
  *
  * The {@link SettingsManager.load load()} method copies the namespaces' settings data from the file system into the manager.
- * All communication between a `SettingsManager` and the file system occurs asynchronously over IPC.
+ * All communication between a `SettingsManager` and the file system occurs synchronously over IPC.
  *
  * Once the settings data has been copied into the `SettingsManager`, it can be read and written synchronously.
  * The `SettingsManager` automatically queues and dispatches updates to the file system in the background.
@@ -105,19 +98,22 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
   }
 
   /**
-   * Loads the latest stored settings for this namespace from the user's file system into this manager. This must be called
-   * before managing any settings, unless you have created an instance using {@link init init()}, which calls this method.
-   */
-  public async load(): Promise<void> {
-    this.#settings = await window.RepluggedNative.settings.all(this.namespace);
-  }
-
-  /**
    * Returns a copy of the settings data stored in this manager.
    * @returns Current values of all settings in this manager's namespace.
    */
   public all(): T {
-    return { ...this.#settings } as T;
+    if (typeof this.#settings === "undefined") {
+      throw new Error(`Settings not loaded for namespace ${this.namespace}`);
+    }
+    return { ...this.#settings };
+  }
+
+  /**
+   * Loads the latest stored settings for this namespace from the user's file system into this manager. This must be called
+   * before managing any settings, unless you have created an instance using {@link init init()}, which calls this method.
+   */
+  public load(): void {
+    this.#settings = window.RepluggedNative.settings.all(this.namespace);
   }
 
   #queueUpdate<K extends Extract<keyof T, string>>(key: K, update: SettingsUpdate<T>): void {
@@ -128,33 +124,15 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
     this.#saveTimeout = setTimeout(() => {
       this.#queuedUpdates.forEach((u, k) => {
         if (u.type === "delete") {
-          void window.RepluggedNative.settings.delete(this.namespace, k);
+          window.RepluggedNative.settings.delete(this.namespace, k);
         } else {
-          void window.RepluggedNative.settings.set(this.namespace, k, u.value);
+          window.RepluggedNative.settings.set(this.namespace, k, u.value);
         }
       });
       this.#queuedUpdates.clear();
       this.#saveTimeout = void 0;
     }); // Add a delay of 1 or 2 seconds?
   }
-
-  /**
-   * React hook for managing settings.
-   * @param key Key of the setting to manage.
-   * @param fallback Value to return if the key does not already exist.
-   * @returns A tuple containing the current value of the setting, and a function to set the value. Works like `useState`.
-   * @example
-   * ```tsx
-   * import { components, settings } from "replugged";
-   * const { TextInput } = components;
-   *
-   * const cfg = settings.init<{ hello: string }>("dev.replugged.Example");
-   *
-   * export function Settings() {
-   *  return <TextInput {...cfg.useSetting("hello", "world")} />;
-   * }
-   * ```
-   */
 }
 
 // I hope there's some way to force TypeScript to accept this, but for now unknown will do
@@ -164,7 +142,7 @@ const managers = new Map<string, unknown>();
  * Creates, initializes, and returns a {@link SettingsManager} for the given settings namespace. If a manager for the namespace already exists,
  * then that instance will be returned. Use this function rather than creating instances of `SettingsManager` directly.
  *
- * Settings are stored synchronously in the window, and updates are dispatched asynchronously to the file system.
+ * Settings are stored synchronously in the window, and updates are dispatched synchronously to the file system.
  * See {@link SettingsManager} for more information on how this works.
  *
  * Here's an example of how to use this in a plugin:
@@ -176,7 +154,7 @@ const managers = new Map<string, unknown>();
  *   hello: "world",
  * };
  *
- * const cfg = await settings.init<{ hello: string; something: string }, "something">(
+ * const cfg = settings.init<{ hello: string; something: string }, "something">(
  *   "dev.replugged.Example",
  *   { something: "everything" },
  * );
@@ -199,15 +177,15 @@ const managers = new Map<string, unknown>();
  * @param defaultSettings Default values for the settings in the namespace. These will be used if no value is set for a setting. Using the `fallback` parameter of {@link SettingsManager.get get()} will override these defaults.
  * @returns Manager for the namespace.
  */
-export async function init<T extends Record<string, Jsonifiable>, D extends keyof T = never>(
+export function init<T extends Record<string, Jsonifiable>, D extends keyof T = never>(
   namespace: string,
   defaultSettings?: Partial<T>,
-): Promise<SettingsManager<T, D>> {
+): SettingsManager<T, D> {
   if (managers.has(namespace)) {
     return managers.get(namespace)! as SettingsManager<T, D>;
   }
-  const manager = new SettingsManager<T, D>(namespace, (defaultSettings || {}) as Partial<T>);
+  const manager = new SettingsManager<T, D>(namespace, defaultSettings || {});
   managers.set(namespace, manager);
-  await manager.load();
+  manager.load();
   return manager;
 }
