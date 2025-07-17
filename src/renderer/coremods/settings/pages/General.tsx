@@ -64,6 +64,10 @@ export const General = (): React.ReactElement => {
   const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
   const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
   const [winUpdaterValue, winUpdaterOnChange] = util.useSettingArray(generalSettings, "winUpdater");
+  const [staffDevToolsValue, staffDevToolsOnChange] = util.useSettingArray(
+    generalSettings,
+    "staffDevTools",
+  );
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
@@ -161,6 +165,17 @@ export const General = (): React.ReactElement => {
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC, {})}>
           {intl.string(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS)}
+        </SwitchItem>
+
+        <SwitchItem
+          disabled={!expValue}
+          value={staffDevToolsValue}
+          onChange={(value) => {
+            staffDevToolsOnChange(value);
+            restartModal(false);
+          }}
+          note={intl.format(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC, {})}>
+          {intl.string(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS)}
         </SwitchItem>
 
         <SwitchItem
