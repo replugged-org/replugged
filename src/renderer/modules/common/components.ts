@@ -2,7 +2,6 @@ import type { LoaderType } from "@components";
 import type { ClickableCompType } from "@components/Clickable";
 import type { NoticeType } from "@components/Notice";
 import type { OriginalTextType } from "@components/Text";
-import type { ButtonType } from "../components/ButtonItem";
 import type { CheckboxType } from "../components/CheckboxItem";
 import type { ContextMenuType } from "../components/ContextMenu";
 import type { DividerType } from "../components/Divider";
@@ -27,7 +26,6 @@ export type DiscordComponents = {
   Text: OriginalTextType;
 } & Record<
   string,
-  | ButtonType
   | CheckboxType
   | ClickableCompType
   | DividerType

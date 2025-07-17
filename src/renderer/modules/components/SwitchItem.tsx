@@ -24,6 +24,7 @@ interface SwitchItemProps {
   hideBorder?: boolean;
   style?: React.CSSProperties;
   className?: string;
+  containerRef?: React.Ref<HTMLDivElement>;
 }
 
 export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;

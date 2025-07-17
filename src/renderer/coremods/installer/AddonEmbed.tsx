@@ -1,4 +1,4 @@
-import { React } from "@common";
+import { React, classNames } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { Button, Clickable, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
@@ -152,17 +152,20 @@ const Embed = React.memo(
           ) : (
             <>
               <Tooltip text={props.authors} className="replugged-addon-embed-title-tooltip">
-                <strong className={`${title} replugged-addon-embed-title`}>{props.authors}</strong>
+                <strong className={classNames(title, "replugged-addon-embed-title")}>
+                  {props.authors}
+                </strong>
               </Tooltip>
               <Clickable
-                className={`${copyLink} replugged-addon-embed-store-button`}
+                className={classNames(copyLink, "replugged-addon-embed-store-button")}
                 onClick={() => openExternal(props.url)}>
                 {intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE)}
               </Clickable>
               <Clickable
-                className={`${copyLink} replugged-addon-embed-copy-button${
-                  props.onCooldown ? ` ${copied} addon-embed-copied` : ""
-                }`}
+                className={classNames(copyLink, "replugged-addon-embed-copy-button", {
+                  [copied]: props.onCooldown,
+                  "addon-embed-copied": props.onCooldown,
+                })}
                 onClick={props.copyUrl}>
                 <Link className={copyLinkIcon} />
                 {props.onCooldown
@@ -175,10 +178,10 @@ const Embed = React.memo(
         <div className={content}>
           <div className="addon-embed-main-content">
             <Icon className={icon} />
-            <div className={`${buildInfo} addon-embed-build-info`}>
+            <div className={classNames(buildInfo, "addon-embed-build-info")}>
               {props.loading ? (
                 <div className={subHead}>
-                  <div className={`${barLoader} ${barTitle}`} />
+                  <div className={classNames(barLoader, barTitle)} />
                 </div>
               ) : (
                 <Text className={subHead} variant={"text-sm/semibold"}>
@@ -211,7 +214,7 @@ const Embed = React.memo(
               shouldShow={props.isInstalled ? undefined : false}
               hideOnClick={false}>
               <Button
-                className={`${button} ${buttonSize} replugged-addon-embed-button`}
+                className={classNames(button, buttonSize, "replugged-addon-embed-button")}
                 style={{
                   minWidth: "auto",
                   maxWidth: "auto",
