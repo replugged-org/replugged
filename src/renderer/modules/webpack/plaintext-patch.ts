@@ -1,4 +1,9 @@
-import type { PlaintextPatch, RawPlaintextPatch, WebpackModule } from "../../../types";
+import type {
+  PlaintextPatch,
+  RawPlaintextPatch,
+  RegexReplacement,
+  WebpackModule,
+} from "../../../types";
 import { Logger } from "../logger";
 
 const logger = Logger.api("plaintext-patch");
@@ -6,6 +11,37 @@ const logger = Logger.api("plaintext-patch");
  * All plaintext patches
  */
 export const plaintextPatches: RawPlaintextPatch[] = [];
+
+/**
+ * Parse regex for plaintext patch.
+ * @param input Regex or string (Strings have no effect)
+ * @returns Parsed Regex
+ */
+export function parseRegex<T>(input: RegExp | T): RegExp | T {
+  if (input instanceof RegExp)
+    return new RegExp(
+      // why is [\\w$] not enough? [A-Za-z_$][\\w$]
+      input.source.replaceAll("\\i", "[\\w$]*"),
+      input.flags,
+    );
+  return input;
+}
+
+/**
+ * Parse replacement for plaintext patch.
+ * @param input Replacement function or string
+ * @parm id Plugin ID where this is used
+ * @returns Parsed Replacement
+ */
+export function parseReplace(
+  input: RegexReplacement["replace"],
+  id: string,
+): RegexReplacement["replace"] {
+  if (typeof input === "function")
+    return (...args): string =>
+      input(...args).replaceAll("$exports", `replugged.plugins.getExports("${id}")`);
+  return input.replaceAll("$exports", `replugged.plugins.getExports("${id}")`);
+}
 
 /**
  * Replace a module with a plaintext-patched version.
@@ -65,12 +101,14 @@ export function patchPlaintext(patches: PlaintextPatch[], id: string): void {
   plaintextPatches.push(
     ...patches.map((patch) => ({
       ...patch,
+      find: parseRegex(patch.find),
       id,
       replacements: patch.replacements.map((replacement) =>
         typeof replacement === "function"
           ? replacement
-          : // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
-            (source: string) => source.replace(replacement.match, replacement.replace),
+          : (source: string) =>
+              // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
+              source.replace(parseRegex(replacement.match), parseReplace(replacement.replace, id)),
       ),
     })),
   );
