@@ -105,6 +105,10 @@ const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERE
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
 void webFrame.executeJavaScript(`(() => {${renderer}})();//# sourceURL=replugged://renderer.js`);
 
+window.addEventListener("beforeunload", () => {
+  ipcRenderer.send(RepluggedIpcChannels.CLEAR_TEMP);
+});
+
 try {
   // Get and execute Discord preload
   // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
