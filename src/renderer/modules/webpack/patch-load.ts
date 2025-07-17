@@ -3,7 +3,7 @@ import type {
   WebpackChunkGlobal,
   WebpackRawModules,
   WebpackRequire,
-} from "../../../types";
+} from "src/types";
 import { listeners } from "./lazy";
 import { patchModuleSource } from "./plaintext-patch";
 

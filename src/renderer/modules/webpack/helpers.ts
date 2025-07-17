@@ -277,6 +277,61 @@ export async function waitForPrototype<T, P extends PropertyKey = keyof T>(
   return getExportsForProps<T, P>(result as T, props, true)!;
 }
 
+// Get by store name
+
+/**
+ * Retrieves a Flux store by its name.
+ *
+ * @param name The name of the store to retrieve
+ * @returns The store instance if found, undefined otherwise
+ */
+export function getByStoreName<T extends Store>(name: string): T | undefined {
+  const stores = flux.Store.getAll();
+  return stores.find((store) => store.getName() === name) as T | undefined;
+}
+
+// Wait for store
+
+export function waitForStore<T extends Store>(
+  name: string,
+  options?: WaitForOptions & { raw?: false },
+): Promise<T>;
+export function waitForStore<T extends Store>(
+  name: string,
+  options: WaitForOptions & { raw: true },
+): Promise<RawModule<T>>;
+export function waitForStore<T extends Store>(
+  name: string,
+  options?: WaitForOptions,
+): Promise<T | RawModule<T>>;
+
+/**
+ * Like {@link getByStoreName} but waits for the module to be loaded.
+ *
+ * @see {@link getByStoreName}
+ * @see {@link waitForModule}
+ */
+export async function waitForStore<T extends Store>(
+  name: string,
+  options?: WaitForOptions,
+): Promise<T | RawModule<T>> {
+  const raw = options?.raw ?? false;
+
+  const result = await waitForModule<T>(filters.byStoreName(name), options);
+
+  if (raw) {
+    return result as RawModule<T>;
+  }
+
+  const store = getExportsForProps<T>(result as T, ["_dispatchToken"]);
+
+  if (!store) {
+    throw new Error(`Store "${name}" not found in module exports`);
+  }
+
+  return store;
+}
+
 // Get by value
 
 export function getByValue<T>(
@@ -356,9 +411,4 @@ export function getByValue<T>(
   },
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
   return getModule<T>(filters.byValue(match), options);
-}
-
-export function getByStoreName<T extends Store>(name: string): T | undefined {
-  const stores = flux.Store.getAll();
-  return stores.find((store) => store.getName() === name) as T | undefined;
 }
