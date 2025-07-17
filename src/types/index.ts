@@ -1,6 +1,5 @@
 import type { WebContents } from "electron";
 import type { PluginManifest, ThemeManifest } from "./addon";
-import type { ConnectedAccount } from "./discord";
 
 export type RepluggedWebContents = WebContents & {
   originalPreload?: string;
@@ -43,22 +42,6 @@ export interface RepluggedAnnouncement {
     onClick?: () => void;
     href?: string;
   };
-}
-
-export interface RepluggedConnection {
-  type: string;
-  name: string;
-  color: string;
-  enabled: boolean;
-  icon: {
-    darkSVG: string;
-    lightSVG: string;
-  };
-  fetchAccount: (id: string) => Promise<ConnectedAccount>;
-  getPlatformUserUrl?: (account: ConnectedAccount) => string;
-  onDisconnect: () => void;
-  onConnect: () => void;
-  setVisibility: (visible: boolean) => boolean | void;
 }
 
 export interface RepluggedTheme {

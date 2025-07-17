@@ -1,4 +1,4 @@
-import asar from "@electron/asar";
+import { createPackage } from "@electron/asar";
 import type { Plugin } from "esbuild";
 import { readFileSync, writeFileSync } from "node:fs";
 import { distDir } from "scripts/build.mjs";
@@ -19,7 +19,7 @@ export default {
           version: mainPackage.version,
         }),
       );
-      void asar.createPackage(distDir, "replugged.asar");
+      void createPackage(distDir, "replugged.asar");
     });
   },
 } as Plugin;

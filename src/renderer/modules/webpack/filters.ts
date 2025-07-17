@@ -6,8 +6,20 @@ import { sourceStrings } from "./patch-load";
  * Get a module that has all the given properties on one of its exports
  * @param props List of property names
  */
-export const byProps = <P extends PropertyKey = PropertyKey>(...props: P[]) => {
+export const byProps = <P extends PropertyKey = PropertyKey>(
+  ...props: P[]
+): ((m: RawModule) => boolean) => {
   return (m: RawModule) => typeof getExportsForProps(m.exports, props) !== "undefined";
+};
+
+/**
+ * Get a function that has all the given properties on its prototype
+ * @param props List of property names to check on the prototype
+ */
+export const byPrototype = <P extends PropertyKey = PropertyKey>(
+  ...props: P[]
+): ((m: RawModule) => boolean) => {
+  return (m: RawModule) => typeof getExportsForProps(m.exports, props, true) !== "undefined";
 };
 
 /**
