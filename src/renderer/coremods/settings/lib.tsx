@@ -4,6 +4,11 @@ import type {
   Section as SectionType,
   SettingsTools,
 } from "../../../types/coremods/settings";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
+
+export const getQuery = await waitForModule(
+  filters.bySource('query:"",isActive:!1,selected:null'),
+).then((c) => getFunctionBySource<() => string>(c, '.useField("query")')!);
 
 const getPos = (pos: number | undefined): number => pos ?? -4;
 
@@ -15,6 +20,7 @@ export const Section = ({
   elem,
   pos,
   fromEnd,
+  tabPredicate,
 }: {
   name: string;
   _id?: string;
@@ -23,6 +29,7 @@ export const Section = ({
   elem: (args: unknown) => React.ReactElement;
   pos?: number;
   fromEnd?: boolean;
+  tabPredicate?: (query: string) => boolean;
 }): SectionType => ({
   section: name,
   _id,
@@ -30,18 +37,22 @@ export const Section = ({
   color,
   element: elem,
   pos: getPos(pos),
+  className: `rp-settingsItem ${name}`,
   fromEnd: fromEnd ?? getPos(pos) < 0,
+  tabPredicate: tabPredicate && (() => tabPredicate(getQuery())),
 });
 
 export const Divider = (pos?: number): SectionType => ({
   section: "DIVIDER",
   pos: getPos(pos),
+  tabPredicate: () => !getQuery(),
 });
 
 export const Header = (label: string | LabelCallback, pos?: number): SectionType => ({
   section: "HEADER",
   label,
   pos: getPos(pos),
+  tabPredicate: () => !getQuery(),
 });
 
 export const settingsTools: SettingsTools = {

@@ -5,6 +5,9 @@ import { t } from "src/renderer/modules/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
+// To hide "No Search Results" when replugged is still there
+import "./searchResults.css";
+
 const injector = new Injector();
 
 export { insertSections };
