@@ -168,9 +168,9 @@ const managers = new Map<string, unknown>();
  * }
  *
  * ```
- * @typeParam T Type definition for the settings to manage in the namespace.
+ * @template T Type definition for the settings to manage in the namespace.
  * This will be an object with strings as keys, and JSON-serializable values.
- * @typeParam D Keys in `T` that will always have a value. These keys will not be nullable.
+ * @template D Keys in `T` that will always have a value. These keys will not be nullable.
  * @param namespace Namespace to manage. A namespace is an ID (for example, the ID of a plugin) that uniquely identifies it.
  * All settings are grouped into namespaces.
  * Settings for a namespace are stored in `settings/NAMESPACE.json` within the [Replugged data folder](https://docs.replugged.dev/#installing-plugins-and-themes).
