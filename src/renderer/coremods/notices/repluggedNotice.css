@@ -8,3 +8,14 @@
   );
   --custom-notice-text: #eeffed;
 }
+
+html[lang="ar"] .replugged-notice,
+html[lang="he"] .replugged-notice {
+  --custom-notice-background: linear-gradient(
+    to left,
+    #c0164b 0%,
+    #a40f91 33%,
+    #7a10b5 66%,
+    #4e10d2 100%
+  );
+}
