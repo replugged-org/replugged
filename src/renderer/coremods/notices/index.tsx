@@ -3,6 +3,8 @@ import { notices } from "@replugged";
 import type { RepluggedAnnouncement } from "src/types";
 import NoticeMod from "./noticeMod";
 
+import "./repluggedNotice.css";
+
 const { Notice, NoticeButton, NoticeButtonAnchor, NoticeCloseButton } = NoticeMod;
 
 function Announcement({
@@ -12,7 +14,7 @@ function Announcement({
   onClose,
 }: RepluggedAnnouncement): React.ReactElement {
   return (
-    <Notice color={color}>
+    <Notice color={color ?? "replugged-notice"}>
       <NoticeCloseButton
         onClick={() => {
           onClose?.();
