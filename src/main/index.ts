@@ -7,7 +7,6 @@ import electron, {
 } from "electron";
 import { dirname, join } from "path";
 import { statSync } from "fs";
-import electron from "electron";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { pathToFileURL } from "url";
 import type { RepluggedWebContents } from "../types";
