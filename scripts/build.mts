@@ -40,6 +40,9 @@ const common: esbuild.BuildOptions = {
   logLevel: "info",
   plugins,
   metafile: true,
+  jsx: "transform",
+  jsxFactory: "window.replugged.common.React.createElement",
+  jsxFragment: "window.replugged.common.React.Fragment",
 };
 
 const contexts = await Promise.all([
@@ -70,8 +73,10 @@ const contexts = await Promise.all([
     target: `chrome${CHROME_VERSION}`,
     outfile: `${distDir}/renderer.js`,
     format: "esm",
+    assetNames: "assets/[hash]",
+    publicPath: "replugged://",
     loader: {
-      ".png": "dataurl",
+      ".png": "file",
     },
   }),
 ]);

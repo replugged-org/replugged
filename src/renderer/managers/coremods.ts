@@ -82,16 +82,16 @@ export async function stopAll(): Promise<void> {
 
 export function runPlaintextPatches(): void {
   [
-    badgesPlaintext,
-    contextMenuPlaintext,
-    experimentsPlaintext,
-    languagePlaintext,
-    messagePopoverPlaintext,
-    noDevtoolsWarningPlaintext,
-    noticesPlaintext,
-    notrackPlaintext,
-    popoutThemingPlaintext,
-    settingsPlaintext,
-    titleBarPlaintext,
-  ].forEach(patchPlaintext);
+    { patch: badgesPlaintext, name: "replugged.coremod.badges" },
+    { patch: contextMenuPlaintext, name: "replugged.coremod.contextMenu" },
+    { patch: experimentsPlaintext, name: "replugged.coremod.experiments" },
+    { patch: languagePlaintext, name: "replugged.coremod.language" },
+    { patch: messagePopoverPlaintext, name: "replugged.coremod.messagePopover" },
+    { patch: noDevtoolsWarningPlaintext, name: "replugged.coremod.noDevtoolsWarning" },
+    { patch: noticesPlaintext, name: "replugged.coremod.notices" },
+    { patch: notrackPlaintext, name: "replugged.coremod.notrack" },
+    { patch: popoutThemingPlaintext, name: "replugged.coremod.popoutTheming" },
+    { patch: settingsPlaintext, name: "replugged.coremod.settings" },
+    { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },
+  ].forEach(({ patch, name }) => patchPlaintext(patch, name));
 }

@@ -10,8 +10,6 @@ interface State {
 }
 
 export interface SelectedGuildStore {
-  getCurrentGuild: () => Guild | undefined;
-
   getGuildId: () => string | null;
   getLastSelectedGuildId: () => string | null;
   getLastSelectedTimestamp: (guildId: string) => number;
@@ -19,24 +17,31 @@ export interface SelectedGuildStore {
 }
 
 export interface GuildStore {
-  getAllGuildsRoles: () => Record<string, Record<string, Role>>;
-  getGeoRestrictedGuilds: () => string[];
   getGuild: (guildId: string) => Guild | undefined;
   getGuildCount: () => number;
   getGuildIds: () => string[];
   getGuilds: () => Record<string, Guild>;
-  getRole: (guildId: string, roleId: string) => Role | undefined;
-  getRoles: (guildId: string) => Record<string, Role>;
-  isLoaded: () => boolean;
+  getGuildsArray: () => Guild[];
 }
 
-export type Guilds = SelectedGuildStore & GuildStore;
+export interface GuildRoleStore {
+  getAllGuildsRoles: () => Record<string, Record<string, Role>>;
+  getRoles: (guildId: string) => Record<string, Role>;
+  getRole: (guildId: string, roleId: string) => Role | undefined;
+}
 
-const GuildStore = await waitForProps<GuildStore & Store>("getGuild", "getGuildIds");
+export type Guilds = SelectedGuildStore &
+  GuildStore &
+  GuildRoleStore & { getCurrentGuild: () => Guild | undefined };
+
 const SelectedGuildStore = await waitForProps<SelectedGuildStore & Store>(
   "getGuildId",
   "getLastSelectedGuildId",
 );
+const GuildStore = await waitForProps<GuildStore & Store>("getGuild", "getGuildIds");
+const GuildRoleStore = await waitForProps<GuildRoleStore & Store>("getAllGuildsRoles", "getRoles");
+
+const { getGuild, getGuildIds, getGuilds, getGuildsArray } = GuildStore;
 
 export function getCurrentGuild(): Guild | undefined {
   const guildId = SelectedGuildStore.getGuildId();
@@ -45,7 +50,8 @@ export function getCurrentGuild(): Guild | undefined {
 }
 
 export default virtualMerge(
-  Object.getPrototypeOf(GuildStore) as GuildStore,
-  Object.getPrototypeOf(SelectedGuildStore) as SelectedGuildStore,
-  { getCurrentGuild },
-);
+  Object.getPrototypeOf(SelectedGuildStore),
+  Object.getPrototypeOf(GuildStore),
+  Object.getPrototypeOf(GuildRoleStore),
+  { getGuild, getGuildIds, getGuilds, getGuildsArray, getCurrentGuild },
+) as Guilds;

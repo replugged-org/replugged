@@ -195,7 +195,7 @@ export function runPlaintextPatches(): void {
         }
       }
 
-      patchPlaintext(patches.default);
+      patchPlaintext(patches.default, plugin.manifest.id);
     } catch (err) {
       logger.error(`Error applying plaintext patches for ${plugin.manifest.id}`, err);
     }
