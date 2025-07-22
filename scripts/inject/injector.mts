@@ -36,7 +36,7 @@ export const isDiscordInstalled = async (appDir: string, silent?: boolean): Prom
 
 // If app.orig.asar but no app.asar, move app.orig.asar to app.asar
 // Fixes a case where app.asar was deleted (unplugged) but app.orig.asar couldn't be moved back
-// Fixes incase using old version of replugged
+// Fixes in case using old version of replugged
 export const correctMissingMainAsar = async (appDir: string): Promise<boolean> => {
   try {
     await stat(join(appDir, "..", "app.orig.asar"));
