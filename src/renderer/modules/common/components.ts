@@ -53,7 +53,6 @@ export type DiscordComponents = {
   | LoaderType
   | SwitchType
   | TextAreaType
-  | TextInputType
   | OriginalTooltipType
   | unknown
 >;
