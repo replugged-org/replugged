@@ -3,6 +3,7 @@ import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 
 import badgesPlaintext from "../coremods/badges/plaintextPatches";
+import commandsPlaintext from "../coremods/commands/plaintextPatches";
 import contextMenuPlaintext from "../coremods/contextMenu/plaintextPatches";
 import experimentsPlaintext from "../coremods/experiments/plaintextPatches";
 import languagePlaintext from "../coremods/language/plaintextPatches";
@@ -83,6 +84,7 @@ export async function stopAll(): Promise<void> {
 export function runPlaintextPatches(): void {
   [
     { patch: badgesPlaintext, name: "replugged.coremod.badges" },
+    { patch: commandsPlaintext, name: "replugged.coremod.commands" },
     { patch: contextMenuPlaintext, name: "replugged.coremod.contextMenu" },
     { patch: experimentsPlaintext, name: "replugged.coremod.experiments" },
     { patch: languagePlaintext, name: "replugged.coremod.language" },
