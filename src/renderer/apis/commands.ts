@@ -75,7 +75,7 @@ export class CommandInteraction<T extends CommandOptionReturn> {
       const { uploadedFilename, item } =
         UploadAttachmentStore.getUpload(props.channel.id, option.name, 5) ?? {};
       fluxDispatcher.dispatch({
-        type: "DRAFT_CLEAR",
+        type: "UPLOAD_ATTACHMENT_CLEAR_ALL_FILES",
         channelId: props.channel.id,
         draftType: 5,
       });
