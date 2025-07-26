@@ -8,7 +8,7 @@ export default [
       {
         match: /getSrc\(\w+\){/,
         replace: (prefix) =>
-          `${prefix}if(this.props.sourceMetadata.message.author.id==="${REPLUGGED_CLYDE_ID}")return this.props.src;`,
+          `${prefix}if(this.props.sourceMetadata?.message?.author?.id==="${REPLUGGED_CLYDE_ID}")return this.props.src;`,
       },
     ],
   },
