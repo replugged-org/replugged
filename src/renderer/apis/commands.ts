@@ -136,7 +136,7 @@ async function executeCommand<T extends CommandOptions>(
       interaction_data: {
         name: command.displayName,
         options: args,
-        type: 1, // interction type for chat
+        type: 1, // interaction type for chat
         id: command.id,
       },
       type: 20,
