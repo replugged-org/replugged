@@ -135,6 +135,9 @@ async function executeCommand<T extends CommandOptions>(
       // eslint-disable-next-line @typescript-eslint/naming-convention
       interaction_data: {
         name: command.displayName,
+        options: args,
+        type: 1, // interction type for chat
+        id: command.id,
       },
       type: 20,
       author: RepluggedUser ?? loadingMessage.author,
@@ -181,6 +184,9 @@ async function executeCommand<T extends CommandOptions>(
         // eslint-disable-next-line @typescript-eslint/naming-convention
         interaction_data: {
           name: command.displayName,
+          options: args,
+          type: 1,
+          id: command.id,
         },
         type: 20,
         author: RepluggedUser ?? botMessage.author,
@@ -209,6 +215,9 @@ async function executeCommand<T extends CommandOptions>(
       // eslint-disable-next-line @typescript-eslint/naming-convention
       interaction_data: {
         name: command.displayName,
+        options: args,
+        type: 1,
+        id: command.id,
       },
       type: 20,
       author: RepluggedUser ?? botMessage.author,
@@ -245,7 +254,7 @@ export class CommandManager {
     command.applicationId = currentSection.section.id;
     command.displayName ??= command.name;
     command.displayDescription ??= command.description;
-    command.type = 2;
+    command.type = 2; // command type for application
     command.id ??= command.name;
 
     command.execute ??= (args, currentInfo) => {
