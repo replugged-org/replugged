@@ -397,6 +397,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
     plugins,
     sourcemap: !production,
     target: `chrome${CHROME_VERSION}`,
+    sourceRoot: `replugged://plugin/${manifest.id}/src`,
   };
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
