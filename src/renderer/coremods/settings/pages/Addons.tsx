@@ -539,7 +539,10 @@ export const Addons = (type: AddonType): React.ReactElement => {
 
   return (
     <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
+      <Flex
+        justify={Flex.Justify.BETWEEN}
+        align={Flex.Align.START}
+        direction={Flex.Direction.VERTICAL}>
         <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
           {section === `rp_${type}` ? (
             <Text.H2
@@ -591,7 +594,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           )}
         </Flex>
         {section === `rp_${type}` && (
-          <div style={{ display: "flex" }}>
+          <Flex className="rp-addon-header-buttons" justify={Flex.Justify.BETWEEN}>
             <Button onClick={() => openFolder(type)}>
               {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
                 type: label(type, { caps: "title", plural: true }),
@@ -632,7 +635,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
-          </div>
+          </Flex>
         )}
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />

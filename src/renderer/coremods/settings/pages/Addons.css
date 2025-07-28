@@ -46,3 +46,12 @@
 .replugged-addon-breadcrumbsInactive:hover {
   color: var(--header-primary);
 }
+
+.rp-addon-header-buttons {
+  align-self: normal;
+  gap: "5px";
+}
+
+.rp-addon-header-buttons button {
+  width: 100%;
+}
