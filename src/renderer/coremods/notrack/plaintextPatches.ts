@@ -15,7 +15,7 @@ export default [
     replacements: [
       {
         match: /\w+=window\.DiscordSentry/g,
-        replace: "false",
+        replace: "null",
       },
     ],
   },

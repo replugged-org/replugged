@@ -6,7 +6,7 @@ import {MessageLoader, TypedIntlMessageGetter, HandlerFunction, HookFunction, Li
 
 export declare const messagesLoader: MessageLoader;
 
-declare const messages: {
+export declare const messages: {
   /**
    * Key: `Xyo9Z2`
    * 
@@ -15,7 +15,9 @@ declare const messages: {
    * Replugged Account
    * ```
    * 
-   * **Translated in all locales**
+   * ### Problems
+   * 
+   * Missing translations: `es-419`, `th`
    */
   'REPLUGGED_ACCOUNT': TypedIntlMessageGetter<{}>,
   /**
@@ -28,7 +30,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDONS_FOLDER_OPEN': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -41,7 +43,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDONS_LOAD_MISSING': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -54,7 +56,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_ADDONS_TITLE_COUNT': TypedIntlMessageGetter<{count: number | string, type: any}>,
   /**
@@ -67,7 +69,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_ADDON_AUTHORS_MANY': TypedIntlMessageGetter<{author1: any, author2: any, author3: any, count: any | number | string}>,
   /**
@@ -80,7 +82,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_ADDON_AUTHORS_ONE': TypedIntlMessageGetter<{author1: any}>,
   /**
@@ -93,7 +95,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_AUTHORS_THREE': TypedIntlMessageGetter<{author1: any, author2: any, author3: any}>,
   /**
@@ -106,7 +108,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_AUTHORS_TWO': TypedIntlMessageGetter<{author1: any, author2: any}>,
   /**
@@ -119,7 +121,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_ADDON_BROWSE': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -132,7 +134,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_DELETE': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -145,7 +147,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_ADDON_NOT_REVIEWED': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -158,7 +160,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_ADDON_NOT_REVIEWED_DESC': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -171,7 +173,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_PAGE_OPEN': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -184,7 +186,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_PROFILE_OPEN': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -197,7 +199,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_RELOAD': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -210,7 +212,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_SETTINGS': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -223,7 +225,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_UNINSTALL': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -236,7 +238,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY': TypedIntlMessageGetter<{type: 'plugin' | any | string}>,
   /**
@@ -249,7 +251,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`
+   * Missing translations: `da`, `es-419`, `th`
    */
   'REPLUGGED_BADGES_BOOSTER': TypedIntlMessageGetter<{}>,
   /**
@@ -260,7 +262,9 @@ declare const messages: {
    * Replugged Contributor
    * ```
    * 
-   * **Translated in all locales**
+   * ### Problems
+   * 
+   * Missing translations: `es-419`, `th`
    */
   'REPLUGGED_BADGES_CONTRIBUTOR': TypedIntlMessageGetter<{}>,
   /**
@@ -271,7 +275,9 @@ declare const messages: {
    * Replugged Developer
    * ```
    * 
-   * **Translated in all locales**
+   * ### Problems
+   * 
+   * Missing translations: `es-419`, `th`
    */
   'REPLUGGED_BADGES_DEVELOPER': TypedIntlMessageGetter<{}>,
   /**
@@ -282,7 +288,9 @@ declare const messages: {
    * Replugged Early User
    * ```
    * 
-   * **Translated in all locales**
+   * ### Problems
+   * 
+   * Missing translations: `es-419`, `th`
    */
   'REPLUGGED_BADGES_EARLY': TypedIntlMessageGetter<{}>,
   /**
@@ -293,7 +301,9 @@ declare const messages: {
    * Replugged Bug Hunter
    * ```
    * 
-   * **Translated in all locales**
+   * ### Problems
+   * 
+   * Missing translations: `es-419`, `th`
    */
   'REPLUGGED_BADGES_HUNTER': TypedIntlMessageGetter<{}>,
   /**
@@ -304,7 +314,9 @@ declare const messages: {
    * Replugged Staff
    * ```
    * 
-   * **Translated in all locales**
+   * ### Problems
+   * 
+   * Missing translations: `es-419`, `th`
    */
   'REPLUGGED_BADGES_STAFF': TypedIntlMessageGetter<{}>,
   /**
@@ -315,7 +327,9 @@ declare const messages: {
    * Replugged Support
    * ```
    * 
-   * **Translated in all locales**
+   * ### Problems
+   * 
+   * Missing translations: `es-419`, `th`
    */
   'REPLUGGED_BADGES_SUPPORT': TypedIntlMessageGetter<{}>,
   /**
@@ -326,22 +340,11 @@ declare const messages: {
    * Replugged Translator
    * ```
    * 
-   * **Translated in all locales**
-   */
-  'REPLUGGED_BADGES_TRANSLATOR': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `7g6vZG`
-   * 
-   * ### Definition
-   * ```text
-   * Got It
-   * ```
-   * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hr`
+   * Missing translations: `es-419`, `th`
    */
-  'REPLUGGED_BUTTON_GOT_IT': TypedIntlMessageGetter<{}>,
+  'REPLUGGED_BADGES_TRANSLATOR': TypedIntlMessageGetter<{}>,
   /**
    * Key: `nnLVsb`
    * 
@@ -352,7 +355,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hr`
+   * Missing translations: `bg`, `da`, `es-419`, `hr`, `th`
    */
   'REPLUGGED_BUTTON_INSTALLER_DOWNLOAD': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -365,22 +368,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hr`
+   * Missing translations: `bg`, `da`, `es-419`, `hr`, `th`
    */
   'REPLUGGED_BUTTON_INSTALLER_INSTALLED': TypedIntlMessageGetter<{type: any}>,
-  /**
-   * Key: `Jbffz8`
-   * 
-   * ### Definition
-   * ```text
-   * Cancel
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hr`
-   */
-  'REPLUGGED_CANCEL': TypedIntlMessageGetter<{}>,
   /**
    * Key: `j9kNoq`
    * 
@@ -391,7 +381,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_ADDONS_OPTION_ADDON_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -404,7 +394,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hr`
+   * Missing translations: `bg`, `da`, `es-419`, `hr`, `th`
    */
   'REPLUGGED_COMMAND_DISABLE_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -417,7 +407,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_DISABLE_MESSAGE_ENABLED': TypedIntlMessageGetter<{name: any, type: any}>,
   /**
@@ -430,7 +420,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_DISABLE_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -443,7 +433,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -456,7 +446,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -469,7 +459,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`, `hr`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `th`
    */
   'REPLUGGED_COMMAND_ENABLE_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -482,7 +472,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED': TypedIntlMessageGetter<{name: any, type: any}>,
   /**
@@ -495,7 +485,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_ENABLE_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -508,7 +498,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -521,7 +511,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_ERROR_GENERIC': TypedIntlMessageGetter<{}>,
   /**
@@ -534,7 +524,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `ru`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_INSTALL_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -547,7 +537,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `ru`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_INSTALL_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -560,7 +550,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -573,7 +563,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -586,7 +576,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -599,7 +589,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `ru`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -612,7 +602,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -625,7 +615,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `ru`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -638,7 +628,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -651,7 +641,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_ERROR_SPECIFY': TypedIntlMessageGetter<{}>,
   /**
@@ -664,7 +654,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_HEADER_DISABLED': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -677,7 +667,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_HEADER_ENABLED': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -690,7 +680,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -703,7 +693,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_SEND_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -716,7 +706,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -729,7 +719,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_BOTH': TypedIntlMessageGetter<{}>,
   /**
@@ -742,7 +732,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED': TypedIntlMessageGetter<{}>,
   /**
@@ -755,7 +745,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED': TypedIntlMessageGetter<{}>,
   /**
@@ -768,7 +758,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -781,7 +771,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -794,7 +784,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN': TypedIntlMessageGetter<{}>,
   /**
@@ -807,7 +797,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME': TypedIntlMessageGetter<{}>,
   /**
@@ -820,7 +810,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_TYPE_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -833,7 +823,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_TYPE_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -846,7 +836,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -859,7 +849,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -872,7 +862,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `he`, `hi`, `hr`, `lt`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `lt`, `th`
    */
   'REPLUGGED_COMMAND_RELOAD_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -885,7 +875,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_RELOAD_MESSAGE_ENABLED': TypedIntlMessageGetter<{name: any, type: any}>,
   /**
@@ -898,7 +888,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_RELOAD_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -911,7 +901,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -924,7 +914,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME': TypedIntlMessageGetter<{}>,
   /**
@@ -937,22 +927,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `es-419`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_COMMAND_SUCCESS_GENERIC': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `/QavUl`
-   * 
-   * ### Definition
-   * ```text
-   * Confirm
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `hr`
-   */
-  'REPLUGGED_CONFIRM': TypedIntlMessageGetter<{}>,
   /**
    * Key: `zENqYW`
    * 
@@ -963,7 +940,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_CONFIRM_INSTALL': TypedIntlMessageGetter<{}>,
   /**
@@ -976,7 +953,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_DEVELOPER_MODE_WARNING': TypedIntlMessageGetter<{$link?: LinkFunction, url: any}>,
   /**
@@ -989,7 +966,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `th`
    */
   'REPLUGGED_ERROR_ALREADY_INSTALLED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -1002,7 +979,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `he`, `hi`, `hr`, `lt`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `lt`, `th`
    */
   'REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND': TypedIntlMessageGetter<{}>,
   /**
@@ -1015,7 +992,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `he`, `hi`, `hr`, `lt`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `lt`, `th`
    */
   'REPLUGGED_ERROR_CHECK_CONSOLE': TypedIntlMessageGetter<{}>,
   /**
@@ -1028,7 +1005,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `hi`
+   * Missing translations: `es-419`, `hi`, `th`
    */
   'REPLUGGED_GENERAL_SETTINGS': TypedIntlMessageGetter<{}>,
   /**
@@ -1041,7 +1018,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `lt`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `lt`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_I18N': TypedIntlMessageGetter<{}>,
   /**
@@ -1054,7 +1031,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_I18N_CONTRIBUTE': TypedIntlMessageGetter<{$link?: LinkFunction, weblateUrl: any}>,
   /**
@@ -1067,7 +1044,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `hi`
+   * Missing translations: `bg`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_I18N_TRANSLATED_PERCENTAGE': TypedIntlMessageGetter<{translated: number | string}>,
   /**
@@ -1080,7 +1057,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_INSTALLER_INSTALL_PROMPT_BODY': TypedIntlMessageGetter<{authors: any, name: any}>,
   /**
@@ -1093,7 +1070,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
   'REPLUGGED_INSTALLER_OPEN_STORE': TypedIntlMessageGetter<{}>,
   /**
@@ -1106,7 +1083,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `he`, `hi`, `hr`, `lt`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `lt`, `th`
    */
   'REPLUGGED_INSTALL_MODAL_HEADER': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -1119,7 +1096,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_LINK_NOW': TypedIntlMessageGetter<{}>,
   /**
@@ -1132,7 +1109,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `lt`, `no`, `pt-PT`, `ro`, `sv-SE`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `lt`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
   'REPLUGGED_LIST_RESULTS': TypedIntlMessageGetter<{count: any | number | string}>,
   /**
@@ -1145,7 +1122,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_NOTICES_JOIN_SERVER_BUTTON': TypedIntlMessageGetter<{}>,
   /**
@@ -1158,7 +1135,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_NOTICES_WELCOME_NEW_USER': TypedIntlMessageGetter<{}>,
   /**
@@ -1171,7 +1148,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_NO_ADDONS_INSTALLED': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -1184,22 +1161,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_NO_ADDON_RESULTS': TypedIntlMessageGetter<{type: any}>,
-  /**
-   * Key: `9+yBFh`
-   * 
-   * ### Definition
-   * ```text
-   * OK
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hr`, `no`
-   */
-  'REPLUGGED_OK': TypedIntlMessageGetter<{}>,
   /**
    * Key: `nrTCTU`
    * 
@@ -1210,7 +1174,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_PLUGIN': TypedIntlMessageGetter<{}>,
   /**
@@ -1223,35 +1187,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `hi`
+   * Missing translations: `es-419`, `hi`, `th`
    */
   'REPLUGGED_PLUGINS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `ibSpio`
-   * 
-   * ### Definition
-   * ```text
-   * Copied!
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`, `hr`, `no`
-   */
-  'REPLUGGED_PLUGIN_EMBED_COPIED': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `IlKRVF`
-   * 
-   * ### Definition
-   * ```text
-   * Copy Link
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`, `hr`, `no`
-   */
-  'REPLUGGED_PLUGIN_EMBED_COPY': TypedIntlMessageGetter<{}>,
   /**
    * Key: `sl1Dvb`
    * 
@@ -1262,7 +1200,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`, `hr`, `no`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `no`, `th`
    */
   'REPLUGGED_PLUGIN_EMBED_VIEW_REPO': TypedIntlMessageGetter<{}>,
   /**
@@ -1275,7 +1213,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`, `hr`, `no`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `no`, `th`
    */
   'REPLUGGED_PLUGIN_EMBED_WHATISTHIS': TypedIntlMessageGetter<{}>,
   /**
@@ -1289,7 +1227,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`, `hr`, `no`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `no`, `th`
    */
   'REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT': TypedIntlMessageGetter<{}>,
   /**
@@ -1302,7 +1240,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -1315,7 +1253,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `hi`
+   * Missing translations: `bg`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_QUICKCSS': TypedIntlMessageGetter<{}>,
   /**
@@ -1328,7 +1266,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_QUICKCSS_CHANGES_APPLY': TypedIntlMessageGetter<{}>,
   /**
@@ -1341,35 +1279,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_QUICKCSS_FOLDER_OPEN': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `gJM35e`
-   * 
-   * ### Definition
-   * ```text
-   * Reload
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
-   */
-  'REPLUGGED_RELOAD': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `kkhJpa`
-   * 
-   * ### Definition
-   * ```text
-   * Restart
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `zh-CN`
-   */
-  'REPLUGGED_RESTART': TypedIntlMessageGetter<{}>,
   /**
    * Key: `e5G3RE`
    * 
@@ -1380,7 +1292,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_SEARCH_FOR_ADDON': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -1393,7 +1305,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_ADDON_EMBEDS': TypedIntlMessageGetter<{}>,
   /**
@@ -1406,22 +1318,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `PdrtPz`
-   * 
-   * ### Definition
-   * ```text
-   * Advanced Settings
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
-   */
-  'REPLUGGED_SETTINGS_ADVANCED': TypedIntlMessageGetter<{}>,
   /**
    * Key: `vdzF9v`
    * 
@@ -1432,7 +1331,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_ADVANCED_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -1445,7 +1344,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_BACKEND': TypedIntlMessageGetter<{}>,
   /**
@@ -1458,7 +1357,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_BACKEND_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -1471,7 +1370,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `lt`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `lt`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_BADGES': TypedIntlMessageGetter<{}>,
   /**
@@ -1484,9 +1383,35 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `lt`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `lt`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_BADGES_DESC': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `5D5ltL`
+   * 
+   * ### Definition
+   * ```text
+   * Custom Title Bar
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `x5PfoK`
+   * 
+   * ### Definition
+   * ```text
+   * Use Discord's custom title bar instead of the system title bar. **Requires restart**.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
    * Key: `RIDq4u`
    * 
@@ -1497,7 +1422,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_DEV_COMPANION': TypedIntlMessageGetter<{}>,
   /**
@@ -1510,22 +1435,35 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_DEV_COMPANION_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `SPo+8/`
+   * Key: `ET71DA`
    * 
    * ### Definition
    * ```text
-   * Reconnect
+   * Enable Discord Internal DevTools
    * ```
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
-  'REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT': TypedIntlMessageGetter<{}>,
+  'REPLUGGED_SETTINGS_DISCORD_DEVTOOLS': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `DMs+IS`
+   * 
+   * ### Definition
+   * ```text
+   * Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
    * Key: `ObxHdn`
    * 
@@ -1536,7 +1474,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS': TypedIntlMessageGetter<{}>,
   /**
@@ -1549,7 +1487,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
@@ -1562,7 +1500,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK': TypedIntlMessageGetter<{}>,
   /**
@@ -1575,7 +1513,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_SETTINGS_ERROR_HEADER': TypedIntlMessageGetter<{}>,
   /**
@@ -1588,7 +1526,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `ru`, `sv-SE`, `th`, `vi`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -1601,7 +1539,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_SETTINGS_ERROR_RENDER_PANEL': TypedIntlMessageGetter<{}>,
   /**
@@ -1614,7 +1552,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_SETTINGS_ERROR_SUB_HEADER': TypedIntlMessageGetter<{}>,
   /**
@@ -1627,7 +1565,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_KEEP_TOKEN': TypedIntlMessageGetter<{}>,
   /**
@@ -1640,7 +1578,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_KEEP_TOKEN_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -1653,7 +1591,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_NO_CLYDE': TypedIntlMessageGetter<{}>,
   /**
@@ -1666,35 +1604,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_NO_CLYDE_DESC': TypedIntlMessageGetter<{$link?: LinkFunction, clydeUrl: any}>,
-  /**
-   * Key: `1VHQaG`
-   * 
-   * ### Definition
-   * ```text
-   * Overlay DevTools
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`
-   */
-  'REPLUGGED_SETTINGS_OVERLAY': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `PS+ccX`
-   * 
-   * ### Definition
-   * ```text
-   * Opens a DevTools window that lets you inspect what's happening within Discord's in-game overlay.
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `hi`
-   */
-  'REPLUGGED_SETTINGS_OVERLAY_DESC': TypedIntlMessageGetter<{}>,
   /**
    * Key: `eXvP6O`
    * 
@@ -1705,7 +1617,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY': TypedIntlMessageGetter<{}>,
   /**
@@ -1718,7 +1630,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -1731,7 +1643,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_REACT_DEVTOOLS': TypedIntlMessageGetter<{}>,
   /**
@@ -1744,7 +1656,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
@@ -1757,7 +1669,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED': TypedIntlMessageGetter<{}>,
   /**
@@ -1770,7 +1682,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SETTINGS_RESTART': TypedIntlMessageGetter<{}>,
   /**
@@ -1783,7 +1695,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_RESTART_TITLE': TypedIntlMessageGetter<{}>,
   /**
@@ -1796,7 +1708,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_TRANSPARENT': TypedIntlMessageGetter<{}>,
   /**
@@ -1809,7 +1721,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
@@ -1822,7 +1734,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `uk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `uk`, `vi`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
@@ -1835,7 +1747,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `sk`, `sv-SE`, `uk`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `uk`, `vi`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
@@ -1848,7 +1760,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `he`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SNIPPET_APPLIED': TypedIntlMessageGetter<{}>,
   /**
@@ -1861,7 +1773,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SNIPPET_APPLY': TypedIntlMessageGetter<{}>,
   /**
@@ -1874,7 +1786,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`, `ko`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `ko`, `th`
    */
   'REPLUGGED_SNIPPET_LINE1': TypedIntlMessageGetter<{date: Date | number}>,
   /**
@@ -1887,7 +1799,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SNIPPET_LINE2': TypedIntlMessageGetter<{authorId: any, authorTag: any}>,
   /**
@@ -1900,7 +1812,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `es-ES`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `ko`, `lt`, `nl`, `no`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `vi`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `ru`, `sv-SE`, `vi`, `zh-CN`
    */
   'REPLUGGED_STORE': TypedIntlMessageGetter<{}>,
   /**
@@ -1913,7 +1825,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_THEME': TypedIntlMessageGetter<{}>,
   /**
@@ -1926,7 +1838,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_THEMES': TypedIntlMessageGetter<{}>,
   /**
@@ -1939,7 +1851,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -1952,7 +1864,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS': TypedIntlMessageGetter<{type: any}>,
   /**
@@ -1965,7 +1877,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-ES`, `fi`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_TOAST_ADDON_DISABLE_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -1978,7 +1890,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -1991,7 +1903,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-ES`, `fi`, `fr`, `he`, `hi`, `hr`, `hu`, `id`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `pt-PT`, `ro`, `ru`, `sk`, `sv-SE`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_TOAST_ADDON_ENABLE_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2004,7 +1916,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2017,7 +1929,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_ADDON_RELOAD_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2030,7 +1942,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2043,7 +1955,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_ADDON_TOGGLE_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2056,7 +1968,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2069,7 +1981,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2082,7 +1994,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL': TypedIntlMessageGetter<{}>,
   /**
@@ -2095,7 +2007,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED': TypedIntlMessageGetter<{}>,
   /**
@@ -2108,7 +2020,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2121,7 +2033,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2134,7 +2046,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2147,7 +2059,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_PROFILE_FETCH_FAILED': TypedIntlMessageGetter<{}>,
   /**
@@ -2160,7 +2072,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED': TypedIntlMessageGetter<{}>,
   /**
@@ -2173,7 +2085,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS': TypedIntlMessageGetter<{}>,
   /**
@@ -2186,7 +2098,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_QUICKCSS_RELOAD': TypedIntlMessageGetter<{}>,
   /**
@@ -2199,7 +2111,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_AVAILABLE': TypedIntlMessageGetter<{count: any | number | string}>,
   /**
@@ -2212,7 +2124,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE': TypedIntlMessageGetter<{}>,
   /**
@@ -2225,7 +2137,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_CHECK': TypedIntlMessageGetter<{}>,
   /**
@@ -2238,7 +2150,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_ENABLE': TypedIntlMessageGetter<{}>,
   /**
@@ -2251,7 +2163,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_FAILED': TypedIntlMessageGetter<{}>,
   /**
@@ -2264,7 +2176,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_FORCE': TypedIntlMessageGetter<{}>,
   /**
@@ -2277,7 +2189,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_LAST_CHECKED': TypedIntlMessageGetter<{date: any}>,
   /**
@@ -2290,7 +2202,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPEN_UPDATER': TypedIntlMessageGetter<{}>,
   /**
@@ -2303,7 +2215,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_AUTO': TypedIntlMessageGetter<{}>,
   /**
@@ -2316,7 +2228,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_AUTO_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -2329,7 +2241,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_CHANGE_LOGS': TypedIntlMessageGetter<{}>,
   /**
@@ -2342,7 +2254,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -2355,7 +2267,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_CONCURRENCY': TypedIntlMessageGetter<{}>,
   /**
@@ -2368,7 +2280,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_CONCURRENCY_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -2381,7 +2293,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG': TypedIntlMessageGetter<{}>,
   /**
@@ -2394,7 +2306,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_ACCOUNT': TypedIntlMessageGetter<{}>,
   /**
@@ -2407,7 +2319,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_APIS': TypedIntlMessageGetter<{}>,
   /**
@@ -2420,7 +2332,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_APP_VERSION': TypedIntlMessageGetter<{}>,
   /**
@@ -2433,7 +2345,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_ARCH': TypedIntlMessageGetter<{}>,
   /**
@@ -2446,7 +2358,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_BETTERDISCORD_PLUGINS': TypedIntlMessageGetter<{}>,
   /**
@@ -2459,7 +2371,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH': TypedIntlMessageGetter<{}>,
   /**
@@ -2472,7 +2384,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_ID': TypedIntlMessageGetter<{}>,
   /**
@@ -2485,7 +2397,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_NUMBER': TypedIntlMessageGetter<{}>,
   /**
@@ -2498,7 +2410,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_CACHED_FILES': TypedIntlMessageGetter<{}>,
   /**
@@ -2511,7 +2423,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_PROCESS_VERSIONS': TypedIntlMessageGetter<{}>,
   /**
@@ -2524,7 +2436,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_SYSTEM_DISCORD': TypedIntlMessageGetter<{}>,
   /**
@@ -2537,7 +2449,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_COMMANDS': TypedIntlMessageGetter<{}>,
   /**
@@ -2550,35 +2462,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_CONNECTIONS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `IlS5Nj`
-   * 
-   * ### Definition
-   * ```text
-   * Copied!
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_COPIED': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `ORcmoK`
-   * 
-   * ### Definition
-   * ```text
-   * Copy
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_COPY': TypedIntlMessageGetter<{}>,
   /**
    * Key: `sNWpYW`
    * 
@@ -2589,7 +2475,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -2602,7 +2488,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH': TypedIntlMessageGetter<{}>,
   /**
@@ -2615,7 +2501,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_DISTRO': TypedIntlMessageGetter<{}>,
   /**
@@ -2628,7 +2514,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_EXPERIMENTS': TypedIntlMessageGetter<{}>,
   /**
@@ -2641,7 +2527,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_LABS': TypedIntlMessageGetter<{}>,
   /**
@@ -2654,7 +2540,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_LATEST': TypedIntlMessageGetter<{}>,
   /**
@@ -2667,7 +2553,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_LOCALE': TypedIntlMessageGetter<{}>,
   /**
@@ -2680,7 +2566,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_OS': TypedIntlMessageGetter<{}>,
   /**
@@ -2693,7 +2579,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_OS_64BIT': TypedIntlMessageGetter<{}>,
   /**
@@ -2706,7 +2592,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS': TypedIntlMessageGetter<{}>,
   /**
@@ -2719,7 +2605,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_LESS': TypedIntlMessageGetter<{}>,
   /**
@@ -2732,7 +2618,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_MORE': TypedIntlMessageGetter<{}>,
   /**
@@ -2745,7 +2631,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_RELEASE_CHANNEL': TypedIntlMessageGetter<{}>,
   /**
@@ -2758,7 +2644,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH': TypedIntlMessageGetter<{}>,
   /**
@@ -2771,7 +2657,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_REVISION': TypedIntlMessageGetter<{}>,
   /**
@@ -2784,7 +2670,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS': TypedIntlMessageGetter<{}>,
   /**
@@ -2797,7 +2683,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC': TypedIntlMessageGetter<{}>,
   /**
@@ -2810,7 +2696,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_THEMES': TypedIntlMessageGetter<{}>,
   /**
@@ -2823,7 +2709,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_UNAUTHORIZED_PLUGINS': TypedIntlMessageGetter<{}>,
   /**
@@ -2836,7 +2722,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM': TypedIntlMessageGetter<{}>,
   /**
@@ -2849,7 +2735,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_INTERVAL': TypedIntlMessageGetter<{}>,
   /**
@@ -2862,7 +2748,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_INTERVAL_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -2875,7 +2761,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE': TypedIntlMessageGetter<{}>,
   /**
@@ -2888,7 +2774,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -2901,7 +2787,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN': TypedIntlMessageGetter<{}>,
   /**
@@ -2914,7 +2800,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_MODAL': TypedIntlMessageGetter<{}>,
   /**
@@ -2927,7 +2813,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `hi`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_MODAL_HEADER': TypedIntlMessageGetter<{}>,
   /**
@@ -2940,7 +2826,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_STABLE_BTN': TypedIntlMessageGetter<{}>,
   /**
@@ -2953,7 +2839,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_SWITCH': TypedIntlMessageGetter<{}>,
   /**
@@ -2966,7 +2852,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `he`, `hi`, `no`
+   * Missing translations: `da`, `es-419`, `hi`, `no`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_TOAST_ENABLED': TypedIntlMessageGetter<{}>,
   /**
@@ -2979,7 +2865,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `he`, `hi`, `no`
+   * Missing translations: `bg`, `da`, `es-419`, `hi`, `no`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -2992,7 +2878,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_TOAST_FAILED_ALL': TypedIntlMessageGetter<{}>,
   /**
@@ -3005,7 +2891,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_TOAST_FAILED_ONE': TypedIntlMessageGetter<{}>,
   /**
@@ -3018,7 +2904,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`, `zh-CN`
    */
   'REPLUGGED_UPDATES_TOAST_NEW': TypedIntlMessageGetter<{count: any | number | string}>,
   /**
@@ -3031,7 +2917,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_TOAST_NO_NEW': TypedIntlMessageGetter<{}>,
   /**
@@ -3044,7 +2930,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_TOAST_SUCCESS_ALL': TypedIntlMessageGetter<{}>,
   /**
@@ -3057,22 +2943,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_TOAST_SUCCESS_ONE': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `V+pee3`
-   * 
-   * ### Definition
-   * ```text
-   * Update
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `da`, `hi`
-   */
-  'REPLUGGED_UPDATES_UPDATE': TypedIntlMessageGetter<{}>,
   /**
    * Key: `DIZGSk`
    * 
@@ -3083,7 +2956,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_UPDATER': TypedIntlMessageGetter<{}>,
   /**
@@ -3096,22 +2969,9 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_UPDATE_ALL': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `yiTLZG`
-   * 
-   * ### Definition
-   * ```text
-   * Update
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
-   */
-  'REPLUGGED_UPDATES_UPDATE_NOUN': TypedIntlMessageGetter<{}>,
   /**
    * Key: `JdG85+`
    * 
@@ -3122,7 +2982,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `da`, `el`, `he`, `hi`, `hr`, `lt`, `no`, `pt-PT`, `ro`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_UPDATE_TO': TypedIntlMessageGetter<{version: any}>,
   /**
@@ -3135,7 +2995,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_UPDATING': TypedIntlMessageGetter<{}>,
   /**
@@ -3148,7 +3008,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_UPDATING_ITEM': TypedIntlMessageGetter<{}>,
   /**
@@ -3161,7 +3021,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `da`, `he`, `hi`
+   * Missing translations: `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_UP_TO_DATE': TypedIntlMessageGetter<{}>,
   /**
@@ -3174,7 +3034,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `lt`, `no`, `pt-PT`, `ro`, `sv-SE`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `lt`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_VERSION': TypedIntlMessageGetter<{version: 'dev' | any | string}>,
   /**
@@ -3187,7 +3047,7 @@ declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `ar`, `bg`, `da`, `el`, `he`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `pt-PT`, `ro`, `sv-SE`, `zh-CN`
+   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
   'REPLUGGED_VIEW_UPDATES': TypedIntlMessageGetter<{count: any | number | string}>,
 };

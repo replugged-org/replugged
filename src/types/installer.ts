@@ -1,4 +1,4 @@
-import { AnyAddonManifest, RepluggedManifest } from "./addon";
+import type { AnyAddonManifest, RepluggedManifest } from "./addon";
 
 export type InstallerType = AnyAddonManifest["type"];
 

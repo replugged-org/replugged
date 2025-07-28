@@ -4,13 +4,13 @@ IPC events:
 - REPLUGGED_UNINSTALL_THEME: uninstalls a theme by name
 */
 
+import { ipcMain, shell } from "electron";
+import type { Dirent, Stats } from "fs";
 import { readFile, readdir, readlink, rm, stat } from "fs/promises";
 import { extname, join, sep } from "path";
-import { ipcMain, shell } from "electron";
+import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels, type RepluggedTheme } from "../../types";
 import { theme } from "../../types/addon";
-import { CONFIG_PATHS } from "src/util.mjs";
-import type { Dirent, Stats } from "fs";
 
 const THEMES_DIR = CONFIG_PATHS.themes;
 

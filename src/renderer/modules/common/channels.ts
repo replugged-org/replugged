@@ -1,6 +1,6 @@
-import { waitForProps } from "../webpack";
 import type { Channel } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
+import { waitForProps } from "../webpack";
 
 interface LastChannelFollowingDestination {
   channelId: string;
@@ -44,15 +44,16 @@ export interface ChannelStore {
   loadAllGuildAndPrivateChannelsFromDisk(): Record<string, Channel>;
 }
 
+const SelectedChannelStore = await waitForProps<SelectedChannelStore>(
+  "getChannelId",
+  "getLastSelectedChannelId",
+  "getVoiceChannelId",
+);
+const ChannelStore = await waitForProps<ChannelStore>("getChannel", "hasChannel");
+
 export type Channels = SelectedChannelStore & ChannelStore;
 
 export default virtualMerge(
-  (await waitForProps<SelectedChannelStore>(
-    "getChannelId",
-    "getLastSelectedChannelId",
-    "getVoiceChannelId",
-  ).then(Object.getPrototypeOf)) as SelectedChannelStore,
-  (await waitForProps<ChannelStore>("getChannel", "hasChannel").then(
-    Object.getPrototypeOf,
-  )) as ChannelStore,
-);
+  Object.getPrototypeOf(SelectedChannelStore),
+  Object.getPrototypeOf(ChannelStore),
+) as Channels;

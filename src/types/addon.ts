@@ -1,5 +1,5 @@
-import { z } from "zod";
 import type { Promisable } from "type-fest";
+import { z } from "zod";
 
 export const id = z
   .string()
@@ -17,7 +17,7 @@ export const author = z.object({
 
 export type Author = z.infer<typeof author>;
 
-const urlType = z.string().url();
+const urlType = z.url();
 
 export const common = z.object({
   // Should be in RDNN format
