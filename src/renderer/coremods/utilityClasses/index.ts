@@ -30,7 +30,6 @@ function tabBarItemId(): void {
     throw new Error("Failed to find TabBar module!");
   }
 
-  // @ts-expect-error https://github.com/replugged-org/replugged/pull/718
   injector.after(TabBar.Item.prototype, "render", (_, res, instance: TabBarItemType) => {
     if (typeof instance.props.id === "string") {
       res.props.id = `${instance.props.id.replace(/\s+/g, "-").toLowerCase()}-tab`;
