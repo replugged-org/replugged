@@ -622,7 +622,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 refreshList();
               }}
               color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
+              look={Button.Looks.OUTLINED}>
               {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
                 type: label(type, { caps: "title", plural: true }),
               })}
@@ -630,7 +630,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
             <Button
               onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
               color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
+              look={Button.Looks.OUTLINED}>
               {intl.format(t.REPLUGGED_ADDON_BROWSE, {
                 type: label(type, { caps: "title", plural: true }),
               })}
