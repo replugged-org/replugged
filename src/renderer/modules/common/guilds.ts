@@ -1,6 +1,6 @@
 import type { Guild, Role } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
-import { waitForProps } from "../webpack";
+import { waitForStore } from "../webpack";
 import type { Store } from "./flux";
 
 interface State {
@@ -34,12 +34,9 @@ export type Guilds = SelectedGuildStore &
   GuildStore &
   GuildRoleStore & { getCurrentGuild: () => Guild | undefined };
 
-const SelectedGuildStore = await waitForProps<SelectedGuildStore & Store>(
-  "getGuildId",
-  "getLastSelectedGuildId",
-);
-const GuildStore = await waitForProps<GuildStore & Store>("getGuild", "getGuildIds");
-const GuildRoleStore = await waitForProps<GuildRoleStore & Store>("getAllGuildsRoles", "getRoles");
+const SelectedGuildStore = await waitForStore<SelectedGuildStore & Store>("SelectedGuildStore");
+const GuildStore = await waitForStore<GuildStore & Store>("GuildStore");
+const GuildRoleStore = await waitForStore<GuildRoleStore & Store>("GuildRoleStore");
 
 const { getGuild, getGuildIds, getGuilds, getGuildsArray } = GuildStore;
 
