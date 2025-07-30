@@ -397,6 +397,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
     plugins,
     sourcemap: !production,
     target: `chrome${CHROME_VERSION}`,
+    sourceRoot: `replugged://plugin/${manifest.id}/${isMonoRepo ? "monoRepo/src" : "src"}`,
   };
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
@@ -490,6 +491,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
     jsx: "transform",
     jsxFactory: "window.replugged.common.React.createElement",
     jsxFragment: "window.replugged.common.React.Fragment",
+    sourceRoot: `replugged://theme/${manifest.id}/${isMonoRepo ? "monoRepo/src" : "src"}`,
   };
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
