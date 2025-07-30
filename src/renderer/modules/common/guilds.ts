@@ -25,9 +25,17 @@ export interface GuildStore {
 }
 
 export interface GuildRoleStore {
-  getAllGuildsRoles: () => Record<string, Record<string, Role>>;
-  getRoles: (guildId: string) => Record<string, Role>;
   getRole: (guildId: string, roleId: string) => Role | undefined;
+  getEveryoneRole: (guild: Guild) => Role | undefined;
+  getManyRoles: (guildId: string, roleIds: string[]) => Role[];
+  getNumRoles: (guildId: string) => number;
+  getRolesSnapshot: (guildId: string) => Record<string, Role>;
+  getSortedRoles: (guildId: string) => Role[];
+  getUnsafeMutableRoles: (guildId: string) => Record<string, Role>;
+  serializeAllGuildRoles: () => Array<{
+    partitionKey: string;
+    values: Record<string, Role>;
+  }>;
 }
 
 export type Guilds = SelectedGuildStore &
@@ -40,6 +48,8 @@ const GuildRoleStore = await waitForStore<GuildRoleStore & Store>("GuildRoleStor
 
 const { getGuild, getGuildIds, getGuilds, getGuildsArray } = GuildStore;
 
+const { getRolesSnapshot, getSortedRoles } = GuildRoleStore;
+
 export function getCurrentGuild(): Guild | undefined {
   const guildId = SelectedGuildStore.getGuildId();
   if (!guildId) return undefined;
@@ -50,5 +60,13 @@ export default virtualMerge(
   Object.getPrototypeOf(SelectedGuildStore),
   Object.getPrototypeOf(GuildStore),
   Object.getPrototypeOf(GuildRoleStore),
-  { getGuild, getGuildIds, getGuilds, getGuildsArray, getCurrentGuild },
+  {
+    getGuild,
+    getGuildIds,
+    getGuilds,
+    getGuildsArray,
+    getRolesSnapshot,
+    getSortedRoles,
+    getCurrentGuild,
+  },
 ) as Guilds;
