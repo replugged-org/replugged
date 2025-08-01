@@ -456,14 +456,21 @@ type BoundMethodMap<T> = {
  */
 export function getBoundMethods<T extends object>(instance: T): BoundMethodMap<T> {
   const proto: T = Object.getPrototypeOf(instance);
-  const bound: Partial<BoundMethodMap<T>> = {};
+  const bound = Object.create(proto);
 
   for (const key of Reflect.ownKeys(proto) as Array<keyof T>) {
-    const descriptor = Object.getOwnPropertyDescriptor(proto, key);
-    if (descriptor?.value && typeof descriptor.value === "function" && key !== "constructor") {
-      bound[key as MethodNames<T>] = descriptor.value.bind(instance);
-    }
+    Object.defineProperty(bound, key, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        const val = proto[key];
+        return typeof val === "function" ? val.bind(instance) : val;
+      },
+      set(newValue) {
+        proto[key] = newValue;
+      },
+    });
   }
 
-  return bound as BoundMethodMap<T>;
+  return bound;
 }
