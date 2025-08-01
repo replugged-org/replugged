@@ -39,7 +39,7 @@ function tabBarItemId(): void {
 }
 
 interface ClientThemesBackgroundStore extends Store {
-  gradientPreset: { getName: () => string } | undefined;
+  gradientPreset: { getName?: () => string } | undefined;
 }
 
 async function customThemeClass(): Promise<void> {
@@ -55,7 +55,7 @@ async function customThemeClass(): Promise<void> {
   injector.after(clientThemeStyleMod, fnKey, (_, res) => {
     if (!res.clientThemesClassName) return res;
     const customThemeName = ClientThemesBackgroundStore.gradientPreset
-      ?.getName()
+      ?.getName?.()
       .replace(" ", "-")
       .toLowerCase();
     res.clientThemesClassName = classNames(customThemeName, res.clientThemesClassName);
