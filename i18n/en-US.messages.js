@@ -235,5 +235,6 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}",
   "REPLUGGED_STORE": "Store",
   "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Custom Title Bar",
-  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC": "Use Discord's custom title bar instead of the system title bar. **Requires restart**."
+  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC": "Use Discord's custom title bar instead of the system title bar. **Requires restart**.",
+  "REPLUGGED_ADDON_RELOAD_REQUIRED": "Reload might be required to apply changes!"
 });
