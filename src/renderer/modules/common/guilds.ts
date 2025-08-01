@@ -1,5 +1,5 @@
 import type { Guild, Role } from "discord-types/general";
-import { virtualMerge } from "src/renderer/util";
+import { getBoundMethods, virtualMerge } from "src/renderer/util";
 import { waitForStore } from "../webpack";
 import type { Store } from "./flux";
 
@@ -57,9 +57,9 @@ export function getCurrentGuild(): Guild | undefined {
 }
 
 export default virtualMerge(
-  Object.getPrototypeOf(SelectedGuildStore),
-  Object.getPrototypeOf(GuildStore),
-  Object.getPrototypeOf(GuildRoleStore),
+  getBoundMethods(SelectedGuildStore),
+  getBoundMethods(GuildStore),
+  getBoundMethods(GuildRoleStore),
   {
     getGuild,
     getGuildIds,

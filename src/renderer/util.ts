@@ -1,7 +1,7 @@
 import { React, channels, flux, fluxDispatcher, guilds, lodash } from "@common";
 import type { Fiber } from "react-reconciler";
 import type { Jsonifiable } from "type-fest";
-import type { ObjectExports } from "../types";
+import type { AnyFunction, ObjectExports } from "../types";
 import { SettingsManager } from "./apis/settings";
 import { getByProps, getBySource, getFunctionBySource } from "./modules/webpack";
 
@@ -436,4 +436,34 @@ export function findInReactTree(
     walkable: ["props", "children", "child", "sibling"],
     maxRecursion,
   });
+}
+
+type MethodNames<T> = {
+  [K in keyof T]: T[K] extends AnyFunction ? K : never;
+}[keyof T];
+
+type BoundMethodMap<T> = {
+  [K in MethodNames<T>]: T[K];
+};
+
+/**
+ * Creates a new object containing all methods from the prototype of the given instance,
+ * with each method bound to the original instance.
+ *
+ * @template T The type of the instance object
+ * @param instance The object instance whose methods should be bound
+ * @returns A new object containing all prototype methods bound to the original instance
+ */
+export function getBoundMethods<T extends object>(instance: T): BoundMethodMap<T> {
+  const proto: T = Object.getPrototypeOf(instance);
+  const bound: Partial<BoundMethodMap<T>> = {};
+
+  for (const key of Reflect.ownKeys(proto) as Array<keyof T>) {
+    const descriptor = Object.getOwnPropertyDescriptor(proto, key);
+    if (descriptor?.value && typeof descriptor.value === "function" && key !== "constructor") {
+      bound[key as MethodNames<T>] = descriptor.value.bind(instance);
+    }
+  }
+
+  return bound as BoundMethodMap<T>;
 }
