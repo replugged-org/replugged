@@ -62,7 +62,7 @@ export class CommandInteraction<T extends CommandOptionReturn> {
         getUpload: (
           channelId: string,
           optionName: string,
-          draftType: 0,
+          draftType: 5,
         ) => { uploadedFilename?: string; item?: { file: File } } | undefined;
       }
     >("UploadAttachmentStore")!;
@@ -73,7 +73,12 @@ export class CommandInteraction<T extends CommandOptionReturn> {
       (o) => o.type === ApplicationCommandOptionType.Attachment,
     )) {
       const { uploadedFilename, item } =
-        UploadAttachmentStore.getUpload(props.channel.id, option.name, 0) ?? {};
+        UploadAttachmentStore.getUpload(props.channel.id, option.name, 5) ?? {};
+      fluxDispatcher.dispatch({
+        type: "UPLOAD_ATTACHMENT_CLEAR_ALL_FILES",
+        channelId: props.channel.id,
+        draftType: 5,
+      });
       option.value = { uploadedFilename, file: item?.file };
     }
   }
