@@ -702,7 +702,6 @@ export const Addons = (type: AddonType): React.ReactElement => {
         )
       )}
       {requiresReload.size && (
-        // TODO: i18n
         <Notice className="replugged-addon-reload-notice" messageType={Notice.Types.WARNING}>
           <Flex justify={Flex.Justify.BETWEEN}>
             <Text.Normal>{intl.string(t.REPLUGGED_ADDON_RELOAD_REQUIRED)}</Text.Normal>
