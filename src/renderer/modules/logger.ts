@@ -68,7 +68,7 @@ export function error(
  * @param type Type of the context of the error (e.g. API, Plugin, Coremod...)
  * @param name Name of the context of the error (e.g. Notices, SilentTyping, Badges...)
  * @param color Color of the prefix as hex or a CSS color
- * @param data Message(s) to print with the error, same as the arguments would be for `console.info`
+ * @param data Message(s) to print with the info message, same as the arguments would be for `console.info`
  */
 export function info(
   type: LoggerType,
@@ -84,7 +84,7 @@ export function info(
  * @param type Type of the context of the error (e.g. API, Plugin, Coremod...)
  * @param name Name of the context of the error (e.g. Notices, SilentTyping, Badges...)
  * @param color Color of the prefix as hex or a CSS color
- * @param data Thing(s) to print with the error, same as the arguments would be for `console.debug`
+ * @param data Thing(s) to print with the verbose message, same as the arguments would be for `console.debug`
  */
 export function verbose(
   type: LoggerType,
