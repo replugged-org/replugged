@@ -163,7 +163,7 @@ export class Logger {
    * @param data Item(s) to print as an info message
    * @remarks The arguments for this method are the same as the arguments for `console.error`.
    */
-  public info(...data: Parameters<typeof console.error>): void {
+  public info(...data: Parameters<typeof console.info>): void {
     info(this.type, this.name, this.color, ...data);
   }
 
