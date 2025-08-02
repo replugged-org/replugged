@@ -172,7 +172,7 @@ export class Logger {
    * @param data Item(s) to print as an message
    * @remarks The arguments for this method are the same as the arguments for `console.error`.
    */
-  public verbose(...data: Parameters<typeof console.error>): void {
+  public verbose(...data: Parameters<typeof console.debug>): void {
     verbose(this.type, this.name, this.color, ...data);
   }
 
