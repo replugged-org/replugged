@@ -170,7 +170,7 @@ export class Logger {
   /**
    * Logs a verbose message to the console, with an identifying prefix managed by the Logger instance.
    * @param data Item(s) to print as an message
-   * @remarks The arguments for this method are the same as the arguments for `console.error`.
+   * @remarks The arguments for this method are the same as the arguments for `console.debug`.
    */
   public verbose(...data: Parameters<typeof console.debug>): void {
     verbose(this.type, this.name, this.color, ...data);
