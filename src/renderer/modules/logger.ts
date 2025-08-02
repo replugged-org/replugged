@@ -161,7 +161,7 @@ export class Logger {
   /**
    * Logs an info message to the console, with an identifying prefix managed by the Logger instance.
    * @param data Item(s) to print as an info message
-   * @remarks The arguments for this method are the same as the arguments for `console.error`.
+   * @remarks The arguments for this method are the same as the arguments for `console.info`.
    */
   public info(...data: Parameters<typeof console.info>): void {
     info(this.type, this.name, this.color, ...data);
