@@ -168,7 +168,7 @@ export class Logger {
   }
 
   /**
-   * Logs an verbose message to the console, with an identifying prefix managed by the Logger instance.
+   * Logs a verbose message to the console, with an identifying prefix managed by the Logger instance.
    * @param data Item(s) to print as an message
    * @remarks The arguments for this method are the same as the arguments for `console.error`.
    */
