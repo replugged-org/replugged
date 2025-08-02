@@ -80,7 +80,7 @@ export function info(
 }
 
 /**
- * Log an error to the console with a Replugged prefix.
+ * Log a verbose message to the console with a Replugged prefix.
  * @param type Type of the context of the error (e.g. API, Plugin, Coremod...)
  * @param name Name of the context of the error (e.g. Notices, SilentTyping, Badges...)
  * @param color Color of the prefix as hex or a CSS color
