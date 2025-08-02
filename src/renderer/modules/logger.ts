@@ -90,7 +90,7 @@ export function verbose(
   type: LoggerType,
   name: string,
   color: string = blurple,
-  ...data: Parameters<typeof console.error>
+  ...data: Parameters<typeof console.debug>
 ): void {
   console.debug(repluggedPrefix(type, name), logColor(color), ...data);
 }
