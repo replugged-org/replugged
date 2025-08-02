@@ -74,7 +74,7 @@ export function info(
   type: LoggerType,
   name: string,
   color: string = blurple,
-  ...data: Parameters<typeof console.error>
+  ...data: Parameters<typeof console.info>
 ): void {
   console.info(repluggedPrefix(type, name), logColor(color), ...data);
 }
