@@ -16,14 +16,10 @@ import type {
 
 const MainLogger = new Logger("Preload", "Backend", "#ea5a5a");
 
-ipcRenderer.on(RepluggedIpcChannels.CONSOLE_LOG, (_event, ...args: unknown[]) =>
-  MainLogger.log(...args),
-);
-ipcRenderer.on(RepluggedIpcChannels.CONSOLE_WARN, (_event, ...args: unknown[]) =>
-  MainLogger.warn(...args),
-);
-ipcRenderer.on(RepluggedIpcChannels.CONSOLE_ERROR, (_event, ...args: unknown[]) =>
-  MainLogger.error(...args),
+ipcRenderer.on(
+  RepluggedIpcChannels.CONSOLE,
+  (_event, type: "log" | "info" | "warn" | "error" | "verbose", ...args: unknown[]) =>
+    MainLogger[type](...args),
 );
 
 const version = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_VERSION);
