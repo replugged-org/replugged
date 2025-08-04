@@ -43,7 +43,6 @@ export interface ErrorProps {
   children: React.ReactNode;
   silent?: boolean;
   onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
-  /** Element to show if the error boundary is triggered */
   fallback?: React.ReactNode;
 }
 

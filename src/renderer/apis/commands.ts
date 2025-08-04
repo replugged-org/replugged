@@ -63,7 +63,7 @@ export class CommandInteraction<T extends CommandOptionReturn> {
         getUpload: (
           channelId: string,
           optionName: string,
-          draftType: 0,
+          draftType: 5,
         ) => { uploadedFilename?: string; item?: { file: File } } | undefined;
       }
     >("UploadAttachmentStore")!;
@@ -74,7 +74,12 @@ export class CommandInteraction<T extends CommandOptionReturn> {
       (o) => o.type === ApplicationCommandOptionType.Attachment,
     )) {
       const { uploadedFilename, item } =
-        UploadAttachmentStore.getUpload(props.channel.id, option.name, 0) ?? {};
+        UploadAttachmentStore.getUpload(props.channel.id, option.name, 5) ?? {};
+      fluxDispatcher.dispatch({
+        type: "UPLOAD_ATTACHMENT_CLEAR_ALL_FILES",
+        channelId: props.channel.id,
+        draftType: 5,
+      });
       option.value = { uploadedFilename, file: item?.file };
     }
   }
@@ -136,6 +141,9 @@ async function executeCommand<T extends CommandOptions>(
       // eslint-disable-next-line @typescript-eslint/naming-convention
       interaction_data: {
         name: command.displayName,
+        options: args,
+        type: 1, // interaction type for chat
+        id: command.id,
       },
       type: 20,
       author: RepluggedUser ?? loadingMessage.author,
@@ -182,6 +190,9 @@ async function executeCommand<T extends CommandOptions>(
         // eslint-disable-next-line @typescript-eslint/naming-convention
         interaction_data: {
           name: command.displayName,
+          options: args,
+          type: 1,
+          id: command.id,
         },
         type: 20,
         author: RepluggedUser ?? botMessage.author,
@@ -210,6 +221,9 @@ async function executeCommand<T extends CommandOptions>(
       // eslint-disable-next-line @typescript-eslint/naming-convention
       interaction_data: {
         name: command.displayName,
+        options: args,
+        type: 1,
+        id: command.id,
       },
       type: 20,
       author: RepluggedUser ?? botMessage.author,
@@ -246,7 +260,7 @@ export class CommandManager {
     command.applicationId = currentSection.section.id;
     command.displayName ??= command.name;
     command.displayDescription ??= command.description;
-    command.type = 2;
+    command.type = 2; // command type for application
     command.id ??= command.name;
 
     command.execute ??= (args, currentInfo) => {

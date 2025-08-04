@@ -1,4 +1,5 @@
-import type { RawModule } from "../../../types";
+import type { RawModule } from "src/types";
+import type { Store } from "../common/flux";
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
 
@@ -6,8 +7,20 @@ import { sourceStrings } from "./patch-load";
  * Get a module that has all the given properties on one of its exports
  * @param props List of property names
  */
-export const byProps = <P extends PropertyKey = PropertyKey>(...props: P[]) => {
+export const byProps = <P extends PropertyKey = PropertyKey>(
+  ...props: P[]
+): ((m: RawModule) => boolean) => {
   return (m: RawModule) => typeof getExportsForProps(m.exports, props) !== "undefined";
+};
+
+/**
+ * Get a function that has all the given properties on its prototype
+ * @param props List of property names to check on the prototype
+ */
+export const byPrototype = <P extends PropertyKey = PropertyKey>(
+  ...props: P[]
+): ((m: RawModule) => boolean) => {
+  return (m: RawModule) => typeof getExportsForProps(m.exports, props, true) !== "undefined";
 };
 
 /**
@@ -54,6 +67,24 @@ export const byValue = (match: string | RegExp) => {
           return true;
         }
       } catch {}
+    }
+    return false;
+  };
+};
+
+/**
+ * Get a module that has a Flux store with the given name
+ * @param name The name of the store to filter by
+ */
+export const byStoreName = (name: string) => {
+  return (m: RawModule) => {
+    const storeExport = getExportsForProps<Store>(m.exports, ["getName", "_dispatchToken"]);
+    if (storeExport && typeof storeExport.getName === "function") {
+      try {
+        return storeExport.getName() === name;
+      } catch {
+        return false;
+      }
     }
     return false;
   };
