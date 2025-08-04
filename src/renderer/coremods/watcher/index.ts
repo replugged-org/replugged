@@ -31,7 +31,7 @@ export function start(): void {
         };
       }
 
-      logger.log(`Got request to reload ${addon.manifest.id}.`);
+      logger.info(`Got request to reload ${addon.manifest.id}.`);
 
       try {
         if (plugin) {

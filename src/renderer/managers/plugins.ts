@@ -105,7 +105,7 @@ export async function start(id: string): Promise<void> {
     }
 
     running.add(plugin.manifest.id);
-    logger.log(`Plugin started: ${plugin.manifest.name}`);
+    logger.verbose(`Plugin started: ${plugin.manifest.name}`);
   } catch (e) {
     logger.error(`Error starting plugin ${plugin?.manifest.name}`, e);
   }
@@ -145,7 +145,7 @@ export async function stop(id: string): Promise<void> {
     }
 
     running.delete(plugin.manifest.id);
-    logger.log(`Plugin stopped: ${plugin.manifest.name}`);
+    logger.verbose(`Plugin stopped: ${plugin.manifest.name}`);
   } catch (e) {
     logger.error(`Error stopping plugin ${plugin?.manifest.name}`, e);
   }

@@ -60,7 +60,7 @@ function parseNode(node: Node): string | RegExp {
 }
 
 function parseFind(type: string, args: unknown[]): unknown {
-  devLogger.log(`Received find parsing request of type ${type} with args: ${args}`);
+  devLogger.info(`Received find parsing request of type ${type} with args: ${args}`);
   switch (type.replace("get", "")) {
     case "Module":
       return getModule(args[0] as Filter, { all: true });
@@ -97,7 +97,7 @@ export function initWs(isManual = false): void {
 
   ws.addEventListener("open", () => {
     wasConnected = true;
-    devLogger.log("Connected to WebSocket");
+    devLogger.info("Connected to WebSocket");
   });
 
   ws.addEventListener("error", (e) => {
@@ -111,7 +111,7 @@ export function initWs(isManual = false): void {
   ws.addEventListener("close", (e) => {
     if (!wasConnected && !hasErrored) return;
 
-    devLogger.log("Dev Companion Disconnected", e.code, e.reason);
+    devLogger.info("Dev Companion Disconnected", e.code, e.reason);
   });
 
   ws.addEventListener("message", (e) => {
@@ -134,7 +134,7 @@ export function initWs(isManual = false): void {
       ws.send(JSON.stringify(data));
     }
 
-    devLogger.log("Received Message:", type, "\n", data);
+    devLogger.info("Received Message:", type, "\n", data);
 
     switch (type) {
       case "testPatch": {

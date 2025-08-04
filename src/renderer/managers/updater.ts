@@ -111,7 +111,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
     return;
   }
   if (!entity.path.endsWith(".asar")) {
-    if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
+    if (verbose) logger.verbose(`Entity ${id} is not an ASAR file, cannot be updated`);
     return;
   }
 
@@ -137,7 +137,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
   const newVersion = res.manifest.version;
 
   if (newVersion === version) {
-    if (verbose) logger.log(`Entity ${id} is up to date`);
+    if (verbose) logger.verbose(`Entity ${id} is up to date`);
     updaterState.set(id, {
       available: false,
       lastChecked: Date.now(),
@@ -148,7 +148,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
     return;
   }
 
-  logger.log(`Entity ${id} has an update available`);
+  logger.info(`Entity ${id} has an update available`);
   updaterState.set(id, {
     available: true,
     url: res.url,
@@ -165,14 +165,14 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     return false;
   }
   if (!entity.path.endsWith(".asar")) {
-    if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
+    if (verbose) logger.verbose(`Entity ${id} is not an ASAR file, cannot be updated`);
     return false;
   }
 
   const updateSettings = getUpdateState(id);
 
   if (!force && !updateSettings?.available) {
-    if (verbose) logger.log(`Entity ${id} has no update available`);
+    if (verbose) logger.verbose(`Entity ${id} has no update available`);
     return false;
   }
 
@@ -202,7 +202,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
 
   completedUpdates.add(id);
 
-  logger.log(`Entity ${id} updated successfully`);
+  logger.info(`Entity ${id} updated successfully`);
 
   return true;
 }
@@ -218,14 +218,14 @@ export async function checkAllUpdates(autoCheck = false, verbose = false): Promi
 
   const addons = [...plugins, ...themes].filter(filterFn);
 
-  logger.log("Checking for updates");
+  logger.verbose("Checking for updates");
 
   await Promise.all([
     checkUpdate(REPLUGGED_ID, verbose),
     ...addons.map((addon) => checkUpdate(addon.manifest.id, verbose)),
   ]);
 
-  logger.log("All updates checked");
+  logger.verbose("All updates checked");
   updaterSettings.set("lastChecked", Date.now());
 }
 
@@ -269,11 +269,11 @@ async function autoUpdateCheck(): Promise<void> {
   // If it's not been long enough to check again, don't check
   // But we still want to try and show existing updates if they exist
   if (lastCheckedAgo >= checkMs) {
-    logger.log("Checking for updates (auto)");
+    logger.verbose("Checking for updates (auto)");
     await checkAllUpdates(true);
     updaterSettings.set("lastChecked", Date.now());
   } else {
-    logger.log("Skipping update check since it's too soon since the last check");
+    logger.verbose("Skipping update check since it's too soon since the last check");
   }
 
   // We only want to show a notification if:
@@ -287,7 +287,7 @@ async function autoUpdateCheck(): Promise<void> {
   const isFirstRun = !didRun;
   didRun = true;
   if (isAnUpdate && (areNewUpdates || isFirstRun)) {
-    logger.log("Showing update notification");
+    logger.verbose("Showing update notification");
 
     const { open } = await openSettingsModPromise;
 
