@@ -68,12 +68,14 @@ async function customThemeClass(): Promise<void> {
  * @hidden
  */
 export function _insertMessageAttributes(
-  message: Message & { ignored: boolean; poll: unknown },
+  message: Message & { ignored: boolean; poll: unknown; author: { globalName: string } },
 ): Record<string, string | number | boolean> {
   return {
     "data-is-author-self": message.author.id === users.getCurrentUser().id,
     "data-is-author-bot": message.author.bot,
     "data-is-author-webhook": Boolean(message.webhookId),
+    "data-author-username": message.author.username,
+    "data-author-globalName": message.author.globalName,
     "data-author-id": message.author.id,
     "data-channel-id": message.channel_id,
     "data-is-reply": Boolean(message.messageReference),
