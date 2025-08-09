@@ -68,15 +68,22 @@ async function customThemeClass(): Promise<void> {
  * @hidden
  */
 export function _insertMessageAttributes(
-  message: Message,
+  message: Message & { ignored: boolean; poll: unknown },
 ): Record<string, string | number | boolean> {
   return {
     "data-is-author-self": message.author.id === users.getCurrentUser().id,
     "data-is-author-bot": message.author.bot,
     "data-is-author-webhook": Boolean(message.webhookId),
     "data-author-id": message.author.id,
+    "data-channel-id": message.channel_id,
+    "data-is-reply": Boolean(message.messageReference),
     "data-message-type": message.type,
+    "data-is-ignored": message.ignored,
     "data-is-blocked": message.blocked,
+    "data-is-interaction": Boolean(message.interaction),
+    "data-is-pinned": message.pinned,
+    "data-is-call": Boolean(message.call),
+    "data-is-spam": message.hasFlag(1 << 20),
   };
 }
 
