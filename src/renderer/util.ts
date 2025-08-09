@@ -328,7 +328,7 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
 
   const handler: ProxyHandler<ExtractObjectType<O>> = {
     ownKeys() {
-      return objects.map((obj) => Reflect.ownKeys(obj)).flat();
+      return Array.from(new Set(objects.map((obj) => Reflect.ownKeys(obj)).flat()));
     },
   };
 
