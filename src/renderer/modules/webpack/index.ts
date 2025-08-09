@@ -10,3 +10,7 @@ export { getById, getExportsForProps, getModule } from "./get-modules";
 export * as filters from "./filters";
 
 export * from "./helpers";
+
+import { parseRegex, parseReplace } from "./plaintext-patch";
+
+export const plaintextPatch = { parseRegex, parseReplace };
