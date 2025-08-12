@@ -84,17 +84,6 @@ require.cache[electronPath]!.exports = electronExports;
 ).setAppPath(discordPath);
 // app.name = discordPackage.name;
 
-protocol.registerSchemesAsPrivileged([
-  {
-    scheme: "replugged",
-    privileges: {
-      standard: true,
-      secure: true,
-      allowServiceWorkers: true,
-    },
-  },
-]);
-
 // replugged scheme
 const repluggedProtocol = {
   scheme: "replugged",
