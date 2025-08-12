@@ -1,6 +1,7 @@
 import type { PlaintextPatch, RawPlaintextPatch, WebpackModule } from "src/types";
 import { Logger } from "../logger";
 
+// Can we change this to PlaintextPatch ?
 const logger = Logger.api("plaintext-patch");
 /**
  * All plaintext patches
@@ -29,7 +30,17 @@ export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule
       return source;
     }
 
-    const result = patch.replacements.reduce((source, patch) => patch(source), source);
+    const result = patch.replacements.reduce((source, patcher) => {
+      const result = patcher(source);
+      // If the replacement had no effect and was meant for a particular module!
+      if (result === source && (patch.find || patch.check))
+        logger.warn(`Plaintext Patch had no effect!`, `Addon ID: ${patch.id} | Module ID: ${id}`, {
+          find: patch.find,
+          check: patch.check,
+          replacement: patcher.regex ?? patcher,
+        });
+      return result;
+    }, source);
 
     if (result === source) {
       return source;
@@ -66,12 +77,14 @@ export function patchPlaintext(patches: PlaintextPatch[], id: string): void {
     ...patches.map((patch) => ({
       ...patch,
       id,
-      replacements: patch.replacements.map((replacement) =>
-        typeof replacement === "function"
-          ? replacement
-          : // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
-            (source: string) => source.replace(replacement.match, replacement.replace),
-      ),
+      replacements: patch.replacements.map((replacement) => {
+        if (typeof replacement === "function") return replacement;
+        const newReplacement = (source: string): string =>
+          // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
+          source.replace(replacement.match, replacement.replace, id);
+        newReplacement.regex = replacement;
+        return newReplacement;
+      }),
     })),
   );
 }
