@@ -95,6 +95,30 @@ protocol.registerSchemesAsPrivileged([
   },
 ]);
 
+// replugged scheme
+const repluggedProtocol = {
+  scheme: "replugged",
+  privileges: {
+    standard: true,
+    secure: true,
+    allowServiceWorkers: true,
+    stream: true,
+    supportFetchAPI: true,
+  },
+};
+
+// Monkey Patch the registerSchemesAsPrivileged function to ensure our protocols are always included
+// This prevents Discord from overwriting our protocols
+// Makes it work with fetch and media
+const originalRegisterSchemesAsPrivileged = protocol.registerSchemesAsPrivileged.bind(protocol);
+
+originalRegisterSchemesAsPrivileged([repluggedProtocol]);
+
+protocol.registerSchemesAsPrivileged = (customSchemes: Electron.CustomScheme[]) => {
+  const combinedSchemes = [repluggedProtocol, ...customSchemes];
+  originalRegisterSchemesAsPrivileged(combinedSchemes);
+};
+
 // Copied from old codebase
 app.once("ready", () => {
   session.defaultSession.webRequest.onBeforeRequest(
