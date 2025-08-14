@@ -1448,7 +1448,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_DISCORD_DEVTOOLS': TypedIntlMessageGetter<{}>,
   /**
@@ -1461,7 +1461,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
