@@ -75,6 +75,11 @@ const contexts = await Promise.all([
     format: "esm",
     assetNames: "assets/[hash]",
     publicPath: "replugged://",
+    banner: { js: "(() => {" },
+    footer: {
+      js: "})();\n//# sourceURL=replugged://renderer/index.js",
+      css: "\n/*# sourceURL=replugged://renderer/index.css */",
+    },
     loader: {
       ".png": "file",
     },
