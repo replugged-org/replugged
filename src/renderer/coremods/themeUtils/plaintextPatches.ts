@@ -6,7 +6,8 @@ export default [
     replacements: [
       {
         match: /"high-contrast-mode":\w+/,
-        replace: (prefix: string) => `${prefix},replugged:true`,
+        replace: (prefix: string) =>
+          `${prefix},replugged:true,"april-fools": (new Date()).toGMTString().includes(" 01 Apr ")`,
       },
     ],
   },
