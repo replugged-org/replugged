@@ -105,7 +105,7 @@ export function _insertAvatarAttributes({
   "aria-label": string;
 }): Record<string, string | number | boolean | undefined> {
   return {
-    "data-stauts": status,
+    "data-status": status,
     "data-is-typing": isTyping,
     "data-is-mobile": isMobile,
     "data-user-id": /\/avatars\/(\d+?)\//.exec(src)?.[1],
