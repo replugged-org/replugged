@@ -69,7 +69,7 @@ async function customThemeClass(): Promise<void> {
  */
 export function _insertMessageAttributes(
   message: Message & { ignored: boolean; poll: unknown; author: { globalName: string } },
-): Record<string, string | number | boolean> {
+): Record<string, string | number | boolean | undefined> {
   return {
     "data-is-author-self": message.author.id === users.getCurrentUser().id,
     "data-is-author-bot": message.author.bot,
@@ -86,6 +86,31 @@ export function _insertMessageAttributes(
     "data-is-pinned": message.pinned,
     "data-is-call": Boolean(message.call),
     "data-is-spam": message.hasFlag(1 << 20),
+  };
+}
+
+export function _insertAvatarAttributes({
+  status,
+  isTyping,
+  isMobile,
+  src,
+  size,
+  "aria-label": ariaLabel,
+}: {
+  status: boolean;
+  isTyping: boolean;
+  isMobile: boolean;
+  size: string;
+  src: string;
+  "aria-label": string;
+}): Record<string, string | number | boolean | undefined> {
+  return {
+    "data-stauts": status,
+    "data-is-typing": isTyping,
+    "data-is-mobile": isMobile,
+    "data-user-id": /\/avatars\/(\d+?)\//.exec(src)?.[1],
+    "data-size": size,
+    "data-user-username": ariaLabel,
   };
 }
 

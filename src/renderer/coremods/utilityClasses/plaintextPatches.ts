@@ -20,4 +20,14 @@ export default [
       },
     ],
   },
+  {
+    find: "getMaskId()",
+    replacements: [
+      {
+        match: /className:\w+\(\)\(\w+\.mask/g,
+        replace: (suffix) =>
+          `...(replugged.coremods.coremods.utilityClasses?._insertAvatarAttributes(arguments[0]) ?? {}),${suffix}`,
+      },
+    ],
+  },
 ] as PlaintextPatch[];
