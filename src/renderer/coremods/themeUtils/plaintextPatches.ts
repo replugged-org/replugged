@@ -16,7 +16,7 @@ export default [
       {
         match: /.messageListItem,/,
         replace:
-          ".messageListItem,...(replugged.coremods.coremods.utilityClasses?._insertMessageAttributes(arguments[0].message) ?? {}),",
+          ".messageListItem,...(replugged.coremods.coremods.themeUtils?._insertMessageAttributes(arguments[0].message) ?? {}),",
       },
     ],
   },
@@ -26,7 +26,7 @@ export default [
       {
         match: /className:\w+\(\)\(\w+\.mask/g,
         replace: (suffix) =>
-          `...(replugged.coremods.coremods.utilityClasses?._insertAvatarAttributes(arguments[0]) ?? {}),${suffix}`,
+          `...(replugged.coremods.coremods.themeUtils?._insertAvatarAttributes(arguments[0]) ?? {}),${suffix}`,
       },
     ],
   },
