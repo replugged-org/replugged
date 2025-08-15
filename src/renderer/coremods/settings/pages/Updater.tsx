@@ -1,5 +1,5 @@
 import { toast } from "@common";
-import { intl } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
@@ -134,8 +134,12 @@ export const Updater = (): React.ReactElement => {
           const hours = Math.floor(value / 60);
           const minutes = value % 60;
 
-          const hourString = hours > 0 ? `${hours}h` : "";
-          const minuteString = minutes > 0 ? `${minutes}m` : "";
+          const hourString =
+            hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
+          const minuteString =
+            minutes > 0
+              ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes })
+              : "";
 
           const label = [hourString, minuteString].filter(Boolean).join(" ");
           return label;
@@ -226,7 +230,7 @@ export const Updater = (): React.ReactElement => {
                     {sourceLink ? (
                       <Tooltip
                         text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
-                          type: intl.string(t.REPLUGGED_UPDATES_UPDATE_NOUN),
+                          type: intl.string(discordT.UPDATE_BADGE_HEADER),
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
                         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
@@ -244,7 +248,7 @@ export const Updater = (): React.ReactElement => {
                     onClick={() => installOne(update.id)}
                     color={Button.Colors.PRIMARY}
                     submitting={isUpdating}>
-                    {intl.string(t.REPLUGGED_UPDATES_UPDATE)}
+                    {intl.string(discordT.UPDATE)}
                   </Button>
                 ) : didInstallAll ? null : (
                   <Button onClick={reload} color={Button.Colors.RED}>

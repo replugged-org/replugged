@@ -2,10 +2,10 @@ import { createContext } from "@marshift/argus";
 import esbuild from "esbuild";
 import { rmSync } from "fs";
 import path from "path";
-import { logBuildPlugin } from "src/util.mjs";
 import { fileURLToPath } from "url";
-import intlPlugin from "./build-plugins/intl-loader.mjs";
+import intlLoaderPlugin from "./build-plugins/intl-loader.mjs";
 import intlTypeGeneratorPlugin from "./build-plugins/intl-type-generator.mjs";
+import logBuildPlugin from "./build-plugins/log-build.mjs";
 import preBundlePlugin from "./build-plugins/pre-bundle.mjs";
 
 const NODE_VERSION = "20";
@@ -40,6 +40,9 @@ const common: esbuild.BuildOptions = {
   logLevel: "info",
   plugins,
   metafile: true,
+  jsx: "transform",
+  jsxFactory: "window.replugged.common.React.createElement",
+  jsxFragment: "window.replugged.common.React.Fragment",
 };
 
 const contexts = await Promise.all([
@@ -64,7 +67,7 @@ const contexts = await Promise.all([
   // Renderer
   esbuild.context({
     ...common,
-    plugins: [...plugins, intlTypeGeneratorPlugin, intlPlugin],
+    plugins: [...plugins, intlTypeGeneratorPlugin, intlLoaderPlugin()],
     entryPoints: ["src/renderer/index.ts"],
     platform: "browser",
     target: `chrome${CHROME_VERSION}`,
