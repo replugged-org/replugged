@@ -1,12 +1,3 @@
-/*======== CSS Variables ========*/
-.theme-dark {
-  --replugged-notification-box-shadow: rgba(0, 0, 0, 0.2);
-  --replugged-notification-border: rgba(28, 36, 43, 0.6);
-}
-.theme-light {
-  --replugged-notification-box-shadow: rgba(255, 255, 255, 0.1);
-  --replugged-notification-border: rgba(199, 199, 199, 0.06);
-}
 /*======== Toast Styling ========*/
 
 .replugged-notification-container {
@@ -23,9 +14,9 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
-  background-color: var(--background-secondary);
-  border: 1px solid var(--replugged-notification-border);
-  box-shadow: 0 8px 16px 0 var(--replugged-notification-box-shadow);
+  background-color: var(--background-base-lower);
+  border: 1px solid var(--border-normal);
+  box-shadow: 0 8px 16px 0 var(--border-subtle);
   border-radius: 8px;
   max-width: 600px;
   min-width: 223px;
@@ -41,20 +32,17 @@
   color: var(--header-primary);
   font-weight: 600;
   font-size: 24px;
-  line-height: 1.2;
-  background-color: var(--background-primary);
-  border-radius: 8px 8px 0 0;
-  padding: 12px 20px;
-  justify-content: center;
-  align-items: center; /* Center items vertically */
+  background-color: var(--background-base-lowest);
+  border-radius: 8px;
+  padding: 14px;
+  align-items: center;
 }
 
-.replugged-notification .header span:has(.icon) {
+.replugged-notification .header span:has(> .icon) {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 8px;
-  margin-top: 3px;
 }
 
 .replugged-notification .header .icon {
@@ -69,14 +57,10 @@
 }
 
 .replugged-notification .header .dismiss {
-  width: 16px;
-  height: 16px;
   opacity: 0.5;
   transition: opacity 0.2s;
   margin-left: auto;
   cursor: pointer;
-  font-size: 12px;
-  margin-bottom: 5px;
 }
 
 .replugged-notification .contents {
@@ -89,11 +73,11 @@
 }
 
 .replugged-notification .contents .inner {
-  color: var(--text-normal);
+  color: var(--text-primary);
   font-size: 14px;
   line-height: 1.4;
-  background-color: var(--background-tertiary);
-  border-bottom: 1px solid solid var(--replugged-notification-border);
+  background-color: var(--background-base-low);
+  border-bottom: 1px solid solid var(--border-normal);
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 6px;

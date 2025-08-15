@@ -4,6 +4,7 @@ import { Button, Clickable, Progress, Tooltip } from "@components";
 import Icons from "./icons";
 import "./notification.css";
 import type { NotificationPropsWithId } from "../../apis/notification";
+import { DISCORD_BLURPLE } from "src/constants";
 const predefinedIcons: Record<
   string,
   React.MemoExoticComponent<(props: React.SVGProps<SVGSVGElement>) => React.ReactElement>
@@ -30,7 +31,9 @@ function NotificationGradient(hex: string): string[] {
   return luminance > 0.5 ? [newHex, hex] : [hex, newHex];
 }
 
-function Notification(props: NotificationPropsWithId): React.ReactElement | null {
+const Notification = React.memo(function Notification(
+  props: NotificationPropsWithId,
+): React.ReactElement | null {
   const [leaving, setLeaving] = React.useState<boolean>(false);
   const [timeoutState, setTimeoutState] = React.useState<NodeJS.Timeout>();
   const [progress, setProgress] = React.useState<number>(100);
@@ -131,14 +134,19 @@ function Notification(props: NotificationPropsWithId): React.ReactElement | null
         <Progress
           percent={progress}
           animate={true}
-          foregroundGradientColor={NotificationGradient(props.color)}
+          foregroundGradientColor={
+            props.gradient ??
+            (props.color === DISCORD_BLURPLE
+              ? ["#c0164b", "#4e10d2"]
+              : NotificationGradient(props.color))
+          }
         />
       )}
     </div>
   );
-}
+});
 
-export default function notificationContainer(): React.ReactElement | null {
+export default React.memo(function notificationContainer(): React.ReactElement | null {
   const [toasts, setToasts] = React.useState<NotificationPropsWithId[]>([]);
 
   const toastsUpdate = (): void => setToasts(notification.NotificationHandler.getNotifications());
@@ -154,7 +162,7 @@ export default function notificationContainer(): React.ReactElement | null {
 
   return (
     <div className="replugged-notification-container">
-      {Boolean(toasts.length) && toasts.map((props, i) => <Notification key={i} {...props} />)}
+      {Boolean(toasts.length) && toasts.map((props) => <Notification key={props.id} {...props} />)}
     </div>
   );
-}
+});

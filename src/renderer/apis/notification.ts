@@ -1,3 +1,4 @@
+import { DISCORD_BLURPLE } from "src/constants";
 import type { ButtonItemProps } from "../modules/components/ButtonItem";
 export interface NotificationProps {
   id?: string;
@@ -5,6 +6,7 @@ export interface NotificationProps {
   origin?: string;
   name?: string;
   color?: string;
+  gradient?: [string, string];
   iconColor?: string;
   imageClassName?: string | undefined;
   header: React.ReactNode;
@@ -55,7 +57,7 @@ export class NotificationAPI {
   public constructor(origin: string, name: string, color?: string) {
     this.origin = origin;
     this.name = name;
-    this.color = color ?? "#5864f2";
+    this.color = color ?? DISCORD_BLURPLE;
   }
 
   public notify(notification: NotificationProps): () => void {
