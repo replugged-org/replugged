@@ -1,10 +1,12 @@
-import { React } from "@common";
+import { React, classNames } from "@common";
 import { notification } from "@replugged";
 import { Button, Clickable, Progress, Tooltip } from "@components";
 import Icons from "./icons";
-import "./notification.css";
 import type { NotificationPropsWithId } from "../../apis/notification";
 import { DISCORD_BLURPLE } from "src/constants";
+
+import "./notification.css";
+
 const predefinedIcons: Record<
   string,
   React.MemoExoticComponent<(props: React.SVGProps<SVGSVGElement>) => React.ReactElement>
@@ -65,9 +67,9 @@ const Notification = React.memo(function Notification(
   return (
     <div
       id={props.id}
-      className={`replugged-notification ${props.type} ${props.className ?? ""} ${
-        leaving ? "leaving" : ""
-      }`}
+      className={classNames("replugged-notification", props.type, props.className, {
+        leaving,
+      })}
       style={props.style}>
       {props.header && (
         <div className="header">
