@@ -9,13 +9,12 @@ import experimentsPlaintext from "../coremods/experiments/plaintextPatches";
 import languagePlaintext from "../coremods/language/plaintextPatches";
 import messagePopoverPlaintext from "../coremods/messagePopover/plaintextPatches";
 import noDevtoolsWarningPlaintext from "../coremods/noDevtoolsWarning/plaintextPatches";
-import notificationPlaintext  from "../coremods/notification/plaintextPatches";
+import notificationPlaintext from "../coremods/notification/plaintextPatches";
 import noticesPlaintext from "../coremods/notices/plaintextPatches";
 import notrackPlaintext from "../coremods/notrack/plaintextPatches";
 import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
-
 
 const logger = Logger.api("Coremods");
 
