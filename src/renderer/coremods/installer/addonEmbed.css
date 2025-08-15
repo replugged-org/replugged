@@ -1,6 +1,6 @@
 /* Fix Discord's style priority issue. Need to match specificity. */
 div[class] .addon-embed-copied:hover {
-  color: var(--text-positive) !important;
+  color: var(--text-feedback-positive) !important;
 }
 
 .addon-embed-main-content {
