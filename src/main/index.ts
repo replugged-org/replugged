@@ -6,7 +6,7 @@ import electron, {
   session,
 } from "electron";
 import { dirname, join } from "path";
-import { statSync } from "fs";
+import { existsSync } from "fs";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { pathToFileURL } from "url";
 import type { RepluggedWebContents } from "../types";
@@ -16,12 +16,10 @@ const electronPath = require.resolve("electron");
 
 // This is for backwards compatibility, to be removed later.
 let discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
-try {
-  // If using older replugged file system
-  statSync(discordPath);
+if (existsSync(discordPath)) {
   const discordPackage: Record<string, string> = require(join(discordPath, "package.json"));
   require.main!.filename = join(discordPath, discordPackage.main);
-} catch {
+} else {
   // If using newer replugged file system
   discordPath = join(dirname(require.main!.filename), "app_bootstrap", "index.orig.js");
 }
