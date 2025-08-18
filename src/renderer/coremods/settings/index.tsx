@@ -1,11 +1,8 @@
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
-import { Injector } from "@replugged";
 import { t } from "src/renderer/modules/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
-
-const injector = new Injector();
 
 export { insertSections };
 
@@ -51,5 +48,4 @@ export function start(): void {
 
 export function stop(): void {
   settingsTools.removeAfter("Billing");
-  injector.uninjectAll();
 }
