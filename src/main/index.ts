@@ -1,4 +1,10 @@
-import electron from "electron";
+import electron, {
+  type BrowserWindowConstructorOptions,
+  app,
+  net,
+  protocol,
+  session,
+} from "electron";
 import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
@@ -28,35 +34,18 @@ Object.defineProperty(global, "appSettings", {
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  public constructor(
-    opts: electron.BrowserWindowConstructorOptions & {
-      webContents?: electron.WebContents;
-      webPreferences?: {
-        nativeWindowOpen: boolean;
-      };
-    },
-  ) {
+  public constructor(opts: BrowserWindowConstructorOptions) {
+    const titleBarSetting = getSetting<boolean>("dev.replugged.Settings", "titleBar", false);
+    if (opts.frame && process.platform === "linux" && titleBarSetting) opts.frame = void 0;
+
     const originalPreload = opts.webPreferences?.preload;
 
-    if (opts.webContents) {
-      // General purpose pop-outs used by Discord
-    } else if (opts.webPreferences?.nodeIntegration) {
-      // Splash Screen
-      // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-    } else if (opts.webPreferences?.offscreen) {
-      // Overlay
-      //      originalPreload = opts.webPreferences.preload;
-      // opts.webPreferences.preload = join(__dirname, './preload.js');
-    } else if (opts.webPreferences?.preload) {
-      // originalPreload = opts.webPreferences.preload;
-      if (opts.webPreferences.nativeWindowOpen) {
-        // Discord Client
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
-        // opts.webPreferences.contextIsolation = false; // shrug
-      } else {
-        // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
-      }
+    // Load our preload script if it's the main window or the splash screen
+    if (
+      opts.webPreferences?.preload &&
+      (opts.title || opts.webPreferences.preload.includes("splash"))
+    ) {
+      opts.webPreferences.preload = join(__dirname, "./preload.js");
     }
 
     super(opts);
@@ -89,13 +78,13 @@ delete require.cache[electronPath]!.exports;
 require.cache[electronPath]!.exports = electronExports;
 
 (
-  electron.app as typeof electron.app & {
+  app as typeof app & {
     setAppPath: (path: string) => void;
   }
 ).setAppPath(discordPath);
-// electron.app.name = discordPackage.name;
+// app.name = discordPackage.name;
 
-electron.protocol.registerSchemesAsPrivileged([
+protocol.registerSchemesAsPrivileged([
   {
     scheme: "replugged",
     privileges: {
@@ -106,17 +95,9 @@ electron.protocol.registerSchemesAsPrivileged([
   },
 ]);
 
-async function loadReactDevTools(): Promise<void> {
-  const rdtSetting = await getSetting("dev.replugged.Settings", "reactDevTools", false);
-
-  if (rdtSetting) {
-    void electron.session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
-  }
-}
-
 // Copied from old codebase
-electron.app.once("ready", () => {
-  electron.session.defaultSession.webRequest.onBeforeRequest(
+app.once("ready", () => {
+  session.defaultSession.webRequest.onBeforeRequest(
     {
       urls: [
         "https://*/api/v*/science",
@@ -132,7 +113,7 @@ electron.app.once("ready", () => {
     },
   );
   // @todo: Whitelist a few domains instead of removing CSP altogether; See #386
-  electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
+  session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     if (!responseHeaders) {
       done({});
       return;
@@ -165,15 +146,16 @@ electron.app.once("ready", () => {
     done({ responseHeaders: headersWithoutCSP });
   });
 
-  electron.protocol.handle("replugged", (request) => {
+  // TODO: Eventually in the future, this should be migrated to IPC for better performance
+  protocol.handle("replugged", (request) => {
     let filePath = "";
     const reqUrl = new URL(request.url);
     switch (reqUrl.hostname) {
-      case "renderer":
-        filePath = join(__dirname, "./renderer.js");
-        break;
       case "renderer.css":
         filePath = join(__dirname, "./renderer.css");
+        break;
+      case "assets":
+        filePath = join(__dirname, reqUrl.hostname, reqUrl.pathname);
         break;
       case "quickcss":
         filePath = join(CONFIG_PATHS.quickcss, reqUrl.pathname);
@@ -185,10 +167,26 @@ electron.app.once("ready", () => {
         filePath = join(CONFIG_PATHS.plugins, reqUrl.pathname);
         break;
     }
-    return electron.net.fetch(pathToFileURL(filePath).toString());
+    return net.fetch(pathToFileURL(filePath).toString());
   });
 
-  void loadReactDevTools();
+  const defaultPermissionRequestHandler = session.defaultSession.setPermissionRequestHandler.bind(
+    session.defaultSession,
+  );
+  session.defaultSession.setPermissionRequestHandler = (cb) => {
+    defaultPermissionRequestHandler((webContents, permission, callback, details) => {
+      if (permission === "media") {
+        callback(true);
+        return;
+      }
+      cb?.(webContents, permission, callback, details);
+    });
+  };
+
+  const rdtSetting = getSetting<boolean>("dev.replugged.Settings", "reactDevTools", false);
+  if (rdtSetting) {
+    void session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
+  }
 });
 
 // This module is required this way at runtime.

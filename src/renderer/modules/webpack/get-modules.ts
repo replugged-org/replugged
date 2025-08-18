@@ -22,27 +22,40 @@ export function getExports<T>(m: RawModule): T | undefined {
 }
 
 /**
- * Iterates over an object and its top-level children that could have properties
+ * Iterates over an object and its top-level and second-level (if specified) children that could have properties
  * @param m Object (module exports) to iterate over
+ * @param secondLevel Boolean on whether to iterate over second level children in object
  */
-function* iterateModuleExports(m: unknown): IterableIterator<Record<PropertyKey, unknown>> {
+function* iterateModuleExports(
+  m: unknown,
+  secondLevel?: boolean,
+): IterableIterator<Record<PropertyKey, unknown>> {
   // if m is null or not an object/function, then it will obviously not have the props
-  // if if has no props, then it definitely has no children either
-  if (m && (typeof m === "object" || typeof m === "function")) {
-    yield m as Record<PropertyKey, unknown>;
-    for (const key in m) {
-      try {
+  // if it has no props, then it definitely has no children either
+  try {
+    if (m && (typeof m === "object" || typeof m === "function")) {
+      yield m as Record<PropertyKey, unknown>;
+      for (const key in m) {
         // This could throw an error ("illegal invocation") if val === DOMTokenList.prototype
         // and key === "length"
         // There could be other cases too, hence this try-catch instead of a specific exclusion
         const val = (m as Record<PropertyKey, unknown>)[key];
         if (val && (typeof val === "object" || typeof val === "function")) {
           yield val as Record<PropertyKey, unknown>;
+          if (secondLevel && typeof val === "object") {
+            for (const subKey in val) {
+              const subVal = (val as Record<PropertyKey, unknown>)[subKey];
+              if (subVal && (typeof subVal === "object" || typeof subVal === "function")) {
+                yield subVal as Record<PropertyKey, unknown>;
+                continue;
+              }
+            }
+          }
         }
-      } catch {
-        // ignore this export
       }
     }
+  } catch {
+    // ignore this export
   }
 }
 
@@ -50,16 +63,25 @@ function* iterateModuleExports(m: unknown): IterableIterator<Record<PropertyKey,
  * Find an object in a module that has all the given properties. You will usually not need this function.
  * @param m Module to search
  * @param props Array of prop names
- * @returns Object that contains all the given properties (and any others), or undefined if not found
+ * @param byPrototype Whether to look in the prototype or not
+ * @returns Object/Function that contains all the given properties (and any others), or undefined if not found
  */
 export function getExportsForProps<T, P extends PropertyKey = keyof T>(
   m: unknown,
   props: P[],
+  byPrototype?: boolean,
 ): T | undefined {
   // Loop over the module and its exports at the top level
   // Return the first thing that has all the indicated props
-  for (const exported of iterateModuleExports(m)) {
-    if (props.every((p) => p in (exported as Record<P, unknown>))) {
+  // Checks only in prototypes if specified, usually to look for functions
+  for (const exported of iterateModuleExports(m, byPrototype)) {
+    if (
+      props.every((p) =>
+        byPrototype
+          ? exported.prototype && p in (exported.prototype as Record<P, unknown>)
+          : p in (exported as Record<P, unknown>),
+      )
+    ) {
       return exported as T;
     }
   }
