@@ -5,7 +5,7 @@ import { sourceStrings } from "../webpack/patch-load";
 import type { MenuItemColors } from "discord-client-types/discord_app/design/components/Menu/web/MenuConstants";
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-export interface ContextMenuType {
+export interface CustomContextMenuType {
   ContextMenu: Design.Menu;
   ItemColors: MenuItemColors;
   MenuCheckboxItem: Design.MenuCheckboxItem;
@@ -16,7 +16,10 @@ export interface ContextMenuType {
   MenuSeparator: Design.MenuSeparator;
 }
 
-const componentMap: Record<string, keyof Omit<ContextMenuType, "ContextMenu" | "ItemColors">> = {
+const componentMap: Record<
+  string,
+  keyof Omit<CustomContextMenuType, "ContextMenu" | "ItemColors">
+> = {
   separator: "MenuSeparator",
   checkbox: "MenuCheckboxItem",
   radio: "MenuRadioItem",
@@ -42,7 +45,7 @@ const menuComponents = Object.entries(components as Record<string, () => null>)
 const Menu = {
   ItemColors: menuConstantsMod,
   ContextMenu: getFunctionBySource(components, "getContainerProps"),
-} as ContextMenuType;
+} as CustomContextMenuType;
 
 for (const [, identifier, type] of source) {
   Menu[componentMap[type]] = menuComponents[identifier];

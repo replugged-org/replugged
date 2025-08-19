@@ -96,10 +96,10 @@ export type { CheckboxItemType };
 export let CheckboxItem: CheckboxItemType;
 importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
 
-import type { ContextMenuType } from "./ContextMenu";
-export type { ContextMenuType };
-export let ContextMenu: ContextMenuType;
-importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mod.default));
+import type { CustomContextMenuType } from "./Menu";
+export type { CustomContextMenuType };
+export let ContextMenu: CustomContextMenuType;
+importTimeout("ContextMenu", import("./Menu"), (mod) => (ContextMenu = mod.default));
 
 import type { CustomFormItemType } from "./FormItem";
 export type { CustomFormItemType };
