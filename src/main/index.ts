@@ -84,7 +84,6 @@ require.cache[electronPath]!.exports = electronExports;
 ).setAppPath(discordPath);
 // app.name = discordPackage.name;
 
-// replugged scheme
 const repluggedProtocol = {
   scheme: "replugged",
   privileges: {
@@ -96,13 +95,9 @@ const repluggedProtocol = {
   },
 };
 
-// Monkey Patch the registerSchemesAsPrivileged function to ensure our protocols are always included
-// This prevents Discord from overwriting our protocols
-// Makes it work with fetch and media
+// Monkey patch to ensure our protocol is always included, even if Discord tries to override it with their own schemes.
 const originalRegisterSchemesAsPrivileged = protocol.registerSchemesAsPrivileged.bind(protocol);
-
 originalRegisterSchemesAsPrivileged([repluggedProtocol]);
-
 protocol.registerSchemesAsPrivileged = (customSchemes: Electron.CustomScheme[]) => {
   const combinedSchemes = [repluggedProtocol, ...customSchemes];
   originalRegisterSchemesAsPrivileged(combinedSchemes);
