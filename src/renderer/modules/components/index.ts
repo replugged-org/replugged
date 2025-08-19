@@ -61,6 +61,9 @@ importTimeout("Loader", import("./Spinner"), (mod) => (Loader = mod.default));
 export let Radio: Design.RadioGroup;
 importTimeout("Radio", import("./RadioItem"), (mod) => (Radio = mod.RadioGroup));
 
+export let SearchBar: typeof Design.SearchBar;
+importTimeout("SearchBar", import("./SearchBar"), (mod) => (SearchBar = mod.default));
+
 export let Switch: Design.Switch;
 importTimeout("Switch", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
 

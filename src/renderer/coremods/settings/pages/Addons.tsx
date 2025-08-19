@@ -9,9 +9,9 @@ import {
   ErrorBoundary,
   Flex,
   Notice,
+  SearchBar,
   Switch,
   Text,
-  TextInput,
   Tooltip,
 } from "@components";
 import { Logger, plugins, themes } from "@replugged";
@@ -624,11 +624,13 @@ export const Addons = (type: AddonType): React.ReactElement => {
       <Divider style={{ margin: "20px 0px" }} />
       {section === `rp_${type}` && unfilteredCount ? (
         <div style={{ marginBottom: "20px" }}>
-          <TextInput
+          <SearchBar
+            query={search}
+            onChange={(query) => setSearch(query)}
+            onClear={() => setSearch("")}
             placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
               type: label(type),
             })}
-            onChange={(e) => setSearch(e)}
             autoFocus
           />
         </div>
