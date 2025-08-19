@@ -35,13 +35,9 @@ export type BeforeCallback<A extends unknown[] = unknown[], I = ObjectExports> =
 export type InsteadCallback<
   A extends unknown[] = unknown[],
   R = unknown,
+  I = ObjectExports,
   T extends AnyFunction = (...args: A) => R,
-  I = ObjectExports
-> = (
-  args: A,
-  orig: T,
-  self: I,
-) => T | void;
+> = (args: A, orig: T, self: I) => T | void;
 
 /**
  * Code to run after the original function
