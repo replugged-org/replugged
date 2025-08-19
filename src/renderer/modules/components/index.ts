@@ -44,13 +44,13 @@ export let Clickable: Design.Clickable;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
 export let Divider: Design.FormDivider;
-importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
+importTimeout("Divider", import("./FlexDivider"), (mod) => (Divider = mod.default));
 
 export let FormNotice: Design.FormNotice;
 importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
 
 export let Loader: Design.Spinner;
-importTimeout("Loader", import("./Loader"), (mod) => (Loader = mod.default));
+importTimeout("Loader", import("./Spinner"), (mod) => (Loader = mod.default));
 
 export let Radio: Design.RadioGroup;
 importTimeout("Radio", import("./RadioItem"), (mod) => (Radio = mod.RadioGroup));
@@ -100,10 +100,10 @@ export type { CustomFormTextType };
 export let FormText: CustomFormTextType;
 importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.CustomFormText));
 
-import type { CustomHelpMessage } from "./Notice";
+import type { CustomHelpMessage } from "./HelpMessage";
 export type { CustomHelpMessage };
 export let Notice: CustomHelpMessage;
-importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));
+importTimeout("Notice", import("./HelpMessage"), (mod) => (Notice = mod.default));
 
 import type { RadioItemType } from "./RadioItem";
 export type { RadioItemType };
