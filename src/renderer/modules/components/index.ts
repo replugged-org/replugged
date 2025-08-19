@@ -34,6 +34,9 @@ function importTimeout<T extends ModuleExports>(
 
 // Design System
 
+export let Breadcrumbs: typeof Design.Breadcrumbs;
+importTimeout("Breadcrumbs", import("./Breadcrumbs"), (mod) => (Breadcrumbs = mod.default));
+
 export let Button: Design.Button;
 importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
 

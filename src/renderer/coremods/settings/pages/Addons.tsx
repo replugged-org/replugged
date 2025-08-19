@@ -2,6 +2,7 @@
 import { React, api, fluxDispatcher, modal, toast, users } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import {
+  Breadcrumbs,
   Button,
   Divider,
   ErrorBoundary,
@@ -12,7 +13,7 @@ import {
   TextInput,
   Tooltip,
 } from "@components";
-import { Logger, plugins, themes, webpack } from "@replugged";
+import { Logger, plugins, themes } from "@replugged";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
@@ -22,23 +23,7 @@ import { generalSettings } from "./General";
 
 import "./Addons.css";
 
-interface Breadcrumb {
-  id: string;
-  label: string;
-}
-
-interface BreadcrumbProps {
-  activeId: string;
-  breadcrumbs: Breadcrumb[];
-  onBreadcrumbClick: (breadcrumb: Breadcrumb) => void;
-  renderCustomBreadcrumb: (breadcrumb: Breadcrumb, active: boolean) => React.ReactNode;
-}
-
 const logger = Logger.coremod("AddonSettings");
-
-const Breadcrumbs = await webpack.waitForModule<React.ComponentClass<BreadcrumbProps>>(
-  webpack.filters.bySource(/\.interactiveBreadcrumb]:null/),
-);
 
 export enum AddonType {
   Plugin = "plugin",
