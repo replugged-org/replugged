@@ -60,6 +60,16 @@ type UseDiscoveryState = (
 
 type FetchProfile = (id: string) => Promise<void>;
 
+type CommandAuth = ({
+  applicationId,
+  channel,
+  commandIntegrationTypes,
+}: {
+  applicationId: string;
+  channel: Channel;
+  commandIntegrationTypes?: number;
+}) => Promise<{ isAuthorized: boolean }>;
+
 async function injectRepluggedBotIcon(): Promise<void> {
   // Adds avatar for Replugged to be used by system bot just like Clyde
   // Ain't removing it on stop because we have checks here
@@ -236,6 +246,33 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
   );
 }
 
+async function injectCommandCache(): Promise<void> {
+  const mod = await waitForModule<Record<string, (channel: Channel, id: string) => Promise<void>>>(
+    filters.bySource("placeholder-section"),
+  );
+  const getCachedCommand = getFunctionKeyBySource(mod, "application:void 0,command:void 0")!;
+  injector.after(
+    mod,
+    getCachedCommand,
+    ([, id], res: { application?: RepluggedCommandSection; command?: AnyRepluggedCommand }) => {
+      const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
+        (commandAndSection) => commandAndSection.commands.size,
+      );
+      const rpCached = commandAndSectionsArray
+        .map((commandAndSection) => ({
+          application: commandAndSection.section,
+          command: Array.from(commandAndSection.commands.values()).find(
+            (command) => command.id === id,
+          ),
+        }))
+        .find((applicationAndCommand) => applicationAndCommand.command);
+      res.application ??= rpCached?.application;
+      res.command ??= rpCached?.command;
+      return res;
+    },
+  );
+}
+
 async function injectProfileFetch(): Promise<void> {
   const userActionCreatorsMod = await waitForModule<Record<string, FetchProfile>>(
     filters.bySource("fetchProfile"),
@@ -248,11 +285,25 @@ async function injectProfileFetch(): Promise<void> {
   });
 }
 
+async function injectCommandAuthorization(): Promise<void> {
+  const commandAuthorizationMod = await waitForModule<Record<string, CommandAuth>>(
+    filters.bySource("isAuthorized:!0"),
+  );
+  const authorizationKey = getFunctionKeyBySource(commandAuthorizationMod, "isAuthorized:!0")!;
+
+  injector.instead(commandAuthorizationMod, authorizationKey, (args, orig) => {
+    if (args[0].applicationId === "replugged") return Promise.resolve({ isAuthorized: true });
+    return orig(...args);
+  });
+}
+
 export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
   await injectRepluggedSectionIcon();
   await injectApplicationCommandIndexStore();
+  await injectCommandCache();
   await injectProfileFetch();
+  await injectCommandAuthorization();
   loadCommands();
 }
 

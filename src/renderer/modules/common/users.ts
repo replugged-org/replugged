@@ -1,6 +1,7 @@
 import type { Channel, GuildMember, User } from "discord-types/general";
 import { virtualMerge } from "src/renderer/util";
-import { waitForProps } from "../webpack";
+import { waitForStore } from "../webpack";
+import type { Store } from "./flux";
 
 interface PendingRoleUpdate {
   added: Record<string, string[]>;
@@ -54,13 +55,12 @@ export interface GuildMemberStore {
   memberOf: (userId: string) => string[];
 }
 
+const UserStore = await waitForStore<UserStore & Store>("UserStore");
+const GuildMemberStore = await waitForStore<GuildMemberStore & Store>("GuildMemberStore");
+
 export type Users = UserStore & GuildMemberStore;
 
 export default virtualMerge(
-  (await waitForProps<UserStore>("getUser", "getCurrentUser").then(
-    Object.getPrototypeOf,
-  )) as UserStore,
-  (await waitForProps<GuildMemberStore>("getTrueMember", "getMember").then(
-    Object.getPrototypeOf,
-  )) as GuildMemberStore,
-);
+  Object.getPrototypeOf(UserStore),
+  Object.getPrototypeOf(GuildMemberStore),
+) as Users;

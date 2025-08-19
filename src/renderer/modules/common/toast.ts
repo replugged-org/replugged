@@ -11,6 +11,7 @@ const Kind = {
   FORWARD: "forward",
   BOOKMARK: "bookmark",
   CLOCK: "clock",
+  AI: "ai",
 } as const;
 
 const Position = {

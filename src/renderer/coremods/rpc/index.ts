@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
 import { Injector } from "@replugged";
 import { BETA_WEBSITE_URL, WEBSITE_URL } from "src/constants";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
@@ -12,12 +11,12 @@ type Socket = Record<string, unknown> & {
   };
 };
 
-type RPCData = {
+interface RPCData {
   args: Record<string, Jsonifiable | undefined>;
   cmd: string;
-};
+}
 
-type RPCCommand = {
+interface RPCCommand {
   scope?:
     | string
     | {
@@ -30,11 +29,13 @@ type RPCCommand = {
     | Promise<Record<string, Jsonifiable | undefined>>
     | void
     | Promise<void>;
-};
+}
 
 type Commands = Record<string, RPCCommand>;
 
-type RPCMod = { commands: Commands };
+interface RPCMod {
+  commands: Commands;
+}
 
 let commands: Commands = {};
 

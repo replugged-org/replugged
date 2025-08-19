@@ -14,7 +14,7 @@ export default tseslint.config(
     name: "base",
     settings: {
       react: {
-        version: "18.3",
+        version: "19.0",
       },
     },
     languageOptions: {
@@ -102,6 +102,10 @@ export default tseslint.config(
       "@typescript-eslint/no-confusing-void-expression": ["warn", { ignoreArrowShorthand: true }],
       "@typescript-eslint/no-floating-promises": ["error", { ignoreIIFE: true }],
       "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: false }],
+      "@typescript-eslint/no-unnecessary-condition": [
+        "warn",
+        { allowConstantLoopConditions: false },
+      ],
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
