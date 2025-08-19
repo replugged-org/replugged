@@ -1,5 +1,7 @@
 import { error } from "../logger";
 
+import type { LocalStorage } from "discord-client-types/discord_common/packages/storage/web/Storage";
+
 const modulePromises: Array<() => Promise<void>> = [];
 
 function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) => void): void {
@@ -92,8 +94,6 @@ export type { I18n };
 export let i18n: I18n;
 importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod));
 
-import type { LocalStorage } from "./localStorage";
-export type { LocalStorage };
 export let localStorage: LocalStorage;
 importTimeout("localStorage", import("./localStorage"), (mod) => (localStorage = mod.default));
 

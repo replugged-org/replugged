@@ -1,5 +1,5 @@
-import type { PlaintextPatch } from "src/types";
 import { REPLUGGED_CLYDE_ID } from "src/constants";
+import type { PlaintextPatch } from "src/types";
 
 export default [
   {
