@@ -10,7 +10,7 @@ export async function start(): Promise<void> {
   const clientCheckerKey = getFunctionKeyBySource(clientCheckerMod, ".$||")!;
 
   injector.instead(clientCheckerMod, clientCheckerKey, () => {
-    return () => false;
+    return false;
   });
 }
 

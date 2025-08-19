@@ -37,7 +37,7 @@ export type InsteadCallback<
   R = unknown,
   I = ObjectExports,
   T extends AnyFunction = (...args: A) => R,
-> = (args: A, orig: T, self: I) => T | void;
+> = (args: A, orig: T, self: I) => T | R | void;
 
 /**
  * Code to run after the original function
@@ -117,11 +117,12 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
         let newFunc: AnyFunction = originalFunc;
         for (const i of injectionsForProp.instead) {
           const newResult = i.call(this, args, newFunc, this);
-          if (typeof newResult === "function") {
-            newFunc = newResult;
+          if (newResult !== undefined) {
+            if (typeof newResult === "function") newFunc = newResult as AnyFunction;
+            else res = newResult;
           }
         }
-        res = newFunc.apply(this, args);
+        res ??= newFunc.apply(this, args);
       }
 
       for (const a of injectionsForProp.after) {

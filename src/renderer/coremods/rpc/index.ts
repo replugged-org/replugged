@@ -52,13 +52,13 @@ async function injectRpc(): Promise<void> {
     // From Replugged site
     if (origin === WEBSITE_URL || origin === BETA_WEBSITE_URL) {
       args[0].authorization.scopes = ["REPLUGGED"];
-      return () => Promise.resolve();
+      return Promise.resolve();
     }
 
     // From localhost but for Replugged
     if (isRepluggedClient && (!origin || new URL(origin).hostname === "localhost")) {
       args[0].authorization.scopes = ["REPLUGGED_LOCAL"];
-      return () => Promise.resolve();
+      return Promise.resolve();
     }
 
     // For Replugged but not from an allowed origin
