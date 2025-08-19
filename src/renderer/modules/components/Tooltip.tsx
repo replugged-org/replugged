@@ -15,19 +15,26 @@ export type CustomTooltipType = React.FC<CustomTooltipProps>;
 
 const Tooltip = getFunctionBySource<Design.Tooltip>(components, "shouldShowTooltip")!;
 
-const CustomTooltip = (props: CustomTooltipProps): React.ReactElement => (
-  <Tooltip {...props}>
-    {(tooltipProps) => {
-      const mergedProps = {
-        ...tooltipProps,
-        className: props.className,
-        style: props.style,
-      };
+function CustomTooltip({
+  children,
+  className,
+  style,
+  ...restProps
+}: CustomTooltipProps): React.ReactElement {
+  return (
+    <Tooltip {...restProps}>
+      {(tooltipProps) => {
+        const mergedProps = {
+          ...tooltipProps,
+          className,
+          style,
+        };
 
-      return <span {...mergedProps}>{props.children}</span>;
-    }}
-  </Tooltip>
-);
+        return <span {...mergedProps}>{children}</span>;
+      }}
+    </Tooltip>
+  );
+}
 CustomTooltip.Colors = Tooltip.Colors;
 
 export default CustomTooltip;

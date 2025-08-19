@@ -1,3 +1,4 @@
+import { sharedStyles } from "@common";
 import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
@@ -15,15 +16,22 @@ interface RadioItemProps extends RadioGroupProps {
 
 export type RadioItemType = React.FC<React.PropsWithChildren<RadioItemProps>>;
 
-export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React.ReactElement => {
+export function RadioItem({
+  children,
+  className,
+  style,
+  note,
+  ...restProps
+}: React.PropsWithChildren<RadioItemProps>): React.ReactElement {
   return (
     <FormItem
-      title={props.children}
-      style={{ marginBottom: 20, ...props.style }}
-      note={props.note}
-      disabled={props.disabled}
+      title={children}
+      className={sharedStyles.MarginStyles.marginBottom20}
+      style={style}
+      note={note}
+      disabled={restProps.disabled}
       divider>
-      <RadioGroup {...props} />
+      <RadioGroup {...restProps} />
     </FormItem>
   );
-};
+}

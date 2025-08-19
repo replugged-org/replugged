@@ -54,7 +54,7 @@ export interface ErrorState {
 
 export type ErrorBoundaryType = React.ComponentClass<ErrorProps, ErrorState>;
 
-export default class ErrorBoundary extends React.Component<ErrorProps, ErrorState> {
+class ErrorBoundary extends React.Component<ErrorProps, ErrorState> {
   public constructor(props: ErrorProps) {
     super(props);
     this.state = { hasError: false };
@@ -111,3 +111,5 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
     return this.props.children;
   }
 }
+
+export default ErrorBoundary;

@@ -1,3 +1,4 @@
+import { sharedStyles } from "@common";
 import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
@@ -15,7 +16,7 @@ interface SelectOptionType {
   key?: string;
 }
 
-interface SelectCompProps {
+interface SelectProps {
   options: SelectOptionType[];
   isSelected?: (value: string) => void;
   serialize?: (value: string) => void;
@@ -42,11 +43,11 @@ interface SelectCompProps {
   optionClassName?: string;
 }
 
-export type SelectCompType = React.FC<SelectCompProps>;
+export type SelectType = React.FC<SelectProps>;
 
-const SelectComp = getFunctionBySource<SelectCompType>(components, /maxVisibleItems:\w+=7/)!;
+const Select = getFunctionBySource<SelectType>(components, /maxVisibleItems:\w+=7/)!;
 
-interface SelectProps extends SelectCompProps {
+interface CustomSelectProps extends SelectProps {
   onChange?: (value: string) => void;
   onSelect?: (value: string) => void;
   onClear?: () => void;
@@ -54,42 +55,48 @@ interface SelectProps extends SelectCompProps {
   disabled?: boolean;
 }
 
-export type SelectType = React.FC<React.PropsWithChildren<SelectProps>> & {
+export type CustomSelectType = React.FC<React.PropsWithChildren<CustomSelectProps>> & {
   Looks: typeof Looks;
 };
 
-export const Select = ((props) => {
+export function CustomSelect(props: CustomSelectProps): React.ReactElement {
   if (!props.isSelected && props.value != null) props.isSelected = (value) => value === props.value;
   if (!props.serialize) props.serialize = (value) => value;
 
   return (
-    <SelectComp
+    <Select
       isDisabled={props.disabled}
       select={props.onChange || props.onSelect}
       clear={props.onClear}
       {...props}
     />
   );
-}) as SelectType;
-Select.Looks = Looks;
+}
+CustomSelect.Looks = Looks;
 
-interface SelectItemProps extends SelectProps {
+interface SelectItemProps extends CustomSelectProps {
   note?: string;
   style?: React.CSSProperties;
 }
 
 export type SelectItemType = React.FC<React.PropsWithChildren<SelectItemProps>>;
 
-export const SelectItem = (props: React.PropsWithChildren<SelectItemProps>): React.ReactElement => {
+export function SelectItem({
+  children,
+  style,
+  note,
+  ...restProps
+}: React.PropsWithChildren<SelectItemProps>): React.ReactElement {
   return (
     <FormItem
-      title={props.children}
-      style={{ marginBottom: 20, ...props.style }}
-      note={props.note}
+      title={children}
+      className={sharedStyles.MarginStyles.marginBottom20}
+      style={style}
+      note={note}
       notePosition="after"
-      disabled={props.disabled}
+      disabled={restProps.disabled}
       divider>
-      <Select {...props} />
+      <CustomSelect {...restProps} />
     </FormItem>
   );
-};
+}

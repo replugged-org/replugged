@@ -10,7 +10,7 @@ export const Checkbox = getFunctionBySource<Design.Checkbox>(components, ".check
 
 export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
 
-export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
+export function CheckboxItem(props: React.PropsWithChildren<CheckboxProps>): React.ReactElement {
   return (
     <Checkbox {...props}>
       {props.children && (
@@ -20,4 +20,4 @@ export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): Rea
       )}
     </Checkbox>
   );
-};
+}

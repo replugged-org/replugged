@@ -1,3 +1,4 @@
+import { classNames, sharedStyles } from "@common";
 import { filters, waitForModule, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, FormText } from ".";
@@ -23,25 +24,37 @@ type CustomFormItemProps = FormItemProps & {
 
 export type CustomFormItemType = React.FC<CustomFormItemProps>;
 
-export default (props: CustomFormItemProps): React.ReactElement => {
-  const { note, notePosition = "before", noteStyle, noteClassName, divider, ...compProps } = props;
-
-  const noteStyleDefault = notePosition === "before" ? { marginBottom: 8 } : { marginTop: 8 };
-  const noteComp = (
+function CustomFormItem({
+  children,
+  note,
+  notePosition = "before",
+  noteStyle,
+  noteClassName,
+  divider,
+  ...restProps
+}: CustomFormItemProps): React.ReactElement {
+  const noteContent = note && (
     <FormText.DESCRIPTION
-      disabled={props.disabled}
-      className={noteClassName}
-      style={{ ...noteStyleDefault, ...noteStyle }}>
+      disabled={restProps.disabled}
+      className={classNames(
+        noteClassName,
+        notePosition === "before"
+          ? sharedStyles.MarginStyles.marginBottom8
+          : sharedStyles.MarginStyles.marginTop8,
+      )}
+      style={noteStyle}>
       {note}
     </FormText.DESCRIPTION>
   );
 
   return (
-    <FormItem {...compProps}>
-      {note && notePosition === "before" && noteComp}
-      {props.children}
-      {note && notePosition === "after" && noteComp}
+    <FormItem {...restProps}>
+      {notePosition === "before" && noteContent}
+      {children}
+      {notePosition === "after" && noteContent}
       {divider && <Divider className={classes.dividerDefault} />}
     </FormItem>
   );
-};
+}
+
+export default CustomFormItem;
