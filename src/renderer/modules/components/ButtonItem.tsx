@@ -1,9 +1,12 @@
+import { classNames, sharedStyles } from "@common";
 import { filters, getFunctionBySource, waitForModule, waitForProps } from "@webpack";
 import type React from "react";
-import { Divider, Flex, FormText, Tooltip } from ".";
+import { Divider, Flex, FormText } from ".";
 
 import type { FormSwitchStyles } from "discord-client-types/discord_app/design/components/Forms/web/FormSwitch.module";
 import type * as Design from "discord-client-types/discord_app/design/web";
+
+import "./ButtonItem.css";
 
 const mod = await waitForModule(filters.bySource(".disabledButtonWrapper,"));
 export const Button = getFunctionBySource<Design.Button>(mod, "Type.PULSING_ELLIPSIS")!;
@@ -14,8 +17,6 @@ interface ButtonItemProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   button?: React.ReactNode;
   note?: string;
-  tooltipText?: string;
-  tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   success?: boolean;
   color?: string;
   disabled?: boolean;
@@ -24,47 +25,43 @@ interface ButtonItemProps {
 
 export type ButtonItemType = React.FC<React.PropsWithChildren<ButtonItemProps>>;
 
-export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>): React.ReactElement => {
-  const { hideBorder = false } = props;
-
-  const button = (
-    <Button
-      color={props.success ? Button.Colors.GREEN : props.color}
-      disabled={props.disabled}
-      onClick={props.onClick}>
-      {props.button}
-    </Button>
-  );
-
+export function ButtonItem({
+  children,
+  button,
+  color,
+  success,
+  disabled,
+  onClick,
+  note,
+  hideBorder = false,
+}: React.PropsWithChildren<ButtonItemProps>): React.ReactElement {
   return (
-    <div style={{ marginBottom: 20 }}>
-      <Flex justify={Flex.Justify.END} style={{ opacity: props.disabled ? 0.3 : undefined }}>
-        <Flex.Child>
-          <div className={classes.labelRow}>
-            <label
-              className={classes.title}
-              style={{ cursor: props.disabled ? "not-allowed" : "pointer" }}>
-              {props.children}
-            </label>
-            {props.tooltipText ? (
-              <Tooltip
-                text={props.tooltipText}
-                position={props.tooltipPosition}
-                shouldShow={Boolean(props.tooltipText)}
-                className={Flex.Align.CENTER}
-                style={{ height: "100%" }}>
-                {button}
-              </Tooltip>
-            ) : (
-              button
-            )}
-          </div>
-          {props.note && (
-            <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
+    <div
+      className={classNames(sharedStyles.MarginStyles.marginBottom20, {
+        [classes.disabled]: disabled,
+      })}>
+      <Flex direction={Flex.Direction.VERTICAL} className="replugged-button-item-wrapper">
+        <Flex direction={Flex.Direction.VERTICAL} className="replugged-button-item-labelSection">
+          <Flex align={Flex.Align.CENTER} direction={Flex.Direction.HORIZONTAL}>
+            <label className={classes.title}>{children}</label>
+          </Flex>
+          {note && (
+            <FormText.DESCRIPTION
+              className={classNames({ "replugged-button-item-disabled": disabled })}>
+              {note}
+            </FormText.DESCRIPTION>
           )}
-        </Flex.Child>
+        </Flex>
+        <Flex>
+          <Button
+            color={success ? Button.Colors.GREEN : color}
+            disabled={disabled}
+            onClick={onClick}>
+            {button}
+          </Button>
+        </Flex>
       </Flex>
       {!hideBorder && <Divider className={classes.dividerDefault} />}
     </div>
   );
-};
+}
