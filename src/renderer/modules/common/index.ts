@@ -107,6 +107,11 @@ export type { Parser };
 export let parser: Parser;
 importTimeout("parser", import("./parser"), (mod) => (parser = mod.default));
 
+import type { SharedStyles } from "./sharedStyles";
+export type { SharedStyles };
+export let sharedStyles: SharedStyles;
+importTimeout("sharedStyles", import("./sharedStyles"), (mod) => (sharedStyles = mod.default));
+
 import type { Toast } from "./toast";
 export type { Toast };
 export let toast: Toast;

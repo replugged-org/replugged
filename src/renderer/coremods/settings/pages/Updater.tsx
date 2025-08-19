@@ -1,4 +1,4 @@
-import { toast } from "@common";
+import { sharedStyles, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import {
@@ -154,13 +154,13 @@ export const Updater = (): React.ReactElement => {
         {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
       </SliderItem>
       {isRepluggedDev && (
-        <div style={{ marginBottom: "16px" }}>
-          <Notice messageType={Notice.Types.WARNING}>
-            {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
-              url: "https://replugged.dev/download",
-            })}
-          </Notice>
-        </div>
+        <Notice
+          messageType={Notice.Types.WARNING}
+          className={sharedStyles.MarginStyles.marginBottom20}>
+          {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
+            url: "https://replugged.dev/download",
+          })}
+        </Notice>
       )}
       <Flex
         justify={Flex.Justify.BETWEEN}
@@ -173,7 +173,7 @@ export const Updater = (): React.ReactElement => {
               : intl.string(t.REPLUGGED_UPDATES_UP_TO_DATE)}
           </Text>
           {lastChecked ? (
-            <Text.Normal style={{ marginTop: "5px" }}>
+            <Text.Normal className={sharedStyles.MarginStyles.marginTop4}>
               {intl.format(t.REPLUGGED_UPDATES_LAST_CHECKED, {
                 date: new Date(lastChecked).toLocaleString(intl.currentLocale),
               })}
@@ -226,7 +226,10 @@ export const Updater = (): React.ReactElement => {
             <div className="replugged-updater-item" key={update.id}>
               <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
                 <div>
-                  <Flex align={Flex.Align.CENTER} style={{ gap: "5px", marginBottom: "5px" }}>
+                  <Flex
+                    align={Flex.Align.CENTER}
+                    style={{ gap: "5px" }}
+                    className={sharedStyles.MarginStyles.marginBottom4}>
                     <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
                       <Text variant="heading-md/bold" color="header-primary" tag="span">
                         {manifest.name}
@@ -263,13 +266,13 @@ export const Updater = (): React.ReactElement => {
                 )}
               </Flex>
               {manifest.type !== "replugged" && manifest.updater?.type !== "store" ? (
-                <div style={{ marginTop: "8px" }}>
-                  <Notice messageType={Notice.Types.ERROR}>
-                    {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-                      type: label(getAddonType(manifest.type)),
-                    })}
-                  </Notice>
-                </div>
+                <Notice
+                  messageType={Notice.Types.ERROR}
+                  className={sharedStyles.MarginStyles.marginTop8}>
+                  {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+                    type: label(getAddonType(manifest.type)),
+                  })}
+                </Notice>
               ) : null}
             </div>
           );

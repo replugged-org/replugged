@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, api, fluxDispatcher, modal, toast, users } from "@common";
+import { React, api, fluxDispatcher, modal, sharedStyles, toast, users } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import {
   Anchor,
@@ -289,7 +289,10 @@ function Card({
 
   return (
     <div className="replugged-addon-card">
-      <Flex align={Flex.Align.START} justify={Flex.Justify.BETWEEN} style={{ marginBottom: "5px" }}>
+      <Flex
+        align={Flex.Align.START}
+        justify={Flex.Justify.BETWEEN}
+        className={sharedStyles.MarginStyles.marginBottom4}>
         <span>
           <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
             <Text variant="heading-md/bold" tag="span" color="header-primary">
@@ -348,17 +351,15 @@ function Card({
           <Switch checked={!disabled} onChange={toggleDisabled} />
         </Flex>
       </Flex>
-      <Text.Normal style={{ margin: "5px 0" }} markdown allowMarkdownLinks>
+      <Text.Normal markdown allowMarkdownLinks>
         {addon.manifest.description}
       </Text.Normal>
       {addon.manifest.updater?.type !== "store" ? (
-        <div style={{ marginTop: "8px" }}>
-          <Notice messageType={Notice.Types.ERROR}>
-            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-              type: label(type),
-            })}
-          </Notice>
-        </div>
+        <Notice messageType={Notice.Types.ERROR} className={sharedStyles.MarginStyles.marginTop8}>
+          {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+            type: label(type),
+          })}
+        </Notice>
       ) : null}
     </div>
   );
@@ -579,7 +580,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
             )}
           </Flex>
           {section === `rp_${type}` && (
-            <div style={{ display: "flex" }}>
+            <Flex justify={Flex.Justify.END}>
               <Button onClick={() => openFolder(type)}>
                 {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
                   type: label(type, { caps: "title", plural: true }),
@@ -620,25 +621,24 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   type: label(type, { caps: "title", plural: true }),
                 })}
               </Button>
-            </div>
+            </Flex>
           )}
         </Flex>
       }>
       {section === `rp_${type}` && unfilteredCount ? (
-        <div style={{ marginBottom: "20px" }}>
-          <SearchBar
-            query={search}
-            onChange={(query) => setSearch(query)}
-            onClear={() => setSearch("")}
-            placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
-              type: label(type),
-            })}
-            autoFocus
-          />
-        </div>
+        <SearchBar
+          query={search}
+          onChange={(query) => setSearch(query)}
+          onClear={() => setSearch("")}
+          placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
+            type: label(type),
+          })}
+          autoFocus
+          className={sharedStyles.MarginStyles.marginBottom20}
+        />
       ) : null}
       {section === `rp_${type}` && search && list?.length ? (
-        <Text variant="heading-md/bold" style={{ marginBottom: "10px" }}>
+        <Text variant="heading-md/bold" className={sharedStyles.MarginStyles.marginBottom8}>
           {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
         </Text>
       ) : null}

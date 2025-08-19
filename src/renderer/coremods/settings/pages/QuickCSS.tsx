@@ -176,7 +176,7 @@ export const QuickCSS = (): React.ReactElement => {
       title={
         <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
           {intl.string(t.REPLUGGED_QUICKCSS)}
-          <div style={{ display: "flex" }}>
+          <Flex justify={Flex.Justify.END}>
             {autoApply ? null : (
               <Button onClick={reloadAndToast}>
                 {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
@@ -188,7 +188,7 @@ export const QuickCSS = (): React.ReactElement => {
               look={Button.Looks.LINK}>
               {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
             </Button>
-          </div>
+          </Flex>
         </Flex>
       }>
       <div ref={ref} id="replugged-quickcss-wrapper" />
