@@ -34,6 +34,9 @@ function importTimeout<T extends ModuleExports>(
 
 // Design System
 
+export let Anchor: Design.Anchor;
+importTimeout("Anchor", import("./Anchor"), (mod) => (Anchor = mod.default));
+
 export let Breadcrumbs: typeof Design.Breadcrumbs;
 importTimeout("Breadcrumbs", import("./Breadcrumbs"), (mod) => (Breadcrumbs = mod.default));
 

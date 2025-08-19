@@ -2,6 +2,7 @@
 import { React, api, fluxDispatcher, modal, toast, users } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import {
+  Anchor,
   Breadcrumbs,
   Button,
   Divider,
@@ -221,18 +222,18 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
             type: intl.string(discordT.NOTIFICATION_TITLE_DISCORD),
           })}
           className="replugged-addon-icon replugged-addon-icon-author">
-          <a onClick={() => openUserProfile(author.discordID!)}>
+          <Anchor onClick={() => openUserProfile(author.discordID!)}>
             <Icons.Discord />
-          </a>
+          </Anchor>
         </Tooltip>
       ) : null}
       {author.github ? (
         <Tooltip
           text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, { type: "GitHub" })}
           className="replugged-addon-icon replugged-addon-icon-author">
-          <a href={`https://github.com/${author.github}`} target="_blank" rel="noopener noreferrer">
+          <Anchor href={`https://github.com/${author.github}`}>
             <Icons.GitHub />
-          </a>
+          </Anchor>
         </Tooltip>
       ) : null}
     </Flex>
@@ -308,9 +309,9 @@ function Card({
                 type: label(type, { caps: "title" }),
               })}
               className="replugged-addon-icon">
-              <a href={sourceLink} target="_blank" rel="noopener noreferrer">
+              <Anchor href={sourceLink}>
                 <Icons.Link />
-              </a>
+              </Anchor>
             </Tooltip>
           ) : null}
           {hasSettings ? (
@@ -319,9 +320,9 @@ function Card({
                 type: label(type, { caps: "title" }),
               })}
               className="replugged-addon-icon">
-              <a onClick={() => openSettings()}>
+              <Anchor onClick={() => openSettings()}>
                 <Icons.Settings />
-              </a>
+              </Anchor>
             </Tooltip>
           ) : null}
           <Tooltip
@@ -329,9 +330,9 @@ function Card({
               type: label(type, { caps: "title" }),
             })}
             className="replugged-addon-icon">
-            <a onClick={() => uninstall()}>
+            <Anchor onClick={() => uninstall()}>
               <Icons.Trash />
-            </a>
+            </Anchor>
           </Tooltip>
           {disabled ? null : (
             <Tooltip
@@ -339,9 +340,9 @@ function Card({
                 type: label(type, { caps: "title" }),
               })}
               className="replugged-addon-icon">
-              <a onClick={() => reload()}>
+              <Anchor onClick={() => reload()}>
                 <Icons.Reload />
-              </a>
+              </Anchor>
             </Tooltip>
           )}
           <Switch checked={!disabled} onChange={toggleDisabled} />

@@ -1,7 +1,17 @@
 import { toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
-import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
+import {
+  Anchor,
+  Button,
+  Divider,
+  Flex,
+  Notice,
+  SliderItem,
+  SwitchItem,
+  Text,
+  Tooltip,
+} from "@components";
 import { Logger } from "@replugged";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
@@ -233,9 +243,9 @@ export const Updater = (): React.ReactElement => {
                           type: intl.string(discordT.UPDATE_BADGE_HEADER),
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
-                        <a href={sourceLink} target="_blank" rel="noopener noreferrer">
+                        <Anchor href={sourceLink}>
                           <Icons.Link />
-                        </a>
+                        </Anchor>
                       </Tooltip>
                     ) : null}
                   </Flex>
