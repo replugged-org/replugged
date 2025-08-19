@@ -44,7 +44,7 @@ export let Clickable: Design.Clickable;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
 export let Divider: Design.FormDivider;
-importTimeout("Divider", import("./FlexDivider"), (mod) => (Divider = mod.default));
+importTimeout("Divider", import("./FormDivider"), (mod) => (Divider = mod.default));
 
 export let FormNotice: Design.FormNotice;
 importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
@@ -64,8 +64,7 @@ importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.F
 export let TextArea: Design.TextArea;
 importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default));
 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-export let TextInput: Design.TextInputLegacy;
+export let TextInput: Design.TextInput;
 importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
 
 // Other

@@ -3,5 +3,4 @@ import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-export default getFunctionBySource<Design.TextInputLegacy>(components, "prefixElement:")!;
+export default getFunctionBySource<Design.TextInput>(components, /defaultDirty:\w+=!1,leading/)!;
