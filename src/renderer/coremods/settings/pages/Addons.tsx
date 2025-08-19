@@ -5,9 +5,9 @@ import {
   Anchor,
   Breadcrumbs,
   Button,
-  Divider,
   ErrorBoundary,
   Flex,
+  FormSection,
   Notice,
   SearchBar,
   Switch,
@@ -524,104 +524,106 @@ export const Addons = (type: AddonType): React.ReactElement => {
   React.useEffect(refreshList, [search]);
 
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
-          {section === `rp_${type}` ? (
-            <Text.H2
-              style={{
-                // Do not turn "(num)" into a single symbol
-                fontVariantLigatures: "none",
-              }}>
-              {intl.format(t.REPLUGGED_ADDONS_TITLE_COUNT, {
-                type: label(type, { caps: "title", plural: true }),
-                count: unfilteredCount,
-              })}
-            </Text.H2>
-          ) : (
-            <Breadcrumbs
-              activeId={section.toString()}
-              breadcrumbs={[
-                {
-                  id: `rp_${type}`,
-                  label: intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
-                    type: label(type, { caps: "title", plural: true }),
-                    count: unfilteredCount,
-                  }),
-                },
-                {
-                  id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
-                  label:
-                    list?.filter?.(
-                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
-                    )?.[0]?.manifest.name || "",
-                },
-              ]}
-              onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
-              renderCustomBreadcrumb={(breadcrumb, active) => (
-                <Text.H2
-                  color={active ? "header-primary" : "inherit"}
-                  className={
-                    active
-                      ? "replugged-addon-breadcrumbsActive"
-                      : "replugged-addon-breadcrumbsInactive"
+    <FormSection
+      tag="h1"
+      title={
+        <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
+          <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
+            {section === `rp_${type}` ? (
+              <Text.H2
+                style={{
+                  // Do not turn "(num)" into a single symbol
+                  fontVariantLigatures: "none",
+                }}>
+                {intl.format(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+                  type: label(type, { caps: "title", plural: true }),
+                  count: unfilteredCount,
+                })}
+              </Text.H2>
+            ) : (
+              <Breadcrumbs
+                activeId={section.toString()}
+                breadcrumbs={[
+                  {
+                    id: `rp_${type}`,
+                    label: intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+                      type: label(type, { caps: "title", plural: true }),
+                      count: unfilteredCount,
+                    }),
+                  },
+                  {
+                    id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
+                    label:
+                      list?.filter?.(
+                        (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
+                      )?.[0]?.manifest.name || "",
+                  },
+                ]}
+                onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
+                renderCustomBreadcrumb={(breadcrumb, active) => (
+                  <Text.H2
+                    color={active ? "header-primary" : "inherit"}
+                    className={
+                      active
+                        ? "replugged-addon-breadcrumbsActive"
+                        : "replugged-addon-breadcrumbsInactive"
+                    }
+                    style={{
+                      // Do not turn "(num)" into a single symbol
+                      fontVariantLigatures: "none",
+                    }}>
+                    {breadcrumb.label}
+                  </Text.H2>
+                )}
+              />
+            )}
+          </Flex>
+          {section === `rp_${type}` && (
+            <div style={{ display: "flex" }}>
+              <Button onClick={() => openFolder(type)}>
+                {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
+                  type: label(type, { caps: "title", plural: true }),
+                })}
+              </Button>
+              <Button
+                onClick={async () => {
+                  try {
+                    await loadMissing(type);
+                    toast.toast(
+                      intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
+                        type: label(type, { plural: true }),
+                      }),
+                    );
+                  } catch (e) {
+                    logger.error("Error loading missing", e);
+                    toast.toast(
+                      intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
+                        type: label(type, { plural: true }),
+                      }),
+                      toast.Kind.FAILURE,
+                    );
                   }
-                  style={{
-                    // Do not turn "(num)" into a single symbol
-                    fontVariantLigatures: "none",
-                  }}>
-                  {breadcrumb.label}
-                </Text.H2>
-              )}
-            />
+
+                  refreshList();
+                }}
+                color={Button.Colors.PRIMARY}
+                look={Button.Looks.LINK}>
+                {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
+                  type: label(type, { caps: "title", plural: true }),
+                })}
+              </Button>
+              <Button
+                onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
+                color={Button.Colors.PRIMARY}
+                look={Button.Looks.LINK}>
+                {intl.format(t.REPLUGGED_ADDON_BROWSE, {
+                  type: label(type, { caps: "title", plural: true }),
+                })}
+              </Button>
+            </div>
           )}
         </Flex>
-        {section === `rp_${type}` && (
-          <div style={{ display: "flex" }}>
-            <Button onClick={() => openFolder(type)}>
-              {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-            <Button
-              onClick={async () => {
-                try {
-                  await loadMissing(type);
-                  toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
-                      type: label(type, { plural: true }),
-                    }),
-                  );
-                } catch (e) {
-                  logger.error("Error loading missing", e);
-                  toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
-                      type: label(type, { plural: true }),
-                    }),
-                    toast.Kind.FAILURE,
-                  );
-                }
-
-                refreshList();
-              }}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
-              {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-            <Button
-              onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
-              {intl.format(t.REPLUGGED_ADDON_BROWSE, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-          </div>
-        )}
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
+      }>
       {section === `rp_${type}` && unfilteredCount ? (
         <div style={{ marginBottom: "20px" }}>
           <SearchBar
@@ -668,7 +670,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </ErrorBoundary>
         )
       )}
-    </>
+    </FormSection>
   );
 };
 

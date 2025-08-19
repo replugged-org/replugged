@@ -4,8 +4,8 @@ import React from "@common/react";
 import {
   Anchor,
   Button,
-  Divider,
   Flex,
+  FormSection,
   Notice,
   SliderItem,
   SwitchItem,
@@ -123,11 +123,7 @@ export const Updater = (): React.ReactElement => {
   };
 
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_UPDATES_UPDATER)}</Text.H2>
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
+    <FormSection tag="h1" title={intl.string(t.REPLUGGED_UPDATES_UPDATER)}>
       <SwitchItem
         {...useSetting(updaterSettings, "autoCheck")}
         note={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}>
@@ -279,6 +275,6 @@ export const Updater = (): React.ReactElement => {
           );
         })}
       </Flex>
-    </>
+    </FormSection>
   );
 };

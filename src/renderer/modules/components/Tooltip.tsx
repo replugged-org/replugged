@@ -15,7 +15,7 @@ export type CustomTooltipType = React.FC<CustomTooltipProps>;
 
 const Tooltip = getFunctionBySource<Design.Tooltip>(components, "shouldShowTooltip")!;
 
-const CustomTooltipProps = (props: CustomTooltipProps): React.ReactElement => (
+const CustomTooltip = (props: CustomTooltipProps): React.ReactElement => (
   <Tooltip {...props}>
     {(tooltipProps) => {
       const mergedProps = {
@@ -28,6 +28,6 @@ const CustomTooltipProps = (props: CustomTooltipProps): React.ReactElement => (
     }}
   </Tooltip>
 );
-CustomTooltipProps.Colors = Tooltip.Colors;
+CustomTooltip.Colors = Tooltip.Colors;
 
-export default CustomTooltipProps;
+export default CustomTooltip;

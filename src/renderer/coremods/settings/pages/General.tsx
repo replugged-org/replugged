@@ -5,9 +5,8 @@ import {
   Button,
   ButtonItem,
   Category,
-  Divider,
-  Flex,
   FormItem,
+  FormSection,
   SwitchItem,
   Text,
   TextInput,
@@ -93,13 +92,7 @@ export const General = (): React.ReactElement => {
   }, [kKeys, isEasterEgg]);
 
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_GENERAL_SETTINGS)}</Text.H2>
-      </Flex>
-
-      <Divider style={{ margin: "20px 0px" }} />
-
+    <FormSection tag="h1" title={intl.string(t.REPLUGGED_GENERAL_SETTINGS)}>
       <SwitchItem
         {...util.useSetting(generalSettings, "badges")}
         note={intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}>
@@ -213,6 +206,6 @@ export const General = (): React.ReactElement => {
           </Text.H1>
         </>
       )}
-    </>
+    </FormSection>
   );
 };
