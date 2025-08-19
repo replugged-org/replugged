@@ -1,31 +1,21 @@
-import { getFunctionBySource } from "@webpack";
-import type React from "react";
+import { getExportsForProps, getFunctionBySource } from "@webpack";
 import components from "../common/components";
-import type { Variant } from "./Text";
 
-enum HelpMessageTypes {
-  WARNING = "warn",
-  INFO = "info",
-  ERROR = "danger",
-  POSITIVE = "positive",
-  PREVIEW = "preview",
-}
+import type * as CommonDesign from "discord-client-types/discord_common/packages/design/web";
 
-interface HelpMessageProps {
-  children: React.ReactNode;
-  messageType: (typeof HelpMessageTypes)[keyof typeof HelpMessageTypes];
-  textColor?: string;
-  textVariant?: Variant;
-  className?: string;
-}
-
-export type NoticeType = React.FC<HelpMessageProps> & {
-  Types: typeof HelpMessageTypes; // for backwards compat
-  HelpMessageTypes: typeof HelpMessageTypes;
+export type CustomHelpMessage = CommonDesign.HelpMessage & {
+  // Backwards compatibility
+  Types: typeof CommonDesign.HelpMessageTypes;
+  HelpMessageTypes: typeof CommonDesign.HelpMessageTypes;
 };
 
-const HelpMessage = getFunctionBySource<NoticeType>(components, "messageType:")!;
+const HelpMessage = getFunctionBySource<CustomHelpMessage>(components, "messageType:")!;
+const HelpMessageTypes = getExportsForProps<typeof CommonDesign.HelpMessageTypes>(components, [
+  "INFO",
+  "ERROR",
+])!;
+
 HelpMessage.HelpMessageTypes = HelpMessageTypes;
-HelpMessage.Types = HelpMessage.HelpMessageTypes;
+HelpMessage.Types = HelpMessageTypes;
 
 export default HelpMessage;

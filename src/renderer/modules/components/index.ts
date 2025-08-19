@@ -1,6 +1,9 @@
 import type { ModuleExports } from "../../../types";
 import { error } from "../logger";
 
+import type * as Design from "discord-client-types/discord_app/design/web";
+import type { Flex as FlexType } from "discord-client-types/discord_app/modules/core/web/Flex";
+
 const modulePromises: Array<() => Promise<void>> = [];
 
 function importTimeout<T extends ModuleExports>(
@@ -29,33 +32,111 @@ function importTimeout<T extends ModuleExports>(
   );
 }
 
-import type { FlexType } from "./Flex";
-export type { FlexType };
+// Design System
+
+export let Button: Design.Button;
+importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
+
+export let Checkbox: Design.Checkbox;
+importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
+
+export let Clickable: Design.Clickable;
+importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
+
+export let Divider: Design.FormDivider;
+importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
+
+export let FormNotice: Design.FormNotice;
+importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
+
+export let Loader: Design.Spinner;
+importTimeout("Loader", import("./Loader"), (mod) => (Loader = mod.default));
+
+export let Radio: Design.RadioGroup;
+importTimeout("Radio", import("./RadioItem"), (mod) => (Radio = mod.RadioGroup));
+
+export let Switch: Design.Switch;
+importTimeout("Switch", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
+
+export let SwitchItem: Design.FormSwitch;
+importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.FormSwitch));
+
+export let TextArea: Design.TextArea;
+importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default));
+
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+export let TextInput: Design.TextInputLegacy;
+importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
+
+// Other
+
 export let Flex: FlexType;
 importTimeout("Flex", import("./Flex"), (mod) => (Flex = mod.default));
+
+// Wrapped
+
+import type { ButtonItemType } from "./ButtonItem";
+export type { ButtonItemType };
+export let ButtonItem: ButtonItemType;
+importTimeout("ButtonItem", import("./ButtonItem"), (mod) => (ButtonItem = mod.ButtonItem));
+
+import type { CheckboxItemType } from "./CheckboxItem";
+export type { CheckboxItemType };
+export let CheckboxItem: CheckboxItemType;
+importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
 
 import type { ContextMenuType } from "./ContextMenu";
 export type { ContextMenuType };
 export let ContextMenu: ContextMenuType;
 importTimeout("ContextMenu", import("./ContextMenu"), (mod) => (ContextMenu = mod.default));
 
-import type { SwitchItemType, SwitchType } from "./SwitchItem";
-export type { SwitchType };
-export let Switch: SwitchType;
-importTimeout("Switch", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
+import type { CustomFormItemType } from "./FormItem";
+export type { CustomFormItemType };
+export let FormItem: CustomFormItemType;
+importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
 
-export type { SwitchItemType };
-export let SwitchItem: SwitchItemType;
-importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.SwitchItem));
+import type { CustomFormTextType } from "./FormText";
+export type { CustomFormTextType };
+export let FormText: CustomFormTextType;
+importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.CustomFormText));
 
-import type { RadioItemType, RadioType } from "./RadioItem";
-export type { RadioType };
-export let Radio: RadioType;
-importTimeout("Radio", import("./RadioItem"), (mod) => (Radio = mod.Radio));
+import type { CustomHelpMessage } from "./Notice";
+export type { CustomHelpMessage };
+export let Notice: CustomHelpMessage;
+importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));
 
+import type { RadioItemType } from "./RadioItem";
 export type { RadioItemType };
 export let RadioItem: RadioItemType;
 importTimeout("RadioItem", import("./RadioItem"), (mod) => (RadioItem = mod.RadioItem));
+
+import type { CustomSliderType, SliderItemType } from "./SliderItem";
+export type { CustomSliderType };
+export let Slider: CustomSliderType;
+importTimeout("Slider", import("./SliderItem"), (mod) => (Slider = mod.CustomSlider));
+
+export type { SliderItemType };
+export let SliderItem: SliderItemType;
+importTimeout("SliderItem", import("./SliderItem"), (mod) => (SliderItem = mod.SliderItem));
+
+import type { CustomTooltipType } from "./Tooltip";
+export type { CustomTooltipType };
+export let Tooltip: CustomTooltipType;
+importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
+
+// Custom Components
+
+import type { CategoryType } from "./Category";
+export type { CategoryType };
+export let Category: CategoryType;
+importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
+
+import type { ErrorBoundaryType } from "./ErrorBoundary";
+export type { ErrorBoundaryType };
+export let ErrorBoundary: ErrorBoundaryType;
+importTimeout("ErrorBoundary", import("./ErrorBoundary"), (mod) => (ErrorBoundary = mod.default));
+
+//
 
 import type { SelectItemType, SelectType } from "./SelectItem";
 export type { SelectType };
@@ -71,97 +152,10 @@ export type { ModalType };
 export let Modal: ModalType;
 importTimeout("Modal", import("./Modal"), (mod) => (Modal = mod.default));
 
-import type { DividerType } from "./Divider";
-export type { DividerType };
-export let Divider: DividerType;
-importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
-
-import type { TooltipType } from "./Tooltip";
-export type { TooltipType };
-export let Tooltip: TooltipType;
-importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
-
-import type { FormTextType } from "./FormText";
-export type { FormTextType };
-export let FormText: FormTextType;
-importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.FormText));
-
-import type { FormItemType } from "./FormItem";
-export type { FormItemType };
-export let FormItem: FormItemType;
-importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
-
-import type { FormNoticeType } from "./FormNotice";
-export type { FormNoticeType };
-export let FormNotice: FormNoticeType;
-importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
-
-import type { ButtonItemType, ButtonType } from "./ButtonItem";
-export type { ButtonType };
-export let Button: ButtonType;
-importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
-
-export type { ButtonItemType };
-export let ButtonItem: ButtonItemType;
-importTimeout("ButtonItem", import("./ButtonItem"), (mod) => (ButtonItem = mod.ButtonItem));
-
-import type { ClickableType } from "./Clickable";
-export type { ClickableType };
-export let Clickable: ClickableType;
-importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
-
-import type { CategoryType } from "./Category";
-export type { CategoryType };
-export let Category: CategoryType;
-importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
-
-import type { TextInputType } from "./TextInput";
-export type { TextInputType };
-export let TextInput: TextInputType;
-importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
-
-import type { TextAreaType } from "./TextArea";
-export type { TextAreaType };
-export let TextArea: TextAreaType;
-importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default));
-
-import type { SliderItemType, SliderType } from "./SliderItem";
-export type { SliderType };
-export let Slider: SliderType;
-importTimeout("Slider", import("./SliderItem"), (mod) => (Slider = mod.Slider));
-
-export type { SliderItemType };
-export let SliderItem: SliderItemType;
-importTimeout("SliderItem", import("./SliderItem"), (mod) => (SliderItem = mod.SliderItem));
-
 import type { TextType } from "./Text";
 export type { TextType };
 export let Text: TextType;
 importTimeout("Text", import("./Text"), (mod) => (Text = mod.default));
-
-import type { ErrorBoundaryType } from "./ErrorBoundary";
-export type { ErrorBoundaryType };
-export let ErrorBoundary: ErrorBoundaryType;
-importTimeout("ErrorBoundary", import("./ErrorBoundary"), (mod) => (ErrorBoundary = mod.default));
-
-import type { LoaderType } from "./Loader";
-export type { LoaderType };
-export let Loader: LoaderType;
-importTimeout("Loader", import("./Loader"), (mod) => (Loader = mod.default));
-
-import type { CheckboxItemType, CheckboxType } from "./CheckboxItem";
-export type { CheckboxType };
-export let Checkbox: CheckboxType;
-importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
-
-export type { CheckboxItemType };
-export let CheckboxItem: CheckboxItemType;
-importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
-
-import type { NoticeType } from "./Notice";
-export type { NoticeType };
-export let Notice: NoticeType;
-importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));
 
 /**
  * @internal

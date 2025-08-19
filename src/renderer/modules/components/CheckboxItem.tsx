@@ -3,35 +3,12 @@ import type React from "react";
 import { Text } from ".";
 import components from "../common/components";
 
-interface CheckboxProps {
-  disabled?: boolean;
-  readOnly?: boolean;
-  reverse?: boolean;
-  displayOnly?: boolean;
-  shape?: string;
-  align?: string;
-  type?: string;
-  color?: string;
-  checkboxColor?: string;
-  size?: number;
-  value?: boolean;
-  style?: React.CSSProperties;
-  className?: string;
-  innerClassName?: string;
-  onClick?: React.MouseEventHandler<HTMLInputElement>;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, value: boolean) => void;
-}
+import type { CheckboxProps } from "discord-client-types/discord_app/design/components/Checkbox/web/Checkbox";
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-export type CheckboxType = React.ComponentClass<React.PropsWithChildren<CheckboxProps>> & {
-  defaultProps: CheckboxProps;
-  Types: Record<"DEFAULT" | "INVERTED" | "GHOST" | "ROW", string>;
-  Aligns: Record<"TOP" | "CENTER", string>;
-  Shapes: Record<"BOX" | "ROUND" | "SMALL_BOX", string>;
-};
+export const Checkbox = getFunctionBySource<Design.Checkbox>(components, ".checkboxWrapper")!;
 
 export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
-
-export const Checkbox = getFunctionBySource<CheckboxType>(components, ".checkboxWrapper")!;
 
 export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
   return (

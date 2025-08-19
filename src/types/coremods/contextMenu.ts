@@ -1,5 +1,7 @@
 import type React from "react";
-import type { ContextMenuType, MenuProps } from "../../renderer/modules/components/ContextMenu";
+import type { ContextMenuType } from "../../renderer/modules/components/ContextMenu";
+
+import type { MenuProps } from "discord-client-types/discord_app/design/components/Menu/web/Menu";
 
 type ContextMenuComponents = Omit<ContextMenuType, "ItemColors" | "ContextMenu">;
 

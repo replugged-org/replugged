@@ -1,6 +1,8 @@
 import type { ProgressEvent, Request, Response } from "superagent";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
+import type { Backoff } from "discord-client-types/discord_common/packages/backoff/Backoff";
+
 interface HTTPAttachment {
   file: string | Blob | Buffer;
   filename: string;
@@ -46,27 +48,6 @@ export interface HTTPResponse<T = Record<string, unknown>> {
   ok: boolean;
   status: number;
   text: string;
-}
-
-export declare class Backoff {
-  public constructor(min?: number, max?: number | null, jitter?: boolean);
-
-  private _callback?: () => void;
-  private _current: number;
-  private _fails: number;
-  private _timeoutId?: number;
-
-  public jitter: boolean;
-  public max: number;
-  public min: number;
-
-  public get current(): number;
-  public get fails(): number;
-  public get pending(): boolean;
-
-  public cancel: () => void;
-  public fail: (callback?: () => void) => number;
-  public succeed: () => void;
 }
 
 export declare class V6OrEarlierAPIError {
