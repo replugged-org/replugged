@@ -38,7 +38,7 @@ interface BreadcrumbProps {
 const logger = Logger.coremod("AddonSettings");
 
 const Breadcrumbs = await webpack.waitForModule<React.ComponentClass<BreadcrumbProps>>(
-  webpack.filters.bySource(/\w+.breadcrumbFinalWrapper/),
+  webpack.filters.bySource(/\.interactiveBreadcrumb]:null/),
 );
 
 export enum AddonType {
@@ -515,7 +515,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Flex align={Flex.Align.CENTER} className={"replugged-addon-breadcrumbs"}>
+        <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
           {section === `rp_${type}` ? (
             <Text.H2
               style={{
@@ -618,7 +618,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               type: label(type),
             })}
             onChange={(e) => setSearch(e)}
-            autoFocus={true}
+            autoFocus
           />
         </div>
       ) : null}
