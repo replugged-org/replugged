@@ -1270,6 +1270,19 @@ export declare const messages: {
    */
   'REPLUGGED_QUICKCSS_CHANGES_APPLY': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `Iof76O`
+   * 
+   * ### Definition
+   * ```text
+   * This you add custom styles to Discord instantly. Change colors, layout, and looks in real time without themes.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_QUICKCSS_DESC': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `Nk3LNj`
    * 
    * ### Definition
@@ -1448,7 +1461,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_DISCORD_DEVTOOLS': TypedIntlMessageGetter<{}>,
   /**
@@ -1461,7 +1474,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
