@@ -93,11 +93,10 @@ export const General = (): React.ReactElement => {
     return () => document.removeEventListener("keydown", listener);
   }, [kKeys, isEasterEgg]);
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     if (quickCSS) window.replugged.quickCSS.load();
     else window.replugged.quickCSS.unload();
   }, [quickCSS]);
-
 
   return (
     <>
@@ -118,15 +117,14 @@ export const General = (): React.ReactElement => {
         note={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC)}>
         {intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS)}
       </SwitchItem>
-      
 
       <SwitchItem
         value={quickCSS}
         onChange={(value) => {
           setQuickCSS(value);
         }}
-         note={intl.string(t.REPLUGGED_QUICKCSS_DESC)}>
-         {intl.string(t.REPLUGGED_QUICKCSS)}
+        note={intl.string(t.REPLUGGED_QUICKCSS_DESC)}>
+        {intl.string(t.REPLUGGED_QUICKCSS)}
       </SwitchItem>
 
       <SwitchItem

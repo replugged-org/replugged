@@ -29,7 +29,6 @@ export function start(): void {
       // React Hook should be used instead
       tabPredicate: () => generalSettings.get("quickCSS"),
       elem: QuickCSS,
-      
     }),
     Section({
       name: "rp-plugins",

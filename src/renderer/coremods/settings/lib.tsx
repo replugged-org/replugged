@@ -15,7 +15,7 @@ export const Section = ({
   elem,
   pos,
   fromEnd,
-  tabPredicate
+  tabPredicate,
 }: {
   name: string;
   _id?: string;
@@ -24,7 +24,7 @@ export const Section = ({
   elem: (args: unknown) => React.ReactElement;
   pos?: number;
   fromEnd?: boolean;
-  tabPredicate?: () => boolean
+  tabPredicate?: () => boolean;
 }): SectionType => ({
   section: name,
   _id,
@@ -33,7 +33,7 @@ export const Section = ({
   element: elem,
   pos: getPos(pos),
   fromEnd: fromEnd ?? getPos(pos) < 0,
-  tabPredicate
+  tabPredicate,
 });
 
 export const Divider = (pos?: number): SectionType => ({
