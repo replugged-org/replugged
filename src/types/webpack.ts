@@ -56,6 +56,7 @@ export type PlaintextReplacer = ((source: string) => string) & { regex?: RegexRe
 export interface PlaintextPatch {
   find?: string | RegExp;
   check?: (source: string) => boolean;
+  required?: boolean;
   replacements: Array<PlaintextReplacer | RegexReplacement>;
 }
 
@@ -63,6 +64,7 @@ export interface RawPlaintextPatch {
   find?: string | RegExp;
   id: string;
   check?: (source: string) => boolean;
+  required?: boolean;
   replacements: PlaintextReplacer[];
 }
 
