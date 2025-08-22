@@ -196,5 +196,7 @@
   "REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC": "Geef versienummers weer in de lijst",
   "REPLUGGED_COMMAND_LIST_HEADER_DISABLED": "{type} uitgeschakeld",
   "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Succes",
-  "REPLUGGED_COMMAND_RELOAD_NAME": "herladen"
+  "REPLUGGED_COMMAND_RELOAD_NAME": "herladen",
+  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS": "Schakel Interne Discord DevTools In",
+  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Vervangt de helpknop in de titelbalk door de interne ontwikkelaarstools van Discord (deze zijn anders dan de Chrome DevTools). Voor deze instelling moeten Discord-experimenten eerst ingeschakeld zijn. **Herstart vereist**."
 }
