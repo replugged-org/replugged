@@ -33,9 +33,7 @@ function NotificationGradient(hex: string): string[] {
   return luminance > 0.5 ? [newHex, hex] : [hex, newHex];
 }
 
-const Notification = React.memo((
-  props: NotificationPropsWithId,
-): React.ReactElement | null => {
+const Notification = React.memo((props: NotificationPropsWithId): React.ReactElement | null => {
   const [leaving, setLeaving] = React.useState<boolean>(false);
   const [timeoutState, setTimeoutState] = React.useState<NodeJS.Timeout>();
   const [progress, setProgress] = React.useState<number>(100);
@@ -148,7 +146,7 @@ const Notification = React.memo((
   );
 });
 
-export default React.memo((): React.ReactElement | null  => {
+export default React.memo((): React.ReactElement | null => {
   const [toasts, setToasts] = React.useState<NotificationPropsWithId[]>([]);
 
   const toastsUpdate = (): void => setToasts(notification.NotificationHandler.getNotifications());
