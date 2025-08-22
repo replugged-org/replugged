@@ -1,4 +1,6 @@
 import { ready as commonReady } from "@common";
+import { type GeneralSettings, defaultSettings } from "src/types";
+import * as settings from "../apis/settings";
 import { ready as componentsReady } from "../modules/components";
 import * as i18n from "../modules/i18n";
 import { error, log } from "../modules/logger";
@@ -8,6 +10,12 @@ import * as plugins from "./plugins";
 import * as quickCSS from "./quick-css";
 import * as themes from "./themes";
 import { startAutoUpdateChecking } from "./updater";
+
+// TODO: see if we can import this from General.tsx
+const generalSettings = settings.init<GeneralSettings, keyof typeof defaultSettings>(
+  "dev.replugged.Settings",
+  defaultSettings,
+);
 
 export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");
@@ -36,7 +44,7 @@ export async function start(): Promise<void> {
   started = true;
 
   // Quick CSS needs to be called after themes are loaded so that it will override the theme's CSS
-  quickCSS.load();
+  if (generalSettings.get("quickCSS")) quickCSS.load();
 
   // Want to make sure all addons are initialized before starting auto-update checking
   startAutoUpdateChecking();
