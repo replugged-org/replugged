@@ -84,5 +84,15 @@ export default (generalSettings.get("experiments")
           },
         ],
       },
+      {
+        // Always show the ManaPlaygroundEmbed
+        find: "dev://mana(/",
+        replacements: [
+          {
+            match: ".isStaffPersonal())",
+            replace: `$&||true`,
+          },
+        ],
+      },
     ]
   : []) as PlaintextPatch[];
