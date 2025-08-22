@@ -67,6 +67,7 @@ export const General = (): React.ReactElement => {
     generalSettings,
     "staffDevTools",
   );
+  const [quickCSS, setQuickCSS] = util.useSettingArray(generalSettings, "quickCSS");
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
@@ -92,6 +93,12 @@ export const General = (): React.ReactElement => {
     return () => document.removeEventListener("keydown", listener);
   }, [kKeys, isEasterEgg]);
 
+   React.useEffect(() => {
+    if (quickCSS) window.replugged.quickCSS.load();
+    else window.replugged.quickCSS.unload();
+  }, [quickCSS]);
+
+
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
@@ -111,9 +118,19 @@ export const General = (): React.ReactElement => {
         note={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC)}>
         {intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS)}
       </SwitchItem>
+      
+
+      <SwitchItem
+        value={quickCSS}
+        onChange={(value) => {
+          setQuickCSS(value);
+        }}>
+        Quick CSS
+      </SwitchItem>
 
       <SwitchItem
         {...util.useSetting(generalSettings, "autoApplyQuickCss")}
+        disabled={!quickCSS}
         note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
