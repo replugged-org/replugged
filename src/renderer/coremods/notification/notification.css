@@ -4,19 +4,32 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: flex-end;
   position: fixed;
   bottom: 25px;
   right: 25px;
   z-index: 999;
+  max-height: 69%;
+  overflow: hidden scroll;
+  scroll-snap-type: y proximity;
 }
+
+.replugged-notification-container::-webkit-scrollbar,
+.replugged-notification-container::-webkit-scrollbar-track,
+.replugged-notification-container::-webkit-scrollbar-thumb,
+.replugged-notification-container::-webkit-scrollbar-corner {
+  opacity: 0;
+}
+
+.replugged-notification-container > .replugged-notification:last-child {
+  scroll-snap-align: end;
+}
+
 .replugged-notification {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
   background-color: var(--background-base-lower);
   border: 1px solid var(--border-normal);
-  box-shadow: 0 8px 16px 0 var(--border-subtle);
   border-radius: 8px;
   max-width: 600px;
   min-width: 223px;
