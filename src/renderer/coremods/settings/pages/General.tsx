@@ -120,11 +120,9 @@ export const General = (): React.ReactElement => {
 
       <SwitchItem
         value={quickCSS}
-        onChange={(value) => {
-          setQuickCSS(value);
-        }}
-        note={intl.string(t.REPLUGGED_QUICKCSS_DESC)}>
-        {intl.string(t.REPLUGGED_QUICKCSS)}
+        onChange={setQuickCSS}
+        note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC)}>
+        {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE)}
       </SwitchItem>
 
       <SwitchItem

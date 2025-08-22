@@ -1,4 +1,5 @@
 import { ready as commonReady } from "@common";
+import { generalSettings } from "../coremods/settings/pages";
 import { ready as componentsReady } from "../modules/components";
 import * as i18n from "../modules/i18n";
 import { error, log } from "../modules/logger";
@@ -8,7 +9,6 @@ import * as plugins from "./plugins";
 import * as quickCSS from "./quick-css";
 import * as themes from "./themes";
 import { startAutoUpdateChecking } from "./updater";
-import { generalSettings } from "../coremods/settings/pages";
 
 export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");
