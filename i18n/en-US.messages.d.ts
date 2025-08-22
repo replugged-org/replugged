@@ -1270,19 +1270,6 @@ export declare const messages: {
    */
   'REPLUGGED_QUICKCSS_CHANGES_APPLY': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Iof76O`
-   * 
-   * ### Definition
-   * ```text
-   * This you add custom styles to Discord instantly. Change colors, layout, and looks in real time without themes.
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
-   */
-  'REPLUGGED_QUICKCSS_DESC': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `Nk3LNj`
    * 
    * ### Definition
@@ -1646,6 +1633,32 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `iAl99/`
+   * 
+   * ### Definition
+   * ```text
+   * Enable Quick CSS
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_QUICKCSS_ENABLE': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `pKkVIi`
+   * 
+   * ### Definition
+   * ```text
+   * Apply custom styles to Discord instantly. Change colors, layout, and appearance in real time without installing themes.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC': TypedIntlMessageGetter<{}>,
   /**
    * Key: `ojp79/`
    * 

@@ -71,7 +71,6 @@ export default defineMessages({
   "REPLUGGED_PLUGIN": "Plugin",
   "REPLUGGED_PLUGINS": "Plugins",
   "REPLUGGED_QUICKCSS": "Quick CSS",
-  "REPLUGGED_QUICKCSS_DESC": "This lets you add custom styles to Discord instantly. Change colors, layout, and looks in real time without themes.",
   "REPLUGGED_SETTINGS_ADVANCED_DESC": "Don't touch stuff in here if you don't know what you're doing. Unexpected things can happen to your cat.",
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL used to fetch some assets and to query Replugged's REST API.",
@@ -238,5 +237,7 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Custom Title Bar",
   "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC": "Use Discord's custom title bar instead of the system title bar. **Requires restart**.",
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS": "Enable Discord Internal DevTools",
-  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**."
+  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**.",
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE": "Enable Quick CSS",
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Apply custom styles to Discord instantly. Change colors, layout, and appearance in real time without installing themes."
 });
