@@ -10,3 +10,5 @@ export { getById, getExportsForProps, getModule } from "./get-modules";
 export * as filters from "./filters";
 
 export * from "./helpers";
+
+export { sourceStrings, wpRequire } from "./patch-load";
