@@ -27,7 +27,7 @@ export function start(): void {
       name: "rp-quickcss",
       label: () => intl.string(t.REPLUGGED_QUICKCSS),
       // React Hook should be used instead
-      tabPredicate: () => generalSettings.get("quickCSS"),
+      tabPredicate: () => generalSettings.useValue("quickCSS"),
       elem: QuickCSS,
     }),
     Section({
