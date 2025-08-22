@@ -1,6 +1,7 @@
 import type { Channel } from "discord-types/general";
-import { virtualMerge } from "src/renderer/util";
-import { waitForProps } from "../webpack";
+import { getBoundMethods, virtualMerge } from "src/renderer/util";
+import { waitForStore } from "../webpack";
+import type { Store } from "./flux";
 
 interface LastChannelFollowingDestination {
   channelId: string;
@@ -44,15 +45,14 @@ export interface ChannelStore {
   loadAllGuildAndPrivateChannelsFromDisk(): Record<string, Channel>;
 }
 
+const SelectedChannelStore = await waitForStore<SelectedChannelStore & Store>(
+  "SelectedChannelStore",
+);
+const ChannelStore = await waitForStore<ChannelStore & Store>("ChannelStore");
+
 export type Channels = SelectedChannelStore & ChannelStore;
 
 export default virtualMerge(
-  (await waitForProps<SelectedChannelStore>(
-    "getChannelId",
-    "getLastSelectedChannelId",
-    "getVoiceChannelId",
-  ).then(Object.getPrototypeOf)) as SelectedChannelStore,
-  (await waitForProps<ChannelStore>("getChannel", "hasChannel").then(
-    Object.getPrototypeOf,
-  )) as ChannelStore,
-);
+  getBoundMethods(SelectedChannelStore),
+  getBoundMethods(ChannelStore),
+) as Channels;
