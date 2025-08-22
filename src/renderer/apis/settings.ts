@@ -1,3 +1,4 @@
+import { React } from "@common";
 import type { Jsonifiable } from "type-fest";
 
 type SettingsUpdate<T> = { type: "set"; value: T[keyof T] } | { type: "delete" };
@@ -18,6 +19,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
   #saveTimeout: ReturnType<typeof setTimeout> | undefined;
   #queuedUpdates: Map<Extract<keyof T, string>, SettingsUpdate<T>>;
   #defaultSettings: Partial<T>;
+  #listeners = new Map<keyof T, Set<() => void>>();
 
   /**
    * Namespace for these settings.
@@ -42,7 +44,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * Gets a setting.
    * @param key Key of the setting to retrieve.
    * @param fallback Value to return if the key does not already exist.
-   * @returns
+   * @returns The value of the setting, or the fallback value if it does not already exist.
    */
   public get<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
     key: K,
@@ -57,6 +59,37 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
     }
     // @ts-expect-error It doesn't understand ig
     return this.#settings[key] ?? fallback ?? this.#defaultSettings[key];
+  }
+
+  /**
+   * Use a setting's value in React.
+   * @param key Key of the setting to retrieve.
+   * @param fallback Value to return if the key does not already exist.
+   * @returns The value of the setting, or the fallback value if it does not already exist.
+   */
+  public useValue<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
+    key: K,
+    fallback?: F,
+  ): K extends D
+    ? NonNullable<T[K]>
+    : F extends null | undefined
+      ? T[K] | undefined
+      : NonNullable<T[K]> | F {
+    if (typeof this.#settings === "undefined") {
+      throw new Error(`Settings not loaded for namespace ${this.namespace}`);
+    }
+    const [setting, setSetting] = React.useState(() => this.get(key, fallback));
+    React.useEffect(() => {
+      if (!this.#listeners.has(key)) this.#listeners.set(key, new Set());
+      const listeners = this.#listeners.get(key)!;
+      const cb = (): void => setSetting(this.get(key, fallback));
+      listeners.add(cb);
+      return () => {
+        listeners.delete(cb);
+        if (!listeners.size) this.#listeners.delete(key);
+      };
+    }, [key, fallback]);
+    return setting;
   }
 
   /**
@@ -123,6 +156,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
     this.#queuedUpdates.set(key, update);
     this.#saveTimeout = setTimeout(() => {
       this.#queuedUpdates.forEach((u, k) => {
+        if (this.#listeners.has(k)) this.#listeners.get(k)!.forEach((c) => c());
         if (u.type === "delete") {
           window.RepluggedNative.settings.delete(this.namespace, k);
         } else {

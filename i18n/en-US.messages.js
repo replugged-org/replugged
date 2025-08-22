@@ -71,7 +71,7 @@ export default defineMessages({
   "REPLUGGED_PLUGIN": "Plugin",
   "REPLUGGED_PLUGINS": "Plugins",
   "REPLUGGED_QUICKCSS": "Quick CSS",
-  "REPLUGGED_QUICKCSS_DESC": "This you add custom styles to Discord instantly. Change colors, layout, and looks in real time without themes.",
+  "REPLUGGED_QUICKCSS_DESC": "This lets you add custom styles to Discord instantly. Change colors, layout, and looks in real time without themes.",
   "REPLUGGED_SETTINGS_ADVANCED_DESC": "Don't touch stuff in here if you don't know what you're doing. Unexpected things can happen to your cat.",
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL used to fetch some assets and to query Replugged's REST API.",
