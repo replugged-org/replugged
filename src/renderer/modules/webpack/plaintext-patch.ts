@@ -33,7 +33,7 @@ export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule
     const result = patch.replacements.reduce((source, patcher) => {
       const result = patcher(source);
       // If the replacement had no effect and was meant for a particular module!
-      if (patch.required && (patch.find || patch.check) && result === source)
+      if (patch.warn && (patch.find || patch.check) && result === source)
         logger.warn(`Plaintext Patch had no effect!`, `Addon ID: ${patch.id} | Module ID: ${id}`, {
           find: patch.find,
           check: patch.check,
@@ -77,7 +77,7 @@ export function patchPlaintext(patches: PlaintextPatch[], id: string): void {
     ...patches.map((patch) => ({
       ...patch,
       id,
-      required: patch.required ?? true,
+      warn: patch.warn ?? true,
       replacements: patch.replacements.map((replacement) => {
         if (typeof replacement === "function") return replacement;
         const newReplacement = (source: string): string =>
