@@ -17,31 +17,33 @@ interface CategoryProps {
 
 export type CategoryType = React.FC<React.PropsWithChildren<CategoryProps>>;
 
-/**
- * A category. It's opened state, by default, is automatically handled by the component. `open` and `onChange` both must be specified to override.
- */
-export default ((props: React.PropsWithChildren<CategoryProps>) => {
-  const [open, setOpen] = React.useState(props.open || false);
+function Category({
+  children,
+  title,
+  open,
+  note,
+  disabled,
+  onChange,
+}: React.PropsWithChildren<CategoryProps>): React.ReactElement {
+  const [isOpen, setIsOpen] = React.useState(open || false);
 
   const handleClick = (): void => {
-    if (props.disabled) return;
+    if (disabled) return;
 
-    if (typeof props.onChange === "function" && typeof props.open === "boolean") props.onChange();
-    else setOpen(!open);
+    if (typeof onChange === "function" && typeof open === "boolean") onChange();
+    else setIsOpen(!isOpen);
   };
 
   return (
     <div style={{ marginBottom: 20 }}>
       <div
         style={{
-          cursor: props.disabled ? "not-allowed" : "pointer",
+          cursor: disabled ? "not-allowed" : "pointer",
           alignItems: "center",
           display: "flex",
-          opacity: props.disabled ? 0.3 : undefined,
+          opacity: disabled ? 0.3 : undefined,
         }}
-        onClick={() => {
-          handleClick();
-        }}>
+        onClick={handleClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -50,7 +52,7 @@ export default ((props: React.PropsWithChildren<CategoryProps>) => {
             height: 28,
             marginRight: 15,
             transition: "transform 0.3s",
-            transform: open ? "rotate(90deg)" : undefined,
+            transform: isOpen ? "rotate(90deg)" : undefined,
           }}>
           <path
             fill="var(--header-primary)"
@@ -61,30 +63,30 @@ export default ((props: React.PropsWithChildren<CategoryProps>) => {
           <div className={classes.labelRow}>
             <label
               className={classes.title}
-              style={{ cursor: props.disabled ? "not-allowed" : "pointer" }}>
-              {props.title}
+              style={{ cursor: disabled ? "not-allowed" : "pointer" }}>
+              {title}
             </label>
           </div>
-          {props.note && (
-            <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
-          )}
+          {note && <FormText.DESCRIPTION className={classes.note}>{note}</FormText.DESCRIPTION>}
         </div>
       </div>
-      {open ? (
+      {isOpen ? (
         <div
           style={{
             marginTop: 20,
             marginLeft: 12,
             borderLeft: "1px var(--border-subtle) solid",
             paddingLeft: 33,
-            cursor: props.disabled ? "not-allowed" : undefined,
-            opacity: props.disabled ? 0.3 : undefined,
+            cursor: disabled ? "not-allowed" : undefined,
+            opacity: disabled ? 0.3 : undefined,
           }}>
-          {props.children}
+          {children}
         </div>
       ) : (
         <Divider className={classes.dividerDefault} />
       )}
     </div>
   );
-}) as CategoryType;
+}
+
+export default Category;
