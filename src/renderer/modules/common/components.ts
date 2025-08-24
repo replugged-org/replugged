@@ -4,6 +4,7 @@ import type { NoticeType } from "@components/Notice";
 import type { OriginalTextType } from "@components/Text";
 import type { CheckboxType } from "../components/CheckboxItem";
 import type { ContextMenuType } from "../components/ContextMenu";
+import type { ColorPickerType } from "../components/ColorPickerItem";
 import type { DividerType } from "../components/Divider";
 import type { FormItemCompType } from "../components/FormItem";
 import type { FormNoticeType } from "../components/FormNotice";
@@ -27,6 +28,7 @@ export type DiscordComponents = {
   string,
   | CheckboxType
   | ClickableCompType
+  | ColorPickerType
   | DividerType
   | FormItemCompType
   | FormNoticeType
