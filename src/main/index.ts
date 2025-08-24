@@ -6,12 +6,11 @@ import electron, {
   session,
 } from "electron";
 import { dirname, join } from "path";
-import { CONFIG_PATHS } from "src/util.mjs";
+import { CONFIG_PATHS, getAddonPath } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
 import type { RepluggedWebContents } from "../types";
 import { getSetting } from "./ipc/settings";
-
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 const discordPackage: PackageJson = require(join(discordPath, "package.json"));
@@ -169,10 +168,10 @@ app.once("ready", () => {
         filePath = join(CONFIG_PATHS.quickcss, reqUrl.pathname);
         break;
       case "theme":
-        filePath = join(CONFIG_PATHS.themes, reqUrl.pathname);
+        filePath = getAddonPath(reqUrl.pathname, CONFIG_PATHS.themes);
         break;
       case "plugin":
-        filePath = join(CONFIG_PATHS.plugins, reqUrl.pathname);
+        filePath = getAddonPath(reqUrl.pathname, CONFIG_PATHS.plugins);
         break;
     }
     return net.fetch(pathToFileURL(filePath).toString());
