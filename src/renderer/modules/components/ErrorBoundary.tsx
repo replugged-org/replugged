@@ -2,7 +2,7 @@ import { intl } from "@common/i18n";
 import React from "@common/react";
 import { plugins } from "@replugged";
 import { t } from "../i18n";
-import { Logger } from "../logger";
+import { Logger } from "@logger";
 
 import "./ErrorBoundary.css";
 

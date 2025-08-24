@@ -11,6 +11,7 @@ import { extname, join, sep } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
+import logger from "../logger";
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
 
@@ -85,8 +86,8 @@ ipcMain.on(RepluggedIpcChannels.LIST_PLUGINS, (event) => {
     try {
       plugins.push(getPlugin(pluginDir.name));
     } catch (e) {
-      console.error(`Invalid plugin: ${pluginDir.name}`);
-      console.error(e);
+      logger.error(`Invalid plugin: ${pluginDir.name}`);
+      logger.error(e);
     }
   }
 
