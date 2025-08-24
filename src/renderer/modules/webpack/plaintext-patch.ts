@@ -6,7 +6,7 @@ const logger = Logger.api("plaintext-patch");
 /**
  * All plaintext patches
  */
-export const plaintextPatches: RawPlaintextPatch[] = [];
+const plaintextPatches: RawPlaintextPatch[] = [];
 
 /**
  * Replace a module with a plaintext-patched version.
@@ -34,7 +34,7 @@ export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule
       const result = patcher(source);
       // Log a warning if the replacement had no effect and was intended for a specific module
       if (patch.warn && (patch.find || patch.check) && result === source)
-        logger.warn(`Plaintext patch had no effect`, `Addon ID: ${patch.id} | Module ID: ${id}`, {
+        logger.warn(`Plaintext patch had no effect (Addon ID: ${patch.id}, Module ID: ${id})`, {
           find: patch.find,
           check: patch.check,
           replacement: patcher.regex ?? patcher,
