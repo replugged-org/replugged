@@ -12,17 +12,22 @@ export default (generalSettings.get("experiments")
       {
         find: /"displayName","(Developer)?ExperimentStore"/,
         replacements: [
-          // Patch the ExperimentStore to force the release channel to 'staging'
+          // Force the release channel to 'staging'
           {
             match: /window\.GLOBAL_ENV\.RELEASE_CHANNEL/g,
             replace: `"staging"`,
           },
-          // Patch the DeveloperExperimentStore to force the 'isDeveloper' property to true
+        ],
+      },
+      {
+        find: '"displayName","DeveloperExperimentStore"',
+        replacements: [
+          // Force the 'isDeveloper' property to true
           {
             match: /(isDeveloper:{configurable:!1,get:\(\)=>)\w+/g,
             replace: `$1true`,
           },
-          // Patch the DeveloperExperimentStore to set the result of 'isStaffEnv' to be always true
+          // Set the result of 'isStaffEnv' to be always true
           {
             match: /=\(0,\w+\.\w+\)\(\w+\.default\.getCurrentUser\(\)\)/,
             replace: "=true",
