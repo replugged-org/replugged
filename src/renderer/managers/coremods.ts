@@ -9,6 +9,7 @@ import experimentsPlaintext from "../coremods/experiments/plaintextPatches";
 import languagePlaintext from "../coremods/language/plaintextPatches";
 import messagePopoverPlaintext from "../coremods/messagePopover/plaintextPatches";
 import noDevtoolsWarningPlaintext from "../coremods/noDevtoolsWarning/plaintextPatches";
+import notificationPlaintext from "../coremods/notification/plaintextPatches";
 import noticesPlaintext from "../coremods/notices/plaintextPatches";
 import notrackPlaintext from "../coremods/notrack/plaintextPatches";
 import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
@@ -32,6 +33,7 @@ export namespace coremods {
   export let messagePopover: Coremod;
   export let noDevtoolsWarning: Coremod;
   export let notices: Coremod;
+  export let notification: Coremod;
   export let notrack: Coremod;
   export let rdtComponentSourceFix: Coremod;
   export let rpc: Coremod;
@@ -59,6 +61,7 @@ export async function startAll(): Promise<void> {
   coremods.messagePopover = await import("../coremods/messagePopover");
   coremods.noDevtoolsWarning = await import("../coremods/noDevtoolsWarning");
   coremods.notices = await import("../coremods/notices");
+  coremods.notification = await import("../coremods/notification");
   coremods.notrack = await import("../coremods/notrack");
   coremods.rdtComponentSourceFix = await import("../coremods/rdtComponentSourceFix");
   coremods.rpc = await import("../coremods/rpc");
@@ -90,6 +93,7 @@ export function runPlaintextPatches(): void {
     { patch: languagePlaintext, name: "replugged.coremod.language" },
     { patch: messagePopoverPlaintext, name: "replugged.coremod.messagePopover" },
     { patch: noDevtoolsWarningPlaintext, name: "replugged.coremod.noDevtoolsWarning" },
+    { patch: notificationPlaintext, name: "replugged.coremod.notification" },
     { patch: noticesPlaintext, name: "replugged.coremod.notices" },
     { patch: notrackPlaintext, name: "replugged.coremod.notrack" },
     { patch: popoutThemingPlaintext, name: "replugged.coremod.popoutTheming" },

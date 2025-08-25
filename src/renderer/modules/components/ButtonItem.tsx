@@ -67,7 +67,7 @@ const classes =
     "dividerDefault",
   );
 
-interface ButtonItemProps {
+export interface ButtonItemProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   button?: string;
   note?: string;

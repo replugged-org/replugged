@@ -163,6 +163,11 @@ export type { NoticeType };
 export let Notice: NoticeType;
 importTimeout("Notice", import("./Notice"), (mod) => (Notice = mod.default));
 
+import type { ProgressType } from "./Progress";
+export type { ProgressType };
+export let Progress: ProgressType;
+importTimeout("Progress", import("./Progress"), (mod) => (Progress = mod.default));
+
 /**
  * @internal
  * @hidden
