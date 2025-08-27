@@ -1,10 +1,10 @@
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
 import { t } from "src/renderer/modules/i18n";
-import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
+import { Section, insertRecords,insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater, generalSettings } from "./pages";
 
-export { insertSections };
+export { insertSections,insertRecords  };
 
 export function VersionInfo(): React.ReactElement {
   return (
@@ -15,13 +15,14 @@ export function VersionInfo(): React.ReactElement {
 }
 
 export function start(): void {
-  settingsTools.addAfter("Billing", [
-    Divider(),
-    Header("Replugged"),
+  settingsTools.addAfter("BILLING", {
+    divider: true,
+    header: "Replugged",
+    settings: [
     Section({
       name: "rp-general",
       label: () => intl.string(discordT.SETTINGS_GENERAL),
-      elem: General,
+      elem: General
     }),
     Section({
       name: "rp-quickcss",
@@ -43,10 +44,10 @@ export function start(): void {
       name: "rp-updater",
       label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
       elem: Updater,
-    }),
-  ]);
+    })]
+});
 }
 
 export function stop(): void {
-  settingsTools.removeAfter("Billing");
+  settingsTools.removeAfter("BILLING");
 }
