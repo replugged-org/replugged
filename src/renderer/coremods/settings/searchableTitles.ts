@@ -18,28 +18,26 @@ export default {
     intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION),
   ],
   quickCSS: [intl.string(t.REPLUGGED_QUICKCSS), intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)],
-  get plugins() {
-    return () =>
-      [...plugins.values()]
-        .map((x) => [
-          x.manifest.name,
-          x.manifest.id,
-          x.manifest.description,
-          ...[x.manifest.author].flat().map(Object.values).flat(),
-        ])
-        .flat(10);
-  },
-  get themes() {
-    return () =>
-      [...themes.values()]
-        .map((x) => [
-          x.manifest.name,
-          x.manifest.id,
-          x.manifest.description,
-          ...[x.manifest.author].flat().map(Object.values).flat(),
-        ])
-        .flat(10);
-  },
+  plugins: () =>
+    [...plugins.values()]
+      .map((x) => [
+        x.manifest.name,
+        x.manifest.id,
+        x.manifest.description,
+        ...[x.manifest.author].flat().map(Object.values).flat(),
+      ])
+      .flat(10),
+
+  themes: () =>
+    [...themes.values()]
+      .map((x) => [
+        x.manifest.name,
+        x.manifest.id,
+        x.manifest.description,
+        ...[x.manifest.author].flat().map(Object.values).flat(),
+      ])
+      .flat(10),
+
   updater: [
     intl.string(t.REPLUGGED_UPDATES_UPDATE_ALL),
     intl.string(t.REPLUGGED_UPDATES_CHECK),

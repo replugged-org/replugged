@@ -28,7 +28,7 @@ export const Section = ({
   pos?: number;
   fromEnd?: boolean;
   tabPredicate?: () => boolean;
-  searchableTitles?: string[];
+  searchableTitles?: string[] | SearchableCallback;
 }): SectionType => ({
   section: name,
   _id,
@@ -40,7 +40,6 @@ export const Section = ({
   tabPredicate,
   searchableTitles,
 });
-
 
 export const settingsTools: SettingsTools = {
   sections: new Map(),
