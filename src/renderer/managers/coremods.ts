@@ -1,5 +1,5 @@
 import type { Promisable } from "type-fest";
-import { Logger } from "../modules/logger";
+import { Logger } from "@logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 
 import badgesPlaintext from "../coremods/badges/plaintextPatches";

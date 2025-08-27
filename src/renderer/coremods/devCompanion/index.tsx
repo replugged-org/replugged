@@ -1,7 +1,7 @@
+import { Logger } from "@logger";
 import { getByProps, getBySource, getByValue, getModule } from "src/renderer/modules/webpack";
 import { sourceStrings } from "src/renderer/modules/webpack/patch-load";
 import type { Filter } from "src/types";
-import { Logger } from "../../modules/logger";
 
 const PORT = 8485;
 
