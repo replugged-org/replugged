@@ -8,6 +8,7 @@ export interface Section {
   label?: string | LabelCallback;
   color?: string;
   element?: (args: unknown) => React.ReactElement;
+  tabPredicate?: () => boolean;
   pos: number;
   fromEnd?: boolean;
   className?: string;

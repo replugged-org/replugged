@@ -1,5 +1,11 @@
-import type classnames from "classnames";
-import { waitForModule } from "../webpack";
-import { bySource } from "../webpack/filters";
+import { filters, waitForModule } from "../webpack";
 
-export default await waitForModule<typeof classnames>(bySource("window.classNames="));
+type Value = string | number | boolean | undefined | null;
+type Mapping = Record<string, unknown>;
+type ArgumentArray = Argument[];
+type ReadonlyArgumentArray = readonly Argument[];
+type Argument = Value | Mapping | ArgumentArray | ReadonlyArgumentArray;
+
+export type ClassNames = (...args: ArgumentArray) => string;
+
+export default await waitForModule<ClassNames>(filters.bySource("window.classNames="));

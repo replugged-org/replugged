@@ -1,4 +1,5 @@
-import type { RawModule } from "../../../types";
+import type { RawModule } from "src/types";
+import type { Store } from "../common/flux";
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
 
@@ -66,6 +67,24 @@ export const byValue = (match: string | RegExp) => {
           return true;
         }
       } catch {}
+    }
+    return false;
+  };
+};
+
+/**
+ * Get a module that has a Flux store with the given name
+ * @param name The name of the store to filter by
+ */
+export const byStoreName = (name: string) => {
+  return (m: RawModule) => {
+    const storeExport = getExportsForProps<Store>(m.exports, ["getName", "_dispatchToken"]);
+    if (storeExport && typeof storeExport.getName === "function") {
+      try {
+        return storeExport.getName() === name;
+      } catch {
+        return false;
+      }
     }
     return false;
   };

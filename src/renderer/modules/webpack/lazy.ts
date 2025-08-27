@@ -1,5 +1,4 @@
 import type { Filter, LazyCallback, LazyListener, RawModule, WaitForOptions } from "src/types";
-
 import { getExports, getModule } from "./get-modules";
 
 /**
