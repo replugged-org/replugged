@@ -10,7 +10,6 @@ export interface Section {
   element?: (args: unknown) => React.ReactElement;
   pos: number;
   fromEnd?: boolean;
-  className?: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   __$$label?: LabelCallback;
   tabPredicate?: () => boolean;

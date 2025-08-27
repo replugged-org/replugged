@@ -35,7 +35,6 @@ export const Section = ({
   color,
   element: elem,
   pos: getPos(pos),
-  className: `rp-settingsItem ${name}`,
   fromEnd: fromEnd ?? getPos(pos) < 0,
   tabPredicate,
   searchableTitles,
