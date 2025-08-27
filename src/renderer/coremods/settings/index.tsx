@@ -24,32 +24,32 @@ export function start(): void {
         name: "rp-general",
         label: () => intl.string(discordT.SETTINGS_GENERAL),
         elem: General,
-        searchableTitles: searchableTitles.general
+        searchableTitles: searchableTitles.general,
       }),
       Section({
         name: "rp-quickcss",
         label: () => intl.string(t.REPLUGGED_QUICKCSS),
         tabPredicate: () => generalSettings.useValue("quickCSS"),
         elem: QuickCSS,
-        searchableTitles: searchableTitles.quickCSS
+        searchableTitles: searchableTitles.quickCSS,
       }),
       Section({
         name: "rp-plugins",
         label: () => intl.string(t.REPLUGGED_PLUGINS),
         elem: Plugins,
-        searchableTitles: searchableTitles.plugins
+        searchableTitles: searchableTitles.plugins,
       }),
       Section({
         name: "rp-themes",
         label: () => intl.string(t.REPLUGGED_THEMES),
         elem: Themes,
-        searchableTitles: searchableTitles.themes
+        searchableTitles: searchableTitles.themes,
       }),
       Section({
         name: "rp-updater",
         label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
         elem: Updater,
-        searchableTitles: searchableTitles.updater
+        searchableTitles: searchableTitles.updater,
       }),
     ],
   });
