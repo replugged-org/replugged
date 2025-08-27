@@ -1,10 +1,10 @@
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
 import { t } from "src/renderer/modules/i18n";
-import { Section, insertRecords,insertSections, settingsTools } from "./lib";
+import { Section, insertRecords, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater, generalSettings } from "./pages";
 
-export { insertSections,insertRecords  };
+export { insertSections, insertRecords };
 
 export function VersionInfo(): React.ReactElement {
   return (
@@ -19,33 +19,34 @@ export function start(): void {
     divider: true,
     header: "Replugged",
     settings: [
-    Section({
-      name: "rp-general",
-      label: () => intl.string(discordT.SETTINGS_GENERAL),
-      elem: General
-    }),
-    Section({
-      name: "rp-quickcss",
-      label: () => intl.string(t.REPLUGGED_QUICKCSS),
-      tabPredicate: () => generalSettings.useValue("quickCSS"),
-      elem: QuickCSS,
-    }),
-    Section({
-      name: "rp-plugins",
-      label: () => intl.string(t.REPLUGGED_PLUGINS),
-      elem: Plugins,
-    }),
-    Section({
-      name: "rp-themes",
-      label: () => intl.string(t.REPLUGGED_THEMES),
-      elem: Themes,
-    }),
-    Section({
-      name: "rp-updater",
-      label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
-      elem: Updater,
-    })]
-});
+      Section({
+        name: "rp-general",
+        label: () => intl.string(discordT.SETTINGS_GENERAL),
+        elem: General,
+      }),
+      Section({
+        name: "rp-quickcss",
+        label: () => intl.string(t.REPLUGGED_QUICKCSS),
+        tabPredicate: () => generalSettings.useValue("quickCSS"),
+        elem: QuickCSS,
+      }),
+      Section({
+        name: "rp-plugins",
+        label: () => intl.string(t.REPLUGGED_PLUGINS),
+        elem: Plugins,
+      }),
+      Section({
+        name: "rp-themes",
+        label: () => intl.string(t.REPLUGGED_THEMES),
+        elem: Themes,
+      }),
+      Section({
+        name: "rp-updater",
+        label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
+        elem: Updater,
+      }),
+    ],
+  });
 }
 
 export function stop(): void {

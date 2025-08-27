@@ -17,7 +17,7 @@ export const Section = ({
   pos,
   fromEnd,
   tabPredicate,
-  searchableTitles
+  searchableTitles,
 }: {
   name: string;
   _id?: string;
@@ -27,7 +27,7 @@ export const Section = ({
   pos?: number;
   fromEnd?: boolean;
   tabPredicate?: () => boolean;
-   searchableTitles?: string[];
+  searchableTitles?: string[];
 }): SectionType => ({
   section: name,
   _id,
@@ -38,7 +38,7 @@ export const Section = ({
   className: `rp-settingsItem ${name}`,
   fromEnd: fromEnd ?? getPos(pos) < 0,
   tabPredicate,
-  searchableTitles
+  searchableTitles,
 });
 
 export const settingsTools: SettingsTools = {
