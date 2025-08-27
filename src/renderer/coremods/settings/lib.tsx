@@ -29,7 +29,7 @@ export const Section = ({
   elem: (args: unknown) => React.ReactElement;
   pos?: number;
   fromEnd?: boolean;
-  tabPredicate?: (query: string) => boolean;
+  tabPredicate?: () => boolean;
 }): SectionType => ({
   section: name,
   _id,
@@ -39,7 +39,7 @@ export const Section = ({
   pos: getPos(pos),
   className: `rp-settingsItem ${name}`,
   fromEnd: fromEnd ?? getPos(pos) < 0,
-  tabPredicate: tabPredicate && (() => tabPredicate(getQuery())),
+  tabPredicate,
 });
 
 export const Divider = (pos?: number): SectionType => ({
