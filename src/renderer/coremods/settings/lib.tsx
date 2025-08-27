@@ -1,6 +1,7 @@
 import type React from "react";
 import type {
   LabelCallback,
+  SearchableCallback,
   SectionRecords,
   Section as SectionType,
   SettingsTools,
@@ -40,6 +41,7 @@ export const Section = ({
   searchableTitles,
 });
 
+
 export const settingsTools: SettingsTools = {
   sections: new Map(),
   rpSections: new Map(),
@@ -47,13 +49,6 @@ export const settingsTools: SettingsTools = {
   addSection(opts) {
     const data = Section(opts);
     const name = data._id || data.section;
-    const labelFn = data.__$$label;
-    if (typeof data.label === "function" || typeof labelFn === "function") {
-      if (!labelFn) {
-        data.__$$label = data.label as LabelCallback;
-      }
-      data.label = data.__$$label?.();
-    }
     settingsTools.rpSections.set(name, data);
     return data;
   },
@@ -65,18 +60,13 @@ export const settingsTools: SettingsTools = {
     const record = {
       header: section.header,
       divider: section.divider,
-      settings: section.settings?.map((section) => {
-        const name = section._id || section.section;
-        const labelFn = section.__$$label;
-        if (typeof section.label === "function" || typeof labelFn === "function") {
-          if (!labelFn) {
-            section.__$$label = section.label as LabelCallback;
-          }
-          section.label = section.__$$label?.();
-        }
-        settingsTools.sections.set(name, section);
-        return name;
-      }),
+      get settings() {
+        return section.settings?.map((section) => {
+          const name = section._id || section.section;
+          settingsTools.sections.set(name, section);
+          return name;
+        });
+      },
     };
     settingsTools.rpSectionsAfter.set(sectionName, record);
     return section;
@@ -88,10 +78,32 @@ export const settingsTools: SettingsTools = {
 };
 
 export function insertSections<T = Record<string, SectionType>>(sections: T): T {
+  const mapSections = (sections: Map<string, SectionType>): Record<string, SectionType> => {
+    return Object.fromEntries(
+      [...sections.entries()].map(([name, section]) => {
+        const labelFn = section.__$$label;
+        if (typeof section.label === "function" || typeof labelFn === "function") {
+          if (!labelFn) {
+            section.__$$label = section.label as LabelCallback;
+          }
+          section.label = section.__$$label?.();
+        }
+
+        const searchableFn = section.__$$searchable;
+        if (typeof section.searchableTitles === "function" || typeof searchableFn === "function") {
+          if (!searchableFn) {
+            section.__$$searchable = section.searchableTitles as SearchableCallback;
+          }
+          section.searchableTitles = section.__$$searchable?.();
+        }
+        return [name, section];
+      }),
+    );
+  };
   return {
     ...sections,
-    ...Object.fromEntries(settingsTools.sections),
-    ...Object.fromEntries(settingsTools.rpSections),
+    ...mapSections(settingsTools.sections),
+    ...mapSections(settingsTools.rpSections),
   };
 }
 

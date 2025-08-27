@@ -2,6 +2,8 @@ import type React from "react";
 
 export type LabelCallback = () => string;
 
+export type SearchableCallback = () => string[];
+
 export interface Section {
   section: string;
   _id?: string;
@@ -12,8 +14,10 @@ export interface Section {
   fromEnd?: boolean;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   __$$label?: LabelCallback;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  __$$searchable?: SearchableCallback;
   tabPredicate?: () => boolean;
-  searchableTitles?: string[];
+  searchableTitles?: string[] | SearchableCallback;
 }
 
 interface SettingRecord {
