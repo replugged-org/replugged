@@ -4,11 +4,11 @@ const coremodStr = "replugged.coremods.coremods.settings";
 
 export default [
   {
-    find: "SettingsRendererConfig",
+    find: 'section:"logout"',
     replacements: [
       {
         match: /return Object.freeze/,
-        replace: (_) => `return (${coremodStr}?.insertSections ?? ((obj)=>obj))`,
+        replace: (_) => `return (${coremodStr}?.insertSections ?? Object.freeze)`,
       },
     ],
   },
