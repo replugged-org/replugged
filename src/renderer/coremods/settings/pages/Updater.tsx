@@ -128,7 +128,7 @@ export const Updater = (): React.ReactElement => {
         disabled={!updaterSettings.get("autoCheck")}
         note={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
         markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
-        equidistant={true}
+        equidistant
         onMarkerRender={(value) => {
           // Format as xh and/or xm
           const hours = Math.floor(value / 60);
@@ -144,7 +144,7 @@ export const Updater = (): React.ReactElement => {
           const label = [hourString, minuteString].filter(Boolean).join(" ");
           return label;
         }}
-        stickToMarkers={true}>
+        stickToMarkers>
         {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
       </SliderItem>
       {isRepluggedDev && (
@@ -230,7 +230,7 @@ export const Updater = (): React.ReactElement => {
                     {sourceLink ? (
                       <Tooltip
                         text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
-                          type: intl.string(t.REPLUGGED_UPDATES_UPDATE_NOUN),
+                          type: intl.string(discordT.UPDATE_BADGE_HEADER),
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
                         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
@@ -248,7 +248,7 @@ export const Updater = (): React.ReactElement => {
                     onClick={() => installOne(update.id)}
                     color={Button.Colors.PRIMARY}
                     submitting={isUpdating}>
-                    {intl.string(t.REPLUGGED_UPDATES_UPDATE)}
+                    {intl.string(discordT.UPDATE)}
                   </Button>
                 ) : didInstallAll ? null : (
                   <Button onClick={reload} color={Button.Colors.RED}>

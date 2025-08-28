@@ -1,6 +1,6 @@
 import type { Guild, Role } from "discord-types/general";
-import { virtualMerge } from "src/renderer/util";
-import { waitForProps } from "../webpack";
+import { getBoundMethods, virtualMerge } from "src/renderer/util";
+import { waitForStore } from "../webpack";
 import type { Store } from "./flux";
 
 interface State {
@@ -10,8 +10,6 @@ interface State {
 }
 
 export interface SelectedGuildStore {
-  getCurrentGuild: () => Guild | undefined;
-
   getGuildId: () => string | null;
   getLastSelectedGuildId: () => string | null;
   getLastSelectedTimestamp: (guildId: string) => number;
@@ -19,24 +17,38 @@ export interface SelectedGuildStore {
 }
 
 export interface GuildStore {
-  getAllGuildsRoles: () => Record<string, Record<string, Role>>;
-  getGeoRestrictedGuilds: () => string[];
   getGuild: (guildId: string) => Guild | undefined;
   getGuildCount: () => number;
   getGuildIds: () => string[];
   getGuilds: () => Record<string, Guild>;
-  getRole: (guildId: string, roleId: string) => Role | undefined;
-  getRoles: (guildId: string) => Record<string, Role>;
-  isLoaded: () => boolean;
+  getGuildsArray: () => Guild[];
 }
 
-export type Guilds = SelectedGuildStore & GuildStore;
+export interface GuildRoleStore {
+  getRole: (guildId: string, roleId: string) => Role | undefined;
+  getEveryoneRole: (guild: Guild) => Role | undefined;
+  getManyRoles: (guildId: string, roleIds: string[]) => Role[];
+  getNumRoles: (guildId: string) => number;
+  getRolesSnapshot: (guildId: string) => Record<string, Role>;
+  getSortedRoles: (guildId: string) => Role[];
+  getUnsafeMutableRoles: (guildId: string) => Record<string, Role>;
+  serializeAllGuildRoles: () => Array<{
+    partitionKey: string;
+    values: Record<string, Role>;
+  }>;
+}
 
-const GuildStore = await waitForProps<GuildStore & Store>("getGuild", "getGuildIds");
-const SelectedGuildStore = await waitForProps<SelectedGuildStore & Store>(
-  "getGuildId",
-  "getLastSelectedGuildId",
-);
+export type Guilds = SelectedGuildStore &
+  GuildStore &
+  GuildRoleStore & { getCurrentGuild: () => Guild | undefined };
+
+const SelectedGuildStore = await waitForStore<SelectedGuildStore & Store>("SelectedGuildStore");
+const GuildStore = await waitForStore<GuildStore & Store>("GuildStore");
+const GuildRoleStore = await waitForStore<GuildRoleStore & Store>("GuildRoleStore");
+
+const { getGuild, getGuildIds, getGuilds, getGuildsArray } = GuildStore;
+
+const { getRolesSnapshot, getSortedRoles } = GuildRoleStore;
 
 export function getCurrentGuild(): Guild | undefined {
   const guildId = SelectedGuildStore.getGuildId();
@@ -45,7 +57,16 @@ export function getCurrentGuild(): Guild | undefined {
 }
 
 export default virtualMerge(
-  Object.getPrototypeOf(GuildStore) as GuildStore,
-  Object.getPrototypeOf(SelectedGuildStore) as SelectedGuildStore,
-  { getCurrentGuild },
-);
+  getBoundMethods(SelectedGuildStore),
+  getBoundMethods(GuildStore),
+  getBoundMethods(GuildRoleStore),
+  {
+    getGuild,
+    getGuildIds,
+    getGuilds,
+    getGuildsArray,
+    getRolesSnapshot,
+    getSortedRoles,
+    getCurrentGuild,
+  },
+) as Guilds;

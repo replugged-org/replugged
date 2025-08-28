@@ -3,6 +3,7 @@ import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 
 import badgesPlaintext from "../coremods/badges/plaintextPatches";
+import commandsPlaintext from "../coremods/commands/plaintextPatches";
 import contextMenuPlaintext from "../coremods/contextMenu/plaintextPatches";
 import experimentsPlaintext from "../coremods/experiments/plaintextPatches";
 import languagePlaintext from "../coremods/language/plaintextPatches";
@@ -10,7 +11,9 @@ import messagePopoverPlaintext from "../coremods/messagePopover/plaintextPatches
 import noDevtoolsWarningPlaintext from "../coremods/noDevtoolsWarning/plaintextPatches";
 import noticesPlaintext from "../coremods/notices/plaintextPatches";
 import notrackPlaintext from "../coremods/notrack/plaintextPatches";
+import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
+import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 
 const logger = Logger.api("Coremods");
 
@@ -80,14 +83,17 @@ export async function stopAll(): Promise<void> {
 
 export function runPlaintextPatches(): void {
   [
-    badgesPlaintext,
-    contextMenuPlaintext,
-    experimentsPlaintext,
-    languagePlaintext,
-    messagePopoverPlaintext,
-    noDevtoolsWarningPlaintext,
-    noticesPlaintext,
-    notrackPlaintext,
-    settingsPlaintext,
-  ].forEach(patchPlaintext);
+    { patch: badgesPlaintext, name: "replugged.coremod.badges" },
+    { patch: commandsPlaintext, name: "replugged.coremod.commands" },
+    { patch: contextMenuPlaintext, name: "replugged.coremod.contextMenu" },
+    { patch: experimentsPlaintext, name: "replugged.coremod.experiments" },
+    { patch: languagePlaintext, name: "replugged.coremod.language" },
+    { patch: messagePopoverPlaintext, name: "replugged.coremod.messagePopover" },
+    { patch: noDevtoolsWarningPlaintext, name: "replugged.coremod.noDevtoolsWarning" },
+    { patch: noticesPlaintext, name: "replugged.coremod.notices" },
+    { patch: notrackPlaintext, name: "replugged.coremod.notrack" },
+    { patch: popoutThemingPlaintext, name: "replugged.coremod.popoutTheming" },
+    { patch: settingsPlaintext, name: "replugged.coremod.settings" },
+    { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },
+  ].forEach(({ patch, name }) => patchPlaintext(patch, name));
 }

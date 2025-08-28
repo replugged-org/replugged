@@ -17,7 +17,7 @@ export const author = z.object({
 
 export type Author = z.infer<typeof author>;
 
-const urlType = z.string().url();
+const urlType = z.url();
 
 const sourceType = z.enum(["store", "github"]);
 
