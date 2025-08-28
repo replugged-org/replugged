@@ -539,9 +539,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
 
   return (
     <>
-      <Flex
-        justify={Flex.Justify.BETWEEN}
-        direction={Flex.Direction.VERTICAL}>
+      <Flex justify={Flex.Justify.BETWEEN} direction={Flex.Direction.VERTICAL}>
         <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
           {section === `rp_${type}` ? (
             <Text.H2
@@ -600,7 +598,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               })}
             </Button>
             <Button
-            fullWidth={true}
+              fullWidth={true}
               onClick={async () => {
                 try {
                   await loadMissing(type);
@@ -628,7 +626,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               })}
             </Button>
             <Button
-            fullWidth={true}
+              fullWidth={true}
               onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
               color={Button.Colors.PRIMARY}
               look={Button.Looks.OUTLINED}>
