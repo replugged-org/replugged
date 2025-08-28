@@ -47,11 +47,6 @@
   color: var(--header-primary);
 }
 
-.rp-addon-header-buttons {
-  align-self: normal;
+.replugged-addon-header-buttons {
   gap: "5px";
-}
-
-.rp-addon-header-buttons button {
-  width: 100%;
 }

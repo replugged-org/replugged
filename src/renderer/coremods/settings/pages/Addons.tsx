@@ -541,7 +541,6 @@ export const Addons = (type: AddonType): React.ReactElement => {
     <>
       <Flex
         justify={Flex.Justify.BETWEEN}
-        align={Flex.Align.START}
         direction={Flex.Direction.VERTICAL}>
         <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
           {section === `rp_${type}` ? (
@@ -594,13 +593,14 @@ export const Addons = (type: AddonType): React.ReactElement => {
           )}
         </Flex>
         {section === `rp_${type}` && (
-          <Flex className="rp-addon-header-buttons" justify={Flex.Justify.BETWEEN}>
-            <Button onClick={() => openFolder(type)}>
+          <Flex className="replugged-addon-header-buttons" justify={Flex.Justify.BETWEEN}>
+            <Button fullWidth={true} onClick={() => openFolder(type)}>
               {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
             <Button
+            fullWidth={true}
               onClick={async () => {
                 try {
                   await loadMissing(type);
@@ -628,6 +628,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               })}
             </Button>
             <Button
+            fullWidth={true}
               onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
               color={Button.Colors.PRIMARY}
               look={Button.Looks.OUTLINED}>
