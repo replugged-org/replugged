@@ -65,6 +65,7 @@
 }
 
 .replugged-quickcss-popout-root #replugged-quickcss-wrapper .cm-editor {
+  height: 100%;
   max-height: calc(100% - 25px);
 }
 .platform-win .replugged-quickcss-popout-root #replugged-quickcss-wrapper .cm-editor {
