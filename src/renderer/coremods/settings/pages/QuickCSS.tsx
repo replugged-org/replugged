@@ -1,8 +1,8 @@
 import { css } from "@codemirror/lang-css";
 import { EditorState } from "@codemirror/state";
-import { React, toast } from "@common";
+import { React, flux, fluxDispatcher, toast } from "@common";
 import { intl } from "@common/i18n";
-import { Button, Divider, Flex, Text } from "@components";
+import { Button, Clickable, Flex, Text } from "@components";
 import { webpack } from "@replugged";
 import { EditorView, basicSetup } from "codemirror";
 import { t } from "src/renderer/modules/i18n";
@@ -10,6 +10,8 @@ import { githubDark, githubLight } from "./codemirror-github";
 import { generalSettings } from "./General";
 
 import "./QuickCSS.css";
+import type { Store } from "@common/flux";
+import Icons from "../icons";
 
 interface UseCodeMirrorOptions {
   value?: string;
@@ -22,6 +24,23 @@ interface ThemeModule {
   addChangeListener: (listener: () => unknown) => unknown;
   removeChangeListener: (listener: () => unknown) => unknown;
 }
+
+const PopoutWindowStore = await webpack.waitForStore<
+  { getWindowOpen: (key: string) => boolean; getIsAlwaysOnTop: (key: string) => boolean } & Store
+>("PopoutWindowStore", { timeout: 10_000 });
+
+const PopoutContext = await webpack
+  .waitForModule<
+    Record<string, unknown>
+  >(webpack.filters.bySource("Missing guestWindow reference"), { timeout: 10_000 })
+  .then(
+    (m) =>
+      Object.values(m).find((c) => typeof c === "object") as React.MemoExoticComponent<
+        React.FC<{ withTitleBar?: boolean; windowKey: string; children: React.ReactElement }>
+      >,
+  );
+
+const WindowKey = "DISCORD_REPLUGGED_QUICKCSS";
 
 function useTheme(): "light" | "dark" {
   const [theme, setTheme] = React.useState<"light" | "dark">("dark");
@@ -110,20 +129,86 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
   return { value, setValue: customSetValue };
 }
 
-export const QuickCSS = (): React.ReactElement => {
+const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactElement => {
+  const isAlwaysOnTop = flux.useStateFromStores([PopoutWindowStore], () =>
+    PopoutWindowStore.getIsAlwaysOnTop(WindowKey),
+  );
+
+  return (
+    <span className="replugged-quickcss-popout-nagivation-container">
+      <Clickable
+        onClick={() => {
+          fluxDispatcher.dispatch({
+            type: "POPOUT_WINDOW_SET_ALWAYS_ON_TOP",
+            alwaysOnTop: !isAlwaysOnTop,
+            key: windowKey,
+          });
+        }}
+        className="replugged-quickcss-popout-nagivation-button">
+        {isAlwaysOnTop ? <Icons.Unpin /> : <Icons.Pin />}
+      </Clickable>
+      <Clickable
+        onClick={() => {
+          DiscordNative.window.minimize(windowKey);
+        }}
+        className="replugged-quickcss-popout-nagivation-button">
+        <Icons.Minimize />
+      </Clickable>
+      <Clickable
+        onClick={() => {
+          DiscordNative.window.maximize(windowKey);
+        }}
+        className="replugged-quickcss-popout-nagivation-button">
+        <Icons.Maximize />
+      </Clickable>
+      <Clickable
+        onClick={() => {
+          DiscordNative.window.close(windowKey);
+        }}
+        className="replugged-quickcss-popout-nagivation-button">
+        <Icons.Close />
+      </Clickable>
+    </span>
+  );
+};
+
+const QuickCSSPanel = ({ isPopout }: { isPopout?: boolean }): React.ReactElement => {
   const ref = React.useRef<HTMLDivElement>(null);
   const { value, setValue } = useCodeMirror({
     container: ref.current,
   });
   const [ready, setReady] = React.useState(false);
 
-  const autoApply = generalSettings.get("autoApplyQuickCss");
+  const autoApply = generalSettings.useValue("autoApplyQuickCss");
 
   const reload = (): void => window.replugged.quickCSS.reload();
   const reloadAndToast = (): void => {
     reload();
     toast.toast(intl.string(t.REPLUGGED_TOAST_QUICKCSS_RELOAD));
   };
+
+  const openPopout = (): void => {
+                  fluxDispatcher.dispatch({
+                    type: "POPOUT_WINDOW_OPEN",
+                    key: WindowKey,
+                    features: {
+                      frame: false,
+                      menubar: false,
+                      toolbar: false,
+                      location: false,
+                      directories: false,
+                      minWidth: 854,
+                      minHeight: 480,
+                    },
+                    render: () => (
+                      <PopoutContext withTitleBar={false} windowKey={WindowKey}>
+                        <div className="root replugged-quickcss-popout-root">
+                          <QuickCSSPanel isPopout />
+                        </div>
+                      </PopoutContext>
+                    ),
+                  });
+                }
 
   React.useEffect(() => {
     void window.RepluggedNative.quickCSS.get().then((val: string) => {
@@ -138,24 +223,24 @@ export const QuickCSS = (): React.ReactElement => {
         e.preventDefault();
         reloadAndToast();
       }
+      if (e.key === "Escape" && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        fluxDispatcher.dispatch({ type: "LAYER_POP_ALL" });
+      }
+    };
+
+    const toogleKeybinds = (enabled: boolean): void => {
+      fluxDispatcher.dispatch({
+        type: "KEYBINDS_ENABLE_ALL_KEYBINDS",
+        enable: isPopout || enabled,
+      });
     };
 
     window.addEventListener("keydown", listener);
-
-    // This is the best way I could come up with to not show the sticker picker when CTRL + S is pressed
-    // We want it to only be active when this tab is active
-    const hideStickerPickerCss = `
-    [class*="positionLayer-"] {
-      display: none;
-    }
-    `;
-    const style = document.createElement("style");
-    style.innerText = hideStickerPickerCss;
-    document.head.appendChild(style);
+    toogleKeybinds(false);
 
     return () => {
       window.removeEventListener("keydown", listener);
-      document.head.removeChild(style);
+      toogleKeybinds(true);
     };
   }, []);
 
@@ -172,24 +257,51 @@ export const QuickCSS = (): React.ReactElement => {
 
   return (
     <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_QUICKCSS)}</Text.H2>
-        <div style={{ display: "flex" }}>
-          {autoApply ? null : (
-            <Button onClick={reloadAndToast}>
-              {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
+      <div ref={ref} id="replugged-quickcss-wrapper">
+        <Flex
+          className="replugged-quickcss-header"
+          justify={Flex.Justify.BETWEEN}
+          align={Flex.Align.CENTER}>
+          <Text.H2>{intl.string(t.REPLUGGED_QUICKCSS)}</Text.H2>
+          <Flex className="replugged-quickcss-header-buttons">
+            {!isPopout ? (
+              <Clickable
+                onClick={openPopout}
+                className="replugged-quickcss-popout-nagivation-button">
+                <Icons.Popout />
+              </Clickable>
+            ) : (
+              <NavigationButtons windowKey={WindowKey} />
+            )}
+            <Button
+              onClick={() => window.RepluggedNative.quickCSS.openFolder()}
+              color={Button.Colors.PRIMARY}
+              look={Button.Looks.OUTLINED}>
+              {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
             </Button>
-          )}
-          <Button
-            onClick={() => window.RepluggedNative.quickCSS.openFolder()}
-            color={Button.Colors.PRIMARY}
-            look={Button.Looks.LINK}>
-            {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
-          </Button>
-        </div>
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
-      <div ref={ref} id="replugged-quickcss-wrapper" />
+            {autoApply ? null : (
+              <Button onClick={reloadAndToast}>
+                {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
+              </Button>
+            )}
+          </Flex>
+        </Flex>
+      </div>
     </>
+  );
+};
+
+export const QuickCSS = (): React.ReactElement => {
+  const isPopoutOpen = flux.useStateFromStores([PopoutWindowStore], () =>
+    PopoutWindowStore.getWindowOpen(WindowKey),
+  );
+  return isPopoutOpen ? (
+    <>
+      <Flex align={Flex.Align.CENTER} justify={Flex.Justify.CENTER} style={{ height: "100%" }}>
+        <Text.H3>You&apos;ve popped out the editor to another window</Text.H3>
+      </Flex>
+    </>
+  ) : (
+    <QuickCSSPanel />
   );
 };

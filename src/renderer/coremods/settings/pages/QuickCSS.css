@@ -3,15 +3,58 @@
 #replugged-quickcss-wrapper {
   height: 100%;
 }
-#replugged-quickcss-wrapper .cm-editor {
+
+.platform-win #replugged-quickcss-wrapper {
+  max-height: calc(100% - var(--custom-app-top-bar-height) - 20px);
+}
+
+#replugged-quickcss-wrapper {
   max-height: calc(100% - 20px);
+  background-color: var(--background-base-lower);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+#replugged-quickcss-wrapper .replugged-quickcss-header h2 {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.replugged-quickcss-popout-root {
+  height: 100%;
+  width: 100%;
+}
+.replugged-quickcss-popout-root #replugged-quickcss-wrapper {
+  height: auto;
+  max-height: 100%;
+  border-radius: unset;
+}
+
+.replugged-quickcss-popout-root #replugged-quickcss-wrapper .replugged-quickcss-header {
+  -webkit-app-region: drag;
+}
+#replugged-quickcss-wrapper .replugged-quickcss-header {
+  margin: 0 var(--space-8) 0 var(--space-16);
+}
+#replugged-quickcss-wrapper .replugged-quickcss-header .replugged-quickcss-header-buttons {
+  overflow: hidden;
+  flex-flow: row-reverse;
+  flex-grow: unset !important;
+  margin: var(--space-6) 0 var(--space-6);
+  gap: 5px;
+  -webkit-app-region: no-drag;
+}
+
+#replugged-quickcss-wrapper .cm-editor {
+  max-height: calc(100% - 25px);
   background: var(--bg-overlay-2, var(--background-base-lower));
-  border: 1px solid var(--background-secondary-alt);
-  border-radius: 4px;
+  border-top: 1px solid var(--background-secondary-alt);
   outline: none !important;
 }
 .platform-win #replugged-quickcss-wrapper .cm-editor {
-  max-height: calc(100% - var(--custom-app-top-bar-height) - 20px);
+  max-height: calc(100% - var(--custom-app-top-bar-height) - 25px);
 }
 #replugged-quickcss-wrapper .cm-content {
   padding: 0px;
@@ -186,4 +229,32 @@
 #replugged-quickcss-wrapper .cm-trailingSpace,
 #replugged-quickcss-wrapper .cm-specialChar {
   color: var(--red-400);
+}
+
+#replugged-quickcss-wrapper .replugged-quickcss-popout-nagivation-container {
+  display: flex;
+  gap: 5px;
+}
+
+#replugged-quickcss-wrapper .replugged-quickcss-popout-nagivation-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--interactive-normal);
+  border: 1px solid var(--button-outline-primary-border);
+  border-radius: var(--radius-sm);
+  min-width: 38px;
+  min-height: 38px;
+}
+#replugged-quickcss-wrapper .replugged-quickcss-popout-nagivation-button > svg {
+  width: 20px;
+  height: 20px;
+}
+
+#replugged-quickcss-wrapper .replugged-quickcss-popout-nagivation-button:hover {
+  color: var(--interactive-hover);
+}
+
+#replugged-quickcss-wrapper .replugged-quickcss-popout-nagivation-button:active {
+  color: var(--interactive-active);
 }
