@@ -4,12 +4,26 @@ const coremodStr = "replugged.coremods.coremods.settings";
 
 export default [
   {
-    find: "getPredicateSections",
+    find: 'section:"logout"',
     replacements: [
       {
-        match: /(this\.props\.sections\.filter\(.+?\))}/,
-        replace: (_, filteredSections) =>
-          `${coremodStr}?.insertSections(${filteredSections}) ?? ${filteredSections}};`,
+        match: /return Object.freeze/,
+        replace: (_) => `return (${coremodStr}?.insertSections ?? Object.freeze)`,
+      },
+    ],
+  },
+  {
+    find: `header:"Developer Only"`,
+    replacements: [
+      {
+        match: /(OVERLAY]};return )(\w+\?\w+:\w+.toSpliced\(3,0,\w+\))/,
+        replace: (_, prefix, records) =>
+          `${prefix}(${coremodStr}?.insertRecords(${records})??(${records}))`,
+      },
+      {
+        match: /((\w+\[\w+\])\),{tabPredicate:\(\)=>)(null==\w+\|\|\w+\(\w+,\w+,\w+\))/,
+        replace: (_, prefix, section, condition) =>
+          `${prefix}(!${section}?.tabPredicate||${section}?.tabPredicate?.())&&(${condition})`,
       },
     ],
   },
