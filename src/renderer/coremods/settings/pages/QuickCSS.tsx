@@ -298,7 +298,7 @@ export const QuickCSS = (): React.ReactElement => {
   return isPopoutOpen ? (
     <>
       <Flex align={Flex.Align.CENTER} justify={Flex.Justify.CENTER} style={{ height: "100%" }}>
-        <Text.H3>You&apos;ve popped out the editor to another window</Text.H3>
+        <Text.H3>{intl.string(t.REPLUGGED_QUICKCSS_EDITOR_POPPED_OUT)}</Text.H3>
       </Flex>
     </>
   ) : (
