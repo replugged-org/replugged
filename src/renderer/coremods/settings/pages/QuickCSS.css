@@ -255,6 +255,14 @@
   color: var(--interactive-hover);
 }
 
+#replugged-quickcss-wrapper
+  .replugged-quickcss-popout-nagivation-button.replugged-quickcss-close-popout:active,
+#replugged-quickcss-wrapper
+  .replugged-quickcss-popout-nagivation-button.replugged-quickcss-close-popout:hover {
+  color: var(--status-danger);
+  border-color: var(--status-danger);
+}
+
 #replugged-quickcss-wrapper .replugged-quickcss-popout-nagivation-button:active {
   color: var(--interactive-active);
 }

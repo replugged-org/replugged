@@ -165,7 +165,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
         onClick={() => {
           DiscordNative.window.close(windowKey);
         }}
-        className="replugged-quickcss-popout-nagivation-button">
+        className="replugged-quickcss-popout-nagivation-button replugged-quickcss-close-popout">
         <Icons.Close />
       </Clickable>
     </span>
