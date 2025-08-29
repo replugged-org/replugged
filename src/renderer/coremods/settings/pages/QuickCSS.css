@@ -29,6 +29,21 @@
   text-overflow: ellipsis;
 }
 
+.platform-osx
+  .replugged-quickcss-popout-root
+  #replugged-quickcss-wrapper
+  .replugged-quickcss-header
+  h2 {
+  opacity: 0;
+}
+
+.platform-osx
+  .replugged-quickcss-popout-root
+  #replugged-quickcss-wrapper
+  .replugged-quickcss-popout-navigation-container {
+  display: none;
+}
+
 .replugged-quickcss-popout-root {
   height: 100%;
   width: 100%;

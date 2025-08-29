@@ -212,8 +212,7 @@ const QuickCSSPanel = ({ isPopout }: { isPopout?: boolean }): React.ReactElement
         toolbar: false,
         location: false,
         directories: false,
-        minWidth: 854,
-        minHeight: 480,
+        trafficLightPosition: btoa('{"x":16,"y":20}'),
       },
       render: () => (
         <PopoutContext
