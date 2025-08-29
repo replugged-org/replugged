@@ -36,7 +36,12 @@ const PopoutContext = await webpack
   .then(
     (m) =>
       Object.values(m).find((c) => typeof c === "object") as React.MemoExoticComponent<
-        React.FC<{ withTitleBar?: boolean; windowKey: string; children: React.ReactElement }>
+        React.FC<{
+          withTitleBar?: boolean;
+          windowKey: string;
+          title?: string;
+          children: React.ReactElement;
+        }>
       >,
   );
 
@@ -211,7 +216,10 @@ const QuickCSSPanel = ({ isPopout }: { isPopout?: boolean }): React.ReactElement
         minHeight: 480,
       },
       render: () => (
-        <PopoutContext withTitleBar={false} windowKey={WindowKey}>
+        <PopoutContext
+          withTitleBar={false}
+          windowKey={WindowKey}
+          title={intl.string(t.REPLUGGED_QUICKCSS)}>
           <div className="root replugged-quickcss-popout-root">
             <QuickCSSPanel isPopout />
           </div>
