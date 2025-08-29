@@ -12,8 +12,10 @@
   max-height: calc(100% - var(--custom-app-top-bar-height) - 20px);
 }
 
-#replugged-quickcss-wrapper {
+#rp-quickcss-tab #replugged-quickcss-wrapper {
   height: auto;
+}
+#replugged-quickcss-wrapper {
   max-height: calc(100% - 20px);
   background-color: var(--background-base-lower);
   border: 1px solid var(--border-subtle);
@@ -60,6 +62,13 @@
 }
 .platform-win #replugged-quickcss-wrapper .cm-editor {
   max-height: calc(100% - var(--custom-app-top-bar-height) - 20px);
+}
+
+.replugged-quickcss-popout-root #replugged-quickcss-wrapper .cm-editor {
+  max-height: calc(100% - 25px);
+}
+.platform-win .replugged-quickcss-popout-root #replugged-quickcss-wrapper .cm-editor {
+  max-height: calc(100% - var(--custom-app-top-bar-height) - 25px);
 }
 #replugged-quickcss-wrapper .cm-content {
   padding: 0px;
