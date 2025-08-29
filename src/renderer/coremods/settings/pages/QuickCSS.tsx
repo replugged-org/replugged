@@ -1,8 +1,8 @@
 import { css } from "@codemirror/lang-css";
 import { EditorState } from "@codemirror/state";
 import { React, flux, fluxDispatcher, toast } from "@common";
-import { intl } from "@common/i18n";
-import { Button, Clickable, Flex, Text } from "@components";
+import { t as discordT, intl } from "@common/i18n";
+import { Button, Clickable, Flex, Text, Tooltip } from "@components";
 import { webpack } from "@replugged";
 import { EditorView, basicSetup } from "codemirror";
 import { t } from "src/renderer/modules/i18n";
@@ -133,41 +133,51 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
   const isAlwaysOnTop = flux.useStateFromStores([PopoutWindowStore], () =>
     PopoutWindowStore.getIsAlwaysOnTop(WindowKey),
   );
-
   return (
     <span className="replugged-quickcss-popout-nagivation-container">
-      <Clickable
-        onClick={() => {
-          fluxDispatcher.dispatch({
-            type: "POPOUT_WINDOW_SET_ALWAYS_ON_TOP",
-            alwaysOnTop: !isAlwaysOnTop,
-            key: windowKey,
-          });
-        }}
-        className="replugged-quickcss-popout-nagivation-button">
-        {isAlwaysOnTop ? <Icons.Unpin /> : <Icons.Pin />}
-      </Clickable>
-      <Clickable
-        onClick={() => {
-          DiscordNative.window.minimize(windowKey);
-        }}
-        className="replugged-quickcss-popout-nagivation-button">
-        <Icons.Minimize />
-      </Clickable>
-      <Clickable
-        onClick={() => {
-          DiscordNative.window.maximize(windowKey);
-        }}
-        className="replugged-quickcss-popout-nagivation-button">
-        <Icons.Maximize />
-      </Clickable>
-      <Clickable
-        onClick={() => {
-          DiscordNative.window.close(windowKey);
-        }}
-        className="replugged-quickcss-popout-nagivation-button replugged-quickcss-close-popout">
-        <Icons.Close />
-      </Clickable>
+      <Tooltip
+        text={intl.string(
+          isAlwaysOnTop ? discordT.POPOUT_REMOVE_FROM_TOP : discordT.POPOUT_STAY_ON_TOP,
+        )}>
+        <Clickable
+          onClick={() => {
+            fluxDispatcher.dispatch({
+              type: "POPOUT_WINDOW_SET_ALWAYS_ON_TOP",
+              alwaysOnTop: !isAlwaysOnTop,
+              key: windowKey,
+            });
+          }}
+          className="replugged-quickcss-popout-nagivation-button">
+          {isAlwaysOnTop ? <Icons.Unpin /> : <Icons.Pin />}
+        </Clickable>
+      </Tooltip>
+      <Tooltip text={intl.string(discordT.TITLE_BAR_MINIMIZE_WINDOW)}>
+        <Clickable
+          onClick={() => {
+            DiscordNative.window.minimize(windowKey);
+          }}
+          className="replugged-quickcss-popout-nagivation-button">
+          <Icons.Minimize />
+        </Clickable>
+      </Tooltip>
+      <Tooltip text={intl.string(discordT.TITLE_BAR_MAXIMIZE_WINDOW)}>
+        <Clickable
+          onClick={() => {
+            DiscordNative.window.maximize(windowKey);
+          }}
+          className="replugged-quickcss-popout-nagivation-button">
+          <Icons.Maximize />
+        </Clickable>
+      </Tooltip>
+      <Tooltip text={intl.string(discordT.TITLE_BAR_CLOSE_WINDOW)}>
+        <Clickable
+          onClick={() => {
+            DiscordNative.window.close(windowKey);
+          }}
+          className="replugged-quickcss-popout-nagivation-button replugged-quickcss-close-popout">
+          <Icons.Close />
+        </Clickable>
+      </Tooltip>
     </span>
   );
 };
@@ -188,27 +198,27 @@ const QuickCSSPanel = ({ isPopout }: { isPopout?: boolean }): React.ReactElement
   };
 
   const openPopout = (): void => {
-                  fluxDispatcher.dispatch({
-                    type: "POPOUT_WINDOW_OPEN",
-                    key: WindowKey,
-                    features: {
-                      frame: false,
-                      menubar: false,
-                      toolbar: false,
-                      location: false,
-                      directories: false,
-                      minWidth: 854,
-                      minHeight: 480,
-                    },
-                    render: () => (
-                      <PopoutContext withTitleBar={false} windowKey={WindowKey}>
-                        <div className="root replugged-quickcss-popout-root">
-                          <QuickCSSPanel isPopout />
-                        </div>
-                      </PopoutContext>
-                    ),
-                  });
-                }
+    fluxDispatcher.dispatch({
+      type: "POPOUT_WINDOW_OPEN",
+      key: WindowKey,
+      features: {
+        frame: false,
+        menubar: false,
+        toolbar: false,
+        location: false,
+        directories: false,
+        minWidth: 854,
+        minHeight: 480,
+      },
+      render: () => (
+        <PopoutContext withTitleBar={false} windowKey={WindowKey}>
+          <div className="root replugged-quickcss-popout-root">
+            <QuickCSSPanel isPopout />
+          </div>
+        </PopoutContext>
+      ),
+    });
+  };
 
   React.useEffect(() => {
     void window.RepluggedNative.quickCSS.get().then((val: string) => {
@@ -265,11 +275,13 @@ const QuickCSSPanel = ({ isPopout }: { isPopout?: boolean }): React.ReactElement
           <Text.H2>{intl.string(t.REPLUGGED_QUICKCSS)}</Text.H2>
           <Flex className="replugged-quickcss-header-buttons">
             {!isPopout ? (
-              <Clickable
-                onClick={openPopout}
-                className="replugged-quickcss-popout-nagivation-button">
-                <Icons.Popout />
-              </Clickable>
+              <Tooltip text={intl.string(discordT.POPOUT_PLAYER)}>
+                <Clickable
+                  onClick={openPopout}
+                  className="replugged-quickcss-popout-nagivation-button">
+                  <Icons.Popout />
+                </Clickable>
+              </Tooltip>
             ) : (
               <NavigationButtons windowKey={WindowKey} />
             )}
