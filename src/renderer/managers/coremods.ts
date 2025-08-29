@@ -14,6 +14,7 @@ import notrackPlaintext from "../coremods/notrack/plaintextPatches";
 import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
+import themeUtilsPlaintext from "../coremods/themeUtils/plaintextPatches";
 
 const logger = Logger.api("Coremods");
 
@@ -36,6 +37,7 @@ export namespace coremods {
   export let rdtComponentSourceFix: Coremod;
   export let rpc: Coremod;
   export let settings: Coremod;
+  export let themeUtils: Coremod;
   export let watcher: Coremod;
   export let welcome: Coremod;
 }
@@ -62,6 +64,7 @@ export async function startAll(): Promise<void> {
   coremods.notrack = await import("../coremods/notrack");
   coremods.rdtComponentSourceFix = await import("../coremods/rdtComponentSourceFix");
   coremods.rpc = await import("../coremods/rpc");
+  coremods.themeUtils = await import("../coremods/themeUtils");
   coremods.settings = await import("../coremods/settings");
   coremods.watcher = await import("../coremods/watcher");
   coremods.welcome = await import("../coremods/welcome");
@@ -95,5 +98,6 @@ export function runPlaintextPatches(): void {
     { patch: popoutThemingPlaintext, name: "replugged.coremod.popoutTheming" },
     { patch: settingsPlaintext, name: "replugged.coremod.settings" },
     { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },
+    { patch: themeUtilsPlaintext, name: "replugged.coremod.themeUtils" },
   ].forEach(({ patch, name }) => patchPlaintext(patch, name));
 }
