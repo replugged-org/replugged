@@ -134,7 +134,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
     PopoutWindowStore.getIsAlwaysOnTop(WindowKey),
   );
   return (
-    <span className="replugged-quickcss-popout-nagivation-container">
+    <span className="replugged-quickcss-popout-navigation-container">
       <Tooltip
         text={intl.string(
           isAlwaysOnTop ? discordT.POPOUT_REMOVE_FROM_TOP : discordT.POPOUT_STAY_ON_TOP,
@@ -147,7 +147,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
               key: windowKey,
             });
           }}
-          className="replugged-quickcss-popout-nagivation-button">
+          className="replugged-quickcss-popout-navigation-button">
           {isAlwaysOnTop ? <Icons.Unpin /> : <Icons.Pin />}
         </Clickable>
       </Tooltip>
@@ -156,7 +156,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
           onClick={() => {
             DiscordNative.window.minimize(windowKey);
           }}
-          className="replugged-quickcss-popout-nagivation-button">
+          className="replugged-quickcss-popout-navigation-button">
           <Icons.Minimize />
         </Clickable>
       </Tooltip>
@@ -165,7 +165,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
           onClick={() => {
             DiscordNative.window.maximize(windowKey);
           }}
-          className="replugged-quickcss-popout-nagivation-button">
+          className="replugged-quickcss-popout-navigation-button">
           <Icons.Maximize />
         </Clickable>
       </Tooltip>
@@ -174,7 +174,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
           onClick={() => {
             DiscordNative.window.close(windowKey);
           }}
-          className="replugged-quickcss-popout-nagivation-button replugged-quickcss-close-popout">
+          className="replugged-quickcss-popout-navigation-button replugged-quickcss-close-popout">
           <Icons.Close />
         </Clickable>
       </Tooltip>
@@ -238,7 +238,7 @@ const QuickCSSPanel = ({ isPopout }: { isPopout?: boolean }): React.ReactElement
       }
     };
 
-    const toogleKeybinds = (enabled: boolean): void => {
+    const toggleKeybinds = (enabled: boolean): void => {
       fluxDispatcher.dispatch({
         type: "KEYBINDS_ENABLE_ALL_KEYBINDS",
         enable: isPopout || enabled,
@@ -246,11 +246,11 @@ const QuickCSSPanel = ({ isPopout }: { isPopout?: boolean }): React.ReactElement
     };
 
     window.addEventListener("keydown", listener);
-    toogleKeybinds(false);
+    toggleKeybinds(false);
 
     return () => {
       window.removeEventListener("keydown", listener);
-      toogleKeybinds(true);
+      toggleKeybinds(true);
     };
   }, []);
 
@@ -278,7 +278,7 @@ const QuickCSSPanel = ({ isPopout }: { isPopout?: boolean }): React.ReactElement
               <Tooltip text={intl.string(discordT.POPOUT_PLAYER)}>
                 <Clickable
                   onClick={openPopout}
-                  className="replugged-quickcss-popout-nagivation-button">
+                  className="replugged-quickcss-popout-navigation-button">
                   <Icons.Popout />
                 </Clickable>
               </Tooltip>
