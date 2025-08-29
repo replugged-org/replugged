@@ -3,12 +3,17 @@
 #replugged-quickcss-wrapper {
   height: 100%;
 }
+#rp-quickcss-tab {
+  display: flex;
+  flex-direction: column;
+}
 
 .platform-win #replugged-quickcss-wrapper {
   max-height: calc(100% - var(--custom-app-top-bar-height) - 20px);
 }
 
 #replugged-quickcss-wrapper {
+  height: auto;
   max-height: calc(100% - 20px);
   background-color: var(--background-base-lower);
   border: 1px solid var(--border-subtle);
@@ -27,7 +32,6 @@
   width: 100%;
 }
 .replugged-quickcss-popout-root #replugged-quickcss-wrapper {
-  height: auto;
   max-height: 100%;
   border-radius: unset;
 }
@@ -51,6 +55,7 @@
   max-height: calc(100% - 25px);
   background: var(--bg-overlay-2, var(--background-base-lower));
   border-top: 1px solid var(--background-secondary-alt);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   outline: none !important;
 }
 .platform-win #replugged-quickcss-wrapper .cm-editor {
