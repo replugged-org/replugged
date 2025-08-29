@@ -66,7 +66,7 @@ async function injectRpc(): Promise<void> {
       throw new Error("Invalid Client ID");
     }
 
-    return fn(...args);
+    return fn;
   });
 
   const rpcMod = await waitForModule<RPCMod>(filters.byProps("setCommandHandler"));
