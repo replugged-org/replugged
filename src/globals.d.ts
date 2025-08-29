@@ -30,6 +30,9 @@ declare global {
       relaunch: () => void;
     };
     window: {
+      close(key: string): void;
+      maximize(key: string): void;
+      minimize(key: string): void;
       setDevtoolsCallbacks(onOpened?: (() => void) | null, onClosed?: (() => void) | null): void;
       focus(): void;
     };
