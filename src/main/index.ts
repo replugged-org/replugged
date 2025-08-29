@@ -55,14 +55,17 @@ class BrowserWindow extends electron.BrowserWindow {
       defaultWindowOpenHandler(({ url, frameName, features, ...args }) => {
         const ret = cb({ url, frameName, features, ...args });
         if (frameName.startsWith("DISCORD_REPLUGGED") && ret.action === "allow") {
-          const trafficLightPositionBase64 = /trafficLightPosition=(.+?),/.exec(features)?.[1];
-          if (trafficLightPositionBase64) {
-            ret.overrideBrowserWindowOptions ??= {};
-            try {
-              ret.overrideBrowserWindowOptions.trafficLightPosition = JSON.parse(
-                atob(trafficLightPositionBase64),
-              );
-            } catch {}
+          const trafficLightPosition = features.split(",").reduce(
+            (pos, pair) => {
+              const [key, value] = pair.split("=");
+              if (key === "trafficLightPositionX") pos.x = Number(value);
+              if (key === "trafficLightPositionY") pos.y = Number(value);
+              return pos;
+            },
+            { x: -1, y: -1 },
+          );
+          if (trafficLightPosition.x !== -1 && trafficLightPosition.y !== -1) {
+            ret.overrideBrowserWindowOptions!.trafficLightPosition = trafficLightPosition;
           }
         }
         return ret;
