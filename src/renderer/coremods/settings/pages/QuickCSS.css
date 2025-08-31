@@ -40,7 +40,18 @@
 .platform-osx
   .replugged-quickcss-popout-root
   #replugged-quickcss-wrapper
-  .replugged-quickcss-popout-navigation-container {
+  .replugged-quickcss-popout-navigation-container
+  replugged-quickcss-popout-navigation-minimize,
+.platform-osx
+  .replugged-quickcss-popout-root
+  #replugged-quickcss-wrapper
+  .replugged-quickcss-popout-navigation-container
+  replugged-quickcss-popout-navigation-maximize,
+.platform-osx
+  .replugged-quickcss-popout-root
+  #replugged-quickcss-wrapper
+  .replugged-quickcss-popout-navigation-container
+  replugged-quickcss-popout-navigation-close {
   display: none;
 }
 

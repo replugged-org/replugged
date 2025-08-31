@@ -141,6 +141,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
   return (
     <span className="replugged-quickcss-popout-navigation-container">
       <Tooltip
+        className="replugged-quickcss-popout-navigation-pin"
         text={intl.string(
           isAlwaysOnTop ? discordT.POPOUT_REMOVE_FROM_TOP : discordT.POPOUT_STAY_ON_TOP,
         )}>
@@ -156,7 +157,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
           {isAlwaysOnTop ? <Icons.Unpin /> : <Icons.Pin />}
         </Clickable>
       </Tooltip>
-      <Tooltip text={intl.string(discordT.TITLE_BAR_MINIMIZE_WINDOW)}>
+      <Tooltip  className="replugged-quickcss-popout-navigation-minimize" text={intl.string(discordT.TITLE_BAR_MINIMIZE_WINDOW)}>
         <Clickable
           onClick={() => {
             DiscordNative.window.minimize(windowKey);
@@ -165,7 +166,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
           <Icons.Minimize />
         </Clickable>
       </Tooltip>
-      <Tooltip text={intl.string(discordT.TITLE_BAR_MAXIMIZE_WINDOW)}>
+      <Tooltip  className="replugged-quickcss-popout-navigation-maximize" text={intl.string(discordT.TITLE_BAR_MAXIMIZE_WINDOW)}>
         <Clickable
           onClick={() => {
             DiscordNative.window.maximize(windowKey);
@@ -174,7 +175,7 @@ const NavigationButtons = ({ windowKey }: { windowKey: string }): React.ReactEle
           <Icons.Maximize />
         </Clickable>
       </Tooltip>
-      <Tooltip text={intl.string(discordT.TITLE_BAR_CLOSE_WINDOW)}>
+      <Tooltip  className="replugged-quickcss-popout-navigation-close" text={intl.string(discordT.TITLE_BAR_CLOSE_WINDOW)}>
         <Clickable
           onClick={() => {
             DiscordNative.window.close(windowKey);
