@@ -9,7 +9,7 @@ import type { CheckResultSuccess } from "src/types";
 import { getSourceLink } from "../settings/pages";
 import { type InstallLinkProps, authorList, checkIsInstalled, getInfo, install } from "./util";
 
-import "./addonEmbed.css";
+import "./AddonEmbed.css";
 
 const logger = Logger.coremod("AddonEmbed");
 

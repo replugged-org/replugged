@@ -1,4 +1,4 @@
-import { modal, toast } from "@common";
+import { modal, sharedStyles, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
@@ -251,13 +251,13 @@ async function showInstallPrompt(
       <>
         {text}
         {(source ?? DEFAULT_INSTALLER_SOURCE) !== "store" ? (
-          <div style={{ marginTop: "16px" }}>
-            <Notice messageType={Notice.Types.ERROR}>
-              {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-                type: label(getAddonType(manifest.type)),
-              })}
-            </Notice>
-          </div>
+          <Notice
+            messageType={Notice.Types.ERROR}
+            className={sharedStyles.MarginStyles.marginTop20}>
+            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+              type: label(getAddonType(manifest.type)),
+            })}
+          </Notice>
         ) : null}
       </>
     ),

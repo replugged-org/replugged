@@ -1,0 +1,12 @@
+.replugged-button-item-disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.replugged-button-item-wrapper {
+  gap: var(--space-16);
+}
+
+.replugged-button-item-labelSection {
+  gap: var(--space-4);
+}
