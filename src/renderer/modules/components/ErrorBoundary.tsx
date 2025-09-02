@@ -8,9 +8,7 @@ import "./ErrorBoundary.css";
 
 const logger = new Logger("Components", "ErrorBoundary");
 
-function CollapsibleErrorStack(props: { stack: string }): React.ReactElement {
-  const { stack } = props;
-
+function CollapsibleErrorStack({ stack }: { stack: string }): React.ReactElement {
   const [open, setOpen] = React.useState(false);
 
   const message = stack.split("\n")[0];

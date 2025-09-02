@@ -10,12 +10,16 @@ export const Checkbox = getFunctionBySource<Design.Checkbox>(components, ".check
 
 export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
 
-export function CheckboxItem(props: React.PropsWithChildren<CheckboxProps>): React.ReactElement {
+export function CheckboxItem({
+  children,
+  style,
+  ...props
+}: React.PropsWithChildren<CheckboxProps>): React.ReactElement {
   return (
     <Checkbox {...props}>
-      {props.children && (
-        <Text variant="text-sm/normal" style={props.style}>
-          {props.children}
+      {children && (
+        <Text variant="text-sm/normal" style={style}>
+          {children}
         </Text>
       )}
     </Checkbox>

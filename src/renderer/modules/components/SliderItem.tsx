@@ -19,8 +19,8 @@ interface CustomSliderProps extends SliderProps {
 
 export type CustomSliderType = React.FC<CustomSliderProps>;
 
-export function CustomSlider(props: CustomSliderProps): React.ReactElement {
-  return <Slider initialValue={props.value} onValueChange={props.onChange} {...props} />;
+export function CustomSlider({ value, onChange, ...props }: CustomSliderProps): React.ReactElement {
+  return <Slider initialValue={value} onValueChange={onChange} {...props} />;
 }
 
 interface SliderItemProps extends CustomSliderProps {

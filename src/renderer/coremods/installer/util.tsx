@@ -262,9 +262,8 @@ async function showInstallPrompt(
       </>
     ),
     confirmText: intl.string(discordT.CONFIRM),
-    cancelText: intl.string(discordT.CANCEL),
     secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
-    onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : null),
+    onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : undefined),
   });
 
   return res;

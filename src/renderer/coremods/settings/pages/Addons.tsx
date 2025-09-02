@@ -437,7 +437,6 @@ function Cards({
               title: intl.format(t.REPLUGGED_ADDON_UNINSTALL, { name: addon.manifest.name }),
               body: intl.format(t.REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY, { type: label(type) }),
               confirmText: intl.string(discordT.APPLICATION_UNINSTALL_PROMPT_CONFIRM),
-              cancelText: intl.string(discordT.CANCEL),
               confirmColor: Button.Colors.RED,
             });
             if (!confirmation) return;

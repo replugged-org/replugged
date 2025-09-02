@@ -4,12 +4,12 @@ import type React from "react";
 import { Divider, Flex, FormText } from ".";
 
 import type { FormSwitchStyles } from "discord-client-types/discord_app/design/components/Forms/web/FormSwitch.module";
-import type * as Design from "discord-client-types/discord_app/design/web";
+import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 
 import "./ButtonItem.css";
 
 const mod = await waitForModule(filters.bySource(".disabledButtonWrapper,"));
-export const Button = getFunctionBySource<Design.Button>(mod, "Type.PULSING_ELLIPSIS")!;
+export const Button = getFunctionBySource<VoidDesign.Button>(mod, "Type.PULSING_ELLIPSIS")!;
 
 const classes = await waitForProps<Record<FormSwitchStyles, string>>("dividerDefault");
 

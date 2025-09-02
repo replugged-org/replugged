@@ -1,6 +1,7 @@
 import type { ModuleExports } from "../../../types";
 import { error } from "../logger";
 
+import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 import type * as Design from "discord-client-types/discord_app/design/web";
 import type { Flex as FlexType } from "discord-client-types/discord_app/modules/core/web/Flex";
 
@@ -40,13 +41,13 @@ importTimeout("Anchor", import("./Anchor"), (mod) => (Anchor = mod.default));
 export let Breadcrumbs: typeof Design.Breadcrumbs;
 importTimeout("Breadcrumbs", import("./Breadcrumbs"), (mod) => (Breadcrumbs = mod.default));
 
-export let Button: Design.Button;
+export let Button: VoidDesign.Button;
 importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
 
 export let Checkbox: Design.Checkbox;
 importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
 
-export let Clickable: Design.Clickable;
+export let Clickable: typeof Design.Clickable;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
 export let Divider: Design.FormDivider;
@@ -73,7 +74,7 @@ importTimeout("Switch", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
 export let SwitchItem: Design.FormSwitch;
 importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.FormSwitch));
 
-export let TextArea: Design.TextArea;
+export let TextArea: typeof VoidDesign.TextAreaLegacy;
 importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default));
 
 export let TextInput: Design.TextInput;
@@ -111,6 +112,11 @@ export type { CustomFormTextType };
 export let FormText: CustomFormTextType;
 importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.CustomFormText));
 
+import type { CustomModalType } from "./Modal";
+export type { CustomModalType };
+export let Modal: CustomModalType;
+importTimeout("Modal", import("./Modal"), (mod) => (Modal = mod.default));
+
 import type { CustomHelpMessage } from "./HelpMessage";
 export type { CustomHelpMessage };
 export let Notice: CustomHelpMessage;
@@ -144,6 +150,11 @@ export type { CustomTooltipType };
 export let Tooltip: CustomTooltipType;
 importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
 
+import type { CustomTextType } from "./Text";
+export type { CustomTextType };
+export let Text: CustomTextType;
+importTimeout("Text", import("./Text"), (mod) => (Text = mod.default));
+
 // Custom Components
 
 import type { CategoryType } from "./Category";
@@ -155,18 +166,6 @@ import type { ErrorBoundaryType } from "./ErrorBoundary";
 export type { ErrorBoundaryType };
 export let ErrorBoundary: ErrorBoundaryType;
 importTimeout("ErrorBoundary", import("./ErrorBoundary"), (mod) => (ErrorBoundary = mod.default));
-
-//
-
-import type { ModalType } from "./Modal";
-export type { ModalType };
-export let Modal: ModalType;
-importTimeout("Modal", import("./Modal"), (mod) => (Modal = mod.default));
-
-import type { TextType } from "./Text";
-export type { TextType };
-export let Text: TextType;
-importTimeout("Text", import("./Text"), (mod) => (Text = mod.default));
 
 /**
  * @internal

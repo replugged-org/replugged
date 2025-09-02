@@ -1,6 +1,10 @@
-import { getFunctionBySource } from "@webpack";
-import components from "../common/components";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 
-import type * as Design from "discord-client-types/discord_app/design/web";
+import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 
-export default getFunctionBySource<Design.TextArea>(components, "showCharacterCountFullPadding")!;
+const mod = await waitForModule(filters.bySource("this.getIsOverflowing()"));
+
+export default getFunctionBySource<typeof VoidDesign.TextAreaLegacy>(
+  mod,
+  "showCharacterCountFullPadding",
+)!;

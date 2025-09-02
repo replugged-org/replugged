@@ -1,11 +1,9 @@
-import type { OriginalTextType } from "@components/Text";
 import { waitForProps } from "@webpack";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-// Expand this as needed
 export type DiscordComponents = {
-  Text: OriginalTextType;
+  Text: Design.Text;
   ToastPosition: typeof Design.ToastPosition;
   ToastType: typeof Design.ToastType;
   createToast: Design.CreateToast;
