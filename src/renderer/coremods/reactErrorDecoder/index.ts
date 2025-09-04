@@ -1,36 +1,45 @@
 import { React, localStorage } from "@common";
+import { Logger } from "@replugged";
+
 interface LocalReactErrorCodes {
   version: string;
   errorCodes: Record<number, string>;
 }
 
-const ReactErrorUrl = `https://raw.githubusercontent.com/facebook/react/v${React.version}/scripts/error-codes/codes.json`;
+const logger = Logger.coremod("ReactErrorDecoder");
 
-const LocalStorageKey = "replugged_reactErrorDecoder";
+const REACT_ERROR_CODES_URL = `https://raw.githubusercontent.com/facebook/react/v${React.version}/scripts/error-codes/codes.json`;
+const LOCAL_STORAGE_KEY = "replugged_reactErrorDecoder";
 
-async function getReactErrorCodes(): Promise<Record<number, string> | void> {
-  const cached = localStorage.get<LocalReactErrorCodes | undefined>(LocalStorageKey);
+async function getReactErrorCodes(): Promise<Record<number, string> | undefined> {
+  const cached = localStorage.get<LocalReactErrorCodes | undefined>(LOCAL_STORAGE_KEY);
   if (cached?.version === React.version) {
     return cached.errorCodes;
   }
 
-  const errorCodesRequest = await fetch(ReactErrorUrl);
+  try {
+    const res = await fetch(REACT_ERROR_CODES_URL);
+    if (!res.ok) {
+      logger.warn("Failed to fetch React error codes:", res);
+      return;
+    }
 
-  if (!errorCodesRequest.ok) return;
+    const errorCodes: Record<number, string> = await res.json();
 
-  const errorCodes: Record<number, string> = await errorCodesRequest.json();
+    localStorage.set(LOCAL_STORAGE_KEY, { version: React.version, errorCodes });
 
-  localStorage.set(LocalStorageKey, { version: React.version, errorCodes });
-
-  return errorCodes;
+    return errorCodes;
+  } catch (err) {
+    logger.error("Error fetching React error codes:", err);
+  }
 }
 
-const REACT_ERROR_CODES = await getReactErrorCodes();
+const reactErrorCodes = await getReactErrorCodes();
 
 /**
  * @internal
  * @hidden
  */
-export const _decodeError = (code: number, ...args: string[]): string | void =>
-  REACT_ERROR_CODES &&
-  `Code - ${code}; ${REACT_ERROR_CODES[code].replace(/%s/g, () => args.shift()!)}`;
+export const _decodeError = (code: number, ...args: string[]): string | undefined =>
+  reactErrorCodes &&
+  `React error #${code}; ${reactErrorCodes[code].replace(/%s/g, () => args.shift()!)}`;
