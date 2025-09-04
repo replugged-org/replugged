@@ -13,6 +13,7 @@ export default [
   },
   {
     find: "navId",
+    warn: false,
     replacements: [
       {
         match: /navId:(?![^(})]*?}=)[^)]*?\)/g,

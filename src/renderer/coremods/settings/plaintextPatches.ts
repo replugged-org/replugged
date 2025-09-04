@@ -22,7 +22,7 @@ export default [
         replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
       },
       {
-        match: /\(0,\w+\.jsx\)\(\w+.\w+,{copyValue:(\w+)\.join/,
+        match: /\w+\)\?\(0,\w+\.jsx\)\(\w+\.\w+,{copyValue:(\w+)\.join/,
         replace:
           "$1.push(window.replugged.common.i18n.intl.format(window.replugged.i18n.t.REPLUGGED_VERSION,{version: window.RepluggedNative.getVersion()})),$&",
       },

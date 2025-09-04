@@ -2,10 +2,11 @@ import type { PlaintextPatch, RawPlaintextPatch, WebpackModule } from "src/types
 import { Logger } from "../logger";
 
 const logger = Logger.api("plaintext-patch");
+
 /**
  * All plaintext patches
  */
-export const plaintextPatches: RawPlaintextPatch[] = [];
+const plaintextPatches: RawPlaintextPatch[] = [];
 
 /**
  * Replace a module with a plaintext-patched version.
@@ -29,7 +30,17 @@ export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule
       return source;
     }
 
-    const result = patch.replacements.reduce((source, patch) => patch(source), source);
+    const result = patch.replacements.reduce((source, patcher) => {
+      const result = patcher(source);
+      // Log a warning if the replacement had no effect and was intended for a specific module
+      if (patch.warn && (patch.find || patch.check) && result === source)
+        logger.warn(`Plaintext patch had no effect (Addon ID: ${patch.id}, Module ID: ${id})`, {
+          find: patch.find,
+          check: patch.check,
+          replacement: patcher.regex ?? patcher,
+        });
+      return result;
+    }, source);
 
     if (result === source) {
       return source;
@@ -66,12 +77,15 @@ export function patchPlaintext(patches: PlaintextPatch[], id: string): void {
     ...patches.map((patch) => ({
       ...patch,
       id,
-      replacements: patch.replacements.map((replacement) =>
-        typeof replacement === "function"
-          ? replacement
-          : // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
-            (source: string) => source.replace(replacement.match, replacement.replace),
-      ),
+      warn: patch.warn ?? true,
+      replacements: patch.replacements.map((replacement) => {
+        if (typeof replacement === "function") return replacement;
+        const newReplacement = (source: string): string =>
+          // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
+          source.replace(replacement.match, replacement.replace, id);
+        newReplacement.regex = replacement;
+        return newReplacement;
+      }),
     })),
   );
 }
