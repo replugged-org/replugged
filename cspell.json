@@ -1,6 +1,6 @@
 {
   "version": "0.2",
-  "ignorePaths": ["src/renderer/coremods/reactErrorDecoder/react.v19.0.0.codes.json"],
+  "ignorePaths": [],
   "dictionaryDefinitions": [],
   "dictionaries": [],
   "words": [
