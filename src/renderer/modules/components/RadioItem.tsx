@@ -1,7 +1,6 @@
-import { getFunctionBySource } from "@webpack";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
-import components from "../common/components";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type RadioOptionType = {
@@ -35,11 +34,12 @@ interface RadioProps {
   collapsibleClassName?: string;
 }
 
-export type RadioType = React.FC<RadioProps> & {
-  Sizes: Record<"NOT_SET" | "NONE" | "SMALL" | "MEDIUM", string>;
-};
+export type RadioType = React.FC<RadioProps>;
 
-export const Radio = getFunctionBySource<RadioType>(components, "itemInfoClassName:")!;
+const radioString = ".radioIndicatorGroup,";
+const mod = await waitForModule(filters.bySource(radioString));
+
+export const Radio = getFunctionBySource<RadioType>(mod, radioString)!;
 
 interface RadioItemProps extends RadioProps {
   note?: string;

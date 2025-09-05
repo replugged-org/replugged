@@ -91,6 +91,8 @@ export const RepluggedNative = {
   reactDevTools: {
     downloadExtension: (): Promise<void> =>
       ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
+    removeExtension: (): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.REMOVE_REACT_DEVTOOLS),
   },
 
   getVersion: (): string => version,

@@ -28,13 +28,13 @@ export namespace coremods {
   export let badges: Coremod;
   export let commands: Coremod;
   export let contextMenu: Coremod;
+  export let devCompanion: Coremod;
   export let installer: Coremod;
   export let language: Coremod;
   export let messagePopover: Coremod;
   export let noDevtoolsWarning: Coremod;
   export let notices: Coremod;
   export let notrack: Coremod;
-  export let rdtComponentSourceFix: Coremod;
   export let reactErrorDecoder: Coremod;
   export let rpc: Coremod;
   export let settings: Coremod;
@@ -62,7 +62,6 @@ export async function startAll(): Promise<void> {
   coremods.noDevtoolsWarning = await import("../coremods/noDevtoolsWarning");
   coremods.notices = await import("../coremods/notices");
   coremods.notrack = await import("../coremods/notrack");
-  coremods.rdtComponentSourceFix = await import("../coremods/rdtComponentSourceFix");
   coremods.reactErrorDecoder = await import("../coremods/reactErrorDecoder");
   coremods.rpc = await import("../coremods/rpc");
   coremods.settings = await import("../coremods/settings");
