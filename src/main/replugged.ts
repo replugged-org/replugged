@@ -4,14 +4,12 @@ import { CONFIG_PATHS } from "src/util.mjs";
 import { pathToFileURL } from "url";
 import { getSetting } from "./ipc/settings";
 
-import "./patches/app-settings";
-import "./patches/browser-window";
-import "./patches/protocol-scheme";
+import "./patches";
 
 // Copied from old codebase
 app.once("ready", async () => {
   require("./csp");
-  require("./patches/on-ready/permission-handler");
+  require("./patches/on-ready");
 
   // TODO: Eventually in the future, this should be migrated to IPC for better performance
   protocol.handle("replugged", (request) => {
