@@ -117,7 +117,7 @@ Menu.buildFromTemplate = (items: MenuItemConstructorOptions[]) => {
   if (items[0]?.label !== "Discord") return defaultBuildFromTemplate(items);
   if (!items.find((e) => e.label === "Replugged"))
     items.splice(
-      // Quit + seperator
+      // Quit + separator
       -2,
       0,
       { type: "separator" },
@@ -187,7 +187,7 @@ Menu.buildFromTemplate = (items: MenuItemConstructorOptions[]) => {
                 title: "Successfully Updated",
                 message:
                   process.platform === "linux"
-                    ? "Relugged updated but we can't relaunch automatically due to an bug on electron linux, discord will close now!"
+                    ? "Replugged updated but we can't relaunch automatically due to an bug on electron linux, discord will close now!"
                     : "Replugged update and will relaunch discord now to take effects!",
                 buttons: ["Ok"],
               });
