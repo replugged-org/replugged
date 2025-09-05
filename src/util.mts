@@ -1,6 +1,19 @@
 import { execSync } from "child_process";
-import { chownSync, existsSync, mkdirSync, statSync, writeFileSync } from "fs";
+import {
+  chownSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  statSync,
+  writeFileSync,
+} from "fs";
 import { join } from "path";
+import { tmpdir } from "os";
+import { extractAll } from "@electron/asar";
+import { rm } from "fs/promises";
+
+const TMP_DIR = tmpdir();
 
 const REPLUGGED_FOLDER_NAME = "replugged";
 export const configPathFn = (): string => {
@@ -47,21 +60,36 @@ if (!existsSync(CONFIG_PATH)) {
   mkdirSync(CONFIG_PATH, { recursive: true });
 }
 
+for (const file of readdirSync(TMP_DIR)) {
+  if (file.startsWith("replugged-addons-")) {
+    const tempDir = join(TMP_DIR, file);
+    void rm(tempDir, { recursive: true, force: true });
+  }
+}
+
 const CONFIG_FOLDER_NAMES = [
   "plugins",
   "themes",
   "settings",
   "quickcss",
   "react-devtools",
+  "temp_addons",
 ] as const;
 
 export const CONFIG_PATHS = Object.fromEntries(
   CONFIG_FOLDER_NAMES.map((name) => {
-    const path = join(CONFIG_PATH, name);
-    if (!existsSync(path)) {
-      mkdirSync(path);
+    switch (name) {
+      case "temp_addons": {
+        return [name, mkdtempSync(join(TMP_DIR, "replugged-addons-"))];
+      }
+      default: {
+        const path = join(CONFIG_PATH, name);
+        if (!existsSync(path)) {
+          mkdirSync(path);
+        }
+        return [name, path];
+      }
     }
-    return [name, path];
   }),
 ) as Record<(typeof CONFIG_FOLDER_NAMES)[number], string>;
 
@@ -69,7 +97,9 @@ const { uid: REAL_UID, gid: REAL_GID } = statSync(join(CONFIG_PATH, ".."));
 const shouldChown = process.platform === "linux";
 if (shouldChown) {
   chownSync(CONFIG_PATH, REAL_UID, REAL_GID);
-  CONFIG_FOLDER_NAMES.forEach((folder) => chownSync(join(CONFIG_PATH, folder), REAL_UID, REAL_GID));
+  for (const folder of CONFIG_FOLDER_NAMES) {
+    if (folder !== "temp_addons") chownSync(join(CONFIG_PATH, folder), REAL_UID, REAL_GID);
+  }
 }
 
 const QUICK_CSS_FILE = join(CONFIG_PATHS.quickcss, "main.css");
@@ -79,3 +109,13 @@ if (!existsSync(QUICK_CSS_FILE)) {
     chownSync(QUICK_CSS_FILE, REAL_UID, REAL_GID);
   }
 }
+export const extractAddon = (srcPath: string, destPath: string): void => {
+  mkdirSync(destPath, { recursive: true });
+  extractAll(srcPath, destPath);
+};
+
+export const getAddonPath = (pathname: string, mainPath: string): string =>
+  join(
+    pathname.includes(".asar") ? CONFIG_PATHS.temp_addons : mainPath,
+    pathname.replace(".asar", ""),
+  );
