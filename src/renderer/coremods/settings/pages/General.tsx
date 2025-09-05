@@ -182,24 +182,29 @@ export const General = (): React.ReactElement => {
 
         <SwitchItem
           value={rdtValue}
-          onChange={(value) => {
-            if (value) {
+          onChange={async (value) => {
+            try {
               rdtOnChange(value);
-              void RepluggedNative.reactDevTools
-                .downloadExtension()
-                .then(() => {
-                  restartModal(true);
-                })
-                .catch(() => {
-                  rdtOnChange(false); // Disable if failed
-                  toast.toast(
-                    intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
-                    toast.Kind.FAILURE,
-                  );
-                });
-            } else {
-              rdtOnChange(value);
+              if (value) {
+                await RepluggedNative.reactDevTools.downloadExtension();
+              } else {
+                await RepluggedNative.reactDevTools.removeExtension();
+              }
               restartModal(true);
+            } catch {
+              // Revert setting on any error
+              rdtOnChange(false);
+              if (value) {
+                try {
+                  await RepluggedNative.reactDevTools.removeExtension();
+                } catch {
+                  // Ignore cleanup errors
+                }
+              }
+              toast.toast(
+                intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
+                toast.Kind.FAILURE,
+              );
             }
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}>
