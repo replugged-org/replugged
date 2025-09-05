@@ -105,7 +105,7 @@ async function github(
   };
 }
 
-async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
+export async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
   const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
   const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
@@ -175,6 +175,84 @@ const getBaseName = (type: InstallerType | "replugged"): string => {
   }
 };
 
+export async function installAddon(
+  type: InstallerType | "replugged",
+  path: string,
+  url: string,
+  update: boolean,
+  version?: string,
+): Promise<InstallResultSuccess | InstallResultFailure> {
+  const query = new URLSearchParams();
+  query.set("type", update ? "update" : "install");
+  if (version) query.set("version", version);
+
+  if (type === "replugged") {
+    // Manually set Path and URL for security purposes
+    path = "replugged.asar";
+    const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
+    url = `${apiUrl}/api/v1/store/dev.replugged.Replugged.asar`;
+  }
+
+  let res;
+  try {
+    res = await fetch(`${url}?${query}`);
+  } catch (err) {
+    return {
+      success: false,
+      error: `Failed to fetch update: ${err}`,
+    };
+  }
+  let file;
+  try {
+    file = await res.arrayBuffer();
+  } catch (err) {
+    return {
+      success: false,
+      error: `Failed to read update: ${err}`,
+    };
+  }
+
+  const buf = Buffer.from(file);
+
+  const base = getBaseName(type);
+  const filePath = resolve(base, path);
+  if (!filePath.startsWith(`${base}${sep}`)) {
+    // Ensure file changes are restricted to the base path
+    return {
+      success: false,
+      error: "Invalid path",
+    };
+  }
+
+  console.log(url, filePath);
+
+  try {
+    await writeFile(filePath, buf);
+  } catch (err) {
+    return {
+      success: false,
+      error: `Failed to write file: ${err}`,
+    };
+  }
+
+  return {
+    success: true,
+  };
+}
+
+export function getRepluggedVersion(): string {
+  const path = join(__dirname, "package.json");
+  try {
+    const packageJson = JSON.parse(readFileSync(path, "utf8"));
+    return packageJson.version;
+  } catch (err) {
+    if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
+      return "dev";
+    }
+    throw err;
+  }
+}
+
 ipcMain.handle(
   RepluggedIpcChannels.INSTALL_ADDON,
   async (
@@ -184,76 +262,9 @@ ipcMain.handle(
     url: string,
     update: boolean,
     version?: string,
-  ): Promise<InstallResultSuccess | InstallResultFailure> => {
-    const query = new URLSearchParams();
-    query.set("type", update ? "update" : "install");
-    if (version) query.set("version", version);
-
-    if (type === "replugged") {
-      // Manually set Path and URL for security purposes
-      path = "replugged.asar";
-      const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
-      url = `${apiUrl}/api/v1/store/dev.replugged.Replugged.asar`;
-    }
-
-    let res;
-    try {
-      res = await fetch(`${url}?${query}`);
-    } catch (err) {
-      return {
-        success: false,
-        error: `Failed to fetch update: ${err}`,
-      };
-    }
-    let file;
-    try {
-      file = await res.arrayBuffer();
-    } catch (err) {
-      return {
-        success: false,
-        error: `Failed to read update: ${err}`,
-      };
-    }
-
-    const buf = Buffer.from(file);
-
-    const base = getBaseName(type);
-    const filePath = resolve(base, path);
-    if (!filePath.startsWith(`${base}${sep}`)) {
-      // Ensure file changes are restricted to the base path
-      return {
-        success: false,
-        error: "Invalid path",
-      };
-    }
-
-    console.log(url, filePath);
-
-    try {
-      await writeFile(filePath, buf);
-    } catch (err) {
-      return {
-        success: false,
-        error: `Failed to write file: ${err}`,
-      };
-    }
-
-    return {
-      success: true,
-    };
-  },
+  ) => installAddon(type, path, url, update, version),
 );
 
 ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_VERSION, (event) => {
-  const path = join(__dirname, "package.json");
-  try {
-    const packageJson = JSON.parse(readFileSync(path, "utf8"));
-    event.returnValue = packageJson.version;
-  } catch (err) {
-    if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
-      event.returnValue = "dev";
-      return;
-    }
-    throw err;
-  }
+  event.returnValue = getRepluggedVersion();
 });
