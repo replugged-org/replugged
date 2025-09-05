@@ -175,23 +175,34 @@ export function runPlaintextPatches(): void {
       let patches: { default: PlaintextPatch[] } = { default: [] };
 
       if (code) {
-        const wrap = (src: string): string =>
-          `((module) => {\n${src}return module.exports})({exports:{}})\n//# sourceURL=replugged://plugin/${plugin.manifest.id}/plaintextPatches.js?t=${Date.now()}`;
-
-        let codeCjs = code.replace(/export\s+default\s+/g, "module.exports = ");
-        codeCjs = codeCjs.replace(/export[\s+]?\{([^}]+)\}[;]?/g, (_: string, exports: string) =>
-          exports
-            .split(",")
-            .map((exp) => exp.split(" as ").map((x) => x.trim()))
-            .map(([orig, alias]) => `module.exports.${alias || orig} = ${orig};`)
-            .join("\n"),
-        );
-
         try {
           // eslint-disable-next-line no-eval
-          patches = (0, eval)(wrap(codeCjs));
+          patches = (0, eval)(code);
         } catch (err) {
-          logger.error(`Error evaluating plaintext patches for ${plugin.manifest.id}`, err);
+          logger.error(
+            `Error evaluating plaintext patches for ${plugin.manifest.id}, Falling Back from CJS to ESM`,
+            err,
+          );
+          // TODO: remove at v5.0?
+          const wrap = (src: string): string =>
+            `((module) => {\n${src}return module.exports})({exports:{}})\n//# sourceURL=replugged://plugin/${plugin.manifest.id}/plaintextPatches.js?t=${Date.now()}`;
+
+          try {
+            let codeCjs = code.replace(/export\s+default\s+/g, "module.exports = ");
+            codeCjs = codeCjs.replace(
+              /export[\s+]?\{([^}]+)\}[;]?/g,
+              (_: string, exports: string) =>
+                exports
+                  .split(",")
+                  .map((exp) => exp.split(" as ").map((x) => x.trim()))
+                  .map(([orig, alias]) => `module.exports.${alias || orig} = ${orig};`)
+                  .join("\n"),
+            );
+            // eslint-disable-next-line no-eval
+            patches = (0, eval)(wrap(codeCjs));
+          } catch (err) {
+            logger.error(`Error evaluating plaintext patches for ${plugin.manifest.id}`, err);
+          }
         }
       }
 
