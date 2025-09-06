@@ -1270,6 +1270,19 @@ export declare const messages: {
    */
   'REPLUGGED_QUICKCSS_CHANGES_APPLY': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `NNLlfn`
+   * 
+   * ### Definition
+   * ```text
+   * You've popped out the editor to another window.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_QUICKCSS_EDITOR_POPPED_OUT': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `Nk3LNj`
    * 
    * ### Definition
