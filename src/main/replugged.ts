@@ -4,6 +4,7 @@ import { CONFIG_PATHS } from "src/util.mjs";
 import { pathToFileURL } from "url";
 import { getSetting } from "./ipc/settings";
 
+import "./ipc";
 import "./patches";
 
 // Copied from old codebase
@@ -40,6 +41,3 @@ app.once("ready", async () => {
     await session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
   }
 });
-
-// This module is required this way at runtime.
-require("./ipc");
