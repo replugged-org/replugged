@@ -127,6 +127,7 @@ Menu.buildFromTemplate = (items: MenuItemConstructorOptions[]) => {
           {
             label: "Toggle DevTools",
             role: "toggleDevTools",
+            accelerator: "F12",
           },
           {
             // Should we just do enabled: currentVersion !== "dev" instead of dialog??
