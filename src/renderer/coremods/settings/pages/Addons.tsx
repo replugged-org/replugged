@@ -539,7 +539,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
 
   return (
     <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
+      <Flex justify={Flex.Justify.BETWEEN} direction={Flex.Direction.VERTICAL}>
         <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
           {section === `rp_${type}` ? (
             <Text.H2
@@ -591,13 +591,14 @@ export const Addons = (type: AddonType): React.ReactElement => {
           )}
         </Flex>
         {section === `rp_${type}` && (
-          <div style={{ display: "flex" }}>
-            <Button onClick={() => openFolder(type)}>
+          <Flex className="replugged-addon-header-buttons" justify={Flex.Justify.BETWEEN}>
+            <Button fullWidth={true} onClick={() => openFolder(type)}>
               {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
             <Button
+              fullWidth={true}
               onClick={async () => {
                 try {
                   await loadMissing(type);
@@ -619,20 +620,21 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 refreshList();
               }}
               color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
+              look={Button.Looks.OUTLINED}>
               {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
             <Button
+              fullWidth={true}
               onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
               color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
+              look={Button.Looks.OUTLINED}>
               {intl.format(t.REPLUGGED_ADDON_BROWSE, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
-          </div>
+          </Flex>
         )}
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />

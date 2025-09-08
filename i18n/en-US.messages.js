@@ -239,5 +239,7 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_WIN_UPDATER": "Auto Replug",
   "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Automatically Replug discord when discord updates.",
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS": "Enable Discord Internal DevTools",
-  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**."
+  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**.",
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE": "Enable Quick CSS",
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Apply custom styles to Discord instantly. Change colors, layout, and appearance in real time without installing themes."
 });

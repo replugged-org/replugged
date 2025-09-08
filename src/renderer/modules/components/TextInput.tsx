@@ -1,6 +1,5 @@
-import { getFunctionBySource } from "@webpack";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
-import components from "../common/components";
 
 interface TextInputProps
   extends Omit<React.ComponentPropsWithoutRef<"input">, "onChange" | "onFocus" | "onBlur"> {
@@ -20,4 +19,6 @@ export type TextInputType = React.ComponentClass<TextInputProps> & {
   defaultProps: TextInputProps;
 };
 
-export default getFunctionBySource<TextInputType>(components, "prefixElement:")!;
+const TextInputString = "prefixElement:";
+const TextInputMod = await waitForModule(filters.bySource(TextInputString));
+export default getFunctionBySource<TextInputType>(TextInputMod, TextInputString)!;

@@ -64,6 +64,38 @@ export function error(
 }
 
 /**
+ * Log an info message to the console with a Replugged prefix.
+ * @param type Type of the context of the error (e.g. API, Plugin, Coremod...)
+ * @param name Name of the context of the error (e.g. Notices, SilentTyping, Badges...)
+ * @param color Color of the prefix as hex or a CSS color
+ * @param data Message(s) to print with the info message, same as the arguments would be for `console.info`
+ */
+export function info(
+  type: LoggerType,
+  name: string,
+  color: string = blurple,
+  ...data: Parameters<typeof console.info>
+): void {
+  console.info(repluggedPrefix(type, name), logColor(color), ...data);
+}
+
+/**
+ * Log a verbose message to the console with a Replugged prefix.
+ * @param type Type of the context of the error (e.g. API, Plugin, Coremod...)
+ * @param name Name of the context of the error (e.g. Notices, SilentTyping, Badges...)
+ * @param color Color of the prefix as hex or a CSS color
+ * @param data Thing(s) to print with the verbose message, same as the arguments would be for `console.debug`
+ */
+export function verbose(
+  type: LoggerType,
+  name: string,
+  color: string = blurple,
+  ...data: Parameters<typeof console.debug>
+): void {
+  console.debug(repluggedPrefix(type, name), logColor(color), ...data);
+}
+
+/**
  * A convenient way to manage logging things to the console with colorful prefixes indicating their context.
  * Each `Logger` instance stores its context type, context name, and prefix color,
  * so you can use its {@link Logger.log log}, {@link Logger.warn warn}, and {@link Logger.error error}
@@ -124,6 +156,24 @@ export class Logger {
    */
   public error(...data: Parameters<typeof console.error>): void {
     error(this.type, this.name, this.color, ...data);
+  }
+
+  /**
+   * Logs an info message to the console, with an identifying prefix managed by the Logger instance.
+   * @param data Item(s) to print as an info message
+   * @remarks The arguments for this method are the same as the arguments for `console.info`.
+   */
+  public info(...data: Parameters<typeof console.info>): void {
+    info(this.type, this.name, this.color, ...data);
+  }
+
+  /**
+   * Logs a verbose message to the console, with an identifying prefix managed by the Logger instance.
+   * @param data Item(s) to print as a verbose message
+   * @remarks The arguments for this method are the same as the arguments for `console.debug`.
+   */
+  public verbose(...data: Parameters<typeof console.debug>): void {
+    verbose(this.type, this.name, this.color, ...data);
   }
 
   /**

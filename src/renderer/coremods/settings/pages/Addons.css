@@ -46,3 +46,7 @@
 .replugged-addon-breadcrumbsInactive:hover {
   color: var(--header-primary);
 }
+
+.replugged-addon-header-buttons {
+  gap: 5px;
+}

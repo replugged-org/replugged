@@ -68,6 +68,7 @@ export const General = (): React.ReactElement => {
     generalSettings,
     "staffDevTools",
   );
+  const [quickCSS, setQuickCSS] = util.useSettingArray(generalSettings, "quickCSS");
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
@@ -93,6 +94,11 @@ export const General = (): React.ReactElement => {
     return () => document.removeEventListener("keydown", listener);
   }, [kKeys, isEasterEgg]);
 
+  React.useEffect(() => {
+    if (quickCSS) window.replugged.quickCSS.load();
+    else window.replugged.quickCSS.unload();
+  }, [quickCSS]);
+
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
@@ -114,7 +120,15 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       <SwitchItem
+        value={quickCSS}
+        onChange={setQuickCSS}
+        note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC)}>
+        {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE)}
+      </SwitchItem>
+
+      <SwitchItem
         {...util.useSetting(generalSettings, "autoApplyQuickCss")}
+        disabled={!quickCSS}
         note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
@@ -180,24 +194,29 @@ export const General = (): React.ReactElement => {
 
         <SwitchItem
           value={rdtValue}
-          onChange={(value) => {
-            if (value) {
+          onChange={async (value) => {
+            try {
               rdtOnChange(value);
-              void RepluggedNative.reactDevTools
-                .downloadExtension()
-                .then(() => {
-                  restartModal(true);
-                })
-                .catch(() => {
-                  rdtOnChange(false); // Disable if failed
-                  toast.toast(
-                    intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
-                    toast.Kind.FAILURE,
-                  );
-                });
-            } else {
-              rdtOnChange(value);
+              if (value) {
+                await RepluggedNative.reactDevTools.downloadExtension();
+              } else {
+                await RepluggedNative.reactDevTools.removeExtension();
+              }
               restartModal(true);
+            } catch {
+              // Revert setting on any error
+              rdtOnChange(false);
+              if (value) {
+                try {
+                  await RepluggedNative.reactDevTools.removeExtension();
+                } catch {
+                  // Ignore cleanup errors
+                }
+              }
+              toast.toast(
+                intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
+                toast.Kind.FAILURE,
+              );
             }
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}>

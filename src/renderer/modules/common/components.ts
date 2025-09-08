@@ -14,7 +14,6 @@ import type { SelectCompType } from "../components/SelectItem";
 import type { SliderCompType } from "../components/SliderItem";
 import type { SwitchItemType, SwitchType } from "../components/SwitchItem";
 import type { TextAreaType } from "../components/TextArea";
-import type { TextInputType } from "../components/TextInput";
 import type { OriginalTooltipType } from "../components/Tooltip";
 import { waitForProps } from "../webpack";
 import type { CreateToast, ShowToast } from "./toast";
@@ -53,7 +52,6 @@ export type DiscordComponents = {
   | LoaderType
   | SwitchType
   | TextAreaType
-  | TextInputType
   | OriginalTooltipType
   | unknown
 >;
