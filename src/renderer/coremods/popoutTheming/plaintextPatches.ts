@@ -5,7 +5,7 @@ export default [
     find: "Not injecting stylesheet",
     replacements: [
       {
-        match: /\)return void \w+\.warn\("Not injecting/,
+        match: /\)return void \i\.warn\("Not injecting/,
         replace: (suffix) => `&&null${suffix}`,
       },
     ],
