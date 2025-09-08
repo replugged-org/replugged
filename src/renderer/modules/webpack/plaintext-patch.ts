@@ -14,9 +14,10 @@ const logger = Logger.api("plaintext-patch");
 const plaintextPatches: RawPlaintextPatch[] = [];
 
 /**
- * Parse regex for plaintext patch.
- * @param input Regex or string (Strings have no effect)
- * @returns Parsed Regex
+ * Parses a given input and, if it is a regular expression, replaces all occurrences
+ * of the custom `\i` pattern with a regex pattern that matches valid identifier names.
+ * @param input The input to parse
+ * @returns A new `RegExp` with the `\i` pattern replaced, or the original input if it is not a `RegExp`
  */
 export function parseRegex<T>(input: RegExp | T): RegExp | T {
   if (input instanceof RegExp)
@@ -25,10 +26,11 @@ export function parseRegex<T>(input: RegExp | T): RegExp | T {
 }
 
 /**
- * Parse replacement for plaintext patch.
- * @param input Replacement function or string
- * @parm id Plugin ID where this is used
- * @returns Parsed Replacement
+ * Parses and replaces occurrences of the `$exports` placeholder in the provided input
+ * with a string referencing the exports of a plugin identified by the given `id`.
+ * @param input The replacement input.
+ * @param id The ID of the plugin whose exports are being referenced.
+ * @returns The processed replacement input with `$exports` replaced by the appropriate plugin exports reference.
  */
 export function parseReplace(
   input: RegexReplacement["replace"],
@@ -115,7 +117,7 @@ export function patchPlaintext(patches: PlaintextPatch[], id: string): void {
         if (typeof replacement === "function") return replacement;
         const newReplacement = (source: string): string =>
           // @ts-expect-error Why? Because https://github.com/microsoft/TypeScript/issues/14107
-          source.replace(parseRegex(replacement.match), parseRegex(replacement.replace), id);
+          source.replace(parseRegex(replacement.match), parseReplace(replacement.replace, id));
         newReplacement.regex = replacement;
         return newReplacement;
       }),
