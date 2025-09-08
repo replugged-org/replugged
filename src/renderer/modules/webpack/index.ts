@@ -11,6 +11,8 @@ export * as filters from "./filters";
 
 export * from "./helpers";
 
+export { sourceStrings, wpRequire } from "./patch-load";
+
 import { parseRegex, parseReplace } from "./plaintext-patch";
 
 export const plaintextPatch = { parseRegex, parseReplace };
