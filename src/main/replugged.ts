@@ -9,8 +9,8 @@ import "./patches";
 
 // Copied from old codebase
 app.once("ready", async () => {
-  require("./csp");
-  require("./patches/on-ready");
+  await import("./csp");
+  await import("./patches/on-ready");
 
   // TODO: Eventually in the future, this should be migrated to IPC for better performance
   protocol.handle("replugged", (request) => {
