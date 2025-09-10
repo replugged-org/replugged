@@ -3,8 +3,6 @@ import { readFileSync } from "fs";
 import { writeFile as originalWriteFile } from "original-fs";
 import { join, resolve, sep } from "path";
 import { WEBSITE_URL } from "src/constants";
-import { type AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
-import { promisify } from "util";
 import {
   type CheckResultFailure,
   type CheckResultSuccess,
@@ -12,8 +10,11 @@ import {
   type InstallResultSuccess,
   type InstallerType,
   RepluggedIpcChannels,
-} from "../../types";
-import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
+} from "src/types";
+import { type AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
+import { CONFIG_PATH, CONFIG_PATHS } from "src/util.mjs";
+import type { PackageJson } from "type-fest";
+import { promisify } from "util";
 import { getSetting } from "./settings";
 
 const writeFile = promisify(originalWriteFile);
@@ -105,7 +106,7 @@ async function github(
   };
 }
 
-export async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
+async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
   const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
   const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
@@ -145,6 +146,21 @@ const handlers: Record<
   store,
 };
 
+export async function getAddonInfo(
+  type: string,
+  identifier: string,
+  id?: string,
+): Promise<CheckResultSuccess | CheckResultFailure> {
+  if (!(type in handlers)) {
+    return {
+      success: false,
+      error: "Unknown updater type",
+    };
+  }
+
+  return handlers[type](identifier, id);
+}
+
 ipcMain.handle(
   RepluggedIpcChannels.GET_ADDON_INFO,
   async (
@@ -153,14 +169,7 @@ ipcMain.handle(
     identifier: string,
     id?: string,
   ): Promise<CheckResultSuccess | CheckResultFailure> => {
-    if (!(type in handlers)) {
-      return {
-        success: false,
-        error: "Unknown updater type",
-      };
-    }
-
-    return handlers[type](identifier, id);
+    return getAddonInfo(type, identifier, id);
   },
 );
 
@@ -224,8 +233,6 @@ export async function installAddon(
     };
   }
 
-  console.log(url, filePath);
-
   try {
     await writeFile(filePath, buf);
   } catch (err) {
@@ -240,19 +247,6 @@ export async function installAddon(
   };
 }
 
-export function getRepluggedVersion(): string {
-  const path = join(__dirname, "package.json");
-  try {
-    const packageJson = JSON.parse(readFileSync(path, "utf8"));
-    return packageJson.version;
-  } catch (err) {
-    if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
-      return "dev";
-    }
-    throw err;
-  }
-}
-
 ipcMain.handle(
   RepluggedIpcChannels.INSTALL_ADDON,
   async (
@@ -264,6 +258,19 @@ ipcMain.handle(
     version?: string,
   ) => installAddon(type, path, url, update, version),
 );
+
+export function getRepluggedVersion(): string {
+  const path = join(__dirname, "package.json");
+  try {
+    const packageJson: PackageJson = JSON.parse(readFileSync(path, "utf8"));
+    return packageJson.version ?? "unknown";
+  } catch (err) {
+    if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
+      return "dev";
+    }
+    throw err;
+  }
+}
 
 ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_VERSION, (event) => {
   event.returnValue = getRepluggedVersion();
