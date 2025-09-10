@@ -5,10 +5,10 @@ const coremodStr = "replugged.coremods.coremods.notices";
 export default [
   {
     // Add the AnnouncementContainer to the AppView component children
-    find: /hasNotice:\w+,sidebarTheme:\w+/,
+    find: /hasNotice:\i,sidebarTheme:\i/,
     replacements: [
       {
-        match: /\w+\.base,"data-fullscreen":\w+,children:\[/,
+        match: /\i\.base,"data-fullscreen":\i,children:\[/,
         replace: `$&${coremodStr}?.AnnouncementContainer?.(),`,
       },
     ],
@@ -19,7 +19,7 @@ export default [
     find: /"displayName","NoticeStore"/,
     replacements: [
       {
-        match: /(hasNotice\(\){return )(null!=\w+&&null!=\w+\.type)/,
+        match: /(hasNotice\(\){return )(null!=\i&&null!=\i\.type)/,
         replace: `$1($2)||replugged.notices.announcements.length>0`,
       },
     ],
