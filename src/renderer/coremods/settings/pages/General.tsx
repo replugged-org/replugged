@@ -65,6 +65,7 @@ export const General = (): React.ReactElement => {
   const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
   const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
   const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
+  const [winUpdaterValue, winUpdaterOnChange] = util.useSettingArray(generalSettings, "winUpdater");
   const [staffDevToolsValue, staffDevToolsOnChange] = util.useSettingArray(
     generalSettings,
     "staffDevTools",
@@ -143,6 +144,17 @@ export const General = (): React.ReactElement => {
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}>
           {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+        </SwitchItem>
+      )}
+
+      {DiscordNative.process.platform === "win32" && (
+        <SwitchItem
+          value={winUpdaterValue}
+          onChange={(value) => {
+            winUpdaterOnChange(value);
+          }}
+          note={intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER_DESC)}>
+          {intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER)}
         </SwitchItem>
       )}
 
