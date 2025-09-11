@@ -8,9 +8,9 @@ import contextMenuPlaintext from "../coremods/contextMenu/plaintextPatches";
 import experimentsPlaintext from "../coremods/experiments/plaintextPatches";
 import languagePlaintext from "../coremods/language/plaintextPatches";
 import messagePopoverPlaintext from "../coremods/messagePopover/plaintextPatches";
-import noDevtoolsWarningPlaintext from "../coremods/noDevtoolsWarning/plaintextPatches";
 import noticesPlaintext from "../coremods/notices/plaintextPatches";
 import noTrackPlaintext from "../coremods/noTrack/plaintextPatches";
+import noXSSDefensesPlaintext from "../coremods/noXSSDefenses/plaintextPatches";
 import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import reactErrorDecoderPlaintext from "../coremods/reactErrorDecoder/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
@@ -32,9 +32,9 @@ export namespace coremods {
   export let installer: Coremod;
   export let language: Coremod;
   export let messagePopover: Coremod;
-  export let noDevtoolsWarning: Coremod;
   export let notices: Coremod;
   export let noTrack: Coremod;
+  export let noXSSDefenses: Coremod;
   export let reactErrorDecoder: Coremod;
   export let rpc: Coremod;
   export let settings: Coremod;
@@ -59,7 +59,6 @@ export async function startAll(): Promise<void> {
   coremods.installer = await import("../coremods/installer");
   coremods.language = await import("../coremods/language");
   coremods.messagePopover = await import("../coremods/messagePopover");
-  coremods.noDevtoolsWarning = await import("../coremods/noDevtoolsWarning");
   coremods.notices = await import("../coremods/notices");
   coremods.noTrack = await import("../coremods/noTrack");
   coremods.reactErrorDecoder = await import("../coremods/reactErrorDecoder");
@@ -91,7 +90,7 @@ export function runPlaintextPatches(): void {
     { patch: experimentsPlaintext, name: "replugged.coremod.experiments" },
     { patch: languagePlaintext, name: "replugged.coremod.language" },
     { patch: messagePopoverPlaintext, name: "replugged.coremod.messagePopover" },
-    { patch: noDevtoolsWarningPlaintext, name: "replugged.coremod.noDevtoolsWarning" },
+    { patch: noXSSDefensesPlaintext, name: "replugged.coremod.noXSSDefenses" },
     { patch: noticesPlaintext, name: "replugged.coremod.notices" },
     { patch: noTrackPlaintext, name: "replugged.coremod.noTrack" },
     { patch: popoutThemingPlaintext, name: "replugged.coremod.popoutTheming" },
