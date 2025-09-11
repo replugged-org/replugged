@@ -74,7 +74,7 @@
   "REPLUGGED_SETTINGS_ERROR_HEADER": "Something went wrong rendering this element!",
   "REPLUGGED_SETTINGS_ERROR_RENDER_PANEL": "An error occurred while rendering settings panel.",
   "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Component stack:",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN": "Keep token stored",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN": "Keep Token Stored",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Prevents Discord from removing your token from localStorage, reducing the numbers of unwanted logouts.",
   "REPLUGGED_SETTINGS_NO_CLYDE": "Eradicate Clyde",
   "REPLUGGED_SETTINGS_NO_CLYDE_DESC": "Replaces [Clyde]({clydeUrl}) in Replugged commands with a mixed range of avatars and usernames selected by plug-in developers - fallbacks to \"Replugged\" by default.",

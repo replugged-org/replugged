@@ -29,7 +29,6 @@ declare global {
       relaunch: () => void;
     };
     window: {
-      setDevtoolsCallbacks(onOpened?: (() => void) | null, onClosed?: (() => void) | null): void;
       focus(): void;
     };
     clipboard: {

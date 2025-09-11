@@ -1560,7 +1560,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Keep token stored
+   * Keep Token Stored
    * ```
    * 
    * ### Problems
