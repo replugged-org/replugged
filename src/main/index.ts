@@ -1,4 +1,5 @@
 import { app } from "electron";
+
 import { dirname, join } from "path";
 import type { PackageJson } from "type-fest";
 
