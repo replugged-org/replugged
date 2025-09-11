@@ -54,14 +54,18 @@ export function load(id: string): void {
     settings.set(theme.manifest.id, themeSettings);
   }
 
+  unload(id);
+
   let el;
   if (theme.manifest.main) {
     el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
   } else if (themeSettings.chosenPreset) {
     el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenPreset}`);
   } else {
-    throw new Error(`Theme ${id} does not have a main variant.`);
+    logger.error("Manager", `Theme ${id} does not have a main variant or a chosen preset.`);
+    return;
   }
+
   themeElements.set(id, el);
 }
 
@@ -90,7 +94,8 @@ export function loadSplash(id: string): void {
  */
 export function loadAll(): void {
   for (const id of themes.keys()) {
-    if (!disabled.includes(id) && themes.get(id)?.manifest.main) {
+    const theme = themes.get(id);
+    if (!disabled.includes(id) && (theme?.manifest.main || theme?.manifest.presets)) {
       load(id);
     }
   }

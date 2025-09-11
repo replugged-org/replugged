@@ -99,9 +99,8 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
               themes.reload(id);
             }
           }}
-          isSelected={(val) => settings.chosenPreset === val}
-          closeOnSelect={true}>
-          Choose Theme Flavor
+          isSelected={(val) => settings.chosenPreset === val}>
+          Choose Theme Preset
         </SelectItem>
       );
     }

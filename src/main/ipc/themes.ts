@@ -30,7 +30,6 @@ async function getTheme(path: string): Promise<RepluggedTheme> {
       encoding: "utf-8",
     }),
   );
-  console.log(manifest);
 
   return {
     path,
