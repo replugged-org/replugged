@@ -83,7 +83,7 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
     return plugins.getExports(id)?.Settings;
   }
   if (type === AddonType.Theme) {
-    let settings = themes.settings.get(id, { chosenPreset: undefined });
+    const settings = themes.settings.get(id, { chosenPreset: undefined });
     const theme = themes.themes.get(id)!;
     if (theme.manifest.presets?.length) {
       return () => (

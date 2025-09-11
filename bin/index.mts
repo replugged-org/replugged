@@ -532,12 +532,12 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
     targets.push(
       esbuild.context({
         ...common,
-        entryPoints: manifest.presets.map((p: Record<string, string>) => p.path),
+        entryPoints: manifest.presets.map((p) => p.path),
         outdir: `${distPath}/presets`,
       }),
     );
 
-    manifest.presets = manifest.presets?.map((p: Record<string, string>) => ({
+    manifest.presets = manifest.presets.map((p) => ({
       ...p,
       path: `presets/${path.basename(p.path).split(".")[0]}.css`,
     }));
