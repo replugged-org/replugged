@@ -51,7 +51,9 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
     .confirm({
       title: intl.string(t.REPLUGGED_SETTINGS_RESTART_TITLE),
       body: intl.string(t.REPLUGGED_SETTINGS_RESTART),
-      confirmText: doRelaunch ? intl.string(discordT.BUNDLE_READY_RESTART) : intl.string(discordT.ERRORS_RELOAD),
+      confirmText: doRelaunch
+        ? intl.string(discordT.BUNDLE_READY_RESTART)
+        : intl.string(discordT.ERRORS_RELOAD),
       confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
