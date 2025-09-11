@@ -1,69 +1,31 @@
-import { Injector, Logger } from "@replugged";
-import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
-import { ObjectExports } from "src/types";
-import { registerRPCCommand } from "../rpc";
-import { InstallResponse, InstallerSource, installFlow, isValidSource } from "./util";
+import { parser } from "@common";
+import { Injector } from "@replugged";
+import type React from "react";
+import type { Capture, DefaultInRule } from "simple-markdown";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
-import AddonEmbed from "./AddonEmbed";
+import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
+import type { ObjectExports } from "src/types";
+import { registerRPCCommand } from "../rpc";
 import { generalSettings } from "../settings/pages";
-import type { Capture, DefaultInRule } from "simple-markdown";
-import { parser } from "@common";
+import AddonEmbed from "./AddonEmbed";
+import { loadCommands } from "./commands";
+import {
+  type InstallLinkProps,
+  type InstallResponse,
+  type InstallerSource,
+  installFlow,
+  parseInstallLink,
+} from "./util";
 
 const injector = new Injector();
-const logger = Logger.coremod("Installer");
 
 interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
   useDefaultUnderlineStyles?: boolean;
   focusProps?: Record<string, unknown>;
 }
 
-export interface InstallLinkProps {
-  /** Identifier for the addon in the source */
-  identifier: string;
-  /** Updater source type */
-  source?: InstallerSource;
-  /** ID for the addon in that source. Useful for GitHub repositories that have multiple addons. */
-  id?: string;
-}
-
-function parseInstallLink(href: string): InstallLinkProps | null {
-  try {
-    const url = new URL(href);
-    const repluggedHostname = new URL(generalSettings.get("apiUrl")).hostname;
-    if (url.hostname !== repluggedHostname) return null;
-
-    if (url.pathname === "/install") {
-      const params = url.searchParams;
-      const identifier = params.get("identifier");
-      const source = params.get("source") ?? "store";
-      const id = params.get("id") ?? undefined;
-      if (!identifier) return null;
-      if (!isValidSource(source)) return null;
-      return {
-        identifier,
-        source,
-        id,
-      };
-    }
-
-    const storeMatch = url.pathname.match(/^\/store\/([^/]+)$/);
-    if (storeMatch) {
-      const identifier = storeMatch[1];
-      if (["plugins", "themes"].includes(identifier.toLowerCase())) return null;
-      return {
-        identifier,
-        source: "store",
-      };
-    }
-
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-let uninjectFns: Array<() => void> = [];
+const uninjectFns: Array<() => void> = [];
 
 const modalFlows = new Map<string, Promise<InstallResponse>>();
 
@@ -126,29 +88,22 @@ const triggerInstall = (
 };
 
 async function injectLinks(): Promise<void> {
-  const linkMod = await waitForModule(filters.bySource(".useDefaultUnderlineStyles"), {
+  const linkMod = await waitForModule(filters.bySource(",useDefaultUnderlineStyles:"), {
     raw: true,
   });
-  const exports = linkMod.exports as ObjectExports &
-    Record<string, React.FC<React.PropsWithChildren<AnchorProps>>>;
-
-  const key = getFunctionKeyBySource(exports, ".useDefaultUnderlineStyles");
-  if (!key) {
-    logger.error("Failed to find link component.");
-    return;
-  }
-
-  injector.instead(exports, key, (args, fn) => {
+  const exports = linkMod.exports as ObjectExports & {
+    Anchor: React.FC<React.PropsWithChildren<AnchorProps>>;
+  };
+  const anchorKey = getFunctionKeyBySource(exports, "")! as "Anchor"; // It's actually a mangled name, but TS can sit down and shut up
+  injector.before(exports, anchorKey, (args) => {
     const { href } = args[0];
-    if (!href) return fn(...args);
+    if (!href) return args;
     const installLink = parseInstallLink(href);
-    if (!installLink) return fn(...args);
+    if (!installLink) return args;
 
     args[0].onClick = (e) => triggerInstall(installLink, e);
 
-    const res = fn(...args);
-
-    return res;
+    return args;
   });
 
   const defaultRules = parser.defaultRules as typeof parser.defaultRules & {
@@ -158,7 +113,7 @@ async function injectLinks(): Promise<void> {
   defaultRules.repluggedInstallLink = {
     order: defaultRules.autolink.order - 0.5,
     match: (source: string) => {
-      const match = source.match(/^<?(https?:\/\/[^\s<]+[^<>.,:; "'\]\s])>?/);
+      const match = /^<?(https?:\/\/[^\s<]+[^<>.,:; "'\]\s])>?/.exec(source);
       if (!match) return null;
       const installLink = parseInstallLink(match[1]);
       if (!installLink) return null;
@@ -169,7 +124,7 @@ async function injectLinks(): Promise<void> {
     parse: (capture: Capture) => {
       const installLink = parseInstallLink(capture[1]);
       return {
-        ...installLink!,
+        ...installLink,
         url: capture[1],
       };
     },
@@ -202,6 +157,7 @@ async function injectLinks(): Promise<void> {
 export async function start(): Promise<void> {
   await injectLinks();
   injectRpc();
+  loadCommands(injector);
 }
 
 export function stop(): void {

@@ -1,10 +1,11 @@
-import type { CommandOptions, RepluggedCommand } from "src/types";
+import type { RepluggedCommand } from "../../types/coremods/commands";
 import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
 import type { GetButtonItem } from "../../types/coremods/message";
+import type { CommandOptions } from "../../types/discord";
 import type { AnyFunction } from "../../types/util";
 import type { ObjectExports } from "../../types/webpack";
 import { CommandManager } from "../apis/commands";
-import { addContextMenuItem } from "../coremods/contextMenu";
+import { type ContextMenuProps, addContextMenuItem } from "../coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
 
 enum InjectionTypes {
@@ -19,9 +20,9 @@ enum InjectionTypes {
  * @param self The module the injected function is on
  * @returns New arguments to pass to the original function, or undefined to leave them unchanged
  */
-export type BeforeCallback<A extends unknown[] = unknown[]> = (
+export type BeforeCallback<A extends unknown[] = unknown[], I = ObjectExports> = (
   args: A,
-  self: ObjectExports,
+  self: I,
 ) => A | undefined | void;
 
 /**
@@ -31,10 +32,10 @@ export type BeforeCallback<A extends unknown[] = unknown[]> = (
  * @param self The module the injected function is on
  * @returns New result to return
  */
-export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
+export type InsteadCallback<A extends unknown[] = unknown[], R = unknown, I = ObjectExports> = (
   args: A,
   orig: (...args: A) => R,
-  self: ObjectExports,
+  self: I,
 ) => R | void;
 
 /**
@@ -44,10 +45,10 @@ export type InsteadCallback<A extends unknown[] = unknown[], R = unknown> = (
  * @param self The module the injected function is on
  * @returns New result to return, or undefined to leave it unchanged
  */
-export type AfterCallback<A extends unknown[] = unknown[], R = unknown> = (
+export type AfterCallback<A extends unknown[] = unknown[], R = unknown, I = ObjectExports> = (
   args: A,
   res: R,
-  self: ObjectExports,
+  self: I,
 ) => R | undefined | void;
 
 interface ObjectInjections {
@@ -166,7 +167,8 @@ function before<
   T extends Record<U, AnyFunction>,
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
->(obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
+  I = ObjectExports,
+>(obj: T, funcName: U, cb: BeforeCallback<A, I>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
   return inject(obj, funcName, cb as BeforeCallback, InjectionTypes.Before);
 }
@@ -176,7 +178,8 @@ function instead<
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
->(obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
+  I = ObjectExports,
+>(obj: T, funcName: U, cb: InsteadCallback<A, R, I>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
   return inject(obj, funcName, cb, InjectionTypes.Instead);
 }
@@ -186,7 +189,8 @@ function after<
   U extends keyof T & string,
   A extends unknown[] = Parameters<T[U]>,
   R = ReturnType<T[U]>,
->(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
+  I = unknown,
+>(obj: T, funcName: U, cb: AfterCallback<A, R, I>): () => void {
   // @ts-expect-error 'unknown[]' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype of constraint 'unknown[]'.
   return inject(obj, funcName, cb, InjectionTypes.After);
 }
@@ -231,7 +235,8 @@ export class Injector {
     T extends Record<U, AnyFunction>,
     U extends keyof T & string,
     A extends unknown[] = Parameters<T[U]>,
-  >(obj: T, funcName: U, cb: BeforeCallback<A>): () => void {
+    I = ObjectExports,
+  >(obj: T, funcName: U, cb: BeforeCallback<A, I>): () => void {
     const uninjector = before(obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
@@ -249,7 +254,8 @@ export class Injector {
     U extends keyof T & string,
     A extends unknown[] = Parameters<T[U]>,
     R = ReturnType<T[U]>,
-  >(obj: T, funcName: U, cb: InsteadCallback<A, R>): () => void {
+    I = ObjectExports,
+  >(obj: T, funcName: U, cb: InsteadCallback<A, R, I>): () => void {
     const uninjector = instead(obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
@@ -267,7 +273,8 @@ export class Injector {
     U extends keyof T & string,
     A extends unknown[] = Parameters<T[U]>,
     R = ReturnType<T[U]>,
-  >(obj: T, funcName: U, cb: AfterCallback<A, R>): () => void {
+    I = ObjectExports,
+  >(obj: T, funcName: U, cb: AfterCallback<A, R, I>): () => void {
     const uninjector = after(obj, funcName, cb);
     this.#uninjectors.add(uninjector);
     return uninjector;
@@ -319,7 +326,7 @@ export class Injector {
      * By default, items are placed in a group for custom items, though that can be customized with `sectionId` and `indexInSection`
      * @param navId The id of the menu to add to
      * @param item The function that creates the item to add
-     * @param sectionId — The number of the section to add to. Defaults to replugged's section
+     * @param sectionId — The number of the section to add to. Defaults to Replugged's section
      * @param indexInSection — The index in the section to add to. Defaults to the end position
      * @returns A callback to de-register the function
      *
@@ -332,7 +339,7 @@ export class Injector {
      * const injector = new Injector();
      *
      * export function start() {
-     *   injector.utils.addMenuItem(ContextMenuTypes.UserContext,  // Right-clicking a user
+     *   injector.utils.addMenuItem(ContextMenuTypes.UserContext, // Right-clicking a user
      *     (data, menu) => {
      *       return <MenuItem
      *         id="my-item"
@@ -351,8 +358,8 @@ export class Injector {
     addMenuItem: <T extends Record<string, unknown> = Record<string, unknown>>(
       navId: ContextMenuTypes,
       item: GetContextItem<T>,
-      sectionId: number | undefined = undefined,
-      indexInSection = Infinity, // Last item
+      sectionId: number | ((props: ContextMenuProps) => number) | undefined = undefined,
+      indexInSection: number | ((props: ContextMenuProps) => number) = Infinity, // Last item
     ) => {
       const uninjector = addContextMenuItem(
         navId,
@@ -371,7 +378,7 @@ export class Injector {
      *
      * @example
      * ```
-     * import { Injector, components, types } from "replugged";
+     * import { Injector, types } from "replugged";
      *
      * const injector = new Injector();
      *

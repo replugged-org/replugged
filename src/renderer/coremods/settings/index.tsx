@@ -1,67 +1,47 @@
-import { Messages } from "@common/i18n";
+import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
-import { Injector } from "@replugged";
-import { filters, waitForModule } from "src/renderer/modules/webpack";
-import type { Section as SectionType } from "src/types/coremods/settings";
+import { t } from "src/renderer/modules/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
-
-const injector = new Injector();
+import { General, Plugins, QuickCSS, Themes, Updater, generalSettings } from "./pages";
 
 export { insertSections };
 
-interface VersionMod {
-  Z: () => SectionType[];
-}
-async function injectVersionInfo(): Promise<void> {
-  const mod = await waitForModule<VersionMod>(filters.bySource("().versionHash"), { raw: true });
-
-  injector.after(mod.exports, "Z", (_, sections: SectionType[]) => {
-    const lastSection = sections.at(-1)!;
-    const element = lastSection.element?.({});
-    if (!element) return;
-    element.props.children.push(
-      <Text
-        variant="text-xs/normal"
-        color="text-muted"
-        tag="span"
-        style={{ textTransform: "none" }}>
-        {Messages.REPLUGGED_VERSION.format({ version: window.RepluggedNative.getVersion() })}
-      </Text>,
-    );
-    lastSection.element = () => element;
-  });
+export function VersionInfo(): React.ReactElement {
+  return (
+    <Text variant="text-xs/normal" color="text-muted" tag="span" style={{ textTransform: "none" }}>
+      {intl.format(t.REPLUGGED_VERSION, { version: window.RepluggedNative.getVersion() })}
+    </Text>
+  );
 }
 
 export function start(): void {
-  void injectVersionInfo();
-
   settingsTools.addAfter("Billing", [
     Divider(),
     Header("Replugged"),
     Section({
       name: "rp-general",
-      label: () => Messages.SETTINGS_GENERAL,
+      label: () => intl.string(discordT.SETTINGS_GENERAL),
       elem: General,
     }),
     Section({
       name: "rp-quickcss",
-      label: () => Messages.REPLUGGED_QUICKCSS,
+      label: () => intl.string(t.REPLUGGED_QUICKCSS),
+      tabPredicate: () => generalSettings.useValue("quickCSS"),
       elem: QuickCSS,
     }),
     Section({
       name: "rp-plugins",
-      label: () => Messages.REPLUGGED_PLUGINS,
+      label: () => intl.string(t.REPLUGGED_PLUGINS),
       elem: Plugins,
     }),
     Section({
       name: "rp-themes",
-      label: () => Messages.REPLUGGED_THEMES,
+      label: () => intl.string(t.REPLUGGED_THEMES),
       elem: Themes,
     }),
     Section({
       name: "rp-updater",
-      label: () => Messages.REPLUGGED_UPDATES_UPDATER,
+      label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
       elem: Updater,
     }),
   ]);
@@ -69,5 +49,4 @@ export function start(): void {
 
 export function stop(): void {
   settingsTools.removeAfter("Billing");
-  injector.uninjectAll();
 }

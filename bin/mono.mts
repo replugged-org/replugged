@@ -1,9 +1,9 @@
-#!/usr/bin/env node
+// WARNING: any imported files need to be added to files in package.json
 
 import { existsSync, readdirSync } from "fs";
 import path from "path";
-import { directory } from "./index.mjs";
 import prompts from "prompts";
+import { directory } from "./index.mjs";
 import { onCancel } from "./release.mjs";
 
 export const isMonoRepo =
@@ -27,7 +27,7 @@ interface SelectedAddon {
 
 export async function selectAddon(type: AddonType | "all"): Promise<SelectedAddon> {
   if (type !== "all") {
-    const folder = getAddonFolder(type as AddonType);
+    const folder = getAddonFolder(type);
 
     const { addon } = await prompts(
       {

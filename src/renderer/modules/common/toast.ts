@@ -1,11 +1,17 @@
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import type React from "react";
+import { components } from ".";
 
 const Kind = {
-  MESSAGE: 0,
-  SUCCESS: 1,
-  FAILURE: 2,
-  CUSTOM: 3,
-  CLIP: 4,
+  MESSAGE: "message",
+  SUCCESS: "success",
+  FAILURE: "failure",
+  CUSTOM: "custom",
+  CLIP: "clip",
+  LINK: "link",
+  FORWARD: "forward",
+  BOOKMARK: "bookmark",
+  CLOCK: "clock",
+  AI: "ai",
 } as const;
 
 const Position = {
@@ -19,11 +25,26 @@ interface ToastOptions {
   component?: React.ReactElement;
 }
 
+interface ToastProps {
+  message: string | React.ReactElement | null;
+  id: string;
+  type: (typeof Kind)[keyof typeof Kind];
+  options: ToastOptions;
+}
+
+export type CreateToast = (
+  content: string | React.ReactElement | null,
+  kind?: (typeof Kind)[keyof typeof Kind],
+  opts?: ToastOptions,
+) => ToastProps;
+
+export type ShowToast = (props: ToastProps) => void;
+
 type ToastFn = (
   content: string | React.ReactElement | null,
   kind?: (typeof Kind)[keyof typeof Kind],
   opts?: ToastOptions,
-) => unknown;
+) => void;
 
 export interface Toast {
   toast: ToastFn;
@@ -31,18 +52,9 @@ export interface Toast {
   Position: typeof Position;
 }
 
-const mod = await waitForModule(filters.bySource("queuedToasts"));
-const fn = getFunctionBySource<(props: ReturnType<ToastFn>) => void>(mod, "queuedToasts).concat")!;
-
-const propGenMod = await waitForModule(filters.bySource(/case (\w+\.){1,2}FAILURE/));
-const propGenFn = getFunctionBySource<ToastFn>(
-  propGenMod,
-  /options:{position:\w+,component:\w+,duration:\w+}/,
-)!;
-
 const toast: ToastFn = (content, kind = Kind.SUCCESS, opts = undefined) => {
-  const props = propGenFn(content, kind, opts);
-  fn(props);
+  const props = components.createToast(content, kind, opts);
+  components.showToast(props);
 };
 
 export default {

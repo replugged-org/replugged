@@ -1,5 +1,5 @@
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 enum ModalTransitionState {
   ENTERING,
@@ -17,6 +17,7 @@ interface ModalRootProps extends Omit<React.ComponentPropsWithoutRef<"div">, "ch
   fullscreenOnMobile?: boolean;
   hideShadow?: boolean;
   onAnimationEnd?(): string;
+  returnRef?: React.Ref<unknown>;
 }
 
 interface ModalHeaderProps {
@@ -35,7 +36,7 @@ interface ModalContentProps extends React.ComponentPropsWithoutRef<"div"> {
   scrollbarType?: "auto" | "none" | "thin";
 }
 
-interface ModalFooterProps extends ModalHeaderProps {}
+type ModalFooterProps = ModalHeaderProps;
 
 interface ModalCloseButtonProps {
   onClick(): void;
@@ -53,12 +54,14 @@ export interface ModalType {
   ModalCloseButton: React.FC<ModalCloseButtonProps>;
 }
 
-const mod = await waitForModule(filters.bySource("().closeWithCircleBackground"));
+const ModalComponents = await waitForModule<Record<string, ModalType[keyof ModalType]>>(
+  filters.bySource(/\w+\.withCircleBackground/),
+);
 
 export default {
-  ModalRoot: getFunctionBySource(mod, "().root"),
-  ModalHeader: getFunctionBySource(mod, "().header"),
-  ModalContent: getFunctionBySource(mod, "().content"),
-  ModalFooter: getFunctionBySource(mod, "().footerSeparator"),
-  ModalCloseButton: getFunctionBySource(mod, "().closeWithCircleBackground"),
+  ModalRoot: getFunctionBySource(ModalComponents, /\w+\.root/)!,
+  ModalHeader: getFunctionBySource(ModalComponents, /\w+\.header,/)!,
+  ModalContent: getFunctionBySource(ModalComponents, /\w+\.content/)!,
+  ModalFooter: getFunctionBySource(ModalComponents, /\w+\.footerSeparator/)!,
+  ModalCloseButton: getFunctionBySource(ModalComponents, /\w+\.closeWithCircleBackground/)!,
 } as ModalType;

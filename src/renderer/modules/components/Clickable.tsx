@@ -1,19 +1,20 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
-import { filters, waitForModule } from "../webpack";
+import components from "../common/components";
 
 // TODO: generic type for tags?
 type ClickableProps = React.ComponentPropsWithoutRef<"div"> & {
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: keyof React.JSX.IntrinsicElements;
+  focusProps?: Record<string, unknown>;
+  innerRef?: React.Ref<HTMLDivElement>;
   ignoreKeyPress?: boolean;
 };
 
-type ClickableCompType = React.ComponentClass<React.PropsWithChildren<ClickableProps>> & {
+export type ClickableCompType = React.ComponentClass<React.PropsWithChildren<ClickableProps>> & {
   defaultProps: ClickableProps;
 };
 
-const Clickable = await waitForModule<Record<string, ClickableCompType>>(
-  filters.bySource("renderNonInteractive"),
-).then((mod) => Object.values(mod).find((x) => x.prototype?.renderNonInteractive)!);
+const Clickable = getFunctionBySource<ClickableType>(components, "this.renderNonInteractive()")!;
 
 export type ClickableType = React.FC<React.PropsWithChildren<ClickableProps>>;
 

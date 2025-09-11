@@ -1,45 +1,41 @@
+import { filters, getFunctionBySource, waitForModule, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, Flex, FormText, Tooltip } from ".";
-import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
 
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   look?: string;
-  size?: string;
   color?: string;
-  borderColor?: string;
-  hover?: string;
+  size?: string;
   fullWidth?: boolean;
   grow?: boolean;
   submitting?: boolean;
-  submittingStartedLabel?: string;
-  submittingFinishedLabel?: string;
+  wrapperClassName?: string;
+  innerClassName?: string;
   buttonRef?: React.Ref<HTMLButtonElement>;
   focusProps?: Record<string, unknown>;
-  innerClassName?: string;
-  wrapperClassName?: string;
+  submittingStartedLabel?: string;
+  submittingFinishedLabel?: string;
 }
 
-interface Path {
+interface Location<S = unknown> {
   pathname?: string;
   search?: string;
+  state?: S;
   hash?: string;
+  key?: string;
 }
 
-interface LinkProps extends Omit<React.ComponentPropsWithoutRef<"a">, "href"> {
+interface LinkProps<S = unknown> extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  component?: React.ComponentType;
+  to: string | Location<S> | ((location: Location<S>) => string | Location<S>);
   replace?: boolean;
-  state?: unknown;
-  to: string | Path;
-  reloadDocument?: boolean;
-  preventScrollReset?: boolean;
-  relative?: "route" | "path";
+  innerRef?: React.Ref<HTMLAnchorElement>;
 }
 
-interface ButtonLinkProps extends LinkProps {
+interface ButtonLinkProps<S = unknown> extends LinkProps<S> {
   look?: string;
-  size?: string;
   color?: string;
-  borderColor?: string;
-  hover?: string;
+  size?: string;
   fullWidth?: boolean;
   grow?: boolean;
   innerClassName?: string;
@@ -47,56 +43,24 @@ interface ButtonLinkProps extends LinkProps {
 
 export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
   Link: React.FC<React.PropsWithChildren<ButtonLinkProps>>;
-  Looks: Record<"FILLED" | "INVERTED" | "OUTLINED" | "LINK" | "BLANK", string>;
+  Looks: Record<"FILLED" | "OUTLINED" | "LINK" | "BLANK", string>;
   Colors: Record<
     | "BRAND"
+    | "BRAND_INVERTED"
     | "RED"
     | "GREEN"
-    | "YELLOW"
     | "PRIMARY"
     | "LINK"
     | "WHITE"
-    | "BLACK"
     | "TRANSPARENT"
-    | "BRAND_NEW"
     | "CUSTOM",
     string
   >;
-  BorderColors: Record<
-    | "BRAND"
-    | "RED"
-    | "GREEN"
-    | "YELLOW"
-    | "PRIMARY"
-    | "LINK"
-    | "WHITE"
-    | "BLACK"
-    | "TRANSPARENT"
-    | "BRAND_NEW",
-    string
-  >;
-  Hovers: Record<
-    | "DEFAULT"
-    | "BRAND"
-    | "RED"
-    | "GREEN"
-    | "YELLOW"
-    | "PRIMARY"
-    | "LINK"
-    | "WHITE"
-    | "BLACK"
-    | "TRANSPARENT",
-    string
-  >;
-  Sizes: Record<
-    "NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "XLARGE" | "MIN" | "MAX" | "ICON",
-    string
-  >;
+  Sizes: Record<"NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "MIN" | "MAX" | "ICON", string>;
 };
 
-export const Button = await waitForModule(filters.bySource(".BorderColors=")).then(
-  (mod) => getFunctionBySource<ButtonType>(mod, "wrapperClassName")!,
-);
+const mod = await waitForModule(filters.bySource(".disabledButtonWrapper,"));
+export const Button = getFunctionBySource<ButtonType>(mod, "Type.PULSING_ELLIPSIS")!;
 
 const classes =
   await waitForProps<Record<"dividerDefault" | "labelRow" | "note" | "title", string>>(

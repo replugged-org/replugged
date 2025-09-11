@@ -1,6 +1,6 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
-import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 const Aligns = {
   BOTTOM: "bottom",
@@ -22,10 +22,7 @@ const Positions = {
 interface TooltipEnums {
   Aligns: typeof Aligns;
   Positions: typeof Positions;
-  Colors: Record<
-    "PRIMARY" | "BLACK" | "GREY" | "BRAND" | "GREEN" | "YELLOW" | "RED" | "CUSTOM" | "PREMIUM",
-    string
-  >;
+  Colors: Record<"PRIMARY" | "GREY" | "BRAND" | "GREEN" | "RED", string>;
 }
 
 interface BaseTooltipProps {
@@ -36,6 +33,7 @@ interface BaseTooltipProps {
   spacing?: number;
   delay?: number;
   allowOverflow?: boolean;
+  overflowOnly?: boolean;
   disableTooltipPointerEvents?: boolean;
   forceOpen?: boolean;
   hideOnClick?: boolean;
@@ -45,8 +43,11 @@ interface BaseTooltipProps {
   className?: string;
   tooltipClassName?: string;
   tooltipContentClassName?: string;
+  tooltipPointerClassName?: string;
   style?: React.CSSProperties;
+  tooltipStyle?: React.CSSProperties;
   onTooltipShow?: () => void;
+  onTooltipHide?: () => void;
   onAnimationRest?: (result: unknown, spring: unknown, item?: unknown) => void;
 }
 
@@ -58,15 +59,11 @@ interface TooltipCustom extends BaseTooltipProps {
   children: React.ReactNode;
 }
 
-type OriginalTooltipType = React.ComponentClass<TooltipFunctionChildren> & TooltipEnums;
+export type OriginalTooltipType = React.ComponentClass<TooltipFunctionChildren> & TooltipEnums;
 
 export type TooltipType = React.FC<TooltipCustom> & TooltipEnums;
 
-const tooltipRgx = /shouldShowTooltip:!1/;
-
-const TooltipMod = await waitForModule(filters.bySource(/tooltipTop,.{0,20}tooltipBottom/)).then(
-  (mod) => getFunctionBySource<OriginalTooltipType>(mod as ObjectExports, tooltipRgx)!,
-);
+const TooltipMod = getFunctionBySource<OriginalTooltipType>(components, "shouldShowTooltip")!;
 
 const Tooltip: TooltipType = (props) => (
   <TooltipMod {...props}>

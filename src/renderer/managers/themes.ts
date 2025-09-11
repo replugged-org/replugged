@@ -1,8 +1,8 @@
-import { loadStyleSheet } from "../util";
-import type { RepluggedTheme } from "../../types";
 import type { ThemeSettings } from "src/types/addon";
+import type { RepluggedTheme } from "../../types";
 import { init } from "../apis/settings";
 import * as logger from "../modules/logger";
+import { loadStyleSheet } from "../util";
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
@@ -11,7 +11,7 @@ const themeElements = new Map<string, HTMLLinkElement>();
  */
 export const themes = new Map<string, RepluggedTheme>();
 let disabled: string[];
-export const settings = await init<ThemeSettings>("themes");
+export const settings = init<ThemeSettings>("themes");
 
 /**
  * Load metadata for all themes that are added to the themes folder but not yet loaded, such as newly added themes.

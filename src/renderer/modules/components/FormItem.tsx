@@ -1,30 +1,28 @@
+import { filters, waitForModule, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, FormText } from ".";
-import { filters, waitForModule, waitForProps } from "../webpack";
 
 interface FormItemCompProps extends Omit<React.ComponentPropsWithoutRef<"div">, "title"> {
   children: React.ReactNode;
   title?: React.ReactNode;
   error?: React.ReactNode;
+  faded?: boolean;
   disabled?: boolean;
   required?: boolean;
   tag?: "h1" | "h2" | "h3" | "h4" | "h5" | "label" | "legend";
+  titleId?: string;
+  errorId?: string;
   titleClassName?: string;
 }
 
-const formItemStr =
-  '"children","disabled","className","titleClassName","tag","required","style","title","error"';
+export type FormItemCompType = React.ForwardRefExoticComponent<FormItemCompProps> & {
+  render: React.ForwardRefRenderFunction<unknown>;
+};
 
-const FormItemComp = await waitForModule<
-  Record<
-    string,
-    React.ForwardRefExoticComponent<FormItemCompProps> & {
-      render: React.ForwardRefRenderFunction<unknown>;
-    }
-  >
->(filters.bySource(formItemStr)).then(
-  (mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!,
-);
+const formItemStr = ".fieldWrapper";
+const FormItemComp = await waitForModule<Record<string, FormItemCompType>>(
+  filters.bySource(formItemStr),
+).then((mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!);
 
 const classes = await waitForProps<Record<"dividerDefault", string>>("dividerDefault");
 
@@ -40,25 +38,22 @@ export type FormItemType = React.FC<FormItemProps>;
 
 export default ((props) => {
   const { note, notePosition = "before", noteStyle, noteClassName, divider, ...compProps } = props;
+
+  const noteStyleDefault = notePosition === "before" ? { marginBottom: 8 } : { marginTop: 8 };
+  const noteComp = (
+    <FormText.DESCRIPTION
+      disabled={props.disabled}
+      className={noteClassName}
+      style={{ ...noteStyleDefault, ...noteStyle }}>
+      {note}
+    </FormText.DESCRIPTION>
+  );
+
   return (
     <FormItemComp {...compProps}>
-      {note && notePosition === "before" && (
-        <FormText.DESCRIPTION
-          disabled={props.disabled}
-          className={noteClassName}
-          style={{ marginBottom: 8, ...noteStyle }}>
-          {note}
-        </FormText.DESCRIPTION>
-      )}
+      {note && notePosition === "before" && noteComp}
       {props.children}
-      {note && notePosition === "after" && (
-        <FormText.DESCRIPTION
-          disabled={props.disabled}
-          className={noteClassName}
-          style={{ marginTop: 8, ...noteStyle }}>
-          {note}
-        </FormText.DESCRIPTION>
-      )}
+      {note && notePosition === "after" && noteComp}
       {divider && <Divider className={classes.dividerDefault} />}
     </FormItemComp>
   );

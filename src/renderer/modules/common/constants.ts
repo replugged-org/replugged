@@ -1,8 +1,14 @@
 import { virtualMerge } from "src/renderer/util";
 import { filters, getExportsForProps, waitForModule, waitForProps } from "../webpack";
 
-const ConstantsCommon = await waitForModule<Record<string, unknown>>(filters.bySource("BASE_URL:"));
-const Constants = await waitForModule<Record<string, unknown>>(filters.bySource("USER_PROFILE:"));
+type StringConcat = (...rest: string[]) => string;
+
+const ConstantsCommon = await waitForModule<Record<string, unknown>>(
+  filters.bySource("dis.gd/request"),
+);
+const Constants = await waitForModule<Record<string, unknown>>(
+  filters.bySource("users/@me/relationships"),
+);
 export const raw = virtualMerge(ConstantsCommon, Constants);
 
 export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsCommon, [
@@ -10,10 +16,7 @@ export const Permissions = getExportsForProps<Record<string, bigint>>(ConstantsC
   "MANAGE_GUILD",
 ]);
 // OAuth2Scopes
-export const Scopes = getExportsForProps<Record<string, string>>(ConstantsCommon, [
-  "BOT",
-  "GUILDS",
-])!;
+export const Scopes = await waitForProps<Record<string, string>>("BOT", "GUILDS");
 // RPCCloseCodes
 export const RPCErrors = getExportsForProps<Record<string, string | number>>(ConstantsCommon, [
   "RATELIMITED",
@@ -42,7 +45,7 @@ export const ChannelTypes = getExportsForProps<Record<string, string | number>>(
   "DM",
   "GUILD_FORUM",
 ])!;
-export const Endpoints = getExportsForProps<Record<string, unknown>>(Constants, [
+export const Endpoints = getExportsForProps<Record<string, string | StringConcat>>(Constants, [
   "USERS",
   "INTEGRATIONS",
 ])!;
@@ -54,8 +57,11 @@ export const MessageFlags = getExportsForProps<Record<string, number>>(Constants
   "EPHEMERAL",
   "LOADING",
 ])!;
-export const Routes = getExportsForProps<Record<string, unknown>>(Constants, ["INDEX", "LOGIN"])!;
-export const UserFlags = getExportsForProps<Record<string, number>>(Constants, [
+export const Routes = getExportsForProps<Record<string, string | StringConcat>>(Constants, [
+  "INDEX",
+  "LOGIN",
+])!;
+export const UserFlags = getExportsForProps<Record<string, string | number>>(Constants, [
   "STAFF",
   "SPAMMER",
 ])!;
@@ -103,16 +109,16 @@ interface UnsafeRawColor {
 
 interface ColorMod {
   themes: Record<string, string>;
+  modules: Record<string, Record<string, number>>;
   colors: Record<string, Color>;
   spacing: Record<string, string>;
   radii: Record<string, number>;
   shadows: Record<string, ShadowColor>;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   unsafe_rawColors: Record<string, UnsafeRawColor>;
+  layout: Record<string, string>;
 }
 
-export const ColorGenerator = await waitForModule<ColorMod>(
-  filters.bySource(/\w+\.unsafe_rawColors\[\w+\]\.resolve\(\w+\)/),
-);
+export const ColorGenerator = await waitForProps<ColorMod>("unsafe_rawColors", "layout");
 
 export const Themes = ColorGenerator.themes;

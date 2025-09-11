@@ -1,7 +1,6 @@
 import { parser } from "@common";
 import type React from "react";
-import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 export type Variant =
   | "heading-sm/normal"
@@ -60,6 +59,10 @@ export type Variant =
   | "redesign/message-preview/medium"
   | "redesign/message-preview/semibold"
   | "redesign/message-preview/bold"
+  | "redesign/channel-title/normal"
+  | "redesign/channel-title/medium"
+  | "redesign/channel-title/semibold"
+  | "redesign/channel-title/bold"
   | "display-sm"
   | "display-md"
   | "display-lg"
@@ -68,10 +71,11 @@ export type Variant =
 // TODO: generic type for tags?
 interface TextProps extends React.ComponentPropsWithoutRef<"div"> {
   variant?: Variant;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: keyof React.JSX.IntrinsicElements;
   selectable?: boolean;
   tabularNumbers?: boolean;
   lineClamp?: number;
+  scaleFontToUserSetting?: boolean;
 }
 
 interface CustomTextProps extends TextProps {
@@ -81,13 +85,12 @@ interface CustomTextProps extends TextProps {
   allowMarkdownList?: boolean;
 }
 
-type OriginalTextType = React.FC<CustomTextProps>;
+export type OriginalTextType = React.FC<CustomTextProps>;
 
 export type TextType = OriginalTextType &
   Record<"Normal" | "H1" | "H2" | "H3" | "H4" | "Eyebrow", OriginalTextType>;
 
-const mod = await waitForModule<ObjectExports>(filters.bySource("data-text-variant"));
-const OriginalText = getFunctionBySource<OriginalTextType>(mod, "data-text-variant")!;
+const TextComp = components.Text;
 
 function TextWithDefaultProps(defaultProps: CustomTextProps) {
   return (props: CustomTextProps) => {
@@ -105,7 +108,7 @@ function TextWithDefaultProps(defaultProps: CustomTextProps) {
     delete props.allowMarkdownLinks;
     delete props.allowMarkdownHeading;
     delete props.allowMarkdownList;
-    return <OriginalText {...props}>{newChildren}</OriginalText>;
+    return <TextComp {...props}>{newChildren}</TextComp>;
   };
 }
 

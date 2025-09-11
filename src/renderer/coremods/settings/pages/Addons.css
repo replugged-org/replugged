@@ -1,13 +1,14 @@
 .replugged-addon-cards {
   display: grid;
-  gap: 20px;
+  gap: var(--space-md);
 }
 
 .replugged-addon-card {
-  background-color: var(--background-secondary);
+  background-color: var(--background-base-lower);
+  border: 1px solid var(--border-subtle);
   width: 100%;
-  padding: 15px;
-  border-radius: 5px;
+  padding: var(--space-16);
+  border-radius: var(--radius-sm);
 }
 
 .replugged-addon-icon,
@@ -30,4 +31,22 @@
 
 .replugged-addon-icon:hover svg {
   color: var(--interactive-hover);
+}
+
+.replugged-addon-breadcrumbs {
+  margin-bottom: 20px;
+}
+.replugged-addon-breadcrumbsActive {
+  color: var(--header-primary);
+}
+.replugged-addon-breadcrumbsInactive {
+  cursor: pointer;
+  color: var(--header-secondary);
+}
+.replugged-addon-breadcrumbsInactive:hover {
+  color: var(--header-primary);
+}
+
+.replugged-addon-header-buttons {
+  gap: 5px;
 }

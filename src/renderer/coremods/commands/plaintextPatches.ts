@@ -1,13 +1,14 @@
+import { REPLUGGED_CLYDE_ID } from "src/constants";
 import type { PlaintextPatch } from "src/types";
 
 export default [
   {
-    //disables api request to find commands if its added by replugged
-    find: "filteredSectionId:null",
+    find: "/\\.gif($|\\?|#)/i",
     replacements: [
       {
-        match: /\w+\({applicationId:(\w+)}/,
-        replace: (suffix, id) => `${id} == "replugged"||${suffix}`,
+        match: /getSrc\(\i\){/,
+        replace: (prefix) =>
+          `${prefix}if(this.props.sourceMetadata?.message?.author?.id==="${REPLUGGED_CLYDE_ID}")return this.props.src;`,
       },
     ],
   },

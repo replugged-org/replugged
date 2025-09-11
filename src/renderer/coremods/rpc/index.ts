@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { Injector, Logger } from "@replugged";
+import { Injector } from "@replugged";
+import { BETA_WEBSITE_URL, WEBSITE_URL } from "src/constants";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
-import { Jsonifiable } from "type-fest";
+import type { Jsonifiable } from "type-fest";
 
 const injector = new Injector();
-
-const logger = Logger.coremod("RPC");
 
 type Socket = Record<string, unknown> & {
   authorization: Record<string, unknown> & {
@@ -13,12 +11,12 @@ type Socket = Record<string, unknown> & {
   };
 };
 
-type RPCData = {
+interface RPCData {
   args: Record<string, Jsonifiable | undefined>;
   cmd: string;
-};
+}
 
-type RPCCommand = {
+interface RPCCommand {
   scope?:
     | string
     | {
@@ -31,11 +29,13 @@ type RPCCommand = {
     | Promise<Record<string, Jsonifiable | undefined>>
     | void
     | Promise<void>;
-};
+}
 
 type Commands = Record<string, RPCCommand>;
 
-type RPCMod = { commands: Commands };
+interface RPCMod {
+  commands: Commands;
+}
 
 let commands: Commands = {};
 
@@ -43,18 +43,14 @@ async function injectRpc(): Promise<void> {
   const rpcValidatorMod = await waitForModule<
     Record<string, (socket: Socket, client_id: string, origin: string) => Promise<void>>
   >(filters.bySource("Invalid Client ID"));
-  const validatorFunctionKey = getFunctionKeyBySource(rpcValidatorMod, "Invalid Client ID");
-  if (!validatorFunctionKey) {
-    logger.error("Failed to find RPC validator function.");
-    return;
-  }
+  const fetchApplicationsRPCKey = getFunctionKeyBySource(rpcValidatorMod, "Invalid Origin")!;
 
-  injector.instead(rpcValidatorMod, validatorFunctionKey, (args, fn) => {
+  injector.instead(rpcValidatorMod, fetchApplicationsRPCKey, (args, fn) => {
     const [, clientId, origin] = args;
     const isRepluggedClient = clientId.startsWith("REPLUGGED-");
 
     // From Replugged site
-    if (origin === "https://replugged.dev" || origin === "https://beta.replugged.dev") {
+    if (origin === WEBSITE_URL || origin === BETA_WEBSITE_URL) {
       args[0].authorization.scopes = ["REPLUGGED"];
       return Promise.resolve();
     }

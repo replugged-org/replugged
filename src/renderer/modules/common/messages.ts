@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { Channel, Message, MessageAttachment, User } from "discord-types/general";
-import { virtualMerge } from "src/renderer/util";
+import { getBoundMethods, virtualMerge } from "src/renderer/util";
 import type { APIEmbed } from "src/types";
-import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
+import {
+  filters,
+  getFunctionBySource,
+  waitForModule,
+  waitForProps,
+  waitForStore,
+} from "../webpack";
+import type { Store } from "./flux";
 
 export enum ActivityActionTypes {
   JOIN = 1,
@@ -60,14 +67,14 @@ interface FocusMessageOptions {
   messageId: string;
 }
 
-interface SendMessageForReplyOptions {
+export interface SendMessageForReplyOptions {
   channel: Channel;
   message: Message;
   shouldMention: boolean;
   showMentionToggle: boolean;
 }
 
-interface SendMessageOptionsForReply {
+export interface SendMessageOptionsForReply {
   messageReference?: MessageReference;
   allowedMentions?: AllowedMentions;
 }
@@ -128,7 +135,23 @@ interface MessageGreetOptions {
   allowedMentions?: AllowedMentions;
 }
 
-declare class LocalFetchComplete {
+interface Poll {
+  question: {
+    text: string;
+  };
+  answers: Array<{
+    poll_media: {
+      text: string;
+    };
+    answer_id: number;
+  }>;
+  expiry: string;
+  allow_multiselect: boolean;
+  duration: number;
+  layout_type: number;
+}
+
+declare class RemoteFetch {
   public completed: boolean;
 
   public markComplete: () => void;
@@ -231,6 +254,7 @@ export declare class ChannelMessages {
   public _clearMessages: () => void;
   public _merge: (messages: Message[], prepend?: boolean, clearCache?: boolean) => void;
   public addCachedMessages: (messages: Message[], cache?: boolean) => ChannelMessages;
+  public filter: Message[]["filter"];
   public findNewest: (
     callback: (message: Message, index: number, messages: Message) => unknown,
   ) => Message | undefined;
@@ -310,16 +334,18 @@ export interface MessageStore {
   focusedMessageId: (channelId: string) => string | null | undefined;
   getLastCommandMessage: (channelId: string) => Message | undefined;
   getLastEditableMessage: (channelId: string) => Message | undefined;
+  getLastMessage: (channelId: string) => Message | undefined;
+  getLastNonCurrentUserMessage: (channelId: string) => Message | undefined;
   getMessage: (channelId: string, messageId: string) => Message | undefined;
   getMessages: (channelId: string) => ChannelMessages;
   hasCurrentUserSentMessage: (channelId: string) => boolean;
+  hasCurrentUserSentMessageSinceAppStart: () => boolean;
   hasPresent: (channelId: string) => boolean;
   isLoadingMessages: (channelId: string) => boolean;
+  isReady: (channelId: string) => boolean;
   jumpedMessageId: (channelId: string) => string | null | undefined;
   whenReady: (channelId: string, callback: () => void) => void;
 }
-
-export type PartialMessageStore = Pick<MessageStore, "getMessage" | "getMessages">;
 
 export interface MessageActions {
   clearChannel: (channelId: string) => void;
@@ -341,7 +367,7 @@ export interface MessageActions {
     before: string,
     after: string,
     limit: number,
-    localFetchComplete: LocalFetchComplete,
+    remoteFetch: RemoteFetch,
   ) => Promise<void>;
   fetchMessages: (options: FetchMessagesOptions) => Promise<boolean>;
   fetchNewLocalMessages: (channelId: string, limit: number) => Promise<void>;
@@ -369,8 +395,18 @@ export interface MessageActions {
     analyticsTriggeredFrom?: string,
     suggestedInvite?: InviteSuggestion,
   ) => Promise<unknown | void>;
-  sendBotMessage: (channelId: string, content: string, messageName?: string) => void;
+  sendBotMessage: (
+    channelId: string,
+    content: string,
+    messageName?: string,
+    messageId?: string,
+  ) => void;
   sendClydeError: (channelId: string, code?: number) => void;
+  sendExplicitMediaClydeError: (
+    channelId: string,
+    attachments: MessageAttachment[] | undefined,
+    context: string,
+  ) => void;
   sendGreetMessage: (
     channelId: string,
     stickerId: string,
@@ -395,7 +431,17 @@ export interface MessageActions {
     options?: SendMessageOptionsForReply | Record<never, never>,
     tts?: boolean,
   ) => Promise<unknown | void>;
-  startEditMessage: (channelId: string, messageId: string, content: string) => void;
+  sendPollMessage: (
+    channelId: string,
+    poll: Poll,
+    options?: SendMessageOptionsForReply | Record<never, never>,
+  ) => Promise<unknown | void>;
+  startEditMessage: (
+    channelId: string,
+    messageId: string,
+    content: string,
+    source?: string,
+  ) => void;
   suppressEmbeds: (channelId: string, messageId: string) => Promise<void>;
   trackInvite: (options: TrackInviteOptions) => void;
   trackJump(
@@ -419,6 +465,7 @@ interface CreateBotMessageOptions {
   content: string;
   embeds?: APIEmbed[];
   loggingName?: string;
+  messageId?: string;
 }
 
 interface CreateMessageOptions {
@@ -431,6 +478,8 @@ interface CreateMessageOptions {
   author: User;
   flags?: number;
   nonce?: string;
+  poll?: Poll;
+  changelogId?: string;
 }
 
 interface UserServer {
@@ -445,27 +494,27 @@ interface UserServer {
 interface MessageUtils {
   createBotMessage: (options: CreateBotMessageOptions) => Message;
   createMessage: (options: CreateMessageOptions) => Message;
-  createNonce: () => string;
   userRecordToServer: (user: User) => UserServer;
 }
 
-const MessageStore = await waitForProps<MessageStore>("getMessage", "getMessages");
+const MessageActionCreators = await waitForProps<MessageActions>(
+  "sendMessage",
+  "editMessage",
+  "deleteMessage",
+);
+const MessageStore = await waitForStore<MessageStore & Store>("MessageStore");
 
 const MessageUtilsMod = await waitForModule(filters.bySource('username:"Clyde"'));
 const MessageUtils = {
   createBotMessage: getFunctionBySource(MessageUtilsMod, 'username:"Clyde"'),
   createMessage: getFunctionBySource(MessageUtilsMod, "createMessage"),
-  createNonce: getFunctionBySource(MessageUtilsMod, "fromTimestamp"),
   userRecordToServer: getFunctionBySource(MessageUtilsMod, "global_name:"),
 } as MessageUtils;
 
-export type Messages = PartialMessageStore & MessageActions & MessageUtils;
+export type Messages = MessageActions & MessageStore & MessageUtils;
 
 export default virtualMerge(
-  await waitForProps<MessageActions>("sendMessage", "editMessage", "deleteMessage"),
-  {
-    getMessage: MessageStore.getMessage,
-    getMessages: MessageStore.getMessages,
-  },
+  MessageActionCreators,
+  getBoundMethods(MessageStore),
   MessageUtils,
-);
+) as Messages;

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type EventEmitter from "events";
 import { waitForProps } from "../webpack";
+import type { ActionHandler, ActionHandlerRecord } from "./flux";
 
 export enum DispatchBand {
   Early,
@@ -7,11 +9,9 @@ export enum DispatchBand {
   Default,
 }
 
-type FluxCallback = (action?: { [index: string]: unknown }) => void;
-
 interface Action {
   type: string;
-  [index: string]: unknown;
+  [key: string]: any;
 }
 
 type ActionMetric = [string, string, number];
@@ -57,7 +57,7 @@ declare class ActionLog {
 }
 
 interface NodeData {
-  actionHandler: Record<string, FluxCallback>;
+  actionHandler: ActionHandlerRecord;
   band: DispatchBand;
   name: string;
   storeDidChange: (action: Action) => void;
@@ -86,12 +86,12 @@ export declare class DepGraph {
 }
 
 interface Handler {
-  actionHandler: FluxCallback;
+  actionHandler: ActionHandler;
   name: string;
   storeDidChange: (action: Action) => void;
 }
 
-declare class ActionHandlers {
+declare class ActionHandlersGraph {
   public _orderedActionHandlers: Record<string, Handler[]>;
   public _orderedCallbackTokens: string[];
   public _lastID: number;
@@ -102,7 +102,7 @@ declare class ActionHandlers {
   public getOrderedActionHandlers: (action: Action) => Handler[];
   public register: (
     name: string,
-    actionHandler: Record<string, FluxCallback>,
+    actionHandlers: ActionHandlerRecord,
     storeDidChange: (action: Action) => void,
     band: DispatchBand,
     token?: string,
@@ -116,15 +116,27 @@ declare class ActionHandlers {
   private _validateDependencies: (token: string) => void;
 }
 
+interface Breadcrumb {
+  category?: string;
+  data?: Record<string, unknown>;
+  message?: string;
+}
+
+interface SentryUtils {
+  addBreadcrumb: (breadcrumb: Breadcrumb) => void;
+}
+
 export interface FluxDispatcher {
-  _actionHandlers: ActionHandlers;
+  _actionHandlers: ActionHandlersGraph;
   _currentDispatchActionType: string | null;
   _defaultBand: DispatchBand;
   _interceptors: Array<(...rest: unknown[]) => unknown>;
   _processingWaitQueue: boolean;
-  _subscriptions: Record<string, Set<FluxCallback>>;
+  _sentryUtils: SentryUtils | null | undefined;
+  _subscriptions: Record<string, Set<ActionHandler>>;
   _waitQueue: Array<(...rest: unknown[]) => unknown>;
   actionLogger: ActionLogger;
+  functionCache: Record<string, (action: Action) => void>;
 
   _dispatchWithDevtools: (action: Action) => void;
   _dispatchWithLogging: (action: Action) => void;
@@ -139,12 +151,12 @@ export interface FluxDispatcher {
   dispatch: (action: Action) => void;
   flushWaitQueue: () => void;
   isDispatching: () => boolean;
-  subscribe: (type: string, callback: FluxCallback) => void;
-  unsubscribe: (type: string, callback: FluxCallback) => void;
+  subscribe: <A extends Action>(type: string, callback: ActionHandler<A>) => void;
+  unsubscribe: <A extends Action>(type: string, callback: ActionHandler<A>) => void;
   wait: (callback: (...rest: unknown[]) => unknown) => void;
   register: (
     name: string,
-    actionHandler: Record<string, FluxCallback>,
+    actionHandlers: ActionHandlerRecord,
     storeDidChange: (action: Action) => void,
     band: DispatchBand,
     token?: string,

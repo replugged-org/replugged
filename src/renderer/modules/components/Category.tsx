@@ -1,6 +1,6 @@
 import React from "@common/react";
+import { waitForProps } from "@webpack";
 import { Divider, FormText } from ".";
-import { waitForProps } from "../webpack";
 
 const classes =
   await waitForProps<Record<"labelRow" | "title" | "note" | "dividerDefault", string>>(
@@ -75,7 +75,7 @@ export default ((props: React.PropsWithChildren<CategoryProps>) => {
           style={{
             marginTop: 20,
             marginLeft: 12,
-            borderLeft: "1px var(--background-modifier-accent) solid",
+            borderLeft: "1px var(--border-subtle) solid",
             paddingLeft: 33,
             cursor: props.disabled ? "not-allowed" : undefined,
             opacity: props.disabled ? 0.3 : undefined,

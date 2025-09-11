@@ -1,40 +1,40 @@
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 interface SwitchProps {
-  checked: boolean;
-  onChange: (value: boolean) => void;
+  checked?: boolean;
+  onChange?: (value: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   id?: string;
-  innerRef?: React.Ref<unknown>;
+  innerRef?: React.Ref<HTMLInputElement>;
   focusProps?: Record<string, unknown>;
   className?: string;
 }
 
-export type SwitchType = React.FC<React.PropsWithChildren<SwitchProps>>;
+export type SwitchType = React.FC<SwitchProps>;
 
 interface SwitchItemProps {
-  value: boolean;
-  onChange: (value: boolean) => void;
-  note?: string;
+  value?: boolean;
+  onChange?: (value: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
+  note?: React.ReactNode;
   tooltipNote?: string;
   disabled?: boolean;
+  disabledText?: string;
   hideBorder?: boolean;
   style?: React.CSSProperties;
   className?: string;
+  containerRef?: React.Ref<HTMLDivElement>;
 }
 
 export type SwitchItemType = React.FC<React.PropsWithChildren<SwitchItemProps>>;
 
-const switchModStr = "xMinYMid meet";
-const switchItemStr = ").dividerDefault";
+const switchString = "xMinYMid meet";
+const mod = await waitForModule(filters.bySource(switchString));
 
-export const Switch = await waitForModule(filters.bySource(switchModStr)).then((mod) => {
-  if (typeof mod === "function") return mod as SwitchType;
-  return getFunctionBySource<SwitchType>(mod, switchModStr)!;
-});
+export const Switch = getFunctionBySource<SwitchType>(mod, switchString)!;
 
-export const SwitchItem = await waitForModule(filters.bySource(switchItemStr)).then((mod) => {
-  if (typeof mod === "function") return mod as SwitchItemType;
-  return getFunctionBySource<SwitchItemType>(mod, switchItemStr)!;
-});
+export const SwitchItem = getFunctionBySource<SwitchItemType>(
+  components,
+  /hideBorder:\w+=!1,tooltipNote:\w+,onChange/,
+)!;

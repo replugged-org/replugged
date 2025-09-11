@@ -1,7 +1,6 @@
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
-import type { ObjectExports } from "../../../types";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type RadioOptionType = {
@@ -14,10 +13,11 @@ type RadioOptionType = {
   tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
   icon?: React.ComponentType<unknown>;
   collapsibleContent?: React.ReactNode;
+  radioItemIconClassName?: string;
+  radioBarClassName?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type RadioProps = {
+interface RadioProps {
   options: RadioOptionType[];
   value?: string;
   onChange: (option: RadioOptionType) => void;
@@ -32,17 +32,14 @@ type RadioProps = {
   itemTitleClassName?: string;
   radioItemClassName?: string;
   collapsibleClassName?: string;
-};
+}
 
-export type RadioType = React.FC<RadioProps> & {
-  Sizes: Record<"NOT_SET" | "NONE" | "SMALL" | "MEDIUM", string>;
-};
+export type RadioType = React.FC<RadioProps>;
 
-const radioStr = ".itemInfoClassName";
+const radioString = ".radioIndicatorGroup,";
+const mod = await waitForModule(filters.bySource(radioString));
 
-export const Radio = await waitForModule(filters.bySource(radioStr)).then(
-  (mod) => getFunctionBySource<RadioType>(mod as ObjectExports, radioStr)!,
-);
+export const Radio = getFunctionBySource<RadioType>(mod, radioString)!;
 
 interface RadioItemProps extends RadioProps {
   note?: string;

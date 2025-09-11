@@ -1,5 +1,6 @@
+import { getFunctionBySource } from "@webpack";
 import type React from "react";
-import { filters, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
 interface ImageData {
   height: number;
@@ -24,8 +25,4 @@ export type FormNoticeType = React.FC<FormNoticeProps> & {
   Types: Record<"PRIMARY" | "DANGER" | "WARNING" | "SUCCESS" | "BRAND" | "CUSTOM", string>;
 };
 
-const formNoticeStr = ".formNoticeTitle";
-
-export default await waitForModule(filters.bySource(formNoticeStr)).then(
-  (mod) => getFunctionBySource<FormNoticeType>(mod, formNoticeStr)!,
-);
+export default getFunctionBySource<FormNoticeType>(components, ".Types.DANGER")!;

@@ -1,4 +1,5 @@
-import type { Channel, Guild } from "discord-types/general";
+import type { Channel, Guild, User } from "discord-types/general";
+import { REPLUGGED_CLYDE_ID } from "../../constants";
 import type {
   AnyRepluggedCommand,
   CommandOptionReturn,
@@ -12,17 +13,35 @@ import type {
 } from "../../types";
 // eslint-disable-next-line no-duplicate-imports
 import { ApplicationCommandOptionType } from "../../types";
-import { constants, i18n, messages, users } from "../modules/common";
+import icon from "../assets/logo.png";
+import { constants, fluxDispatcher, i18n, messages, users } from "../modules/common";
 import type { Store } from "../modules/common/flux";
+import type {
+  SendMessageForReplyOptions,
+  SendMessageOptionsForReply,
+} from "../modules/common/messages";
+import { t } from "../modules/i18n";
 import { Logger } from "../modules/logger";
-import { getByStoreName } from "../modules/webpack";
+import { filters, getByStoreName, waitForModule } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
+
+let RepluggedUser: User | undefined;
 
 interface CommandsAndSection {
   section: RepluggedCommandSection;
   commands: Map<string, AnyRepluggedCommand>;
 }
+
+void waitForModule<typeof User>(filters.bySource("hasHadPremium(){")).then((User) => {
+  RepluggedUser = new User({
+    avatar: "replugged",
+    id: REPLUGGED_CLYDE_ID,
+    bot: true,
+    username: "Replugged",
+    system: true,
+  });
+});
 
 export const commandAndSections = new Map<string, CommandsAndSection>();
 
@@ -30,7 +49,7 @@ export const defaultSection: RepluggedCommandSection = Object.freeze({
   id: "replugged",
   name: "Replugged",
   type: 1,
-  icon: "https://cdn.discordapp.com/attachments/1000955992068079716/1004196106055454820/Replugged-Logo.png",
+  icon,
 });
 
 export class CommandInteraction<T extends CommandOptionReturn> {
@@ -43,7 +62,7 @@ export class CommandInteraction<T extends CommandOptionReturn> {
         getUpload: (
           channelId: string,
           optionName: string,
-          draftType: 0,
+          draftType: 5,
         ) => { uploadedFilename?: string; item?: { file: File } } | undefined;
       }
     >("UploadAttachmentStore")!;
@@ -54,7 +73,12 @@ export class CommandInteraction<T extends CommandOptionReturn> {
       (o) => o.type === ApplicationCommandOptionType.Attachment,
     )) {
       const { uploadedFilename, item } =
-        UploadAttachmentStore.getUpload(props.channel.id, option.name, 0) ?? {};
+        UploadAttachmentStore.getUpload(props.channel.id, option.name, 5) ?? {};
+      fluxDispatcher.dispatch({
+        type: "UPLOAD_ATTACHMENT_CLEAR_ALL_FILES",
+        channelId: props.channel.id,
+        draftType: 5,
+      });
       option.value = { uploadedFilename, file: item?.file };
     }
   }
@@ -85,16 +109,21 @@ async function executeCommand<T extends CommandOptions>(
   command: RepluggedCommand<T>,
 ): Promise<void> {
   try {
+    const PendingReplyStore = getByStoreName<
+      Store & {
+        getPendingReply: (channelId: string) => SendMessageForReplyOptions;
+      }
+    >("PendingReplyStore")!;
+
     const currentChannelId = currentInfo.channel.id;
+    const replyOptions: SendMessageOptionsForReply = messages.getSendMessageOptionsForReply(
+      PendingReplyStore.getPendingReply(currentChannelId),
+    );
+
     const loadingMessage = messages.createBotMessage({
       channelId: currentChannelId,
       content: "",
       loggingName: "Replugged",
-    });
-
-    Object.assign(loadingMessage.author, {
-      username: "Replugged",
-      avatar: "replugged",
     });
 
     Object.assign(loadingMessage, {
@@ -111,8 +140,12 @@ async function executeCommand<T extends CommandOptions>(
       // eslint-disable-next-line @typescript-eslint/naming-convention
       interaction_data: {
         name: command.displayName,
+        options: args,
+        type: 1, // interaction type for chat
+        id: command.id,
       },
       type: 20,
+      author: RepluggedUser ?? loadingMessage.author,
     });
     messages.receiveMessage(currentChannelId, loadingMessage, true);
     const interaction = new CommandInteraction({ options: args, ...currentInfo });
@@ -122,23 +155,26 @@ async function executeCommand<T extends CommandOptions>(
     if ((!result?.result && !result?.embeds) || !currentChannelId) return;
 
     if (result.send) {
-      void messages.sendMessage(currentChannelId, {
-        content: result.result!,
-        invalidEmojis: [],
-        validNonShortcutEmojis: [],
-        tts: false,
-      });
+      void messages.sendMessage(
+        currentChannelId,
+        {
+          content: result.result!,
+          invalidEmojis: [],
+          validNonShortcutEmojis: [],
+          tts: false,
+        },
+        undefined,
+        replyOptions,
+      );
+      if (replyOptions.messageReference) {
+        fluxDispatcher.dispatch({ type: "DELETE_PENDING_REPLY", channelId: currentChannelId });
+      }
     } else {
       const botMessage = messages.createBotMessage({
         channelId: currentChannelId,
         content: result.result || "",
         embeds: result.embeds || [],
         loggingName: "Replugged",
-      });
-
-      Object.assign(botMessage.author, {
-        username: "Replugged",
-        avatar: "replugged",
       });
 
       Object.assign(botMessage, {
@@ -153,8 +189,12 @@ async function executeCommand<T extends CommandOptions>(
         // eslint-disable-next-line @typescript-eslint/naming-convention
         interaction_data: {
           name: command.displayName,
+          options: args,
+          type: 1,
+          id: command.id,
         },
         type: 20,
+        author: RepluggedUser ?? botMessage.author,
       });
       messages.receiveMessage(currentChannelId, botMessage, true);
     }
@@ -163,14 +203,9 @@ async function executeCommand<T extends CommandOptions>(
     const currentChannelId = currentInfo.channel.id;
     const botMessage = messages.createBotMessage({
       channelId: currentChannelId,
-      content: i18n.Messages.REPLUGGED_COMMAND_ERROR_GENERIC,
+      content: i18n.intl.string(t.REPLUGGED_COMMAND_ERROR_GENERIC),
       embeds: [],
       loggingName: "Replugged",
-    });
-
-    Object.assign(botMessage.author, {
-      username: "Replugged",
-      avatar: "replugged",
     });
 
     Object.assign(botMessage, {
@@ -185,8 +220,12 @@ async function executeCommand<T extends CommandOptions>(
       // eslint-disable-next-line @typescript-eslint/naming-convention
       interaction_data: {
         name: command.displayName,
+        options: args,
+        type: 1,
+        id: command.id,
       },
       type: 20,
+      author: RepluggedUser ?? botMessage.author,
     });
 
     messages.receiveMessage(currentChannelId, botMessage, true);
@@ -203,9 +242,9 @@ export class CommandManager {
   }
 
   /**
-   * Code to register an slash command
-   * @param cmd Slash Command to be registered
-   * @returns An Callback to unregister the slash command
+   * Code to register a slash command
+   * @param command Slash command to be registered
+   * @returns A callback to unregister the slash command
    */
   public registerCommand<const T extends CommandOptions>(command: RepluggedCommand<T>): () => void {
     if (!commandAndSections.has(this.#section.id)) {
@@ -214,11 +253,13 @@ export class CommandManager {
         commands: new Map<string, AnyRepluggedCommand>(),
       });
     }
-    const currentSection = commandAndSections.get(this.#section.id);
-    command.applicationId = currentSection?.section.id;
+
+    const currentSection = commandAndSections.get(this.#section.id)!; // Can't be undefined as we set it above
+    command.section = currentSection.section;
+    command.applicationId = currentSection.section.id;
     command.displayName ??= command.name;
     command.displayDescription ??= command.description;
-    command.type = 2;
+    command.type = 2; // command type for application
     command.id ??= command.name;
 
     command.execute ??= (args, currentInfo) => {
@@ -229,19 +270,19 @@ export class CommandManager {
       option.serverLocalizedName ??= option.displayName;
       option.displayName ??= option.name;
       option.displayDescription ??= option.description;
-
       return option;
     });
 
-    currentSection?.commands.set(command.id, command as AnyRepluggedCommand);
+    currentSection.commands.set(command.id, command as AnyRepluggedCommand);
 
     const uninject = (): void => {
-      void currentSection?.commands.delete(command.id!);
+      void currentSection.commands.delete(command.id!);
       this.#unregister = this.#unregister.filter((u) => u !== uninject);
     };
     this.#unregister.push(uninject);
     return uninject;
   }
+
   /**
    * Code to unregister all slash commands registered with this class
    */

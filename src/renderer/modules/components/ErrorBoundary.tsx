@@ -1,7 +1,9 @@
-import { Messages } from "@common/i18n";
+import { intl } from "@common/i18n";
 import React from "@common/react";
 import { plugins } from "@replugged";
+import { t } from "../i18n";
 import { Logger } from "../logger";
+
 import "./ErrorBoundary.css";
 
 const logger = new Logger("Components", "ErrorBoundary");
@@ -41,7 +43,6 @@ export interface ErrorProps {
   children: React.ReactNode;
   silent?: boolean;
   onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
-  /** Element to show if the error boundary is triggered */
   fallback?: React.ReactNode;
 }
 
@@ -90,13 +91,13 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
       return (
         this.props.fallback || (
           <div className="replugged-error-boundary">
-            <h1>{Messages.REPLUGGED_SETTINGS_ERROR_HEADER}</h1>
+            <h1>{intl.string(t.REPLUGGED_SETTINGS_ERROR_HEADER)}</h1>
             {pluginName && (
               <p className="replugged-error-boundary-plugin">
-                {Messages.REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME?.format?.({ name: pluginName })}
+                {intl.format(t.REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME, { name: pluginName })}
               </p>
             )}
-            <p>{Messages.REPLUGGED_SETTINGS_ERROR_SUB_HEADER}</p>
+            <p>{intl.string(t.REPLUGGED_SETTINGS_ERROR_SUB_HEADER)}</p>
             {error?.stack && (
               <ErrorBoundary fallback={<></>}>
                 <CollapsibleErrorStack stack={error.stack} />

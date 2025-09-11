@@ -1,51 +1,34 @@
+import { getExportsForProps, getFunctionBySource } from "@webpack";
 import type React from "react";
-import { filters, getExportsForProps, getFunctionBySource, waitForModule } from "../webpack";
+import components from "../common/components";
 
-type FormTextTypeKey =
-  | "DEFAULT"
-  | "DESCRIPTION"
-  | "ERROR"
-  | "INPUT_PLACEHOLDER"
-  | "LABEL_BOLD"
-  | "LABEL_DESCRIPTOR"
-  | "LABEL_SELECTED"
-  | "SUCCESS"
-  | string;
+export type FormTextTypeKey = "DEFAULT" | "DESCRIPTION" | string;
 
-interface FormTextProps {
+interface FormTextProps extends React.ComponentPropsWithoutRef<"div"> {
   type?: string;
   disabled?: boolean;
   selectable?: boolean;
-  style?: React.CSSProperties;
-  className?: string;
 }
 
-type FormTextCompType = React.FC<React.PropsWithChildren<FormTextProps>>;
+export type FormTextCompType = React.FC<React.PropsWithChildren<FormTextProps>>;
 
 export type FormTextType = Record<FormTextTypeKey, FormTextCompType>;
 
-const mod = await waitForModule(filters.bySource("LABEL_SELECTED"));
-const FormTextComp = getFunctionBySource<FormTextCompType>(
-  mod,
-  '"type","className","disabled","selectable","children","style"',
-)!;
-const types = getExportsForProps<Record<FormTextTypeKey, string>>(mod, ["LABEL_SELECTED"])!;
+const FormTextComp = getFunctionBySource<FormTextCompType>(components, /type:\w+=\w+\.DEFAULT/)!;
+const FormTextTypes = getExportsForProps<Record<FormTextTypeKey, string>>(components, [
+  "DEFAULT",
+  "DESCRIPTION",
+]);
 
 export const FormText: FormTextType = {
   DEFAULT: () => null,
   DESCRIPTION: () => null,
-  ERROR: () => null,
-  INPUT_PLACEHOLDER: () => null,
-  LABEL_BOLD: () => null,
-  LABEL_DESCRIPTOR: () => null,
-  LABEL_SELECTED: () => null,
-  SUCCESS: () => null,
 };
 
-if (typeof types === "object" && types !== null)
-  Object.keys(types).forEach((key) => {
+if (typeof FormTextTypes === "object" && FormTextTypes !== null)
+  Object.keys(FormTextTypes).forEach((key) => {
     FormText[key] = (props: React.PropsWithChildren<FormTextProps>) => (
-      <FormTextComp type={types[key]} {...props}>
+      <FormTextComp type={FormTextTypes[key]} {...props}>
         {props.children}
       </FormTextComp>
     );

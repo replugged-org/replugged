@@ -1,6 +1,6 @@
+import { filters, getExportsForProps, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import { Text } from ".";
-import { filters, waitForModule } from "../webpack";
 
 interface CheckboxProps {
   disabled?: boolean;
@@ -21,8 +21,7 @@ interface CheckboxProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>, value: boolean) => void;
 }
 
-export type CheckboxType = React.ComponentClass<React.PropsWithChildren<CheckboxProps>> & {
-  defaultProps: CheckboxProps;
+export type CheckboxType = React.FC<React.PropsWithChildren<CheckboxProps>> & {
   Types: Record<"DEFAULT" | "INVERTED" | "GHOST" | "ROW", string>;
   Aligns: Record<"TOP" | "CENTER", string>;
   Shapes: Record<"BOX" | "ROUND" | "SMALL_BOX", string>;
@@ -30,11 +29,13 @@ export type CheckboxType = React.ComponentClass<React.PropsWithChildren<Checkbox
 
 export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
 
-export const Checkbox = await waitForModule<Record<string, CheckboxType>>(
-  filters.bySource(".getInputMode"),
-).then(
-  (mod) => Object.values(mod).find((x) => "defaultProps" in x && "displayOnly" in x.defaultProps)!,
-);
+const mod = await waitForModule<CheckboxType>(filters.bySource(".checkboxWrapperDisabled"));
+
+export const Checkbox = getFunctionBySource<CheckboxType>(mod, ".checkboxWrapper")!;
+
+Checkbox.Types = getExportsForProps(mod, ["DEFAULT"])!;
+Checkbox.Aligns = getExportsForProps(mod, ["TOP"])!;
+Checkbox.Shapes = getExportsForProps(mod, ["BOX"])!;
 
 export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
   return (

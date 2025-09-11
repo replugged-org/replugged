@@ -1,12 +1,13 @@
+import { i18n } from "@common";
+import type { RepluggedPlugin, RepluggedTheme } from "src/types";
+import type { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
+import notices from "../apis/notices";
 import { init } from "../apis/settings";
+import { t } from "../modules/i18n";
+import { Logger } from "../modules/logger";
+import { waitForProps } from "../modules/webpack";
 import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
-import { Logger } from "../modules/logger";
-import type { RepluggedPlugin, RepluggedTheme } from "src/types";
-import { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
-import notices from "../apis/notices";
-import * as common from "@common";
-import { waitForProps } from "../modules/webpack";
 
 const logger = Logger.coremod("Updater");
 
@@ -54,12 +55,12 @@ const mainUpdaterDefaultSettings = {
   lastChecked: 0,
 } satisfies Partial<MainUpdaterSettings>;
 
-export const updaterSettings = await init<
-  MainUpdaterSettings,
-  keyof typeof mainUpdaterDefaultSettings
->("dev.replugged.Updater", mainUpdaterDefaultSettings);
+export const updaterSettings = init<MainUpdaterSettings, keyof typeof mainUpdaterDefaultSettings>(
+  "dev.replugged.Updater",
+  mainUpdaterDefaultSettings,
+);
 
-const updaterState = await init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
+const updaterState = init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
 
 const completedUpdates = new Set<string>();
 
@@ -288,23 +289,15 @@ async function autoUpdateCheck(): Promise<void> {
   if (isAnUpdate && (areNewUpdates || isFirstRun)) {
     logger.log("Showing update notification");
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const Messages = common.i18n?.Messages; // Weird hack due to circular dependency
     const { open } = await openSettingsModPromise;
-
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!Messages) {
-      logger.error("Messages missing, cannot show update notification");
-      return;
-    }
 
     clearActiveNotification?.();
     clearActiveNotification = notices.sendAnnouncement({
-      message: Messages.REPLUGGED_UPDATES_AVAILABLE.format({
+      message: i18n.intl.format(t.REPLUGGED_UPDATES_AVAILABLE, {
         count: newUpdateCount,
       }),
       button: {
-        text: Messages.REPLUGGED_VIEW_UPDATES.format({
+        text: i18n.intl.formatToPlainString(t.REPLUGGED_VIEW_UPDATES, {
           count: newUpdateCount,
         }),
         onClick: () => open("rp-updater"),
@@ -316,7 +309,9 @@ async function autoUpdateCheck(): Promise<void> {
 // Check if updates need to be checked every minute
 export function startAutoUpdateChecking(): void {
   setInterval(() => {
-    autoUpdateCheck().catch((err) => logger.error("Error in update checking (loop)", err));
+    autoUpdateCheck().catch((err: unknown) => logger.error("Error in update checking (loop)", err));
   }, 60 * 1000);
-  autoUpdateCheck().catch((err) => logger.error("Error in update checking (initial)", err));
+  autoUpdateCheck().catch((err: unknown) =>
+    logger.error("Error in update checking (initial)", err),
+  );
 }
