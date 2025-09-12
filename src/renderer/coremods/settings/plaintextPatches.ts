@@ -18,11 +18,11 @@ export default [
     replacements: [
       {
         match:
-          /appArch,children:.{0,200}?className:\w+\(\)\(\w+\.line,\w+\.os\),.{0,100}children:\w+}\):null/,
+          /appArch,children:.{0,200}?className:\i\(\)\(\i\.line,\i\.os\),.{0,100}children:\i}\):null/,
         replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
       },
       {
-        match: /\(0,\w+\.jsx\)\(\w+.\w+,{copyValue:(\w+)\.join/,
+        match: /\i\)\?\(0,\i\.jsx\)\(\i\.\i,{copyValue:(\i)\.join/,
         replace:
           "$1.push(window.replugged.common.i18n.intl.format(window.replugged.i18n.t.REPLUGGED_VERSION,{version: window.RepluggedNative.getVersion()})),$&",
       },

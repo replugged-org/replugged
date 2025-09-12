@@ -1,6 +1,5 @@
-import { getFunctionBySource } from "@webpack";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
-import components from "../common/components";
 
 interface TextAreaProps {
   autoFocus?: boolean;
@@ -37,4 +36,6 @@ export type TextAreaType = React.ComponentClass<TextAreaProps> & {
   defaultProps: TextAreaProps;
 };
 
-export default getFunctionBySource<TextAreaType>(components, "showCharacterCountFullPadding")!;
+const mod = await waitForModule(filters.bySource("this.getIsOverflowing()"));
+
+export default getFunctionBySource<TextAreaType>(mod, "showCharacterCountFullPadding")!;
