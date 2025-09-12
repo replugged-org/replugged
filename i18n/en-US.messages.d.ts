@@ -2089,19 +2089,6 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `HZhNXl`
-   * 
-   * ### Definition
-   * ```text
-   * Failed to fetch user profile
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_TOAST_PROFILE_FETCH_FAILED': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `avF+9f`
    * 
    * ### Definition
