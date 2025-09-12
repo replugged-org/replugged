@@ -200,7 +200,7 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): ReactI
   const els = getAuthors(addon).map((author) => (
     <a
       key={JSON.stringify(author)}
-      onClick={() => author.discordID && openUserProfile(author.discordID)}
+      onClick={() => author.discordID && openUserProfileModal({ userId: author.discordID })}
       onContextMenu={(event: React.MouseEvent) => {
         if (!author.github && !author.discordID) return;
         contextMenu.open(event, (props) => (
