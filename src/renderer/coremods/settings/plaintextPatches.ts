@@ -16,12 +16,12 @@ export default [
     find: `header:"Developer Only"`,
     replacements: [
       {
-        match: /(OVERLAY]};return )(\w+\?\w+:\w+.toSpliced\(3,0,\w+\))/,
+        match: /(OVERLAY]};return )(\i\?\i:\i.toSpliced\(3,0,\i\))/,
         replace: (_, prefix, records) =>
           `${prefix}(${coremodStr}?.insertRecords(${records})??(${records}))`,
       },
       {
-        match: /((\w+\[\w+\])\),{tabPredicate:\(\)=>)(null==\w+\|\|\w+\(\w+,\w+,\w+\))/,
+        match: /((\i\[\i\])\),{tabPredicate:\(\)=>)(null==\i\|\|\i\(\i,\i,\i\))/,
         replace: (_, prefix, section, condition) =>
           `${prefix}(!${section}?.tabPredicate||${section}?.tabPredicate?.())&&(${condition})`,
       },
@@ -31,7 +31,7 @@ export default [
     find: "user-settings-cog",
     replacements: [
       {
-        match: /Object.values\(\w+.\w+\)/,
+        match: /Object.values\(\i\.\i\)/,
         replace: (keys: string) => `[...(${coremodStr}?.getSectionKeys() ?? []), ...${keys}]`,
       },
     ],
@@ -45,7 +45,7 @@ export default [
         replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
       },
       {
-        match: /copyValue:(\w+)\.join/g,
+        match: /copyValue:(\i)\.join/g,
         replace: (_, versionInfo) =>
           `copyValue:[...${versionInfo}, ${coremodStr}?.getVersionInfoText()].join`,
       },
