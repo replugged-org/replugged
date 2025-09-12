@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, api, fluxDispatcher, modal, toast, users } from "@common";
+import { React, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import {
   Button,
@@ -34,11 +34,37 @@ interface BreadcrumbProps {
   renderCustomBreadcrumb: (breadcrumb: Breadcrumb, active: boolean) => React.ReactNode;
 }
 
+interface OpenUserProfileModalProps {
+  userId: string;
+  guildId?: string | null;
+  channelId?: string;
+  messageId?: string;
+  roleId?: string;
+  sessionId?: string;
+  joinRequestId?: string;
+  section?: string;
+  subsection?: string;
+  showGuildProfile?: boolean;
+  hideRestrictedProfile?: boolean;
+  sourceAnalyticsLocations?: string[];
+  appContext?: string;
+  customStatusPrompt?: { value: string; label: () => string };
+  disableActionsForPreview?: boolean;
+}
+
+interface UserProfileModalActionCreators {
+  openUserProfileModal: (props: OpenUserProfileModalProps) => Promise<void>;
+  closeUserProfileModal: () => void;
+}
+
 const logger = Logger.coremod("AddonSettings");
 
 const Breadcrumbs = await webpack.waitForModule<React.ComponentClass<BreadcrumbProps>>(
   webpack.filters.bySource(/\.interactiveBreadcrumb]:null/),
 );
+
+const { openUserProfileModal } =
+  await webpack.waitForProps<UserProfileModalActionCreators>("openUserProfileModal");
 
 export enum AddonType {
   Plugin = "plugin",
@@ -96,40 +122,6 @@ function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string,
     return themes.themes;
   }
   throw new Error("Invalid addon type");
-}
-
-async function openUserProfile(id: string): Promise<void> {
-  if (!users.getUser(id)) {
-    try {
-      const { body } = await api.HTTP.get({
-        url: `/users/${id}/profile`,
-        query: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_friends_count: "true",
-
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_guilds: "true",
-        },
-      });
-      fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body.user });
-      fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
-    } catch {
-      try {
-        const { body } = await api.HTTP.get({
-          url: `/users/${id}`,
-        });
-        fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
-      } catch (e) {
-        logger.error(`Failed to fetch user profile for ${id}`, e);
-        toast.toast(intl.string(t.REPLUGGED_TOAST_PROFILE_FETCH_FAILED), toast.Kind.FAILURE);
-        return;
-      }
-    }
-  }
-  fluxDispatcher.dispatch({
-    type: "USER_PROFILE_MODAL_OPEN",
-    userId: id,
-  });
 }
 
 function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
@@ -236,7 +228,7 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
             type: intl.string(discordT.NOTIFICATION_TITLE_DISCORD),
           })}
           className="replugged-addon-icon replugged-addon-icon-author">
-          <a onClick={() => openUserProfile(author.discordID!)}>
+          <a onClick={() => openUserProfileModal({ userId: author.discordID! })}>
             <Icons.Discord />
           </a>
         </Tooltip>

@@ -122,7 +122,6 @@
   "REPLUGGED_CONFIRM_INSTALL": "Встановити",
   "REPLUGGED_ADDONS_LOAD_MISSING": "Завантажити пропущений {type}",
   "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "Деінстальовано {name}",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Не вдалося отримати профіль користувача",
   "REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED": "Не вдалося встановити {name}.",
   "REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED": "{name} було встановлено але не вдалося завантажити.",
   "REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL": "Встановлення скасовано.",
