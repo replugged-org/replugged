@@ -58,7 +58,7 @@ const contexts = await Promise.all([
   // Preload
   esbuild.context({
     ...common,
-    entryPoints: ["src/preload.ts"],
+    entryPoints: ["src/preload/index.ts"],
     platform: "node",
     target: [`node${NODE_VERSION}`, `chrome${CHROME_VERSION}`],
     outfile: `${distDir}/preload.js`,
