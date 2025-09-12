@@ -154,3 +154,7 @@ export function insertRecords(records: SectionRecords[]): SectionRecords[] {
   }
   return records;
 }
+
+export function getSectionKeys(): string[] {
+  return [...settingsTools.sections.keys(), ...settingsTools.rpSections.keys()];
+}

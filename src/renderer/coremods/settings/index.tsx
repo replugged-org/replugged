@@ -1,11 +1,11 @@
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
 import { t } from "src/renderer/modules/i18n";
-import { Section, insertRecords, insertSections, settingsTools } from "./lib";
+import { Section, getSectionKeys, insertRecords, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater, generalSettings } from "./pages";
 import searchableTitles from "./searchableTitles";
 
-export { insertSections, insertRecords };
+export { insertSections, insertRecords, getSectionKeys };
 
 export function VersionInfo(): React.ReactElement {
   return (
@@ -13,6 +13,12 @@ export function VersionInfo(): React.ReactElement {
       {intl.format(t.REPLUGGED_VERSION, { version: window.RepluggedNative.getVersion() })}
     </Text>
   );
+}
+
+export function getVersionInfoText(): string {
+  return intl.formatToPlainString(t.REPLUGGED_VERSION, {
+    version: window.RepluggedNative.getVersion(),
+  });
 }
 
 export function start(): void {

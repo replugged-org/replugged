@@ -28,6 +28,15 @@ export default [
     ],
   },
   {
+    find: "user-settings-cog",
+    replacements: [
+      {
+        match: /Object.values\(\w+.\w+\)/,
+        replace: (keys: string) => `[...(${coremodStr}?.getSectionKeys() ?? []), ...${keys}]`,
+      },
+    ],
+  },
+  {
     find: ".versionHash",
     replacements: [
       {
@@ -36,9 +45,9 @@ export default [
         replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
       },
       {
-        match: /\i\)\?\(0,\i\.jsx\)\(\i\.\i,{copyValue:(\i)\.join/,
-        replace:
-          "$1.push(window.replugged.common.i18n.intl.format(window.replugged.i18n.t.REPLUGGED_VERSION,{version: window.RepluggedNative.getVersion()})),$&",
+        match: /copyValue:(\w+)\.join/g,
+        replace: (_, versionInfo) =>
+          `copyValue:[...${versionInfo}, ${coremodStr}?.getVersionInfoText()].join`,
       },
     ],
   },
