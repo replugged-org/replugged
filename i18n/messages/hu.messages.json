@@ -128,7 +128,6 @@
   "REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS": "{name} ujratöltve",
   "REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED": "{name} törlése sikertelen",
   "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "{name} eltávolítva",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Sikertelen profil lekérdezés",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Sikertelen kód formázás",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Kód formázva",
   "REPLUGGED_TOAST_QUICKCSS_RELOAD": "Gyors CSS ujratöltve",

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, api, contextMenu, fluxDispatcher, modal, toast, users } from "@common";
+import { React, contextMenu, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import {
   Button,
@@ -35,11 +35,37 @@ interface BreadcrumbProps {
   renderCustomBreadcrumb: (breadcrumb: Breadcrumb, active: boolean) => React.ReactNode;
 }
 
+interface OpenUserProfileModalProps {
+  userId: string;
+  guildId?: string | null;
+  channelId?: string;
+  messageId?: string;
+  roleId?: string;
+  sessionId?: string;
+  joinRequestId?: string;
+  section?: string;
+  subsection?: string;
+  showGuildProfile?: boolean;
+  hideRestrictedProfile?: boolean;
+  sourceAnalyticsLocations?: string[];
+  appContext?: string;
+  customStatusPrompt?: { value: string; label: () => string };
+  disableActionsForPreview?: boolean;
+}
+
+interface UserProfileModalActionCreators {
+  openUserProfileModal: (props: OpenUserProfileModalProps) => Promise<void>;
+  closeUserProfileModal: () => void;
+}
+
 const logger = Logger.coremod("AddonSettings");
 
 const Breadcrumbs = await webpack.waitForModule<React.ComponentClass<BreadcrumbProps>>(
-  webpack.filters.bySource(/\w+.breadcrumbFinalWrapper/),
+  webpack.filters.bySource(/\.interactiveBreadcrumb]:null/),
 );
+
+const { openUserProfileModal } =
+  await webpack.waitForProps<UserProfileModalActionCreators>("openUserProfileModal");
 
 export enum AddonType {
   Plugin = "plugin",
@@ -97,40 +123,6 @@ function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string,
     return themes.themes;
   }
   throw new Error("Invalid addon type");
-}
-
-async function openUserProfile(id: string): Promise<void> {
-  if (!users.getUser(id)) {
-    try {
-      const { body } = await api.HTTP.get({
-        url: `/users/${id}/profile`,
-        query: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_friends_count: "true",
-
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_guilds: "true",
-        },
-      });
-      fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body.user });
-      fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
-    } catch {
-      try {
-        const { body } = await api.HTTP.get({
-          url: `/users/${id}`,
-        });
-        fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
-      } catch (e) {
-        logger.error(`Failed to fetch user profile for ${id}`, e);
-        toast.toast(intl.string(t.REPLUGGED_TOAST_PROFILE_FETCH_FAILED), toast.Kind.FAILURE);
-        return;
-      }
-    }
-  }
-  fluxDispatcher.dispatch({
-    type: "USER_PROFILE_MODAL_OPEN",
-    userId: id,
-  });
 }
 
 function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
@@ -221,7 +213,7 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): ReactI
                   })}
                   id="replugged-addon-author-discord"
                   icon={() => <Icons.Discord />}
-                  action={() => openUserProfile(author.discordID!)}
+                  action={() => openUserProfileModal({ userId: author.discordID! })}
                 />
               )}
               {author.github && (
@@ -514,8 +506,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
 
   return (
     <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Flex align={Flex.Align.CENTER} className={"replugged-addon-breadcrumbs"}>
+      <Flex justify={Flex.Justify.BETWEEN} direction={Flex.Direction.VERTICAL}>
+        <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
           {section === `rp_${type}` ? (
             <Text.H2
               style={{
@@ -566,13 +558,14 @@ export const Addons = (type: AddonType): React.ReactElement => {
           )}
         </Flex>
         {section === `rp_${type}` && (
-          <div style={{ display: "flex" }}>
-            <Button onClick={() => openFolder(type)}>
+          <Flex className="replugged-addon-header-buttons" justify={Flex.Justify.BETWEEN}>
+            <Button fullWidth={true} onClick={() => openFolder(type)}>
               {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
             <Button
+              fullWidth={true}
               onClick={async () => {
                 try {
                   await loadMissing(type);
@@ -594,20 +587,21 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 refreshList();
               }}
               color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
+              look={Button.Looks.OUTLINED}>
               {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
             <Button
+              fullWidth={true}
               onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
               color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
+              look={Button.Looks.OUTLINED}>
               {intl.format(t.REPLUGGED_ADDON_BROWSE, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
-          </div>
+          </Flex>
         )}
       </Flex>
       <Divider style={{ margin: "20px 0px" }} />
@@ -618,7 +612,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               type: label(type),
             })}
             onChange={(e) => setSearch(e)}
-            autoFocus={true}
+            autoFocus
           />
         </div>
       ) : null}

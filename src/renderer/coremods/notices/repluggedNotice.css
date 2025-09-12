@@ -1,0 +1,10 @@
+.replugged-notice {
+  --custom-notice-background: linear-gradient(
+    to right,
+    #c0164b 0%,
+    #a40f91 33%,
+    #7a10b5 66%,
+    #4e10d2 100%
+  );
+  --custom-notice-text: var(--white-500);
+}

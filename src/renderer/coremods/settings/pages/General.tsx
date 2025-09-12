@@ -51,7 +51,9 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
     .confirm({
       title: intl.string(t.REPLUGGED_SETTINGS_RESTART_TITLE),
       body: intl.string(t.REPLUGGED_SETTINGS_RESTART),
-      confirmText: intl.string(discordT.BUNDLE_READY_RESTART),
+      confirmText: doRelaunch
+        ? intl.string(discordT.BUNDLE_READY_RESTART)
+        : intl.string(discordT.ERRORS_RELOAD),
       confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
@@ -60,18 +62,15 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
 }
 
 export const General = (): React.ReactElement => {
-  const { value: expValue, onChange: expOnChange } = util.useSetting(
+  const [quickCSSValue, quickCSSOnChange] = util.useSettingArray(generalSettings, "quickCSS");
+  const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
+  const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
+  const [staffDevToolsValue, staffDevToolsOnChange] = util.useSettingArray(
     generalSettings,
-    "experiments",
+    "staffDevTools",
   );
-  const { value: rdtValue, onChange: rdtOnChange } = util.useSetting(
-    generalSettings,
-    "reactDevTools",
-  );
-  const { value: titleBarValue, onChange: titleBarOnChange } = util.useSetting(
-    generalSettings,
-    "titleBar",
-  );
+  const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
+  const [keepTokenValue, keepTokenOnChange] = util.useSettingArray(generalSettings, "keepToken");
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
@@ -97,6 +96,11 @@ export const General = (): React.ReactElement => {
     return () => document.removeEventListener("keydown", listener);
   }, [kKeys, isEasterEgg]);
 
+  React.useEffect(() => {
+    if (quickCSSValue) window.replugged.quickCSS.load();
+    else window.replugged.quickCSS.unload();
+  }, [quickCSSValue]);
+
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
@@ -118,7 +122,15 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       <SwitchItem
+        value={quickCSSValue}
+        onChange={quickCSSOnChange}
+        note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC)}>
+        {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE)}
+      </SwitchItem>
+
+      <SwitchItem
         {...util.useSetting(generalSettings, "autoApplyQuickCss")}
+        disabled={!quickCSSValue}
         note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
@@ -141,7 +153,7 @@ export const General = (): React.ReactElement => {
         <FormItem
           title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
           note={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
-          divider={true}
+          divider
           style={{ marginBottom: "20px" }}>
           <TextInput
             {...util.useSetting(generalSettings, "apiUrl")}
@@ -161,29 +173,55 @@ export const General = (): React.ReactElement => {
         </SwitchItem>
 
         <SwitchItem
-          value={rdtValue}
+          disabled={!expValue}
+          value={staffDevToolsValue}
           onChange={(value) => {
-            if (value) {
+            staffDevToolsOnChange(value);
+            restartModal(false);
+          }}
+          note={intl.format(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC, {})}>
+          {intl.string(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS)}
+        </SwitchItem>
+
+        <SwitchItem
+          value={rdtValue}
+          onChange={async (value) => {
+            try {
               rdtOnChange(value);
-              void RepluggedNative.reactDevTools
-                .downloadExtension()
-                .then(() => {
-                  restartModal(true);
-                })
-                .catch(() => {
-                  rdtOnChange(false); // Disable if failed
-                  toast.toast(
-                    intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
-                    toast.Kind.FAILURE,
-                  );
-                });
-            } else {
-              rdtOnChange(value);
+              if (value) {
+                await RepluggedNative.reactDevTools.downloadExtension();
+              } else {
+                await RepluggedNative.reactDevTools.removeExtension();
+              }
               restartModal(true);
+            } catch {
+              // Revert setting on any error
+              rdtOnChange(false);
+              if (value) {
+                try {
+                  await RepluggedNative.reactDevTools.removeExtension();
+                } catch {
+                  // Ignore cleanup errors
+                }
+              }
+              toast.toast(
+                intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
+                toast.Kind.FAILURE,
+              );
             }
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}>
           {intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
+        </SwitchItem>
+
+        <SwitchItem
+          value={keepTokenValue}
+          onChange={(value) => {
+            keepTokenOnChange(value);
+            restartModal(false);
+          }}
+          note={intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN_DESC)}>
+          {intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN)}
         </SwitchItem>
 
         <ButtonItem

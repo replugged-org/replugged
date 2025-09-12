@@ -75,7 +75,10 @@ const discordT = intlMod.t ?? getExportsForProps<I18n["t"]>(intlMod, ["$$loader"
 export const { runtimeHashMessageKey } = await waitForProps<Hash>("runtimeHashMessageKey");
 
 export const t = new Proxy(discordT.$$baseObject, {
-  get: (_t, key: string) => discordT[runtimeHashMessageKey(key)],
+  get: (_t, key: string) =>
+    Reflect.has(discordT.$$loader.messages[discordT.$$loader.defaultLocale], key)
+      ? discordT[key]
+      : discordT[runtimeHashMessageKey(key)],
 }) as MessagesBindsProxy;
 
 export { getAvailableLocales, getLanguages, intl, useSyncMessages };

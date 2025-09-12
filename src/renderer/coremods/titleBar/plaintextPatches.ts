@@ -7,27 +7,18 @@ const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(
   defaultSettings,
 );
 
-const replacements = [
-  {
-    match: /\(0,.{1,3}\.getPlatform\)\(\)/g,
-    replace: `"WINDOWS"`,
-  },
-];
-
 export default (navigator.userAgent.includes("Linux") && generalSettings.get("titleBar")
   ? [
-      // Force the custom title bar to be shown when Desktop Visual Refresh is disabled
-      {
-        find: ".appAsidePanelWrapper,",
-        replacements,
-      },
       // Patch the title bar to show the buttons
       {
         find: ".winButtons,",
-        replacements,
+        replacements: [
+          {
+            match: /\(0,.{1,3}\.getPlatform\)\(\)/g,
+            replace: `"WINDOWS"`,
+          },
+        ],
       },
-      // Edit the PopoutWindow component to add the custom title bar
-      { find: "this.registerPopoutGlobalKeybinds", replacements },
       // Disable the 'frame' option for popout windows
       {
         find: "menubar:!1,toolbar:!1",

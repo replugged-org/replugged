@@ -1,15 +1,10 @@
-import electron, {
-  type BrowserWindowConstructorOptions,
-  app,
-  net,
-  protocol,
-  session,
-} from "electron";
+import electron, { Menu, app, dialog, net, protocol, session } from "electron";
 import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
 import type { RepluggedWebContents } from "../types";
+import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
@@ -34,7 +29,7 @@ Object.defineProperty(global, "appSettings", {
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  public constructor(opts: BrowserWindowConstructorOptions) {
+  public constructor(opts: Electron.BrowserWindowConstructorOptions) {
     const titleBarSetting = getSetting<boolean>("dev.replugged.Settings", "titleBar", false);
     if (opts.frame && process.platform === "linux" && titleBarSetting) opts.frame = void 0;
 
@@ -84,24 +79,136 @@ require.cache[electronPath]!.exports = electronExports;
 ).setAppPath(discordPath);
 // app.name = discordPackage.name;
 
-protocol.registerSchemesAsPrivileged([
-  {
-    scheme: "replugged",
-    privileges: {
-      standard: true,
-      secure: true,
-      allowServiceWorkers: true,
-    },
+const repluggedProtocol = {
+  scheme: "replugged",
+  privileges: {
+    standard: true,
+    secure: true,
+    allowServiceWorkers: true,
+    stream: true,
+    supportFetchAPI: true,
   },
-]);
+};
 
-function loadReactDevTools(): void {
-  const rdtSetting = getSetting<boolean>("dev.replugged.Settings", "reactDevTools", false);
+// Monkey patch to ensure our protocol is always included, even if Discord tries to override it with their own schemes
+const originalRegisterSchemesAsPrivileged = protocol.registerSchemesAsPrivileged.bind(protocol);
+originalRegisterSchemesAsPrivileged([repluggedProtocol]);
+protocol.registerSchemesAsPrivileged = (customSchemes: Electron.CustomScheme[]) => {
+  const combinedSchemes = [repluggedProtocol, ...customSchemes];
+  originalRegisterSchemesAsPrivileged(combinedSchemes);
+};
 
-  if (rdtSetting) {
-    void session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
-  }
+// Monkey patch to add our menu items into the tray context menu
+const originalBuildFromTemplate = Menu.buildFromTemplate.bind(Menu);
+
+async function showInfo(title: string, message: string): Promise<Electron.MessageBoxReturnValue> {
+  return dialog.showMessageBox({ type: "info", title, message, buttons: ["Ok"] });
 }
+async function showError(title: string, message: string): Promise<Electron.MessageBoxReturnValue> {
+  return dialog.showMessageBox({ type: "error", title, message, buttons: ["Close"] });
+}
+
+Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
+  if (items[0]?.label !== "Discord" || items.some((e) => e.label === "Replugged"))
+    return originalBuildFromTemplate(items);
+
+  const currentVersion = getRepluggedVersion();
+
+  const repluggedMenuItems: Electron.MenuItemConstructorOptions = {
+    label: "Replugged",
+    submenu: [
+      {
+        label: "Toggle Developer Tools",
+        click: () => {
+          const win =
+            BrowserWindow.getFocusedWindow() ||
+            BrowserWindow.getAllWindows().find((w) => !w.isDestroyed() && !w.getParentWindow());
+          if (win) win.webContents.toggleDevTools();
+        },
+        accelerator: process.platform === "darwin" ? "Option+Cmd+I" : "Ctrl+Shift+I",
+      },
+      {
+        label: "Update Replugged",
+        click: async () => {
+          try {
+            if (currentVersion === "dev") {
+              await showInfo(
+                "Developer Mode",
+                "You are currently running Replugged in developer mode and Replugged will not be able to update itself.",
+              );
+              return;
+            }
+
+            const repluggedInfo = await getAddonInfo("store", "dev.replugged.Replugged");
+            if (!repluggedInfo.success) {
+              console.error(repluggedInfo.error);
+              await showError(
+                "Update Check Failed",
+                "Unable to check for Replugged updates. Check logs for details.",
+              );
+              return;
+            }
+
+            const newVersion = repluggedInfo.manifest.version;
+            if (currentVersion === newVersion) {
+              await showInfo(
+                "Up to Date",
+                `You're running the latest version of Replugged (v${currentVersion}).`,
+              );
+              return;
+            }
+
+            const installed = await installAddon(
+              "replugged",
+              "replugged.asar",
+              repluggedInfo.url,
+              true,
+              newVersion,
+            );
+            if (!installed.success) {
+              console.error(installed.error);
+              await showError(
+                "Install Update Failed",
+                "An error occurred while installing the Replugged update. Check logs for details.",
+              );
+              return;
+            }
+
+            await showInfo(
+              "Successfully Updated",
+              process.platform === "linux"
+                ? "Replugged updated but we can't relaunch automatically on Linux. Discord will close now."
+                : "Replugged updated and will relaunch Discord now to take effect!",
+            );
+
+            app.relaunch();
+            app.quit();
+          } catch (err) {
+            console.error(err);
+            await showError(
+              "Update Error",
+              "An unexpected error occurred. Check logs for details.",
+            );
+          }
+        },
+      },
+      {
+        enabled: false,
+        label: `Version: ${currentVersion === "dev" ? "dev" : `v${currentVersion}`}`,
+      },
+    ],
+  };
+
+  items.splice(
+    // Quit + separator
+    -2,
+    0,
+    { type: "separator" },
+    repluggedMenuItems,
+  );
+
+  return originalBuildFromTemplate(items);
+};
 
 // Copied from old codebase
 app.once("ready", () => {
@@ -178,7 +285,23 @@ app.once("ready", () => {
     return net.fetch(pathToFileURL(filePath).toString());
   });
 
-  loadReactDevTools();
+  const defaultPermissionRequestHandler = session.defaultSession.setPermissionRequestHandler.bind(
+    session.defaultSession,
+  );
+  session.defaultSession.setPermissionRequestHandler = (cb) => {
+    defaultPermissionRequestHandler((webContents, permission, callback, details) => {
+      if (permission === "media") {
+        callback(true);
+        return;
+      }
+      cb?.(webContents, permission, callback, details);
+    });
+  };
+
+  const rdtSetting = getSetting<boolean>("dev.replugged.Settings", "reactDevTools", false);
+  if (rdtSetting) {
+    void session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
+  }
 });
 
 // This module is required this way at runtime.

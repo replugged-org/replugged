@@ -5,7 +5,7 @@ export default [
     find: "♫ (つ｡◕‿‿◕｡)つ ♪",
     replacements: [
       {
-        match: /((\w+)\){)(var\s*\w+;let{navId:)/,
+        match: /((\i)\){)(var\s*\i;let{navId:)/,
         replace: (_, prefix, props, suffix) =>
           `${prefix}${props}=replugged.coremods.coremods.contextMenu?._insertMenuItems(${props});${suffix}`,
       },
@@ -13,6 +13,7 @@ export default [
   },
   {
     find: "navId",
+    warn: false,
     replacements: [
       {
         match: /navId:(?![^(})]*?}=)[^)]*?\)/g,
