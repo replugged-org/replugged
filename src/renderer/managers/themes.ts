@@ -1,4 +1,4 @@
-import type { AddonSettings } from "src/types/addon";
+import type { ThemeSettings } from "src/types/addon";
 import type { RepluggedTheme } from "../../types";
 import { init } from "../apis/settings";
 import * as logger from "../modules/logger";
@@ -11,7 +11,7 @@ const themeElements = new Map<string, HTMLLinkElement>();
  */
 export const themes = new Map<string, RepluggedTheme>();
 let disabled: string[];
-const settings = init<AddonSettings>("themes");
+export const settings = init<ThemeSettings>("themes");
 
 /**
  * Load metadata for all themes that are added to the themes folder but not yet loaded, such as newly added themes.
@@ -47,13 +47,25 @@ export function load(id: string): void {
   }
 
   const theme = themes.get(id)!;
-  if (!theme.manifest.main) {
-    logger.error("Manager", `Theme ${id} does not have a main variant.`);
-    return;
+  let themeSettings = settings.get(theme.manifest.id);
+  if (!themeSettings) themeSettings = {};
+  if (!themeSettings.chosenPreset) {
+    themeSettings.chosenPreset = theme.manifest.presets?.find((x) => x.default)?.path;
+    settings.set(theme.manifest.id, themeSettings);
   }
+
   unload(id);
 
-  const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+  let el;
+  if (theme.manifest.main) {
+    el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+  } else if (themeSettings.chosenPreset) {
+    el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenPreset}`);
+  } else {
+    logger.error("Manager", `Theme ${id} does not have a main variant or a chosen preset.`);
+    return;
+  }
+
   themeElements.set(id, el);
 }
 
@@ -82,7 +94,8 @@ export function loadSplash(id: string): void {
  */
 export function loadAll(): void {
   for (const id of themes.keys()) {
-    if (!disabled.includes(id) && themes.get(id)?.manifest.main) {
+    const theme = themes.get(id);
+    if (!disabled.includes(id) && (theme?.manifest.main || theme?.manifest.presets)) {
       load(id);
     }
   }

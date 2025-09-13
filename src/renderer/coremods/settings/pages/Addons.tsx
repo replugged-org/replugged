@@ -9,6 +9,7 @@ import {
   ErrorBoundary,
   Flex,
   Notice,
+  SelectItem,
   Switch,
   Text,
   TextInput,
@@ -111,6 +112,27 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
     return plugins.getExports(id)?.Settings;
   }
   if (type === AddonType.Theme) {
+    const settings = themes.settings.get(id, { chosenPreset: undefined });
+    const theme = themes.themes.get(id)!;
+    if (theme.manifest.presets?.length) {
+      return () => (
+        <SelectItem
+          options={theme.manifest.presets!.map((preset) => ({
+            label: preset.label,
+            value: preset.path,
+          }))}
+          onChange={(val) => {
+            settings.chosenPreset = val;
+            themes.settings.set(id, settings);
+            if (!themes.getDisabled().includes(id)) {
+              themes.reload(id);
+            }
+          }}
+          isSelected={(val) => settings.chosenPreset === val}>
+          Choose Theme Preset
+        </SelectItem>
+      );
+    }
     return undefined;
   }
 
@@ -652,7 +674,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Text>
         ) : null
       ) : (
-        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length), type)) && (
+        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length + 1), type)) && (
           <ErrorBoundary>
             <SettingsElement />
           </ErrorBoundary>
