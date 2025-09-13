@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, contextMenu, modal, toast } from "@common";
+import { React, components, contextMenu, modal, toast } from "@common";
+import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
 import {
   Button,
@@ -20,8 +21,8 @@ import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
 import Icons from "../icons";
 import { generalSettings } from "./General";
+
 import "./Addons.css";
-import type { ReactIntlMessage } from "@discord/intl";
 
 interface Breadcrumb {
   id: string;
@@ -60,9 +61,10 @@ interface UserProfileModalActionCreators {
 
 const logger = Logger.coremod("AddonSettings");
 
-const Breadcrumbs = await webpack.waitForModule<React.ComponentClass<BreadcrumbProps>>(
-  webpack.filters.bySource(/\.interactiveBreadcrumb]:null/),
-);
+const Breadcrumbs = webpack.getFunctionBySource<React.ComponentClass<BreadcrumbProps>>(
+  components,
+  /\.interactiveBreadcrumb]:null/,
+)!;
 
 const { openUserProfileModal } =
   await webpack.waitForProps<UserProfileModalActionCreators>("openUserProfileModal");
@@ -196,39 +198,46 @@ export function label(
   return base;
 }
 
-function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): ReactIntlMessage {
+function AuthorContextMenu({
+  author,
+  ...props
+}: { author: Author } & ContextMenuProps): React.ReactElement {
+  return (
+    <ContextMenu.ContextMenu {...props} onClose={contextMenu.close} navId="replugged-addon-authors">
+      <ContextMenu.MenuGroup>
+        {author.discordID && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: intl.string(discordT.DISCORD),
+            })}
+            id="replugged-addon-author-discord"
+            icon={Icons.Discord}
+            action={() => openUserProfileModal({ userId: author.discordID! })}
+          />
+        )}
+        {author.github && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: "GitHub",
+            })}
+            id="replugged-addon-author-github"
+            icon={Icons.GitHub}
+            action={() => open(`https://github.com/${author.github}`)}
+          />
+        )}
+      </ContextMenu.MenuGroup>
+    </ContextMenu.ContextMenu>
+  );
+}
+
+function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactNode {
   const els = getAuthors(addon).map((author) => (
     <a
       key={JSON.stringify(author)}
       onClick={() => author.discordID && openUserProfileModal({ userId: author.discordID })}
-      onContextMenu={(event: React.MouseEvent) => {
+      onContextMenu={(event) => {
         if (!author.github && !author.discordID) return;
-        contextMenu.open(event, (props) => (
-          <ContextMenu.ContextMenu {...props} onClose={contextMenu.close} navId="rp-addon-authors">
-            <ContextMenu.MenuGroup label="Links">
-              {author.discordID && (
-                <ContextMenu.MenuItem
-                  label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
-                    type: intl.string(discordT.NOTIFICATION_TITLE_DISCORD),
-                  })}
-                  id="replugged-addon-author-discord"
-                  icon={() => <Icons.Discord />}
-                  action={() => openUserProfileModal({ userId: author.discordID! })}
-                />
-              )}
-              {author.github && (
-                <ContextMenu.MenuItem
-                  label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
-                    type: "GitHub",
-                  })}
-                  id="replugged-addon-author-github"
-                  icon={() => <Icons.GitHub />}
-                  action={() => open(`https://github.com/${author.github}`)}
-                />
-              )}
-            </ContextMenu.MenuGroup>
-          </ContextMenu.ContextMenu>
-        ));
+        contextMenu.open(event, (props) => <AuthorContextMenu {...props} author={author} />);
       }}>
       <b>{author.name}</b>
     </a>
@@ -280,7 +289,7 @@ function Card({
         </span>
         <Switch checked={!disabled} onChange={toggleDisabled} />
       </Flex>
-      <Text.Normal style={{ margin: "5px 0" }} markdown={true} allowMarkdownLinks={true}>
+      <Text.Normal style={{ margin: "5px 0" }} markdown allowMarkdownLinks>
         {addon.manifest.description}
       </Text.Normal>
       {addon.manifest.updater?.type !== "store" ? (
@@ -292,7 +301,7 @@ function Card({
           </Notice>
         </div>
       ) : null}
-      <Flex align={Flex.Align.BASELINE} style={{ marginTop: "8px" }}>
+      <Flex style={{ marginTop: "10px" }}>
         <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
           <Authors addon={addon} />
         </Text>
@@ -559,13 +568,13 @@ export const Addons = (type: AddonType): React.ReactElement => {
         </Flex>
         {section === `rp_${type}` && (
           <Flex className="replugged-addon-header-buttons" justify={Flex.Justify.BETWEEN}>
-            <Button fullWidth={true} onClick={() => openFolder(type)}>
+            <Button fullWidth onClick={() => openFolder(type)}>
               {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
             <Button
-              fullWidth={true}
+              fullWidth
               onClick={async () => {
                 try {
                   await loadMissing(type);
@@ -593,7 +602,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               })}
             </Button>
             <Button
-              fullWidth={true}
+              fullWidth
               onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
               color={Button.Colors.PRIMARY}
               look={Button.Looks.OUTLINED}>
