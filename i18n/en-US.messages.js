@@ -197,6 +197,7 @@ export default defineMessages({
   "REPLUGGED_ADDON_AUTHORS_TWO": "by {author1} and {author2}",
   "REPLUGGED_ADDON_AUTHORS_THREE": "by {author1}, {author2}, and {author3}",
   "REPLUGGED_ADDON_AUTHORS_MANY": "by {author1}, {author2}, {author3}, and {count, plural, =1 {# other} other {# others}}",
+  "REPLUGGED_ADDON_AUTHORS": "{count, plural, =1 {Author: {author1}} =2 {Authors: {author1} and {author2}} =3 {Authors: {author1}, {author2}, and {author3}} other {Authors: {author1}, {author2}, {author3}, and {others, plural, =1 {# other} other {# others}}}}",
   "REPLUGGED_CONFIRM_INSTALL": "Install",
   "REPLUGGED_UPDATES_UPDATE_ALL": "Update All",
   "REPLUGGED_UPDATES_UPDATE_TO": "Update to {version}",

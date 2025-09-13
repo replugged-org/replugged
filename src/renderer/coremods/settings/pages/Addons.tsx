@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, modal, toast } from "@common";
+import { React, components, contextMenu, modal, toast } from "@common";
+import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
 import {
   Button,
+  ContextMenu,
   Divider,
   ErrorBoundary,
   Flex,
@@ -59,9 +61,10 @@ interface UserProfileModalActionCreators {
 
 const logger = Logger.coremod("AddonSettings");
 
-const Breadcrumbs = await webpack.waitForModule<React.ComponentClass<BreadcrumbProps>>(
-  webpack.filters.bySource(/\.interactiveBreadcrumb]:null/),
-);
+const Breadcrumbs = webpack.getFunctionBySource<React.ComponentClass<BreadcrumbProps>>(
+  components,
+  /\.interactiveBreadcrumb]:null/,
+)!;
 
 const { openUserProfileModal } =
   await webpack.waitForProps<UserProfileModalActionCreators>("openUserProfileModal");
@@ -195,80 +198,57 @@ export function label(
   return base;
 }
 
-function replaceVariable(
-  str: string,
-  variables: Record<string, React.ReactElement | string>,
-): React.ReactElement {
-  const els: Array<React.ReactElement | string> = [];
-  let last = 0;
-  for (const [match, el] of Object.entries(variables)) {
-    const index = str.indexOf(`{${match}}`, last);
-    if (index === -1) continue;
-    els.push(<>{str.slice(last, index)}</>);
-    els.push(el);
-    last = index + match.length + 2;
-  }
-  els.push(<>{str.slice(last)}</>);
-  return <>{els}</>;
+function AuthorContextMenu({
+  author,
+  ...props
+}: { author: Author } & ContextMenuProps): React.ReactElement {
+  return (
+    <ContextMenu.ContextMenu {...props} onClose={contextMenu.close} navId="replugged-addon-authors">
+      <ContextMenu.MenuGroup>
+        {author.discordID && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: intl.string(discordT.DISCORD),
+            })}
+            id="replugged-addon-author-discord"
+            icon={Icons.Discord}
+            action={() => openUserProfileModal({ userId: author.discordID! })}
+          />
+        )}
+        {author.github && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: "GitHub",
+            })}
+            id="replugged-addon-author-github"
+            icon={Icons.GitHub}
+            action={() => open(`https://github.com/${author.github}`)}
+          />
+        )}
+      </ContextMenu.MenuGroup>
+    </ContextMenu.ContextMenu>
+  );
 }
 
-function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactElement {
+function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactNode {
   const els = getAuthors(addon).map((author) => (
-    <Flex
+    <a
       key={JSON.stringify(author)}
-      align={Flex.Align.CENTER}
-      style={{
-        gap: "5px",
-        display: "inline-flex",
+      onClick={() => author.discordID && openUserProfileModal({ userId: author.discordID })}
+      onContextMenu={(event) => {
+        if (!author.github && !author.discordID) return;
+        contextMenu.open(event, (props) => <AuthorContextMenu {...props} author={author} />);
       }}>
       <b>{author.name}</b>
-      {author.discordID ? (
-        <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
-            type: intl.string(discordT.NOTIFICATION_TITLE_DISCORD),
-          })}
-          className="replugged-addon-icon replugged-addon-icon-author">
-          <a onClick={() => openUserProfileModal({ userId: author.discordID! })}>
-            <Icons.Discord />
-          </a>
-        </Tooltip>
-      ) : null}
-      {author.github ? (
-        <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, { type: "GitHub" })}
-          className="replugged-addon-icon replugged-addon-icon-author">
-          <a href={`https://github.com/${author.github}`} target="_blank" rel="noopener noreferrer">
-            <Icons.GitHub />
-          </a>
-        </Tooltip>
-      ) : null}
-    </Flex>
+    </a>
   ));
 
-  let message = "";
-
-  if (els.length === 1) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_ONE);
-  }
-  if (els.length === 2) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_TWO);
-  }
-  if (els.length === 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_THREE);
-  }
-  if (els.length > 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_MANY);
-  }
-
-  return replaceVariable(message, {
+  return intl.format(t.REPLUGGED_ADDON_AUTHORS, {
     author1: els[0],
     author2: els[1],
     author3: els[2],
-    count: (els.length - 3).toString(),
+    count: els.length.toString(),
+    others: (els.length - 3).toString(),
   });
 }
 
@@ -304,10 +284,27 @@ function Card({
             <span>
               {" "}
               <b>v{addon.manifest.version}</b>
-            </span>{" "}
-            <Authors addon={addon} />
+            </span>
           </Text>
         </span>
+        <Switch checked={!disabled} onChange={toggleDisabled} />
+      </Flex>
+      <Text.Normal style={{ margin: "5px 0" }} markdown allowMarkdownLinks>
+        {addon.manifest.description}
+      </Text.Normal>
+      {addon.manifest.updater?.type !== "store" ? (
+        <div style={{ marginTop: "8px" }}>
+          <Notice messageType={Notice.Types.ERROR}>
+            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+              type: label(type),
+            })}
+          </Notice>
+        </div>
+      ) : null}
+      <Flex style={{ marginTop: "10px" }}>
+        <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
+          <Authors addon={addon} />
+        </Text>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
           {sourceLink ? (
             <Tooltip
@@ -351,21 +348,8 @@ function Card({
               </a>
             </Tooltip>
           )}
-          <Switch checked={!disabled} onChange={toggleDisabled} />
         </Flex>
       </Flex>
-      <Text.Normal style={{ margin: "5px 0" }} markdown allowMarkdownLinks>
-        {addon.manifest.description}
-      </Text.Normal>
-      {addon.manifest.updater?.type !== "store" ? (
-        <div style={{ marginTop: "8px" }}>
-          <Notice messageType={Notice.Types.ERROR}>
-            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-              type: label(type),
-            })}
-          </Notice>
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -584,13 +568,13 @@ export const Addons = (type: AddonType): React.ReactElement => {
         </Flex>
         {section === `rp_${type}` && (
           <Flex className="replugged-addon-header-buttons" justify={Flex.Justify.BETWEEN}>
-            <Button fullWidth={true} onClick={() => openFolder(type)}>
+            <Button fullWidth onClick={() => openFolder(type)}>
               {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
             <Button
-              fullWidth={true}
+              fullWidth
               onClick={async () => {
                 try {
                   await loadMissing(type);
@@ -618,7 +602,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               })}
             </Button>
             <Button
-              fullWidth={true}
+              fullWidth
               onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
               color={Button.Colors.PRIMARY}
               look={Button.Looks.OUTLINED}>
