@@ -3,14 +3,14 @@ import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
 
-import type * as Design from "discord-client-types/discord_app/design/web";
+import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 
 const radioString = ".radioIndicatorGroup,";
 const mod = await waitForModule(filters.bySource(radioString));
 
-export const RadioGroup = getFunctionBySource<Design.RadioGroup>(mod, radioString)!;
+export const RadioGroup = getFunctionBySource<VoidDesign.RadioGroup>(mod, radioString)!;
 
-interface RadioItemProps extends Design.RadioGroupProps {
+interface RadioItemProps extends VoidDesign.RadioGroupProps {
   note?: string;
   style?: React.CSSProperties;
 }

@@ -44,7 +44,7 @@ importTimeout("Breadcrumbs", import("./Breadcrumbs"), (mod) => (Breadcrumbs = mo
 export let Button: VoidDesign.Button;
 importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
 
-export let Checkbox: Design.Checkbox;
+export let Checkbox: VoidDesign.Checkbox;
 importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
 
 export let Clickable: typeof Design.Clickable;
@@ -62,13 +62,13 @@ importTimeout("FormSection", import("./FormSection"), (mod) => (FormSection = mo
 export let Loader: Design.Spinner;
 importTimeout("Loader", import("./Spinner"), (mod) => (Loader = mod.default));
 
-export let Radio: Design.RadioGroup;
+export let Radio: VoidDesign.RadioGroup;
 importTimeout("Radio", import("./RadioItem"), (mod) => (Radio = mod.RadioGroup));
 
 export let SearchBar: Design.SearchBar;
 importTimeout("SearchBar", import("./SearchBar"), (mod) => (SearchBar = mod.default));
 
-export let Switch: Design.Switch;
+export let Switch: VoidDesign.Switch;
 importTimeout("Switch", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
 
 export let SwitchItem: Design.FormSwitch;

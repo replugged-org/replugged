@@ -2,19 +2,20 @@ import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import { Text } from ".";
 
-import type * as Design from "discord-client-types/discord_app/design/web";
+import type * as VoidDesign from "discord-client-types/discord_app/design/web";
 
-const mod = await waitForModule(filters.bySource(".checkboxWrapperDisabled"));
+const checkboxString = ".checkboxWrapperDisabled";
+const mod = await waitForModule(filters.bySource(checkboxString));
 
-export const Checkbox = getFunctionBySource<Design.Checkbox>(mod, ".checkboxWrapper")!;
+export const Checkbox = getFunctionBySource<VoidDesign.Checkbox>(mod, checkboxString)!;
 
-export type CheckboxItemType = React.FC<React.PropsWithChildren<Design.CheckboxProps>>;
+export type CheckboxItemType = React.FC<React.PropsWithChildren<VoidDesign.CheckboxProps>>;
 
 export function CheckboxItem({
   children,
   style,
   ...props
-}: React.PropsWithChildren<Design.CheckboxProps>): React.ReactElement {
+}: React.PropsWithChildren<VoidDesign.CheckboxProps>): React.ReactElement {
   return (
     <Checkbox {...props}>
       {children && (

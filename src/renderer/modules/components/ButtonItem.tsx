@@ -8,8 +8,10 @@ import type * as VoidDesign from "discord-client-types/discord_app/design/void/w
 
 import "./ButtonItem.css";
 
-const mod = await waitForModule(filters.bySource(".disabledButtonWrapper,"));
-export const Button = getFunctionBySource<VoidDesign.Button>(mod, "Type.PULSING_ELLIPSIS")!;
+const buttonString = ".disabledButtonWrapper,";
+const mod = await waitForModule(filters.bySource(buttonString));
+
+export const Button = getFunctionBySource<VoidDesign.Button>(mod, buttonString)!;
 
 const classes = await waitForProps<Record<FormSwitchStyles, string>>("dividerDefault");
 
