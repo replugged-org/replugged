@@ -40,19 +40,16 @@ export function ButtonItem({
       className={classNames(marginStyles.marginBottom20, {
         [classes.disabled]: disabled,
       })}>
-      <Flex direction={Flex.Direction.VERTICAL} className="replugged-button-item-wrapper">
-        <Flex direction={Flex.Direction.VERTICAL} className="replugged-button-item-labelSection">
-          <Flex align={Flex.Align.CENTER} direction={Flex.Direction.HORIZONTAL}>
-            <label className={classes.title}>{children}</label>
-          </Flex>
-          {note && (
-            <FormText.DESCRIPTION
-              className={classNames({ "replugged-button-item-disabled": disabled })}>
-              {note}
-            </FormText.DESCRIPTION>
-          )}
+      <Flex direction={Flex.Direction.VERTICAL} className={marginStyles.marginBottom20}>
+        <Flex align={Flex.Align.CENTER} direction={Flex.Direction.HORIZONTAL}>
+          <label className={classes.title}>{children}</label>
         </Flex>
-        <Flex>
+        {note && (
+          <FormText.DESCRIPTION disabled={disabled} className={classes.note}>
+            {note}
+          </FormText.DESCRIPTION>
+        )}
+        <Flex className="replugged-button-item-button">
           <Button
             color={success ? Button.Colors.GREEN : color}
             disabled={disabled}
