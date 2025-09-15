@@ -25,10 +25,6 @@
   height: 1.75ch;
 }
 
-.replugged-addon-icon-author svg {
-  height: 1.5ch;
-}
-
 .replugged-addon-icon:hover svg {
   color: var(--interactive-hover);
 }
