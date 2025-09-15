@@ -138,7 +138,6 @@
   "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "Odinstalowano {name}",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED": "Nie udało się załadować brakującego dodatku {type}",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS": "Wczytano brakujący dodatek {type}",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Nie udało się pobrać profilu użytkownika",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Nie udało się sformatować kodu",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Kod sformatowany",
   "REPLUGGED_TOAST_QUICKCSS_RELOAD": "Przeładowano Szybki CSS",
