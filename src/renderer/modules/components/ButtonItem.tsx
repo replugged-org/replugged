@@ -1,4 +1,4 @@
-import { classNames, sharedStyles } from "@common";
+import { classNames, marginStyles } from "@common";
 import { filters, getFunctionBySource, waitForModule, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, Flex, FormText } from ".";
@@ -37,7 +37,7 @@ export function ButtonItem({
 }: React.PropsWithChildren<ButtonItemProps>): React.ReactElement {
   return (
     <div
-      className={classNames(sharedStyles.MarginStyles.marginBottom20, {
+      className={classNames(marginStyles.marginBottom20, {
         [classes.disabled]: disabled,
       })}>
       <Flex direction={Flex.Direction.VERTICAL} className="replugged-button-item-wrapper">

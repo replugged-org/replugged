@@ -1,4 +1,4 @@
-import { classNames, sharedStyles } from "@common";
+import { classNames, marginStyles } from "@common";
 import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
@@ -39,19 +39,15 @@ export function SliderItem({
   return (
     <FormItem
       title={children}
-      className={sharedStyles.MarginStyles.marginBottom20}
+      className={marginStyles.marginBottom20}
       style={style}
       note={note}
-      noteClassName={
-        restProps.markers
-          ? sharedStyles.MarginStyles.marginBottom20
-          : sharedStyles.MarginStyles.marginBottom4
-      }
+      noteClassName={restProps.markers ? marginStyles.marginBottom20 : marginStyles.marginBottom4}
       disabled={restProps.disabled}
       divider>
       <CustomSlider
         className={classNames(
-          { [sharedStyles.MarginStyles.marginTop20]: restProps.markers && !note },
+          { [marginStyles.marginTop20]: restProps.markers && !note },
           className,
         )}
         {...restProps}

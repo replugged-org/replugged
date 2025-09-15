@@ -97,6 +97,11 @@ importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod));
 export let localStorage: LocalStorage;
 importTimeout("localStorage", import("./localStorage"), (mod) => (localStorage = mod.default));
 
+import type { MarginStyles } from "./marginStyles";
+export type { MarginStyles };
+export let marginStyles: MarginStyles;
+importTimeout("marginStyles", import("./marginStyles"), (mod) => (marginStyles = mod.default));
+
 import type { Modal } from "./modal";
 export type { Modal };
 export let modal: Modal;
@@ -106,11 +111,6 @@ import type { Parser } from "./parser";
 export type { Parser };
 export let parser: Parser;
 importTimeout("parser", import("./parser"), (mod) => (parser = mod.default));
-
-import type { SharedStyles } from "./sharedStyles";
-export type { SharedStyles };
-export let sharedStyles: SharedStyles;
-importTimeout("sharedStyles", import("./sharedStyles"), (mod) => (sharedStyles = mod.default));
 
 import type { Toast } from "./toast";
 export type { Toast };

@@ -1,4 +1,4 @@
-import { modal, sharedStyles, toast } from "@common";
+import { marginStyles, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import {
@@ -146,7 +146,7 @@ export const General = (): React.ReactElement => {
         <FormItem
           title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
           note={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
-          className={sharedStyles.MarginStyles.marginBottom20}
+          className={marginStyles.marginBottom20}
           divider>
           <TextInput
             {...util.useSetting(generalSettings, "apiUrl")}

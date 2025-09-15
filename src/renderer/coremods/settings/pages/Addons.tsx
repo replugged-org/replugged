@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, classNames, contextMenu, modal, sharedStyles, toast } from "@common";
+import { React, classNames, contextMenu, marginStyles, modal, toast } from "@common";
 import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
 import {
@@ -263,7 +263,7 @@ function Card({
       <Flex
         align={Flex.Align.START}
         justify={Flex.Justify.BETWEEN}
-        className={sharedStyles.MarginStyles.marginBottom4}>
+        className={marginStyles.marginBottom4}>
         <span>
           <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
             <Text variant="heading-md/bold" tag="span" color="header-primary">
@@ -281,13 +281,13 @@ function Card({
         {addon.manifest.description}
       </Text.Normal>
       {addon.manifest.updater?.type !== "store" ? (
-        <Notice messageType={Notice.Types.ERROR} className={sharedStyles.MarginStyles.marginTop8}>
+        <Notice messageType={Notice.Types.ERROR} className={marginStyles.marginTop8}>
           {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
             type: label(type),
           })}
         </Notice>
       ) : null}
-      <Flex className={sharedStyles.MarginStyles.marginTop8}>
+      <Flex className={marginStyles.marginTop8}>
         <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
           <Authors addon={addon} />
         </Text>
@@ -556,10 +556,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
       {section === `rp_${type}` && (
         <Flex
           justify={Flex.Justify.BETWEEN}
-          className={classNames(
-            "replugged-addon-header-buttons",
-            sharedStyles.MarginStyles.marginBottom20,
-          )}>
+          className={classNames("replugged-addon-header-buttons", marginStyles.marginBottom20)}>
           <Button fullWidth onClick={() => openFolder(type)}>
             {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
               type: label(type, { caps: "title", plural: true }),
@@ -605,7 +602,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
         </Flex>
       )}
       {section === `rp_${type}` && unfilteredCount ? (
-        <div className={sharedStyles.MarginStyles.marginBottom20}>
+        <div className={marginStyles.marginBottom20}>
           <SearchBar
             query={search}
             onChange={(query) => setSearch(query)}
@@ -618,7 +615,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
         </div>
       ) : null}
       {section === `rp_${type}` && search && list?.length ? (
-        <Text variant="heading-md/bold" className={sharedStyles.MarginStyles.marginBottom8}>
+        <Text variant="heading-md/bold" className={marginStyles.marginBottom8}>
           {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
         </Text>
       ) : null}

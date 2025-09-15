@@ -1,4 +1,4 @@
-import { classNames, sharedStyles } from "@common";
+import { classNames, marginStyles } from "@common";
 import { filters, waitForModule, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, FormText } from ".";
@@ -37,9 +37,7 @@ function CustomFormItem({
       disabled={restProps.disabled}
       className={classNames(
         noteClassName,
-        notePosition === "before"
-          ? sharedStyles.MarginStyles.marginBottom8
-          : sharedStyles.MarginStyles.marginTop8,
+        notePosition === "before" ? marginStyles.marginBottom8 : marginStyles.marginTop8,
       )}
       style={noteStyle}>
       {note}

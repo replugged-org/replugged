@@ -1,4 +1,4 @@
-import { sharedStyles } from "@common";
+import { marginStyles } from "@common";
 import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
@@ -27,7 +27,7 @@ export function RadioItem({
   return (
     <FormItem
       title={children}
-      className={sharedStyles.MarginStyles.marginBottom20}
+      className={marginStyles.marginBottom20}
       style={style}
       note={note}
       disabled={restProps.disabled}

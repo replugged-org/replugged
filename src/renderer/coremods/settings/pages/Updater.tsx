@@ -1,4 +1,4 @@
-import { sharedStyles, toast } from "@common";
+import { marginStyles, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import {
@@ -154,9 +154,7 @@ export const Updater = (): React.ReactElement => {
         {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
       </SliderItem>
       {isRepluggedDev && (
-        <Notice
-          messageType={Notice.Types.WARNING}
-          className={sharedStyles.MarginStyles.marginBottom20}>
+        <Notice messageType={Notice.Types.WARNING} className={marginStyles.marginBottom20}>
           {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
             url: "https://replugged.dev/download",
           })}
@@ -173,7 +171,7 @@ export const Updater = (): React.ReactElement => {
               : intl.string(t.REPLUGGED_UPDATES_UP_TO_DATE)}
           </Text>
           {lastChecked ? (
-            <Text.Normal className={sharedStyles.MarginStyles.marginTop4}>
+            <Text.Normal className={marginStyles.marginTop4}>
               {intl.format(t.REPLUGGED_UPDATES_LAST_CHECKED, {
                 date: new Date(lastChecked).toLocaleString(intl.currentLocale),
               })}
@@ -229,7 +227,7 @@ export const Updater = (): React.ReactElement => {
                   <Flex
                     align={Flex.Align.CENTER}
                     style={{ gap: "5px" }}
-                    className={sharedStyles.MarginStyles.marginBottom4}>
+                    className={marginStyles.marginBottom4}>
                     <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
                       <Text variant="heading-md/bold" color="header-primary" tag="span">
                         {manifest.name}
@@ -266,9 +264,7 @@ export const Updater = (): React.ReactElement => {
                 )}
               </Flex>
               {manifest.type !== "replugged" && manifest.updater?.type !== "store" ? (
-                <Notice
-                  messageType={Notice.Types.ERROR}
-                  className={sharedStyles.MarginStyles.marginTop8}>
+                <Notice messageType={Notice.Types.ERROR} className={marginStyles.marginTop8}>
                   {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
                     type: label(getAddonType(manifest.type)),
                   })}

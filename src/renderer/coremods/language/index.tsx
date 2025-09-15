@@ -1,4 +1,4 @@
-import { sharedStyles } from "@common";
+import { marginStyles } from "@common";
 import { getLanguages, intl } from "@common/i18n";
 import { Flex, FormNotice, Text } from "@components";
 import { messagesLoader } from "i18n/en-US.messages";
@@ -14,7 +14,7 @@ export function Card(): React.ReactElement {
       title={intl.string(t.REPLUGGED_I18N)}
       body={intl.format(t.REPLUGGED_I18N_CONTRIBUTE, { weblateUrl: WEBLATE_URL })}
       type={FormNotice.Types.PRIMARY}
-      className={sharedStyles.MarginStyles.marginBottom20}
+      className={marginStyles.marginBottom20}
     />
   );
 }
