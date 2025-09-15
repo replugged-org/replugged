@@ -2,10 +2,9 @@ import { getFunctionBySource } from "@webpack";
 import type React from "react";
 import components from "../common/components";
 
-import type { TooltipProps } from "discord-client-types/discord_app/design/components/Tooltip/web/Tooltip";
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-interface CustomTooltipProps extends Omit<TooltipProps, "children"> {
+interface CustomTooltipProps extends Omit<Design.TooltipProps, "children"> {
   className?: string;
   style?: React.CSSProperties;
   children: React.ReactNode;

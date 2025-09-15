@@ -3,7 +3,6 @@ import { filters, waitForModule, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, FormText } from ".";
 
-import type { FormItemProps } from "discord-client-types/discord_app/design/components/Forms/web/FormItem";
 import type { FormSwitchStyles } from "discord-client-types/discord_app/design/components/Forms/web/FormSwitch.module";
 import type * as Design from "discord-client-types/discord_app/design/web";
 
@@ -14,7 +13,7 @@ const FormItem = await waitForModule<Record<string, Design.FormItem>>(
 
 const classes = await waitForProps<Record<FormSwitchStyles, string>>("dividerDefault");
 
-type CustomFormItemProps = FormItemProps & {
+type CustomFormItemProps = Design.FormItemProps & {
   note?: string;
   notePosition?: "before" | "after";
   noteStyle?: React.CSSProperties;

@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, api, classNames, fluxDispatcher, modal, sharedStyles, toast, users } from "@common";
+import { React, classNames, contextMenu, modal, sharedStyles, toast } from "@common";
+import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
 import {
   Anchor,
   Breadcrumbs,
   Button,
+  ContextMenu,
   ErrorBoundary,
   Flex,
   FormSection,
@@ -14,7 +16,7 @@ import {
   Text,
   Tooltip,
 } from "@components";
-import { Logger, plugins, themes } from "@replugged";
+import { Logger, plugins, themes, webpack } from "@replugged";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
@@ -24,7 +26,33 @@ import { generalSettings } from "./General";
 
 import "./Addons.css";
 
+interface OpenUserProfileModalProps {
+  userId: string;
+  guildId?: string | null;
+  channelId?: string;
+  messageId?: string;
+  roleId?: string;
+  sessionId?: string;
+  joinRequestId?: string;
+  section?: string;
+  subsection?: string;
+  showGuildProfile?: boolean;
+  hideRestrictedProfile?: boolean;
+  sourceAnalyticsLocations?: string[];
+  appContext?: string;
+  customStatusPrompt?: { value: string; label: () => string };
+  disableActionsForPreview?: boolean;
+}
+
+interface UserProfileModalActionCreators {
+  openUserProfileModal: (props: OpenUserProfileModalProps) => Promise<void>;
+  closeUserProfileModal: () => void;
+}
+
 const logger = Logger.coremod("AddonSettings");
+
+const { openUserProfileModal } =
+  await webpack.waitForProps<UserProfileModalActionCreators>("openUserProfileModal");
 
 export enum AddonType {
   Plugin = "plugin",
@@ -82,40 +110,6 @@ function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string,
     return themes.themes;
   }
   throw new Error("Invalid addon type");
-}
-
-async function openUserProfile(id: string): Promise<void> {
-  if (!users.getUser(id)) {
-    try {
-      const { body } = await api.HTTP.get({
-        url: `/users/${id}/profile`,
-        query: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_friends_count: "true",
-
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_guilds: "true",
-        },
-      });
-      fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body.user });
-      fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
-    } catch {
-      try {
-        const { body } = await api.HTTP.get({
-          url: `/users/${id}`,
-        });
-        fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
-      } catch (e) {
-        logger.error(`Failed to fetch user profile for ${id}`, e);
-        toast.toast(intl.string(t.REPLUGGED_TOAST_PROFILE_FETCH_FAILED), toast.Kind.FAILURE);
-        return;
-      }
-    }
-  }
-  fluxDispatcher.dispatch({
-    type: "USER_PROFILE_MODAL_OPEN",
-    userId: id,
-  });
 }
 
 function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
@@ -189,80 +183,57 @@ export function label(
   return base;
 }
 
-function replaceVariable(
-  str: string,
-  variables: Record<string, React.ReactElement | string>,
-): React.ReactElement {
-  const els: Array<React.ReactElement | string> = [];
-  let last = 0;
-  for (const [match, el] of Object.entries(variables)) {
-    const index = str.indexOf(`{${match}}`, last);
-    if (index === -1) continue;
-    els.push(<>{str.slice(last, index)}</>);
-    els.push(el);
-    last = index + match.length + 2;
-  }
-  els.push(<>{str.slice(last)}</>);
-  return <>{els}</>;
+function AuthorContextMenu({
+  author,
+  ...props
+}: { author: Author } & ContextMenuProps): React.ReactElement {
+  return (
+    <ContextMenu.ContextMenu {...props} onClose={contextMenu.close} navId="replugged-addon-authors">
+      <ContextMenu.MenuGroup>
+        {author.discordID && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: intl.string(discordT.DISCORD),
+            })}
+            id="replugged-addon-author-discord"
+            icon={Icons.Discord}
+            action={() => openUserProfileModal({ userId: author.discordID! })}
+          />
+        )}
+        {author.github && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: "GitHub",
+            })}
+            id="replugged-addon-author-github"
+            icon={Icons.GitHub}
+            action={() => open(`https://github.com/${author.github}`)}
+          />
+        )}
+      </ContextMenu.MenuGroup>
+    </ContextMenu.ContextMenu>
+  );
 }
 
-function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactElement {
+function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactNode {
   const els = getAuthors(addon).map((author) => (
-    <Flex
+    <Anchor
       key={JSON.stringify(author)}
-      align={Flex.Align.CENTER}
-      style={{
-        gap: "5px",
-        display: "inline-flex",
+      onClick={() => author.discordID && openUserProfileModal({ userId: author.discordID })}
+      onContextMenu={(event) => {
+        if (!author.github && !author.discordID) return;
+        contextMenu.open(event, (props) => <AuthorContextMenu {...props} author={author} />);
       }}>
       <b>{author.name}</b>
-      {author.discordID ? (
-        <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
-            type: intl.string(discordT.NOTIFICATION_TITLE_DISCORD),
-          })}
-          className="replugged-addon-icon replugged-addon-icon-author">
-          <Anchor onClick={() => openUserProfile(author.discordID!)}>
-            <Icons.Discord />
-          </Anchor>
-        </Tooltip>
-      ) : null}
-      {author.github ? (
-        <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, { type: "GitHub" })}
-          className="replugged-addon-icon replugged-addon-icon-author">
-          <Anchor href={`https://github.com/${author.github}`}>
-            <Icons.GitHub />
-          </Anchor>
-        </Tooltip>
-      ) : null}
-    </Flex>
+    </Anchor>
   ));
 
-  let message = "";
-
-  if (els.length === 1) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_ONE);
-  }
-  if (els.length === 2) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_TWO);
-  }
-  if (els.length === 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_THREE);
-  }
-  if (els.length > 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_MANY);
-  }
-
-  return replaceVariable(message, {
+  return intl.format(t.REPLUGGED_ADDON_AUTHORS, {
     author1: els[0],
     author2: els[1],
     author3: els[2],
-    count: (els.length - 3).toString(),
+    count: els.length.toString(),
+    others: (els.length - 3).toString(),
   });
 }
 
@@ -301,10 +272,25 @@ function Card({
             <span>
               {" "}
               <b>v{addon.manifest.version}</b>
-            </span>{" "}
-            <Authors addon={addon} />
+            </span>
           </Text>
         </span>
+        <Switch checked={!disabled} onChange={toggleDisabled} />
+      </Flex>
+      <Text.Normal markdown allowMarkdownLinks>
+        {addon.manifest.description}
+      </Text.Normal>
+      {addon.manifest.updater?.type !== "store" ? (
+        <Notice messageType={Notice.Types.ERROR} className={sharedStyles.MarginStyles.marginTop8}>
+          {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+            type: label(type),
+          })}
+        </Notice>
+      ) : null}
+      <Flex className={sharedStyles.MarginStyles.marginTop8}>
+        <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
+          <Authors addon={addon} />
+        </Text>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
           {sourceLink ? (
             <Tooltip
@@ -348,19 +334,8 @@ function Card({
               </Anchor>
             </Tooltip>
           )}
-          <Switch checked={!disabled} onChange={toggleDisabled} />
         </Flex>
       </Flex>
-      <Text.Normal markdown allowMarkdownLinks>
-        {addon.manifest.description}
-      </Text.Normal>
-      {addon.manifest.updater?.type !== "store" ? (
-        <Notice messageType={Notice.Types.ERROR} className={sharedStyles.MarginStyles.marginTop8}>
-          {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-            type: label(type),
-          })}
-        </Notice>
-      ) : null}
     </div>
   );
 }
@@ -630,16 +605,17 @@ export const Addons = (type: AddonType): React.ReactElement => {
         </Flex>
       )}
       {section === `rp_${type}` && unfilteredCount ? (
-        <SearchBar
-          query={search}
-          onChange={(query) => setSearch(query)}
-          onClear={() => setSearch("")}
-          placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
-            type: label(type),
-          })}
-          autoFocus
-          className={sharedStyles.MarginStyles.marginBottom20}
-        />
+        <div className={sharedStyles.MarginStyles.marginBottom20}>
+          <SearchBar
+            query={search}
+            onChange={(query) => setSearch(query)}
+            onClear={() => setSearch("")}
+            placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
+              type: label(type),
+            })}
+            autoFocus
+          />
+        </div>
       ) : null}
       {section === `rp_${type}` && search && list?.length ? (
         <Text variant="heading-md/bold" className={sharedStyles.MarginStyles.marginBottom8}>

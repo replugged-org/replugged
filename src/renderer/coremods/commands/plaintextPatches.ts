@@ -6,7 +6,7 @@ export default [
     find: "/\\.gif($|\\?|#)/i",
     replacements: [
       {
-        match: /getSrc\(\w+\){/,
+        match: /getSrc\(\i\){/,
         replace: (prefix) =>
           `${prefix}if(this.props.sourceMetadata?.message?.author?.id==="${REPLUGGED_CLYDE_ID}")return this.props.src;`,
       },

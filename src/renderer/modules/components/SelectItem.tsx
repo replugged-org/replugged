@@ -4,7 +4,6 @@ import type React from "react";
 import { FormItem } from ".";
 import components from "../common/components";
 
-import type { SingleSelectProps } from "discord-client-types/discord_app/design/components/Select/web/Select";
 import type * as Design from "discord-client-types/discord_app/design/web";
 
 const SingleSelect = getFunctionBySource<Design.SingleSelect>(
@@ -12,7 +11,7 @@ const SingleSelect = getFunctionBySource<Design.SingleSelect>(
   /var{value:\w+,onChange:\w+}/,
 )!;
 
-interface CustomSelectProps extends SingleSelectProps {
+interface CustomSelectProps extends Design.SingleSelectProps {
   disabled?: boolean;
 }
 

@@ -1,15 +1,16 @@
 import { sharedStyles } from "@common";
-import { getFunctionBySource } from "@webpack";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
-import components from "../common/components";
 
-import type { RadioGroupProps } from "discord-client-types/discord_app/design/components/RadioGroup/web/RadioGroup";
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-export const RadioGroup = getFunctionBySource<Design.RadioGroup>(components, "itemInfoClassName:")!;
+const radioString = ".radioIndicatorGroup,";
+const mod = await waitForModule(filters.bySource(radioString));
 
-interface RadioItemProps extends RadioGroupProps {
+export const RadioGroup = getFunctionBySource<Design.RadioGroup>(mod, radioString)!;
+
+interface RadioItemProps extends Design.RadioGroupProps {
   note?: string;
   style?: React.CSSProperties;
 }

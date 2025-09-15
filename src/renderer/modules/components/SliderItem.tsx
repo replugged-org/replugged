@@ -4,7 +4,6 @@ import type React from "react";
 import { FormItem } from ".";
 import components from "../common/components";
 
-import type { SliderProps } from "discord-client-types/discord_app/design/components/Slider/web/Slider";
 import type * as Design from "discord-client-types/discord_app/design/web";
 
 const Slider = getFunctionBySource<typeof Design.Slider>(
@@ -12,7 +11,7 @@ const Slider = getFunctionBySource<typeof Design.Slider>(
   /initialValue!==\w+\.initialValueProp/,
 )!;
 
-interface CustomSliderProps extends SliderProps {
+interface CustomSliderProps extends Design.SliderProps {
   value?: number;
   onChange?: (value: number) => void;
 }

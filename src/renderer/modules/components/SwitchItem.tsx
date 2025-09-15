@@ -1,9 +1,12 @@
-import { getFunctionBySource } from "@webpack";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-export const Switch = getFunctionBySource<Design.Switch>(components, "xMinYMid meet")!;
+const switchString = "xMinYMid meet";
+const mod = await waitForModule(filters.bySource(switchString));
+
+export const Switch = getFunctionBySource<Design.Switch>(mod, switchString)!;
 
 export const FormSwitch = getFunctionBySource<Design.FormSwitch>(
   components,

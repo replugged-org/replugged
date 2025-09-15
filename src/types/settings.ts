@@ -16,6 +16,7 @@ export type GeneralSettings = {
   reactDevTools?: boolean;
   titleBar?: boolean;
   quickCSS?: boolean;
+  keepToken?: boolean;
 };
 
 export const defaultSettings = {
@@ -29,4 +30,5 @@ export const defaultSettings = {
   addonEmbeds: true,
   titleBar: false,
   quickCSS: true,
+  keepToken: false,
 } satisfies Partial<GeneralSettings>;

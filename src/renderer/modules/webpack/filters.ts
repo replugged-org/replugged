@@ -2,6 +2,7 @@ import type { RawModule } from "src/types";
 import type { Store } from "../common/flux";
 import { getExportsForProps } from "./get-modules";
 import { sourceStrings } from "./patch-load";
+import { parseRegex } from "./plaintext-patch";
 
 /**
  * Get a module that has all the given properties on one of its exports
@@ -38,7 +39,7 @@ export const bySource = (match: string | RegExp) => {
     const source = sourceStrings[m.id];
     if (!source) return false;
 
-    return typeof match === "string" ? source.includes(match) : match.test(source);
+    return typeof match === "string" ? source.includes(match) : parseRegex(match).test(source);
   };
 };
 
@@ -63,7 +64,7 @@ export const byValue = (match: string | RegExp) => {
     for (const k in m.exports) {
       try {
         const v = (m.exports as Record<PropertyKey, unknown>)[k];
-        if (matchIsString ? v === match : typeof v === "string" && match.test(v)) {
+        if (matchIsString ? v === match : typeof v === "string" && parseRegex(match).test(v)) {
           return true;
         }
       } catch {}

@@ -1,19 +1,16 @@
 import { parser } from "@common";
 import components from "../common/components";
 
-import type {
-  Text,
-  TextProps,
-} from "discord-client-types/discord_common/packages/design/components/Text/web/Text";
+import type * as CommonDesign from "discord-client-types/discord_common/packages/design/web";
 
-interface CustomTextProps extends TextProps {
+interface CustomTextProps extends CommonDesign.TextProps {
   markdown?: boolean;
   allowMarkdownLinks?: boolean;
   allowMarkdownHeading?: boolean;
   allowMarkdownList?: boolean;
 }
 
-export type CustomTextType = Text &
+export type CustomTextType = CommonDesign.Text &
   Record<"Normal" | "H1" | "H2" | "H3" | "H4" | "Eyebrow", React.FC<CustomTextProps>>;
 
 const { Text } = components;
