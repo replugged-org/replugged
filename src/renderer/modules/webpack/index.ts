@@ -1,6 +1,6 @@
 export { waitForModule } from "./lazy";
 
-export { getFunctionBySource, getFunctionKeyBySource } from "./inner-search";
+export { getComponentBySource, getFunctionBySource, getFunctionKeyBySource } from "./inner-search";
 
 export { getById, getExportsForProps, getModule } from "./get-modules";
 

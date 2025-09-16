@@ -1,15 +1,10 @@
 import type { UnknownFunction } from "src/types";
 import { parseRegex } from "./plaintext-patch";
 
-/**
- * Get a function in a module to inject into.
- * @param module Module
- * @param match Source criterion
- * @returns Entry for the found function (key and value)
- */
 function findFunctionEntryBySource<T>(
   module: T,
   match: string | RegExp | ((func: UnknownFunction) => boolean),
+  componentSearch = false,
 ): [Extract<keyof T, string>, T[Extract<keyof T, string>]] | undefined {
   if (typeof module === "object" && module !== null) {
     for (const k in module) {
@@ -18,17 +13,19 @@ function findFunctionEntryBySource<T>(
         let v: unknown = module[k];
 
         // unwrap React.memo / React.forwardRef wrappers
-        while (typeof v === "object" && v !== null) {
-          const obj = v as Record<string, unknown>;
+        if (componentSearch) {
+          while (typeof v === "object" && v !== null) {
+            const obj = v as Record<string, unknown>;
 
-          if (!obj.$$typeof) break;
+            if (!obj.$$typeof) break;
 
-          if (typeof obj.type === "function") {
-            v = obj.type;
-          } else if (typeof obj.render === "function") {
-            v = obj.render;
-          } else {
-            break;
+            if (typeof obj.type === "function") {
+              v = obj.type;
+            } else if (typeof obj.render === "function") {
+              v = obj.render;
+            } else {
+              break;
+            }
           }
         }
 
@@ -82,4 +79,19 @@ export function getFunctionKeyBySource<T>(
   match: string | RegExp | ((func: UnknownFunction) => boolean),
 ): Extract<keyof T, string> | undefined {
   return findFunctionEntryBySource<T>(module, match)?.[0];
+}
+
+/**
+ * Retrieves a component from a module by searching its source code for a specific match.
+ * Can search for normal components as well as those wrapped in `React.memo` or `React.forwardRef`.
+ * @template T The expected type of the component to be returned.
+ * @param module The module to search within.
+ * @param match The pattern to match the source against.
+ * @returns The first component that matches the given pattern, or `undefined` if no match is found.
+ */
+export function getComponentBySource<T>(
+  module: unknown,
+  match: string | RegExp | ((func: UnknownFunction) => boolean),
+): T | undefined {
+  return findFunctionEntryBySource(module, match, true)?.[1];
 }
