@@ -53,26 +53,25 @@ function findFunctionEntryBySource<T>(
 }
 
 /**
- * Search for a function within a module by its source code.
- *
- * @param match The string or regex to match against the function's source code.
- * @param module The module to search.
+ * Retrieves a function from a module by searching its source code for a specific match.
+ * @template T The expected type of the function to be returned.
+ * @param module The module to search within. This can be any object or structure containing functions.
+ * @param match The pattern to match the function's source code.
+ * @returns The first function that matches the given pattern, or `undefined` if no match is found.
  */
-export function getFunctionBySource<F>(
+export function getFunctionBySource<T>(
   module: unknown,
   match: string | RegExp | ((func: UnknownFunction) => boolean),
-): F | undefined {
+): T | undefined {
   return findFunctionEntryBySource(module, match)?.[1];
 }
 
 /**
- * Search for a function within a module by its source code. Returns the key of the function.
- *
- * @param match The string or regex to match against the function's source code.
- * @param module The module to search.
- *
- * @remarks
- * Useful for getting the prop name to inject into.
+ * Retrieves the key of a function within a module that matches a given source pattern.
+ * @template T The type of the module object.
+ * @param module The module object to search within.
+ * @param match The pattern to match the function's source code.
+ * @returns The key of the matching function as a string, or `undefined` if no match is found.
  */
 export function getFunctionKeyBySource<T>(
   module: T,
