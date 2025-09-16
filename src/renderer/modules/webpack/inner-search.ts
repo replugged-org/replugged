@@ -1,4 +1,5 @@
 import type { UnknownFunction } from "src/types";
+import { parseRegex } from "./plaintext-patch";
 
 /**
  * Get a function in a module to inject into.
@@ -25,7 +26,7 @@ function findFunctionEntryBySource<T>(
               isSourceMatch = v.toString().includes(match);
               break;
             default:
-              isSourceMatch = match.test(v.toString());
+              isSourceMatch = parseRegex(match).test(v.toString());
           }
           if (isSourceMatch) return [k, v];
         }
