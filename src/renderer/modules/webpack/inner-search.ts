@@ -15,9 +15,26 @@ function findFunctionEntryBySource<T>(
     for (const k in module) {
       try {
         // This could throw an error, hence the try-catch
-        const v = module[k];
+        let v: unknown = module[k];
+
+        // unwrap React.memo / React.forwardRef wrappers
+        while (typeof v === "object" && v !== null) {
+          const obj = v as Record<string, unknown>;
+
+          if (!obj.$$typeof) break;
+
+          if (typeof obj.type === "function") {
+            v = obj.type;
+          } else if (typeof obj.render === "function") {
+            v = obj.render;
+          } else {
+            break;
+          }
+        }
+
         if (typeof v === "function") {
           let isSourceMatch = false;
+
           switch (typeof match) {
             case "function":
               isSourceMatch = match(v as UnknownFunction);
@@ -28,7 +45,10 @@ function findFunctionEntryBySource<T>(
             default:
               isSourceMatch = parseRegex(match).test(v.toString());
           }
-          if (isSourceMatch) return [k, v];
+
+          if (isSourceMatch) {
+            return [k, module[k]];
+          }
         }
       } catch {}
     }
