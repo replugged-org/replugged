@@ -1,22 +1,14 @@
-import type {
-  PlaintextPatch,
-  RawPlaintextPatch,
-  RegexReplacement,
-  WebpackModule,
-} from "../../../types";
+import type { PlaintextPatch, RawPlaintextPatch, RegexReplacement, WebpackModule } from "src/types";
 import { Logger } from "../logger";
 
 const logger = Logger.api("plaintext-patch");
 
-/**
- * All plaintext patches
- */
 const plaintextPatches: RawPlaintextPatch[] = [];
 
 /**
- * Parses a given input and, if it is a regular expression, replaces all occurrences
+ * Parses a given input and, if it is a regular expression, replaces all occurrences.
  * of the custom `\i` pattern with a regex pattern that matches valid identifier names.
- * @param input The input to parse
+ * @param input The input to parse.
  * @returns A new `RegExp` with the `\i` pattern replaced, or the original input if it is not a `RegExp`
  */
 export function parseRegex<T>(input: RegExp | T): RegExp | T {
@@ -26,7 +18,7 @@ export function parseRegex<T>(input: RegExp | T): RegExp | T {
 }
 
 /**
- * Parses and replaces occurrences of the `$exports` placeholder in the provided input
+ * Parses and replaces occurrences of the `$exports` placeholder in the provided input.
  * with a string referencing the exports of a plugin identified by the given `id`.
  * @param input The replacement input.
  * @param id The ID of the plugin whose exports are being referenced.
@@ -43,9 +35,12 @@ export function parseReplace(
 }
 
 /**
- * Replace a module with a plaintext-patched version.
- * @param mod Module
- * @returns Patched module
+ * Applies a series of plaintext patches to a Webpack module's source code.
+ * @param mod The Webpack module to be patched.
+ * @param id The unique identifier of the module being patched.
+ * @returns The patched Webpack module if modifications were made, otherwise the original module.
+ * @throws {Error} Will throw an error if there is a syntax error in the patched source code during evaluation.
+ * @internal
  */
 export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule {
   const originalSource = mod.toString();
@@ -101,10 +96,10 @@ export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule
 }
 
 /**
- * Add a plaintext patch.
- * @param patches Patch to add
+ * Adds plaintext patches to be applied to Webpack modules.
+ * @param patches An array of plaintext patches to be applied.
+ * @param id A unique identifier for the set of patches being applied.
  * @internal
- * @hidden
  */
 export function patchPlaintext(patches: PlaintextPatch[], id: string): void {
   plaintextPatches.push(

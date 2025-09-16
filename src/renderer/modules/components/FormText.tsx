@@ -4,7 +4,7 @@ import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-const FormText = getFunctionBySource<Design.FormText>(components, /type:\w+=\w+\.DEFAULT/)!;
+const FormText = getFunctionBySource<Design.FormText>(components, /type:\i=\i\.DEFAULT/)!;
 const FormTextTypes = getExportsForProps<Record<FormTextTypeKey, string>>(components, [
   "DEFAULT",
   "DESCRIPTION",

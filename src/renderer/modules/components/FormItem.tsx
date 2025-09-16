@@ -1,25 +1,23 @@
 import { classNames, marginStyles } from "@common";
-import { filters, waitForModule, waitForProps } from "@webpack";
+import { getComponentBySource, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, FormText } from ".";
+import components from "../common/components";
 
 import type { FormSwitchStyles } from "discord-client-types/discord_app/design/components/Forms/web/FormSwitch.module";
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-const formItemStr = ".fieldWrapper";
-const FormItem = await waitForModule<Record<string, Design.FormItem>>(
-  filters.bySource(formItemStr),
-).then((mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!);
+const FormItem = getComponentBySource<Design.FormItem>(components, ".fieldWrapper")!;
 
 const classes = await waitForProps<Record<FormSwitchStyles, string>>("dividerDefault");
 
-type CustomFormItemProps = Design.FormItemProps & {
+interface CustomFormItemProps extends Design.FormItemProps {
   note?: string;
   notePosition?: "before" | "after";
   noteStyle?: React.CSSProperties;
   noteClassName?: string;
   divider?: boolean;
-};
+}
 
 export type CustomFormItemType = React.FC<CustomFormItemProps>;
 
@@ -30,11 +28,11 @@ function CustomFormItem({
   noteStyle,
   noteClassName,
   divider,
-  ...restProps
+  ...props
 }: CustomFormItemProps): React.ReactElement {
   const noteContent = note && (
     <FormText.DESCRIPTION
-      disabled={restProps.disabled}
+      disabled={props.disabled}
       className={classNames(
         noteClassName,
         notePosition === "before" ? marginStyles.marginBottom8 : marginStyles.marginTop8,
@@ -45,7 +43,7 @@ function CustomFormItem({
   );
 
   return (
-    <FormItem {...restProps}>
+    <FormItem {...props}>
       {notePosition === "before" && noteContent}
       {children}
       {notePosition === "after" && noteContent}

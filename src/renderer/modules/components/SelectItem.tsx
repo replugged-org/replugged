@@ -8,20 +8,23 @@ import type * as Design from "discord-client-types/discord_app/design/web";
 
 const SingleSelect = getFunctionBySource<Design.SingleSelect>(
   components,
-  /var{value:\w+,onChange:\w+}/,
+  /var{value:\i,onChange:\i}/,
 )!;
 
-interface CustomSelectProps extends Design.SingleSelectProps {
+interface CustomSingleSelectProps extends Design.SingleSelectProps {
   disabled?: boolean;
 }
 
-export type CustomSelectType = React.FC<React.PropsWithChildren<CustomSelectProps>>;
+export type CustomSingleSelectType = React.FC<React.PropsWithChildren<CustomSingleSelectProps>>;
 
-export function CustomSelect({ disabled, ...props }: CustomSelectProps): React.ReactElement {
+export function CustomSingleSelect({
+  disabled,
+  ...props
+}: CustomSingleSelectProps): React.ReactElement {
   return <SingleSelect isDisabled={disabled} {...props} />;
 }
 
-interface SelectItemProps extends CustomSelectProps {
+interface SelectItemProps extends CustomSingleSelectProps {
   note?: string;
   style?: React.CSSProperties;
 }
@@ -32,7 +35,7 @@ export function SelectItem({
   children,
   style,
   note,
-  ...restProps
+  ...props
 }: React.PropsWithChildren<SelectItemProps>): React.ReactElement {
   return (
     <FormItem
@@ -41,9 +44,9 @@ export function SelectItem({
       style={style}
       note={note}
       notePosition="after"
-      disabled={restProps.disabled}
+      disabled={props.disabled}
       divider>
-      <CustomSelect {...restProps} />
+      <CustomSingleSelect {...props} />
     </FormItem>
   );
 }

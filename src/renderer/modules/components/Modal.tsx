@@ -11,15 +11,15 @@ export interface CustomModalType {
 }
 
 const ModalComponents = await waitForModule<Record<string, CustomModalType[keyof CustomModalType]>>(
-  filters.bySource(/\w+\.withCircleBackground/),
+  filters.bySource(/\i\.withCircleBackground/),
 );
 
 const remappedModalComponents: CustomModalType = {
-  ModalRoot: getFunctionBySource(ModalComponents, /\w+\.root/)!,
-  ModalHeader: getFunctionBySource(ModalComponents, /\w+\.header,/)!,
-  ModalContent: getFunctionBySource(ModalComponents, /\w+\.content/)!,
-  ModalFooter: getFunctionBySource(ModalComponents, /\w+\.footerSeparator/)!,
-  ModalCloseButton: getFunctionBySource(ModalComponents, /\w+\.closeWithCircleBackground/)!,
+  ModalRoot: getFunctionBySource(ModalComponents, /\i\.root/)!,
+  ModalHeader: getFunctionBySource(ModalComponents, /\i\.header,/)!,
+  ModalContent: getFunctionBySource(ModalComponents, /\i\.content/)!,
+  ModalFooter: getFunctionBySource(ModalComponents, /\i\.footerSeparator/)!,
+  ModalCloseButton: getFunctionBySource(ModalComponents, /\i\.closeWithCircleBackground/)!,
 };
 
 export default remappedModalComponents;

@@ -22,7 +22,7 @@ export function RadioItem({
   className,
   style,
   note,
-  ...restProps
+  ...props
 }: React.PropsWithChildren<RadioItemProps>): React.ReactElement {
   return (
     <FormItem
@@ -30,9 +30,9 @@ export function RadioItem({
       className={marginStyles.marginBottom20}
       style={style}
       note={note}
-      disabled={restProps.disabled}
+      disabled={props.disabled}
       divider>
-      <RadioGroup {...restProps} />
+      <RadioGroup {...props} />
     </FormItem>
   );
 }

@@ -1,10 +1,6 @@
-import { filters, waitForModule } from "@webpack";
+import { getComponentBySource } from "@webpack";
+import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-const formSectionStr = ".sectionTitle,";
-const FormSection = await waitForModule<Record<string, Design.FormSection>>(
-  filters.bySource(formSectionStr),
-).then((mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formSectionStr))!);
-
-export default FormSection;
+export default getComponentBySource<Design.FormSection>(components, ".sectionTitle,")!;

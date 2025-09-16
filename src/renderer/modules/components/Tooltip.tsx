@@ -18,10 +18,10 @@ function CustomTooltip({
   children,
   className,
   style,
-  ...restProps
+  ...props
 }: CustomTooltipProps): React.ReactElement {
   return (
-    <Tooltip {...restProps}>
+    <Tooltip {...props}>
       {(tooltipProps) => {
         const mergedProps = {
           ...tooltipProps,

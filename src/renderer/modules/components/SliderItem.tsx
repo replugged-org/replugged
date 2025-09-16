@@ -8,7 +8,7 @@ import type * as Design from "discord-client-types/discord_app/design/web";
 
 const Slider = getFunctionBySource<typeof Design.Slider>(
   components,
-  /initialValue!==\w+\.initialValueProp/,
+  /initialValue!==\i\.initialValueProp/,
 )!;
 
 interface CustomSliderProps extends Design.SliderProps {
@@ -34,7 +34,7 @@ export function SliderItem({
   className,
   style,
   note,
-  ...restProps
+  ...props
 }: React.PropsWithChildren<SliderItemProps>): React.ReactElement {
   return (
     <FormItem
@@ -42,15 +42,12 @@ export function SliderItem({
       className={marginStyles.marginBottom20}
       style={style}
       note={note}
-      noteClassName={restProps.markers ? marginStyles.marginBottom20 : marginStyles.marginBottom4}
-      disabled={restProps.disabled}
+      noteClassName={props.markers ? marginStyles.marginBottom20 : marginStyles.marginBottom4}
+      disabled={props.disabled}
       divider>
       <CustomSlider
-        className={classNames(
-          { [marginStyles.marginTop20]: restProps.markers && !note },
-          className,
-        )}
-        {...restProps}
+        className={classNames({ [marginStyles.marginTop20]: props.markers && !note }, className)}
+        {...props}
       />
     </FormItem>
   );
