@@ -38,7 +38,7 @@ type ShallowEqual = <T>(
 type AreArraysShallowEqual = <T extends []>(a: T, b: T, options?: ShallowEqualOptions) => boolean;
 
 const shallowEqualMod = await waitForModule(
-  filters.bySource(/{shouldWarnLargeObjects:\w+,logCallback:\w+}/),
+  filters.bySource(/{shouldWarnLargeObjects:\i,logCallback:\i}/),
 );
 const shallowEqual = getFunctionBySource<ShallowEqual>(shallowEqualMod, "Object.keys")!;
 const areArraysShallowEqual = getFunctionBySource<AreArraysShallowEqual>(
