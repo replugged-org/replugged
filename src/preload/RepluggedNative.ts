@@ -1,6 +1,6 @@
-import { contextBridge, ipcRenderer, webFrame } from "electron";
+import { ipcRenderer } from "electron";
+import { RepluggedIpcChannels } from "src/types";
 
-import { RepluggedIpcChannels } from "./types";
 // eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
 import type {
   CheckResultFailure,
@@ -10,11 +10,13 @@ import type {
   InstallerType,
   RepluggedPlugin,
   RepluggedTheme,
-} from "./types";
+} from "src/types";
+
+export type RepluggedNativeType = typeof RepluggedNative;
 
 const version = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_VERSION);
 
-const RepluggedNative = {
+export const RepluggedNative = {
   themes: {
     list: async (): Promise<RepluggedTheme[]> =>
       ipcRenderer.invoke(RepluggedIpcChannels.LIST_THEMES),
@@ -94,24 +96,4 @@ const RepluggedNative = {
   },
 
   getVersion: (): string => version,
-
-  // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };
-
-export type RepluggedNativeType = typeof RepluggedNative;
-
-contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
-
-const renderer: string = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
-
-// webFrame.executeJavaScript returns a Promise, but we don't have any use for it
-void webFrame.executeJavaScript(renderer);
-
-try {
-  // Get and execute Discord preload
-  // If Discord ever sandboxes its preload, we'll have to eval the preload contents directly
-  const preload: string = ipcRenderer.sendSync(RepluggedIpcChannels.GET_DISCORD_PRELOAD);
-  if (preload) require(preload);
-} catch (err) {
-  console.error("Error loading original preload", err);
-}
