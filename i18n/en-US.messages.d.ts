@@ -1309,6 +1309,19 @@ export declare const messages: {
    */
   'REPLUGGED_SEARCH_FOR_ADDON': TypedIntlMessageGetter<{type: any}>,
   /**
+   * Key: `g2lGYW`
+   * 
+   * ### Definition
+   * ```text
+   * Search for a {type} on store
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SEARCH_FOR_ADDON_STORE': TypedIntlMessageGetter<{type: any}>,
+  /**
    * Key: `wxHqIi`
    * 
    * ### Definition
@@ -1854,6 +1867,32 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `ru`, `sv-SE`, `vi`, `zh-CN`
    */
   'REPLUGGED_STORE': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `4wTZ5O`
+   * 
+   * ### Definition
+   * ```text
+   * Replugged Addon Store is now Build in app for ease of use.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_STORE_INCLUDED_INAPP': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `vz3Ak5`
+   * 
+   * ### Definition
+   * ```text
+   * Where Can I get more {type}?
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_STORE_WHERE_TO_FIND_ADDONS': TypedIntlMessageGetter<{type: any}>,
   /**
    * Key: `kZXj5O`
    * 
