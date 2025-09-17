@@ -137,7 +137,6 @@
   "REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED": "Fallo al desinstalar {name}",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED": "Fallo al cargar que faltaba {type}",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS": "Cargado falta {type}",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Fallo al recuperar el perfil de usuario",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Fallo al formatear el código",
   "REPLUGGED_ADDONS_LOAD_MISSING": "Falta carga {type}",
   "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "Desinstalado {name}",

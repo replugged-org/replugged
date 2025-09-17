@@ -1,13 +1,7 @@
+import { React } from "@common";
 import type { Jsonifiable } from "type-fest";
 
-type SettingsUpdate<T> =
-  | {
-      type: "set";
-      value: T[keyof T];
-    }
-  | {
-      type: "delete";
-    };
+type SettingsUpdate<T> = { type: "set"; value: T[keyof T] } | { type: "delete" };
 
 /**
  * Manages settings for a given namespace.
@@ -25,6 +19,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
   #saveTimeout: ReturnType<typeof setTimeout> | undefined;
   #queuedUpdates: Map<Extract<keyof T, string>, SettingsUpdate<T>>;
   #defaultSettings: Partial<T>;
+  #listeners = new Map<keyof T, Set<() => void>>();
 
   /**
    * Namespace for these settings.
@@ -49,7 +44,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
    * Gets a setting.
    * @param key Key of the setting to retrieve.
    * @param fallback Value to return if the key does not already exist.
-   * @returns
+   * @returns The value of the setting, or the fallback value if it does not already exist.
    */
   public get<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
     key: K,
@@ -64,6 +59,37 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
     }
     // @ts-expect-error It doesn't understand ig
     return this.#settings[key] ?? fallback ?? this.#defaultSettings[key];
+  }
+
+  /**
+   * Use a setting's value in React.
+   * @param key Key of the setting to retrieve.
+   * @param fallback Value to return if the key does not already exist.
+   * @returns The value of the setting, or the fallback value if it does not already exist.
+   */
+  public useValue<K extends Extract<keyof T, string>, F extends T[K] | undefined>(
+    key: K,
+    fallback?: F,
+  ): K extends D
+    ? NonNullable<T[K]>
+    : F extends null | undefined
+      ? T[K] | undefined
+      : NonNullable<T[K]> | F {
+    if (typeof this.#settings === "undefined") {
+      throw new Error(`Settings not loaded for namespace ${this.namespace}`);
+    }
+    const [setting, setSetting] = React.useState(() => this.get(key, fallback));
+    React.useEffect(() => {
+      if (!this.#listeners.has(key)) this.#listeners.set(key, new Set());
+      const listeners = this.#listeners.get(key)!;
+      const cb = (): void => setSetting(this.get(key, fallback));
+      listeners.add(cb);
+      return () => {
+        listeners.delete(cb);
+        if (!listeners.size) this.#listeners.delete(key);
+      };
+    }, [key, fallback]);
+    return setting;
   }
 
   /**
@@ -105,19 +131,22 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
   }
 
   /**
+   * Returns a copy of the settings data stored in this manager.
+   * @returns Current values of all settings in this manager's namespace.
+   */
+  public all(): T {
+    if (typeof this.#settings === "undefined") {
+      throw new Error(`Settings not loaded for namespace ${this.namespace}`);
+    }
+    return { ...this.#settings };
+  }
+
+  /**
    * Loads the latest stored settings for this namespace from the user's file system into this manager. This must be called
    * before managing any settings, unless you have created an instance using {@link init init()}, which calls this method.
    */
   public load(): void {
     this.#settings = window.RepluggedNative.settings.all(this.namespace);
-  }
-
-  /**
-   * Returns a copy of the settings data stored in this manager.
-   * @returns Current values of all settings in this manager's namespace.
-   */
-  public all(): T {
-    return { ...this.#settings } as T;
   }
 
   #queueUpdate<K extends Extract<keyof T, string>>(key: K, update: SettingsUpdate<T>): void {
@@ -127,6 +156,7 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
     this.#queuedUpdates.set(key, update);
     this.#saveTimeout = setTimeout(() => {
       this.#queuedUpdates.forEach((u, k) => {
+        if (this.#listeners.has(k)) this.#listeners.get(k)!.forEach((c) => c());
         if (u.type === "delete") {
           window.RepluggedNative.settings.delete(this.namespace, k);
         } else {
@@ -137,24 +167,6 @@ export class SettingsManager<T extends Record<string, Jsonifiable>, D extends ke
       this.#saveTimeout = void 0;
     }); // Add a delay of 1 or 2 seconds?
   }
-
-  /**
-   * React hook for managing settings.
-   * @param key Key of the setting to manage.
-   * @param fallback Value to return if the key does not already exist.
-   * @returns A tuple containing the current value of the setting, and a function to set the value. Works like `useState`.
-   * @example
-   * ```tsx
-   * import { components, settings } from "replugged";
-   * const { TextInput } = components;
-   *
-   * const cfg = settings.init<{ hello: string }>("dev.replugged.Example");
-   *
-   * export function Settings() {
-   *  return <TextInput {...cfg.useSetting("hello", "world")} />;
-   * }
-   * ```
-   */
 }
 
 // I hope there's some way to force TypeScript to accept this, but for now unknown will do
@@ -190,9 +202,9 @@ const managers = new Map<string, unknown>();
  * }
  *
  * ```
- * @typeParam T Type definition for the settings to manage in the namespace.
+ * @template T Type definition for the settings to manage in the namespace.
  * This will be an object with strings as keys, and JSON-serializable values.
- * @typeParam D Keys in `T` that will always have a value. These keys will not be nullable.
+ * @template D Keys in `T` that will always have a value. These keys will not be nullable.
  * @param namespace Namespace to manage. A namespace is an ID (for example, the ID of a plugin) that uniquely identifies it.
  * All settings are grouped into namespaces.
  * Settings for a namespace are stored in `settings/NAMESPACE.json` within the [Replugged data folder](https://docs.replugged.dev/#installing-plugins-and-themes).
@@ -206,7 +218,7 @@ export function init<T extends Record<string, Jsonifiable>, D extends keyof T = 
   if (managers.has(namespace)) {
     return managers.get(namespace)! as SettingsManager<T, D>;
   }
-  const manager = new SettingsManager<T, D>(namespace, (defaultSettings || {}) as Partial<T>);
+  const manager = new SettingsManager<T, D>(namespace, defaultSettings || {});
   managers.set(namespace, manager);
   manager.load();
   return manager;

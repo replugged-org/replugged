@@ -140,7 +140,6 @@
   "REPLUGGED_VERSION": "Replugged {version, select, dev {[VÝVOJÁŘSKÝ REŽIM]} other {v{version}}}",
   "REPLUGGED_SETTINGS_BADGES": "Povolit odznaky Replugged",
   "REPLUGGED_SETTINGS_BADGES_DESC": "Ukáže vlastní odznaky Replugged na uživatelských profilech.",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Načtení uživatelského profilu selhalo",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Formátování kódu selhalo",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Kód byl zformátován",
   "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "Zkontroluj konzoli pro detaily.",

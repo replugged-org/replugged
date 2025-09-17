@@ -5,7 +5,7 @@ export default [
     find: "AnalyticsActionHandlers.handleTrack",
     replacements: [
       {
-        match: /(\(\)|\w+)=>\w+\.AnalyticsActionHandlers\.handle\w+\([^)]*\)/g,
+        match: /(\(\)|\i)=>\i\.AnalyticsActionHandlers\.handle\i\([^)]*\)/g,
         replace: "arg=>{arg?.resolve?.()}",
       },
     ],
@@ -14,14 +14,14 @@ export default [
     find: "window.DiscordSentry",
     replacements: [
       {
-        match: /\w+=window\.DiscordSentry/g,
+        match: /\i=window\.DiscordSentry/g,
         replace: "null",
       },
     ],
   },
   {
     find: "crashReporter.updateCrashReporter",
-    replacements: [{ match: /updateCrashReporter\(\w+\){/, replace: "$&return;" }],
+    replacements: [{ match: /updateCrashReporter\(\i\){/, replace: "$&return;" }],
   },
   {
     find: /this\._metrics\.push\(.\),/,

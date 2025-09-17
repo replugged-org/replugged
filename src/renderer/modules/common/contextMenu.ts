@@ -16,7 +16,7 @@ interface ContextMenusOptions {
   enableSpellCheck?: boolean;
 }
 
-interface ContextMenuProps {
+export interface ContextMenuProps {
   className: string;
   position: "top" | "bottom" | "left" | "right" | "center" | "window_center" | null;
   theme: string;
