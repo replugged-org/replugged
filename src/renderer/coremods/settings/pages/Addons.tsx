@@ -574,13 +574,15 @@ export const Addons = (type: AddonType): React.ReactElement => {
                     count: unfilteredCount,
                   }),
                 },
-                {
-                  id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
-                  label:
-                    list?.filter?.(
-                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
-                    )?.[0]?.manifest.name || "",
-                },
+                section === "store"
+                  ? { id: `rp_${type}_store`, label: intl.string(t.REPLUGGED_STORE) }
+                  : {
+                      id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
+                      label:
+                        list?.filter?.(
+                          (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
+                        )?.[0]?.manifest.name || "",
+                    },
               ]}
               onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
               renderCustomBreadcrumb={(breadcrumb, active) => (

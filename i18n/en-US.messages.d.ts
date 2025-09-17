@@ -1881,6 +1881,19 @@ export declare const messages: {
    */
   'REPLUGGED_STORE_INCLUDED_INAPP': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `JjGds7`
+   * 
+   * ### Definition
+   * ```text
+   * You are on page of {current} of {total}
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_STORE_PAGINATOR': TypedIntlMessageGetter<{current: any, total: any}>,
+  /**
    * Key: `vz3Ak5`
    * 
    * ### Definition

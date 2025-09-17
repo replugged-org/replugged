@@ -14,6 +14,7 @@ import type {
 import Icons from "../icons";
 import { install } from "../../installer/util";
 import { AddonType, Card, generalSettings, getManager, getSourceLink, label } from "./index";
+import { viewImage } from "src/renderer/util";
 
 const logger = Logger.coremod("AddonStore");
 
@@ -51,7 +52,7 @@ function StoreAddonCard({
     setCooldownTimeout(
       setTimeout(() => {
         setOnCooldown(false);
-      }, 2000),
+      }, 1000),
     );
   };
 
@@ -92,6 +93,17 @@ function StoreAddonCard({
     refreshList();
   };
 
+  const previewClick = async (): Promise<void> => {
+    if (!onCooldown) await viewImage(manifest.image!);
+    setOnCooldown(true);
+    if (cooldownTimeout) clearTimeout(cooldownTimeout);
+    setCooldownTimeout(
+      setTimeout(() => {
+        setOnCooldown(false);
+      }, 1000),
+    );
+  };
+
   return (
     <Card
       manifest={manifest}
@@ -102,7 +114,7 @@ function StoreAddonCard({
             look={isUninstalling ? Button.Looks.OUTLINED : Button.Looks.FILLED}
             color={Button.Colors.RED}
             onClick={() => uninstallClick()}>
-            {isUninstalling ? <Loader /> : "Uninstall"}
+            {isUninstalling ? <Loader /> : intl.string(discordT.APPLICATION_CONTEXT_MENU_UNINSTALL)}
           </Button>
         ) : (
           <Button
@@ -110,7 +122,7 @@ function StoreAddonCard({
             look={isInstalling ? Button.Looks.OUTLINED : Button.Looks.FILLED}
             color={Button.Colors.BRAND}
             onClick={() => installClick()}>
-            {isInstalling ? <Loader /> : "Install"}
+            {isInstalling ? <Loader /> : intl.string(t.REPLUGGED_CONFIRM_INSTALL)}
           </Button>
         )
       }
@@ -143,8 +155,10 @@ function StoreAddonCard({
             </>
           }
           {manifest.image && (
-            <Tooltip text={"Preview"} className="replugged-addon-icon">
-              <a onClick={() => null}>
+            <Tooltip
+              text={intl.string(discordT.ACCESSIBILITY_SETTINGS_TTS_RATE_PREVIEW)}
+              className="replugged-addon-icon">
+              <a onClick={() => previewClick()}>
                 <Icons.Preview />
               </a>
             </Tooltip>
@@ -263,7 +277,10 @@ export default ({
               {"<"}
             </Button>
             <Text.Normal>
-              You are on page of {page} of {totalPage}
+              {intl.formatToPlainString(t.REPLUGGED_STORE_PAGINATOR, {
+                current: page,
+                total: totalPage,
+              })}
             </Text.Normal>
             <Button
               color={Button.Colors.BRAND}
