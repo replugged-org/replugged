@@ -163,7 +163,6 @@ export default defineMessages({
   "REPLUGGED_ADDON_SETTINGS": "Open {type} Settings",
   "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Are you sure you want to uninstall this {type}? This cannot be undone.",
   "REPLUGGED_ADDON_UNINSTALL": "Uninstall {name}",
-  "REPLUGGED_UNINSTALL": "Uninstall",
   "REPLUGGED_ADDONS_FOLDER_OPEN": "Open {type} Folder",
   "REPLUGGED_ADDONS_LOAD_MISSING": "Load Missing {type}",
   "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",
