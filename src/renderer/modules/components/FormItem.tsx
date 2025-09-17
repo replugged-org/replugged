@@ -1,6 +1,7 @@
-import { filters, waitForModule, waitForProps } from "@webpack";
+import { getComponentBySource, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, FormText } from ".";
+import components from "../common/components";
 
 interface FormItemCompProps extends Omit<React.ComponentPropsWithoutRef<"div">, "title"> {
   children: React.ReactNode;
@@ -19,10 +20,7 @@ export type FormItemCompType = React.ForwardRefExoticComponent<FormItemCompProps
   render: React.ForwardRefRenderFunction<unknown>;
 };
 
-const formItemStr = ".fieldWrapper";
-const FormItemComp = await waitForModule<Record<string, FormItemCompType>>(
-  filters.bySource(formItemStr),
-).then((mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!);
+const FormItemComp = getComponentBySource<FormItemCompType>(components, ".fieldWrapper")!;
 
 const classes = await waitForProps<Record<"dividerDefault", string>>("dividerDefault");
 

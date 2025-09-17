@@ -17,6 +17,7 @@ export type GeneralSettings = {
   titleBar?: boolean;
   winUpdater?: boolean;
   quickCSS?: boolean;
+  keepToken?: boolean;
 };
 
 export const defaultSettings = {
@@ -31,4 +32,5 @@ export const defaultSettings = {
   titleBar: false,
   winUpdater: true,
   quickCSS: true,
+  keepToken: false,
 } satisfies Partial<GeneralSettings>;

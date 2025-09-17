@@ -121,7 +121,6 @@
   "REPLUGGED_ADDONS_FOLDER_OPEN": "Apri cartella {type}",
   "REPLUGGED_NO_ADDONS_INSTALLED": "Nessun {type} installato.",
   "REPLUGGED_QUICKCSS_CHANGES_APPLY": "Applica modifiche",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Impossibile recuperare il profilo utente",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Impossibile formattare il codice",
   "REPLUGGED_ADDONS_LOAD_MISSING": "Carica {type} mancanti",
   "REPLUGGED_ADDONS_TITLE_COUNT": "{type} ({count, number})",

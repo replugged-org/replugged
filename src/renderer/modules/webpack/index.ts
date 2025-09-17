@@ -1,11 +1,11 @@
 export { waitForModule } from "./lazy";
 
-export { getFunctionBySource, getFunctionKeyBySource } from "./inner-search";
+export { getComponentBySource, getFunctionBySource, getFunctionKeyBySource } from "./inner-search";
 
 export { getById, getExportsForProps, getModule } from "./get-modules";
 
 /**
- * Filter functions to use with {@link getModule}
+ * A collection of filter functions to be used with {@link getModule}.
  */
 export * as filters from "./filters";
 

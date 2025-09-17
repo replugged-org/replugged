@@ -44,7 +44,7 @@ interface SelectCompProps {
 
 export type SelectCompType = React.FC<SelectCompProps>;
 
-const SelectComp = getFunctionBySource<SelectCompType>(components, /maxVisibleItems:\w+=7/)!;
+const SelectComp = getFunctionBySource<SelectCompType>(components, /maxVisibleItems:\i=7/)!;
 
 interface SelectProps extends SelectCompProps {
   onChange?: (value: string) => void;
