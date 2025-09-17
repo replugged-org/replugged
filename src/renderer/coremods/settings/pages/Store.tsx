@@ -189,7 +189,7 @@ export default ({
 
   const fetchAddons = async (abortController: AbortController): Promise<void> => {
     try {
-      if (section !== `rp_${type}_store`) return;
+      if (section !== `store`) return;
       const {
         numPages,
         page: newPage,
@@ -234,7 +234,7 @@ export default ({
     };
   }, [debouncedSearch, page]);
 
-  return section !== `rp_${type}_store` ? (
+  return section !== `store` ? (
     <></>
   ) : (
     <>

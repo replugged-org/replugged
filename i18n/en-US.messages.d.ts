@@ -1868,7 +1868,7 @@ export declare const messages: {
    */
   'REPLUGGED_STORE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `4wTZ5O`
+   * Key: `W+c1ER`
    * 
    * ### Definition
    * ```text
@@ -1879,7 +1879,7 @@ export declare const messages: {
    * 
    * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
-  'REPLUGGED_STORE_INCLUDED_INAPP': TypedIntlMessageGetter<{}>,
+  'REPLUGGED_STORE_INCLUDED_IN_APP': TypedIntlMessageGetter<{}>,
   /**
    * Key: `JjGds7`
    * 

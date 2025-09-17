@@ -663,7 +663,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 })}
               </Text.H2>
               <Text.Normal>
-                {intl.string(t.REPLUGGED_STORE_INCLUDED_INAPP)}
+                {intl.string(t.REPLUGGED_STORE_INCLUDED_IN_APP)}
                 <br />
                 <a onClick={() => open(`https://replugged.dev/store/${type}`)}>
                   {intl.string(discordT.MASKED_LINK_ALERT_V2_CONFIRM_WEBSITE)}
@@ -673,7 +673,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
             <Button
               look={Button.Looks.OUTLINED}
               color={Button.Colors.PRIMARY}
-              onClick={() => setSection(`rp_${type}_store`)}>
+              onClick={() => setSection(`store`)}>
               {intl.string(discordT.TAKE_ME_THERE)}
             </Button>
           </Flex>
@@ -717,7 +717,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 })}
           </Text>
         ) : null
-      ) : section === `rp_${type}_store` ? (
+      ) : section === "store" ? (
         <Store type={type} section={section} list={list!} refreshList={refreshList} />
       ) : (
         (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length), type)) && (
