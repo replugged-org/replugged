@@ -236,7 +236,7 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.",
   "REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME": "Plugin: {name}",
   "REPLUGGED_STORE": "Store",
-  "REPLUGGED_STORE_INCLUDED_IN_APP": "Replugged Addon Store is now Build in app for ease of use.",
+  "REPLUGGED_STORE_INCLUDED_IN_APP": "Replugged Addon Store is now built in app for ease of use.",
   "REPLUGGED_STORE_WHERE_TO_FIND_ADDONS": "Where Can I get more {type}?",
   "REPLUGGED_STORE_PAGINATOR": "You are on page of {current} of {total}",
   "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Custom Title Bar",
