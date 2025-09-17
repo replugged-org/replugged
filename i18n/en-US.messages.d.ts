@@ -229,6 +229,19 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_SETTINGS': TypedIntlMessageGetter<{type: any}>,
   /**
+   * Key: `qdaVER`
+   * 
+   * ### Definition
+   * ```text
+   * Open {type} Source
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_ADDON_SOURCE_OPEN': TypedIntlMessageGetter<{type: any}>,
+  /**
    * Key: `WqqBfH`
    * 
    * ### Definition

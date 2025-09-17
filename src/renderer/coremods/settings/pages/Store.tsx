@@ -130,6 +130,17 @@ function StoreAddonCard({
         <>
           {
             <>
+              {manifest.source ? (
+                <Tooltip
+                  text={intl.formatToPlainString(t.REPLUGGED_ADDON_SOURCE_OPEN, {
+                    type: label(type, { caps: "title" }),
+                  })}
+                  className="replugged-addon-icon">
+                  <a href={manifest.source} target="_blank" rel="noopener noreferrer">
+                    <Icons.GitHub />
+                  </a>
+                </Tooltip>
+              ) : null}
               {sourceLink ? (
                 <Tooltip
                   text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {

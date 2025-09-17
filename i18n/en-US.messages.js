@@ -158,6 +158,7 @@ export default defineMessages({
   "REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT": "This is a Replugged feature. It allows you to install plugins or themes straight from chat.\nSimply hit the install button on the embed.",
   "REPLUGGED_ADDON_DELETE": "Delete {type}",
   "REPLUGGED_ADDON_PAGE_OPEN": "Open {type} Page",
+  "REPLUGGED_ADDON_SOURCE_OPEN": "Open {type} Source",
   "REPLUGGED_ADDON_PROFILE_OPEN": "Open {type} Profile",
   "REPLUGGED_ADDON_RELOAD": "Reload {type}",
   "REPLUGGED_ADDON_SETTINGS": "Open {type} Settings",
