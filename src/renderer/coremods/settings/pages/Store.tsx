@@ -208,7 +208,6 @@ export default ({
 
   const fetchAddons = async (abortController: AbortController): Promise<void> => {
     try {
-      if (loading) setLoading(true);
       if (section !== `store`) return;
 
       const res = await RepluggedNative.store.getList(type, page, debouncedSearch, abortController);
@@ -240,8 +239,8 @@ export default ({
   }, [search]);
 
   React.useEffect(() => {
+    if (!loading) setLoading(true);
     const abortController = new AbortController();
-
     void fetchAddons(abortController);
     return () => {
       abortController.abort("Rerender");
@@ -281,7 +280,7 @@ export default ({
           <Loader type={Loader.Type.SPINNING_CIRCLE} style={{ marginTop: "100%" }} />
         )}
       </div>
-      {addons.length && !loading && (
+      {addons.length && (
         <div className="replugged-addon-store-page-notice">
           <Flex justify={Flex.Justify.BETWEEN}>
             <Button
