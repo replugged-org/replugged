@@ -4,14 +4,17 @@ import { writeFile as originalWriteFile } from "original-fs";
 import { join, resolve, sep } from "path";
 import { WEBSITE_URL } from "src/constants";
 import {
-  type CheckResultFailure,
   type CheckResultSuccess,
-  type InstallResultFailure,
   type InstallResultSuccess,
   type InstallerType,
   RepluggedIpcChannels,
+  type ResultFailure,
 } from "src/types";
-import { type AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
+import {
+  type AnyAddonManifest,
+  type AnyAddonManifestOrReplugged,
+  anyAddonOrReplugged,
+} from "src/types/addon";
 import { CONFIG_PATH, CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
 import { promisify } from "util";
@@ -40,7 +43,7 @@ interface ReleaseAsset {
 async function github(
   identifier: string,
   id?: string,
-): Promise<CheckResultSuccess | CheckResultFailure> {
+): Promise<CheckResultSuccess | ResultFailure> {
   const [owner, repo] = identifier.split("/");
   if (!owner || !repo) {
     return {
@@ -106,7 +109,7 @@ async function github(
   };
 }
 
-async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
+async function store(id: string): Promise<CheckResultSuccess | ResultFailure> {
   const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
   const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
@@ -140,7 +143,7 @@ async function store(id: string): Promise<CheckResultSuccess | CheckResultFailur
 
 const handlers: Record<
   string,
-  (identifier: string, id?: string) => Promise<CheckResultSuccess | CheckResultFailure>
+  (identifier: string, id?: string) => Promise<CheckResultSuccess | ResultFailure>
 > = {
   github,
   store,
@@ -150,7 +153,7 @@ export async function getAddonInfo(
   type: string,
   identifier: string,
   id?: string,
-): Promise<CheckResultSuccess | CheckResultFailure> {
+): Promise<CheckResultSuccess | ResultFailure> {
   if (!(type in handlers)) {
     return {
       success: false,
@@ -168,7 +171,7 @@ ipcMain.handle(
     type: string,
     identifier: string,
     id?: string,
-  ): Promise<CheckResultSuccess | CheckResultFailure> => {
+  ): Promise<CheckResultSuccess | ResultFailure> => {
     return getAddonInfo(type, identifier, id);
   },
 );
@@ -190,7 +193,7 @@ export async function installAddon(
   url: string,
   update: boolean,
   version?: string,
-): Promise<InstallResultSuccess | InstallResultFailure> {
+): Promise<InstallResultSuccess | ResultFailure> {
   const query = new URLSearchParams();
   query.set("type", update ? "update" : "install");
   if (version) query.set("version", version);
@@ -275,3 +278,72 @@ export function getRepluggedVersion(): string {
 ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_VERSION, (event) => {
   event.returnValue = getRepluggedVersion();
 });
+
+ipcMain.handle(
+  RepluggedIpcChannels.LIST_ADDONS,
+  async (
+    _,
+    type: "plugins" | "themes",
+    abortController?: AbortController,
+    page = 1,
+    query = "",
+    maxItems = 15,
+  ) => {
+    const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
+    const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
+    const listUrl = `${STORE_BASE_URL}/list/${type}?page=${page}&items=${maxItems}&query=${query}`;
+
+    const res = await fetch(listUrl, { method: "get", signal: abortController?.signal });
+
+    if (!res.ok) {
+      return {
+        success: false,
+        error: "Failed to fetch addon list",
+      };
+    }
+
+    let result;
+    try {
+      const {
+        error,
+        numPages,
+        page,
+        results: list,
+      } = (await res.json()) as
+        | {
+            numPages: number;
+            page: number;
+            results: AnyAddonManifest[];
+            error: never;
+          }
+        | { numPages: never; page: never; results: never; error: string };
+      if (error)
+        return {
+          success: false,
+          error,
+        };
+
+      result = {
+        numPages,
+        page,
+        list: list.map((manifest) => {
+          return {
+            manifest,
+            name: `${manifest.id}.asar`,
+            url: `${STORE_BASE_URL}/${manifest.id}.asar`,
+          };
+        }),
+      };
+    } catch {
+      return {
+        success: false,
+        error: "Failed to parse list",
+      };
+    }
+
+    return {
+      success: true,
+      ...result,
+    };
+  },
+);

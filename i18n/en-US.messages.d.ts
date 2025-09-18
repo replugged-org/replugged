@@ -1885,7 +1885,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Replugged Addon Store is now Build in app for ease of use.
+   * Replugged Addon Store is now built in app for ease of use.
    * ```
    * 
    * ### Problems

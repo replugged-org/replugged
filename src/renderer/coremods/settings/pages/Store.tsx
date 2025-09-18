@@ -13,28 +13,26 @@ import type {
 } from "src/types";
 import Icons from "../icons";
 import { install } from "../../installer/util";
-import { AddonType, Card, generalSettings, getManager, getSourceLink, label } from "./index";
+import { AddonType, Card, getManager, getSourceLink, label } from "./index";
 import { viewImage } from "src/renderer/util";
 
 const logger = Logger.coremod("AddonStore");
 
 import "./Store.css";
 
-function getAddonUrl(id: string): string {
-  const apiUrl = generalSettings.get("apiUrl");
-  return `${apiUrl}/api/v1/store/${id}.asar`;
-}
-
 function StoreAddonCard({
   manifest,
   type,
   refreshList,
   list,
+  name,
+  url,
 }: {
+  name: string;
+  url: string;
   manifest: ThemeManifest | PluginManifest;
   list: Array<RepluggedPlugin | RepluggedTheme>;
   type: AddonType;
-
   refreshList: () => void;
 }): React.ReactElement {
   const isInstalled = list.some((c) => c.manifest.id === manifest.id);
@@ -86,8 +84,8 @@ function StoreAddonCard({
     await install({
       success: true,
       manifest,
-      url: getAddonUrl(manifest.updater!.id),
-      name: manifest.name,
+      url,
+      name,
     });
     setIsInstalling(false);
     refreshList();
@@ -191,37 +189,30 @@ export default ({
   list: Array<RepluggedPlugin | RepluggedTheme>;
   refreshList: () => void;
 }): React.ReactElement => {
-  const apiUrl = generalSettings.get("apiUrl");
   const [search, setSearch] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = React.useState(search);
   const [page, setPage] = React.useState(1);
   const [totalPage, setTotalPage] = React.useState(1);
-  const [addons, setAddons] = React.useState<AnyAddonManifest[]>([]);
+  const [addons, setAddons] = React.useState<
+    Array<{ manifest: AnyAddonManifest; url: string; name: string }>
+  >([]);
 
   const fetchAddons = async (abortController: AbortController): Promise<void> => {
     try {
       if (section !== `store`) return;
-      const {
-        numPages,
-        page: newPage,
-        results,
-      } = (await fetch(
-        `${apiUrl}/api/store/list/${type}?page=${page}&items=15&query=${debouncedSearch}`,
-        {
-          method: "get",
-          signal: abortController.signal,
-        },
-      ).then((res) => res.json())) as {
-        numPages?: number;
-        page?: number;
-        results?: AnyAddonManifest[];
-      };
 
-      setTotalPage(numPages || 1);
+      const res = await RepluggedNative.store.getList(type, page, debouncedSearch, abortController);
+      if (!res.success) {
+        logger.error(`Store Failed to get list for ${type}s: ${res.error}`);
+        return;
+      }
+      const { numPages, page: newPage, list } = res;
+
+      setTotalPage(res.numPages || 1);
       if ((numPages || 0) < page || newPage !== page) {
         setPage(newPage || 1);
       }
-      setAddons(results ?? []);
+      setAddons(list);
     } catch (err) {
       logger.error("Failed while fetching addon list", err);
     }
@@ -261,11 +252,13 @@ export default ({
       <Divider style={{ margin: "20px 0px" }} />
       <div className="replugged-addon-store-cards" key={debouncedSearch}>
         {addons.length ? (
-          addons.map((manifest) => {
+          addons.map(({ manifest, name, url }) => {
             return (
               <StoreAddonCard
-                key={manifest.id}
+                key={name}
                 manifest={manifest}
+                name={name}
+                url={url}
                 type={type}
                 list={list}
                 refreshList={refreshList}
