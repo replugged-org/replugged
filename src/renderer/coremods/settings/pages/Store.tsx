@@ -112,7 +112,11 @@ function StoreAddonCard({
             look={isUninstalling ? Button.Looks.OUTLINED : Button.Looks.FILLED}
             color={Button.Colors.RED}
             onClick={() => uninstallClick()}>
-            {isUninstalling ? <Loader /> : intl.string(discordT.APPLICATION_CONTEXT_MENU_UNINSTALL)}
+            {isUninstalling ? (
+              <Loader type={Loader.Type.LOW_MOTION} />
+            ) : (
+              intl.string(discordT.APPLICATION_CONTEXT_MENU_UNINSTALL)
+            )}
           </Button>
         ) : (
           <Button
@@ -120,7 +124,11 @@ function StoreAddonCard({
             look={isInstalling ? Button.Looks.OUTLINED : Button.Looks.FILLED}
             color={Button.Colors.BRAND}
             onClick={() => installClick()}>
-            {isInstalling ? <Loader /> : intl.string(t.REPLUGGED_CONFIRM_INSTALL)}
+            {isInstalling ? (
+              <Loader type={Loader.Type.LOW_MOTION} />
+            ) : (
+              intl.string(t.REPLUGGED_CONFIRM_INSTALL)
+            )}
           </Button>
         )
       }
@@ -189,6 +197,7 @@ export default ({
   list: Array<RepluggedPlugin | RepluggedTheme>;
   refreshList: () => void;
 }): React.ReactElement => {
+  const [loading, setLoading] = React.useState(true);
   const [search, setSearch] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = React.useState(search);
   const [page, setPage] = React.useState(1);
@@ -199,6 +208,7 @@ export default ({
 
   const fetchAddons = async (abortController: AbortController): Promise<void> => {
     try {
+      if (loading) setLoading(true);
       if (section !== `store`) return;
 
       const res = await RepluggedNative.store.getList(type, page, debouncedSearch, abortController);
@@ -213,6 +223,7 @@ export default ({
         setPage(newPage || 1);
       }
       setAddons(list);
+      setLoading(false);
     } catch (err) {
       logger.error("Failed while fetching addon list", err);
     }
@@ -230,6 +241,7 @@ export default ({
 
   React.useEffect(() => {
     const abortController = new AbortController();
+
     void fetchAddons(abortController);
     return () => {
       abortController.abort("Rerender");
@@ -251,7 +263,7 @@ export default ({
       </div>
       <Divider style={{ margin: "20px 0px" }} />
       <div className="replugged-addon-store-cards" key={debouncedSearch}>
-        {addons.length ? (
+        {addons.length && !loading ? (
           addons.map(({ manifest, name, url }) => {
             return (
               <StoreAddonCard
@@ -266,10 +278,10 @@ export default ({
             );
           })
         ) : (
-          <></>
+          <Loader type={Loader.Type.SPINNING_CIRCLE} style={{ marginTop: "100%" }} />
         )}
       </div>
-      {addons.length && (
+      {addons.length && !loading && (
         <div className="replugged-addon-store-page-notice">
           <Flex justify={Flex.Justify.BETWEEN}>
             <Button
