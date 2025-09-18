@@ -18,11 +18,12 @@ import { Logger, plugins, themes, webpack } from "@replugged";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
-import type { AnyAddonManifest, Author } from "src/types/addon";
+import type { AnyAddonManifest, Author, PluginManifest, ThemeManifest } from "src/types/addon";
 import Icons from "../icons";
 import { generalSettings } from "./General";
 
 import "./Addons.css";
+import Store from "./Store";
 
 interface Breadcrumb {
   id: string;
@@ -96,7 +97,7 @@ function getRepluggedNative(
   throw new Error("Invalid addon type");
 }
 
-function getManager(type: AddonType): typeof plugins | typeof themes {
+export function getManager(type: AddonType): typeof plugins | typeof themes {
   if (type === AddonType.Plugin) {
     return plugins;
   }
@@ -127,8 +128,8 @@ function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string,
   throw new Error("Invalid addon type");
 }
 
-function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
-  return [addon.manifest.author].flat();
+function getAuthors(manifest: PluginManifest | ThemeManifest): Author[] {
+  return [manifest.author].flat();
 }
 
 export function getSourceLink(addon: AnyAddonManifest): string | undefined {
@@ -230,8 +231,12 @@ function AuthorContextMenu({
   );
 }
 
-function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactNode {
-  const els = getAuthors(addon).map((author) => (
+export function Authors({
+  manifest,
+}: {
+  manifest: PluginManifest | ThemeManifest;
+}): React.ReactNode {
+  const els = getAuthors(manifest).map((author) => (
     <a
       key={JSON.stringify(author)}
       onClick={() => author.discordID && openUserProfileModal({ userId: author.discordID })}
@@ -252,7 +257,53 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
   });
 }
 
-function Card({
+export function Card({
+  manifest,
+  notice,
+  topControls,
+  bottomControls,
+}: {
+  manifest: PluginManifest | ThemeManifest;
+  notice?: React.ReactElement | null;
+  topControls: React.ReactElement;
+  bottomControls: React.ReactElement;
+}): React.ReactElement {
+  return (
+    <div className="replugged-addon-card">
+      <Flex
+        align={Flex.Align.CENTER}
+        justify={Flex.Justify.BETWEEN}
+        style={{ marginBottom: "5px" }}>
+        <span>
+          <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
+            <Text variant="heading-md/bold" tag="span" color="header-primary">
+              {manifest.name}
+            </Text>
+            <span>
+              {" "}
+              <b>v{manifest.version}</b>
+            </span>
+          </Text>
+        </span>
+        {topControls}
+      </Flex>
+      <Text.Normal style={{ margin: "5px 0" }} markdown allowMarkdownLinks>
+        {manifest.description}
+      </Text.Normal>
+      {notice}
+      <Flex style={{ marginTop: "10px" }}>
+        <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
+          <Authors manifest={manifest} />
+        </Text>
+        <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
+          {bottomControls}
+        </Flex>
+      </Flex>
+    </div>
+  );
+}
+
+function AddonCard({
   type,
   addon,
   disabled,
@@ -274,38 +325,22 @@ function Card({
   const sourceLink = getSourceLink(addon.manifest);
 
   return (
-    <div className="replugged-addon-card">
-      <Flex align={Flex.Align.START} justify={Flex.Justify.BETWEEN} style={{ marginBottom: "5px" }}>
-        <span>
-          <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-            <Text variant="heading-md/bold" tag="span" color="header-primary">
-              {addon.manifest.name}
-            </Text>
-            <span>
-              {" "}
-              <b>v{addon.manifest.version}</b>
-            </span>
-          </Text>
-        </span>
-        <Switch checked={!disabled} onChange={toggleDisabled} />
-      </Flex>
-      <Text.Normal style={{ margin: "5px 0" }} markdown allowMarkdownLinks>
-        {addon.manifest.description}
-      </Text.Normal>
-      {addon.manifest.updater?.type !== "store" ? (
-        <div style={{ marginTop: "8px" }}>
-          <Notice messageType={Notice.Types.ERROR}>
-            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-              type: label(type),
-            })}
-          </Notice>
-        </div>
-      ) : null}
-      <Flex style={{ marginTop: "10px" }}>
-        <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-          <Authors addon={addon} />
-        </Text>
-        <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
+    <Card
+      manifest={addon.manifest}
+      topControls={<Switch checked={!disabled} onChange={toggleDisabled} />}
+      notice={
+        addon.manifest.updater?.type !== "store" ? (
+          <div style={{ marginTop: "8px" }}>
+            <Notice messageType={Notice.Types.ERROR}>
+              {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+                type: label(type),
+              })}
+            </Notice>
+          </div>
+        ) : null
+      }
+      bottomControls={
+        <>
           {sourceLink ? (
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
@@ -348,9 +383,9 @@ function Card({
               </a>
             </Tooltip>
           )}
-        </Flex>
-      </Flex>
-    </div>
+        </>
+      }
+    />
   );
 }
 
@@ -372,7 +407,7 @@ function Cards({
   return (
     <div className="replugged-addon-cards">
       {list.map((addon) => (
-        <Card
+        <AddonCard
           type={type}
           addon={addon}
           key={JSON.stringify(addon.manifest)}
@@ -539,13 +574,15 @@ export const Addons = (type: AddonType): React.ReactElement => {
                     count: unfilteredCount,
                   }),
                 },
-                {
-                  id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
-                  label:
-                    list?.filter?.(
-                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
-                    )?.[0]?.manifest.name || "",
-                },
+                section === "store"
+                  ? { id: `rp_${type}_store`, label: intl.string(t.REPLUGGED_STORE) }
+                  : {
+                      id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
+                      label:
+                        list?.filter?.(
+                          (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
+                        )?.[0]?.manifest.name || "",
+                    },
               ]}
               onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
               renderCustomBreadcrumb={(breadcrumb, active) => (
@@ -613,7 +650,36 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Flex>
         )}
       </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
+      {section === `rp_${type}` && (
+        <>
+          <Flex
+            justify={Flex.Justify.BETWEEN}
+            align={Flex.Align.CENTER}
+            className="replugged-addon-store-banner">
+            <Flex direction={Flex.Direction.VERTICAL} style={{ gap: "4px", maxWidth: "400px" }}>
+              <Text.H2>
+                {intl.formatToPlainString(t.REPLUGGED_STORE_WHERE_TO_FIND_ADDONS, {
+                  type: label(type, { plural: true }),
+                })}
+              </Text.H2>
+              <Text.Normal>
+                {intl.string(t.REPLUGGED_STORE_INCLUDED_IN_APP)}
+                <br />
+                <a onClick={() => open(`https://replugged.dev/store/${type}`)}>
+                  {intl.string(discordT.MASKED_LINK_ALERT_V2_CONFIRM_WEBSITE)}
+                </a>
+              </Text.Normal>
+            </Flex>
+            <Button
+              look={Button.Looks.OUTLINED}
+              color={Button.Colors.PRIMARY}
+              onClick={() => setSection(`store`)}>
+              {intl.string(discordT.TAKE_ME_THERE)}
+            </Button>
+          </Flex>
+          <Divider style={{ margin: "20px 0px" }} />
+        </>
+      )}
       {section === `rp_${type}` && unfilteredCount ? (
         <div style={{ marginBottom: "20px" }}>
           <TextInput
@@ -651,6 +717,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 })}
           </Text>
         ) : null
+      ) : section === "store" ? (
+        <Store type={type} section={section} list={list!} refreshList={refreshList} />
       ) : (
         (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length), type)) && (
           <ErrorBoundary>

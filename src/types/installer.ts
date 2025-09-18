@@ -10,7 +10,7 @@ export interface CheckResultSuccess {
   webUrl?: string;
 }
 
-export interface CheckResultFailure {
+export interface ResultFailure {
   success: false;
   error: string | null;
 }
@@ -19,7 +19,13 @@ export interface InstallResultSuccess {
   success: true;
 }
 
-export interface InstallResultFailure {
-  success: false;
-  error: string | null;
+export interface ListResultSuccess {
+  success: true;
+  numPages: number;
+  page: number;
+  list: Array<{
+    manifest: AnyAddonManifest;
+    name: string;
+    url: string;
+  }>;
 }

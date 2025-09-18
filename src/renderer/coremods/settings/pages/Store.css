@@ -1,0 +1,27 @@
+.replugged-addon-store-page-notice {
+  border: 1px solid var(--border-normal);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  z-index: 999;
+  background: var(--background-base-lowest);
+  position: fixed;
+  bottom: 4.5em;
+  align-items: center;
+  max-width: 660px;
+  width: 100%;
+  opacity: 0.75;
+}
+
+.replugged-addon-store-page-notice:hover {
+  opacity: 1;
+}
+
+.replugged-addon-store-page-notice div {
+  align-items: inherit;
+}
+
+.replugged-addon-store-cards {
+  display: grid;
+  gap: var(--space-md);
+  margin-bottom: 5em;
+}

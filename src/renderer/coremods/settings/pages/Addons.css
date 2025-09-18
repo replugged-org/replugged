@@ -46,3 +46,39 @@
 .replugged-addon-header-buttons {
   gap: 5px;
 }
+
+.replugged-addon-store-banner {
+  border: 1px solid var(--border-subtle);
+  width: 100%;
+  padding: var(--space-16);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)),
+    url("https://discord.com/assets/63ac51b66622ae3d.svg") center 75% / 90% no-repeat,
+    linear-gradient(305deg, rgba(95, 0, 30, 0.32), transparent);
+  height: 150px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.theme-light .replugged-addon-store-banner {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2)),
+    linear-gradient(305deg, rgb(255 150 200 / 32%), transparent);
+  position: relative;
+  overflow: hidden;
+}
+.theme-light .replugged-addon-store-banner * {
+  z-index: 1;
+}
+
+.theme-light .replugged-addon-store-banner:before {
+  content: "";
+  position: absolute;
+  background: url(https://discord.com/assets/63ac51b66622ae3d.svg) center 125% / 95%;
+  pointer-events: none;
+  height: 100%;
+  width: 100%;
+  filter: brightness(0.8);
+  z-index: 0;
+}

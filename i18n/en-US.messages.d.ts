@@ -229,6 +229,19 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_SETTINGS': TypedIntlMessageGetter<{type: any}>,
   /**
+   * Key: `qdaVER`
+   * 
+   * ### Definition
+   * ```text
+   * Open {type} Source
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_ADDON_SOURCE_OPEN': TypedIntlMessageGetter<{type: any}>,
+  /**
    * Key: `WqqBfH`
    * 
    * ### Definition
@@ -1309,6 +1322,19 @@ export declare const messages: {
    */
   'REPLUGGED_SEARCH_FOR_ADDON': TypedIntlMessageGetter<{type: any}>,
   /**
+   * Key: `g2lGYW`
+   * 
+   * ### Definition
+   * ```text
+   * Search for a {type} on store
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SEARCH_FOR_ADDON_STORE': TypedIntlMessageGetter<{type: any}>,
+  /**
    * Key: `wxHqIi`
    * 
    * ### Definition
@@ -1854,6 +1880,45 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `ru`, `sv-SE`, `vi`, `zh-CN`
    */
   'REPLUGGED_STORE': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `W+c1ER`
+   * 
+   * ### Definition
+   * ```text
+   * Replugged Addon Store is now built in app for ease of use.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_STORE_INCLUDED_IN_APP': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `JjGds7`
+   * 
+   * ### Definition
+   * ```text
+   * You are on page of {current} of {total}
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_STORE_PAGINATOR': TypedIntlMessageGetter<{current: any, total: any}>,
+  /**
+   * Key: `vz3Ak5`
+   * 
+   * ### Definition
+   * ```text
+   * Where Can I get more {type}?
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_STORE_WHERE_TO_FIND_ADDONS': TypedIntlMessageGetter<{type: any}>,
   /**
    * Key: `kZXj5O`
    * 
