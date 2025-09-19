@@ -129,7 +129,6 @@
   "REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED": "{name} konnte nicht deinstalliert werden",
   "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "{name} deinstalliert",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS": "Fehlendes {type} geladen",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Benutzerprofil konnte nicht abgerufen werden",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Formatierung des Codes fehlgeschlagen",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Code formatiert",
   "REPLUGGED_SETTINGS_ERROR_SUB_HEADER": "Einzelheiten befinden sich in der Konsole.",

@@ -1,28 +1,20 @@
 import type { Filter, LazyCallback, LazyListener, RawModule, WaitForOptions } from "src/types";
-
 import { getExports, getModule } from "./get-modules";
 
 /**
- * Listeners that will be checked when each module is initialized
+ * Listeners that will be checked when each module is initialized.
+ * @internal
  */
 export const listeners = new Set<LazyListener>();
 
-/** @hidden */
 function onModule<T>(filter: Filter, callback: LazyCallback<T>, raw?: false): () => void;
-/** @hidden */
 function onModule<T>(filter: Filter, callback: LazyCallback<RawModule<T>>, raw?: true): () => void;
 function onModule<T>(
   filter: Filter,
   callback: LazyCallback<T> | LazyCallback<RawModule<T>>,
   raw?: boolean,
 ): () => void;
-/**
- * Handle a module being loaded and perform an action if needed.
- * @param filter Filter to check the module against
- * @param callback Action to take if the filter returns true
- * @param raw Whether to pass the raw module to the callback
- * @returns Function to unregister the listener this creates
- */
+
 function onModule<T>(
   filter: Filter,
   callback: LazyCallback<T> | LazyCallback<RawModule<T>>,
@@ -64,18 +56,20 @@ export async function waitForModule<T>(
   filter: Filter,
   options?: WaitForOptions,
 ): Promise<T | RawModule<T>>;
+
 /**
- * Wait for a module that matches the given filter
- * @param filter Filter function
- * @param options Options
- * @param options.raw Return the raw module instead of the exports
- * @param options.timeout Timeout in milliseconds
+ * Waits for a module to be available that matches the specified filter.
  *
+ * This function checks if the module already exists and returns it if found.
+ * Otherwise, it waits for the module to be loaded and resolves with the module once it becomes available.
+ * @template T The type of the module to wait for.
+ * @param filter A filter function to identify the desired module.
+ * @param options Options for waiting.
+ * @param options.raw Whether to return the raw module instead of its exports.
+ * @param options.timeout The maximum time to wait for the module (in milliseconds).
  * @see {@link filters}
- *
- * @remarks
- * Some modules may not be available immediately when Discord starts and will take up to a few seconds.
- * This is useful to ensure that the module is available before using it.
+ * @returns A promise that resolves with the module or rejects if the timeout is reached.
+ * @throws {Error} Will throw an error if the timeout is reached before the module is available.
  */
 export async function waitForModule<T>(
   filter: Filter,

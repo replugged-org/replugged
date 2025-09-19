@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { Channel, Message, MessageAttachment, User } from "discord-types/general";
-import { virtualMerge } from "src/renderer/util";
+import { getBoundMethods, virtualMerge } from "src/renderer/util";
 import type { APIEmbed } from "src/types";
-import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
+import {
+  filters,
+  getFunctionBySource,
+  waitForModule,
+  waitForProps,
+  waitForStore,
+} from "../webpack";
+import type { Store } from "./flux";
 
 export enum ActivityActionTypes {
   JOIN = 1,
@@ -340,8 +347,6 @@ export interface MessageStore {
   whenReady: (channelId: string, callback: () => void) => void;
 }
 
-export type PartialMessageStore = Pick<MessageStore, "getMessage" | "getMessages">;
-
 export interface MessageActions {
   clearChannel: (channelId: string) => void;
   crosspostMessage: (channelId: string, messageId: string) => Promise<unknown | void>;
@@ -492,7 +497,12 @@ interface MessageUtils {
   userRecordToServer: (user: User) => UserServer;
 }
 
-const MessageStore = await waitForProps<MessageStore>("getMessage", "getMessages");
+const MessageActionCreators = await waitForProps<MessageActions>(
+  "sendMessage",
+  "editMessage",
+  "deleteMessage",
+);
+const MessageStore = await waitForStore<MessageStore & Store>("MessageStore");
 
 const MessageUtilsMod = await waitForModule(filters.bySource('username:"Clyde"'));
 const MessageUtils = {
@@ -501,13 +511,10 @@ const MessageUtils = {
   userRecordToServer: getFunctionBySource(MessageUtilsMod, "global_name:"),
 } as MessageUtils;
 
-export type Messages = PartialMessageStore & MessageActions & MessageUtils;
+export type Messages = MessageActions & MessageStore & MessageUtils;
 
 export default virtualMerge(
-  await waitForProps<MessageActions>("sendMessage", "editMessage", "deleteMessage"),
-  {
-    getMessage: MessageStore.getMessage,
-    getMessages: MessageStore.getMessages,
-  },
+  MessageActionCreators,
+  getBoundMethods(MessageStore),
   MessageUtils,
-);
+) as Messages;

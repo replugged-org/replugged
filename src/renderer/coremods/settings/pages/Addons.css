@@ -4,10 +4,10 @@
 }
 
 .replugged-addon-card {
-  background-color: var(--bg-base-secondary);
+  background-color: var(--background-base-lower);
   border: 1px solid var(--border-subtle);
   width: 100%;
-  padding: var(--spacing-16);
+  padding: var(--space-16);
   border-radius: var(--radius-sm);
 }
 
@@ -23,10 +23,6 @@
 
 .replugged-addon-icon-md svg {
   height: 1.75ch;
-}
-
-.replugged-addon-icon-author svg {
-  height: 1.5ch;
 }
 
 .replugged-addon-icon:hover svg {
@@ -45,4 +41,8 @@
 }
 .replugged-addon-breadcrumbsInactive:hover {
   color: var(--header-primary);
+}
+
+.replugged-addon-header-buttons {
+  gap: 5px;
 }

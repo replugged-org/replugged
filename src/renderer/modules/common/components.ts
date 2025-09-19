@@ -2,7 +2,6 @@ import type { LoaderType } from "@components";
 import type { ClickableCompType } from "@components/Clickable";
 import type { NoticeType } from "@components/Notice";
 import type { OriginalTextType } from "@components/Text";
-import type { ButtonType } from "../components/ButtonItem";
 import type { CheckboxType } from "../components/CheckboxItem";
 import type { ContextMenuType } from "../components/ContextMenu";
 import type { ColorPickerType } from "../components/ColorPickerItem";
@@ -16,7 +15,6 @@ import type { SelectCompType } from "../components/SelectItem";
 import type { SliderCompType } from "../components/SliderItem";
 import type { SwitchItemType, SwitchType } from "../components/SwitchItem";
 import type { TextAreaType } from "../components/TextArea";
-import type { TextInputType } from "../components/TextInput";
 import type { OriginalTooltipType } from "../components/Tooltip";
 import { waitForProps } from "../webpack";
 import type { CreateToast, ShowToast } from "./toast";
@@ -28,7 +26,6 @@ export type DiscordComponents = {
   Text: OriginalTextType;
 } & Record<
   string,
-  | ButtonType
   | CheckboxType
   | ClickableCompType
   | ColorPickerType
@@ -57,7 +54,6 @@ export type DiscordComponents = {
   | LoaderType
   | SwitchType
   | TextAreaType
-  | TextInputType
   | OriginalTooltipType
   | unknown
 >;
