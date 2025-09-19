@@ -239,5 +239,12 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS": "Enable Discord Internal DevTools",
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**.",
   "REPLUGGED_SETTINGS_QUICKCSS_ENABLE": "Enable Quick CSS",
-  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Apply custom styles to Discord instantly. Change colors, layout, and appearance in real time without installing themes."
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Apply custom styles to Discord instantly. Change colors, layout, and appearance in real time without installing themes.",
+  "REPLUGGED_SOFT_CRASH_SAFE_RELOAD": "Safe Mode Reload",
+  "REPLUGGED_SOFT_CRASH_RELOAD_REQUIRED": "Reload might be required to apply changes!",
+  "REPLUGGED_SOFT_CRASH_ERROR_STACK": "Error Stack",
+  "REPLUGGED_SOFT_CRASH_SUSPECTED_PLUGINS": "Suspected Plugins ({count})",
+  "REPLUGGED_SOFT_CRASH_TRY_RECOVERY": "Try Recovery",
+  "REPLUGGED_SOFT_CRASH_DETAILS": "Crash Details",
+  "REPLUGGED_SAFE_MODE_ACTIVE": "Replugged is currently started in safe mode, reload to disable it.",
 });

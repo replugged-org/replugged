@@ -1296,6 +1296,19 @@ export declare const messages: {
    */
   'REPLUGGED_QUICKCSS_FOLDER_OPEN': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `jrgWTU`
+   * 
+   * ### Definition
+   * ```text
+   * Replugged is currently started in safe mode, reload to disable it.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SAFE_MODE_ACTIVE': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `e5G3RE`
    * 
    * ### Definition
@@ -1841,6 +1854,84 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_SNIPPET_LINE2': TypedIntlMessageGetter<{authorId: any, authorTag: any}>,
+  /**
+   * Key: `hu6sMD`
+   * 
+   * ### Definition
+   * ```text
+   * Crash Details
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SOFT_CRASH_DETAILS': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `Z8ZhHR`
+   * 
+   * ### Definition
+   * ```text
+   * Error Stack
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SOFT_CRASH_ERROR_STACK': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `/v876O`
+   * 
+   * ### Definition
+   * ```text
+   * Reload might be required to apply changes!
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SOFT_CRASH_RELOAD_REQUIRED': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `JJwiQE`
+   * 
+   * ### Definition
+   * ```text
+   * Safe Mode Reload
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SOFT_CRASH_SAFE_RELOAD': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `vzwC9v`
+   * 
+   * ### Definition
+   * ```text
+   * Suspected Plugins ({count})
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SOFT_CRASH_SUSPECTED_PLUGINS': TypedIntlMessageGetter<{count: any}>,
+  /**
+   * Key: `SwaZ8/`
+   * 
+   * ### Definition
+   * ```text
+   * Try Recovery
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SOFT_CRASH_TRY_RECOVERY': TypedIntlMessageGetter<{}>,
   /**
    * Key: `haZx5+`
    * 

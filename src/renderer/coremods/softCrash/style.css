@@ -1,0 +1,76 @@
+.replugged-crashDetails-header {
+  margin-left: 5px;
+  margin-bottom: 10px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: none !important;
+}
+
+.replugged-crashDetails-backdrop div:has(> .replugged-crashDetails-modal) {
+  z-index: 10;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.replugged-crashDetails-modal {
+  transform: scale(1) !important;
+  opacity: 1 !important;
+  max-height: 50em;
+}
+
+.replugged-crashDetails-backdrop {
+  padding-top: var(--space-24);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  padding-bottom: var(--space-24);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 9;
+}
+
+.replugged-crash-details-stack {
+  background-color: var(--background-base-lower);
+  color: var(--text-default);
+  border-radius: 5px;
+  border: 1px solid var(--background-base-lowest);
+  margin: 10px 0px;
+  padding: 12px;
+  user-select: text;
+  white-space: pre-wrap;
+  min-height: 10.5em;
+}
+
+.replugged-crashDetails-footer {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.replugged-crash-reloadButton {
+  width: auto !important;
+  align-items: center;
+  margin-left: auto;
+}
+
+.replugged-crash-reloadButton div {
+  align-items: inherit;
+}
+
+.replugged-crashDetails-content {
+  margin-top: 10px;
+}
