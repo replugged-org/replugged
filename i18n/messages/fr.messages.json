@@ -130,7 +130,7 @@
   "REPLUGGED_TOAST_ADDON_TOGGLE_FAILED": "Impossible de basculer {name}",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED": "Échec du chargement du {type} manquant",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS": "{type} manquant chargé",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Échec de la récupération du profil utilisateur",
+  "": "Échec de la récupération du profil utilisateur",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Impossible de formater le code",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Code formaté",
   "REPLUGGED_TOAST_QUICKCSS_RELOAD": "CSS Rapide rechargé",

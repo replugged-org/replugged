@@ -59,6 +59,7 @@ export default tseslint.config(
       "no-useless-call": "warn",
       "no-useless-computed-key": "warn",
       "no-useless-concat": "warn",
+      "no-useless-escape": ["error", { allowRegexCharacters: ["i"] }],
       "no-useless-rename": "warn",
       "no-useless-return": "warn",
       radix: "error",

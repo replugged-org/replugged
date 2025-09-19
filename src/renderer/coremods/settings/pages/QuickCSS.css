@@ -5,7 +5,7 @@
 }
 #replugged-quickcss-wrapper .cm-editor {
   max-height: calc(100% - 20px);
-  background: var(--bg-overlay-2, var(--background-secondary));
+  background: var(--bg-overlay-2, var(--background-base-lower));
   border: 1px solid var(--background-secondary-alt);
   border-radius: 4px;
   outline: none !important;
@@ -143,12 +143,12 @@
   color: var(--interactive-normal);
 }
 #replugged-quickcss-wrapper .cm-panels {
-  background: var(--bg-overlay-2, var(--background-secondary));
+  background: var(--bg-overlay-2, var(--background-base-lower));
   border-top: 1px solid var(--background-secondary-alt);
 }
 #replugged-quickcss-wrapper .cm-textfield,
 #replugged-quickcss-wrapper .cm-button {
-  background-color: var(--background-tertiary);
+  background-color: var(--background-base-lowest);
   background-image: unset;
   border-radius: 4px;
 }
