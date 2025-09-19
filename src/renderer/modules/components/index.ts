@@ -44,9 +44,6 @@ importTimeout("Breadcrumbs", import("./Breadcrumbs"), (mod) => (Breadcrumbs = mo
 export let Button: VoidDesign.Button;
 importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
 
-export let Checkbox: VoidDesign.Checkbox;
-importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
-
 export let Clickable: typeof Design.Clickable;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
@@ -92,7 +89,11 @@ export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
 importTimeout("ButtonItem", import("./ButtonItem"), (mod) => (ButtonItem = mod.ButtonItem));
 
-import type { CheckboxItemType } from "./CheckboxItem";
+import type { CheckboxItemType, CustomCheckboxType } from "./CheckboxItem";
+export type { CustomCheckboxType };
+export let Checkbox: CustomCheckboxType;
+importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
+
 export type { CheckboxItemType };
 export let CheckboxItem: CheckboxItemType;
 importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
