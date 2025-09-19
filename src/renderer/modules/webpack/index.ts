@@ -1,3 +1,5 @@
+export { unmangleExports } from "./unmangle";
+
 export { waitForModule } from "./lazy";
 
 export { getComponentBySource, getFunctionBySource, getFunctionKeyBySource } from "./inner-search";
