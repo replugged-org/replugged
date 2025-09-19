@@ -81,8 +81,11 @@ function DetailsModalContent({
             const plugin = plugins.plugins.get(c);
             return (
               <ErrorBoundary key={`${c}-${disabled.includes(c)}`}>
-                <Flex justify={Flex.Justify.BETWEEN} style={{ margin: "10px 0px" }}>
-                  <Text.Eyebrow>{plugin?.manifest.name}</Text.Eyebrow>
+                <Flex
+                  justify={Flex.Justify.BETWEEN}
+                  align={Flex.Align.CENTER}
+                  style={{ margin: "10px 0px" }}>
+                  <Text.Eyebrow style={{ fontSize: "16px" }}>{plugin?.manifest.name}</Text.Eyebrow>
                   <Button
                     disabled={disabled.includes(c)}
                     onClick={() => {
