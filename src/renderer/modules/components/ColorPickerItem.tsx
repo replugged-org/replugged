@@ -1,6 +1,7 @@
 import type React from "react";
 import { Flex, FormItem } from ".";
 import components from "../common/components";
+import { getComponentBySource } from "@webpack";
 
 interface ColorPickerProps {
   value: string | number;
@@ -21,9 +22,7 @@ interface ColorPickerProps {
 
 export type ColorPickerType = React.MemoExoticComponent<React.FC<ColorPickerProps>>;
 
-export const ColorPicker = Object.values(components).find((x) =>
-  (x as ColorPickerType)?.type?.toString()?.includes(".customColorPickerInputContainer"),
-) as ColorPickerType;
+export const ColorPicker = getComponentBySource<ColorPickerType>(components, ".customColorPicker")!;
 
 interface ColorPickerItemProps extends ColorPickerProps {
   eagerUpdate?: never;
