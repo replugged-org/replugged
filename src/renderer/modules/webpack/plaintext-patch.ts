@@ -15,7 +15,7 @@ export const PatchIds: Record<string, string[] | undefined> = {};
 /**
  * Parses a given input and, if it is a regular expression, replaces all occurrences.
  * of the custom `\i` pattern with a regex pattern that matches valid identifier names.
- * @param input The input to parse.atchedBy
+ * @param input The input to parse.
  * @returns A new `RegExp` with the `\i` pattern replaced, or the original input if it is not a `RegExp`
  */
 export function parseRegex<T>(input: RegExp | T): RegExp | T {
