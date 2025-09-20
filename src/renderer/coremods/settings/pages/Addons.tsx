@@ -129,7 +129,7 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
             }
           }}
           isSelected={(val) => settings.chosenPreset === val}>
-          Choose Theme Preset
+          {intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
         </SelectItem>
       );
     }
