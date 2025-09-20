@@ -6,11 +6,7 @@ interface RPCData {
 }
 
 interface RPCCommand {
-  scope?:
-    | string
-    | {
-        $any: string[];
-      };
+  scope?: string | { $any: string[] };
   handler: (
     data: RPCData,
   ) =>
@@ -24,34 +20,28 @@ type Commands = Record<string, RPCCommand>;
 
 class RpcAPI {
   #commandMap = new Map<string, RPCCommand>();
-  /**
-   * internal
-   * @param name Command name
-   * @returns Boolean
-   */
+
   #checkName(name: string): void {
     if (!name.startsWith("REPLUGGED_"))
       throw new Error("RPC command name must start with REPLUGGED_");
   }
 
   /**
-   * Function to Register RPC Commands
-   * @param name Command name
-   * @param command Command handler
-   * @returns Unregister function
+   * Register an RPC command.
+   * @param name The command name.
+   * @param command The command definition.
+   * @returns Unregister function.
    */
   public registerRPCCommand(name: string, command: RPCCommand): () => void {
     this.#checkName(name);
     if (this.#commandMap.has(name)) throw new Error("RPC command already exists");
     this.#commandMap.set(name, command);
-    return () => {
-      this.#commandMap.delete(name);
-    };
+    return () => this.#commandMap.delete(name);
   }
 
   /**
-   * Function to Unregister RPC Commands
-   * @param name Command name
+   * Unregister an RPC command.
+   * @param name The command name.
    */
   public unregisterRPCCommand(name: string): void {
     this.#checkName(name);
@@ -59,9 +49,10 @@ class RpcAPI {
   }
 
   /**
-   * internal
-   * @param commands Original Discord's commands object
-   * @returns RPC Commands Proxy
+   * Wrap Discord's commands object with Replugged RPC commands.
+   * @param commands The original commands object.
+   * @returns The wrapped commands object.
+   * @internal
    */
   public _getCommands(commands: Commands): Commands {
     return new Proxy(commands, {
@@ -84,12 +75,14 @@ class RpcAPI {
         if (prop in target) {
           return Object.getOwnPropertyDescriptor(target, prop);
         }
-        return {
-          configurable: true,
-          enumerable: true,
-          writable: false,
-          value: this.#commandMap.get(prop),
-        };
+        if (this.#commandMap.has(prop)) {
+          return {
+            configurable: true,
+            enumerable: true,
+            writable: false,
+            value: this.#commandMap.get(prop),
+          };
+        }
       },
     });
   }
