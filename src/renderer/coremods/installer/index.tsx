@@ -6,7 +6,7 @@ import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import type { ObjectExports } from "src/types";
-import { registerRPCCommand } from "../rpc";
+import rpc from "../../apis/rpc";
 import { generalSettings } from "../settings/pages";
 import AddonEmbed from "./AddonEmbed";
 import { loadCommands } from "./commands";
@@ -35,7 +35,7 @@ if (window.RepluggedNative.getVersion() === "dev") {
 }
 
 function injectRpc(): void {
-  const uninjectInstall = registerRPCCommand("REPLUGGED_INSTALL", {
+  const uninjectInstall = rpc.registerRPCCommand("REPLUGGED_INSTALL", {
     scope: {
       $any: scopes,
     },
@@ -59,7 +59,7 @@ function injectRpc(): void {
     },
   });
 
-  const uninjectList = registerRPCCommand("REPLUGGED_LIST_ADDONS", {
+  const uninjectList = rpc.registerRPCCommand("REPLUGGED_LIST_ADDONS", {
     scope: {
       $any: scopes,
     },
