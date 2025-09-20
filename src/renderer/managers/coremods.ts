@@ -15,6 +15,7 @@ import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import reactErrorDecoderPlaintext from "../coremods/reactErrorDecoder/plaintextPatches";
 import rpcPlaintext from "../coremods/rpc/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
+import softCrashPlaintext from "../coremods/softCrash/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 
 const logger = Logger.api("Coremods");
@@ -38,7 +39,9 @@ export namespace coremods {
   export let noXSSDefenses: Coremod;
   export let reactErrorDecoder: Coremod;
   export let rpc: Coremod;
+  export let safeMode: Coremod;
   export let settings: Coremod;
+  export let softCrash: Coremod;
   export let watcher: Coremod;
   export let welcome: Coremod;
 }
@@ -64,7 +67,9 @@ export async function startAll(): Promise<void> {
   coremods.noTrack = await import("../coremods/noTrack");
   coremods.reactErrorDecoder = await import("../coremods/reactErrorDecoder");
   coremods.rpc = await import("../coremods/rpc");
+  coremods.safeMode = await import("../coremods/safeMode");
   coremods.settings = await import("../coremods/settings");
+  coremods.softCrash = await import("../coremods/softCrash");
   coremods.watcher = await import("../coremods/watcher");
   coremods.welcome = await import("../coremods/welcome");
 
@@ -98,6 +103,7 @@ export function runPlaintextPatches(): void {
     { patch: reactErrorDecoderPlaintext, name: "replugged.coremod.reactErrorDecoder" },
     { patch: rpcPlaintext, name: "replugged.coremod.rpc" },
     { patch: settingsPlaintext, name: "replugged.coremod.settings" },
+    { patch: softCrashPlaintext, name: "replugged.coremod.softCrash" },
     { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },
   ].forEach(({ patch, name }) => patchPlaintext(patch, name));
 }

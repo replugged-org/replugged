@@ -6,6 +6,13 @@ const logger = Logger.api("plaintext-patch");
 const plaintextPatches: RawPlaintextPatch[] = [];
 
 /**
+ * Module ID is the key
+ * With value as ids of addons/coremods that patch the module
+ * This is better than keeping the whole keeping patched module as string
+ */
+export const PatchIds: Record<string, string[] | undefined> = {};
+
+/**
  * Parses a given input and, if it is a regular expression, replaces all occurrences.
  * of the custom `\i` pattern with a regex pattern that matches valid identifier names.
  * @param input The input to parse.
@@ -81,6 +88,7 @@ export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule
   if (patchedSource === originalSource) {
     return mod;
   }
+  PatchIds[id] = patchedBy;
   try {
     // eslint-disable-next-line no-eval
     return (0, eval)(

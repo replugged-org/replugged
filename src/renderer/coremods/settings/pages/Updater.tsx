@@ -22,7 +22,7 @@ import "./Updater.css";
 
 const logger = Logger.coremod("Settings:Updater");
 
-export const Updater = (): React.ReactElement => {
+export const Updater = ({ crashed }: { crashed?: boolean }): React.ReactElement => {
   const [checking, setChecking] = React.useState(false);
   const [updatesAvailable, setUpdatesAvailable] =
     React.useState<Array<UpdateSettings & { id: string }>>(getAvailableUpdates());
@@ -114,47 +114,51 @@ export const Updater = (): React.ReactElement => {
 
   return (
     <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_UPDATES_UPDATER)}</Text.H2>
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
-      <SwitchItem
-        {...useSetting(updaterSettings, "autoCheck")}
-        note={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}>
-        {intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO)}
-      </SwitchItem>
-      <SliderItem
-        {...useSetting(updaterSettings, "checkIntervalMinutes")}
-        disabled={!updaterSettings.get("autoCheck")}
-        note={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
-        markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
-        equidistant
-        onMarkerRender={(value) => {
-          // Format as xh and/or xm
-          const hours = Math.floor(value / 60);
-          const minutes = value % 60;
+      {!crashed && (
+        <>
+          <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
+            <Text.H2>{intl.string(t.REPLUGGED_UPDATES_UPDATER)}</Text.H2>
+          </Flex>
+          <Divider style={{ margin: "20px 0px" }} />
+          <SwitchItem
+            {...useSetting(updaterSettings, "autoCheck")}
+            note={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}>
+            {intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO)}
+          </SwitchItem>
+          <SliderItem
+            {...useSetting(updaterSettings, "checkIntervalMinutes")}
+            disabled={!updaterSettings.get("autoCheck")}
+            note={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
+            markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
+            equidistant
+            onMarkerRender={(value) => {
+              // Format as xh and/or xm
+              const hours = Math.floor(value / 60);
+              const minutes = value % 60;
 
-          const hourString =
-            hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
-          const minuteString =
-            minutes > 0
-              ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes })
-              : "";
+              const hourString =
+                hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
+              const minuteString =
+                minutes > 0
+                  ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes })
+                  : "";
 
-          const label = [hourString, minuteString].filter(Boolean).join(" ");
-          return label;
-        }}
-        stickToMarkers>
-        {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
-      </SliderItem>
-      {isRepluggedDev && (
-        <div style={{ marginBottom: "16px" }}>
-          <Notice messageType={Notice.Types.WARNING}>
-            {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
-              url: "https://replugged.dev/download",
-            })}
-          </Notice>
-        </div>
+              const label = [hourString, minuteString].filter(Boolean).join(" ");
+              return label;
+            }}
+            stickToMarkers>
+            {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
+          </SliderItem>
+          {isRepluggedDev && (
+            <div style={{ marginBottom: "16px" }}>
+              <Notice messageType={Notice.Types.WARNING}>
+                {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
+                  url: "https://replugged.dev/download",
+                })}
+              </Notice>
+            </div>
+          )}
+        </>
       )}
       <Flex
         justify={Flex.Justify.BETWEEN}
