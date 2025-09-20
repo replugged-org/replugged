@@ -9,6 +9,7 @@ import {
   ErrorBoundary,
   Flex,
   Notice,
+  SelectItem,
   Switch,
   Text,
   TextInput,
@@ -111,6 +112,27 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
     return plugins.getExports(id)?.Settings;
   }
   if (type === AddonType.Theme) {
+    const settings = themes.settings.get(id, { chosenPreset: undefined });
+    const theme = themes.themes.get(id)!;
+    if (theme.manifest.presets?.length) {
+      return () => (
+        <SelectItem
+          options={theme.manifest.presets!.map((preset) => ({
+            label: preset.label,
+            value: preset.path,
+          }))}
+          onChange={(val) => {
+            settings.chosenPreset = val;
+            themes.settings.set(id, settings);
+            if (!themes.getDisabled().includes(id)) {
+              themes.reload(id);
+            }
+          }}
+          isSelected={(val) => settings.chosenPreset === val}>
+          {intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
+        </SelectItem>
+      );
+    }
     return undefined;
   }
 
@@ -471,7 +493,7 @@ function Cards({
             refreshList();
           }}
           openSettings={() => {
-            setSection(`rp_plugin_${addon.manifest.id}`);
+            setSection(`rp_${type}_${addon.manifest.id}`);
 
             document.querySelector('div[class^="contentRegionScroller"]')!.scrollTo({ top: 0 });
           }}
@@ -513,6 +535,11 @@ export const Addons = (type: AddonType): React.ReactElement => {
 
   React.useEffect(refreshList, [search]);
 
+  function getAddonIdFromSection(section: string): string {
+    const prefix = `rp_${type}_`;
+    return section.startsWith(prefix) ? section.slice(prefix.length) : section;
+  }
+
   return (
     <>
       <Flex justify={Flex.Justify.BETWEEN} direction={Flex.Direction.VERTICAL}>
@@ -540,11 +567,10 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   }),
                 },
                 {
-                  id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
+                  id: `rp_${type}_${getAddonIdFromSection(section)}`,
                   label:
-                    list?.filter?.(
-                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
-                    )?.[0]?.manifest.name || "",
+                    list?.find((x) => x.manifest.id === getAddonIdFromSection(section))?.manifest
+                      .name || "",
                 },
               ]}
               onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
@@ -652,7 +678,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Text>
         ) : null
       ) : (
-        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length), type)) && (
+        (SettingsElement = getSettingsElement(getAddonIdFromSection(section), type)) && (
           <ErrorBoundary>
             <SettingsElement />
           </ErrorBoundary>
