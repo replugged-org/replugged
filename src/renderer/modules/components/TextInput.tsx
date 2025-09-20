@@ -1,24 +1,6 @@
-import { filters, getFunctionBySource, waitForModule } from "@webpack";
-import type React from "react";
+import { getFunctionBySource } from "@webpack";
+import components from "../common/components";
 
-interface TextInputProps
-  extends Omit<React.ComponentPropsWithoutRef<"input">, "onChange" | "onFocus" | "onBlur"> {
-  editable?: boolean;
-  prefixElement?: React.ReactNode;
-  error?: string;
-  inputRef?: React.Ref<HTMLInputElement>;
-  focusProps?: Record<string, unknown>;
-  inputClassName?: string;
-  defaultDirty?: boolean;
-  onChange?: (value: string, name: string) => void;
-  onFocus?: (event: React.FocusEvent<HTMLInputElement>, name: string) => void;
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>, name: string) => void;
-}
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-export type TextInputType = React.ComponentClass<TextInputProps> & {
-  defaultProps: TextInputProps;
-};
-
-const TextInputString = "prefixElement:";
-const TextInputMod = await waitForModule(filters.bySource(TextInputString));
-export default getFunctionBySource<TextInputType>(TextInputMod, TextInputString)!;
+export default getFunctionBySource<Design.TextInput>(components, /defaultDirty:\i=!1,leading/)!;

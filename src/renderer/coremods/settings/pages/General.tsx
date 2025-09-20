@@ -1,13 +1,12 @@
-import { modal, toast } from "@common";
+import { marginStyles, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import {
   Button,
   ButtonItem,
   Category,
-  Divider,
-  Flex,
   FormItem,
+  FormSection,
   SwitchItem,
   Text,
   TextInput,
@@ -102,13 +101,7 @@ export const General = (): React.ReactElement => {
   }, [quickCSSValue]);
 
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_GENERAL_SETTINGS)}</Text.H2>
-      </Flex>
-
-      <Divider style={{ margin: "20px 0px" }} />
-
+    <FormSection tag="h1" title={intl.string(t.REPLUGGED_GENERAL_SETTINGS)}>
       <SwitchItem
         {...util.useSetting(generalSettings, "badges")}
         note={intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}>
@@ -153,8 +146,8 @@ export const General = (): React.ReactElement => {
         <FormItem
           title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
           note={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
-          divider
-          style={{ marginBottom: "20px" }}>
+          className={marginStyles.marginBottom20}
+          divider>
           <TextInput
             {...util.useSetting(generalSettings, "apiUrl")}
             placeholder={WEBSITE_URL}
@@ -245,6 +238,6 @@ export const General = (): React.ReactElement => {
           </Text.H1>
         </>
       )}
-    </>
+    </FormSection>
   );
 };

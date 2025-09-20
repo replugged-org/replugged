@@ -1,91 +1,43 @@
-import { filters, getBySource, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
+import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
 
-enum ModalTransitionState {
-  ENTERING,
-  ENTERED,
-  EXITING,
-  EXITED,
-  HIDDEN,
+import type {
+  Close,
+  Confirm,
+  Show,
+  ShowProps,
+} from "discord-client-types/discord_app/actions/web/AlertActionCreators";
+import type * as Design from "discord-client-types/discord_app/design/web";
+
+interface AlertActionCreators {
+  show: Show;
+  close: Close;
+  confirm: Confirm;
 }
 
-export interface ModalProps {
-  transitionState: ModalTransitionState;
-  onClose(): Promise<void>;
+export interface Modal {
+  openModal: Design.OpenModal;
+  closeModal: Design.CloseModal;
+  alert: Show;
+  confirm: (props: ShowProps) => Promise<boolean | null>;
 }
 
-export interface ModalOptions {
-  modalKey?: string;
-  instant?: boolean;
-  onCloseRequest?: () => void;
-  onCloseCallback?: () => void;
-}
-
-interface ModalClasses {
-  Direction: Record<"HORIZONTAL" | "HORIZONTAL_REVERSE" | "VERTICAL", string>;
-  Align: Record<"BASELINE" | "CENTER" | "END" | "START" | "STRETCH", string>;
-  Justify: Record<"AROUND" | "BETWEEN" | "CENTER" | "END" | "START", string>;
-  Wrap: Record<"WRAP" | "NO_WRAP" | "WRAP_REVERSE", string>;
-}
-
-interface AlertProps {
-  title?: React.ReactNode;
-  body?: React.ReactNode;
-  confirmColor?: string;
-  confirmText?: string;
-  cancelText?: string;
-  onConfirm?: () => void;
-  onCancel?: () => void;
-  onCloseCallback?: () => void;
-  secondaryConfirmText?: string;
-  onConfirmSecondary?: () => void;
-  className?: string;
-  titleClassName?: string;
-}
-
-interface AlertMod {
-  show: (props: AlertProps) => void;
-  close: () => void;
-}
-
-const defaultConfirmProps: Partial<AlertProps> = {
-  title: "Are you sure you want to continue?",
-  cancelText: "Cancel",
-};
-
-export type Modal = {
-  openModal: (
-    render: (props: ModalProps) => React.ReactNode,
-    options?: ModalOptions,
-    contextKey?: string,
-  ) => string;
-  closeModal: (modalKey: string, contextKey?: string) => void;
-  alert: (props: AlertProps) => void;
-  confirm: (props: AlertProps) => Promise<boolean | null>;
-} & ModalClasses;
-
-const mod = await waitForModule(filters.bySource("onCloseRequest:null!="));
-const alertMod = await waitForProps<AlertMod>("show", "close");
-
-const classes = getBySource<ModalClasses>(".justifyStart")!;
+const ModalAPI = await waitForModule(filters.bySource("onCloseRequest:null!="));
+const { show } = await waitForProps<AlertActionCreators>("show", "close");
 
 export default {
-  openModal: getFunctionBySource<Modal["openModal"]>(mod, "onCloseRequest:null!=")!,
-  closeModal: getFunctionBySource<Modal["closeModal"]>(mod, "onCloseCallback&&")!,
-  Direction: classes?.Direction,
-  Align: classes?.Align,
-  Justify: classes?.Justify,
-  Wrap: classes?.Wrap,
-  alert: alertMod.show,
-  confirm: (props: AlertProps) =>
+  openModal: getFunctionBySource<Design.OpenModal>(ModalAPI, "onCloseRequest:null!=")!,
+  closeModal: getFunctionBySource<Design.CloseModal>(ModalAPI, "onCloseCallback&&")!,
+  alert: show,
+  confirm: (props: ShowProps) =>
     new Promise((resolve) => {
       let didResolve = false;
       const onConfirm = (): void => {
-        if (props.onConfirm) props.onConfirm();
+        if (props.onConfirm) void props.onConfirm();
         didResolve = true;
         resolve(true);
       };
       const onCancel = (): void => {
-        if (props.onCancel) props.onCancel();
+        if (props.onCancel) void props.onCancel();
         didResolve = true;
         resolve(false);
       };
@@ -95,6 +47,6 @@ export default {
           if (!didResolve) resolve(null);
         }, 0);
       };
-      alertMod.show({ ...defaultConfirmProps, ...props, onConfirm, onCancel, onCloseCallback });
+      show({ ...props, onConfirm, onCancel, onCloseCallback });
     }),
 } as Modal;

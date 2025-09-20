@@ -29,9 +29,6 @@
   color: var(--interactive-hover);
 }
 
-.replugged-addon-breadcrumbs {
-  margin-bottom: 20px;
-}
 .replugged-addon-breadcrumbsActive {
   color: var(--header-primary);
 }
@@ -44,5 +41,5 @@
 }
 
 .replugged-addon-header-buttons {
-  gap: 5px;
+  gap: var(--space-8);
 }
