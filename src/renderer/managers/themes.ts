@@ -47,26 +47,39 @@ export function load(id: string): void {
   }
 
   const theme = themes.get(id)!;
-  let themeSettings = settings.get(theme.manifest.id);
-  if (!themeSettings) themeSettings = {};
-  if (!themeSettings.chosenPreset) {
-    themeSettings.chosenPreset = theme.manifest.presets?.find((x) => x.default)?.path;
-    settings.set(theme.manifest.id, themeSettings);
+  const themeSettings = settings.get(id, { chosenPreset: undefined });
+
+  let el: HTMLLinkElement;
+
+  try {
+    if (theme.manifest.presets?.length) {
+      if (!themeSettings.chosenPreset) {
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.path;
+        if (!themeSettings.chosenPreset) {
+          // Fallback to first preset
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.path;
+        }
+        settings.set(id, themeSettings);
+      }
+
+      if (themeSettings.chosenPreset) {
+        el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenPreset}`);
+      } else {
+        logger.error("Manager", `No valid preset found for theme ${id}`);
+        return;
+      }
+    } else if (theme.manifest.main) {
+      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+    } else {
+      logger.error("Manager", `Theme ${id} has neither main CSS nor presets.`);
+      return;
+    }
+
+    unload(id);
+    themeElements.set(id, el);
+  } catch (error) {
+    logger.error("Manager", `Failed to load theme ${id}:`, String(error));
   }
-
-  unload(id);
-
-  let el;
-  if (theme.manifest.main) {
-    el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
-  } else if (themeSettings.chosenPreset) {
-    el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenPreset}`);
-  } else {
-    logger.error("Manager", `Theme ${id} does not have a main variant or a chosen preset.`);
-    return;
-  }
-
-  themeElements.set(id, el);
 }
 
 /**
