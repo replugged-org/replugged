@@ -132,7 +132,6 @@
   "REPLUGGED_TOAST_ADDON_TOGGLE_FAILED": "Aan/uitschakelen van {name} is mislukt",
   "REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED": "Verwijderen van {name} mislukt",
   "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "{name} verwijderd",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Kan gebruikersprofiel niet ophalen",
   "REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY": "Weet je zeker dat je {type, select, plugin {deze} other {dit}} {type} wil verwijderen? Dit kan niet ongedaan gemaakt worden.",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED": "Laden van ontbrekende {type} mislukt",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS": "Ontbrekende {type} geladen",

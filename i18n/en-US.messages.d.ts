@@ -60,6 +60,19 @@ export declare const messages: {
    */
   'REPLUGGED_ADDONS_TITLE_COUNT': TypedIntlMessageGetter<{count: number | string, type: any}>,
   /**
+   * Key: `ov+bm5`
+   * 
+   * ### Definition
+   * ```text
+   * {count, plural, =1 {Author: {author1}} =2 {Authors: {author1} and {author2}} =3 {Authors: {author1}, {author2}, and {author3}} other {Authors: {author1}, {author2}, {author3}, and {others, plural, =1 {# other} other {# others}}}}
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_ADDON_AUTHORS': TypedIntlMessageGetter<{author1: any, author2: any, author3: any, count: any | number, others: any | number | string}>,
+  /**
    * Key: `XuYvz8`
    * 
    * ### Definition
@@ -2075,19 +2088,6 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED': TypedIntlMessageGetter<{name: any}>,
-  /**
-   * Key: `HZhNXl`
-   * 
-   * ### Definition
-   * ```text
-   * Failed to fetch user profile
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_TOAST_PROFILE_FETCH_FAILED': TypedIntlMessageGetter<{}>,
   /**
    * Key: `avF+9f`
    * 

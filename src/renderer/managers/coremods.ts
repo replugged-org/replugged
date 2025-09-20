@@ -13,6 +13,7 @@ import noTrackPlaintext from "../coremods/noTrack/plaintextPatches";
 import noXSSDefensesPlaintext from "../coremods/noXSSDefenses/plaintextPatches";
 import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import reactErrorDecoderPlaintext from "../coremods/reactErrorDecoder/plaintextPatches";
+import rpcPlaintext from "../coremods/rpc/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 
@@ -95,6 +96,7 @@ export function runPlaintextPatches(): void {
     { patch: noTrackPlaintext, name: "replugged.coremod.noTrack" },
     { patch: popoutThemingPlaintext, name: "replugged.coremod.popoutTheming" },
     { patch: reactErrorDecoderPlaintext, name: "replugged.coremod.reactErrorDecoder" },
+    { patch: rpcPlaintext, name: "replugged.coremod.rpc" },
     { patch: settingsPlaintext, name: "replugged.coremod.settings" },
     { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },
   ].forEach(({ patch, name }) => patchPlaintext(patch, name));

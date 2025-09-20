@@ -45,7 +45,7 @@ export type SliderCompType = React.ComponentClass<SliderCompProps>;
 
 const SliderComp = getFunctionBySource<SliderCompType>(
   components,
-  /initialValue!==\w+\.initialValueProp/,
+  /initialValue!==\i\.initialValueProp/,
 )!;
 
 interface SliderProps extends SliderCompProps {

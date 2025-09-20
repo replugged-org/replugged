@@ -36,5 +36,5 @@ export const Switch = getFunctionBySource<SwitchType>(mod, switchString)!;
 
 export const SwitchItem = getFunctionBySource<SwitchItemType>(
   components,
-  /hideBorder:\w+=!1,tooltipNote:\w+,onChange/,
+  /hideBorder:\i=!1,tooltipNote:\i,onChange/,
 )!;

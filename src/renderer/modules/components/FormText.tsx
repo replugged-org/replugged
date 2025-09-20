@@ -14,7 +14,7 @@ export type FormTextCompType = React.FC<React.PropsWithChildren<FormTextProps>>;
 
 export type FormTextType = Record<FormTextTypeKey, FormTextCompType>;
 
-const FormTextComp = getFunctionBySource<FormTextCompType>(components, /type:\w+=\w+\.DEFAULT/)!;
+const FormTextComp = getFunctionBySource<FormTextCompType>(components, /type:\i=\i\.DEFAULT/)!;
 const FormTextTypes = getExportsForProps<Record<FormTextTypeKey, string>>(components, [
   "DEFAULT",
   "DESCRIPTION",

@@ -133,7 +133,6 @@
   "REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS": "Đã gỡ cài đặt {name}",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED": "Đã có sự cố xảy ra khi nhập các {type} bị thiếu",
   "REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS": "Đã nhập các {type} bị thiếu",
-  "REPLUGGED_TOAST_PROFILE_FETCH_FAILED": "Đã có sự cố xảy ra khi tìm hồ sơ người dùng",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS": "Mã nguồn đã được định dạng",
   "REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED": "Đã có sự cố xảy ra khi định dạng mã nguồn",
   "REPLUGGED_TOAST_QUICKCSS_RELOAD": "Đã khởi động lại CSS Nhanh",
