@@ -95,6 +95,8 @@ const RepluggedNative = {
 
   getVersion: (): string => version,
 
+  clearTemp: (): void => ipcRenderer.send(RepluggedIpcChannels.CLEAR_TEMP),
+
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };
 
