@@ -3,13 +3,13 @@ import { contextBridge, ipcRenderer, webFrame } from "electron";
 import { RepluggedIpcChannels } from "./types";
 // eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
 import type {
-  CheckResultFailure,
   CheckResultSuccess,
-  InstallResultFailure,
   InstallResultSuccess,
   InstallerType,
+  ListResultSuccess,
   RepluggedPlugin,
   RepluggedTheme,
+  ResultFailure,
 } from "./types";
 
 const version = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_VERSION);
@@ -39,14 +39,14 @@ const RepluggedNative = {
       type: string,
       identifier: string,
       id: string,
-    ): Promise<CheckResultSuccess | CheckResultFailure> =>
+    ): Promise<CheckResultSuccess | ResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, identifier, id),
     install: async (
       type: InstallerType | "replugged",
       path: string,
       url: string,
       version: string,
-    ): Promise<InstallResultSuccess | InstallResultFailure> =>
+    ): Promise<InstallResultSuccess | ResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, true, version),
   },
 
@@ -55,15 +55,33 @@ const RepluggedNative = {
       type: string,
       repo: string,
       id?: string,
-    ): Promise<CheckResultSuccess | CheckResultFailure> =>
+    ): Promise<CheckResultSuccess | ResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_ADDON_INFO, type, repo, id),
     install: async (
       type: InstallerType,
       path: string,
       url: string,
       version: string,
-    ): Promise<InstallResultSuccess | InstallResultFailure> =>
+    ): Promise<InstallResultSuccess | ResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, false, version),
+  },
+
+  store: {
+    getList: async (
+      type: "plugin" | "theme",
+      page?: number,
+      query?: string,
+      abortController?: AbortController,
+      maxItems?: number,
+    ): Promise<ListResultSuccess | ResultFailure> =>
+      ipcRenderer.invoke(
+        RepluggedIpcChannels.LIST_ADDONS,
+        type,
+        abortController,
+        page,
+        query,
+        maxItems,
+      ),
   },
 
   quickCSS: {

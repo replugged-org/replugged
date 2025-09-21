@@ -474,3 +474,75 @@ export function getBoundMethods<T extends object>(instance: T): BoundMethodMap<T
 
   return bound;
 }
+
+interface MediaModelMod {
+  openModel: (
+    props: Partial<{
+      hasMediaOptions?: boolean;
+      shouldHideMediaOptions?: boolean;
+      className?: string;
+      items: Array<
+        Partial<{
+          className: string;
+          original: string;
+          zoomThumbnailPlaceholder: string;
+          type: "VIDEO" | "IMAGE";
+          children?: React.ReactNode;
+        }>
+      >;
+      fit?: string;
+      onCloseCallback?: () => void;
+    }>,
+  ) => void;
+  key: string;
+}
+
+let openMediaModel: MediaModelMod["openModel"] | undefined;
+
+/**
+ * View the image from url
+ * @param url A single url or array of urls (eg "https://replugged.dev/assets/replugged-b625c392.png")
+ */
+export async function viewImage(urls: string[] | string): Promise<void> {
+  if (!Array.isArray(urls)) urls = [urls];
+
+  if (!openMediaModel) {
+    openMediaModel = getFunctionBySource(
+      getBySource<MediaModelMod>(/hasMediaOptions:!\w+\.shouldHideMediaOptions/),
+      ".MEDIA_VIEWER",
+    );
+    if (!openMediaModel) {
+      throw new Error("Could not find openMediaModel");
+    }
+  }
+
+  const items = await Promise.all(
+    urls.map((url) => {
+      return new Promise<{
+        url: string;
+        original: string;
+        zoomThumbnailPlaceholder: string;
+        width: number;
+        height: number;
+        type: "IMAGE";
+      }>((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+          resolve({
+            url,
+            original: url,
+            zoomThumbnailPlaceholder: url,
+            width: img.width,
+            height: img.height,
+            type: "IMAGE",
+          });
+        };
+        img.onerror = () => reject(new Error("Failed to load image"));
+        img.src = url;
+      });
+    }),
+  );
+
+  openMediaModel({ items });
+}
