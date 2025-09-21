@@ -112,8 +112,11 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
     return plugins.getExports(id)?.Settings;
   }
   if (type === AddonType.Theme) {
+    if (themes.getDisabled().includes(id)) return undefined;
+
     const settings = themes.settings.get(id, { chosenPreset: undefined });
     const theme = themes.themes.get(id)!;
+
     if (theme.manifest.presets?.length) {
       return () => (
         <SelectItem
@@ -122,10 +125,25 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
             value: preset.path,
           }))}
           onChange={(val) => {
-            settings.chosenPreset = val;
-            themes.settings.set(id, settings);
-            if (!themes.getDisabled().includes(id)) {
-              themes.reload(id);
+            try {
+              settings.chosenPreset = val;
+              themes.settings.set(id, settings);
+              if (!themes.getDisabled().includes(id)) {
+                themes.reload(id);
+              }
+              toast.toast(
+                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
+                  name: theme.manifest.presets!.find((p) => p.path === val)?.label || val,
+                }),
+              );
+            } catch (error) {
+              logger.error("Error changing theme preset", error);
+              toast.toast(
+                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
+                  name: theme.manifest.name,
+                }),
+                toast.Kind.FAILURE,
+              );
             }
           }}
           isSelected={(val) => settings.chosenPreset === val}>

@@ -240,5 +240,7 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**.",
   "REPLUGGED_SETTINGS_QUICKCSS_ENABLE": "Enable Quick CSS",
   "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Apply custom styles to Discord instantly. Change colors, layout, and appearance in real time without installing themes.",
-  "REPLUGGED_ADDON_SETTINGS_THEME_PRESET": "Choose Theme Preset"
+  "REPLUGGED_ADDON_SETTINGS_THEME_PRESET": "Choose Theme Preset",
+  "REPLUGGED_TOAST_THEME_PRESET_CHANGED": "Switched to preset: {name}",
+  "REPLUGGED_TOAST_THEME_PRESET_FAILED": "Failed to change preset for {name}"
 });
