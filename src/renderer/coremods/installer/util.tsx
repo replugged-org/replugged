@@ -260,6 +260,7 @@ async function showInstallPrompt(
       </>
     ),
     confirmText: intl.string(discordT.CONFIRM),
+    cancelText: intl.string(discordT.CANCEL),
     secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
     onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : undefined),
   });
@@ -359,6 +360,7 @@ export async function installFlow(
           name: info.manifest.name,
         }),
         confirmText: intl.string(discordT.ERRORS_RELOAD),
+        cancelText: intl.string(discordT.CANCEL),
         confirmColor: Button.Colors.RED,
       })
       .then((answer) => {

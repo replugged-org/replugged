@@ -92,17 +92,17 @@ function getManager(type: AddonType): typeof plugins | typeof themes {
   throw new Error("Invalid addon type");
 }
 
-function ThemeSettings({ id }: { id: string }): React.ReactElement | null {
+function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
   const settings = themes.settings.useValue(id, { chosenPreset: undefined });
   const theme = themes.themes.get(id)!;
 
-  return theme.manifest.presets?.length ? (
+  return (
     <SelectItem
-      options={theme.manifest.presets.map((preset) => ({
+      options={theme.manifest.presets!.map((preset) => ({
         label: preset.label,
         value: preset.path,
       }))}
-      value={settings.chosenPreset || theme.manifest.presets[0].path}
+      value={settings.chosenPreset || theme.manifest.presets![0].path}
       onChange={(val) => {
         try {
           themes.settings.set(id, { chosenPreset: val });
@@ -126,7 +126,7 @@ function ThemeSettings({ id }: { id: string }): React.ReactElement | null {
       }}>
       {intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
     </SelectItem>
-  ) : null;
+  );
 }
 
 function getSettingsElement(id: string, type: AddonType): React.ComponentType | undefined {
@@ -135,7 +135,13 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
   }
   if (type === AddonType.Theme) {
     if (themes.getDisabled().includes(id)) return undefined;
-    return () => <ThemeSettings id={id} />;
+
+    const theme = themes.themes.get(id)!;
+
+    if (theme.manifest.presets?.length) {
+      return () => <ThemePresetSettings id={id} />;
+    }
+    return undefined;
   }
 
   throw new Error("Invalid addon type");
@@ -451,6 +457,7 @@ function Cards({
               title: intl.format(t.REPLUGGED_ADDON_UNINSTALL, { name: addon.manifest.name }),
               body: intl.format(t.REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY, { type: label(type) }),
               confirmText: intl.string(discordT.APPLICATION_UNINSTALL_PROMPT_CONFIRM),
+              cancelText: intl.string(discordT.CANCEL),
               confirmColor: Button.Colors.RED,
             });
             if (!confirmation) return;
