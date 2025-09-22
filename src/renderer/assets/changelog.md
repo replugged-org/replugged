@@ -12,7 +12,7 @@
 
 ### 📰 Other Changes
 
-- Make the injector instance argument type reassignable
+- Make the injector instance argument type re-assignable
   ([f98e65b](https://github.com/replugged-org/replugged/commit/f98e65ba73bd0ff79e5006f013eea38be62724d2))
   (by [@yofukashino](https://github.com/yofukashino) in
   [#718](https://github.com/replugged-org/replugged/pull/718))
@@ -20,7 +20,7 @@
   ([846374e](https://github.com/replugged-org/replugged/commit/846374ee86850b8fd73e83f8b6c9071e30320840))
   (by [@yofukashino](https://github.com/yofukashino) in
   [#720](https://github.com/replugged-org/replugged/pull/720))
-- Seperate source maps for seperate addons and make them usable for debugging
+- Separate source maps for separate addons and make them usable for debugging
   ([270b4a5](https://github.com/replugged-org/replugged/commit/270b4a5a2878a658e9cdcf47d38f4305331e311f))
   (by [@yofukashino](https://github.com/yofukashino) in
   [#721](https://github.com/replugged-org/replugged/pull/721))
