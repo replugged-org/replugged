@@ -11,32 +11,51 @@ const SingleSelect = getFunctionBySource<Design.SingleSelect>(
   /var{value:\i,onChange:\i}/,
 )!;
 
-interface CustomSingleSelectProps extends Design.SingleSelectProps {
+interface CustomSingleSelectProps<
+  TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
+  TClearable extends boolean = false,
+> extends Design.SingleSelectProps<TOptions, TClearable> {
   disabled?: boolean;
 }
 
-export type CustomSingleSelectType = React.FC<React.PropsWithChildren<CustomSingleSelectProps>>;
+export type CustomSingleSelectType = <
+  TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
+  TClearable extends boolean = false,
+>(
+  props: React.PropsWithChildren<CustomSingleSelectProps<TOptions, TClearable>>,
+) => React.ReactElement;
 
-export function CustomSingleSelect({
-  disabled,
-  ...props
-}: CustomSingleSelectProps): React.ReactElement {
+export function CustomSingleSelect<
+  TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
+  TClearable extends boolean = false,
+>({ disabled, ...props }: CustomSingleSelectProps<TOptions, TClearable>): React.ReactElement {
   return <SingleSelect isDisabled={disabled} {...props} />;
 }
 
-interface SelectItemProps extends CustomSingleSelectProps {
+interface SelectItemProps<
+  TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
+  TClearable extends boolean = false,
+> extends CustomSingleSelectProps<TOptions, TClearable> {
   note?: string;
   style?: React.CSSProperties;
 }
 
-export type SelectItemType = React.FC<React.PropsWithChildren<SelectItemProps>>;
+export type SelectItemType = <
+  TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
+  TClearable extends boolean = false,
+>(
+  props: React.PropsWithChildren<SelectItemProps<TOptions, TClearable>>,
+) => React.ReactElement;
 
-export function SelectItem({
+export function SelectItem<
+  TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
+  TClearable extends boolean = false,
+>({
   children,
   style,
   note,
   ...props
-}: React.PropsWithChildren<SelectItemProps>): React.ReactElement {
+}: React.PropsWithChildren<SelectItemProps<TOptions, TClearable>>): React.ReactElement {
   return (
     <FormItem
       title={children}

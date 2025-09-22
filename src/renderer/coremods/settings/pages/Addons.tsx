@@ -12,6 +12,7 @@ import {
   FormSection,
   Notice,
   SearchBar,
+  SelectItem,
   Switch,
   Text,
   Tooltip,
@@ -91,12 +92,50 @@ function getManager(type: AddonType): typeof plugins | typeof themes {
   throw new Error("Invalid addon type");
 }
 
+function ThemeSettings({ id }: { id: string }): React.ReactElement | null {
+  const settings = themes.settings.useValue(id, { chosenPreset: undefined });
+  const theme = themes.themes.get(id)!;
+
+  return theme.manifest.presets?.length ? (
+    <SelectItem
+      options={theme.manifest.presets.map((preset) => ({
+        label: preset.label,
+        value: preset.path,
+      }))}
+      value={settings.chosenPreset || theme.manifest.presets[0].path}
+      onChange={(val) => {
+        try {
+          themes.settings.set(id, { chosenPreset: val });
+          if (!themes.getDisabled().includes(id)) {
+            themes.reload(id);
+          }
+          toast.toast(
+            intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
+              name: theme.manifest.presets!.find((p) => p.path === val)?.label || val,
+            }),
+          );
+        } catch (error) {
+          logger.error("Error changing theme preset", error);
+          toast.toast(
+            intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
+              name: theme.manifest.name,
+            }),
+            toast.Kind.FAILURE,
+          );
+        }
+      }}>
+      {intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
+    </SelectItem>
+  ) : null;
+}
+
 function getSettingsElement(id: string, type: AddonType): React.ComponentType | undefined {
   if (type === AddonType.Plugin) {
     return plugins.getExports(id)?.Settings;
   }
   if (type === AddonType.Theme) {
-    return undefined;
+    if (themes.getDisabled().includes(id)) return undefined;
+    return () => <ThemeSettings id={id} />;
   }
 
   throw new Error("Invalid addon type");
@@ -456,7 +495,7 @@ function Cards({
             refreshList();
           }}
           openSettings={() => {
-            setSection(`rp_plugin_${addon.manifest.id}`);
+            setSection(`rp_${type}_${addon.manifest.id}`);
 
             document.querySelector('div[class^="contentRegionScroller"]')!.scrollTo({ top: 0 });
           }}
@@ -498,6 +537,11 @@ export const Addons = (type: AddonType): React.ReactElement => {
 
   React.useEffect(refreshList, [search]);
 
+  function getAddonIdFromSection(section: string): string {
+    const prefix = `rp_${type}_`;
+    return section.startsWith(prefix) ? section.slice(prefix.length) : section;
+  }
+
   return (
     <FormSection
       tag="h1"
@@ -526,11 +570,10 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   }),
                 },
                 {
-                  id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
+                  id: `rp_${type}_${getAddonIdFromSection(section)}`,
                   label:
-                    list?.filter?.(
-                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
-                    )?.[0]?.manifest.name || "",
+                    list?.find((x) => x.manifest.id === getAddonIdFromSection(section))?.manifest
+                      .name || "",
                 },
               ]}
               onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
@@ -641,7 +684,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Text>
         ) : null
       ) : (
-        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length), type)) && (
+        (SettingsElement = getSettingsElement(getAddonIdFromSection(section), type)) && (
           <ErrorBoundary>
             <SettingsElement />
           </ErrorBoundary>
