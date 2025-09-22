@@ -3,6 +3,7 @@
   "version": "4.10.2",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
   "license": "MIT",
+  "diff": "https://github.com/replugged-org/replugged/compare/v4.10.1...v4.10.2",
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=10.0.0"

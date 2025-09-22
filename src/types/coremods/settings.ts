@@ -9,6 +9,7 @@ export interface Section {
   color?: string;
   element?: React.FC;
   tabPredicate?: () => boolean;
+  onClick?: (event: React.MouseEvent) => void;
   pos: number;
   fromEnd?: boolean;
   // eslint-disable-next-line @typescript-eslint/naming-convention

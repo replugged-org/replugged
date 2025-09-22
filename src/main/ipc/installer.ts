@@ -259,19 +259,23 @@ ipcMain.handle(
   ) => installAddon(type, path, url, update, version),
 );
 
-export function getRepluggedVersion(): string {
+export function getRepluggedPackage(key: "version" | "diff"): string | undefined {
   const path = join(__dirname, "package.json");
   try {
-    const packageJson: PackageJson = JSON.parse(readFileSync(path, "utf8"));
-    return packageJson.version ?? "unknown";
+    const packageJson: PackageJson & { diff: string } = JSON.parse(readFileSync(path, "utf8"));
+    return packageJson[key] ?? "unknown";
   } catch (err) {
     if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
-      return "dev";
+      return;
     }
     throw err;
   }
 }
 
 ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_VERSION, (event) => {
-  event.returnValue = getRepluggedVersion();
+  event.returnValue = getRepluggedPackage("version") ?? "dev";
+});
+
+ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_DIFF, (event) => {
+  event.returnValue = getRepluggedPackage("diff");
 });

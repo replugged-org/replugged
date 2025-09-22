@@ -398,6 +398,32 @@ export declare const messages: {
    */
   'REPLUGGED_BUTTON_INSTALLER_INSTALLED': TypedIntlMessageGetter<{type: any}>,
   /**
+   * Key: `Qx8juL`
+   * 
+   * ### Definition
+   * ```text
+   * Changelog
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_CHANGELOG': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `hEf4GR`
+   * 
+   * ### Definition
+   * ```text
+   * **Source Changelog**: {diff}
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_CHANGELOG_SOURCE_DIFF': TypedIntlMessageGetter<{$b?: HookFunction, diff: any}>,
+  /**
    * Key: `j9kNoq`
    * 
    * ### Definition
