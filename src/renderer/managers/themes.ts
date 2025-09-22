@@ -1,4 +1,4 @@
-import type { AddonSettings } from "src/types/addon";
+import type { ThemeSettings } from "src/types/addon";
 import type { RepluggedTheme } from "../../types";
 import { init } from "../apis/settings";
 import * as logger from "../modules/logger";
@@ -11,7 +11,7 @@ const themeElements = new Map<string, HTMLLinkElement>();
  */
 export const themes = new Map<string, RepluggedTheme>();
 let disabled: string[];
-const settings = init<AddonSettings>("themes");
+export const settings = init<ThemeSettings>("themes");
 
 /**
  * Load metadata for all themes that are added to the themes folder but not yet loaded, such as newly added themes.
@@ -47,14 +47,39 @@ export function load(id: string): void {
   }
 
   const theme = themes.get(id)!;
-  if (!theme.manifest.main) {
-    logger.error("Manager", `Theme ${id} does not have a main variant.`);
-    return;
-  }
-  unload(id);
+  const themeSettings = settings.get(id, { chosenPreset: undefined });
 
-  const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
-  themeElements.set(id, el);
+  let el: HTMLLinkElement;
+
+  try {
+    if (theme.manifest.presets?.length) {
+      if (!themeSettings.chosenPreset) {
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.path;
+        if (!themeSettings.chosenPreset) {
+          // Fallback to first preset
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.path;
+        }
+        settings.set(id, themeSettings);
+      }
+
+      if (themeSettings.chosenPreset) {
+        el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenPreset}`);
+      } else {
+        logger.error("Manager", `No valid preset found for theme ${id}`);
+        return;
+      }
+    } else if (theme.manifest.main) {
+      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+    } else {
+      logger.error("Manager", `Theme ${id} has neither main CSS nor presets.`);
+      return;
+    }
+
+    unload(id);
+    themeElements.set(id, el);
+  } catch (error) {
+    logger.error("Manager", `Failed to load theme ${id}:`, String(error));
+  }
 }
 
 /**
@@ -82,7 +107,8 @@ export function loadSplash(id: string): void {
  */
 export function loadAll(): void {
   for (const id of themes.keys()) {
-    if (!disabled.includes(id) && themes.get(id)?.manifest.main) {
+    const theme = themes.get(id);
+    if (!disabled.includes(id) && (theme?.manifest.main || theme?.manifest.presets)) {
       load(id);
     }
   }

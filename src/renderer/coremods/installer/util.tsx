@@ -1,4 +1,4 @@
-import { modal, toast } from "@common";
+import { marginStyles, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
@@ -251,20 +251,18 @@ async function showInstallPrompt(
       <>
         {text}
         {(source ?? DEFAULT_INSTALLER_SOURCE) !== "store" ? (
-          <div style={{ marginTop: "16px" }}>
-            <Notice messageType={Notice.Types.ERROR}>
-              {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-                type: label(getAddonType(manifest.type)),
-              })}
-            </Notice>
-          </div>
+          <Notice messageType={Notice.Types.ERROR} className={marginStyles.marginTop20}>
+            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+              type: label(getAddonType(manifest.type)),
+            })}
+          </Notice>
         ) : null}
       </>
     ),
     confirmText: intl.string(discordT.CONFIRM),
     cancelText: intl.string(discordT.CANCEL),
     secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
-    onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : null),
+    onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : undefined),
   });
 
   return res;
@@ -362,6 +360,7 @@ export async function installFlow(
           name: info.manifest.name,
         }),
         confirmText: intl.string(discordT.ERRORS_RELOAD),
+        cancelText: intl.string(discordT.CANCEL),
         confirmColor: Button.Colors.RED,
       })
       .then((answer) => {
