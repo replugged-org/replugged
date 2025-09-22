@@ -3,7 +3,7 @@ import { notices } from "@replugged";
 import type { RepluggedAnnouncement } from "src/types";
 import NoticeMod from "./noticeMod";
 
-import "./repluggedNotice.css";
+import "./RepluggedNotice.css";
 
 const { Notice, NoticeButton, NoticeButtonAnchor, NoticeCloseButton } = NoticeMod;
 

@@ -18,12 +18,9 @@ import {
   parseInstallLink,
 } from "./util";
 
-const injector = new Injector();
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
-  useDefaultUnderlineStyles?: boolean;
-  focusProps?: Record<string, unknown>;
-}
+const injector = new Injector();
 
 const uninjectFns: Array<() => void> = [];
 
@@ -92,7 +89,7 @@ async function injectLinks(): Promise<void> {
     raw: true,
   });
   const exports = linkMod.exports as ObjectExports & {
-    Anchor: React.FC<React.PropsWithChildren<AnchorProps>>;
+    Anchor: Design.Anchor;
   };
   const anchorKey = getFunctionKeyBySource(exports, "")! as "Anchor"; // It's actually a mangled name, but TS can sit down and shut up
   injector.before(exports, anchorKey, (args) => {

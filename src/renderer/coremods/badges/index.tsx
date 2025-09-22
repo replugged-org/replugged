@@ -9,7 +9,7 @@ import { Injector } from "../../modules/injector";
 import { generalSettings } from "../settings/pages";
 import Badges from "./badges";
 
-import "./badge.css";
+import "./RepluggedBadge.css";
 
 const injector = new Injector();
 
