@@ -114,6 +114,7 @@ export let FormText: CustomFormTextType;
 importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.CustomFormText));
 
 import type { CustomKeyRecorderType, KeyRecorderItemType } from "./KeyRecorderItem";
+export type { CustomKeyRecorderType };
 export let KeyRecorder: CustomKeyRecorderType;
 importTimeout(
   "KeyRecorder",
