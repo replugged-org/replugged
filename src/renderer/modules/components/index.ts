@@ -113,6 +113,22 @@ export type { CustomFormTextType };
 export let FormText: CustomFormTextType;
 importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.CustomFormText));
 
+import type { CustomKeyRecorderType, KeyRecorderItemType } from "./KeyRecorderItem";
+export let KeyRecorder: CustomKeyRecorderType;
+importTimeout(
+  "KeyRecorder",
+  import("./KeyRecorderItem"),
+  (mod) => (KeyRecorder = mod.CustomKeyRecorder),
+);
+
+export type { KeyRecorderItemType };
+export let KeyRecorderItem: KeyRecorderItemType;
+importTimeout(
+  "KeyRecorderItem",
+  import("./KeyRecorderItem"),
+  (mod) => (KeyRecorderItem = mod.KeyRecorderItem),
+);
+
 import type { CustomModalType } from "./Modal";
 export type { CustomModalType };
 export let Modal: CustomModalType;
@@ -167,15 +183,6 @@ import type { ErrorBoundaryType } from "./ErrorBoundary";
 export type { ErrorBoundaryType };
 export let ErrorBoundary: ErrorBoundaryType;
 importTimeout("ErrorBoundary", import("./ErrorBoundary"), (mod) => (ErrorBoundary = mod.default));
-
-import type { KeybindItemType, KeybindType } from "./KeybindItem";
-export type { KeybindType };
-export let Keybind: KeybindType;
-importTimeout("Keybind", import("./KeybindItem"), (mod) => (Keybind = mod.Keybind));
-
-export type { KeybindItemType };
-export let KeybindItem: KeybindItemType;
-importTimeout("KeybindItem", import("./KeybindItem"), (mod) => (KeybindItem = mod.KeybindItem));
 
 /**
  * @internal

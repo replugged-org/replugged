@@ -19,7 +19,6 @@ export type RadioItemType = React.FC<React.PropsWithChildren<RadioItemProps>>;
 
 export function RadioItem({
   children,
-  className,
   style,
   note,
   ...props
