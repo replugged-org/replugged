@@ -1,30 +1,28 @@
 import { parser } from "@common";
 import { Injector } from "@replugged";
+import type React from "react";
 import type { Capture, DefaultInRule } from "simple-markdown";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
-import { ObjectExports } from "src/types";
-import { registerRPCCommand } from "../rpc";
+import type { ObjectExports } from "src/types";
+import rpc from "../../apis/rpc";
 import { generalSettings } from "../settings/pages";
 import AddonEmbed from "./AddonEmbed";
 import { loadCommands } from "./commands";
 import {
-  InstallLinkProps,
-  InstallResponse,
-  InstallerSource,
+  type InstallLinkProps,
+  type InstallResponse,
+  type InstallerSource,
   installFlow,
   parseInstallLink,
 } from "./util";
 
+import type * as Design from "discord-client-types/discord_app/design/web";
+
 const injector = new Injector();
 
-interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
-  useDefaultUnderlineStyles?: boolean;
-  focusProps?: Record<string, unknown>;
-}
-
-let uninjectFns: Array<() => void> = [];
+const uninjectFns: Array<() => void> = [];
 
 const modalFlows = new Map<string, Promise<InstallResponse>>();
 
@@ -34,7 +32,7 @@ if (window.RepluggedNative.getVersion() === "dev") {
 }
 
 function injectRpc(): void {
-  const uninjectInstall = registerRPCCommand("REPLUGGED_INSTALL", {
+  const uninjectInstall = rpc.registerRPCCommand("REPLUGGED_INSTALL", {
     scope: {
       $any: scopes,
     },
@@ -58,7 +56,7 @@ function injectRpc(): void {
     },
   });
 
-  const uninjectList = registerRPCCommand("REPLUGGED_LIST_ADDONS", {
+  const uninjectList = rpc.registerRPCCommand("REPLUGGED_LIST_ADDONS", {
     scope: {
       $any: scopes,
     },
@@ -91,18 +89,18 @@ async function injectLinks(): Promise<void> {
     raw: true,
   });
   const exports = linkMod.exports as ObjectExports & {
-    Anchor: React.FC<React.PropsWithChildren<AnchorProps>>;
+    Anchor: Design.Anchor;
   };
   const anchorKey = getFunctionKeyBySource(exports, "")! as "Anchor"; // It's actually a mangled name, but TS can sit down and shut up
-  injector.instead(exports, anchorKey, (args, fn) => {
+  injector.before(exports, anchorKey, (args) => {
     const { href } = args[0];
-    if (!href) return fn(...args);
+    if (!href) return args;
     const installLink = parseInstallLink(href);
-    if (!installLink) return fn(...args);
+    if (!installLink) return args;
 
     args[0].onClick = (e) => triggerInstall(installLink, e);
 
-    return fn(...args);
+    return args;
   });
 
   const defaultRules = parser.defaultRules as typeof parser.defaultRules & {
@@ -112,7 +110,7 @@ async function injectLinks(): Promise<void> {
   defaultRules.repluggedInstallLink = {
     order: defaultRules.autolink.order - 0.5,
     match: (source: string) => {
-      const match = source.match(/^<?(https?:\/\/[^\s<]+[^<>.,:; "'\]\s])>?/);
+      const match = /^<?(https?:\/\/[^\s<]+[^<>.,:; "'\]\s])>?/.exec(source);
       if (!match) return null;
       const installLink = parseInstallLink(match[1]);
       if (!installLink) return null;

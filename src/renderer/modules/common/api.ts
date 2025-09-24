@@ -1,6 +1,8 @@
 import type { ProgressEvent, Request, Response } from "superagent";
 import { filters, getFunctionBySource, waitForModule } from "../webpack";
 
+import type { Backoff } from "discord-client-types/discord_common/packages/backoff/Backoff";
+
 interface HTTPAttachment {
   file: string | Blob | Buffer;
   filename: string;
@@ -48,28 +50,7 @@ export interface HTTPResponse<T = Record<string, unknown>> {
   text: string;
 }
 
-export declare class Backoff {
-  public constructor(min?: number, max?: number | null, jitter?: boolean);
-
-  private _callback?: () => void;
-  private _current: number;
-  private _fails: number;
-  private _timeoutId?: number;
-
-  public jitter: boolean;
-  public max: number;
-  public min: number;
-
-  public get current(): number;
-  public get fails(): number;
-  public get pending(): boolean;
-
-  public cancel: () => void;
-  public fail: (callback?: () => void) => number;
-  public succeed: () => void;
-}
-
-declare class V6OrEarlierAPIError {
+export declare class V6OrEarlierAPIError {
   public constructor(error: Record<string, unknown> | null, code: number, message?: string);
 
   public code: number;
@@ -138,8 +119,8 @@ const v6ErrorClass = exportedClasses.find(
 const v8ErrorClass = exportedClasses.find(
   (c) => "hasFieldErrors" in (c as APIErrorClass).prototype,
 ) as typeof APIError;
-const http = exportedValues.find((v) => typeof v === "object") as HTTP;
-const invalidFormBodyErrorCode = exportedValues.find((v) => typeof v === "number") as number;
+const http = exportedValues.find((v) => typeof v === "object")!;
+const invalidFormBodyErrorCode = exportedValues.find((v) => typeof v === "number")!;
 
 const getAPIBaseURL = getFunctionBySource<API["getAPIBaseURL"]>(
   realApiModule,

@@ -1,20 +1,28 @@
-import { error, log } from "../modules/logger";
 import { ready as commonReady } from "@common";
+import { type GeneralSettings, defaultSettings } from "src/types";
+import * as settings from "../apis/settings";
 import { ready as componentsReady } from "../modules/components";
+import * as i18n from "../modules/i18n";
+import { error, log } from "../modules/logger";
+import { loadStyleSheet } from "../util";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
-import * as themes from "./themes";
 import * as quickCSS from "./quick-css";
-import { loadStyleSheet } from "../util";
+import * as themes from "./themes";
 import { startAutoUpdateChecking } from "./updater";
-import { interceptChunksGlobal } from "../modules/webpack/patch-load";
+
+// TODO: see if we can import this from General.tsx
+const generalSettings = settings.init<GeneralSettings, keyof typeof defaultSettings>(
+  "dev.replugged.Settings",
+  defaultSettings,
+);
 
 export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");
   const startTime = performance.now();
 
   loadStyleSheet("replugged://renderer.css");
-  await import("../modules/i18n").then((i18n) => i18n.load());
+  i18n.load();
 
   let started = false;
   await Promise.race([
@@ -36,7 +44,7 @@ export async function start(): Promise<void> {
   started = true;
 
   // Quick CSS needs to be called after themes are loaded so that it will override the theme's CSS
-  quickCSS.load();
+  if (generalSettings.get("quickCSS")) quickCSS.load();
 
   // Want to make sure all addons are initialized before starting auto-update checking
   startAutoUpdateChecking();
@@ -70,34 +78,21 @@ export async function restart(): Promise<void> {
   await start();
 }
 
-/*
-Load order:
-1. Register all plaintext patches
-2. await waitForReady from webpack
-3. signalStart()
-4. await reactReady
-5. Start coremods, plugins, and themes
-*/
-
-export async function ignite(): Promise<void> {
-  // This is the function that will be called when loading the window.
+export function ignite(): void {
   // Plaintext patches must run first.
-  interceptChunksGlobal();
   coremods.runPlaintextPatches();
-  await plugins.loadAll();
-  await plugins.runPlaintextPatches();
+  plugins.loadAll();
+  plugins.runPlaintextPatches();
   // At this point, Discord's code should run.
   // Wait for the designated common modules to load before continuing.
-  await Promise.all([commonReady(), componentsReady()]);
-  await start();
+  void Promise.all([commonReady(), componentsReady()]).then(start);
 }
 
-export async function startSplash(): Promise<void> {
+export function startSplash(): void {
   log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
   const startTime = performance.now();
 
-  await themes.loadMissing();
-  themes.loadAllSplash();
+  void themes.loadMissing().then(themes.loadAllSplash);
 
   log(
     "Ignition",

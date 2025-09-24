@@ -1,13 +1,12 @@
-import { modal, toast } from "@common";
-import { intl } from "@common/i18n";
+import { marginStyles, modal, toast } from "@common";
+import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import {
   Button,
   ButtonItem,
   Category,
-  Divider,
-  Flex,
   FormItem,
+  FormSection,
   SwitchItem,
   Text,
   TextInput,
@@ -19,12 +18,23 @@ import * as settings from "../../../apis/settings";
 import * as util from "../../../util";
 import { initWs, socket } from "../../devCompanion";
 
-export const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
+export const generalSettings = settings.init<GeneralSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
   defaultSettings,
 );
 
-const konamiCode = ["38", "38", "40", "40", "37", "39", "37", "39", "66", "65"];
+const konamiCode = [
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "KeyB",
+  "KeyA",
+];
 
 function reload(): void {
   setTimeout(() => window.location.reload(), 250);
@@ -40,7 +50,10 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
     .confirm({
       title: intl.string(t.REPLUGGED_SETTINGS_RESTART_TITLE),
       body: intl.string(t.REPLUGGED_SETTINGS_RESTART),
-      confirmText: intl.string(t.REPLUGGED_RESTART),
+      confirmText: doRelaunch
+        ? intl.string(discordT.BUNDLE_READY_RESTART)
+        : intl.string(discordT.ERRORS_RELOAD),
+      cancelText: intl.string(discordT.CANCEL),
       confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
@@ -49,19 +62,18 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
 }
 
 export const General = (): React.ReactElement => {
-  const { value: expValue, onChange: expOnChange } = util.useSetting(
+  const [quickCSSValue, quickCSSOnChange] = util.useSettingArray(generalSettings, "quickCSS");
+  const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
+  const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
+  const [staffDevToolsValue, staffDevToolsOnChange] = util.useSettingArray(
     generalSettings,
-    "experiments",
+    "staffDevTools",
   );
-  const { value: rdtValue, onChange: rdtOnChange } = util.useSetting(
-    generalSettings,
-    "reactDevTools",
-  );
+  const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
+  const [keepTokenValue, keepTokenOnChange] = util.useSettingArray(generalSettings, "keepToken");
 
-  const [kKeys, setKKeys] = React.useState<number[]>([]);
-
+  const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
-
   const [hue, setHue] = React.useState(0);
 
   React.useEffect(() => {
@@ -75,7 +87,7 @@ export const General = (): React.ReactElement => {
 
   const listener = (e: KeyboardEvent): void => {
     if (isEasterEgg) return;
-    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), e.keyCode]);
+    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), e.code]);
   };
 
   React.useEffect(() => {
@@ -84,14 +96,13 @@ export const General = (): React.ReactElement => {
     return () => document.removeEventListener("keydown", listener);
   }, [kKeys, isEasterEgg]);
 
+  React.useEffect(() => {
+    if (quickCSSValue) window.replugged.quickCSS.load();
+    else window.replugged.quickCSS.unload();
+  }, [quickCSSValue]);
+
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_GENERAL_SETTINGS)}</Text.H2>
-      </Flex>
-
-      <Divider style={{ margin: "20px 0px" }} />
-
+    <FormSection tag="h1" title={intl.string(t.REPLUGGED_GENERAL_SETTINGS)}>
       <SwitchItem
         {...util.useSetting(generalSettings, "badges")}
         note={intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}>
@@ -105,19 +116,39 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       <SwitchItem
+        value={quickCSSValue}
+        onChange={quickCSSOnChange}
+        note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC)}>
+        {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE)}
+      </SwitchItem>
+
+      <SwitchItem
         {...util.useSetting(generalSettings, "autoApplyQuickCss")}
+        disabled={!quickCSSValue}
         note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
 
+      {DiscordNative.process.platform === "linux" && (
+        <SwitchItem
+          value={titleBarValue}
+          onChange={(value) => {
+            titleBarOnChange(value);
+            restartModal(true);
+          }}
+          note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}>
+          {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+        </SwitchItem>
+      )}
+
       <Category
-        title={intl.string(t.REPLUGGED_SETTINGS_ADVANCED)}
+        title={intl.string(discordT.ADVANCED_SETTINGS)}
         note={intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}>
         <FormItem
           title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
           note={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
-          divider={true}
-          style={{ marginBottom: "20px" }}>
+          className={marginStyles.marginBottom20}
+          divider>
           <TextInput
             {...util.useSetting(generalSettings, "apiUrl")}
             placeholder={WEBSITE_URL}
@@ -136,33 +167,59 @@ export const General = (): React.ReactElement => {
         </SwitchItem>
 
         <SwitchItem
-          value={rdtValue}
+          disabled={!expValue}
+          value={staffDevToolsValue}
           onChange={(value) => {
-            if (value) {
+            staffDevToolsOnChange(value);
+            restartModal(false);
+          }}
+          note={intl.format(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC, {})}>
+          {intl.string(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS)}
+        </SwitchItem>
+
+        <SwitchItem
+          value={rdtValue}
+          onChange={async (value) => {
+            try {
               rdtOnChange(value);
-              void RepluggedNative.reactDevTools
-                .downloadExtension()
-                .then(() => {
-                  restartModal(true);
-                })
-                .catch(() => {
-                  rdtOnChange(false); // Disable if failed
-                  toast.toast(
-                    intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
-                    toast.Kind.FAILURE,
-                  );
-                });
-            } else {
-              rdtOnChange(value);
+              if (value) {
+                await RepluggedNative.reactDevTools.downloadExtension();
+              } else {
+                await RepluggedNative.reactDevTools.removeExtension();
+              }
               restartModal(true);
+            } catch {
+              // Revert setting on any error
+              rdtOnChange(false);
+              if (value) {
+                try {
+                  await RepluggedNative.reactDevTools.removeExtension();
+                } catch {
+                  // Ignore cleanup errors
+                }
+              }
+              toast.toast(
+                intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
+                toast.Kind.FAILURE,
+              );
             }
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}>
           {intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
         </SwitchItem>
 
+        <SwitchItem
+          value={keepTokenValue}
+          onChange={(value) => {
+            keepTokenOnChange(value);
+            restartModal(false);
+          }}
+          note={intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN_DESC)}>
+          {intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN)}
+        </SwitchItem>
+
         <ButtonItem
-          button={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_RECONNECT)}
+          button={intl.string(discordT.RECONNECT)}
           note={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_DESC)}
           onClick={() => {
             socket?.close(1000, "Reconnecting");
@@ -182,6 +239,6 @@ export const General = (): React.ReactElement => {
           </Text.H1>
         </>
       )}
-    </>
+    </FormSection>
   );
 };

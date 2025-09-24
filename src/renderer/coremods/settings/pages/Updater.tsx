@@ -1,7 +1,17 @@
-import { toast } from "@common";
-import { intl } from "@common/i18n";
+import { marginStyles, toast } from "@common";
+import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
-import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
+import {
+  Anchor,
+  Button,
+  Flex,
+  FormSection,
+  Notice,
+  SliderItem,
+  SwitchItem,
+  Text,
+  Tooltip,
+} from "@components";
 import { Logger } from "@replugged";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
@@ -45,7 +55,7 @@ export const Updater = (): React.ReactElement => {
           });
           setUpdatesAvailable(getAvailableUpdates());
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           if (cancelled) return;
           toast.toast("Update failed.", toast.Kind.FAILURE);
           logger.error(err);
@@ -113,11 +123,7 @@ export const Updater = (): React.ReactElement => {
   };
 
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_UPDATES_UPDATER)}</Text.H2>
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
+    <FormSection tag="h1" title={intl.string(t.REPLUGGED_UPDATES_UPDATER)}>
       <SwitchItem
         {...useSetting(updaterSettings, "autoCheck")}
         note={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}>
@@ -128,29 +134,31 @@ export const Updater = (): React.ReactElement => {
         disabled={!updaterSettings.get("autoCheck")}
         note={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
         markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
-        equidistant={true}
+        equidistant
         onMarkerRender={(value) => {
           // Format as xh and/or xm
           const hours = Math.floor(value / 60);
           const minutes = value % 60;
 
-          const hourString = hours > 0 ? `${hours}h` : "";
-          const minuteString = minutes > 0 ? `${minutes}m` : "";
+          const hourString =
+            hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
+          const minuteString =
+            minutes > 0
+              ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes })
+              : "";
 
           const label = [hourString, minuteString].filter(Boolean).join(" ");
           return label;
         }}
-        stickToMarkers={true}>
+        stickToMarkers>
         {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
       </SliderItem>
       {isRepluggedDev && (
-        <div style={{ marginBottom: "16px" }}>
-          <Notice messageType={Notice.Types.WARNING}>
-            {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
-              url: "https://replugged.dev/download",
-            })}
-          </Notice>
-        </div>
+        <Notice messageType={Notice.Types.WARNING} className={marginStyles.marginBottom20}>
+          {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
+            url: "https://replugged.dev/download",
+          })}
+        </Notice>
       )}
       <Flex
         justify={Flex.Justify.BETWEEN}
@@ -163,7 +171,7 @@ export const Updater = (): React.ReactElement => {
               : intl.string(t.REPLUGGED_UPDATES_UP_TO_DATE)}
           </Text>
           {lastChecked ? (
-            <Text.Normal style={{ marginTop: "5px" }}>
+            <Text.Normal className={marginStyles.marginTop4}>
               {intl.format(t.REPLUGGED_UPDATES_LAST_CHECKED, {
                 date: new Date(lastChecked).toLocaleString(intl.currentLocale),
               })}
@@ -213,10 +221,13 @@ export const Updater = (): React.ReactElement => {
           const { manifest } = addon;
           const sourceLink = update.webUrl;
           return (
-            <div className="replugged-updater-item">
+            <div className="replugged-updater-item" key={update.id}>
               <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
                 <div>
-                  <Flex align={Flex.Align.CENTER} style={{ gap: "5px", marginBottom: "5px" }}>
+                  <Flex
+                    align={Flex.Align.CENTER}
+                    style={{ gap: "5px" }}
+                    className={marginStyles.marginBottom4}>
                     <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
                       <Text variant="heading-md/bold" color="header-primary" tag="span">
                         {manifest.name}
@@ -226,12 +237,12 @@ export const Updater = (): React.ReactElement => {
                     {sourceLink ? (
                       <Tooltip
                         text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
-                          type: intl.string(t.REPLUGGED_UPDATES_UPDATE_NOUN),
+                          type: intl.string(discordT.UPDATE_BADGE_HEADER),
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
-                        <a href={sourceLink} target="_blank" rel="noopener noreferrer">
+                        <Anchor href={sourceLink}>
                           <Icons.Link />
-                        </a>
+                        </Anchor>
                       </Tooltip>
                     ) : null}
                   </Flex>
@@ -244,7 +255,7 @@ export const Updater = (): React.ReactElement => {
                     onClick={() => installOne(update.id)}
                     color={Button.Colors.PRIMARY}
                     submitting={isUpdating}>
-                    {intl.string(t.REPLUGGED_UPDATES_UPDATE)}
+                    {intl.string(discordT.UPDATE)}
                   </Button>
                 ) : didInstallAll ? null : (
                   <Button onClick={reload} color={Button.Colors.RED}>
@@ -253,18 +264,16 @@ export const Updater = (): React.ReactElement => {
                 )}
               </Flex>
               {manifest.type !== "replugged" && manifest.updater?.type !== "store" ? (
-                <div style={{ marginTop: "8px" }}>
-                  <Notice messageType={Notice.Types.ERROR}>
-                    {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-                      type: label(getAddonType(manifest.type)),
-                    })}
-                  </Notice>
-                </div>
+                <Notice messageType={Notice.Types.ERROR} className={marginStyles.marginTop8}>
+                  {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+                    type: label(getAddonType(manifest.type)),
+                  })}
+                </Notice>
               ) : null}
             </div>
           );
         })}
       </Flex>
-    </>
+    </FormSection>
   );
 };

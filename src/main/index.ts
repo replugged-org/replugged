@@ -1,14 +1,16 @@
+import electron, { Menu, app, dialog, net, protocol, session } from "electron";
 import { dirname, join } from "path";
-
-import electron from "electron";
 import { CONFIG_PATHS } from "src/util.mjs";
+import type { PackageJson } from "type-fest";
+import { pathToFileURL } from "url";
 import type { RepluggedWebContents } from "../types";
+import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
-const discordPackage = require(join(discordPath, "package.json"));
-require.main!.filename = join(discordPath, discordPackage.main);
+const discordPackage: PackageJson = require(join(discordPath, "package.json"));
+require.main!.filename = join(discordPath, discordPackage.main!);
 
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
@@ -27,35 +29,18 @@ Object.defineProperty(global, "appSettings", {
 // https://github.com/discord/electron/blob/13-x-y/lib/browser/api/browser-window.ts#L60-L62
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
-  public constructor(
-    opts: electron.BrowserWindowConstructorOptions & {
-      webContents?: electron.WebContents;
-      webPreferences?: {
-        nativeWindowOpen: boolean;
-      };
-    },
-  ) {
+  public constructor(opts: Electron.BrowserWindowConstructorOptions) {
+    const titleBarSetting = getSetting<boolean>("dev.replugged.Settings", "titleBar", false);
+    if (opts.frame && process.platform === "linux" && titleBarSetting) opts.frame = void 0;
+
     const originalPreload = opts.webPreferences?.preload;
 
-    if (opts.webContents) {
-      // General purpose pop-outs used by Discord
-    } else if (opts.webPreferences?.nodeIntegration) {
-      // Splash Screen
-      // opts.webPreferences.preload = join(__dirname, './preloadSplash.js');
-    } else if (opts.webPreferences?.offscreen) {
-      // Overlay
-      //      originalPreload = opts.webPreferences.preload;
-      // opts.webPreferences.preload = join(__dirname, './preload.js');
-    } else if (opts.webPreferences?.preload) {
-      // originalPreload = opts.webPreferences.preload;
-      if (opts.webPreferences.nativeWindowOpen) {
-        // Discord Client
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
-        // opts.webPreferences.contextIsolation = false; // shrug
-      } else {
-        // Splash Screen on macOS (Host 0.0.262+) & Windows (Host 0.0.293 / 1.0.17+)
-        opts.webPreferences.preload = join(__dirname, "./preload.js");
-      }
+    // Load our preload script if it's the main window or the splash screen
+    if (
+      opts.webPreferences?.preload &&
+      (opts.title || opts.webPreferences.preload.includes("splash"))
+    ) {
+      opts.webPreferences.preload = join(__dirname, "./preload.js");
     }
 
     super(opts);
@@ -88,34 +73,146 @@ delete require.cache[electronPath]!.exports;
 require.cache[electronPath]!.exports = electronExports;
 
 (
-  electron.app as typeof electron.app & {
+  app as typeof app & {
     setAppPath: (path: string) => void;
   }
 ).setAppPath(discordPath);
-// electron.app.name = discordPackage.name;
+// app.name = discordPackage.name;
 
-electron.protocol.registerSchemesAsPrivileged([
-  {
-    scheme: "replugged",
-    privileges: {
-      standard: true,
-      secure: true,
-      allowServiceWorkers: true,
-    },
+const repluggedProtocol = {
+  scheme: "replugged",
+  privileges: {
+    standard: true,
+    secure: true,
+    allowServiceWorkers: true,
+    stream: true,
+    supportFetchAPI: true,
   },
-]);
+};
 
-async function loadReactDevTools(): Promise<void> {
-  const rdtSetting = await getSetting("dev.replugged.Settings", "reactDevTools", false);
+// Monkey patch to ensure our protocol is always included, even if Discord tries to override it with their own schemes
+const originalRegisterSchemesAsPrivileged = protocol.registerSchemesAsPrivileged.bind(protocol);
+originalRegisterSchemesAsPrivileged([repluggedProtocol]);
+protocol.registerSchemesAsPrivileged = (customSchemes: Electron.CustomScheme[]) => {
+  const combinedSchemes = [repluggedProtocol, ...customSchemes];
+  originalRegisterSchemesAsPrivileged(combinedSchemes);
+};
 
-  if (rdtSetting) {
-    void electron.session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
-  }
+// Monkey patch to add our menu items into the tray context menu
+const originalBuildFromTemplate = Menu.buildFromTemplate.bind(Menu);
+
+async function showInfo(title: string, message: string): Promise<Electron.MessageBoxReturnValue> {
+  return dialog.showMessageBox({ type: "info", title, message, buttons: ["Ok"] });
+}
+async function showError(title: string, message: string): Promise<Electron.MessageBoxReturnValue> {
+  return dialog.showMessageBox({ type: "error", title, message, buttons: ["Close"] });
 }
 
+Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
+  if (items[0]?.label !== "Discord" || items.some((e) => e.label === "Replugged"))
+    return originalBuildFromTemplate(items);
+
+  const currentVersion = getRepluggedVersion();
+
+  const repluggedMenuItems: Electron.MenuItemConstructorOptions = {
+    label: "Replugged",
+    submenu: [
+      {
+        label: "Toggle Developer Tools",
+        click: () => {
+          const win =
+            BrowserWindow.getFocusedWindow() ||
+            BrowserWindow.getAllWindows().find((w) => !w.isDestroyed() && !w.getParentWindow());
+          if (win) win.webContents.toggleDevTools();
+        },
+        accelerator: process.platform === "darwin" ? "Option+Cmd+I" : "Ctrl+Shift+I",
+      },
+      {
+        label: "Update Replugged",
+        click: async () => {
+          try {
+            if (currentVersion === "dev") {
+              await showInfo(
+                "Developer Mode",
+                "You are currently running Replugged in developer mode and Replugged will not be able to update itself.",
+              );
+              return;
+            }
+
+            const repluggedInfo = await getAddonInfo("store", "dev.replugged.Replugged");
+            if (!repluggedInfo.success) {
+              console.error(repluggedInfo.error);
+              await showError(
+                "Update Check Failed",
+                "Unable to check for Replugged updates. Check logs for details.",
+              );
+              return;
+            }
+
+            const newVersion = repluggedInfo.manifest.version;
+            if (currentVersion === newVersion) {
+              await showInfo(
+                "Up to Date",
+                `You're running the latest version of Replugged (v${currentVersion}).`,
+              );
+              return;
+            }
+
+            const installed = await installAddon(
+              "replugged",
+              "replugged.asar",
+              repluggedInfo.url,
+              true,
+              newVersion,
+            );
+            if (!installed.success) {
+              console.error(installed.error);
+              await showError(
+                "Install Update Failed",
+                "An error occurred while installing the Replugged update. Check logs for details.",
+              );
+              return;
+            }
+
+            await showInfo(
+              "Successfully Updated",
+              process.platform === "linux"
+                ? "Replugged updated but we can't relaunch automatically on Linux. Discord will close now."
+                : "Replugged updated and will relaunch Discord now to take effect!",
+            );
+
+            app.relaunch();
+            app.quit();
+          } catch (err) {
+            console.error(err);
+            await showError(
+              "Update Error",
+              "An unexpected error occurred. Check logs for details.",
+            );
+          }
+        },
+      },
+      {
+        enabled: false,
+        label: `Version: ${currentVersion === "dev" ? "dev" : `v${currentVersion}`}`,
+      },
+    ],
+  };
+
+  items.splice(
+    // Quit + separator
+    -2,
+    0,
+    { type: "separator" },
+    repluggedMenuItems,
+  );
+
+  return originalBuildFromTemplate(items);
+};
+
 // Copied from old codebase
-electron.app.once("ready", () => {
-  electron.session.defaultSession.webRequest.onBeforeRequest(
+app.once("ready", () => {
+  session.defaultSession.webRequest.onBeforeRequest(
     {
       urls: [
         "https://*/api/v*/science",
@@ -131,7 +228,7 @@ electron.app.once("ready", () => {
     },
   );
   // @todo: Whitelist a few domains instead of removing CSP altogether; See #386
-  electron.session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
+  session.defaultSession.webRequest.onHeadersReceived(({ responseHeaders }, done) => {
     if (!responseHeaders) {
       done({});
       return;
@@ -164,15 +261,16 @@ electron.app.once("ready", () => {
     done({ responseHeaders: headersWithoutCSP });
   });
 
-  electron.protocol.registerFileProtocol("replugged", (request, cb) => {
+  // TODO: Eventually in the future, this should be migrated to IPC for better performance
+  protocol.handle("replugged", (request) => {
     let filePath = "";
     const reqUrl = new URL(request.url);
     switch (reqUrl.hostname) {
-      case "renderer":
-        filePath = join(__dirname, "./renderer.js");
-        break;
       case "renderer.css":
         filePath = join(__dirname, "./renderer.css");
+        break;
+      case "assets":
+        filePath = join(__dirname, reqUrl.hostname, reqUrl.pathname);
         break;
       case "quickcss":
         filePath = join(CONFIG_PATHS.quickcss, reqUrl.pathname);
@@ -184,10 +282,26 @@ electron.app.once("ready", () => {
         filePath = join(CONFIG_PATHS.plugins, reqUrl.pathname);
         break;
     }
-    cb({ path: filePath });
+    return net.fetch(pathToFileURL(filePath).toString());
   });
 
-  void loadReactDevTools();
+  const defaultPermissionRequestHandler = session.defaultSession.setPermissionRequestHandler.bind(
+    session.defaultSession,
+  );
+  session.defaultSession.setPermissionRequestHandler = (cb) => {
+    defaultPermissionRequestHandler((webContents, permission, callback, details) => {
+      if (permission === "media") {
+        callback(true);
+        return;
+      }
+      cb?.(webContents, permission, callback, details);
+    });
+  };
+
+  const rdtSetting = getSetting<boolean>("dev.replugged.Settings", "reactDevTools", false);
+  if (rdtSetting) {
+    void session.defaultSession.loadExtension(CONFIG_PATHS["react-devtools"]);
+  }
 });
 
 // This module is required this way at runtime.

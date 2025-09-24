@@ -1,5 +1,7 @@
 import { error } from "../logger";
 
+import type { LocalStorage } from "discord-client-types/discord_common/packages/storage/web/Storage";
+
 const modulePromises: Array<() => Promise<void>> = [];
 
 function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) => void): void {
@@ -16,9 +18,9 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
             cb(mod);
             res();
           })
-          .catch((err) => {
+          .catch((err: unknown) => {
             error("CommonModules", name, void 0, `Failed to import module "${name}"`, err);
-            rej(err);
+            rej(err instanceof Error ? err : new Error(String(err)));
           });
       }),
   );
@@ -53,12 +55,12 @@ export type { API };
 export let api: API;
 importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
-import * as Components from "./components";
-export type { Components };
-export let components: typeof import("./components").default;
+import type { DiscordComponents } from "./components";
+export type { DiscordComponents };
+export let components: DiscordComponents;
 importTimeout("components", import("./components"), (mod) => (components = mod.default));
 
-import * as Constants from "./constants";
+import type * as Constants from "./constants";
 export type { Constants };
 export let constants: typeof Constants;
 importTimeout("constants", import("./constants"), (mod) => (constants = mod));
@@ -92,6 +94,14 @@ export type { I18n };
 export let i18n: I18n;
 importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod));
 
+export let localStorage: LocalStorage;
+importTimeout("localStorage", import("./localStorage"), (mod) => (localStorage = mod.default));
+
+import type { MarginStyles } from "./marginStyles";
+export type { MarginStyles };
+export let marginStyles: MarginStyles;
+importTimeout("marginStyles", import("./marginStyles"), (mod) => (marginStyles = mod.default));
+
 import type { Modal } from "./modal";
 export type { Modal };
 export let modal: Modal;
@@ -115,7 +125,15 @@ importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 // External Libraries
 
 /**
- * @see {@link https://highlightjs.org/usage/}
+ * @see {@link https://github.com/JedWatson/classnames}
+ */
+import type { ClassNames } from "./classnames";
+export type { ClassNames };
+export let classNames: ClassNames;
+importTimeout("classnames", import("./classnames"), (mod) => (classNames = mod.default));
+
+/**
+ * @see {@link https://highlightjs.org/}
  */
 export let hljs: typeof import("highlight.js").default;
 importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
