@@ -9,7 +9,7 @@ import { Injector } from "../../modules/injector";
 import { generalSettings } from "../settings/pages";
 import Badges from "./badges";
 
-import "./badge.css";
+import "./RepluggedBadge.css";
 
 const injector = new Injector();
 
@@ -99,7 +99,7 @@ const badgeElements = [
 
 export async function start(): Promise<void> {
   const useBadgesMod = await waitForModule<Record<string, UseBadges>>(
-    filters.bySource(/:\w+\.getBadges\(\)/),
+    filters.bySource(/:\i\.getBadges\(\)/),
   );
   const useBadgesKey = getFunctionKeyBySource(useBadgesMod, "")!;
 
@@ -173,7 +173,7 @@ export async function start(): Promise<void> {
   });
 
   const userProfileConstantsMod = await waitForModule<Record<string, GetBadgeAsset>>(
-    filters.bySource(/concat\(\w+,"\/badge-icons\/"/),
+    filters.bySource(/concat\(\i,"\/badge-icons\/"/),
   );
   const getBadgeAssetKey = getFunctionKeyBySource(userProfileConstantsMod, "badge-icons")!;
 

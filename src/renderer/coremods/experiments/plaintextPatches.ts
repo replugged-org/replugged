@@ -12,19 +12,24 @@ export default (generalSettings.get("experiments")
       {
         find: /"displayName","(Developer)?ExperimentStore"/,
         replacements: [
-          // Patch the ExperimentStore to force the release channel to 'staging'
+          // Force the release channel to 'staging'
           {
             match: /window\.GLOBAL_ENV\.RELEASE_CHANNEL/g,
             replace: `"staging"`,
           },
-          // Patch the DeveloperExperimentStore to force the 'isDeveloper' property to true
+        ],
+      },
+      {
+        find: '"displayName","DeveloperExperimentStore"',
+        replacements: [
+          // Force the 'isDeveloper' property to true
           {
-            match: /(isDeveloper:{configurable:!1,get:\(\)=>)\w+/g,
+            match: /(isDeveloper:{configurable:!1,get:\(\)=>)\i/g,
             replace: `$1true`,
           },
-          // Patch the DeveloperExperimentStore to set the result of 'isStaffEnv' to be always true
+          // Set the result of 'isStaffEnv' to be always true
           {
-            match: /=\(0,\w+\.\w+\)\(\w+\.default\.getCurrentUser\(\)\)/,
+            match: /=\(0,\i\.\i\)\(\i\.default\.getCurrentUser\(\)\)/,
             replace: "=true",
           },
         ],
@@ -34,7 +39,7 @@ export default (generalSettings.get("experiments")
         find: `header:"Developer Only"`,
         replacements: [
           {
-            match: /isStaff:\w+/,
+            match: /isStaff:\i/,
             replace: `$&||true`,
           },
         ],
@@ -56,7 +61,7 @@ export default (generalSettings.get("experiments")
               find: `staff-help-popout`,
               replacements: [
                 {
-                  match: /isDiscordDeveloper:\w+/,
+                  match: /isDiscordDeveloper:\i/,
                   replace: `$&=true`,
                 },
               ],
@@ -64,10 +69,10 @@ export default (generalSettings.get("experiments")
             {
               // Set the resulting experiment configuration of the bug reporter to be always true
               // This is necessary to ensure the StaffHelpButton is shown instead of the classic HelpButton
-              find: /hasBugReporterAccess:\w+}=\w+\.\w+\.useExperiment/,
+              find: /hasBugReporterAccess:\i}=\i\.\i\.useExperiment/,
               replacements: [
                 {
-                  match: /hasBugReporterAccess:\w+/,
+                  match: /hasBugReporterAccess:\i/,
                   replace: `_$&=true`,
                 },
               ],
@@ -77,6 +82,16 @@ export default (generalSettings.get("experiments")
       {
         // Always show the ExperimentEmbed
         find: "dev://experiment/",
+        replacements: [
+          {
+            match: ".isStaffPersonal())",
+            replace: `$&||true`,
+          },
+        ],
+      },
+      {
+        // Always show the ManaPlaygroundEmbed
+        find: "dev://mana(/",
         replacements: [
           {
             match: ".isStaffPersonal())",

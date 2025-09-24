@@ -1,40 +1,8 @@
-import { getFunctionBySource } from "@webpack";
-import type React from "react";
-import components from "../common/components";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 
-interface TextAreaProps {
-  autoFocus?: boolean;
-  disabled?: boolean;
-  required?: boolean;
-  allowOverflow?: boolean;
-  resizeable?: boolean;
-  flex?: boolean;
-  autosize?: boolean;
-  spellCheck?: boolean;
-  showCharacterCount?: boolean;
-  showCharacterCountFullPadding?: boolean;
-  showRemainingCharacterCount?: boolean;
-  minLength?: number;
-  maxLength?: number;
-  rows?: number;
-  name?: string;
-  placeholder?: string;
-  error?: string;
-  value?: string;
-  id?: string;
-  defaultDirty?: boolean;
-  inputRef?: React.Ref<HTMLTextAreaElement>;
-  className?: string;
-  onChange?: (value: string, name: string) => void;
-  onInvalid?: React.FormEventHandler<HTMLTextAreaElement>;
-  onFocus?: (event: React.FocusEvent<HTMLTextAreaElement>, name: string) => void;
-  onBlur?: (event: React.FocusEvent<HTMLTextAreaElement>, name: string) => void;
-  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
-  "aria-labelledby"?: string;
-}
+import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 
-export type TextAreaType = React.ComponentClass<TextAreaProps> & {
-  defaultProps: TextAreaProps;
-};
+const textAreaString = "this.getIsOverflowing()";
+const mod = await waitForModule(filters.bySource(textAreaString));
 
-export default getFunctionBySource<TextAreaType>(components, "showCharacterCountFullPadding")!;
+export default getFunctionBySource<typeof VoidDesign.TextAreaLegacy>(mod, textAreaString)!;

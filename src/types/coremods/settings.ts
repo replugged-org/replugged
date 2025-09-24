@@ -7,7 +7,8 @@ export interface Section {
   _id?: string;
   label?: string | LabelCallback;
   color?: string;
-  element?: (args: unknown) => React.ReactElement;
+  element?: React.FC;
+  tabPredicate?: () => boolean;
   pos: number;
   fromEnd?: boolean;
   // eslint-disable-next-line @typescript-eslint/naming-convention

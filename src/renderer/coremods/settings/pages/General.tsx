@@ -1,13 +1,12 @@
-import { modal, toast } from "@common";
+import { marginStyles, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
 import {
   Button,
   ButtonItem,
   Category,
-  Divider,
-  Flex,
   FormItem,
+  FormSection,
   SwitchItem,
   Text,
   TextInput,
@@ -51,7 +50,10 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
     .confirm({
       title: intl.string(t.REPLUGGED_SETTINGS_RESTART_TITLE),
       body: intl.string(t.REPLUGGED_SETTINGS_RESTART),
-      confirmText: intl.string(discordT.BUNDLE_READY_RESTART),
+      confirmText: doRelaunch
+        ? intl.string(discordT.BUNDLE_READY_RESTART)
+        : intl.string(discordT.ERRORS_RELOAD),
+      cancelText: intl.string(discordT.CANCEL),
       confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
@@ -60,13 +62,15 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
 }
 
 export const General = (): React.ReactElement => {
-  const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
-  const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
+  const [quickCSSValue, quickCSSOnChange] = util.useSettingArray(generalSettings, "quickCSS");
   const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
+  const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
   const [staffDevToolsValue, staffDevToolsOnChange] = util.useSettingArray(
     generalSettings,
     "staffDevTools",
   );
+  const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
+  const [keepTokenValue, keepTokenOnChange] = util.useSettingArray(generalSettings, "keepToken");
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
@@ -92,14 +96,13 @@ export const General = (): React.ReactElement => {
     return () => document.removeEventListener("keydown", listener);
   }, [kKeys, isEasterEgg]);
 
+  React.useEffect(() => {
+    if (quickCSSValue) window.replugged.quickCSS.load();
+    else window.replugged.quickCSS.unload();
+  }, [quickCSSValue]);
+
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_GENERAL_SETTINGS)}</Text.H2>
-      </Flex>
-
-      <Divider style={{ margin: "20px 0px" }} />
-
+    <FormSection tag="h1" title={intl.string(t.REPLUGGED_GENERAL_SETTINGS)}>
       <SwitchItem
         {...util.useSetting(generalSettings, "badges")}
         note={intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}>
@@ -113,7 +116,15 @@ export const General = (): React.ReactElement => {
       </SwitchItem>
 
       <SwitchItem
+        value={quickCSSValue}
+        onChange={quickCSSOnChange}
+        note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC)}>
+        {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE)}
+      </SwitchItem>
+
+      <SwitchItem
         {...util.useSetting(generalSettings, "autoApplyQuickCss")}
+        disabled={!quickCSSValue}
         note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
         {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
       </SwitchItem>
@@ -136,8 +147,8 @@ export const General = (): React.ReactElement => {
         <FormItem
           title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
           note={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
-          divider
-          style={{ marginBottom: "20px" }}>
+          className={marginStyles.marginBottom20}
+          divider>
           <TextInput
             {...util.useSetting(generalSettings, "apiUrl")}
             placeholder={WEBSITE_URL}
@@ -168,28 +179,43 @@ export const General = (): React.ReactElement => {
 
         <SwitchItem
           value={rdtValue}
-          onChange={(value) => {
-            if (value) {
+          onChange={async (value) => {
+            try {
               rdtOnChange(value);
-              void RepluggedNative.reactDevTools
-                .downloadExtension()
-                .then(() => {
-                  restartModal(true);
-                })
-                .catch(() => {
-                  rdtOnChange(false); // Disable if failed
-                  toast.toast(
-                    intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
-                    toast.Kind.FAILURE,
-                  );
-                });
-            } else {
-              rdtOnChange(value);
+              if (value) {
+                await RepluggedNative.reactDevTools.downloadExtension();
+              } else {
+                await RepluggedNative.reactDevTools.removeExtension();
+              }
               restartModal(true);
+            } catch {
+              // Revert setting on any error
+              rdtOnChange(false);
+              if (value) {
+                try {
+                  await RepluggedNative.reactDevTools.removeExtension();
+                } catch {
+                  // Ignore cleanup errors
+                }
+              }
+              toast.toast(
+                intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
+                toast.Kind.FAILURE,
+              );
             }
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}>
           {intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
+        </SwitchItem>
+
+        <SwitchItem
+          value={keepTokenValue}
+          onChange={(value) => {
+            keepTokenOnChange(value);
+            restartModal(false);
+          }}
+          note={intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN_DESC)}>
+          {intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN)}
         </SwitchItem>
 
         <ButtonItem
@@ -213,6 +239,6 @@ export const General = (): React.ReactElement => {
           </Text.H1>
         </>
       )}
-    </>
+    </FormSection>
   );
 };
