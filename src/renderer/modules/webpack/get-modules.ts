@@ -86,9 +86,9 @@ export function getExportsForProps<T, P extends PropertyKey = keyof T>(
 
 // This doesn't have anywhere else to go
 
-export function getById<T>(id: number, raw?: false): T | undefined;
-export function getById<T>(id: number, raw: true): RawModule<T> | undefined;
-export function getById<T>(id: number, raw?: boolean): T | RawModule<T> | undefined;
+export function getById<T>(id: number | string, raw?: false): T | undefined;
+export function getById<T>(id: number | string, raw: true): RawModule<T> | undefined;
+export function getById<T>(id: number | string, raw?: boolean): T | RawModule<T> | undefined;
 
 /**
  * Retrieves a module by its ID.
@@ -102,7 +102,7 @@ export function getById<T>(id: number, raw?: boolean): T | RawModule<T> | undefi
  * @returns The module's exports, the raw module object, or `undefined` if the module could not be found.
  * @throws {Error} Will throw an error if Webpack is not initialized.
  */
-export function getById<T>(id: number, raw = false): T | RawModule<T> | undefined {
+export function getById<T>(id: number | string, raw = false): T | RawModule<T> | undefined {
   if (!wpRequire) throw new Error("Webpack not initialized");
   // Load the module if not already initialized
   if (!webpackChunks || !(id in webpackChunks)) {
