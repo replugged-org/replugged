@@ -1,45 +1,24 @@
-import { UnknownFunction } from "src/types";
-import { getExportsForProps } from "./get-modules";
-import { getFunctionKeyBySource } from "./inner-search";
-
-function byProps<P extends PropertyKey = PropertyKey>(...props: P[]) {
-  return (m: Record<string, unknown>) => {
-    const obj = getExportsForProps(m, props);
-    if (typeof obj !== "undefined")
-      for (const [k, exported] of Object.entries(m)) {
-        if (exported === obj) return k;
-      }
-  };
-}
-
-function byString(match: string | RegExp | ((func: UnknownFunction) => boolean)) {
-  return (m: Record<string, unknown>) => {
-    return getFunctionKeyBySource(m, match);
-  };
-}
-
-export function unmangleExports<T, M = T & { raw: unknown }>(
+export function unmangleExports<T = Record<string, unknown>, M = T & { symbol: unknown }>(
   mod: Record<string, unknown> | undefined,
-  map: Record<
-    keyof T,
-    ReturnType<typeof byString> | ReturnType<typeof byString> | ((m: unknown) => string)
-  >,
+  map: Record<keyof T, string>,
 ): M {
-  const unmangled = { raw: mod } as M;
+  const unmangled = { [Symbol.for("raw")]: mod } as M;
   if (!mod) return unmangled;
 
-  for (const key in map) {
-    const valueKey = map[key](mod)!;
-    Object.defineProperty(unmangled, key, {
-      get: () => mod[valueKey],
-      set: (v) => {
-        mod[valueKey] = v;
+  for (const string in map) {
+    const key = map[string];
+    Object.defineProperty(unmangled, string, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        const val = mod[key];
+        return typeof val === "function" ? val.bind(mod) : val;
+      },
+      set(newValue) {
+        mod[key] = newValue;
       },
     });
   }
 
   return unmangled;
 }
-
-unmangleExports.byString = byString;
-unmangleExports.byProps = byProps;
