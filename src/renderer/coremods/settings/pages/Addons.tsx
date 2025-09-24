@@ -18,12 +18,12 @@ import {
   Tooltip,
 } from "@components";
 import { Logger, plugins, themes, webpack } from "@replugged";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
 import Icons from "../icons";
-import { generalSettings } from "./General";
 
 import "./Addons.css";
 

@@ -2,13 +2,14 @@ import { marginStyles, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
+import { generalSettings } from "src/renderer/managers/settings";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
-import { generalSettings, getAddonType, getSourceLink, label } from "../settings/pages";
+import { getAddonType, getSourceLink, label } from "../settings/pages";
 
 const logger = Logger.coremod("Installer");
 

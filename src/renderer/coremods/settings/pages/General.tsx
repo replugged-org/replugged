@@ -12,16 +12,10 @@ import {
   TextInput,
 } from "@components";
 import { WEBSITE_URL } from "src/constants";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
-import { type GeneralSettings, defaultSettings } from "src/types";
-import * as settings from "../../../apis/settings";
 import * as util from "../../../util";
 import { initWs, socket } from "../../devCompanion";
-
-export const generalSettings = settings.init<GeneralSettings, keyof typeof defaultSettings>(
-  "dev.replugged.Settings",
-  defaultSettings,
-);
 
 const konamiCode = [
   "ArrowUp",

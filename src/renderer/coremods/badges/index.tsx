@@ -3,10 +3,10 @@ import React from "@common/react";
 import { Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "@webpack";
 import { DISCORD_BLURPLE, DISCORD_INVITE, WEBLATE_URL } from "src/constants";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import type { Badge, DisplayProfile } from "src/types";
 import { Injector } from "../../modules/injector";
-import { generalSettings } from "../settings/pages";
 import Badges from "./badges";
 
 import "./RepluggedBadge.css";
