@@ -4,7 +4,7 @@ import { CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
 import type { RepluggedWebContents } from "../types";
-import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
+import { getAddonInfo, getRepluggedPackage, installAddon } from "./ipc/installer";
 import { getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
@@ -112,7 +112,7 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
   if (items[0]?.label !== "Discord" || items.some((e) => e.label === "Replugged"))
     return originalBuildFromTemplate(items);
 
-  const currentVersion = getRepluggedVersion();
+  const currentVersion = getRepluggedPackage("version");
 
   const repluggedMenuItems: Electron.MenuItemConstructorOptions = {
     label: "Replugged",

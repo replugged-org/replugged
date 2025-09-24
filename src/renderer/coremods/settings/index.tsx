@@ -2,7 +2,15 @@ import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
 import { t } from "src/renderer/modules/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, QuickCSS, Themes, Updater, generalSettings } from "./pages";
+import {
+  General,
+  Plugins,
+  QuickCSS,
+  Themes,
+  Updater,
+  generalSettings,
+  openChangelog,
+} from "./pages";
 
 export { insertSections };
 
@@ -43,6 +51,11 @@ export function start(): void {
       name: "rp-updater",
       label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
       elem: Updater,
+    }),
+    Section({
+      name: "rp-changelog",
+      label: () => intl.string(t.REPLUGGED_CHANGELOG),
+      onClick: openChangelog,
     }),
   ]);
 }

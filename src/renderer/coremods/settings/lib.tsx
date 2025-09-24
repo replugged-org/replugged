@@ -17,28 +17,33 @@ export const Section = ({
   pos,
   fromEnd,
   tabPredicate,
+  onClick,
 }: {
   name: string;
   _id?: string;
   label?: string | LabelCallback;
   color?: string;
-  elem: React.FC;
+  elem?: React.FC;
   pos?: number;
   fromEnd?: boolean;
   tabPredicate?: () => boolean;
+  onClick?: (event: React.MouseEvent) => void;
 }): SectionType => ({
   section: name,
   _id,
   label,
   color,
-  element: (props) => (
-    <ErrorBoundary>
-      <Page {...props} />
-    </ErrorBoundary>
-  ),
+  element: Page
+    ? (props) => (
+        <ErrorBoundary>
+          <Page {...props} />
+        </ErrorBoundary>
+      )
+    : undefined,
   pos: getPos(pos),
   fromEnd: fromEnd ?? getPos(pos) < 0,
   tabPredicate,
+  onClick,
 });
 
 export const Divider = (pos?: number): SectionType => ({

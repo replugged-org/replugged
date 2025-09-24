@@ -82,6 +82,7 @@ const contexts = await Promise.all([
     },
     loader: {
       ".png": "file",
+      ".md": "file",
     },
   }),
 ]);
