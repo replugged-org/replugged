@@ -27,7 +27,7 @@ function injectTabBarItemId(): void {
     TabBar.Item.prototype,
     "render",
     (_, res: React.ReactElement<Design.TabBarItemProps>, instance: Design.TabBarItem) => {
-      if (instance.props.id) {
+      if (typeof instance.props.id === "string") {
         res.props.id = `${instance.props.id.replace(/\s+/g, "-").toLowerCase()}-tab`;
       }
       return res;
