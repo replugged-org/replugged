@@ -9,7 +9,7 @@ import { Logger } from "../../modules/logger";
 
 import type { MenuProps } from "discord-client-types/discord_app/design/components/Menu/web/Menu";
 
-const logger = Logger.api("ContextMenu");
+const logger = Logger.coremod("ContextMenu");
 
 interface MenuItem {
   getItem: GetContextItem;
