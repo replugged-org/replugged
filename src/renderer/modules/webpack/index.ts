@@ -1,4 +1,4 @@
-export { unmangleExports } from "./unmangle";
+export { mapModule } from "./mapper";
 
 export { waitForModule } from "./lazy";
 
