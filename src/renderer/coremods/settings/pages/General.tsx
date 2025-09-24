@@ -64,6 +64,7 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
 export const General = (): React.ReactElement => {
   const [quickCSSValue, quickCSSOnChange] = util.useSettingArray(generalSettings, "quickCSS");
   const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
+  const [winUpdaterValue, winUpdaterOnChange] = util.useSettingArray(generalSettings, "winUpdater");
   const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
   const [staffDevToolsValue, staffDevToolsOnChange] = util.useSettingArray(
     generalSettings,
@@ -138,6 +139,17 @@ export const General = (): React.ReactElement => {
           }}
           note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}>
           {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+        </SwitchItem>
+      )}
+
+      {DiscordNative.process.platform === "win32" && (
+        <SwitchItem
+          value={winUpdaterValue}
+          onChange={(value) => {
+            winUpdaterOnChange(value);
+          }}
+          note={intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER_DESC)}>
+          {intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER)}
         </SwitchItem>
       )}
 
