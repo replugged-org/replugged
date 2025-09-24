@@ -1,63 +1,73 @@
-import { Injector } from "@replugged";
+import { classNames, components, users } from "@common";
+import { Injector, Logger } from "@replugged";
 import {
   filters,
   getFunctionBySource,
   getFunctionKeyBySource,
   waitForModule,
   waitForStore,
-} from "src/renderer/modules/webpack";
-import { classNames, components, users } from "@common";
-import type React from "react";
-import type { Store } from "src/renderer/modules/common/flux";
+} from "@webpack";
 import type { Message } from "discord-types/general";
+import type { Store } from "src/renderer/modules/common/flux";
+
+import type * as Design from "discord-client-types/discord_app/design/web";
 
 const injector = new Injector();
 
-interface TabBarItemProps {
-  id: string;
-}
+const logger = Logger.coremod("ThemeUtils");
 
-interface TabBarItemType extends React.Component<TabBarItemProps> {
-  render(): React.ReactElement<TabBarItemProps>;
-}
-
-function tabBarItemId(): void {
-  const TabBar = getFunctionBySource<{ Item: { prototype: TabBarItemType } }>(
-    components,
-    "this.tabBarRef",
-  );
+function injectTabBarItemId(): void {
+  const TabBar = getFunctionBySource<Design.TabBar>(components, "this.tabBarRef");
   if (!TabBar) {
-    throw new Error("Failed to find TabBar module!");
+    logger.error("Failed to find TabBar component");
+    return;
   }
 
-  injector.after(TabBar.Item.prototype, "render", (_, res, instance: TabBarItemType) => {
-    if (typeof instance.props.id === "string") {
-      res.props.id = `${instance.props.id.replace(/\s+/g, "-").toLowerCase()}-tab`;
-    }
-    return res;
-  });
+  injector.after(
+    TabBar.Item.prototype,
+    "render",
+    (_, res: React.ReactElement<Design.TabBarItemProps>, instance: Design.TabBarItem) => {
+      if (instance.props.id) {
+        res.props.id = `${instance.props.id.replace(/\s+/g, "-").toLowerCase()}-tab`;
+      }
+      return res;
+    },
+  );
 }
 
 interface ClientThemesBackgroundStore extends Store {
   gradientPreset: { getName?: () => string } | undefined;
 }
 
-async function customThemeClass(): Promise<void> {
+interface UseBackgroundGradientCSSResult {
+  clientThemesCSS: string;
+  clientThemesClassName: string;
+}
+
+type UseBackgroundGradientCSS = () => UseBackgroundGradientCSSResult;
+
+async function injectCustomThemeClass(): Promise<void> {
   const ClientThemesBackgroundStore = await waitForStore<ClientThemesBackgroundStore>(
     "ClientThemesBackgroundStore",
   );
-  const clientThemeStyleMod = await waitForModule<
-    Record<string, () => { clientThemesClassName?: string; clientThemesCSS?: string }>
-  >(filters.bySource("data-client-themes"));
 
-  const fnKey = getFunctionKeyBySource(clientThemeStyleMod, "clientThemesClassName")!;
+  const useBackgroundGradientCSSMod = await waitForModule<Record<string, UseBackgroundGradientCSS>>(
+    filters.bySource("data-client-themes"),
+  );
+  const fnKey = getFunctionKeyBySource(useBackgroundGradientCSSMod, "clientThemesClassName");
+  if (!fnKey) {
+    logger.error("Failed to find useBackgroundGradientCSS function");
+    return;
+  }
 
-  injector.after(clientThemeStyleMod, fnKey, (_, res) => {
+  injector.after(useBackgroundGradientCSSMod, fnKey, (_, res) => {
     if (!res.clientThemesClassName) return res;
-    const customThemeName = ClientThemesBackgroundStore.gradientPreset
-      ?.getName?.()
-      .replace(" ", "-")
-      .toLowerCase();
+
+    const gradientName = ClientThemesBackgroundStore.gradientPreset?.getName?.();
+    if (!gradientName) return res;
+
+    const customThemeName = gradientName.replace(/\s+/g, "-").toLowerCase();
+
     res.clientThemesClassName = classNames(customThemeName, res.clientThemesClassName);
     return res;
   });
@@ -65,17 +75,16 @@ async function customThemeClass(): Promise<void> {
 
 /**
  * @internal
- * @hidden
  */
 export function _insertMessageAttributes(
-  message: Message & { ignored: boolean; poll: unknown; author: { globalName: string } },
+  message: Message & { ignored: boolean; author: { globalName: string } },
 ): Record<string, string | number | boolean | undefined> {
   return {
     "data-is-author-self": message.author.id === users.getCurrentUser().id,
     "data-is-author-bot": message.author.bot,
     "data-is-author-webhook": Boolean(message.webhookId),
     "data-author-username": message.author.username,
-    "data-author-globalName": message.author.globalName,
+    "data-author-global-name": message.author.globalName,
     "data-author-id": message.author.id,
     "data-channel-id": message.channel_id,
     "data-is-reply": Boolean(message.messageReference),
@@ -89,6 +98,9 @@ export function _insertMessageAttributes(
   };
 }
 
+/**
+ * @internal
+ */
 export function _insertAvatarAttributes({
   status,
   isTyping,
@@ -115,8 +127,8 @@ export function _insertAvatarAttributes({
 }
 
 export async function start(): Promise<void> {
-  tabBarItemId();
-  await customThemeClass();
+  injectTabBarItemId();
+  await injectCustomThemeClass();
 }
 
 export function stop(): void {
