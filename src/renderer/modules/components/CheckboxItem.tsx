@@ -2,49 +2,37 @@ import { filters, getExportsForProps, getFunctionBySource, waitForModule } from 
 import type React from "react";
 import { Text } from ".";
 
-interface CheckboxProps {
-  disabled?: boolean;
-  readOnly?: boolean;
-  reverse?: boolean;
-  displayOnly?: boolean;
-  shape?: string;
-  align?: string;
-  type?: string;
-  color?: string;
-  checkboxColor?: string;
-  size?: number;
-  value?: boolean;
-  style?: React.CSSProperties;
-  className?: string;
-  innerClassName?: string;
-  onClick?: React.MouseEventHandler<HTMLInputElement>;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, value: boolean) => void;
-}
+import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 
-export type CheckboxType = React.FC<React.PropsWithChildren<CheckboxProps>> & {
-  Types: Record<"DEFAULT" | "INVERTED" | "GHOST" | "ROW", string>;
-  Aligns: Record<"TOP" | "CENTER", string>;
-  Shapes: Record<"BOX" | "ROUND" | "SMALL_BOX", string>;
+const checkboxString = ".checkboxWrapperDisabled";
+const mod = await waitForModule(filters.bySource(checkboxString));
+
+export type CustomCheckboxType = VoidDesign.Checkbox & {
+  Types: VoidDesign.CheckboxTypes;
+  Aligns: VoidDesign.CheckboxAligns;
+  Shapes: VoidDesign.CheckboxShapes;
 };
 
-export type CheckboxItemType = React.FC<React.PropsWithChildren<CheckboxProps>>;
-
-const mod = await waitForModule<CheckboxType>(filters.bySource(".checkboxWrapperDisabled"));
-
-export const Checkbox = getFunctionBySource<CheckboxType>(mod, ".checkboxWrapper")!;
+export const Checkbox = getFunctionBySource<CustomCheckboxType>(mod, checkboxString)!;
 
 Checkbox.Types = getExportsForProps(mod, ["DEFAULT"])!;
 Checkbox.Aligns = getExportsForProps(mod, ["TOP"])!;
 Checkbox.Shapes = getExportsForProps(mod, ["BOX"])!;
 
-export const CheckboxItem = (props: React.PropsWithChildren<CheckboxProps>): React.ReactElement => {
+export type CheckboxItemType = React.FC<React.PropsWithChildren<VoidDesign.CheckboxProps>>;
+
+export function CheckboxItem({
+  children,
+  style,
+  ...props
+}: React.PropsWithChildren<VoidDesign.CheckboxProps>): React.ReactElement {
   return (
     <Checkbox {...props}>
-      {props.children && (
-        <Text variant="text-sm/normal" style={props.style}>
-          {props.children}
+      {children && (
+        <Text variant="text-sm/normal" style={style}>
+          {children}
         </Text>
       )}
     </Checkbox>
   );
-};
+}
