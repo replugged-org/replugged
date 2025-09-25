@@ -1,28 +1,6 @@
 import { getFunctionBySource } from "@webpack";
-import type React from "react";
 import components from "../common/components";
 
-interface ImageData {
-  height: number;
-  width: number;
-  src: string;
-  position?: "left" | "right";
-}
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-interface FormNoticeProps {
-  title?: React.ReactNode;
-  body: React.ReactNode;
-  type?: string;
-  imageData?: ImageData;
-  button?: React.ReactNode;
-  align?: string;
-  style?: React.CSSProperties;
-  className?: string;
-  iconClassName?: string;
-}
-
-export type FormNoticeType = React.FC<FormNoticeProps> & {
-  Types: Record<"PRIMARY" | "DANGER" | "WARNING" | "SUCCESS" | "BRAND" | "CUSTOM", string>;
-};
-
-export default getFunctionBySource<FormNoticeType>(components, ".Types.DANGER")!;
+export default getFunctionBySource<Design.FormNotice>(components, ".Types.DANGER")!;

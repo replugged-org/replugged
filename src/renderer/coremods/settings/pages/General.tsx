@@ -1,28 +1,23 @@
-import { modal, toast } from "@common";
+import { React, classNames, marginStyles, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
-import React from "@common/react";
 import {
   Button,
   ButtonItem,
-  Category,
   Divider,
-  Flex,
   FormItem,
+  Notice,
   SwitchItem,
+  TabBar,
   Text,
   TextInput,
 } from "@components";
 import { WEBSITE_URL } from "src/constants";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
-import { type GeneralSettings, defaultSettings } from "src/types";
-import * as settings from "../../../apis/settings";
-import * as util from "../../../util";
+import * as util from "src/renderer/util";
 import { initWs, socket } from "../../devCompanion";
 
-export const generalSettings = settings.init<GeneralSettings, keyof typeof defaultSettings>(
-  "dev.replugged.Settings",
-  defaultSettings,
-);
+import "./General.css";
 
 const konamiCode = [
   "ArrowUp",
@@ -54,6 +49,7 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
       confirmText: doRelaunch
         ? intl.string(discordT.BUNDLE_READY_RESTART)
         : intl.string(discordT.ERRORS_RELOAD),
+      cancelText: intl.string(discordT.CANCEL),
       confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
@@ -61,9 +57,63 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
     .then((answer) => answer && restart());
 }
 
-export const General = (): React.ReactElement => {
+const GeneralSettingsTabs = { GENERAL: "general", ADVANCED: "advanced" } as const;
+
+function GeneralTab(): React.ReactElement {
   const [quickCSSValue, quickCSSOnChange] = util.useSettingArray(generalSettings, "quickCSS");
   const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
+
+  React.useEffect(() => {
+    if (quickCSSValue) window.replugged.quickCSS.load();
+    else window.replugged.quickCSS.unload();
+  }, [quickCSSValue]);
+
+  const isLinux = DiscordNative.process.platform === "linux";
+
+  return (
+    <>
+      <SwitchItem
+        {...util.useSetting(generalSettings, "badges")}
+        note={intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}>
+        {intl.string(t.REPLUGGED_SETTINGS_BADGES)}
+      </SwitchItem>
+      <SwitchItem
+        {...util.useSetting(generalSettings, "addonEmbeds")}
+        note={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC)}
+        className={classNames({ [marginStyles.marginBottom40]: !isLinux })}>
+        {intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS)}
+      </SwitchItem>
+      {isLinux && (
+        <SwitchItem
+          value={titleBarValue}
+          onChange={(value) => {
+            titleBarOnChange(value);
+            restartModal(true);
+          }}
+          note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
+          className={marginStyles.marginBottom40}>
+          {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+        </SwitchItem>
+      )}
+      <FormItem title={intl.string(t.REPLUGGED_QUICKCSS)}>
+        <SwitchItem
+          value={quickCSSValue}
+          onChange={quickCSSOnChange}
+          note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC)}>
+          {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE)}
+        </SwitchItem>
+        <SwitchItem
+          {...util.useSetting(generalSettings, "autoApplyQuickCss")}
+          disabled={!quickCSSValue}
+          note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
+          {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
+        </SwitchItem>
+      </FormItem>
+    </>
+  );
+}
+
+function AdvancedTab(): React.ReactElement {
   const [expValue, expOnChange] = util.useSettingArray(generalSettings, "experiments");
   const [staffDevToolsValue, staffDevToolsOnChange] = util.useSettingArray(
     generalSettings,
@@ -71,6 +121,95 @@ export const General = (): React.ReactElement => {
   );
   const [rdtValue, rdtOnChange] = util.useSettingArray(generalSettings, "reactDevTools");
   const [keepTokenValue, keepTokenOnChange] = util.useSettingArray(generalSettings, "keepToken");
+
+  return (
+    <>
+      <Notice messageType={Notice.Types.WARNING} className={marginStyles.marginBottom20}>
+        {intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}
+      </Notice>
+      <div className={marginStyles.marginBottom20}>
+        <TextInput
+          {...util.useSetting(generalSettings, "apiUrl")}
+          label={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
+          description={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
+          placeholder={WEBSITE_URL}
+          disabled
+        />
+      </div>
+      <Divider className={marginStyles.marginBottom20} />
+      <SwitchItem
+        value={expValue}
+        onChange={(value) => {
+          expOnChange(value);
+          restartModal();
+        }}
+        note={intl.format(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC, {})}>
+        {intl.string(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS)}
+      </SwitchItem>
+      <SwitchItem
+        disabled={!expValue}
+        value={staffDevToolsValue}
+        onChange={(value) => {
+          staffDevToolsOnChange(value);
+          restartModal();
+        }}
+        note={intl.format(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC, {})}>
+        {intl.string(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS)}
+      </SwitchItem>
+      <SwitchItem
+        value={rdtValue}
+        onChange={async (value) => {
+          try {
+            rdtOnChange(value);
+            if (value) {
+              await RepluggedNative.reactDevTools.downloadExtension();
+            } else {
+              await RepluggedNative.reactDevTools.removeExtension();
+            }
+            restartModal(true);
+          } catch {
+            // Revert setting on any error
+            rdtOnChange(false);
+            if (value) {
+              try {
+                await RepluggedNative.reactDevTools.removeExtension();
+              } catch {
+                // Ignore cleanup errors
+              }
+            }
+            toast.toast(
+              intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
+              toast.Kind.FAILURE,
+            );
+          }
+        }}
+        note={intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}>
+        {intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
+      </SwitchItem>
+      <SwitchItem
+        value={keepTokenValue}
+        onChange={(value) => {
+          keepTokenOnChange(value);
+          restartModal();
+        }}
+        note={intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN_DESC)}>
+        {intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN)}
+      </SwitchItem>
+      <ButtonItem
+        button={intl.string(discordT.RECONNECT)}
+        note={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_DESC)}
+        onClick={() => {
+          socket?.close(1000, "Reconnecting");
+          initWs(true);
+        }}>
+        {intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION)}
+      </ButtonItem>
+    </>
+  );
+}
+
+export function General(): React.ReactElement {
+  const [selectedTab, setSelectedTab] = React.useState<string>(GeneralSettingsTabs.GENERAL);
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
@@ -85,166 +224,43 @@ export const General = (): React.ReactElement => {
     return () => cancelAnimationFrame(id);
   }, [hue, isEasterEgg]);
 
-  const listener = (e: KeyboardEvent): void => {
-    if (isEasterEgg) return;
-    setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), e.code]);
-  };
+  const listener = React.useCallback(
+    (e: KeyboardEvent): void => {
+      if (isEasterEgg) return;
+      setKKeys((val) => [...val.slice(-1 * (konamiCode.length - 1)), e.code]);
+    },
+    [isEasterEgg],
+  );
 
   React.useEffect(() => {
     document.addEventListener("keydown", listener);
-
     return () => document.removeEventListener("keydown", listener);
-  }, [kKeys, isEasterEgg]);
-
-  React.useEffect(() => {
-    if (quickCSSValue) window.replugged.quickCSS.load();
-    else window.replugged.quickCSS.unload();
-  }, [quickCSSValue]);
+  }, [kKeys, isEasterEgg, listener]);
 
   return (
     <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_GENERAL_SETTINGS)}</Text.H2>
-      </Flex>
-
-      <Divider style={{ margin: "20px 0px" }} />
-
-      <SwitchItem
-        {...util.useSetting(generalSettings, "badges")}
-        note={intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}>
-        {intl.string(t.REPLUGGED_SETTINGS_BADGES)}
-      </SwitchItem>
-
-      <SwitchItem
-        {...util.useSetting(generalSettings, "addonEmbeds")}
-        note={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC)}>
-        {intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS)}
-      </SwitchItem>
-
-      <SwitchItem
-        value={quickCSSValue}
-        onChange={quickCSSOnChange}
-        note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC)}>
-        {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE)}
-      </SwitchItem>
-
-      <SwitchItem
-        {...util.useSetting(generalSettings, "autoApplyQuickCss")}
-        disabled={!quickCSSValue}
-        note={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}>
-        {intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
-      </SwitchItem>
-
-      {DiscordNative.process.platform === "linux" && (
-        <SwitchItem
-          value={titleBarValue}
-          onChange={(value) => {
-            titleBarOnChange(value);
-            restartModal(true);
-          }}
-          note={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}>
-          {intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
-        </SwitchItem>
-      )}
-
-      <Category
-        title={intl.string(discordT.ADVANCED_SETTINGS)}
-        note={intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}>
-        <FormItem
-          title={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
-          note={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
-          divider
-          style={{ marginBottom: "20px" }}>
-          <TextInput
-            {...util.useSetting(generalSettings, "apiUrl")}
-            placeholder={WEBSITE_URL}
-            disabled
-          />
-        </FormItem>
-
-        <SwitchItem
-          value={expValue}
-          onChange={(value) => {
-            expOnChange(value);
-            restartModal(false);
-          }}
-          note={intl.format(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC, {})}>
-          {intl.string(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS)}
-        </SwitchItem>
-
-        <SwitchItem
-          disabled={!expValue}
-          value={staffDevToolsValue}
-          onChange={(value) => {
-            staffDevToolsOnChange(value);
-            restartModal(false);
-          }}
-          note={intl.format(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC, {})}>
-          {intl.string(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS)}
-        </SwitchItem>
-
-        <SwitchItem
-          value={rdtValue}
-          onChange={async (value) => {
-            try {
-              rdtOnChange(value);
-              if (value) {
-                await RepluggedNative.reactDevTools.downloadExtension();
-              } else {
-                await RepluggedNative.reactDevTools.removeExtension();
-              }
-              restartModal(true);
-            } catch {
-              // Revert setting on any error
-              rdtOnChange(false);
-              if (value) {
-                try {
-                  await RepluggedNative.reactDevTools.removeExtension();
-                } catch {
-                  // Ignore cleanup errors
-                }
-              }
-              toast.toast(
-                intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
-                toast.Kind.FAILURE,
-              );
-            }
-          }}
-          note={intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}>
-          {intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
-        </SwitchItem>
-
-        <SwitchItem
-          value={keepTokenValue}
-          onChange={(value) => {
-            keepTokenOnChange(value);
-            restartModal(false);
-          }}
-          note={intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN_DESC)}>
-          {intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN)}
-        </SwitchItem>
-
-        <ButtonItem
-          button={intl.string(discordT.RECONNECT)}
-          note={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_DESC)}
-          onClick={() => {
-            socket?.close(1000, "Reconnecting");
-            initWs(true);
-          }}>
-          {intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION)}
-        </ButtonItem>
-      </Category>
-
-      {/* Sleeping? Wake up. */}
+      <TabBar selectedItem={selectedTab} type="top" look="brand" onItemSelect={setSelectedTab}>
+        <TabBar.Item id={GeneralSettingsTabs.GENERAL}>
+          {intl.string(discordT.SETTINGS_GENERAL)}
+        </TabBar.Item>
+        <TabBar.Item id={GeneralSettingsTabs.ADVANCED}>
+          {intl.string(discordT.SETTINGS_ADVANCED)}
+        </TabBar.Item>
+      </TabBar>
+      <TabBar.Panel id={selectedTab} className="replugged-general-tabBarPanel">
+        {selectedTab === GeneralSettingsTabs.GENERAL && <GeneralTab />}
+        {selectedTab === GeneralSettingsTabs.ADVANCED && <AdvancedTab />}
+      </TabBar.Panel>
       {isEasterEgg && (
         <>
           <Text.H1
             variant="heading-xxl/semibold"
-            style={{ display: "inherit", textAlign: "center", color: `hsl(${hue}, 100%, 50%)` }}>
+            className="replugged-general-easter-egg"
+            style={{ color: `hsl(${hue}, 100%, 50%)` }}>
             Wake up. Wake up. Wake up.
           </Text.H1>
         </>
       )}
     </>
   );
-};
+}

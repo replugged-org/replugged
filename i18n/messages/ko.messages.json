@@ -8,7 +8,6 @@
   "REPLUGGED_BADGES_SUPPORT": "Replugged 지원",
   "REPLUGGED_BADGES_TRANSLATOR": "Replugged 번역가",
   "REPLUGGED_BADGES_BOOSTER": "Replugged 서버 부스터",
-  "REPLUGGED_GENERAL_SETTINGS": "일반 설정",
   "REPLUGGED_I18N_CONTRIBUTE": "혹시 Replugged 번역을 돕고 싶으신가요? Replugged의 [Weblate]({weblateUrl})로 오세요!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% 번역됨",
   "REPLUGGED_LINK_NOW": "지금 연동",

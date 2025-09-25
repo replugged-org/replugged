@@ -18,7 +18,7 @@ const patchedModules = new Set<string>();
 /**
  * A record that maps module IDs to their corresponding source strings (without plaintext patches applied).
  */
-export const sourceStrings: Record<number, string> = {};
+export const sourceStrings: Record<number | string, string> = {};
 
 function patchChunk(chunk: WebpackChunk): void {
   const modules = chunk[1];

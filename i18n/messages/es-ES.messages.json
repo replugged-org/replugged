@@ -7,7 +7,6 @@
   "REPLUGGED_BADGES_STAFF": "Personal de Replugged",
   "REPLUGGED_BADGES_TRANSLATOR": "Traductor de Replugged",
   "REPLUGGED_BADGES_BOOSTER": "Mejorador del servidor de Replugged",
-  "REPLUGGED_GENERAL_SETTINGS": "Configuración general",
   "REPLUGGED_I18N_CONTRIBUTE": "¿Quieres ayudar a traducir Replugged? ¡Ve a nuestro [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% traducido",
   "REPLUGGED_LINK_NOW": "Vincular ahora",

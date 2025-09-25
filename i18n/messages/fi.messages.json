@@ -7,7 +7,6 @@
   "REPLUGGED_BADGES_SUPPORT": "Replugged-tuki",
   "REPLUGGED_BADGES_TRANSLATOR": "Replugged-kääntäjä",
   "REPLUGGED_BADGES_BOOSTER": "Replugged-palvelimen nostattaja",
-  "REPLUGGED_GENERAL_SETTINGS": "Yleiset asetukset",
   "REPLUGGED_I18N_CONTRIBUTE": "Haluatko auttaa kääntämään Repluggedia? Mene meidän [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% käännetty",
   "REPLUGGED_LINK_NOW": "Linkitä se nyt",

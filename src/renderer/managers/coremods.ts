@@ -13,7 +13,9 @@ import noTrackPlaintext from "../coremods/noTrack/plaintextPatches";
 import noXSSDefensesPlaintext from "../coremods/noXSSDefenses/plaintextPatches";
 import popoutThemingPlaintext from "../coremods/popoutTheming/plaintextPatches";
 import reactErrorDecoderPlaintext from "../coremods/reactErrorDecoder/plaintextPatches";
+import rpcPlaintext from "../coremods/rpc/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
+import themeUtilsPlaintext from "../coremods/themeUtils/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 
 const logger = Logger.api("Coremods");
@@ -38,6 +40,7 @@ export namespace coremods {
   export let reactErrorDecoder: Coremod;
   export let rpc: Coremod;
   export let settings: Coremod;
+  export let themeUtils: Coremod;
   export let watcher: Coremod;
   export let welcome: Coremod;
 }
@@ -64,6 +67,7 @@ export async function startAll(): Promise<void> {
   coremods.reactErrorDecoder = await import("../coremods/reactErrorDecoder");
   coremods.rpc = await import("../coremods/rpc");
   coremods.settings = await import("../coremods/settings");
+  coremods.themeUtils = await import("../coremods/themeUtils");
   coremods.watcher = await import("../coremods/watcher");
   coremods.welcome = await import("../coremods/welcome");
 
@@ -90,12 +94,14 @@ export function runPlaintextPatches(): void {
     { patch: experimentsPlaintext, name: "replugged.coremod.experiments" },
     { patch: languagePlaintext, name: "replugged.coremod.language" },
     { patch: messagePopoverPlaintext, name: "replugged.coremod.messagePopover" },
-    { patch: noXSSDefensesPlaintext, name: "replugged.coremod.noXSSDefenses" },
     { patch: noticesPlaintext, name: "replugged.coremod.notices" },
     { patch: noTrackPlaintext, name: "replugged.coremod.noTrack" },
+    { patch: noXSSDefensesPlaintext, name: "replugged.coremod.noXSSDefenses" },
     { patch: popoutThemingPlaintext, name: "replugged.coremod.popoutTheming" },
     { patch: reactErrorDecoderPlaintext, name: "replugged.coremod.reactErrorDecoder" },
+    { patch: rpcPlaintext, name: "replugged.coremod.rpc" },
     { patch: settingsPlaintext, name: "replugged.coremod.settings" },
+    { patch: themeUtilsPlaintext, name: "replugged.coremod.themeUtils" },
     { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },
   ].forEach(({ patch, name }) => patchPlaintext(patch, name));
 }

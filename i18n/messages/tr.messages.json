@@ -7,7 +7,6 @@
   "REPLUGGED_BADGES_STAFF": "Replugged Personeli",
   "REPLUGGED_BADGES_TRANSLATOR": "Replugged Tercümanı",
   "REPLUGGED_BADGES_BOOSTER": "Replugged Sunucu Takviyecisi",
-  "REPLUGGED_GENERAL_SETTINGS": "Genel Ayarlar",
   "REPLUGGED_I18N_CONTRIBUTE": "Replugged'un başka dillere tercüme edilmesine yardım etmek ister misin? Gel katıl bize, [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% çevrildi",
   "REPLUGGED_LINK_NOW": "Şimdi bağlayın",
