@@ -47,12 +47,8 @@ importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
 export let Clickable: typeof Design.Clickable;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
-export let ColorPicker: Design.CustomColorPicker;
-importTimeout(
-  "ColorPicker",
-  import("./ColorPickerItem"),
-  (mod) => (ColorPicker = mod.CustomColorPicker),
-);
+export let ColorPicker: Design.ColorPicker;
+importTimeout("ColorPicker", import("./ColorPickerItem"), (mod) => (ColorPicker = mod.ColorPicker));
 
 export let Divider: Design.FormDivider;
 importTimeout("Divider", import("./FormDivider"), (mod) => (Divider = mod.default));
@@ -110,6 +106,15 @@ importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Che
 export type { CheckboxItemType };
 export let CheckboxItem: CheckboxItemType;
 importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
+
+import type { ColorPickerItemType } from "./ColorPickerItem";
+export type { ColorPickerItemType };
+export let ColorPickerItem: ColorPickerItemType;
+importTimeout(
+  "ColorPickerItem",
+  import("./ColorPickerItem"),
+  (mod) => (ColorPickerItem = mod.default),
+);
 
 import type { CustomContextMenuType } from "./Menu";
 export type { CustomContextMenuType };

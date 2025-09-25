@@ -1,20 +1,31 @@
 import { marginStyles } from "@common";
-import { getComponentBySource } from "@webpack";
-import { Flex, FormItem } from ".";
+import { filters, getComponentBySource, waitForModule } from "@webpack";
+import type React from "react";
+import { FormItem } from ".";
 import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-export const CustomColorPicker = getComponentBySource<Design.CustomColorPicker>(
+export const ColorPicker = getComponentBySource<Design.ColorPicker>(
   components,
   ".customColorPicker",
 )!;
 
-interface ColorPickerItemProps
-  extends Omit<Design.CustomColorPickerProps, "onChange" | "wrapperComponentType"> {
+interface ColorSwatchProps
+  extends Pick<Design.CustomColorPickerProps, "onChange" | "suggestedColors" | "showEyeDropper"> {
+  onClose?: Design.PopoutProps["onRequestClose"];
+  color?: Design.CustomColorPickerProps["value"];
   disabled?: boolean;
-  getHex?: boolean;
-  onChange?: (color: string | number) => void;
+  label?: React.ReactNode;
+  colorPickerMiddle?: Design.CustomColorPickerProps["middle"];
+  colorPickerFooter?: Design.CustomColorPickerProps["footer"];
+}
+
+type ColorSwatchType = React.FC<ColorSwatchProps>;
+
+const ColorSwatch = await waitForModule<ColorSwatchType>(filters.bySource(".editPencilIcon,"));
+
+interface ColorPickerItemProps extends ColorSwatchProps {
   note?: string;
   style?: React.CSSProperties;
 }
@@ -22,8 +33,6 @@ interface ColorPickerItemProps
 export type ColorPickerItemType = React.FC<React.PropsWithChildren<ColorPickerItemProps>>;
 
 function ColorPickerItem({
-  onChange,
-  getHex,
   children,
   style,
   note,
@@ -31,28 +40,15 @@ function ColorPickerItem({
   ...props
 }: React.PropsWithChildren<ColorPickerItemProps>): React.ReactElement {
   return (
-    <CustomColorPicker
-      {...props}
-      onChange={(int: number) => {
-        if (!getHex) return onChange?.(int);
-        return onChange?.(`#${BigInt(int).toString(16)}`);
-      }}
-      wrapperComponentType={(wrapperProps) => (
-        <FormItem
-          {...wrapperProps}
-          title={children}
-          className={marginStyles.marginBottom20}
-          style={style}
-          note={note}
-          notePosition="after"
-          disabled={disabled}
-          divider>
-          <Flex direction={Flex.Direction.VERTICAL} style={{ gap: "16px", paddingTop: "16px" }}>
-            {wrapperProps.children}
-          </Flex>
-        </FormItem>
-      )}
-    />
+    <FormItem
+      title={children}
+      className={marginStyles.marginBottom20}
+      style={style}
+      note={note}
+      disabled={disabled}
+      divider>
+      <ColorSwatch {...props} />
+    </FormItem>
   );
 }
 
