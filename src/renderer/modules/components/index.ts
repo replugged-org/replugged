@@ -87,6 +87,9 @@ importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default
 export let TextInput: Design.TextInput;
 importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
 
+export let Tooltip: Design.TooltipContainer;
+importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
+
 // Other
 
 export let Flex: FlexType;
@@ -168,11 +171,6 @@ importTimeout("Slider", import("./SliderItem"), (mod) => (Slider = mod.CustomSli
 export type { SliderItemType };
 export let SliderItem: SliderItemType;
 importTimeout("SliderItem", import("./SliderItem"), (mod) => (SliderItem = mod.SliderItem));
-
-import type { CustomTooltipType } from "./Tooltip";
-export type { CustomTooltipType };
-export let Tooltip: CustomTooltipType;
-importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
 
 import type { CustomTextType } from "./Text";
 export type { CustomTextType };
