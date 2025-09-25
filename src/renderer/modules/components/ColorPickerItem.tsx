@@ -1,14 +1,14 @@
 import { marginStyles } from "@common";
-import { filters, getComponentBySource, waitForModule } from "@webpack";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
 import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-export const ColorPicker = getComponentBySource<Design.ColorPicker>(
+export const ColorPicker = getFunctionBySource<Design.ColorPicker>(
   components,
-  ".customColorPicker",
+  'id:"color-picker"',
 )!;
 
 interface ColorSwatchProps
