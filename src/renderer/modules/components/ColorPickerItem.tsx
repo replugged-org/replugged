@@ -14,7 +14,7 @@ export const ColorPicker = getFunctionBySource<Design.ColorPicker>(
 interface ColorSwatchProps
   extends Pick<Design.CustomColorPickerProps, "onChange" | "suggestedColors" | "showEyeDropper"> {
   onClose?: Design.PopoutProps["onRequestClose"];
-  color?: Design.CustomColorPickerProps["value"];
+  color?: number;
   disabled?: boolean;
   label?: React.ReactNode;
   colorPickerMiddle?: Design.CustomColorPickerProps["middle"];
@@ -26,6 +26,7 @@ type ColorSwatchType = React.FC<ColorSwatchProps>;
 const ColorSwatch = await waitForModule<ColorSwatchType>(filters.bySource(".editPencilIcon,"));
 
 interface ColorPickerItemProps extends ColorSwatchProps {
+  value?: number;
   note?: string;
   style?: React.CSSProperties;
 }
@@ -33,10 +34,10 @@ interface ColorPickerItemProps extends ColorSwatchProps {
 export type ColorPickerItemType = React.FC<React.PropsWithChildren<ColorPickerItemProps>>;
 
 function ColorPickerItem({
+  value,
   children,
   style,
   note,
-  disabled,
   ...props
 }: React.PropsWithChildren<ColorPickerItemProps>): React.ReactElement {
   return (
@@ -45,9 +46,9 @@ function ColorPickerItem({
       className={marginStyles.marginBottom20}
       style={style}
       note={note}
-      disabled={disabled}
+      disabled={props.disabled}
       divider>
-      <ColorSwatch {...props} />
+      <ColorSwatch color={value} {...props} />
     </FormItem>
   );
 }
