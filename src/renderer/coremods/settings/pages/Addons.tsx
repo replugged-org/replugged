@@ -542,7 +542,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
     setDisabled(new Set(getManager(type).getDisabled()));
   }
 
-  React.useEffect(refreshList, [search]);
+  React.useEffect(refreshList, [search, type]);
 
   function getAddonIdFromSection(section: string): string {
     const prefix = `rp_${type}_`;

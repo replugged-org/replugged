@@ -1022,19 +1022,6 @@ export declare const messages: {
    */
   'REPLUGGED_ERROR_CHECK_CONSOLE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `5m4FiY`
-   * 
-   * ### Definition
-   * ```text
-   * General Settings
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `es-419`, `hi`, `th`
-   */
-  'REPLUGGED_GENERAL_SETTINGS': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `BS/AJC`
    * 
    * ### Definition

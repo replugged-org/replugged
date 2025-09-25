@@ -71,6 +71,9 @@ importTimeout("Switch", import("./SwitchItem"), (mod) => (Switch = mod.Switch));
 export let SwitchItem: Design.FormSwitch;
 importTimeout("SwitchItem", import("./SwitchItem"), (mod) => (SwitchItem = mod.FormSwitch));
 
+export let TabBar: Design.TabBar;
+importTimeout("TabBar", import("./TabBar"), (mod) => (TabBar = mod.default));
+
 export let TextArea: typeof VoidDesign.TextAreaLegacy;
 importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default));
 

@@ -8,7 +8,6 @@
   "REPLUGGED_BADGES_SUPPORT": "Replugged サポート",
   "REPLUGGED_BADGES_TRANSLATOR": "Replugged 翻訳者",
   "REPLUGGED_BADGES_BOOSTER": "Replugged サーバーブースター",
-  "REPLUGGED_GENERAL_SETTINGS": "一般設定",
   "REPLUGGED_I18N_CONTRIBUTE": "Repluggedの翻訳を手伝いたいですか？[Weblate]({weblateUrl})へどうぞ！",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% 翻訳済み",
   "REPLUGGED_LINK_NOW": "今すぐリンクする",

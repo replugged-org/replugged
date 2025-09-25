@@ -1,0 +1,8 @@
+.replugged-general-tabBarPanel {
+  margin-top: var(--space-24);
+}
+
+.replugged-general-easter-egg {
+  display: inherit;
+  text-align: center;
+}

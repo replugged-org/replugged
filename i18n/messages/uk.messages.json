@@ -7,7 +7,6 @@
   "REPLUGGED_BADGES_STAFF": "Персонал Replugged",
   "REPLUGGED_BADGES_TRANSLATOR": "Перекладач Replugged",
   "REPLUGGED_BADGES_BOOSTER": "Бустер серверу Replugged",
-  "REPLUGGED_GENERAL_SETTINGS": "Основні налаштування",
   "REPLUGGED_I18N_CONTRIBUTE": "Хочеш допомогти перекласти Replugged? Заходи на наш [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% перекладено",
   "REPLUGGED_LINK_NOW": "Прив'язати зараз",

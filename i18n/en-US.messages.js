@@ -61,7 +61,6 @@ export default defineMessages({
   "REPLUGGED_ERROR_ALREADY_INSTALLED": "{name} is already installed.",
   "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "An error occurred while executing the command:",
   "REPLUGGED_ERROR_CHECK_CONSOLE": "Check the console for more details.",
-  "REPLUGGED_GENERAL_SETTINGS": "General Settings",
   "REPLUGGED_I18N_CONTRIBUTE": "Want to help translate Replugged? Go to our [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% translated",
   "REPLUGGED_INSTALL_MODAL_HEADER": "Install {type}",

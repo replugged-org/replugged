@@ -6,7 +6,6 @@
   "REPLUGGED_BADGES_STAFF": "Replugged Personeel",
   "REPLUGGED_BADGES_SUPPORT": "Replugged Support",
   "REPLUGGED_BADGES_BOOSTER": "Replugged Server Booster",
-  "REPLUGGED_GENERAL_SETTINGS": "Algemene Instellingen",
   "REPLUGGED_I18N_CONTRIBUTE": "Wil je helpen met het vertalen van Replugged? Ga naar onze [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% vertaald",
   "REPLUGGED_QUICKCSS": "Snelle CSS",
