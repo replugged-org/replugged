@@ -102,10 +102,14 @@ export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
 importTimeout("ButtonItem", import("./ButtonItem"), (mod) => (ButtonItem = mod.ButtonItem));
 
-import type { CustomCheckboxType } from "./CheckboxItem";
+import type { CheckboxItemType, CustomCheckboxType } from "./CheckboxItem";
 export type { CustomCheckboxType };
 export let Checkbox: CustomCheckboxType;
 importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
+
+export type { CheckboxItemType };
+export let CheckboxItem: CheckboxItemType;
+importTimeout("CheckboxItem", import("./CheckboxItem"), (mod) => (CheckboxItem = mod.CheckboxItem));
 
 import type { CustomContextMenuType } from "./Menu";
 export type { CustomContextMenuType };
