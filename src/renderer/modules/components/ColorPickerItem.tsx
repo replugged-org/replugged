@@ -1,32 +1,17 @@
-import type React from "react";
+import { marginStyles } from "@common";
+import { getComponentBySource } from "@webpack";
 import { Flex, FormItem } from ".";
 import components from "../common/components";
-import { getComponentBySource } from "@webpack";
 
-interface ColorPickerProps {
-  value: string | number;
-  suggestedColors?: string[] | number[];
-  middle?: React.ReactNode;
-  footer?: React.ReactNode;
-  showEyeDropper?: boolean;
-  className?: string;
-  onClose?: () => void;
-  eagerUpdate?: boolean;
-  wrapperComponentType?: React.FC<{
-    "aria-label": string;
-    className: string;
-    children: React.ReactElement;
-  }>;
-  onChange?: (color: number) => void;
-}
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-export type ColorPickerType = React.MemoExoticComponent<React.FC<ColorPickerProps>>;
+export const CustomColorPicker = getComponentBySource<Design.CustomColorPicker>(
+  components,
+  ".customColorPicker",
+)!;
 
-export const ColorPicker = getComponentBySource<ColorPickerType>(components, ".customColorPicker")!;
-
-interface ColorPickerItemProps extends ColorPickerProps {
-  eagerUpdate?: never;
-  wrapperComponentType?: never;
+interface ColorPickerItemProps
+  extends Omit<Design.CustomColorPickerProps, "onChange" | "wrapperComponentType"> {
   disabled?: boolean;
   getHex?: boolean;
   onChange?: (color: string | number) => void;
@@ -36,31 +21,39 @@ interface ColorPickerItemProps extends ColorPickerProps {
 
 export type ColorPickerItemType = React.FC<React.PropsWithChildren<ColorPickerItemProps>>;
 
-export const ColorPickerItem = ({
+function ColorPickerItem({
   onChange,
+  getHex,
+  children,
+  style,
+  note,
+  disabled,
   ...props
-}: React.PropsWithChildren<ColorPickerItemProps>): React.ReactElement => {
+}: React.PropsWithChildren<ColorPickerItemProps>): React.ReactElement {
   return (
-    <ColorPicker
+    <CustomColorPicker
       {...props}
       onChange={(int: number) => {
-        if (!props.getHex) return onChange?.(int);
+        if (!getHex) return onChange?.(int);
         return onChange?.(`#${BigInt(int).toString(16)}`);
       }}
-      wrapperComponentType={({ className, children, ...innerProps }) => (
+      wrapperComponentType={(wrapperProps) => (
         <FormItem
-          {...innerProps}
-          title={props.children}
-          style={{ marginBottom: 20, ...props.style }}
-          note={props.note}
+          {...wrapperProps}
+          title={children}
+          className={marginStyles.marginBottom20}
+          style={style}
+          note={note}
           notePosition="after"
-          disabled={props.disabled}
+          disabled={disabled}
           divider>
           <Flex direction={Flex.Direction.VERTICAL} style={{ gap: "16px", paddingTop: "16px" }}>
-            {children}
+            {wrapperProps.children}
           </Flex>
         </FormItem>
       )}
     />
   );
-};
+}
+
+export default ColorPickerItem;

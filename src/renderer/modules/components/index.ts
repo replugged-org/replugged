@@ -47,6 +47,13 @@ importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
 export let Clickable: typeof Design.Clickable;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
+export let ColorPicker: Design.CustomColorPicker;
+importTimeout(
+  "ColorPicker",
+  import("./ColorPickerItem"),
+  (mod) => (ColorPicker = mod.CustomColorPicker),
+);
+
 export let Divider: Design.FormDivider;
 importTimeout("Divider", import("./FormDivider"), (mod) => (Divider = mod.default));
 
@@ -92,15 +99,10 @@ export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
 importTimeout("ButtonItem", import("./ButtonItem"), (mod) => (ButtonItem = mod.ButtonItem));
 
-import type { CheckboxItemType, CustomCheckboxType } from "./CheckboxItem";
+import type { CustomCheckboxType } from "./CheckboxItem";
 export type { CustomCheckboxType };
 export let Checkbox: CustomCheckboxType;
 importTimeout("Checkbox", import("./CheckboxItem"), (mod) => (Checkbox = mod.Checkbox));
-
-import type { CategoryType } from "./Category";
-export type { CategoryType };
-export let Category: CategoryType;
-importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
 
 import type { CustomContextMenuType } from "./Menu";
 export type { CustomContextMenuType };
@@ -183,19 +185,6 @@ import type { CategoryType } from "./Category";
 export type { CategoryType };
 export let Category: CategoryType;
 importTimeout("Category", import("./Category"), (mod) => (Category = mod.default));
-
-import type { ColorPickerItemType, ColorPickerType } from "./ColorPickerItem";
-export type { ColorPickerType };
-export let ColorPicker: ColorPickerType;
-importTimeout("ColorPicker", import("./ColorPickerItem"), (mod) => (ColorPicker = mod.ColorPicker));
-
-export type { ColorPickerItemType };
-export let ColorPickerItem: ColorPickerItemType;
-importTimeout(
-  "ColorPickerItem",
-  import("./ColorPickerItem"),
-  (mod) => (ColorPickerItem = mod.ColorPickerItem),
-);
 
 import type { ErrorBoundaryType } from "./ErrorBoundary";
 export type { ErrorBoundaryType };
