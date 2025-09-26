@@ -17,6 +17,7 @@ import { WEBSITE_URL } from "src/constants";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import * as util from "src/renderer/util";
+import type { BackgroundMaterialType, VibrancyType } from "src/types";
 import { initWs, socket } from "../../devCompanion";
 import {
   updateBackgroundColor,
@@ -69,25 +70,28 @@ const GeneralSettingsTabs = { GENERAL: "general", ADVANCED: "advanced" } as cons
 function GeneralTab(): React.ReactElement {
   const [quickCSSValue, quickCSSOnChange] = util.useSettingArray(generalSettings, "quickCSS");
   const [titleBarValue, titleBarOnChange] = util.useSettingArray(generalSettings, "titleBar");
-  const [transValue, transOnChange] = util.useSettingArray(generalSettings, "transparentWindow");
+  const [transValue, transOnChange] = util.useSettingArray(generalSettings, "transparency.enabled");
   const [overrideBgColValue, overrideBgColOnChange] = util.useSettingArray(
     generalSettings,
-    "overrideWindowBackgroundColor",
+    "transparency.overrideWindowBackgroundColor",
   );
-  const [bgColValue] = util.useSettingArray(generalSettings, "windowBackgroundColor");
+  const [bgColValue] = util.useSettingArray(generalSettings, "transparency.windowBackgroundColor");
   const [overrideBgMatValue, overrideBgMatOnChange] = util.useSettingArray(
     generalSettings,
-    "overrideWindowBackgroundMaterial",
+    "transparency.overrideWindowBackgroundMaterial",
   );
   const [bgMatValue, bgMatOnChange] = util.useSettingArray(
     generalSettings,
-    "windowBackgroundMaterial",
+    "transparency.windowBackgroundMaterial",
   );
   const [overrideVibrancyValue, overrideVibrancyOnChange] = util.useSettingArray(
     generalSettings,
-    "overrideWindowVibrancy",
+    "transparency.overrideWindowVibrancy",
   );
-  const [vibrancyValue, vibrancyOnChange] = util.useSettingArray(generalSettings, "windowVibrancy");
+  const [vibrancyValue, vibrancyOnChange] = util.useSettingArray(
+    generalSettings,
+    "transparency.windowVibrancy",
+  );
 
   React.useEffect(() => {
     if (quickCSSValue) window.replugged.quickCSS.load();
@@ -215,7 +219,7 @@ function GeneralTab(): React.ReactElement {
                 overrideBgMatOnChange(value);
                 if (value) {
                   void RepluggedNative.transparency.setBackgroundMaterial(
-                    bgMatValue as "none" | "acrylic" | "mica" | "tabbed",
+                    bgMatValue as BackgroundMaterialType,
                   );
                 } else {
                   // If this line is uncommented, coremods kinda die
@@ -231,10 +235,10 @@ function GeneralTab(): React.ReactElement {
               onChange={(value) => {
                 bgMatOnChange(value);
                 void RepluggedNative.transparency.setBackgroundMaterial(
-                  value as "none" | "acrylic" | "mica" | "tabbed",
+                  value as BackgroundMaterialType,
                 );
               }}
-              disabled={!generalSettings.get("overrideWindowBackgroundMaterial") || !transValue}
+              disabled={!overrideBgMatValue || !transValue}
               options={[
                 {
                   label: "None",
@@ -296,39 +300,10 @@ function GeneralTab(): React.ReactElement {
               value={vibrancyValue}
               onChange={(value) => {
                 vibrancyOnChange(value);
-                void RepluggedNative.transparency.setVibrancy(
-                  value as
-                    | "titlebar"
-                    | "selection"
-                    | "menu"
-                    | "popover"
-                    | "sidebar"
-                    | "header"
-                    | "sheet"
-                    | "window"
-                    | "hud"
-                    | "fullscreen-ui"
-                    | "tooltip"
-                    | "content"
-                    | "under-window"
-                    | "under-page"
-                    | null,
-                );
+                void RepluggedNative.transparency.setVibrancy(value as VibrancyType);
               }}
-              disabled={!generalSettings.get("overrideWindowVibrancy") || !transValue}
+              disabled={!overrideVibrancyValue || !transValue}
               options={[
-                {
-                  label: "Appearance-based",
-                  value: "appearance-based",
-                },
-                {
-                  label: "Light",
-                  value: "light",
-                },
-                {
-                  label: "Dark",
-                  value: "dark",
-                },
                 {
                   label: "Titlebar",
                   value: "titlebar",
@@ -348,14 +323,6 @@ function GeneralTab(): React.ReactElement {
                 {
                   label: "Sidebar",
                   value: "sidebar",
-                },
-                {
-                  label: "Medium Light",
-                  value: "medium-light",
-                },
-                {
-                  label: "Ultra Dark",
-                  value: "ultra-dark",
                 },
                 {
                   label: "Header",

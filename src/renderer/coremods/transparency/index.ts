@@ -18,7 +18,7 @@ function getRootStringProperty(property: string): string {
 const logger = Logger.coremod("Transparency");
 
 export async function updateBackgroundMaterial(): Promise<void> {
-  if (generalSettings.get("overrideWindowBackgroundMaterial")) return;
+  if (generalSettings.get("transparency").overrideWindowBackgroundMaterial) return;
 
   const backgroundMaterial = getRootStringProperty("--window-background-material");
   if (backgroundMaterial !== (await RepluggedNative.transparency.getBackgroundMaterial())) {
@@ -29,7 +29,7 @@ export async function updateBackgroundMaterial(): Promise<void> {
 }
 
 export async function updateBackgroundColor(): Promise<void> {
-  if (generalSettings.get("overrideWindowBackgroundColor")) return;
+  if (generalSettings.get("transparency").overrideWindowBackgroundColor) return;
 
   const backgroundColor = getRootProperty("--window-background-color");
   if (backgroundColor !== (await RepluggedNative.transparency.getBackgroundColor())) {
@@ -39,7 +39,7 @@ export async function updateBackgroundColor(): Promise<void> {
 }
 
 export async function updateVibrancy(): Promise<void> {
-  if (generalSettings.get("overrideWindowBackgroundMaterial")) return;
+  if (generalSettings.get("transparency").overrideWindowBackgroundMaterial) return;
 
   const vibrancy = getRootStringProperty("--window-vibrancy");
   if (vibrancy !== (await RepluggedNative.transparency.getVibrancy())) {

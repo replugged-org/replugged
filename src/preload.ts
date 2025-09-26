@@ -1,8 +1,9 @@
-import { BrowserWindow, contextBridge, ipcRenderer, webFrame } from "electron";
+import { contextBridge, ipcRenderer, webFrame } from "electron";
 
 import { RepluggedIpcChannels } from "./types";
 // eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
 import type {
+  BackgroundMaterialType,
   CheckResultFailure,
   CheckResultSuccess,
   InstallResultFailure,
@@ -10,6 +11,7 @@ import type {
   InstallerType,
   RepluggedPlugin,
   RepluggedTheme,
+  VibrancyType,
 } from "./types";
 
 const version = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_VERSION);
@@ -94,20 +96,17 @@ const RepluggedNative = {
   },
 
   transparency: {
-    getBackgroundMaterial: (): Promise<"auto" | "none" | "mica" | "acrylic" | "tabbed"> =>
+    getBackgroundMaterial: (): Promise<BackgroundMaterialType> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_BACKGROUND_MATERIAL),
-    setBackgroundMaterial: (
-      effect: "auto" | "none" | "mica" | "acrylic" | "tabbed",
-    ): Promise<void> => ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_MATERIAL, effect),
+    setBackgroundMaterial: (effect: BackgroundMaterialType): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_MATERIAL, effect),
     getBackgroundColor: (): Promise<string> =>
       ipcRenderer.invoke(RepluggedIpcChannels.GET_BACKGROUND_COLOR),
     setBackgroundColor: (color: string): Promise<void> =>
       ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_COLOR, color),
-    getVibrancy: (): Promise<Parameters<typeof BrowserWindow.prototype.setVibrancy>[0]> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_VIBRANCY),
-    setVibrancy: (
-      vibrancy: Parameters<typeof BrowserWindow.prototype.setVibrancy>[0],
-    ): Promise<void> => ipcRenderer.invoke(RepluggedIpcChannels.SET_VIBRANCY, vibrancy),
+    getVibrancy: (): Promise<VibrancyType> => ipcRenderer.invoke(RepluggedIpcChannels.GET_VIBRANCY),
+    setVibrancy: (vibrancy: VibrancyType): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_VIBRANCY, vibrancy),
     // visualEffectState does not need to be implemented until https://github.com/electron/electron/issues/25513 is implemented.
   },
 

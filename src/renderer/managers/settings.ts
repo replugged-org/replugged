@@ -1,5 +1,6 @@
 import { WEBSITE_URL } from "src/constants";
 import { init } from "src/renderer/apis/settings";
+import type { BackgroundMaterialType, VibrancyType } from "src/types";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type GeneralSettings = {
@@ -14,13 +15,15 @@ export type GeneralSettings = {
   titleBar?: boolean;
   quickCSS?: boolean;
   keepToken?: boolean;
-  transparentWindow?: boolean;
-  overrideWindowBackgroundColor?: boolean;
-  windowBackgroundColor?: string;
-  overrideWindowBackgroundMaterial?: boolean;
-  windowBackgroundMaterial?: string;
-  overrideWindowVibrancy?: boolean;
-  windowVibrancy?: string;
+  transparency?: {
+    enabled?: boolean;
+    overrideWindowBackgroundColor?: boolean;
+    windowBackgroundColor?: string;
+    overrideWindowBackgroundMaterial?: boolean;
+    windowBackgroundMaterial?: BackgroundMaterialType;
+    overrideWindowVibrancy?: boolean;
+    windowVibrancy?: VibrancyType;
+  };
 };
 
 const defaultSettings = {
@@ -35,13 +38,15 @@ const defaultSettings = {
   titleBar: false,
   quickCSS: true,
   keepToken: false,
-  transparentWindow: false,
-  overrideWindowBackgroundColor: false,
-  windowBackgroundColor: "#00000000",
-  overrideWindowBackgroundMaterial: false,
-  windowBackgroundMaterial: "none",
-  overrideWindowVibrancy: false,
-  windowVibrancy: "appearance-based",
+  transparency: {
+    enabled: false,
+    overrideWindowBackgroundColor: false,
+    windowBackgroundColor: "#00000000",
+    overrideWindowBackgroundMaterial: false,
+    windowBackgroundMaterial: "none",
+    overrideWindowVibrancy: false,
+    windowVibrancy: "content",
+  },
 } satisfies Partial<GeneralSettings>;
 
 export const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(
