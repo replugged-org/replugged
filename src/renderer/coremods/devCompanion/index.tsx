@@ -1,11 +1,11 @@
-import { Logger } from "../../modules/logger";
 import { getByProps, getBySource, getByValue, getModule } from "src/renderer/modules/webpack";
-import { Filter } from "src/types";
 import { sourceStrings } from "src/renderer/modules/webpack/patch-load";
+import type { Filter } from "src/types";
+import { Logger } from "../../modules/logger";
 
 const PORT = 8485;
 
-const devLogger = Logger.api("DevCompanion");
+const logger = Logger.coremod("DevCompanion");
 
 export let socket: WebSocket | undefined;
 
@@ -60,7 +60,7 @@ function parseNode(node: Node): string | RegExp {
 }
 
 function parseFind(type: string, args: unknown[]): unknown {
-  devLogger.log(`Received find parsing request of type ${type} with args: ${args}`);
+  logger.log(`Received find parsing request of type ${type} with args: ${args}`);
   switch (type.replace("get", "")) {
     case "Module":
       return getModule(args[0] as Filter, { all: true });
@@ -97,7 +97,7 @@ export function initWs(isManual = false): void {
 
   ws.addEventListener("open", () => {
     wasConnected = true;
-    devLogger.log("Connected to WebSocket");
+    logger.log("Connected to WebSocket");
   });
 
   ws.addEventListener("error", (e) => {
@@ -105,25 +105,25 @@ export function initWs(isManual = false): void {
 
     hasErrored = true;
 
-    devLogger.error("Dev Companion Error:", e);
+    logger.error("Dev Companion Error:", e);
   });
 
   ws.addEventListener("close", (e) => {
     if (!wasConnected && !hasErrored) return;
 
-    devLogger.log("Dev Companion Disconnected", e.code, e.reason);
+    logger.log("Dev Companion Disconnected", e.code, e.reason);
   });
 
   ws.addEventListener("message", (e) => {
     let nonce: unknown, type: string, data: PatchData | FindData;
     try {
       // {nonce, type, data}=JSON.parse(e.data)
-      let rec = JSON.parse(e.data);
+      const rec = JSON.parse(e.data as string);
       nonce = rec.nonce;
       type = rec.type;
       data = rec.data;
     } catch (err) {
-      devLogger.error("Invalid JSON:", err, `\n${e.data}`);
+      logger.error("Invalid JSON:", err, `\n${e.data}`);
       return;
     }
 
@@ -134,7 +134,7 @@ export function initWs(isManual = false): void {
       ws.send(JSON.stringify(data));
     }
 
-    devLogger.log("Received Message:", type, "\n", data);
+    logger.log("Received Message:", type, "\n", data);
 
     switch (type) {
       case "testPatch": {
@@ -184,7 +184,7 @@ export function initWs(isManual = false): void {
         }
 
         try {
-          let results = parseFind(type, parsedArgs) as unknown[];
+          const results = parseFind(type, parsedArgs) as unknown[];
           if (results.length === 0) throw new Error("No results");
           if (results.length > 1)
             throw new Error("Found more than one result! Make this filter more specific.");

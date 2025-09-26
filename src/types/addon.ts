@@ -1,5 +1,5 @@
-import { z } from "zod";
 import type { Promisable } from "type-fest";
+import { z } from "zod";
 
 export const id = z
   .string()
@@ -17,7 +17,7 @@ export const author = z.object({
 
 export type Author = z.infer<typeof author>;
 
-const urlType = z.string().url();
+const urlType = z.url();
 
 export const common = z.object({
   // Should be in RDNN format
@@ -54,6 +54,14 @@ export const theme = common.extend({
   type: z.literal("replugged-theme"),
   main: z.string().optional(),
   splash: z.string().optional(),
+  presets: z
+    .object({
+      label: z.string(),
+      path: z.string(),
+      default: z.boolean().optional(),
+    })
+    .array()
+    .optional(),
 });
 
 export type ThemeManifest = z.infer<typeof theme>;
@@ -86,3 +94,5 @@ export interface PluginExports {
 export type AddonSettings = {
   disabled?: string[];
 };
+
+export type ThemeSettings = AddonSettings & Record<string, { chosenPreset?: string }>;

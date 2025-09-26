@@ -1,11 +1,5 @@
 import { Logger } from "@replugged";
-import { type GeneralSettings, defaultSettings } from "src/types";
-import * as settings from "../../apis/settings";
-
-const generalSettings = await settings.init<GeneralSettings, keyof typeof defaultSettings>(
-  "dev.replugged.Settings",
-  defaultSettings,
-);
+import { generalSettings } from "src/renderer/managers/settings";
 
 let observer: MutationObserver;
 
@@ -56,9 +50,9 @@ export async function updateVibrancy(): Promise<void> {
 }
 
 export function start(): void {
-  let html = document.body.parentElement!;
+  const html = document.body.parentElement!;
 
-  observer = new MutationObserver(async (mutations) => {
+  observer = new MutationObserver((mutations) => {
     let cssModified = false;
     for (const mutation of mutations) {
       if (mutation.target instanceof HTMLLinkElement && mutation.type === "attributes") {
@@ -69,8 +63,10 @@ export function start(): void {
       if (mutation.type !== "childList") continue;
 
       // Check for both added or removed css(like) nodes
-      let changedNodes = Array.from(mutation.addedNodes).concat(Array.from(mutation.removedNodes));
-      let cssLikeNodes = changedNodes.filter(
+      const changedNodes = Array.from(mutation.addedNodes).concat(
+        Array.from(mutation.removedNodes),
+      );
+      const cssLikeNodes = changedNodes.filter(
         (node) => node instanceof HTMLStyleElement || node instanceof HTMLLinkElement,
       );
       if (cssLikeNodes.length > 0) {

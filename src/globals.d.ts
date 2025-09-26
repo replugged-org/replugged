@@ -2,12 +2,13 @@
 
 // @todo: Scope global types to each component
 
-import type { WebpackChunkGlobal } from "./types/discord";
-import * as replugged from "./renderer/replugged";
-import type { RepluggedNativeType } from "./preload";
-
 import type Lodash from "lodash";
+import type { RepluggedNativeType } from "./preload";
+import type * as replugged from "./renderer/replugged";
+import type { WebpackChunkGlobal } from "./types";
+
 declare global {
+  // eslint-disable-next-line no-var
   export var appSettings: {
     set(setting: string, v: unknown): void;
   };
@@ -19,7 +20,6 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     webpackChunkdiscord_app: WebpackChunkGlobal;
     _: typeof _;
-    $type?: (...args: unknown[]) => unknown;
   }
 
   export const RepluggedNative: RepluggedNativeType;
@@ -29,7 +29,6 @@ declare global {
       relaunch: () => void;
     };
     window: {
-      setDevtoolsCallbacks(onOpened?: (() => void) | null, onClosed?: (() => void) | null): void;
       focus(): void;
     };
     clipboard: {
@@ -38,9 +37,7 @@ declare global {
       paste: () => void;
       read: () => string;
     };
-    process: {
-      platform: string;
-    };
+    process: { platform: string };
   };
 
   export const _: typeof Lodash;

@@ -1,11 +1,9 @@
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
-import { Injector } from "@replugged";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
-
-const injector = new Injector();
 
 export { insertSections };
 
@@ -29,6 +27,7 @@ export function start(): void {
     Section({
       name: "rp-quickcss",
       label: () => intl.string(t.REPLUGGED_QUICKCSS),
+      tabPredicate: () => generalSettings.useValue("quickCSS"),
       elem: QuickCSS,
     }),
     Section({
@@ -51,5 +50,4 @@ export function start(): void {
 
 export function stop(): void {
   settingsTools.removeAfter("Billing");
-  injector.uninjectAll();
 }

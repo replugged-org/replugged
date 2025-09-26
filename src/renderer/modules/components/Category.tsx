@@ -1,11 +1,36 @@
-import React from "@common/react";
+import { React, classNames, marginStyles } from "@common";
 import { waitForProps } from "@webpack";
-import { Divider, FormText } from ".";
+import { Divider, Flex, FormText } from ".";
 
-const classes =
-  await waitForProps<Record<"labelRow" | "title" | "note" | "dividerDefault", string>>(
-    "dividerDefault",
+import type { FormSwitchStyles } from "discord-client-types/discord_app/design/components/Forms/web/FormSwitch.module";
+
+import "./Category.css";
+
+const classes = await waitForProps<Record<FormSwitchStyles, string>>("dividerDefault");
+
+export function ChevronIcon({
+  isOpen,
+  className,
+}: {
+  isOpen: boolean;
+  className?: string;
+}): React.ReactElement {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={24}
+      height={24}
+      fill="none"
+      viewBox="0 0 24 24"
+      className={classNames("replugged-category-icon", className)}
+      style={{ transform: isOpen ? "rotate(90deg)" : undefined }}>
+      <path
+        fill="var(--header-primary)"
+        d="M9.3 5.3a1 1 0 0 0 0 1.4l5.29 5.3-5.3 5.3a1 1 0 1 0 1.42 1.4l6-6a1 1 0 0 0 0-1.4l-6-6a1 1 0 0 0-1.42 0Z"
+      />
+    </svg>
   );
+}
 
 interface CategoryProps {
   title: string;
@@ -17,74 +42,56 @@ interface CategoryProps {
 
 export type CategoryType = React.FC<React.PropsWithChildren<CategoryProps>>;
 
-/**
- * A category. It's opened state, by default, is automatically handled by the component. `open` and `onChange` both must be specified to override.
- */
-export default ((props: React.PropsWithChildren<CategoryProps>) => {
-  const [open, setOpen] = React.useState(props.open || false);
+function Category({
+  children,
+  title,
+  open,
+  note,
+  disabled,
+  onChange,
+}: React.PropsWithChildren<CategoryProps>): React.ReactElement {
+  const [isOpen, setIsOpen] = React.useState(open || false);
 
   const handleClick = (): void => {
-    if (props.disabled) return;
+    if (disabled) return;
 
-    if (typeof props.onChange === "function" && typeof props.open === "boolean") props.onChange();
-    else setOpen(!open);
+    if (onChange && open) onChange();
+    else setIsOpen(!isOpen);
   };
 
   return (
-    <div style={{ marginBottom: 20 }}>
-      <div
-        style={{
-          cursor: props.disabled ? "not-allowed" : "pointer",
-          alignItems: "center",
-          display: "flex",
-          opacity: props.disabled ? 0.3 : undefined,
-        }}
-        onClick={() => {
-          handleClick();
-        }}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          style={{
-            width: 28,
-            height: 28,
-            marginRight: 15,
-            transition: "transform 0.3s",
-            transform: open ? "rotate(90deg)" : undefined,
-          }}>
-          <path
-            fill="var(--header-primary)"
-            d="M9.29 15.88L13.17 12 9.29 8.12c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0l4.59 4.59c.39.39.39 1.02 0 1.41L10.7 17.3c-.39.39-1.02.39-1.41 0-.38-.39-.39-1.03 0-1.42z"
-          />
-        </svg>
-        <div style={{ flex: 1 }}>
-          <div className={classes.labelRow}>
-            <label
-              className={classes.title}
-              style={{ cursor: props.disabled ? "not-allowed" : "pointer" }}>
-              {props.title}
-            </label>
-          </div>
-          {props.note && (
-            <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
+    <div
+      className={classNames(marginStyles.marginBottom20, {
+        [classes.disabled]: disabled,
+      })}>
+      <Flex align={Flex.Align.CENTER} onClick={handleClick}>
+        <ChevronIcon
+          isOpen={isOpen}
+          className={classNames({ "replugged-category-disabled": disabled })}
+        />
+        <Flex direction={Flex.Direction.VERTICAL}>
+          <Flex align={Flex.Align.CENTER} direction={Flex.Direction.HORIZONTAL}>
+            <label className={classes.title}>{title}</label>
+          </Flex>
+          {note && (
+            <FormText.DESCRIPTION disabled={disabled} className={classes.note}>
+              {note}
+            </FormText.DESCRIPTION>
           )}
-        </div>
-      </div>
-      {open ? (
+        </Flex>
+      </Flex>
+      {isOpen ? (
         <div
-          style={{
-            marginTop: 20,
-            marginLeft: 12,
-            borderLeft: "1px var(--background-modifier-accent) solid",
-            paddingLeft: 33,
-            cursor: props.disabled ? "not-allowed" : undefined,
-            opacity: props.disabled ? 0.3 : undefined,
-          }}>
-          {props.children}
+          className={classNames("replugged-category-content", {
+            "replugged-category-disabled": disabled,
+          })}>
+          {children}
         </div>
       ) : (
         <Divider className={classes.dividerDefault} />
       )}
     </div>
   );
-}) as CategoryType;
+}
+
+export default Category;

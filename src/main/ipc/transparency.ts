@@ -21,9 +21,8 @@ ipcMain.handle(
       return;
     }
 
-    let windows = BrowserWindow.getAllWindows();
+    const windows = BrowserWindow.getAllWindows();
     windows.forEach((window) => {
-      // @ts-expect-error standalone-electron-types is not updated to have this.
       window.setBackgroundMaterial(typeof material === "string" ? material : "none");
     });
     backgroundMaterial = material;
@@ -39,7 +38,7 @@ ipcMain.handle(
 ipcMain.handle(
   RepluggedIpcChannels.SET_VIBRANCY,
   (_, vibrancy: Parameters<typeof BrowserWindow.prototype.setVibrancy>[0]) => {
-    let windows = BrowserWindow.getAllWindows();
+    const windows = BrowserWindow.getAllWindows();
 
     windows.forEach((window) => window.setVibrancy(vibrancy));
     currentVibrancy = vibrancy;
@@ -61,7 +60,7 @@ ipcMain.handle(RepluggedIpcChannels.SET_BACKGROUND_COLOR, (_, color: string | un
     return;
   }
 
-  let windows = BrowserWindow.getAllWindows();
+  const windows = BrowserWindow.getAllWindows();
   windows.forEach((window) => window.setBackgroundColor(color || "#00000000"));
   currentBackgroundColor = color || "#00000000";
 });

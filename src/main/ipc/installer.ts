@@ -1,20 +1,21 @@
 import { ipcMain } from "electron";
-import {
-  CheckResultFailure,
-  CheckResultSuccess,
-  InstallResultFailure,
-  InstallResultSuccess,
-  InstallerType,
-  RepluggedIpcChannels,
-} from "../../types";
-import { CONFIG_PATH, CONFIG_PATHS } from "../../util.mjs";
-import { readFile } from "fs/promises";
+import { readFileSync } from "fs";
 import { writeFile as originalWriteFile } from "original-fs";
 import { join, resolve, sep } from "path";
-import { AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
-import { getSetting } from "./settings";
-import { promisify } from "util";
 import { WEBSITE_URL } from "src/constants";
+import {
+  type CheckResultFailure,
+  type CheckResultSuccess,
+  type InstallResultFailure,
+  type InstallResultSuccess,
+  type InstallerType,
+  RepluggedIpcChannels,
+} from "src/types";
+import { type AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
+import { CONFIG_PATH, CONFIG_PATHS } from "src/util.mjs";
+import type { PackageJson } from "type-fest";
+import { promisify } from "util";
+import { getSetting } from "./settings";
 
 const writeFile = promisify(originalWriteFile);
 
@@ -48,7 +49,8 @@ async function github(
     };
   }
 
-  let res;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  let res: { assets: ReleaseAsset[]; html_url: string };
 
   try {
     res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`).then((res) =>
@@ -105,7 +107,7 @@ async function github(
 }
 
 async function store(id: string): Promise<CheckResultSuccess | CheckResultFailure> {
-  const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
+  const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
   const STORE_BASE_URL = `${apiUrl}/api/v1/store`;
   const manifestUrl = `${STORE_BASE_URL}/${id}`;
   const asarUrl = `${manifestUrl}.asar`;
@@ -144,6 +146,21 @@ const handlers: Record<
   store,
 };
 
+export async function getAddonInfo(
+  type: string,
+  identifier: string,
+  id?: string,
+): Promise<CheckResultSuccess | CheckResultFailure> {
+  if (!(type in handlers)) {
+    return {
+      success: false,
+      error: "Unknown updater type",
+    };
+  }
+
+  return handlers[type](identifier, id);
+}
+
 ipcMain.handle(
   RepluggedIpcChannels.GET_ADDON_INFO,
   async (
@@ -152,14 +169,7 @@ ipcMain.handle(
     identifier: string,
     id?: string,
   ): Promise<CheckResultSuccess | CheckResultFailure> => {
-    if (!(type in handlers)) {
-      return {
-        success: false,
-        error: "Unknown updater type",
-      };
-    }
-
-    return handlers[type](identifier, id);
+    return getAddonInfo(type, identifier, id);
   },
 );
 
@@ -174,6 +184,69 @@ const getBaseName = (type: InstallerType | "replugged"): string => {
   }
 };
 
+export async function installAddon(
+  type: InstallerType | "replugged",
+  path: string,
+  url: string,
+  update: boolean,
+  version?: string,
+): Promise<InstallResultSuccess | InstallResultFailure> {
+  const query = new URLSearchParams();
+  query.set("type", update ? "update" : "install");
+  if (version) query.set("version", version);
+
+  if (type === "replugged") {
+    // Manually set Path and URL for security purposes
+    path = "replugged.asar";
+    const apiUrl = getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
+    url = `${apiUrl}/api/v1/store/dev.replugged.Replugged.asar`;
+  }
+
+  let res;
+  try {
+    res = await fetch(`${url}?${query}`);
+  } catch (err) {
+    return {
+      success: false,
+      error: `Failed to fetch update: ${err}`,
+    };
+  }
+  let file;
+  try {
+    file = await res.arrayBuffer();
+  } catch (err) {
+    return {
+      success: false,
+      error: `Failed to read update: ${err}`,
+    };
+  }
+
+  const buf = Buffer.from(file);
+
+  const base = getBaseName(type);
+  const filePath = resolve(base, path);
+  if (!filePath.startsWith(`${base}${sep}`)) {
+    // Ensure file changes are restricted to the base path
+    return {
+      success: false,
+      error: "Invalid path",
+    };
+  }
+
+  try {
+    await writeFile(filePath, buf);
+  } catch (err) {
+    return {
+      success: false,
+      error: `Failed to write file: ${err}`,
+    };
+  }
+
+  return {
+    success: true,
+  };
+}
+
 ipcMain.handle(
   RepluggedIpcChannels.INSTALL_ADDON,
   async (
@@ -183,75 +256,22 @@ ipcMain.handle(
     url: string,
     update: boolean,
     version?: string,
-  ): Promise<InstallResultSuccess | InstallResultFailure> => {
-    const query = new URLSearchParams();
-    query.set("type", update ? "update" : "install");
-    if (version) query.set("version", version);
-
-    if (type === "replugged") {
-      // Manually set Path and URL for security purposes
-      path = "replugged.asar";
-      const apiUrl = await getSetting("dev.replugged.Settings", "apiUrl", WEBSITE_URL);
-      url = `${apiUrl}/api/v1/store/dev.replugged.Replugged.asar`;
-    }
-
-    let res;
-    try {
-      res = await fetch(`${url}?${query}`);
-    } catch (err) {
-      return {
-        success: false,
-        error: `Failed to fetch update: ${err}`,
-      };
-    }
-    let file;
-    try {
-      file = await res.arrayBuffer();
-    } catch (err) {
-      return {
-        success: false,
-        error: `Failed to read update: ${err}`,
-      };
-    }
-
-    const buf = Buffer.from(file);
-
-    const base = getBaseName(type);
-    const filePath = resolve(base, path);
-    if (!filePath.startsWith(`${base}${sep}`)) {
-      // Ensure file changes are restricted to the base path
-      return {
-        success: false,
-        error: "Invalid path",
-      };
-    }
-
-    console.log(url, filePath);
-
-    try {
-      await writeFile(filePath, buf);
-    } catch (err) {
-      return {
-        success: false,
-        error: `Failed to write file: ${err}`,
-      };
-    }
-
-    return {
-      success: true,
-    };
-  },
+  ) => installAddon(type, path, url, update, version),
 );
 
-ipcMain.handle(RepluggedIpcChannels.GET_REPLUGGED_VERSION, async () => {
+export function getRepluggedVersion(): string {
   const path = join(__dirname, "package.json");
   try {
-    const packageJson = JSON.parse(await readFile(path, "utf8"));
-    return packageJson.version;
+    const packageJson: PackageJson = JSON.parse(readFileSync(path, "utf8"));
+    return packageJson.version ?? "unknown";
   } catch (err) {
     if (err && typeof err === "object" && "code" in err && err.code === "ENOENT") {
       return "dev";
     }
     throw err;
   }
+}
+
+ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_VERSION, (event) => {
+  event.returnValue = getRepluggedVersion();
 });

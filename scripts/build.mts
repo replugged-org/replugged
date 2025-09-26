@@ -2,14 +2,14 @@ import { createContext } from "@marshift/argus";
 import esbuild from "esbuild";
 import { rmSync } from "fs";
 import path from "path";
-import { logBuildPlugin } from "src/util.mjs";
 import { fileURLToPath } from "url";
-import intlPlugin from "./build-plugins/intl-loader.mjs";
+import intlLoaderPlugin from "./build-plugins/intl-loader.mjs";
 import intlTypeGeneratorPlugin from "./build-plugins/intl-type-generator.mjs";
+import logBuildPlugin from "./build-plugins/log-build.mjs";
 import preBundlePlugin from "./build-plugins/pre-bundle.mjs";
 
 const NODE_VERSION = "20";
-const CHROME_VERSION = "128";
+const CHROME_VERSION = "134";
 
 const ctx = createContext(process.argv);
 const watch = ctx.hasOptionalArg(/--watch/);
@@ -40,6 +40,9 @@ const common: esbuild.BuildOptions = {
   logLevel: "info",
   plugins,
   metafile: true,
+  jsx: "transform",
+  jsxFactory: "window.replugged.common.React.createElement",
+  jsxFragment: "window.replugged.common.React.Fragment",
 };
 
 const contexts = await Promise.all([
@@ -64,14 +67,21 @@ const contexts = await Promise.all([
   // Renderer
   esbuild.context({
     ...common,
-    plugins: [...plugins, intlTypeGeneratorPlugin, intlPlugin],
+    plugins: [...plugins, intlTypeGeneratorPlugin, intlLoaderPlugin()],
     entryPoints: ["src/renderer/index.ts"],
     platform: "browser",
     target: `chrome${CHROME_VERSION}`,
     outfile: `${distDir}/renderer.js`,
     format: "esm",
+    assetNames: "assets/[hash]",
+    publicPath: "replugged://",
+    banner: { js: "(() => {" },
+    footer: {
+      js: "})();\n//# sourceURL=replugged://renderer/index.js",
+      css: "\n/*# sourceURL=replugged://renderer/index.css */",
+    },
     loader: {
-      ".png": "dataurl",
+      ".png": "file",
     },
   }),
 ]);
@@ -81,7 +91,7 @@ await Promise.all(
       await context.watch();
     } else {
       await context.rebuild().catch(() => process.exit(1));
-      context.dispose();
+      await context.dispose();
     }
   }),
 );

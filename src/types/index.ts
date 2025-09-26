@@ -1,6 +1,5 @@
 import type { WebContents } from "electron";
 import type { PluginManifest, ThemeManifest } from "./addon";
-import type { ConnectedAccount } from "./discord";
 
 export type RepluggedWebContents = WebContents & {
   originalPreload?: string;
@@ -8,6 +7,7 @@ export type RepluggedWebContents = WebContents & {
 
 export enum RepluggedIpcChannels {
   GET_DISCORD_PRELOAD = "REPLUGGED_GET_DISCORD_PRELOAD",
+  GET_REPLUGGED_RENDERER = "REPLUGGED_GET_REPLUGGED_RENDERER",
   GET_QUICK_CSS = "REPLUGGED_GET_QUICK_CSS",
   SAVE_QUICK_CSS = "REPLUGGED_SAVE_QUICK_CSS",
   GET_SETTING = "REPLUGGED_GET_SETTING",
@@ -15,15 +15,13 @@ export enum RepluggedIpcChannels {
   HAS_SETTING = "REPLUGGED_HAS_SETTING",
   DELETE_SETTING = "REPLUGGED_DELETE_SETTING",
   GET_ALL_SETTINGS = "REPLUGGED_GET_ALL_SETTINGS",
-  START_SETTINGS_TRANSACTION = "REPLUGGED_START_SETTINGS_TRANSACTION",
-  END_SETTINGS_TRANSACTION = "REPLUGGED_END_SETTINGS_TRANSACTION",
   LIST_THEMES = "REPLUGGED_LIST_THEMES",
   GET_THEME = "REPLUGGED_GET_THEME",
   UNINSTALL_THEME = "REPLUGGED_UNINSTALL_THEME",
   LIST_PLUGINS = "REPLUGGED_LIST_PLUGINS",
   GET_PLUGIN = "REPLUGGED_GET_PLUGIN",
+  GET_PLUGIN_PLAINTEXT_PATCHES = "REPLUGGED_GET_PLUGIN_PLAINTEXT_PATCHES",
   UNINSTALL_PLUGIN = "REPLUGGED_UNINSTALL_PLUGIN",
-  REGISTER_RELOAD = "REPLUGGED_REGISTER_RELOAD",
   GET_ADDON_INFO = "REPLUGGED_GET_ADDON_INFO",
   INSTALL_ADDON = "REPLUGGED_INSTALL_ADDON",
   OPEN_PLUGINS_FOLDER = "REPLUGGED_OPEN_PLUGINS_FOLDER",
@@ -32,6 +30,7 @@ export enum RepluggedIpcChannels {
   OPEN_QUICKCSS_FOLDER = "REPLUGGED_OPEN_QUICKCSS_FOLDER",
   GET_REPLUGGED_VERSION = "REPLUGGED_GET_REPLUGGED_VERSION",
   DOWNLOAD_REACT_DEVTOOLS = "REPLUGGED_DOWNLOAD_REACT_DEVTOOLS",
+  REMOVE_REACT_DEVTOOLS = "REPLUGGED_REMOVE_REACT_DEVTOOLS",
   GET_BACKGROUND_MATERIAL = "REPLUGGED_GET_BACKGROUND_MATERIAL",
   SET_BACKGROUND_MATERIAL = "REPLUGGED_SET_BACKGROUND_MATERIAL",
   GET_VIBRANCY = "REPLUGGED_GET_VIBRANCY",
@@ -50,22 +49,6 @@ export interface RepluggedAnnouncement {
     onClick?: () => void;
     href?: string;
   };
-}
-
-export interface RepluggedConnection {
-  type: string;
-  name: string;
-  color: string;
-  enabled: boolean;
-  icon: {
-    darkSVG: string;
-    lightSVG: string;
-  };
-  fetchAccount: (id: string) => Promise<ConnectedAccount>;
-  getPlatformUserUrl?: (account: ConnectedAccount) => string;
-  onDisconnect: () => void;
-  onConnect: () => void;
-  setVisibility: (visible: boolean) => boolean | void;
 }
 
 export interface RepluggedTheme {
