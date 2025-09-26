@@ -1,6 +1,6 @@
 /// <reference types="standalone-electron-types"/>
 
-// @todo: Scope global types to each component
+// TODO: Scope global types to each component
 
 import type Lodash from "lodash";
 import type { RepluggedNativeType } from "./preload";

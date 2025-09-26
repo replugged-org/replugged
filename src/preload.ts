@@ -113,7 +113,7 @@ const RepluggedNative = {
 
   getVersion: (): string => version,
 
-  // @todo: We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
+  // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };
 
 export type RepluggedNativeType = typeof RepluggedNative;
