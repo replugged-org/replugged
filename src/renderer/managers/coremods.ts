@@ -41,6 +41,7 @@ export namespace coremods {
   export let rpc: Coremod;
   export let settings: Coremod;
   export let themeUtils: Coremod;
+  export let transparency: Coremod;
   export let watcher: Coremod;
   export let welcome: Coremod;
 }
@@ -68,6 +69,7 @@ export async function startAll(): Promise<void> {
   coremods.rpc = await import("../coremods/rpc");
   coremods.settings = await import("../coremods/settings");
   coremods.themeUtils = await import("../coremods/themeUtils");
+  coremods.transparency = await import("../coremods/transparency");
   coremods.watcher = await import("../coremods/watcher");
   coremods.welcome = await import("../coremods/welcome");
 
