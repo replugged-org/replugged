@@ -5,10 +5,12 @@ import { FormItem } from ".";
 
 import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 
-const radioString = ".radioIndicatorGroup,";
-const mod = await waitForModule(filters.bySource(radioString));
+const mod = await waitForModule(filters.bySource(".radioIndicatorGroup,"));
 
-export const RadioGroup = getFunctionBySource<VoidDesign.RadioGroup>(mod, radioString)!;
+export const RadioGroup = getFunctionBySource<VoidDesign.RadioGroup>(
+  mod,
+  /description:\i,required:\i/,
+)!;
 
 interface RadioItemProps extends VoidDesign.RadioGroupProps {
   note?: string;
