@@ -1,32 +1,17 @@
-import { filters, waitForModule, waitForProps } from "@webpack";
+import { classNames, marginStyles } from "@common";
+import { getComponentBySource, waitForProps } from "@webpack";
 import type React from "react";
 import { Divider, FormText } from ".";
+import components from "../common/components";
 
-interface FormItemCompProps extends Omit<React.ComponentPropsWithoutRef<"div">, "title"> {
-  children: React.ReactNode;
-  title?: React.ReactNode;
-  error?: React.ReactNode;
-  faded?: boolean;
-  disabled?: boolean;
-  required?: boolean;
-  tag?: "h1" | "h2" | "h3" | "h4" | "h5" | "label" | "legend";
-  titleId?: string;
-  errorId?: string;
-  titleClassName?: string;
-}
+import type { FormSwitchStyles } from "discord-client-types/discord_app/design/components/Forms/web/FormSwitch.module";
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-export type FormItemCompType = React.ForwardRefExoticComponent<FormItemCompProps> & {
-  render: React.ForwardRefRenderFunction<unknown>;
-};
+const FormItem = getComponentBySource<Design.FormItem>(components, ".fieldWrapper")!;
 
-const formItemStr = ".fieldWrapper";
-const FormItemComp = await waitForModule<Record<string, FormItemCompType>>(
-  filters.bySource(formItemStr),
-).then((mod) => Object.values(mod).find((x) => x?.render?.toString()?.includes(formItemStr))!);
+const classes = await waitForProps<Record<FormSwitchStyles, string>>("dividerDefault");
 
-const classes = await waitForProps<Record<"dividerDefault", string>>("dividerDefault");
-
-interface FormItemProps extends FormItemCompProps {
+interface CustomFormItemProps extends Design.FormItemProps {
   note?: string;
   notePosition?: "before" | "after";
   noteStyle?: React.CSSProperties;
@@ -34,27 +19,37 @@ interface FormItemProps extends FormItemCompProps {
   divider?: boolean;
 }
 
-export type FormItemType = React.FC<FormItemProps>;
+export type CustomFormItemType = React.FC<CustomFormItemProps>;
 
-export default ((props) => {
-  const { note, notePosition = "before", noteStyle, noteClassName, divider, ...compProps } = props;
-
-  const noteStyleDefault = notePosition === "before" ? { marginBottom: 8 } : { marginTop: 8 };
-  const noteComp = (
+function CustomFormItem({
+  children,
+  note,
+  notePosition = "before",
+  noteStyle,
+  noteClassName,
+  divider,
+  ...props
+}: CustomFormItemProps): React.ReactElement {
+  const noteContent = note && (
     <FormText.DESCRIPTION
       disabled={props.disabled}
-      className={noteClassName}
-      style={{ ...noteStyleDefault, ...noteStyle }}>
+      className={classNames(
+        noteClassName,
+        notePosition === "before" ? marginStyles.marginBottom8 : marginStyles.marginTop8,
+      )}
+      style={noteStyle}>
       {note}
     </FormText.DESCRIPTION>
   );
 
   return (
-    <FormItemComp {...compProps}>
-      {note && notePosition === "before" && noteComp}
-      {props.children}
-      {note && notePosition === "after" && noteComp}
+    <FormItem {...props}>
+      {notePosition === "before" && noteContent}
+      {children}
+      {notePosition === "after" && noteContent}
       {divider && <Divider className={classes.dividerDefault} />}
-    </FormItemComp>
+    </FormItem>
   );
-}) as FormItemType;
+}
+
+export default CustomFormItem;

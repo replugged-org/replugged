@@ -8,7 +8,6 @@
   "REPLUGGED_BADGES_SUPPORT": "Replugged 支援",
   "REPLUGGED_BADGES_TRANSLATOR": "Replugged 翻譯者",
   "REPLUGGED_BADGES_BOOSTER": "Replugged 伺服器加成者",
-  "REPLUGGED_GENERAL_SETTINGS": "一般設定",
   "REPLUGGED_I18N_CONTRIBUTE": "想幫忙翻譯Replugged嗎？到我們的[Weblate]({weblateUrl})！",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged：{translated,number}% 已翻譯",
   "REPLUGGED_LINK_NOW": "立即連接",

@@ -1,8 +1,9 @@
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, QuickCSS, Themes, Updater, generalSettings } from "./pages";
+import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
 export { insertSections };
 

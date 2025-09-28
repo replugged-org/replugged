@@ -1,62 +1,39 @@
+import { marginStyles } from "@common";
 import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
 import { FormItem } from ".";
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type RadioOptionType = {
-  name: string;
-  value: string;
-  desc?: string;
-  disabled?: boolean;
-  color?: string;
-  tooltipText?: string;
-  tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
-  icon?: React.ComponentType<unknown>;
-  collapsibleContent?: React.ReactNode;
-  radioItemIconClassName?: string;
-  radioBarClassName?: string;
-};
+import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 
-interface RadioProps {
-  options: RadioOptionType[];
-  value?: string;
-  onChange: (option: RadioOptionType) => void;
-  disabled?: boolean;
-  size?: string;
-  radioPosition?: "left" | "right";
-  withTransparentBackground?: boolean;
-  orientation?: "vertical" | "horizontal";
-  "aria-labelledby"?: string;
-  className?: string;
-  itemInfoClassName?: string;
-  itemTitleClassName?: string;
-  radioItemClassName?: string;
-  collapsibleClassName?: string;
-}
+const mod = await waitForModule(filters.bySource(".radioIndicatorGroup,"));
 
-export type RadioType = React.FC<RadioProps>;
+export const RadioGroup = getFunctionBySource<VoidDesign.RadioGroup>(
+  mod,
+  /description:\i,required:\i/,
+)!;
 
-const radioString = ".radioIndicatorGroup,";
-const mod = await waitForModule(filters.bySource(radioString));
-
-export const Radio = getFunctionBySource<RadioType>(mod, radioString)!;
-
-interface RadioItemProps extends RadioProps {
+interface RadioItemProps extends VoidDesign.RadioGroupProps {
   note?: string;
   style?: React.CSSProperties;
 }
 
 export type RadioItemType = React.FC<React.PropsWithChildren<RadioItemProps>>;
 
-export const RadioItem = (props: React.PropsWithChildren<RadioItemProps>): React.ReactElement => {
+export function RadioItem({
+  children,
+  style,
+  note,
+  ...props
+}: React.PropsWithChildren<RadioItemProps>): React.ReactElement {
   return (
     <FormItem
-      title={props.children}
-      style={{ marginBottom: 20, ...props.style }}
-      note={props.note}
+      title={children}
+      className={marginStyles.marginBottom20}
+      style={style}
+      note={note}
       disabled={props.disabled}
       divider>
-      <Radio {...props} />
+      <RadioGroup {...props} />
     </FormItem>
   );
-};
+}

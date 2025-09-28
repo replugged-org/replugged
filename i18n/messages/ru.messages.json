@@ -7,7 +7,6 @@
   "REPLUGGED_BADGES_STAFF": "Сотрудник Replugged",
   "REPLUGGED_BADGES_TRANSLATOR": "Переводчик Replugged",
   "REPLUGGED_BADGES_BOOSTER": "Бустер сервера Replugged",
-  "REPLUGGED_GENERAL_SETTINGS": "Основные настройки",
   "REPLUGGED_I18N_CONTRIBUTE": "Хочешь помочь перевести Replugged? Заходи на наш [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% переведено",
   "REPLUGGED_LINK_NOW": "Привязать сейчас",

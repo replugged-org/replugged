@@ -8,9 +8,7 @@ import "./ErrorBoundary.css";
 
 const logger = new Logger("Components", "ErrorBoundary");
 
-function CollapsibleErrorStack(props: { stack: string }): React.ReactElement {
-  const { stack } = props;
-
+function CollapsibleErrorStack({ stack }: { stack: string }): React.ReactElement {
   const [open, setOpen] = React.useState(false);
 
   const message = stack.split("\n")[0];
@@ -54,7 +52,7 @@ export interface ErrorState {
 
 export type ErrorBoundaryType = React.ComponentClass<ErrorProps, ErrorState>;
 
-export default class ErrorBoundary extends React.Component<ErrorProps, ErrorState> {
+class ErrorBoundary extends React.Component<ErrorProps, ErrorState> {
   public constructor(props: ErrorProps) {
     super(props);
     this.state = { hasError: false };
@@ -111,3 +109,5 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
     return this.props.children;
   }
 }
+
+export default ErrorBoundary;

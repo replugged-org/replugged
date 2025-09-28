@@ -1,7 +1,17 @@
-import { toast } from "@common";
+import { marginStyles, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import React from "@common/react";
-import { Button, Divider, Flex, Notice, SliderItem, SwitchItem, Text, Tooltip } from "@components";
+import {
+  Anchor,
+  Button,
+  Flex,
+  FormSection,
+  Notice,
+  SliderItem,
+  SwitchItem,
+  Text,
+  Tooltip,
+} from "@components";
 import { Logger } from "@replugged";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
@@ -113,11 +123,7 @@ export const Updater = (): React.ReactElement => {
   };
 
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_UPDATES_UPDATER)}</Text.H2>
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
+    <FormSection tag="h1" title={intl.string(t.REPLUGGED_UPDATES_UPDATER)}>
       <SwitchItem
         {...useSetting(updaterSettings, "autoCheck")}
         note={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}>
@@ -148,13 +154,11 @@ export const Updater = (): React.ReactElement => {
         {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
       </SliderItem>
       {isRepluggedDev && (
-        <div style={{ marginBottom: "16px" }}>
-          <Notice messageType={Notice.Types.WARNING}>
-            {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
-              url: "https://replugged.dev/download",
-            })}
-          </Notice>
-        </div>
+        <Notice messageType={Notice.Types.WARNING} className={marginStyles.marginBottom20}>
+          {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
+            url: "https://replugged.dev/download",
+          })}
+        </Notice>
       )}
       <Flex
         justify={Flex.Justify.BETWEEN}
@@ -167,7 +171,7 @@ export const Updater = (): React.ReactElement => {
               : intl.string(t.REPLUGGED_UPDATES_UP_TO_DATE)}
           </Text>
           {lastChecked ? (
-            <Text.Normal style={{ marginTop: "5px" }}>
+            <Text.Normal className={marginStyles.marginTop4}>
               {intl.format(t.REPLUGGED_UPDATES_LAST_CHECKED, {
                 date: new Date(lastChecked).toLocaleString(intl.currentLocale),
               })}
@@ -220,7 +224,10 @@ export const Updater = (): React.ReactElement => {
             <div className="replugged-updater-item" key={update.id}>
               <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
                 <div>
-                  <Flex align={Flex.Align.CENTER} style={{ gap: "5px", marginBottom: "5px" }}>
+                  <Flex
+                    align={Flex.Align.CENTER}
+                    style={{ gap: "5px" }}
+                    className={marginStyles.marginBottom4}>
                     <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
                       <Text variant="heading-md/bold" color="header-primary" tag="span">
                         {manifest.name}
@@ -233,9 +240,9 @@ export const Updater = (): React.ReactElement => {
                           type: intl.string(discordT.UPDATE_BADGE_HEADER),
                         })}
                         className="replugged-addon-icon replugged-addon-icon-md">
-                        <a href={sourceLink} target="_blank" rel="noopener noreferrer">
+                        <Anchor href={sourceLink}>
                           <Icons.Link />
-                        </a>
+                        </Anchor>
                       </Tooltip>
                     ) : null}
                   </Flex>
@@ -257,18 +264,16 @@ export const Updater = (): React.ReactElement => {
                 )}
               </Flex>
               {manifest.type !== "replugged" && manifest.updater?.type !== "store" ? (
-                <div style={{ marginTop: "8px" }}>
-                  <Notice messageType={Notice.Types.ERROR}>
-                    {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-                      type: label(getAddonType(manifest.type)),
-                    })}
-                  </Notice>
-                </div>
+                <Notice messageType={Notice.Types.ERROR} className={marginStyles.marginTop8}>
+                  {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+                    type: label(getAddonType(manifest.type)),
+                  })}
+                </Notice>
               ) : null}
             </div>
           );
         })}
       </Flex>
-    </>
+    </FormSection>
   );
 };

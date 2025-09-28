@@ -56,7 +56,6 @@
   "REPLUGGED_ERROR_ALREADY_INSTALLED": "{name} is already installed.",
   "REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND": "An error occurred while executing the command:",
   "REPLUGGED_ERROR_CHECK_CONSOLE": "Check the console for more details.",
-  "REPLUGGED_GENERAL_SETTINGS": "General Settings",
   "REPLUGGED_I18N_CONTRIBUTE": "Want to help translate Replugged? Go to our [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% translated",
   "REPLUGGED_INSTALL_MODAL_HEADER": "Install {type}",
@@ -234,5 +233,8 @@
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS": "Enable Discord Internal DevTools",
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**.",
   "REPLUGGED_SETTINGS_QUICKCSS_ENABLE": "Enable Quick CSS",
-  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Apply custom styles to Discord instantly. Change colors, layout, and appearance in real time without installing themes."
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Apply custom styles to Discord instantly. Change colors, layout, and appearance in real time without installing themes.",
+  "REPLUGGED_ADDON_SETTINGS_THEME_PRESET": "Choose Theme Preset",
+  "REPLUGGED_TOAST_THEME_PRESET_CHANGED": "Switched to preset: {name}",
+  "REPLUGGED_TOAST_THEME_PRESET_FAILED": "Failed to change preset for {name}"
 }
