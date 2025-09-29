@@ -17,7 +17,7 @@ export default [
     find: ".versionHash",
     replacements: [
       {
-        match: /\i\.line,\i\.os\),.{0,100}children:\i}\):null/,
+        match: /\i\.line,\i\.os\),variant:"text-xs\/normal",color:"text-muted"children:\i}\):null/,
         replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
       },
       {
