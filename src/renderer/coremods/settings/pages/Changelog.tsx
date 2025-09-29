@@ -5,8 +5,6 @@ import { intl } from "@common/i18n";
 import { t } from "src/renderer/modules/i18n";
 import Icons from "../icons";
 import type { RenderModalProps } from "discord-client-types/discord_app/design/web";
-// eslint-disable-next-line no-duplicate-imports
-import type { ModalRootProps } from "discord-client-types/discord_app/design/web";
 
 import ChangelogContent from "../../../assets/changelog.md";
 
@@ -17,7 +15,8 @@ const classes = webpack.getByProps<Record<"inlineFormat" | "markup", string>>(
 
 export const ChangelogModal = ({
   changelog,
-  ...props
+  onClose,
+  transitionState,
 }: RenderModalProps & {
   changelog: { content: string; subHeader: string; diff?: string };
 }): React.ReactElement => {
@@ -32,13 +31,13 @@ export const ChangelogModal = ({
 
   if (!content)
     return (
-      <Modal.ModalRoot size="medium" {...(props as ModalRootProps)}>
+      <Modal.ModalRoot size="medium" transitionState={transitionState!}>
         <Loader style={{ margin: "auto" }} />
       </Modal.ModalRoot>
     );
 
   return (
-    <Modal.ModalRoot size="medium" {...(props as ModalRootProps)}>
+    <Modal.ModalRoot size="medium" transitionState={transitionState!}>
       <Modal.ModalHeader>
         <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
           <span style={{ width: "25em", whiteSpace: "nowrap" }}>
@@ -51,7 +50,7 @@ export const ChangelogModal = ({
               {changelog.subHeader}
             </Text>
           </span>
-          <Modal.ModalCloseButton onClick={props.onClose.bind(props)} />
+          <Modal.ModalCloseButton onClick={onClose} />
         </Flex>
       </Modal.ModalHeader>
       <Modal.ModalContent style={{ margin: "18px 0" }}>
