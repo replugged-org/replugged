@@ -18,11 +18,12 @@ export default [
     replacements: [
       {
         match: /\i\.line,\i\.os\),variant:"text-xs\/normal",color:"text-muted"children:\i}\):null/,
-        replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
+        replace: (prefix) => `${prefix},${coremodStr}?.VersionInfo() ?? null`,
       },
       {
         match: /copyValue:(\i).join\(" "\)/g,
-        replace: 'copyValue:[...$1,${coremodStr}?._getVersionString()].join(" ")',
+        replace: (_, copyValues) =>
+          `copyValue:[...${copyValues},${coremodStr}?._getVersionString()].join(" ")`,
       },
     ],
   },
