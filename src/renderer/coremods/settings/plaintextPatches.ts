@@ -22,7 +22,7 @@ export default [
         replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
       },
       {
-        match: /copyValue:(\i).join\(" "\)/,
+        match: /copyValue:(\i).join\(" "\)/g,
         replace: 'copyValue:[...$1,${coremodStr}?._getVersionString()].join(" ")',
       },
     ],
