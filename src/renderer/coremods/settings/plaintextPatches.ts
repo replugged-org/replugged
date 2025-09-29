@@ -22,9 +22,8 @@ export default [
         replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
       },
       {
-        match: /"N\/A"\)\),null!=\i&&(\i)\.push\(\i\)/,
-        replace:
-          "$&,$1.push(window.replugged.common.i18n.intl.format(window.replugged.i18n.t.REPLUGGED_VERSION,{version: window.RepluggedNative.getVersion()}))",
+        match: /copyValue:(\i).join\(" "\)/,
+        replace: 'copyValue:[...$1,${coremodStr}?._getVersionString()].join(" ")',
       },
     ],
   },
