@@ -22,9 +22,9 @@ export default [
         replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
       },
       {
-        match: /\i\)\?\(0,\i\.jsx\)\(\i\.\i,{copyValue:(\i)\.join/,
+        match: /"N\/A"\)\),null!=\i&&(\i)\.push\(\i\)/,
         replace:
-          "$1.push(window.replugged.common.i18n.intl.format(window.replugged.i18n.t.REPLUGGED_VERSION,{version: window.RepluggedNative.getVersion()})),$&",
+          "$&,$1.push(window.replugged.common.i18n.intl.format(window.replugged.i18n.t.REPLUGGED_VERSION,{version: window.RepluggedNative.getVersion()}))",
       },
     ],
   },
