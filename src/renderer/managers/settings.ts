@@ -17,12 +17,8 @@ export type GeneralSettings = {
   keepToken?: boolean;
   transparency?: {
     enabled?: boolean;
-    overrideWindowBackgroundColor?: boolean;
-    windowBackgroundColor?: string;
-    overrideWindowBackgroundMaterial?: boolean;
-    windowBackgroundMaterial?: BackgroundMaterialType;
-    overrideWindowVibrancy?: boolean;
-    windowVibrancy?: VibrancyType;
+    backgroundMaterial?: BackgroundMaterialType;
+    vibrancy?: VibrancyType;
   };
 };
 
@@ -40,12 +36,8 @@ const defaultSettings = {
   keepToken: false,
   transparency: {
     enabled: false,
-    overrideWindowBackgroundColor: false,
-    windowBackgroundColor: "#00000000",
-    overrideWindowBackgroundMaterial: false,
-    windowBackgroundMaterial: "none",
-    overrideWindowVibrancy: false,
-    windowVibrancy: "content",
+    backgroundMaterial: "none",
+    vibrancy: "content",
   },
 } satisfies Partial<GeneralSettings>;
 

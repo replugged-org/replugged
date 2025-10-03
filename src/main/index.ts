@@ -31,11 +31,11 @@ Object.defineProperty(global, "appSettings", {
 class BrowserWindow extends electron.BrowserWindow {
   public constructor(opts: Electron.BrowserWindowConstructorOptions) {
     const titleBarSetting = getSetting<boolean>("dev.replugged.Settings", "titleBar", false);
-    const transparentWindowSetting = getSetting<boolean>(
+    const transparencySetting = getSetting<{ enabled: boolean }>(
       "dev.replugged.Settings",
-      "transparentWindow",
-      false,
-    );
+      "transparency",
+      { enabled: false },
+    ).enabled;
 
     if (opts.frame && process.platform === "linux" && titleBarSetting) opts.frame = void 0;
 
@@ -48,72 +48,15 @@ class BrowserWindow extends electron.BrowserWindow {
     ) {
       opts.webPreferences.preload = join(__dirname, "./preload.js");
 
-      if (transparentWindowSetting) {
+      if (transparencySetting) {
         if (process.platform === "win32" || process.platform === "linux") {
           opts.transparent = true;
+          opts.backgroundColor = "#00000000";
         }
       }
     }
 
     super(opts);
-
-    // Center the unmaximized location
-    if (transparentWindowSetting) {
-      let lastBounds = this.getBounds();
-      // Default to the center of the screen at 1440x810 scale for a 1080p monitor (75%)
-      const primaryDisplaySize = electron.screen.getPrimaryDisplay().workAreaSize;
-      let lastLastBounds = {
-        width: primaryDisplaySize.width * 0.75,
-        height: primaryDisplaySize.height * 0.75,
-        x: primaryDisplaySize.width / 2 - (primaryDisplaySize.width * 0.75) / 2,
-        y: primaryDisplaySize.height / 2 - (primaryDisplaySize.height * 0.75) / 2,
-      };
-      let lastResize = Date.now();
-      this.on("resize", () => {
-        const bounds = this.getBounds();
-        lastLastBounds = lastBounds;
-        lastBounds = bounds;
-        lastResize = Date.now();
-      });
-
-      this.on("maximize", () => {
-        // Get the display at the center of the window
-        const screenBounds = this.getBounds();
-        const windowDisplay = electron.screen.getDisplayNearestPoint({
-          x: screenBounds.x + screenBounds.width / 2,
-          y: screenBounds.y + screenBounds.height / 2,
-        });
-        const workAreaSize = windowDisplay.workArea;
-
-        const isSizeMaximized =
-          lastBounds.width === workAreaSize.width && lastBounds.height === workAreaSize.height;
-        const isPositionMaximized =
-          lastBounds.x === workAreaSize.x + 1 && lastBounds.y === workAreaSize.y + 1;
-
-        // if we haven't resized in the last few ms, we probably didn't actually maximize and should instead unmaximize
-        if (lastResize < Date.now() - 10 || (isSizeMaximized && isPositionMaximized)) {
-          // Calculate new x, y to be in the center of the monitor
-          this.setBounds({
-            x: workAreaSize.width / 2 - lastLastBounds.width / 2 + workAreaSize.x,
-            y: workAreaSize.height / 2 - lastLastBounds.height / 2 + workAreaSize.y,
-            width: lastLastBounds.width,
-            height: lastLastBounds.height,
-          });
-
-          lastResize = Date.now();
-          return;
-        }
-
-        // Move the window to 1,1 to mitigate the window going grey when maximized
-        // Note that the window doesn't seem to visually be at 1,1, but that's enough to prevent the greying
-        this.setBounds({
-          x: workAreaSize.x + 1,
-          y: workAreaSize.y + 1,
-          width: screenBounds.width,
-          height: screenBounds.height,
-        });
-      });
-    }
 
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
   }
