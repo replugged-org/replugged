@@ -133,20 +133,17 @@ function GeneralTab(): React.ReactElement {
           description={intl.format(t.REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC, {})}
         />
         {window.DiscordNative.process.platform === "linux" && (
-          <>
-            <Switch
-              checked={titleBar}
-              onChange={(value) => {
-                setTitleBar(value);
-                restartModal(true);
-              }}
-              label={intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
-              description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
-            />
-            <Divider />
-          </>
+          <Switch
+            checked={titleBar}
+            onChange={(value) => {
+              setTitleBar(value);
+              restartModal(true);
+            }}
+            label={intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+            description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
+          />
         )}
-        <Stack>
+        <div>
           <Switch
             checked={transparency}
             onChange={(value) => {
@@ -164,40 +161,34 @@ function GeneralTab(): React.ReactElement {
                 : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
             </Notice>
           )}
-        </Stack>
+        </div>
         {window.DiscordNative.process.platform === "win32" && (
-          <>
-            <Divider />
-            <Select
-              value={backgroundMaterial}
-              onChange={(value) => {
-                setBackgroundMaterial(value);
-                void window.RepluggedNative.transparency.setBackgroundMaterial(value);
-              }}
-              disabled={!transparency}
-              label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL)}
-              options={BACKGROUND_MATERIALS.map((m) => ({
-                label: m.charAt(0).toUpperCase() + m.slice(1),
-                value: m,
-              }))}
-            />
-          </>
+          <Select
+            value={backgroundMaterial}
+            onChange={(value) => {
+              setBackgroundMaterial(value);
+              void window.RepluggedNative.transparency.setBackgroundMaterial(value);
+            }}
+            disabled={!transparency}
+            label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL)}
+            options={BACKGROUND_MATERIALS.map((m) => ({
+              label: m.charAt(0).toUpperCase() + m.slice(1),
+              value: m,
+            }))}
+          />
         )}
         {window.DiscordNative.process.platform === "darwin" && (
-          <>
-            <Divider />
-            <Select
-              disabled={!transparency}
-              value={vibrancy}
-              onChange={(value) => {
-                setVibrancy(value);
-                void window.RepluggedNative.transparency.setVibrancy(value);
-              }}
-              label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY)}
-              options={VIBRANCY_SELECT_OPTIONS}
-              clearable
-            />
-          </>
+          <Select
+            disabled={!transparency}
+            value={vibrancy}
+            onChange={(value) => {
+              setVibrancy(value);
+              void window.RepluggedNative.transparency.setVibrancy(value);
+            }}
+            label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY)}
+            options={VIBRANCY_SELECT_OPTIONS}
+            clearable
+          />
         )}
       </FieldSet>
     </Stack>
