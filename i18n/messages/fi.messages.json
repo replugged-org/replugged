@@ -222,7 +222,7 @@
   "REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC": "Lähde josta lisäosa asennetaan",
   "REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC": "Lähteestä asennettavan lisäosan tunniste",
   "REPLUGGED_SETTINGS_TRANSPARENT": "Läpinäkyvä Ikkuna",
-  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****VAROITUS:**** **Laitteistokiihdytys** on ehkä **poistettava käytöstä**. Joissain tapauksissa saatat kokea mustan taustan, kuten jos ikkuna on leikattu ylä- tai alaosasta monitorin resoluution takia, tai kun kehitystyökalut on auki ja telakoituna.",
+  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "**Laitteistokiihdytys** on ehkä **poistettava käytöstä**. Joissain tapauksissa saatat kokea mustan taustan, kuten jos ikkuna on leikattu ylä- tai alaosasta monitorin resoluution takia, tai kun kehitystyökalut on auki ja telakoituna.",
   "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Tekee Discordin ikkunasta läpinäkyvän, käytetään ensisijaisesti teemaamiseen. **Vaatii uudelleenkäynnistyksen**.",
-  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS": "****VAROITUS:**** Tämä rikkoo **ikkunan napsahtamisen**. Joissain tapauksissa saatat kokea mustan taustan, kuten jos ikkuna on leikattu ylä- tai alaosasta monitorin resoluution takia, tai kun kehitystyökalut on auki ja telakoituna."
+  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS": "Tämä rikkoo **ikkunan napsahtamisen**. Joissain tapauksissa saatat kokea mustan taustan, kuten jos ikkuna on leikattu ylä- tai alaosasta monitorin resoluution takia, tai kun kehitystyökalut on auki ja telakoituna."
 }

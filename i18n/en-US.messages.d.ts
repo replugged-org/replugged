@@ -1738,6 +1738,32 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_RESTART_TITLE': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `e6ACBQ`
+   * 
+   * ### Definition
+   * ```text
+   * Background Material
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `sO01jI`
+   * 
+   * ### Definition
+   * ```text
+   * Vibrancy
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `F1Fb1N`
    * 
    * ### Definition
@@ -1768,7 +1794,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * ****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.
+   * **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.
    * ```
    * 
    * ### Problems
@@ -1781,7 +1807,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * ****WARNING:**** This will break **window snapping**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.
+   * This will break **window snapping**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.
    * ```
    * 
    * ### Problems
@@ -1789,6 +1815,32 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `uk`, `vi`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS': TypedIntlMessageGetter<{$b?: HookFunction}>,
+  /**
+   * Key: `J3A61d`
+   * 
+   * ### Definition
+   * ```text
+   * Window Customization
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_WINDOW': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `XuDbXF`
+   * 
+   * ### Definition
+   * ```text
+   * Manage the Discord window appearance and behavior.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_WINDOW_DESC': TypedIntlMessageGetter<{}>,
   /**
    * Key: `b2oqX1`
    * 
