@@ -198,5 +198,8 @@
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS": "Schakel Interne Discord DevTools In",
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Vervangt de helpknop in de titelbalk door de interne ontwikkelaarstools van Discord (deze zijn anders dan de Chrome DevTools). Voor deze instelling moeten Discord-experimenten eerst ingeschakeld zijn. **Herstart vereist**.",
   "REPLUGGED_SETTINGS_QUICKCSS_ENABLE": "Schakel Quick CSS In",
-  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Pas custom styling toe op Discord. Verander kleuren, lay-out en uiterlijk in realtime zonder thema's te installeren."
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Pas custom styling toe op Discord. Verander kleuren, lay-out en uiterlijk in realtime zonder thema's te installeren.",
+  "REPLUGGED_ADDON_SETTINGS_THEME_PRESET": "Kies Thema-preset",
+  "REPLUGGED_TOAST_THEME_PRESET_CHANGED": "Overgeschakeld naar preset: {name}",
+  "REPLUGGED_TOAST_THEME_PRESET_FAILED": "Het is niet gelukt om de preset te wijzigen voor {name}"
 }
