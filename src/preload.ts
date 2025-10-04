@@ -96,12 +96,8 @@ const RepluggedNative = {
   },
 
   transparency: {
-    getBackgroundMaterial: (): Promise<BackgroundMaterialType> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_BACKGROUND_MATERIAL),
     setBackgroundMaterial: (effect: BackgroundMaterialType): Promise<void> =>
       ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_MATERIAL, effect),
-    getVibrancy: (): Promise<VibrancyType | null> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.GET_VIBRANCY),
     setVibrancy: (vibrancy: VibrancyType | null): Promise<void> =>
       ipcRenderer.invoke(RepluggedIpcChannels.SET_VIBRANCY, vibrancy),
     // visualEffectState does not need to be implemented until https://github.com/electron/electron/issues/25513 is implemented.
