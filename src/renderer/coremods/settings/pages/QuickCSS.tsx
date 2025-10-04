@@ -2,12 +2,12 @@ import { css } from "@codemirror/lang-css";
 import { EditorState } from "@codemirror/state";
 import { React, toast } from "@common";
 import { intl } from "@common/i18n";
-import { Button, Divider, Flex, Text } from "@components";
+import { Button, Flex, FormSection } from "@components";
 import { webpack } from "@replugged";
 import { EditorView, basicSetup } from "codemirror";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { githubDark, githubLight } from "./codemirror-github";
-import { generalSettings } from "./General";
 
 import "./QuickCSS.css";
 
@@ -171,25 +171,27 @@ export const QuickCSS = (): React.ReactElement => {
   }, [value]);
 
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Text.H2>{intl.string(t.REPLUGGED_QUICKCSS)}</Text.H2>
-        <div style={{ display: "flex" }}>
-          {autoApply ? null : (
-            <Button onClick={reloadAndToast}>
-              {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
+    <FormSection
+      tag="h1"
+      title={
+        <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
+          {intl.string(t.REPLUGGED_QUICKCSS)}
+          <Flex justify={Flex.Justify.END}>
+            {autoApply ? null : (
+              <Button onClick={reloadAndToast}>
+                {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
+              </Button>
+            )}
+            <Button
+              onClick={() => window.RepluggedNative.quickCSS.openFolder()}
+              color={Button.Colors.PRIMARY}
+              look={Button.Looks.LINK}>
+              {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
             </Button>
-          )}
-          <Button
-            onClick={() => window.RepluggedNative.quickCSS.openFolder()}
-            color={Button.Colors.PRIMARY}
-            look={Button.Looks.LINK}>
-            {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
-          </Button>
-        </div>
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
+          </Flex>
+        </Flex>
+      }>
       <div ref={ref} id="replugged-quickcss-wrapper" />
-    </>
+    </FormSection>
   );
 };

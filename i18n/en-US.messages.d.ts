@@ -60,6 +60,19 @@ export declare const messages: {
    */
   'REPLUGGED_ADDONS_TITLE_COUNT': TypedIntlMessageGetter<{count: number | string, type: any}>,
   /**
+   * Key: `ov+bm5`
+   * 
+   * ### Definition
+   * ```text
+   * {count, plural, =1 {Author: {author1}} =2 {Authors: {author1} and {author2}} =3 {Authors: {author1}, {author2}, and {author3}} other {Authors: {author1}, {author2}, {author3}, and {others, plural, =1 {# other} other {# others}}}}
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_ADDON_AUTHORS': TypedIntlMessageGetter<{author1: any, author2: any, author3: any, count: any | number, others: any | number | string}>,
+  /**
    * Key: `XuYvz8`
    * 
    * ### Definition
@@ -215,6 +228,19 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
   'REPLUGGED_ADDON_SETTINGS': TypedIntlMessageGetter<{type: any}>,
+  /**
+   * Key: `Re3C6u`
+   * 
+   * ### Definition
+   * ```text
+   * Choose Theme Preset
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_ADDON_SETTINGS_THEME_PRESET': TypedIntlMessageGetter<{}>,
   /**
    * Key: `WqqBfH`
    * 
@@ -996,19 +1022,6 @@ export declare const messages: {
    */
   'REPLUGGED_ERROR_CHECK_CONSOLE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `5m4FiY`
-   * 
-   * ### Definition
-   * ```text
-   * General Settings
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `es-419`, `hi`, `th`
-   */
-  'REPLUGGED_GENERAL_SETTINGS': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `BS/AJC`
    * 
    * ### Definition
@@ -1560,7 +1573,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Keep token stored
+   * Keep Token Stored
    * ```
    * 
    * ### Problems
@@ -1643,7 +1656,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_QUICKCSS_ENABLE': TypedIntlMessageGetter<{}>,
   /**
@@ -1656,7 +1669,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -2076,19 +2089,6 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `HZhNXl`
-   * 
-   * ### Definition
-   * ```text
-   * Failed to fetch user profile
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_TOAST_PROFILE_FETCH_FAILED': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `avF+9f`
    * 
    * ### Definition
@@ -2127,6 +2127,32 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_QUICKCSS_RELOAD': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `TGExoq`
+   * 
+   * ### Definition
+   * ```text
+   * Switched to preset: {name}
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_TOAST_THEME_PRESET_CHANGED': TypedIntlMessageGetter<{name: any}>,
+  /**
+   * Key: `oSw5Aw`
+   * 
+   * ### Definition
+   * ```text
+   * Failed to change preset for {name}
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_TOAST_THEME_PRESET_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
    * Key: `VowTIi`
    * 

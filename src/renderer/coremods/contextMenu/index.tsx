@@ -1,6 +1,5 @@
 import { React, lodash } from "@common";
 import { ContextMenu } from "@components";
-import type { MenuProps } from "@components/ContextMenu";
 import type {
   ContextMenuTypes,
   GetContextItem,
@@ -8,7 +7,9 @@ import type {
 } from "../../../types/coremods/contextMenu";
 import { Logger } from "../../modules/logger";
 
-const logger = Logger.api("ContextMenu");
+import type { MenuProps } from "discord-client-types/discord_app/design/components/Menu/web/Menu";
+
+const logger = Logger.coremod("ContextMenu");
 
 interface MenuItem {
   getItem: GetContextItem;
@@ -18,6 +19,8 @@ interface MenuItem {
 
 export type ContextMenuProps = MenuProps & {
   data: Array<Record<string, unknown>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children: React.ReactElement<any> | Array<React.ReactElement<any>>;
 };
 
 export const menuItems: Record<string, MenuItem[] | undefined> = {};

@@ -7,7 +7,7 @@ export default [
     find: ".flagImage",
     replacements: [
       {
-        match: /(\.H1,title:\w+\.\w+\.string\(.+?\),children:)((?:[^}]*?}){3}\))/,
+        match: /(title:\i\.\i\.string\(.+?\),children:)((?:[^}]*?}){2}\))/,
         replace: (_, prefix, ogChild) => `${prefix}[${coremodStr}?.Card() ?? null,${ogChild}]`,
       },
       {

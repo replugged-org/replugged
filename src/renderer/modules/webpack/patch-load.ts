@@ -8,9 +8,7 @@ import { listeners } from "./lazy";
 import { patchModuleSource } from "./plaintext-patch";
 
 /**
- * Webpack's require function
- * @internal
- * @hidden
+ * Webpack's require function.
  */
 export let wpRequire: WebpackRequire | undefined;
 export let webpackChunks: WebpackRawModules | undefined;
@@ -18,11 +16,9 @@ export let webpackChunks: WebpackRawModules | undefined;
 const patchedModules = new Set<string>();
 
 /**
- * Original stringified module (without plaintext patches applied) for source searches
- * @internal
- * @hidden
+ * A record that maps module IDs to their corresponding source strings (without plaintext patches applied).
  */
-export const sourceStrings: Record<number, string> = {};
+export const sourceStrings: Record<number | string, string> = {};
 
 function patchChunk(chunk: WebpackChunk): void {
   const modules = chunk[1];
@@ -47,11 +43,6 @@ function patchChunk(chunk: WebpackChunk): void {
   }
 }
 
-/**
- * Patch the push method of window.webpackChunkdiscord_app
- * @param webpackChunk Webpack chunk global
- * @internal
- */
 function patchPush(webpackChunk: WebpackChunkGlobal): void {
   const original = webpackChunk.push;
   function handlePush(chunk: WebpackChunk): unknown {
@@ -76,11 +67,6 @@ function patchPush(webpackChunk: WebpackChunkGlobal): void {
   });
 }
 
-/**
- * Modify the webpack chunk global and signal it to begin operations
- * @param webpackChunk Webpack chunk global
- * @internal
- */
 function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
   chunksGlobal.push([
     [Symbol("replugged")],
