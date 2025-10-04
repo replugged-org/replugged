@@ -115,10 +115,12 @@ ipcMain.on(RepluggedIpcChannels.DELETE_SETTING, (event, namespace: string, key: 
   event.returnValue = writeTransaction(namespace, (settings) => settings.delete(key));
 });
 
+export function getAllSettings(namespace: string): Record<string, unknown> {
+  return readTransaction(namespace, (settings) => Object.fromEntries(settings.entries()));
+}
+
 ipcMain.on(RepluggedIpcChannels.GET_ALL_SETTINGS, (event, namespace: string) => {
-  event.returnValue = readTransaction(namespace, (settings) =>
-    Object.fromEntries(settings.entries()),
-  );
+  event.returnValue = getAllSettings(namespace);
 });
 
 ipcMain.on(RepluggedIpcChannels.OPEN_SETTINGS_FOLDER, () => shell.openPath(SETTINGS_DIR));

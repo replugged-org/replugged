@@ -171,7 +171,7 @@ export function runPlaintextPatches(): void {
 
     // This is a bit of a hack, plaintext patches are built in ESM, but we need to run it in a CJS context
     try {
-      const code = RepluggedNative.plugins.getPlaintextPatches(plugin.path);
+      const code = window.RepluggedNative.plugins.getPlaintextPatches(plugin.path);
       let patches: { default: PlaintextPatch[] } = { default: [] };
 
       if (code) {

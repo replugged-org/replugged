@@ -178,7 +178,7 @@
   "REPLUGGED_SETTINGS_ADDON_EMBEDS": "Zobrazit vložený obsash přídavných modulů",
   "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Zobrazit kartu s informacemi pro přídavný modul když je v chatu sdílen instalační odkaz.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Povolit React DevTools",
-  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS": "****VAROVÁNÍ:**** Povolení tohoto nastavení znefukční **přichycování oken**. V některých případech uvidíš černé pozadí, například když je část okna odříznuta nahoře nebo dole kvůli rozlišení monitoru nebo když jsou otevřené a ukotvené vývojářské nástroje.",
+  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS": "Povolení tohoto nastavení znefukční **přichycování oken**. V některých případech uvidíš černé pozadí, například když je část okna odříznuta nahoře nebo dole kvůli rozlišení monitoru nebo když jsou otevřené a ukotvené vývojářské nástroje.",
   "REPLUGGED_COMMAND_ERROR_GENERIC": "Nastala chyba, prosím, zkus to znovu později. Pokud tento problém přetrvává, kontaktuj prosím tým Replugged.",
   "REPLUGGED_COMMAND_ENABLE_NAME": "povolit",
   "REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME": "doplněk",
@@ -222,7 +222,7 @@
   "REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME": "stav",
   "REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED": "Zakázané",
   "REPLUGGED_COMMAND_LIST_HEADER_DISABLED": "Zakázané {type}",
-  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****VAROVÁNÍ:**** Je možné, že bude nutné **vypnout hardwarovou akceleraci**. V některých případech uvidíš černé pozadí, například když je část okna odříznuta nahoře nebo dole kvůli rozlišení monitoru nebo když jsou otevřené a ukotvené vývojářské nástroje.",
+  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "Je možné, že bude nutné **vypnout hardwarovou akceleraci**. V některých případech uvidíš černé pozadí, například když je část okna odříznuta nahoře nebo dole kvůli rozlišení monitoru nebo když jsou otevřené a ukotvené vývojářské nástroje.",
   "REPLUGGED_COMMAND_LIST_ERROR_SPECIFY": "Musíš specifikovat, jestli mám poslat seznam pluginů, nebo motivů",
   "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Zprůhlední okno Discordu, užitečné zejména pro tvorbu motivů. **Vyžaduje restart**."
 }

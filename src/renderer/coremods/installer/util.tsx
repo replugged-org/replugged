@@ -85,7 +85,7 @@ export async function getInfo(
     return cached.data;
   }
 
-  const info = await RepluggedNative.installer.getInfo(source, identifier, id);
+  const info = await window.RepluggedNative.installer.getInfo(source, identifier, id);
   if (!info.success) {
     logger.error(`Failed to get info for ${identifier}: ${info.error}`);
     cache.set(cacheIdentifier, {
@@ -154,7 +154,7 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
     manifest: { name, type, id, version },
   } = data;
 
-  const res = await RepluggedNative.installer.install(
+  const res = await window.RepluggedNative.installer.install(
     type,
     `${id}.asar`,
     url,

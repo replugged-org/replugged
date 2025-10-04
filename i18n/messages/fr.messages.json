@@ -181,7 +181,7 @@
   "REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC": "Afficher une carte contenant des informations sur un addon lorsqu'un lien de vente/installation est partagé dans le chat.",
   "REPLUGGED_SETTINGS_RESTART_TITLE": "Redémarrage requis",
   "REPLUGGED_SETTINGS_TRANSPARENT_DESC": "Rend la fenêtre de Discord transparente, principalement utile pour les thèmes. **Requiert un redémarrage**.",
-  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "****AVERTISSEMENT :**** **L'accélération matérielle** doit possiblement être **désactivée**. Dans certains cas, un arrière-plan noir peut apparaître, par exemple lorsque la fenêtre est coupée en haut ou en bas à cause de la résolution de l'écran, ou lorsque les outils de développement sont ouverts et ancrés.",
+  "REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX": "**L'accélération matérielle** doit possiblement être **désactivée**. Dans certains cas, un arrière-plan noir peut apparaître, par exemple lorsque la fenêtre est coupée en haut ou en bas à cause de la résolution de l'écran, ou lorsque les outils de développement sont ouverts et ancrés.",
   "REPLUGGED_SETTINGS_TRANSPARENT": "Fenêtre transparente",
   "REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED": "{type} {name} a été activé !",
   "REPLUGGED_COMMAND_DISABLE_MESSAGE_ENABLED": "{type} {name} a été désactivé !",

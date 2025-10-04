@@ -1,5 +1,6 @@
 import { WEBSITE_URL } from "src/constants";
 import { init } from "src/renderer/apis/settings";
+import type { BackgroundMaterialType, VibrancyType } from "src/types";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type GeneralSettings = {
@@ -14,6 +15,9 @@ export type GeneralSettings = {
   titleBar?: boolean;
   quickCSS?: boolean;
   keepToken?: boolean;
+  transparency?: boolean;
+  backgroundMaterial?: BackgroundMaterialType;
+  vibrancy?: VibrancyType | null;
 };
 
 const defaultSettings = {
@@ -28,6 +32,9 @@ const defaultSettings = {
   titleBar: false,
   quickCSS: true,
   keepToken: false,
+  transparency: false,
+  backgroundMaterial: "auto",
+  vibrancy: null,
 } satisfies Partial<GeneralSettings>;
 
 export const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(
