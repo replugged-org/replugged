@@ -48,10 +48,9 @@ class BrowserWindow extends electron.BrowserWindow {
         if (process.platform === "win32" && generalSettings.backgroundMaterial) {
           opts.backgroundMaterial = generalSettings.backgroundMaterial as BackgroundMaterialType;
         }
-      }
-
-      if (process.platform === "darwin" && generalSettings.vibrancy) {
-        opts.vibrancy = generalSettings.vibrancy as VibrancyType;
+        if (process.platform === "darwin" && generalSettings.vibrancy) {
+          opts.vibrancy = generalSettings.vibrancy as VibrancyType;
+        }
       }
     }
 

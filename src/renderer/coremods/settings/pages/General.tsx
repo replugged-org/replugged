@@ -174,6 +174,7 @@ function GeneralTab(): React.ReactElement {
           <>
             <Divider />
             <Select
+              disabled={!transparency}
               value={vibrancy}
               onChange={(value) => {
                 setVibrancy(value);
