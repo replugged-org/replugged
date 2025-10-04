@@ -9,7 +9,6 @@
   "REPLUGGED_BADGES_SUPPORT": "Υποστήριξη του Replugged",
   "REPLUGGED_BADGES_TRANSLATOR": "Μεταφραστής του Replugged",
   "REPLUGGED_BADGES_BOOSTER": "Ενισχυτής του Διακομιστή Replugged",
-  "REPLUGGED_GENERAL_SETTINGS": "Γενικές Ρυθμίσεις",
   "REPLUGGED_I18N_CONTRIBUTE": "Θέλετε να βοηθήσετε στη μετάφραση του Replugged; Πηγαίνετε στο δικό μας [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% μεταφρασμένο",
   "REPLUGGED_LINK_NOW": "Συνδέστε τον τώρα",

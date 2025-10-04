@@ -1,9 +1,9 @@
-import { getBySource } from "@webpack";
+import { getBySource, getComponentBySource } from "@webpack";
 import type { Channel, Message } from "discord-types/general";
 import type { GetButtonItem, HoverBarButtonProps } from "../../../types/coremods/message";
 import { Logger } from "../../modules/logger";
 
-const logger = Logger.api("MessagePopover");
+const logger = Logger.coremod("MessagePopover");
 
 export const buttons = new Map<GetButtonItem, string>();
 
@@ -44,10 +44,7 @@ export function _buildPopoverElements(msg: Message, channel: Channel): React.Rea
   // Waiting for the module is not necessary, as it is already loaded by the time this function is called
   const hoverBarButtonStr = ".hoverBarButton";
   const hoverBarMod = getBySource<Record<string, HoverBarButton>>(hoverBarButtonStr)!;
-  const HoverBarButton = Object.values(hoverBarMod).find((x) =>
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    x?.render?.toString()?.includes(hoverBarButtonStr),
-  );
+  const HoverBarButton = getComponentBySource<HoverBarButton>(hoverBarMod, hoverBarButtonStr);
 
   if (!HoverBarButton) {
     logger.error("Could not find HoverBarButton");

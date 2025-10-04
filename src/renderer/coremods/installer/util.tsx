@@ -1,14 +1,15 @@
-import { modal, toast } from "@common";
+import { marginStyles, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
+import { generalSettings } from "src/renderer/managers/settings";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
-import { generalSettings, getAddonType, getSourceLink, label } from "../settings/pages";
+import { getAddonType, getSourceLink, label } from "../settings/pages";
 
 const logger = Logger.coremod("Installer");
 
@@ -251,20 +252,18 @@ async function showInstallPrompt(
       <>
         {text}
         {(source ?? DEFAULT_INSTALLER_SOURCE) !== "store" ? (
-          <div style={{ marginTop: "16px" }}>
-            <Notice messageType={Notice.Types.ERROR}>
-              {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-                type: label(getAddonType(manifest.type)),
-              })}
-            </Notice>
-          </div>
+          <Notice messageType={Notice.Types.ERROR} className={marginStyles.marginTop20}>
+            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+              type: label(getAddonType(manifest.type)),
+            })}
+          </Notice>
         ) : null}
       </>
     ),
     confirmText: intl.string(discordT.CONFIRM),
     cancelText: intl.string(discordT.CANCEL),
     secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
-    onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : null),
+    onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : undefined),
   });
 
   return res;
@@ -362,6 +361,7 @@ export async function installFlow(
           name: info.manifest.name,
         }),
         confirmText: intl.string(discordT.ERRORS_RELOAD),
+        cancelText: intl.string(discordT.CANCEL),
         confirmColor: Button.Colors.RED,
       })
       .then((answer) => {

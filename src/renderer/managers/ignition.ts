@@ -6,6 +6,7 @@ import { loadStyleSheet } from "../util";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
 import * as quickCSS from "./quick-css";
+import { generalSettings } from "./settings";
 import * as themes from "./themes";
 import { startAutoUpdateChecking } from "./updater";
 
@@ -36,7 +37,7 @@ export async function start(): Promise<void> {
   started = true;
 
   // Quick CSS needs to be called after themes are loaded so that it will override the theme's CSS
-  quickCSS.load();
+  if (generalSettings.get("quickCSS")) quickCSS.load();
 
   // Want to make sure all addons are initialized before starting auto-update checking
   startAutoUpdateChecking();
