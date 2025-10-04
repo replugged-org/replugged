@@ -1820,7 +1820,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Window
+   * Window Customization
    * ```
    * 
    * ### Problems

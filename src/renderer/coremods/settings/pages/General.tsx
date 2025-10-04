@@ -152,33 +152,38 @@ function GeneralTab(): React.ReactElement {
             </Notice>
           )}
         </Stack>
-        <Divider />
         {window.DiscordNative.process.platform === "win32" && (
-          <Select
-            value={backgroundMaterial}
-            onChange={(value) => {
-              setBackgroundMaterial(value);
-              void window.RepluggedNative.transparency.setBackgroundMaterial(value);
-            }}
-            disabled={!transparency}
-            label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL)}
-            options={BACKGROUND_MATERIALS.map((m) => ({
-              label: m.charAt(0).toUpperCase() + m.slice(1),
-              value: m,
-            }))}
-          />
+          <>
+            <Divider />
+            <Select
+              value={backgroundMaterial}
+              onChange={(value) => {
+                setBackgroundMaterial(value);
+                void window.RepluggedNative.transparency.setBackgroundMaterial(value);
+              }}
+              disabled={!transparency}
+              label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL)}
+              options={BACKGROUND_MATERIALS.map((m) => ({
+                label: m.charAt(0).toUpperCase() + m.slice(1),
+                value: m,
+              }))}
+            />
+          </>
         )}
         {window.DiscordNative.process.platform === "darwin" && (
-          <Select
-            value={vibrancy}
-            onChange={(value) => {
-              setVibrancy(value);
-              void window.RepluggedNative.transparency.setVibrancy(value);
-            }}
-            label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY)}
-            options={VIBRANCY_SELECT_OPTIONS}
-            clearable
-          />
+          <>
+            <Divider />
+            <Select
+              value={vibrancy}
+              onChange={(value) => {
+                setVibrancy(value);
+                void window.RepluggedNative.transparency.setVibrancy(value);
+              }}
+              label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY)}
+              options={VIBRANCY_SELECT_OPTIONS}
+              clearable
+            />
+          </>
         )}
       </FieldSet>
     </Stack>
