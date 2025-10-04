@@ -52,7 +52,7 @@
     "@codemirror/lang-css": "^6.3.1",
     "@codemirror/language": "^6.11.2",
     "@codemirror/state": "^6.5.2",
-    "@electron/asar": "^4.0.0",
+    "@electron/asar": "3.4.1",
     "@lezer/highlight": "^1.2.1",
     "adm-zip": "^0.5.16",
     "chalk": "^5.4.1",
