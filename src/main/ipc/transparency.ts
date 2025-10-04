@@ -29,7 +29,7 @@ ipcMain.handle(
 let currentVibrancy: VibrancyType | null = null;
 ipcMain.handle(RepluggedIpcChannels.GET_VIBRANCY, (): VibrancyType | null => currentVibrancy);
 
-ipcMain.handle(RepluggedIpcChannels.SET_VIBRANCY, (_, vibrancy: VibrancyType) => {
+ipcMain.handle(RepluggedIpcChannels.SET_VIBRANCY, (_, vibrancy: VibrancyType | null) => {
   const windows = BrowserWindow.getAllWindows();
 
   windows.forEach((window) => window.setVibrancy(vibrancy));

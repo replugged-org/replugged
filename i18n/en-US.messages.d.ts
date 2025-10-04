@@ -1738,19 +1738,6 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_RESTART_TITLE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `ujAx5O`
-   * 
-   * ### Definition
-   * ```text
-   * Transparency
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
-   */
-  'REPLUGGED_SETTINGS_TRANSPARENCY': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `e6ACBQ`
    * 
    * ### Definition
@@ -1763,19 +1750,6 @@ export declare const messages: {
    * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `eCCNpa`
-   * 
-   * ### Definition
-   * ```text
-   * Manage transparency and visual effects for the Discord window.
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
-   */
-  'REPLUGGED_SETTINGS_TRANSPARENCY_DESC': TypedIntlMessageGetter<{}>,
   /**
    * Key: `sO01jI`
    * 
@@ -1841,6 +1815,32 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `uk`, `vi`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS': TypedIntlMessageGetter<{$b?: HookFunction}>,
+  /**
+   * Key: `J3A61d`
+   * 
+   * ### Definition
+   * ```text
+   * Window
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_WINDOW': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `XuDbXF`
+   * 
+   * ### Definition
+   * ```text
+   * Manage the Discord window appearance and behavior.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_WINDOW_DESC': TypedIntlMessageGetter<{}>,
   /**
    * Key: `b2oqX1`
    * 

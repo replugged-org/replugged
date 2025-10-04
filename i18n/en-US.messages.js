@@ -242,8 +242,8 @@ export default defineMessages({
   "REPLUGGED_ADDON_SETTINGS_THEME_PRESET": "Choose Theme Preset",
   "REPLUGGED_TOAST_THEME_PRESET_CHANGED": "Switched to preset: {name}",
   "REPLUGGED_TOAST_THEME_PRESET_FAILED": "Failed to change preset for {name}",
-  "REPLUGGED_SETTINGS_TRANSPARENCY": "Transparency",
-  "REPLUGGED_SETTINGS_TRANSPARENCY_DESC": "Manage transparency and visual effects for the Discord window.",
+  "REPLUGGED_SETTINGS_WINDOW": "Window",
+  "REPLUGGED_SETTINGS_WINDOW_DESC": "Manage the Discord window appearance and behavior.",
   "REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL": "Background Material",
   "REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY": "Vibrancy"
 });

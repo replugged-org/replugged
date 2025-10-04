@@ -15,11 +15,9 @@ export type GeneralSettings = {
   titleBar?: boolean;
   quickCSS?: boolean;
   keepToken?: boolean;
-  transparency?: {
-    enabled?: boolean;
-    backgroundMaterial?: BackgroundMaterialType;
-    vibrancy?: VibrancyType;
-  };
+  transparency?: boolean;
+  backgroundMaterial?: BackgroundMaterialType;
+  vibrancy?: VibrancyType | null;
 };
 
 const defaultSettings = {
@@ -34,11 +32,9 @@ const defaultSettings = {
   titleBar: false,
   quickCSS: true,
   keepToken: false,
-  transparency: {
-    enabled: false,
-    backgroundMaterial: "none",
-    vibrancy: "content",
-  },
+  transparency: false,
+  backgroundMaterial: "auto",
+  vibrancy: null,
 } satisfies Partial<GeneralSettings>;
 
 export const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(

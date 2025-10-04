@@ -3,9 +3,9 @@ import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
-import type { RepluggedWebContents } from "../types";
+import type { BackgroundMaterialType, RepluggedWebContents, VibrancyType } from "../types";
 import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
-import { getSetting } from "./ipc/settings";
+import { getAllSettings, getSetting } from "./ipc/settings";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
@@ -30,16 +30,10 @@ Object.defineProperty(global, "appSettings", {
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
   public constructor(opts: Electron.BrowserWindowConstructorOptions) {
-    const titleBarSetting = getSetting<boolean>("dev.replugged.Settings", "titleBar", false);
-    const transparencySetting = getSetting<{ enabled: boolean }>(
-      "dev.replugged.Settings",
-      "transparency",
-      { enabled: false },
-    ).enabled;
-
-    if (opts.frame && process.platform === "linux" && titleBarSetting) opts.frame = void 0;
-
+    const generalSettings = getAllSettings("dev.replugged.Settings");
     const originalPreload = opts.webPreferences?.preload;
+
+    if (opts.frame && process.platform === "linux" && generalSettings.titleBar) opts.frame = void 0;
 
     // Load our preload script if it's the main window or the splash screen
     if (
@@ -48,16 +42,20 @@ class BrowserWindow extends electron.BrowserWindow {
     ) {
       opts.webPreferences.preload = join(__dirname, "./preload.js");
 
-      if (transparencySetting) {
-        if (process.platform === "win32" || process.platform === "linux") {
-          opts.transparent = true;
-          opts.backgroundColor = "#00000000";
+      if (generalSettings.transparency) {
+        opts.transparent = true;
+        opts.backgroundColor = "#00000000";
+        if (process.platform === "win32" && generalSettings.backgroundMaterial) {
+          opts.backgroundMaterial = generalSettings.backgroundMaterial as BackgroundMaterialType;
         }
+      }
+
+      if (process.platform === "darwin" && generalSettings.vibrancy) {
+        opts.vibrancy = generalSettings.vibrancy as VibrancyType;
       }
     }
 
     super(opts);
-
     (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
   }
 }

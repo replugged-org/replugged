@@ -18,7 +18,7 @@ import * as QuickCSS from "src/renderer/managers/quick-css";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { useSetting, useSettingArray } from "src/renderer/util";
-import { BACKGROUND_MATERIALS, VIBRANCY_VALUES } from "src/types";
+import { BACKGROUND_MATERIALS, VIBRANCY_SELECT_OPTIONS } from "src/types";
 import { initWs, socket } from "../../devCompanion";
 
 import "./General.css";
@@ -72,21 +72,12 @@ function GeneralTab(): React.ReactElement {
     generalSettings,
     "autoApplyQuickCss",
   );
-  const [transparency, setTransparency] = useSettingArray(
-    generalSettings,
-    "transparency.enabled",
-    false,
-  );
+  const [transparency, setTransparency] = useSettingArray(generalSettings, "transparency");
   const [backgroundMaterial, setBackgroundMaterial] = useSettingArray(
     generalSettings,
-    "transparency.backgroundMaterial",
-    "none",
+    "backgroundMaterial",
   );
-  const [vibrancy, setVibrancy] = useSettingArray(
-    generalSettings,
-    "transparency.vibrancy",
-    "content",
-  );
+  const [vibrancy, setVibrancy] = useSettingArray(generalSettings, "vibrancy");
 
   return (
     <Stack gap={24}>
@@ -103,17 +94,6 @@ function GeneralTab(): React.ReactElement {
           label={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS)}
           description={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC)}
         />
-        {window.DiscordNative.process.platform === "linux" && (
-          <Switch
-            checked={titleBar}
-            onChange={(value) => {
-              setTitleBar(value);
-              restartModal(true);
-            }}
-            label={intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
-            description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
-          />
-        )}
       </Stack>
       <Divider />
       <FieldSet label={intl.string(t.REPLUGGED_QUICKCSS)}>
@@ -137,25 +117,42 @@ function GeneralTab(): React.ReactElement {
       </FieldSet>
       <Divider />
       <FieldSet
-        label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY)}
-        description={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_DESC)}>
-        {(window.DiscordNative.process.platform === "linux" ||
-          window.DiscordNative.process.platform === "win32") && (
-          <Notice messageType={Notice.Types.WARNING}>
-            {window.DiscordNative.process.platform === "linux"
-              ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
-              : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
-          </Notice>
+        label={intl.string(t.REPLUGGED_SETTINGS_WINDOW)}
+        description={intl.string(t.REPLUGGED_SETTINGS_WINDOW_DESC)}>
+        {window.DiscordNative.process.platform === "linux" && (
+          <>
+            <Switch
+              checked={titleBar}
+              onChange={(value) => {
+                setTitleBar(value);
+                restartModal(true);
+              }}
+              label={intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+              description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
+            />
+            <Divider />
+          </>
         )}
-        <Switch
-          checked={transparency}
-          onChange={(value) => {
-            setTransparency(value);
-            restartModal(true);
-          }}
-          label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY)}
-          description={intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_DESC, {})}
-        />
+        <Stack>
+          <Switch
+            checked={transparency}
+            onChange={(value) => {
+              setTransparency(value);
+              restartModal(true);
+            }}
+            label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENT)}
+            description={intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_DESC, {})}
+          />
+          {(window.DiscordNative.process.platform === "linux" ||
+            window.DiscordNative.process.platform === "win32") && (
+            <Notice messageType={Notice.Types.WARNING}>
+              {window.DiscordNative.process.platform === "linux"
+                ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
+                : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
+            </Notice>
+          )}
+        </Stack>
+        <Divider />
         {window.DiscordNative.process.platform === "win32" && (
           <Select
             value={backgroundMaterial}
@@ -178,15 +175,9 @@ function GeneralTab(): React.ReactElement {
               setVibrancy(value);
               void window.RepluggedNative.transparency.setVibrancy(value);
             }}
-            disabled={!transparency}
             label={intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY)}
-            options={VIBRANCY_VALUES.map((v) => ({
-              label: v
-                .split(/[-_]/)
-                .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-                .join(" "),
-              value: v,
-            }))}
+            options={VIBRANCY_SELECT_OPTIONS}
+            clearable
           />
         )}
       </FieldSet>
