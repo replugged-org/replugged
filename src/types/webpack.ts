@@ -17,7 +17,7 @@ export interface RawModule<T = unknown> {
 
 export type WebpackRawModules = Record<string | number, RawModule>;
 
-export type WebpackRequire = ((e: number) => unknown) & {
+export type WebpackRequire = ((e: number | string) => unknown) & {
   c?: WebpackRawModules;
   d: (module: unknown, exports: Record<string, () => unknown>) => void;
   m: WebpackChunk[1];
@@ -30,8 +30,8 @@ export type WebpackModule = (
 ) => void;
 
 export type WebpackChunk = [
-  Array<symbol | number>,
-  Record<number, WebpackModule>,
+  Array<symbol | number | string>,
+  Record<number | string, WebpackModule>,
   ((r: WebpackRequire) => unknown)?,
 ];
 
@@ -56,6 +56,7 @@ export type PlaintextReplacer = (source: string) => string;
 export interface PlaintextPatch {
   find?: string | RegExp;
   check?: (source: string) => boolean;
+  warn?: boolean;
   replacements: Array<PlaintextReplacer | RegexReplacement>;
 }
 
@@ -63,7 +64,8 @@ export interface RawPlaintextPatch {
   find?: string | RegExp;
   id: string;
   check?: (source: string) => boolean;
-  replacements: PlaintextReplacer[];
+  warn?: boolean;
+  replacements: Array<PlaintextReplacer & { regex?: RegexReplacement }>;
 }
 
 export interface GetModuleOptions {

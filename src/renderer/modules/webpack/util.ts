@@ -3,10 +3,11 @@ import { Logger } from "../logger";
 const logger = Logger.api("webpack");
 
 /**
- * Log caught errors from webpack query, while doing some filtering to reduce noise
- * @param opts Object containing the properties below. Any other properties provided will be logged as metadata.
- * @param opts.text Text to be logged with the error
- * @param opts.err Error object is expected, but can be anything
+ * Logs an error message along with optional metadata. Certain expected errors are ignored to reduce noise in the logs.
+ * @param opts Configuration object containing the error details and metadata.
+ * @param opts.text The main error message to log.
+ * @param opts.err An optional error object. If provided, it will be checked for specific known error types to determine if it should be ignored.
+ * @internal
  */
 export function logError({
   text,

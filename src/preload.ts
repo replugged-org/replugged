@@ -89,6 +89,8 @@ const RepluggedNative = {
   reactDevTools: {
     downloadExtension: (): Promise<void> =>
       ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
+    removeExtension: (): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.REMOVE_REACT_DEVTOOLS),
   },
 
   getVersion: (): string => version,
@@ -100,10 +102,10 @@ export type RepluggedNativeType = typeof RepluggedNative;
 
 contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 
-const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
+const renderer: string = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
 
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
-void webFrame.executeJavaScript(`(() => {${renderer}})();//# sourceURL=replugged://renderer.js`);
+void webFrame.executeJavaScript(renderer);
 
 try {
   // Get and execute Discord preload

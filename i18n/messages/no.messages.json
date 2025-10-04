@@ -7,7 +7,6 @@
   "REPLUGGED_BADGES_STAFF": "Replugged Personale",
   "REPLUGGED_BADGES_TRANSLATOR": "Replugged Oversetter",
   "REPLUGGED_BADGES_BOOSTER": "Replugged Server Booster",
-  "REPLUGGED_GENERAL_SETTINGS": "Generelle Innstillinger",
   "REPLUGGED_I18N_CONTRIBUTE": "Vil du hjelpe til med å oversette Replugged? Gå til vår [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% oversatt",
   "REPLUGGED_LINK_NOW": "Tilkoble nå",

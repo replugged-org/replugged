@@ -1,15 +1,15 @@
+import { toast } from "@common";
 import { intl } from "@common/i18n";
-import toast from "@common/toast";
 import { Logger, plugins, themes } from "@replugged";
 import { t } from "src/renderer/modules/i18n";
-import { registerRPCCommand } from "../rpc";
+import rpc from "../../apis/rpc";
 
 const logger = Logger.coremod("Watcher");
 
 const uninjectors: Array<() => void> = [];
 
 export function start(): void {
-  const uninjectRpc = registerRPCCommand("REPLUGGED_ADDON_WATCHER", {
+  const uninjectRpc = rpc.registerRPCCommand("REPLUGGED_ADDON_WATCHER", {
     scope: "REPLUGGED_LOCAL",
     handler: async (data) => {
       const { id } = data.args;
