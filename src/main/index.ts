@@ -52,10 +52,17 @@ class BrowserWindow extends electron.BrowserWindow {
           opts.vibrancy = generalSettings.vibrancy as VibrancyType;
         }
       }
-    }
 
-    super(opts);
-    (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
+      if (generalSettings.disableMinimumSize) {
+        opts.minWidth = 0;
+        opts.minHeight = 0;
+      }
+
+      super(opts);
+
+      if (generalSettings.disableMinimumSize) this.setMinimumSize = () => undefined;
+      (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
+    }
   }
 }
 

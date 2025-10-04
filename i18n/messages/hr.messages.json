@@ -18,7 +18,7 @@
   "REPLUGGED_SETTINGS_BACKEND": "Pozadinski URL",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Omogući Discord Eksperimente",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Držite token pohranjen",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Sprječava Discord da ukloni vaš token iz localStoragea, smanjujući broj neželjenih odjava.",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Sprječava Discord da ukloni vaš token iz localStoragea, smanjujući broj neželjenih odjava. **Zahtijeva ponovno pokretanje**.",
   "REPLUGGED_SETTINGS_RESTART": "Ova postavka zahtijeva ponovno pokretanje Discorda kako bi stupila na snagu. Želite li sada ponovo pokrenuti Discord?",
   "REPLUGGED_SNIPPET_APPLIED": "Isječak Primijenjen",
   "REPLUGGED_SNIPPET_APPLY": "Primijeni Isječak",

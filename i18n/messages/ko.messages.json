@@ -19,7 +19,7 @@
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "디스코드 실험 기능 활성화",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****경고:**** 지금 활성화하고 계신 건 디스코드 관리자가 알아챌 수 있는 기능들이에요. ****계정 정지**** 가능성이 있습니다. Replugged 팀은 **이를 책임질 수 없고 어떠한 지원도 해드릴 수 없어요**. **디스코드 재시작 필요**.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "토큰 유지하기",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "디스코드가 계정 토큰을 localStorage에서 제거하는 것을 방지해요. 갑자기 로그아웃되는 문제를 줄여줄 수 있어요.",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "디스코드가 계정 토큰을 localStorage에서 제거하는 것을 방지해요. 갑자기 로그아웃되는 문제를 줄여줄 수 있어요. **디스코드 재시작 필요**.",
   "REPLUGGED_SETTINGS_RESTART": "이 설정은 디스코드를 재시작해야 활성화돼요. 지금 디스코드를 재시작할까요?",
   "REPLUGGED_SNIPPET_APPLIED": "스니펫 적용됨",
   "REPLUGGED_SNIPPET_APPLY": "스니펫 적용",

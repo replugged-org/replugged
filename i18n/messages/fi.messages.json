@@ -20,7 +20,7 @@
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****VAROITUS:**** Tämän käyttöönotto antaa sinulle pääsyn ominaisuuksiin, jotka Discord voi havaita ja jotka voivat johtaa ****tilin lopettamiseen****. Replugged **ei ole vastuussa** siitä, mitä teet tällä ominaisuudella. Jätä se pois käytöstä, jos olet epävarma. Replugged-tiimi **ei** anna mitään tukea minkään kokeilun suhteen. **Vaatii uudelleenkäynnistyksen**.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Pidä token tallenettuna",
   "REPLUGGED_UPDATES_LAST_CHECKED": "Viimeksi tarkistettu: {date}",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Estää Discordia poistamasta tokeniasi localStoragesta, vähentäen ei-toivottujen uloskirjautumisten määrää.",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Estää Discordia poistamasta tokeniasi localStoragesta, vähentäen ei-toivottujen uloskirjautumisten määrää. **Vaatii uudelleenkäynnistyksen**.",
   "REPLUGGED_SETTINGS_RESTART": "Tämä asetus vaatii uudelleenkäynnistyksen vaikuttaakseen Discordia. Haluatko uudelleenkäynnistää nyt?",
   "REPLUGGED_SNIPPET_APPLIED": "Snipetti asetettu",
   "REPLUGGED_SNIPPET_APPLY": "Aseta snipetti",

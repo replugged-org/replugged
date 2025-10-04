@@ -1425,6 +1425,32 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_DEV_COMPANION_DESC': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `Zy83NT`
+   * 
+   * ### Definition
+   * ```text
+   * Disable Minimum Window Size
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_DISABLE_MIN_SIZE': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `5yUVWV`
+   * 
+   * ### Definition
+   * ```text
+   * Remove Discord's minimum window size restrictions. **Requires restart**.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
+  /**
    * Key: `ET71DA`
    * 
    * ### Definition
@@ -1559,14 +1585,14 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Prevents Discord from removing your token from localStorage, reducing the numbers of unwanted logouts.
+   * Prevents Discord from removing your token from localStorage, reducing the numbers of unwanted logouts. **Requires restart**.
    * ```
    * 
    * ### Problems
    * 
    * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
-  'REPLUGGED_SETTINGS_KEEP_TOKEN_DESC': TypedIntlMessageGetter<{}>,
+  'REPLUGGED_SETTINGS_KEEP_TOKEN_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
    * Key: `eXvP6O`
    * 

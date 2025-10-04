@@ -15,7 +15,7 @@
   "REPLUGGED_LINK_NOW": "Koppel het nu",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Zet Discord Experimenten Aan",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Sla token op",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Houd Discord tegen van het verwijderen van je token uit localStorage, wat het aantal ongewenste afmeldingen vermindert.",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Houd Discord tegen van het verwijderen van je token uit localStorage, wat het aantal ongewenste afmeldingen vermindert. **Herstart vereist**.",
   "REPLUGGED_SETTINGS_RESTART": "Deze instelling vereist je om Discord te herstarten voordat deze effect heeft. Wil je Discord nu herstarten?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet Toegepast",
   "REPLUGGED_SNIPPET_APPLY": "Pas Snippet Toe",

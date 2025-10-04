@@ -66,12 +66,16 @@ const GeneralSettingsTabs = { GENERAL: "general", ADVANCED: "advanced" } as cons
 function GeneralTab(): React.ReactElement {
   const [badges, setBadges] = useSettingArray(generalSettings, "badges");
   const [addonEmbeds, setAddonEmbeds] = useSettingArray(generalSettings, "addonEmbeds");
-  const [titleBar, setTitleBar] = useSettingArray(generalSettings, "titleBar");
   const [quickCSS, setQuickCSS] = useSettingArray(generalSettings, "quickCSS");
   const [autoApplyQuickCss, setAutoApplyQuickCssOnChange] = useSettingArray(
     generalSettings,
     "autoApplyQuickCss",
   );
+  const [disableMinimumSize, setDisableMinimumSize] = useSettingArray(
+    generalSettings,
+    "disableMinimumSize",
+  );
+  const [titleBar, setTitleBar] = useSettingArray(generalSettings, "titleBar");
   const [transparency, setTransparency] = useSettingArray(generalSettings, "transparency");
   const [backgroundMaterial, setBackgroundMaterial] = useSettingArray(
     generalSettings,
@@ -119,6 +123,15 @@ function GeneralTab(): React.ReactElement {
       <FieldSet
         label={intl.string(t.REPLUGGED_SETTINGS_WINDOW)}
         description={intl.string(t.REPLUGGED_SETTINGS_WINDOW_DESC)}>
+        <Switch
+          checked={disableMinimumSize}
+          onChange={(value) => {
+            setDisableMinimumSize(value);
+            restartModal(true);
+          }}
+          label={intl.string(t.REPLUGGED_SETTINGS_DISABLE_MIN_SIZE)}
+          description={intl.format(t.REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC, {})}
+        />
         {window.DiscordNative.process.platform === "linux" && (
           <>
             <Switch
@@ -265,7 +278,7 @@ function AdvancedTab(): React.ReactElement {
           restartModal();
         }}
         label={intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN)}
-        description={intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN_DESC)}
+        description={intl.format(t.REPLUGGED_SETTINGS_KEEP_TOKEN_DESC, {})}
       />
       <ButtonItem
         button={intl.string(discordT.RECONNECT)}

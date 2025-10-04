@@ -19,7 +19,7 @@
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Activează Experimentele Discord-ului",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****ATENȚIE:**** Activarea acestui opțiuni vă oferă acces la funcții care pot fi detectate de Discord și pot duce la ****închiderea contului****. Replugged **nu este responsabil** pentru ce tu faci cu aceste funcții. Lasă opțiunea dezactivată dacă nu ești sigur. Echipa Replugged **nu va oferi** suport pentru aceste experimente. **Necesită repornire**.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Menține token-ul",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Împiedică eliminarea token-ului din LocalStore de către Discord, reducând numărul de deconectări nedorite.",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Împiedică eliminarea token-ului din LocalStore de către Discord, reducând numărul de deconectări nedorite. **Necesită repornire**.",
   "REPLUGGED_SETTINGS_RESTART": "Această setare necesăti sa reponesti Discord pentru a lua efect. Dorești să repornești Discord acum?",
   "REPLUGGED_SNIPPET_APPLIED": "Fragment aplicat",
   "REPLUGGED_SNIPPET_APPLY": "Aplică fragment",

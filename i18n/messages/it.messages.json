@@ -18,7 +18,7 @@
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Attiva le funzionalità sperimentali di Discord",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****ATTENZIONE:**** Attivare questo ti da accesso a funzionalità che possono essere rilevate da Discord e potrebbero risultare nella ****terminazione dell'account****. Replugged **non è resposabile** per quello che fai con questa funzionalità. Lasciala disattivata se sei insicuro. Il team di Replugged **non** fornirà alcun supporto riguardante qualsiasi funzionalità sperimentale. **Necessita di un riavvio**.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Mantieni il token memorizzato",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Impedisce a Discord di rimuovere il tuo token dal localStorage, riducendo il numero di disconnessioni non volute.",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Impedisce a Discord di rimuovere il tuo token dal localStorage, riducendo il numero di disconnessioni non volute. **Necessita di un riavvio**.",
   "REPLUGGED_SETTINGS_RESTART": "Questa impostazione necessita un riavvio di Discord per avere effetto. Vuoi riavviare Discord ora?",
   "REPLUGGED_SNIPPET_APPLIED": "Frammento applicato",
   "REPLUGGED_SNIPPET_APPLY": "Applica frammento",

@@ -18,6 +18,7 @@ export type GeneralSettings = {
   transparency?: boolean;
   backgroundMaterial?: BackgroundMaterialType;
   vibrancy?: VibrancyType | null;
+  disableMinimumSize?: boolean;
 };
 
 const defaultSettings = {
@@ -35,6 +36,7 @@ const defaultSettings = {
   transparency: false,
   backgroundMaterial: "auto",
   vibrancy: null,
+  disableMinimumSize: false,
 } satisfies Partial<GeneralSettings>;
 
 export const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(

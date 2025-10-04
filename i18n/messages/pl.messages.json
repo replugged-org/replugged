@@ -18,7 +18,7 @@
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Włącz Eksperymenty Discorda",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****UWAGA:**** Włączenie tej opcji daje dostęp do funkcji, które mogą zostać wykryte przez Discord i mogą skutkować ****usunięciem konta****. Replugged **nie ponosi odpowiedzialności** za to, co zrobisz z tą funkcją. Pozostaw ją wyłączoną, jeśli nie masz pewności że jej potrzebujesz. Zespół Replugged **nie** zapewni żadnego wsparcia dotyczącego jakiegokolwiek eksperymentu. **Wymaga ponownego uruchomienia**.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Zatrzymaj token w pamięci",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Zapobiega usuwaniu tokena przez Discorda z localStorage, zmniejszając liczbę niepożądanych wylogowań.",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Zapobiega usuwaniu tokena przez Discorda z localStorage, zmniejszając liczbę niepożądanych wylogowań. **Wymaga ponownego uruchomienia**.",
   "REPLUGGED_SETTINGS_RESTART": "To ustawienie wymaga ponownego uruchomienia Discorda, aby było zastosowane. Czy chcesz teraz ponownie uruchomić Discorda?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet zastosowany",
   "REPLUGGED_SNIPPET_APPLY": "Zastosuj Snippet",

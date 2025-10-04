@@ -18,7 +18,7 @@
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Habilitar experimentos de Discord",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****ADVERTENCIA:**** Habilitar esto le da acceso a funciones que Discord puede detectar y que pueden provocar la ****Terminación de una cuenta****. Replugged **no es responsable** de lo que haces con esta función. Déjelo desactivado si no está seguro. El equipo de Replugged **no brindará asistencia** con respecto a cualquier experimento.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Mantener token almacenado",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Evita que Discord elimine su token de localStorage, reduciendo el número de cierres de sesión no deseados.",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Evita que Discord elimine su token de localStorage, reduciendo el número de cierres de sesión no deseados. **Requiere reinicio**.",
   "REPLUGGED_SETTINGS_RESTART": "Este ajuste requiere que reinicies Discord para que tome efecto. ¿Quieres reiniciar Discord ahora?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet Aplicado",
   "REPLUGGED_SNIPPET_APPLY": "Aplicar Snippet",

@@ -74,7 +74,7 @@
   "REPLUGGED_SETTINGS_ERROR_RENDER_PANEL": "An error occurred while rendering settings panel.",
   "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Component stack:",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Keep Token Stored",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Prevents Discord from removing your token from localStorage, reducing the numbers of unwanted logouts.",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Prevents Discord from removing your token from localStorage, reducing the numbers of unwanted logouts. **Requires restart**.",
   "REPLUGGED_SETTINGS_RESTART": "This setting requires you to restart Discord to take effect. Do you want to restart Discord now?",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet Applied",
   "REPLUGGED_SNIPPET_APPLY": "Apply Snippet",
@@ -200,5 +200,7 @@
   "REPLUGGED_SETTINGS_WINDOW": "Window Customization",
   "REPLUGGED_SETTINGS_WINDOW_DESC": "Manage the Discord window appearance and behavior.",
   "REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL": "Background Material",
-  "REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY": "Vibrancy"
+  "REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY": "Vibrancy",
+  "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE": "Disable Minimum Window Size",
+  "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC": "Remove Discord's minimum window size restrictions. **Requires restart**."
 }

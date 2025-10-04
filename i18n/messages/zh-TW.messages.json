@@ -19,7 +19,7 @@
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "啟用 Discord 試驗",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****警告：****啟用此可讓你訪問 Discord 可檢測到的功能，並可能導致****帳戶終止****。Replugged 對你使用此功能所做的事情**不負責**。如果你不確定，請將其停用。Replugged 團隊將**不**為任何試驗提供任何幫助。**需要重新啟動**。",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "保持臨時令牌存儲",
-  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "防止Discord在本地存儲移除你的臨時令牌，減少不必要的登出次數。",
+  "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "防止Discord在本地存儲移除你的臨時令牌，減少不必要的登出次數。**需要重新啟動**。",
   "REPLUGGED_SETTINGS_RESTART": "此設置需要你重新啟動Discord才能生效。你想現在重啟Discord嗎？",
   "REPLUGGED_SNIPPET_APPLIED": "Snippet 已應用",
   "REPLUGGED_SNIPPET_APPLY": "應用 Snippet",
