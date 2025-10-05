@@ -3,7 +3,7 @@
 // TODO: Scope global types to each component
 
 import type Lodash from "lodash";
-import type { RepluggedNativeType } from "./preload";
+import type { RepluggedNativeType } from "./preload/RepluggedNative";
 import type * as replugged from "./renderer/replugged";
 import type { WebpackChunkGlobal } from "./types";
 

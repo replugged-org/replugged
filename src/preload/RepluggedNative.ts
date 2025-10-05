@@ -1,4 +1,4 @@
-import { ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 import { RepluggedIpcChannels } from "src/types";
 
 // eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
@@ -97,3 +97,5 @@ export const RepluggedNative = {
 
   getVersion: (): string => version,
 };
+
+contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);

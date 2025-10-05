@@ -1,9 +1,7 @@
-import { contextBridge, ipcRenderer, webFrame } from "electron";
-import { RepluggedNative } from "./RepluggedNative";
-import { RepluggedIpcChannels } from "src/types";
-export type { RepluggedNativeType } from "./RepluggedNative";
+import "./RepluggedNative";
+import { ipcRenderer, webFrame } from "electron";
 
-contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
+import { RepluggedIpcChannels } from "src/types";
 
 const renderer: string = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
 
