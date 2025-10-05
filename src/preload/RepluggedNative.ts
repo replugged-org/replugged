@@ -1,8 +1,8 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { RepluggedIpcChannels } from "src/types";
 
-// eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
 import type {
+  BackgroundMaterialType,
   CheckResultFailure,
   CheckResultSuccess,
   InstallResultFailure,
@@ -10,7 +10,8 @@ import type {
   InstallerType,
   RepluggedPlugin,
   RepluggedTheme,
-} from "src/types";
+  VibrancyType,
+} from "../types";
 
 export type RepluggedNativeType = typeof RepluggedNative;
 
@@ -93,6 +94,14 @@ export const RepluggedNative = {
       ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
     removeExtension: (): Promise<void> =>
       ipcRenderer.invoke(RepluggedIpcChannels.REMOVE_REACT_DEVTOOLS),
+  },
+
+  transparency: {
+    setBackgroundMaterial: (effect: BackgroundMaterialType): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_MATERIAL, effect),
+    setVibrancy: (vibrancy: VibrancyType | null): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_VIBRANCY, vibrancy),
+    // visualEffectState does not need to be implemented until https://github.com/electron/electron/issues/25513 is implemented.
   },
 
   getVersion: (): string => version,

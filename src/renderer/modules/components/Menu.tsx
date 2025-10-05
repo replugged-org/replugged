@@ -14,6 +14,7 @@ export interface CustomContextMenuType {
   MenuItem: Design.MenuItem;
   MenuRadioItem: Design.MenuRadioItem;
   MenuSeparator: Design.MenuSeparator;
+  MenuSwitchItem: Design.MenuSwitchItem;
 }
 
 const componentMap: Record<
@@ -23,6 +24,7 @@ const componentMap: Record<
   separator: "MenuSeparator",
   checkbox: "MenuCheckboxItem",
   radio: "MenuRadioItem",
+  switch: "MenuSwitchItem",
   control: "MenuControlItem",
   groupstart: "MenuGroup",
   customitem: "MenuItem",

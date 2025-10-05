@@ -238,7 +238,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_ADDON_SETTINGS_THEME_PRESET': TypedIntlMessageGetter<{}>,
   /**
@@ -1217,33 +1217,6 @@ export declare const messages: {
    */
   'REPLUGGED_PLUGIN_EMBED_VIEW_REPO': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `siCr0d`
-   * 
-   * ### Definition
-   * ```text
-   * What is this?
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `no`, `th`
-   */
-  'REPLUGGED_PLUGIN_EMBED_WHATISTHIS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `OxZy5+`
-   * 
-   * ### Definition
-   * ```text
-   * This is a Replugged feature. It allows you to install plugins or themes straight from chat.
-   * Simply hit the install button on the embed.
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `es-419`, `hi`, `hr`, `no`, `th`
-   */
-  'REPLUGGED_PLUGIN_EMBED_WHATISTHIS_CONTENT': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `OjncuL`
    * 
    * ### Definition
@@ -1452,6 +1425,32 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_DEV_COMPANION_DESC': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `Zy83NT`
+   * 
+   * ### Definition
+   * ```text
+   * Disable Minimum Window Size
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_DISABLE_MIN_SIZE': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `5yUVWV`
+   * 
+   * ### Definition
+   * ```text
+   * Remove Discord's minimum window size restrictions. **Requires restart**.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
+  /**
    * Key: `ET71DA`
    * 
    * ### Definition
@@ -1586,40 +1585,14 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Prevents Discord from removing your token from localStorage, reducing the numbers of unwanted logouts.
+   * Prevents Discord from removing your token from localStorage, reducing the numbers of unwanted logouts. **Requires restart**.
    * ```
    * 
    * ### Problems
    * 
    * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
-  'REPLUGGED_SETTINGS_KEEP_TOKEN_DESC': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `k5xIBA`
-   * 
-   * ### Definition
-   * ```text
-   * Eradicate Clyde
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
-   */
-  'REPLUGGED_SETTINGS_NO_CLYDE': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `h7GhqK`
-   * 
-   * ### Definition
-   * ```text
-   * Replaces [Clyde]({clydeUrl}) in Replugged commands with a mixed range of avatars and usernames selected by plug-in developers - fallbacks to "Replugged" by default.
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
-   */
-  'REPLUGGED_SETTINGS_NO_CLYDE_DESC': TypedIntlMessageGetter<{$link?: LinkFunction, clydeUrl: any}>,
+  'REPLUGGED_SETTINGS_KEEP_TOKEN_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
    * Key: `eXvP6O`
    * 
@@ -1738,6 +1711,32 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_RESTART_TITLE': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `e6ACBQ`
+   * 
+   * ### Definition
+   * ```text
+   * Background Material
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `sO01jI`
+   * 
+   * ### Definition
+   * ```text
+   * Vibrancy
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `F1Fb1N`
    * 
    * ### Definition
@@ -1768,7 +1767,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * ****WARNING:**** **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.
+   * **Hardware acceleration** may need to be turned **off**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.
    * ```
    * 
    * ### Problems
@@ -1781,7 +1780,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * ****WARNING:**** This will break **window snapping**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.
+   * This will break **window snapping**. In some cases, you may experience a black background, such as when the window is cut off at the top or bottom due to the monitor resolution, or when the development tools are open and docked.
    * ```
    * 
    * ### Problems
@@ -1789,6 +1788,32 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `es-ES`, `fr`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`, `uk`, `vi`, `zh-CN`
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS': TypedIntlMessageGetter<{$b?: HookFunction}>,
+  /**
+   * Key: `J3A61d`
+   * 
+   * ### Definition
+   * ```text
+   * Window Customization
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_WINDOW': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `XuDbXF`
+   * 
+   * ### Definition
+   * ```text
+   * Manage the Discord window appearance and behavior.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_WINDOW_DESC': TypedIntlMessageGetter<{}>,
   /**
    * Key: `b2oqX1`
    * 
@@ -2028,7 +2053,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Install canceled.
+   * Install canceled
    * ```
    * 
    * ### Problems
@@ -2041,7 +2066,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Failed to get info for addon.
+   * Failed to get info for addon
    * ```
    * 
    * ### Problems
@@ -2054,7 +2079,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Failed to install {name}.
+   * Failed to install {name}
    * ```
    * 
    * ### Problems
@@ -2067,7 +2092,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * {name} installed successfully.
+   * {name} installed successfully
    * ```
    * 
    * ### Problems
@@ -2080,7 +2105,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * {name} was installed but could not be loaded.
+   * {name} was installed but could not be loaded
    * ```
    * 
    * ### Problems
@@ -2088,32 +2113,6 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED': TypedIntlMessageGetter<{name: any}>,
-  /**
-   * Key: `avF+9f`
-   * 
-   * ### Definition
-   * ```text
-   * Failed to format code
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_FAILED': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `ZWqCNj`
-   * 
-   * ### Definition
-   * ```text
-   * Code formatted
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_TOAST_QUICKCSS_CODE_FORMAT_SUCCESS': TypedIntlMessageGetter<{}>,
   /**
    * Key: `rLb2kJ`
    * 
@@ -2132,12 +2131,12 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Switched to preset: {name}
+   * Switched to preset {name}
    * ```
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_TOAST_THEME_PRESET_CHANGED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2150,7 +2149,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_TOAST_THEME_PRESET_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
@@ -2335,448 +2334,6 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_CONCURRENCY_DESC': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `CIFw1N`
-   * 
-   * ### Definition
-   * ```text
-   * Debugging Information
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `e7Hqdn`
-   * 
-   * ### Definition
-   * ```text
-   * Account:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_ACCOUNT': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `IbMEX1`
-   * 
-   * ### Definition
-   * ```text
-   * APIs:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_APIS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `IDwV7e`
-   * 
-   * ### Definition
-   * ```text
-   * App Version:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_APP_VERSION': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `izOrlp`
-   * 
-   * ### Definition
-   * ```text
-   * Architecture:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_ARCH': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `41Hijo`
-   * 
-   * ### Definition
-   * ```text
-   * BetterDiscord Plugins:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_BETTERDISCORD_PLUGINS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `ZunGND`
-   * 
-   * ### Definition
-   * ```text
-   * Branch:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_BRANCH': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `hglZeX`
-   * 
-   * ### Definition
-   * ```text
-   * Build ID:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_ID': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `UaHLbW`
-   * 
-   * ### Definition
-   * ```text
-   * Build Number:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_BUILD_NUMBER': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `t6FmmZ`
-   * 
-   * ### Definition
-   * ```text
-   * Cached Files:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_CACHED_FILES': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `eLglnp`
-   * 
-   * ### Definition
-   * ```text
-   * Process Versions
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_PROCESS_VERSIONS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `aK5NIC`
-   * 
-   * ### Definition
-   * ```text
-   * System / Discord
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_CATEGORY_SYSTEM_DISCORD': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `6QTPq6`
-   * 
-   * ### Definition
-   * ```text
-   * Commands:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_COMMANDS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `YP8MeX`
-   * 
-   * ### Definition
-   * ```text
-   * Connections:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_CONNECTIONS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `sNWpYW`
-   * 
-   * ### Definition
-   * ```text
-   * Things that you may find useful for troubleshooting or flexing on some stats.
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_DESC': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `POJMPz`
-   * 
-   * ### Definition
-   * ```text
-   * Discord Path
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_DISCORD_PATH': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `eH844u`
-   * 
-   * ### Definition
-   * ```text
-   * Distro:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_DISTRO': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `v2rFBA`
-   * 
-   * ### Definition
-   * ```text
-   * Experiments:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_EXPERIMENTS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `x3ohYG`
-   * 
-   * ### Definition
-   * ```text
-   * Labs:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_LABS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `XBypcX`
-   * 
-   * ### Definition
-   * ```text
-   * Latest:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_LATEST': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `SgC4V1`
-   * 
-   * ### Definition
-   * ```text
-   * Locale:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_LOCALE': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `q7A+T0`
-   * 
-   * ### Definition
-   * ```text
-   * OS:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_OS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `RBKQkZ`
-   * 
-   * ### Definition
-   * ```text
-   * 64-bit
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_OS_64BIT': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `+IgWAQ`
-   * 
-   * ### Definition
-   * ```text
-   * Plugins:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `VR3/xM`
-   * 
-   * ### Definition
-   * ```text
-   * Show less
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_LESS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `5s44+/`
-   * 
-   * ### Definition
-   * ```text
-   * Show more
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_PLUGINS_SHOW_MORE': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `BfWykp`
-   * 
-   * ### Definition
-   * ```text
-   * Release Channel:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_RELEASE_CHANNEL': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `4InTYm`
-   * 
-   * ### Definition
-   * ```text
-   * Replugged Path
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_REPLUGGED_PATH': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `MYx3Cg`
-   * 
-   * ### Definition
-   * ```text
-   * Revision:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_REVISION': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `sVLm2t`
-   * 
-   * ### Definition
-   * ```text
-   * Settings:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `ER1nxc`
-   * 
-   * ### Definition
-   * ```text
-   * Settings Sync:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_SETTINGS_SYNC': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `vxWV3t`
-   * 
-   * ### Definition
-   * ```text
-   * Themes:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_THEMES': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `PqsQyM`
-   * 
-   * ### Definition
-   * ```text
-   * Unauthorized plugins:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_UNAUTHORIZED_PLUGINS': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `jyRtkp`
-   * 
-   * ### Definition
-   * ```text
-   * Upstream:
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
-   */
-  'REPLUGGED_UPDATES_OPTS_DEBUG_UPSTREAM': TypedIntlMessageGetter<{}>,
   /**
    * Key: `D0hYHB`
    * 
@@ -2964,7 +2521,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * No new updates available.
+   * No new updates available
    * ```
    * 
    * ### Problems
@@ -2977,7 +2534,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * All updates completed successfully.
+   * All updates completed successfully
    * ```
    * 
    * ### Problems
@@ -2990,7 +2547,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Update completed successfully.
+   * Update completed successfully
    * ```
    * 
    * ### Problems
