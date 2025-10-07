@@ -17,7 +17,7 @@
   "REPLUGGED_SETTINGS_BACKEND": "バックエンドURL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "アセットを取得し、RepluggedのREST APIにクエリを実行するために使用するURLです。",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Discord Experimentsを有効にする",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****警告:**** これを有効にすると、Discordによって検出される可能性のある機能にアクセスできるようになり、****アカウントが停止****される可能性があります。Repluggedはこの機能を使った行為に**責任を持ちません**。不安な場合は無効のままにしておいてください。Repluggedチームはいかなる実験的機能に関してもサポートを**行いません**。**再起動が必要です**。",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "これを有効にすると、Discordによって検出される可能性のある機能にアクセスできるようになり、****アカウントが停止****される可能性があります。Repluggedはこの機能を使った行為に**責任を持ちません**。不安な場合は無効のままにしておいてください。Repluggedチームはいかなる実験的機能に関してもサポートを**行いません**。",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "トークンを保存する",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "DiscordがlocalStorageからトークンを削除するのを防ぎ、不要なログアウトの数を減らします。**再起動が必要です**。",
   "REPLUGGED_SETTINGS_RESTART": "この設定を有効にするには、Discordを再起動する必要があります。今すぐDiscordを再起動しますか？",

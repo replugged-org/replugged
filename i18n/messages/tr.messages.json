@@ -16,7 +16,7 @@
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Bazı kaynakları almak ve Replugged'un REST API'sini sorgulamak için kullanılan URL.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Discord Experiments'i aktif et",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****DİKKAT:**** Bunu etkinleştirdiğinizde Discord tarafından algılanabilen ve ****hesabının sonlandırılması**** ile sonuçlanabilecek özelliklere erişebilirsiniz. Replugged bu özelliklerle yaptıklarınızdan **sorumlu değildir**. Emin değilseniz devre dışı bırakın. Replugged Ekibi herhangi bir deneyle ilgili herhangi bir destek **vermeyecektir**. **Yeniden başlatma gerektirir**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Bunu etkinleştirdiğinizde Discord tarafından algılanabilen ve ****hesabının sonlandırılması**** ile sonuçlanabilecek özelliklere erişebilirsiniz. Replugged bu özelliklerle yaptıklarınızdan **sorumlu değildir**. Emin değilseniz devre dışı bırakın. Replugged Ekibi herhangi bir deneyle ilgili herhangi bir destek **vermeyecektir**.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Token'i saklı tut",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Discord'un token'inizi localStorage'dan kaldırmasını engeller, istenmeyen çıkışların sayısını azaltır. **Yeniden başlatma gerektirir**.",
   "REPLUGGED_SETTINGS_RESTART": "Bu ayarın etkili olması için Discord'u yeniden başlatmanızı gerektirir. Discord'u şimdi yeniden başlatmak istiyor musunuz?",

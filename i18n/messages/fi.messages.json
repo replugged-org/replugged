@@ -17,7 +17,7 @@
   "REPLUGGED_BADGES_STAFF": "Repluggedin henkilökunta",
   "REPLUGGED_SETTINGS_ADVANCED_DESC": "Älä koske näihin juttuihin, jos et tiedä mitä teet. Odottamattomia asioita voi tapahtua kissallesi.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Aktivoi Discord-kokeilut",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****VAROITUS:**** Tämän käyttöönotto antaa sinulle pääsyn ominaisuuksiin, jotka Discord voi havaita ja jotka voivat johtaa ****tilin lopettamiseen****. Replugged **ei ole vastuussa** siitä, mitä teet tällä ominaisuudella. Jätä se pois käytöstä, jos olet epävarma. Replugged-tiimi **ei** anna mitään tukea minkään kokeilun suhteen. **Vaatii uudelleenkäynnistyksen**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Tämän käyttöönotto antaa sinulle pääsyn ominaisuuksiin, jotka Discord voi havaita ja jotka voivat johtaa ****tilin lopettamiseen****. Replugged **ei ole vastuussa** siitä, mitä teet tällä ominaisuudella. Jätä se pois käytöstä, jos olet epävarma. Replugged-tiimi **ei** anna mitään tukea minkään kokeilun suhteen.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Pidä token tallenettuna",
   "REPLUGGED_UPDATES_LAST_CHECKED": "Viimeksi tarkistettu: {date}",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Estää Discordia poistamasta tokeniasi localStoragesta, vähentäen ei-toivottujen uloskirjautumisten määrää. **Vaatii uudelleenkäynnistyksen**.",

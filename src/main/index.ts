@@ -6,11 +6,14 @@ import { pathToFileURL } from "url";
 import type { BackgroundMaterialType, RepluggedWebContents, VibrancyType } from "../types";
 import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
 import { getAllSettings, getSetting } from "./ipc/settings";
+import patchAutoStartUpdate from "./winUpdaterPatch";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 const discordPackage: PackageJson = require(join(discordPath, "package.json"));
 require.main!.filename = join(discordPath, discordPackage.main!);
+
+patchAutoStartUpdate();
 
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {

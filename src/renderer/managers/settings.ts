@@ -15,6 +15,7 @@ export type GeneralSettings = {
   titleBar?: boolean;
   quickCSS?: boolean;
   keepToken?: boolean;
+  winUpdater?: boolean;
   transparency?: boolean;
   backgroundMaterial?: BackgroundMaterialType;
   vibrancy?: VibrancyType | null;
@@ -33,6 +34,7 @@ const defaultSettings = {
   titleBar: false,
   quickCSS: true,
   keepToken: false,
+  winUpdater: true,
   transparency: false,
   backgroundMaterial: "auto",
   vibrancy: null,

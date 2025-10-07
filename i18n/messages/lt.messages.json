@@ -17,7 +17,7 @@
   "REPLUGGED_SETTINGS_BACKEND": "\"Backend\" nuoroda",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Nuoroda, naudojama kai kuriems ištekliams gauti ir „Replugged“ REST API užklausoms pateikti.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Įgalinti „Discord“ eksperimentus",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****ĮSPĖJIMAS:**** Įjungus tai, suteikiama prieiga prie funkcijų, kurias gali aptikti „Discord“, ir dėl to ****tavo paskyra gali būti užblokuota****. „Replugged“ komanda **neatsako** už tavo veiksmus. Palik šį pasirinkimą išjungtą, jei nesi užtikrinta(-s), ar tau tai būtų verta. „Replugged“ komanda **nesuteiks** jokios pagalbos eksperimentų klausimais. **Įjungus, tau reikės perkrauti aplikaciją**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Įjungus tai, suteikiama prieiga prie funkcijų, kurias gali aptikti „Discord“, ir dėl to ****tavo paskyra gali būti užblokuota****. „Replugged“ komanda **neatsako** už tavo veiksmus. Palik šį pasirinkimą išjungtą, jei nesi užtikrinta(-s), ar tau tai būtų verta. „Replugged“ komanda **nesuteiks** jokios pagalbos eksperimentų klausimais.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Išsaugoti sesijos prieigos raktą (token)",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Neleidžia „Discord“ pašalinti tavo sesijos prieigos rakto (token) iš vietinės saugyklos ir sumažina nepageidaujamų atjungimų skaičių. **Įjungus, tau reikės perkrauti aplikaciją**.",
   "REPLUGGED_SETTINGS_RESTART": "Šiam nustatymui pakeisti būtina perkrauti „Discord“ aplikaciją. Ar nori tai padaryti dabar?",

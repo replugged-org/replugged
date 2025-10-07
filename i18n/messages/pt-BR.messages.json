@@ -16,7 +16,7 @@
   "REPLUGGED_SETTINGS_BACKEND": "URL de Backend",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL usado para procurar alguns elementos/recursos e consultar a API REST do Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Ativar Experimentos do Discord",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****AVISO:**** A ativação desta opção fornece acesso a recursos que podem ser detectados pelo Discord e podem resultar no ****banimento da sua conta****. O Replugged **não é responsável** por o que você faz com este recurso. Deixe-o desativado se não tiver certeza. A equipe do Replugged **não** oferecerá suporte para qualquer experimento. **Requer reinicialização**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "A ativação desta opção fornece acesso a recursos que podem ser detectados pelo Discord e podem resultar no ****banimento da sua conta****. O Replugged **não é responsável** por o que você faz com este recurso. Deixe-o desativado se não tiver certeza. A equipe do Replugged **não** oferecerá suporte para qualquer experimento.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Manter token armazenado",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Impede que o Discord remova o seu token do localStorage, reduzindo o número de logouts indesejados. **Requer reinicialização**.",
   "REPLUGGED_SETTINGS_RESTART": "Esta configuração requer que você reinicie o Discord para fazer efeito. Deseja reiniciar o Discord agora?",

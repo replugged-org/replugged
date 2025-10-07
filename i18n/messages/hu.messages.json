@@ -19,7 +19,7 @@
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "A Replugged REST API-ja által használt URL.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Discord Kísérletek Engedélyezése",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****FIGYELEM:****Ezen funkció engedélyzésével hozzáférhetsz olyan funkciókhoz is amit a Discord észlelhet és ez ****fiók felfüggesztéssel**** is járhat. Replugged **nem vállal felelősséget**, hogy mit csinál ezen funkciókkal. Ha nem vagy benne biztos hagyd kikapcsolva. A Replugged Team **nem** szolgáltat semmilyen segítségét a kísérleti funkciókkal kapcsolatban. **Újraindítás szükséges**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Ezen funkció engedélyzésével hozzáférhetsz olyan funkciókhoz is amit a Discord észlelhet és ez ****fiók felfüggesztéssel**** is járhat. Replugged **nem vállal felelősséget**, hogy mit csinál ezen funkciókkal. Ha nem vagy benne biztos hagyd kikapcsolva. A Replugged Team **nem** szolgáltat semmilyen segítségét a kísérleti funkciókkal kapcsolatban.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Token megőrzése",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Megakadályozza a Discordot, hogy eltávolítsa a tokened a localStorage-ból, ezzel csökkentve a nem kívánatos kijelentkeztetések számát. **Újraindítás szükséges**.",
   "REPLUGGED_SETTINGS_RESTART": "Ez a beállítás a Discord újraindítását igényli. Szeretnéd most a Discord-ot újraindítani ?",

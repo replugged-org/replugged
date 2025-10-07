@@ -74,7 +74,8 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL used to fetch some assets and to query Replugged's REST API.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Enable Discord Experiments",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****WARNING:**** Enabling this gives you access to features that can be detected by Discord and may result in an ****account termination****. Replugged is **not responsible** for what you do with this feature. Leave it disabled if you are unsure. The Replugged Team will **not** provide any support regarding any experiment. **Requires restart**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "Unlocks Discord's experiments tab and developer options in settings. **Requires restart**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Enabling this gives you access to features that can be detected by Discord and may result in an ****account termination****. Replugged is **not responsible** for what you do with this feature. Leave it disabled if you are unsure. The Replugged Team will **not** provide any support regarding any experiment.",
   "REPLUGGED_SETTINGS_ERROR_HEADER": "Something went wrong rendering this element!",
   "REPLUGGED_SETTINGS_ERROR_RENDER_PANEL": "An error occurred while rendering settings panel.",
   "REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK": "Component stack:",
@@ -207,5 +208,8 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL": "Background Material",
   "REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY": "Vibrancy",
   "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE": "Disable Minimum Window Size",
-  "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC": "Remove Discord's minimum window size restrictions. **Requires restart**."
+  "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC": "Remove Discord's minimum window size restrictions. **Requires restart**.",
+  "REPLUGGED_SETTINGS_WIN_UPDATER": "Keep Replugged After Updates",
+  "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Automatically reapplies Replugged after Discord updates.",
+  "REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS": "Development Tools"
 });
