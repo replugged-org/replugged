@@ -16,7 +16,7 @@
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL, welche verwendet wird um Daten für Replugged zu laden und die Replugged REST API abzufragen.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Discord Experimente aktivieren",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****WARNUNG:**** Wenn du dies aktivierst erhältst du Zugriff zu Funktionen, die von Discord erkannt werden können. Dies kann dazu führen, dass dein ****Account gelöscht wird****. Replugged ist hierbei **nicht verantwortlich** für was du tust. Wenn du dir unsicher bist, lass diese Einstellung lieber deaktiviert. Das Replugged-Team stellt auch **keinen** Support für Probleme, die im Rahmen dieser Experimenten auftreten können.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Wenn du dies aktivierst erhältst du Zugriff zu Funktionen, die von Discord erkannt werden können. Dies kann dazu führen, dass dein ****Account gelöscht wird****. Replugged ist hierbei **nicht verantwortlich** für was du tust. Wenn du dir unsicher bist, lass diese Einstellung lieber deaktiviert. Das Replugged-Team stellt auch **keinen** Support für Probleme, die im Rahmen dieser Experimenten auftreten können.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Halte Token gespeichert",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Hindert Discord daran, deinen Token aus dem localStorage zu löschen. Dadurch wirst du selterner ungewollt abgemeldet. **Benötigt Neustart**",
   "REPLUGGED_SETTINGS_RESTART": "Diese Einstellung benötigt ein Neuladen des Discord-Clients um zu funktionieren. Möchtest du Discord jetzt neustarten?",

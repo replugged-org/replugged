@@ -6,7 +6,7 @@ import { pathToFileURL } from "url";
 import type { BackgroundMaterialType, RepluggedWebContents, VibrancyType } from "../types";
 import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
 import { getAllSettings, getSetting } from "./ipc/settings";
-import patchAutoStartUpdate from "./win32updater";
+import patchAutoStartUpdate from "./winUpdaterPatch";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");

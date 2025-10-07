@@ -1399,6 +1399,19 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
+   * Key: `6RMznZ`
+   * 
+   * ### Definition
+   * ```text
+   * Development Tools
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `RIDq4u`
    * 
    * ### Definition
@@ -1494,14 +1507,27 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * ****WARNING:**** Enabling this gives you access to features that can be detected by Discord and may result in an ****account termination****. Replugged is **not responsible** for what you do with this feature. Leave it disabled if you are unsure. The Replugged Team will **not** provide any support regarding any experiment. **Requires restart**.
+   * Unlocks Discord's experiments tab and developer options in settings. **Requires restart**.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
+  /**
+   * Key: `cmmlCA`
+   * 
+   * ### Definition
+   * ```text
+   * Enabling this gives you access to features that can be detected by Discord and may result in an ****account termination****. Replugged is **not responsible** for what you do with this feature. Leave it disabled if you are unsure. The Replugged Team will **not** provide any support regarding any experiment.
    * ```
    * 
    * ### Problems
    * 
    * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
-  'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
+  'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
    * Key: `V58dvb`
    * 
@@ -1819,7 +1845,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Auto Replug
+   * Keep Replugged After Updates
    * ```
    * 
    * ### Problems

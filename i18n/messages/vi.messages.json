@@ -17,7 +17,7 @@
   "REPLUGGED_SETTINGS_BACKEND": "Đường liên kết phụ trợ",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Đường liện kết dùng để lấy một số những tài nguyên cũng như truy cập REST API của Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Bật các Thí nghiệm của Discord",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****CẢNH CÁO:**** Bật tùy chọn này sẽ cho bạn truy cập vào các tính năng ẩn mà Discord có thể phát hiện bạn sử dụng và tài khoản Discord của bạn sẽ ****bị khóa**** một khi bị phát hiện. Replugged **không chịu trách nhiệm** về những gì bạn làm với tính năng này. Tắt tùy chọn này đi nếu bạn chưa chắc. Đội ngũ của Replugged sẽ **không** hổ trợ bạn về những vấn đề liên quan đến bất kì các Thí nghiệm nào. **Cần khởi động lại**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Bật tùy chọn này sẽ cho bạn truy cập vào các tính năng ẩn mà Discord có thể phát hiện bạn sử dụng và tài khoản Discord của bạn sẽ ****bị khóa**** một khi bị phát hiện. Replugged **không chịu trách nhiệm** về những gì bạn làm với tính năng này. Tắt tùy chọn này đi nếu bạn chưa chắc. Đội ngũ của Replugged sẽ **không** hổ trợ bạn về những vấn đề liên quan đến bất kì các Thí nghiệm nào.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Giữ token được lưu trữ",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Ngăn Discord bỏ token của bạn khỏi localStorage, giảm bớt hiện tượng đăng xuất không mong muốn. **Cần khởi động lại**.",
   "REPLUGGED_SETTINGS_RESTART": "Muốn chỉnh cài đăt này thì cần phải khởi động lại Discord. Bạn có muốn khởi động lại Discord không?",
