@@ -5,9 +5,9 @@ import { intl } from "@common/i18n";
 import { Button, Flex, FormSection } from "@components";
 import { webpack } from "@replugged";
 import { EditorView, basicSetup } from "codemirror";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { githubDark, githubLight } from "./codemirror-github";
-import { generalSettings } from "./General";
 
 import "./QuickCSS.css";
 

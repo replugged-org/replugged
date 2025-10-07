@@ -2,13 +2,14 @@ import { marginStyles, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
+import { generalSettings } from "src/renderer/managers/settings";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
-import { generalSettings, getAddonType, getSourceLink, label } from "../settings/pages";
+import { getAddonType, getSourceLink, label } from "../settings/pages";
 
 const logger = Logger.coremod("Installer");
 
@@ -84,7 +85,7 @@ export async function getInfo(
     return cached.data;
   }
 
-  const info = await RepluggedNative.installer.getInfo(source, identifier, id);
+  const info = await window.RepluggedNative.installer.getInfo(source, identifier, id);
   if (!info.success) {
     logger.error(`Failed to get info for ${identifier}: ${info.error}`);
     cache.set(cacheIdentifier, {
@@ -153,7 +154,7 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
     manifest: { name, type, id, version },
   } = data;
 
-  const res = await RepluggedNative.installer.install(
+  const res = await window.RepluggedNative.installer.install(
     type,
     `${id}.asar`,
     url,

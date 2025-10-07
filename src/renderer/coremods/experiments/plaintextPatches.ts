@@ -1,11 +1,5 @@
-import { init } from "src/renderer/apis/settings";
-import { type GeneralSettings, type PlaintextPatch, defaultSettings } from "src/types";
-
-// TODO: see if we can import this from General.tsx
-const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(
-  "dev.replugged.Settings",
-  defaultSettings,
-);
+import { generalSettings } from "src/renderer/managers/settings";
+import type { PlaintextPatch } from "src/types";
 
 function alwaysTruePatch(find: string | RegExp, match: string | RegExp): PlaintextPatch {
   return { find, replacements: [{ match, replace: `$&||true` }] };
@@ -58,7 +52,7 @@ export default (generalSettings.get("experiments")
       // Add developer only settings to the UserSettingsCogContextMenu
       alwaysTruePatch(`layoutDebuggingEnabled,isStaff:`, "isStaff())===!0"),
       // Show the Playgrounds and Build Overrides menu items in the UserSettingsCogContextMenu
-      alwaysTruePatch("user-settings-cog", "isStaff()"),
+      alwaysTruePatch("user-settings-cog", /isStaff\(\)/g),
       // Show the ExperimentEmbed
       alwaysTruePatch("dev://experiment/", ".isStaffPersonal())"),
       // Show the ManaPlaygroundEmbed

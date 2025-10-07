@@ -17,14 +17,13 @@ export default [
     find: ".versionHash",
     replacements: [
       {
-        match:
-          /appArch,children:.{0,200}?className:\i\(\)\(\i\.line,\i\.os\),.{0,100}children:\i}\):null/,
-        replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
+        match: /\i\.line,\i\.os\),variant:"text-xs\/normal",color:"text-muted",children:\i}\):null/,
+        replace: (prefix) => `${prefix},${coremodStr}?.VersionInfo() ?? null`,
       },
       {
-        match: /\i\)\?\(0,\i\.jsx\)\(\i\.\i,{copyValue:(\i)\.join/,
-        replace:
-          "$1.push(window.replugged.common.i18n.intl.format(window.replugged.i18n.t.REPLUGGED_VERSION,{version: window.RepluggedNative.getVersion()})),$&",
+        match: /copyValue:(\i).join\(" "\)/g,
+        replace: (_, copyValues) =>
+          `copyValue:[...${copyValues},${coremodStr}?._getVersionString()].join(" ")`,
       },
     ],
   },
