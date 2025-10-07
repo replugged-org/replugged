@@ -133,8 +133,6 @@
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Habilitar React DevTools",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Falha ao baixar React DevTools.",
   "REPLUGGED_INSTALLER_OPEN_STORE": "Ver na loja",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "Reconectar Dev Companion",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Reconecta o coremod Dev Companion para a extensão do VSCode.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Carrega a extensão de Ferramentas de Desenvolvedor React, permitindo-o inspecionar a árvore do React e depurar mais facilmente. **Requer uma reinicialização do Discord**.",
   "REPLUGGED_COMMAND_SUCCESS_GENERIC": "Sucesso",
   "REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED": "{type} {name} foi habilitado!",

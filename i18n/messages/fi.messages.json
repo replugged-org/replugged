@@ -130,8 +130,6 @@
   "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Replugged-tiimi ei ole tarkistanut tätä {type}, ja se voi vahingoittaa tietokonettasi. Käytä omalla vastuullasi.",
   "REPLUGGED_VIEW_UPDATES": "Katso {count, plural, =1 {# Update} other {# Updates}}",
   "REPLUGGED_DEVELOPER_MODE_WARNING": "Käytät tällä hetkellä Repluggedia kehittäjätilassa, eikä Replugged pysty päivittämään itseään. [Vaihda tuotantotilaan]({url}).",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "Yhdistä Dev Companion uudelleen",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Yhdistää Dev Companion coremodin uudelleen VSCode laajennukseen.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Ota käyttöön React DevTools",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Lataa React DevTools laajennuksen, jonka avulla voit tarkastaa React-puuta ja tehdä virheenkorjauksia helpommin. **Vaatii uudelleenkäynnistyksen**.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "React DevTools:in lataaminen epäonnistui.",

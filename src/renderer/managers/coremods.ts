@@ -30,7 +30,6 @@ export namespace coremods {
   export let badges: Coremod;
   export let commands: Coremod;
   export let contextMenu: Coremod;
-  export let devCompanion: Coremod;
   export let installer: Coremod;
   export let language: Coremod;
   export let messagePopover: Coremod;

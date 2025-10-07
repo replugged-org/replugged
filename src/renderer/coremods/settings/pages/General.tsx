@@ -2,7 +2,6 @@ import { React, modal, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import {
   Button,
-  ButtonItem,
   Divider,
   FieldSet,
   Notice,
@@ -19,7 +18,6 @@ import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { useSetting, useSettingArray } from "src/renderer/util";
 import { BACKGROUND_MATERIALS, VIBRANCY_SELECT_OPTIONS } from "src/types";
-import { initWs, socket } from "../../devCompanion";
 
 import "./General.css";
 
@@ -261,15 +259,6 @@ function AdvancedTab(): React.ReactElement {
           }}
           label={intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
           description={intl.format(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC, {})}
-        />
-        <ButtonItem
-          button={intl.string(discordT.RECONNECT)}
-          label={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION)}
-          description={intl.string(t.REPLUGGED_SETTINGS_DEV_COMPANION_DESC)}
-          onClick={() => {
-            socket?.close(1000, "Reconnecting");
-            initWs(true);
-          }}
         />
       </FieldSet>
       <Divider />

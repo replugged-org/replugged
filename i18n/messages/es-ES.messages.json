@@ -128,8 +128,6 @@
   "REPLUGGED_ADDON_NOT_REVIEWED": "{type} sin revisar",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Aplicar Quick CSS automáticamente",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Aplique cambios automáticamente a Quick CSS a medida que escribe.",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "Vuelva a conectar a Dev Companion",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Vuelve a conectar el coremod Dev Companion a la extensión VSCode.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Habilitar React DevTools",
   "REPLUGGED_VIEW_UPDATES": "Ver {count, plural, =1 {# Update} other {# Updates}}",
   "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Este {type} no ha sido revisado por el equipo de Replugged y podría dañar su computadora. Úselo bajo su propio riesgo.",

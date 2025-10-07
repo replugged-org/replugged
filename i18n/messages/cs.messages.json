@@ -130,8 +130,6 @@
   "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Tento {type} nebyl zkontrolován týmem Replugged a mohl by poškodit váš počítač. Používáte jej na vlastní nebezpečí.",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatické použití Rychlé CSS",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automatické použití změn Rychlého CSS při psaní.",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "Znovu připojit Vývojářského Pomocníka",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Znovu připojí coremod Vývojářský Pomocník k rozšíření pro VSCode.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Načte rozšíření React DevTools, které vám dovolí prohlédnout strom React a jednoduššeji debugovat. **Vyžaduje restart**.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Nepodařilo se stáhnout React DevTools.",
   "REPLUGGED_INSTALLER_OPEN_STORE": "Zobrazit v Obchodě",

@@ -130,8 +130,6 @@
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatycznie zastosuj Szybki CSS",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automatycznie zastosuj zmiany podczas pisania w Szybkim CSS.",
   "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Ten {type} nie został przetestowany przez zespół Replugged i może być szkodliwy dla twojego komputera. Używasz na własne ryzyko.",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "Połącz ponownie z Dev Companion",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Ponownie łączy coremod Dev Companion z rozszerzeniem VSCode.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Włącz React DevTools",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Ładuje rozszerzenie React DevTools, co umożliwia sprawdzanie drzewa React oraz ułatwia debugowanie. **Wymaga ponownego uruchomienia**.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Nie udało się pobrać React DevTools.",

@@ -129,8 +129,6 @@
   "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Bu {type} Replugged ekibi tarafından incelenmemiştir ve bilgisayarınıza zarar verebilir. Kullanmak kendi sorumluluğunuzdadır.",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Quick CSS'i Otomatik Uygula",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Quick CSS'te değişiklikleri siz yazdıkça otomatik olarak uygula.",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "Dev Companion'a Yeniden Bağlan",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Dev Companion coremod'unu VSCode eklentisine yeniden bağlar.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "React DevTools'u Etkinleştir",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "React DevTools eklentisini yükler, React ağacını inceleyebilmenizi ve daha rahat hata ayıklayabilmenizi sağlar. **Yeniden başlatma gereklidir**.",
   "REPLUGGED_DEVELOPER_MODE_WARNING": "Şu an Replugged'ı geliştirici modunda kullanıyorsunuz, Replugged kendini güncelleyemeyecektir. [Üretim sürümüne geçin]({url}).",

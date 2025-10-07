@@ -130,8 +130,6 @@
   "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "Этот {type} не был проверен командой Replugged и может быть опасным для вашей системы. Используйте на свой страх и риск.",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Автоматическое применение Quick CSS",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Автоматически применять изменения Quick CSS, при его редактировании.",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "Переподключение Dev Companion",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Переподключает Dev Companion к расширению VSCode.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Включить React DevTools",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Загружает расширение React DevTools, упрощая просмотр дерева React и отладку. **Требует перезагрузки**.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Ошибка установки React DevTools.",

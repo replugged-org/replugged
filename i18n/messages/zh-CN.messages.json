@@ -87,8 +87,6 @@
   "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "此 {type} 未经 Replugged 团队审核，可能会损害您的电脑。 使用风险自负。",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "自动应用 Quick CSS",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "在您输入时自动确认更改 Quick CSS。",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "重新连接开发者伙伴",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "重新连接开发者伙伴核心模块至 VSCode 插件。",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "开启反应开发工具",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "加载 React 开发工具插件，它允许你检查 React 代码树并且更加容易地调试代码。**需要重启**。",
   "REPLUGGED_DEVELOPER_MODE_WARNING": "您当前正在开发人员模式下运行 Replugged，Replugged 将无法自行更新。 [切换到制作模式]({url})。",

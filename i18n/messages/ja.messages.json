@@ -113,8 +113,6 @@
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Quick CSS を自動的に適用",
   "REPLUGGED_I18N": "Replugged 翻訳",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "入力中に Quick CSS の変更を自動的に適用します。",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "Dev Companion を再接続",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Dev Companion coremod を VSCode 拡張機能に再接続します。",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "React DevTools を有効化",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "React DevTools 拡張機能をロードし、React ツリーの検査とデバッグをより簡単に行えるようにします。**再起動が必要**",
   "REPLUGGED_VIEW_UPDATES": "{count, number} 個のアップデートを見る",
