@@ -1,12 +1,6 @@
 import { getFunctionBySource } from "@webpack";
-import type React from "react";
 import components from "../common/components";
 
-interface DividerProps {
-  className?: string;
-  style?: React.CSSProperties;
-}
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-export type DividerType = React.FC<DividerProps>;
-
-export default getFunctionBySource<DividerType>(components, ".divider,")!;
+export default getFunctionBySource<Design.Divider>(components, ".divider,")!;

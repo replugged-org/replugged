@@ -2,10 +2,11 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
+    find: "RPC_STORE_WAIT",
     replacements: [
       {
-        match: /null!=\i\.\i\.Messages\.SELF_XSS_HEADER/,
-        replace: "false",
+        match: /this,"commands",{}/,
+        replace: () => `this,"commands",replugged.rpc?._getCommands({}),`,
       },
     ],
   },

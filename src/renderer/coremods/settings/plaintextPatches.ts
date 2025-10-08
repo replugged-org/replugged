@@ -40,14 +40,13 @@ export default [
     find: ".versionHash",
     replacements: [
       {
-        match:
-          /appArch,children:.{0,200}?className:\i\(\)\(\i\.line,\i\.os\),.{0,100}children:\i}\):null/,
-        replace: `$&,${coremodStr}?.VersionInfo() ?? null`,
+        match: /\i\.line,\i\.os\),variant:"text-xs\/normal",color:"text-muted",children:\i}\):null/,
+        replace: (prefix) => `${prefix},${coremodStr}?.VersionInfo() ?? null`,
       },
       {
-        match: /copyValue:(\i)\.join/g,
-        replace: (_, versionInfo) =>
-          `copyValue:[...${versionInfo}, ${coremodStr}?.getVersionInfoText()].join`,
+        match: /copyValue:(\i).join\(" "\)/g,
+        replace: (_, copyValues) =>
+          `copyValue:[...${copyValues},${coremodStr}?._getVersionString()].join(" ")`,
       },
     ],
   },

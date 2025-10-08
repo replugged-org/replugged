@@ -5,9 +5,11 @@ import { logError } from "./util";
 // Export-finding utilities
 
 /**
- * Get the default export (or top-level exports) for a module
- * @param m Raw module
- * @returns Exports
+ * Retrieves the exported value from a module, attempting to resolve specific keys
+ * ("default", "Z", "ZP") if the module's exports object contains only one key.
+ * @template T The expected type of the exported value.
+ * @param m The raw module from which to retrieve the exports.
+ * @returns The exported value, or `undefined` if the exports are not an object or if no suitable key is found.
  * @internal
  */
 export function getExports<T>(m: RawModule): T | undefined {
@@ -21,11 +23,6 @@ export function getExports<T>(m: RawModule): T | undefined {
   return m.exports as T | undefined;
 }
 
-/**
- * Iterates over an object and its top-level and second-level (if specified) children that could have properties
- * @param m Object (module exports) to iterate over
- * @param secondLevel Boolean on whether to iterate over second level children in object
- */
 function* iterateModuleExports(
   m: unknown,
   secondLevel?: boolean,
@@ -54,17 +51,17 @@ function* iterateModuleExports(
         }
       }
     }
-  } catch {
-    // ignore this export
-  }
+  } catch {}
 }
 
 /**
- * Find an object in a module that has all the given properties. You will usually not need this function.
- * @param m Module to search
- * @param props Array of prop names
- * @param byPrototype Whether to look in the prototype or not
- * @returns Object/Function that contains all the given properties (and any others), or undefined if not found
+ * Retrieves the first export from a module that contains all the specified properties.
+ * @template T The expected type of the export that matches the specified properties.
+ * @template P The type of the property keys to look for.
+ * @param m The module to search through.
+ * @param props An array of property keys to look for in the exports.
+ * @param byPrototype Whether to search only in the prototype of the exports. Defaults to `false`.
+ * @returns The first export that contains all the specified properties, or `undefined` if none is found.
  */
 export function getExportsForProps<T, P extends PropertyKey = keyof T>(
   m: unknown,
@@ -89,20 +86,23 @@ export function getExportsForProps<T, P extends PropertyKey = keyof T>(
 
 // This doesn't have anywhere else to go
 
-export function getById<T>(id: number, raw?: false): T | undefined;
-export function getById<T>(id: number, raw: true): RawModule<T> | undefined;
-export function getById<T>(id: number, raw?: boolean): T | RawModule<T> | undefined;
+export function getById<T>(id: number | string, raw?: false): T | undefined;
+export function getById<T>(id: number | string, raw: true): RawModule<T> | undefined;
+export function getById<T>(id: number | string, raw?: boolean): T | RawModule<T> | undefined;
+
 /**
- * Get a function by its ID
+ * Retrieves a module by its ID.
+ * The module will be loaded if it is not already present in the cache.
  *
- * @param id Module ID
- * @param raw Return the raw module instead of the exports
- *
- * @remarks
- * IDs are not stable between Discord updates. This function is mainly useful for debugging.
+ * Module IDs are not stable between Discord updates. This function is mainly useful for debugging.
  * You should not use this function in production unless the ID is dynamically determined.
+ * @template T The expected type of the module's exports.
+ * @param id The ID of the module to retrieve.
+ * @param raw Whether to return the raw module object instead of its exports. Defaults to `false`.
+ * @returns The module's exports, the raw module object, or `undefined` if the module could not be found.
+ * @throws {Error} Will throw an error if Webpack is not initialized.
  */
-export function getById<T>(id: number, raw = false): T | RawModule<T> | undefined {
+export function getById<T>(id: number | string, raw = false): T | RawModule<T> | undefined {
   if (!wpRequire) throw new Error("Webpack not initialized");
   // Load the module if not already initialized
   if (!webpackChunks || !(id in webpackChunks)) {
@@ -156,14 +156,16 @@ export function getModule<T>(
   filter: Filter,
   options?: { all?: boolean; raw?: boolean },
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined;
+
 /**
- * Find a module that matches the given filter
- * @param filter Filter function
- * @param options Options
- * @param options.all Return all matching modules instead of just the first
- * @param options.raw Return the raw module instead of the exports
- *
+ * Retrieves a module(s) that matches the specified filter criteria.
+ * @template T The expected type of the module(s) to be returned.
+ * @param filter A function used to filter the modules.
+ * @param options Configuration options for the module retrieval.
+ * @param options.all Whether to retrieve all matching modules as an array. If `false`, retrieves only the first matching module. Defaults to `false`.
+ * @param options.raw Whether to return the raw module(s) without processing their exports. Defaults to `false`.
  * @see {@link filters}
+ * @returns The retrieved module(s) based on the filter and options.
  */
 export function getModule<T>(
   filter: Filter,
