@@ -130,16 +130,20 @@ export const inject = async (
     (prod ? join(CONFIG_PATH, "replugged.asar") : join(dirname, "..", "..", "dist/main.js"));
 
   if (appDir.includes("flatpak")) {
-    const repluggedConfigDir = "xdg-config/replugged:ro";
+    const entryPointDir = path.dirname(entryPoint);
+    const accessDirs = entryPointDir.startsWith(CONFIG_PATH)
+      ? ["xdg-config/replugged"]
+      : [entryPointDir, "xdg-config/replugged"];
     const discordName = platform === "canary" ? "DiscordCanary" : "Discord";
     const overrideCommand = `${
       appDir.startsWith("/var") ? "sudo flatpak override" : "flatpak override --user"
-    } com.discordapp.${discordName} --filesystem=${prod ? repluggedConfigDir : join(dirname, "..", "..")}`;
+    } com.discordapp.${discordName}${accessDirs.reduce((str, dir) => `${str} --filesystem=${dir}`, "")}`;
 
     console.log(
-      `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to Replugged files (${prod ? repluggedConfigDir : join(dirname, "..", "..")})${AnsiEscapes.RESET}`,
+      `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to Replugged files (${accessDirs.join(", ")}), ${overrideCommand}${AnsiEscapes.RESET}`,
     );
     execSync(overrideCommand);
+    console.log("Done!");
   }
 
   try {

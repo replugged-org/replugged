@@ -16,7 +16,7 @@ if (existsSync(discordPath)) {
   require.main!.filename = join(discordPath, discordPackage.main);
 } else {
   // If using newer replugged file system
-  discordPath = join(dirname(require.main!.filename), "app_bootstrap", "index.orig.js");
+  discordPath = join(dirname(require.main!.filename), "index.orig.js");
 }
 
 Object.defineProperty(global, "appSettings", {
