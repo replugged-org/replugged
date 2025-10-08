@@ -2,6 +2,8 @@ import { ErrorBoundary } from "@components";
 import type React from "react";
 import type {
   LabelCallback,
+  SearchableCallback,
+  SectionRecords,
   Section as SectionType,
   SettingsTools,
 } from "src/types/coremods/settings";
@@ -17,6 +19,7 @@ export const Section = ({
   pos,
   fromEnd,
   tabPredicate,
+  searchableTitles,
 }: {
   name: string;
   _id?: string;
@@ -26,6 +29,7 @@ export const Section = ({
   pos?: number;
   fromEnd?: boolean;
   tabPredicate?: () => boolean;
+  searchableTitles?: string[] | SearchableCallback;
 }): SectionType => ({
   section: name,
   _id,
@@ -39,67 +43,118 @@ export const Section = ({
   pos: getPos(pos),
   fromEnd: fromEnd ?? getPos(pos) < 0,
   tabPredicate,
-});
-
-export const Divider = (pos?: number): SectionType => ({
-  section: "DIVIDER",
-  pos: getPos(pos),
-});
-
-export const Header = (label: string | LabelCallback, pos?: number): SectionType => ({
-  section: "HEADER",
-  label,
-  pos: getPos(pos),
+  searchableTitles,
 });
 
 export const settingsTools: SettingsTools = {
-  rpSections: [],
+  sections: new Map(),
+  rpSections: new Map(),
   rpSectionsAfter: new Map(),
   addSection(opts) {
     const data = Section(opts);
-
-    settingsTools.rpSections.push(data);
+    const name = data._id || data.section;
+    settingsTools.rpSections.set(name, data);
     return data;
   },
   removeSection(sectionName) {
-    settingsTools.rpSections = settingsTools.rpSections.filter(
-      (s) => s.section !== sectionName && s._id !== sectionName,
-    );
+    settingsTools.rpSections.delete(sectionName);
   },
-  addAfter(sectionName, sections) {
-    if (!Array.isArray(sections)) sections = [sections];
-    settingsTools.rpSectionsAfter.set(sectionName, sections);
 
-    return sections;
+  addAfter(sectionName, section) {
+    const record = {
+      header: section.header,
+      divider: section.divider,
+      get settings() {
+        return section.settings?.map((section) => {
+          const name = section._id || section.section;
+          settingsTools.sections.set(name, section);
+          return name;
+        });
+      },
+    };
+    settingsTools.rpSectionsAfter.set(sectionName, record);
+    return section;
   },
   removeAfter(sectionName) {
+    settingsTools.sections.delete(sectionName);
     settingsTools.rpSectionsAfter.delete(sectionName);
   },
 };
 
-export function insertSections(sections: SectionType[]): SectionType[] {
-  for (const section of settingsTools.rpSections) {
-    sections.splice(section.fromEnd ? sections.length + section.pos : section.pos, 0, section);
+export function insertSections<T = Record<string, SectionType>>(sections: T): T {
+  const mapSections = (sections: Map<string, SectionType>): Record<string, SectionType> => {
+    return Object.fromEntries(
+      [...sections.entries()].map(([name, section]) => {
+        const labelFn = section.__$$label;
+        if (typeof section.label === "function" || typeof labelFn === "function") {
+          if (!labelFn) {
+            section.__$$label = section.label as LabelCallback;
+          }
+          section.label = section.__$$label?.();
+        }
+
+        const searchableFn = section.__$$searchable;
+        if (typeof section.searchableTitles === "function" || typeof searchableFn === "function") {
+          if (!searchableFn) {
+            section.__$$searchable = section.searchableTitles as SearchableCallback;
+          }
+          section.searchableTitles = section.__$$searchable?.();
+        }
+        return [name, section];
+      }),
+    );
+  };
+  return {
+    ...sections,
+    ...mapSections(settingsTools.sections),
+    ...mapSections(settingsTools.rpSections),
+  };
+}
+
+export function insertRecords(records: SectionRecords[]): SectionRecords[] {
+  for (const sectionName of settingsTools.rpSections.keys()) {
+    const section = settingsTools.rpSections.get(sectionName)!;
+    const lengths = records.reduce(
+      (acc: number[], curr, index) => [
+        ...acc,
+        (acc[index - 1] || 0) + (curr.settings?.length || 0),
+      ],
+      [],
+    );
+    const recordIndex = lengths.findIndex(
+      (c) => (section.fromEnd ? lengths.at(-1)! - 1 + section.pos : section.pos) < c - 1,
+    );
+    if (recordIndex === -1) continue;
+    records[recordIndex].settings!.splice(
+      (section.fromEnd ? lengths.at(-1)! + section.pos : section.pos) -
+        (lengths[recordIndex - 1] || 0) +
+        1,
+      0,
+      sectionName,
+    );
   }
 
   for (const sectionName of settingsTools.rpSectionsAfter.keys()) {
-    const section = sections.findIndex((s) => s.section === sectionName);
-    if (section === -1) continue;
-
-    for (const section of settingsTools.rpSectionsAfter.get(sectionName)!) {
-      const labelFn = section.__$$label;
-
-      if (typeof section.label === "function" || typeof labelFn === "function") {
-        if (!labelFn) {
-          section.__$$label = section.label as LabelCallback;
-        }
-
-        section.label = section.__$$label?.();
-      }
+    const recordIndex = records.findIndex((r) => r.settings?.includes(sectionName));
+    if (recordIndex === -1) continue;
+    const sectionRecord = records[recordIndex];
+    if (!sectionRecord.settings) continue;
+    if (sectionRecord.settings.at(-1) === sectionName) {
+      records.splice(recordIndex + 1, 0, settingsTools.rpSectionsAfter.get(sectionName)!);
+      continue;
     }
-
-    sections.splice(section + 1, 0, ...settingsTools.rpSectionsAfter.get(sectionName)!);
+    const sectionIndex = sectionRecord.settings.findIndex((s) => s === sectionName);
+    const afterSettings = sectionRecord.settings.splice(
+      sectionIndex,
+      sectionRecord.settings.length,
+    );
+    records.splice(recordIndex + 1, 0, settingsTools.rpSectionsAfter.get(sectionName)!, {
+      settings: afterSettings,
+    });
   }
+  return records;
+}
 
-  return sections;
+export function getSectionKeys(): string[] {
+  return [...settingsTools.sections.keys(), ...settingsTools.rpSections.keys()];
 }
