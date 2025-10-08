@@ -241,7 +241,7 @@ export const smartInject = async (
 ): Promise<boolean> => {
   const appDir = await platformModule.getAppDir(platform);
 
-  if (!appDir.startsWith("/home") || process.platform !== "linux") elevate();
+  if (!appDir.startsWith("/home") && process.platform === "linux") elevate();
 
   const processName =
     process.platform === "darwin"
