@@ -715,20 +715,20 @@ export const Addons = (type: AddonType): React.ReactElement => {
             </ErrorBoundary>
           )
         )}
-         {requiresReload.size && (
-        <Notice className="replugged-addon-reload-notice" messageType={Notice.Types.WARNING}>
-          <Flex justify={Flex.Justify.BETWEEN}>
-            <Text.Normal>{intl.string(t.REPLUGGED_ADDON_RELOAD_REQUIRED)}</Text.Normal>
-            <Button
-              color={Button.Colors.RED}
-              look={Button.Looks.OUTLINED}
-              size={Button.Sizes.TINY}
-              onClick={() => setTimeout(() => window.location.reload(), 250)}>
-              {intl.string(discordT.ERRORS_RELOAD)}
-            </Button>
-          </Flex>
-        </Notice>
-      )}
+        {requiresReload.size && (
+          <Notice className="replugged-addon-reload-notice" messageType={Notice.Types.WARNING}>
+            <Flex justify={Flex.Justify.BETWEEN}>
+              <Text.Normal>{intl.string(t.REPLUGGED_ADDON_RELOAD_REQUIRED)}</Text.Normal>
+              <Button
+                color={Button.Colors.RED}
+                look={Button.Looks.OUTLINED}
+                size={Button.Sizes.TINY}
+                onClick={() => setTimeout(() => window.location.reload(), 250)}>
+                {intl.string(discordT.ERRORS_RELOAD)}
+              </Button>
+            </Flex>
+          </Notice>
+        )}
       </Stack>
     </FormSection>
   );
