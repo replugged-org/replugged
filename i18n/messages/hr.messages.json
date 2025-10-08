@@ -45,7 +45,7 @@
   "REPLUGGED_UPDATES_OPTS_RELEASE_STABLE_BTN": "Prijeđite na stabilan",
   "REPLUGGED_UPDATES_OPTS_RELEASE_SWITCH": "Promijeni",
   "REPLUGGED_UPDATES_OPTS_TOAST_ENABLED": "Prikaži tost provjere ažuriranja",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****UPOZORENJE:**** Ako ovo omogućite, dobivate pristup značajkama koje Discord može otkriti i koje mogu rezultirati ****ukidanjem računa****. Replugged **nije odgovoran** za ono što radite s ovom značajkom. Ostavite ga onemogućenim ako niste sigurni. Replugged tim **neće** pružiti nikakvu podršku u vezi s bilo kojim eksperimentom. **Zahtijeva ponovno pokretanje**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Ako ovo omogućite, dobivate pristup značajkama koje Discord može otkriti i koje mogu rezultirati ****ukidanjem računa****. Replugged **nije odgovoran** za ono što radite s ovom značajkom. Ostavite ga onemogućenim ako niste sigurni. Replugged tim **neće** pružiti nikakvu podršku u vezi s bilo kojim eksperimentom.",
   "REPLUGGED_UPDATES_OPTS_AUTO_DESC": "Replugged može preuzimati i instalirati ažuriranja u pozadini bez da vas previše živcira. Imajte na umu da ažuriranja zahtijevaju akciju korisnika ako je potrebno ponovno učitavanje ili ako postoji sukob.",
   "REPLUGGED_UPDATES_OPTS_INTERVAL_DESC": "Koliko će često Replugged provjeravati ažuriranja (u minutama). Minimalno 10 minuta.",
   "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Možete birati između stabilne verzije ili razvojne verzije. Stabilna verzija će dobiti samo velika ažuriranja, sigurnosna i kritična ažuriranja. Ako niste sigurni, ostanite na stabilnoj verziji.",

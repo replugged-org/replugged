@@ -38,7 +38,7 @@
   "REPLUGGED_SETTINGS_RESTART": "Denna inställningen kommer att kräva en Discord omstart. Vill du starta om Discord nu?",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL som används för att hämta vissa tillgångar och skicka frågor Repluggeds REST API.",
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****VARNING:**** Genom att aktivera detta ger du tillgång till funktioner som kan upptäckas av Discord och kan leda till en ****kontoavslutning****. Replugged **ansvarar inte** för vad du gör med den här funktionen. Lämna det inaktiverat om du är osäker. Replugged-teamet ger **inte** hjälp angående något experiment. **Kräver omstart**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Genom att aktivera detta ger du tillgång till funktioner som kan upptäckas av Discord och kan leda till en ****kontoavslutning****. Replugged **ansvarar inte** för vad du gör med den här funktionen. Lämna det inaktiverat om du är osäker. Replugged-teamet ger **inte** hjälp angående något experiment.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Aktivera Experimentella Discord Funktioner",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Förhindrar Discord från att ta bort din token från localStorage, minska antalet oönskade utloggningar. **Kräver omstart**.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Förvara token",

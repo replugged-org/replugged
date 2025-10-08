@@ -46,7 +46,7 @@
   "REPLUGGED_BADGES_CONTRIBUTOR": "Replugged Bijdrager",
   "REPLUGGED_BADGES_TRANSLATOR": "Replugged Vertaler",
   "REPLUGGED_SETTINGS_ADVANCED_DESC": "Raak hier niks aan als je niet weet wat je aan het doen bent. Er kunnen onverwachte dingen gebeuren met je kat.",
-  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "****WAARSCHUWING:**** Als je dit inschakeld, krijg je toegang tot functies die gedetecteerd kunnen worden door Discord en kunnen leiden tot ****accountbeëindiging****. Replugged is **niet verantwoordelijk** voor wat je doet met deze functie. Laat deze uitstaan als je niet zeker bent. Het Replugged team zal **geen** support uitlenen met betrekking tot elk experiment. **Herstart vereist**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING": "Als je dit inschakeld, krijg je toegang tot functies die gedetecteerd kunnen worden door Discord en kunnen leiden tot ****accountbeëindiging****. Replugged is **niet verantwoordelijk** voor wat je doet met deze functie. Laat deze uitstaan als je niet zeker bent. Het Replugged team zal **geen** support uitlenen met betrekking tot elk experiment.",
   "REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE": "Herladen vereist",
   "REPLUGGED_UPDATES_OPTS_CONCURRENCY_DESC": "Hoeveel gelijktijdige taken Replugged in de achtergrond zal starten om voor updates te checken. Minimaal 1. Als je het niet zeker weet, laat 2 staan.",
   "REPLUGGED_UPDATES_OPTS_RELEASE_DESC": "Je kan kiezen tussen de stabiele branch, of de ontwikkelingsbranch. De stabiele branch krijgt alleen grote, beveiligings, en kritieke updates. Als je het niet zeker weet, blijf op stabiel.",
