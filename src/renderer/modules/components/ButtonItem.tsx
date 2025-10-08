@@ -1,127 +1,38 @@
-import { getFunctionBySource, waitForProps } from "@webpack";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
-import { Divider, Flex, FormText, Tooltip } from ".";
-import components from "../common/components";
+import { FormControl } from ".";
 
-interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
-  look?: string;
-  color?: string;
-  size?: string;
-  fullWidth?: boolean;
-  grow?: boolean;
-  submitting?: boolean;
-  wrapperClassName?: string;
-  innerClassName?: string;
-  buttonRef?: React.Ref<HTMLButtonElement>;
-  focusProps?: Record<string, unknown>;
-  submittingStartedLabel?: string;
-  submittingFinishedLabel?: string;
-}
+import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-interface Location<S = unknown> {
-  pathname?: string;
-  search?: string;
-  state?: S;
-  hash?: string;
-  key?: string;
-}
+import "./ButtonItem.css";
 
-interface LinkProps<S = unknown> extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  component?: React.ComponentType;
-  to: string | Location<S> | ((location: Location<S>) => string | Location<S>);
-  replace?: boolean;
-  innerRef?: React.Ref<HTMLAnchorElement>;
-}
+const buttonString = ".disabledButtonWrapper,";
+const mod = await waitForModule(filters.bySource(buttonString));
 
-interface ButtonLinkProps<S = unknown> extends LinkProps<S> {
-  look?: string;
-  color?: string;
-  size?: string;
-  fullWidth?: boolean;
-  grow?: boolean;
-  innerClassName?: string;
-}
+// TODO: Replace with Button from Mana Design System
+export const Button = getFunctionBySource<VoidDesign.Button>(mod, buttonString)!;
 
-export type ButtonType = React.FC<React.PropsWithChildren<ButtonProps>> & {
-  Link: React.FC<React.PropsWithChildren<ButtonLinkProps>>;
-  Looks: Record<"FILLED" | "OUTLINED" | "LINK" | "BLANK", string>;
-  Colors: Record<
-    | "BRAND"
-    | "BRAND_INVERTED"
-    | "RED"
-    | "GREEN"
-    | "PRIMARY"
-    | "LINK"
-    | "WHITE"
-    | "TRANSPARENT"
-    | "CUSTOM",
-    string
-  >;
-  Sizes: Record<"NONE" | "TINY" | "SMALL" | "MEDIUM" | "LARGE" | "MIN" | "MAX" | "ICON", string>;
-};
-
-export const Button = getFunctionBySource<ButtonType>(components, "Type.PULSING_ELLIPSIS")!;
-
-const classes =
-  await waitForProps<Record<"dividerDefault" | "labelRow" | "note" | "title", string>>(
-    "dividerDefault",
-  );
-
-interface ButtonItemProps {
+interface ButtonItemProps extends Omit<Design.FormControlProps, "layout" | "children"> {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  button?: string;
-  note?: string;
-  tooltipText?: string;
-  tooltipPosition?: "top" | "bottom" | "left" | "right" | "center" | "window_center";
-  success?: boolean;
+  button?: React.ReactNode;
   color?: string;
-  disabled?: boolean;
-  hideBorder?: boolean;
 }
 
 export type ButtonItemType = React.FC<React.PropsWithChildren<ButtonItemProps>>;
 
-export const ButtonItem = (props: React.PropsWithChildren<ButtonItemProps>): React.ReactElement => {
-  const { hideBorder = false } = props;
-
-  const button = (
-    <Button
-      color={props.success ? Button.Colors.GREEN : props.color}
-      disabled={props.disabled}
-      onClick={props.onClick}>
-      {props.button}
-    </Button>
-  );
-
+export function ButtonItem({
+  button,
+  color,
+  disabled,
+  onClick,
+  ...props
+}: React.PropsWithChildren<ButtonItemProps>): React.ReactElement {
   return (
-    <div style={{ marginBottom: 20 }}>
-      <Flex justify={Flex.Justify.END} style={{ opacity: props.disabled ? 0.3 : undefined }}>
-        <Flex.Child>
-          <div className={classes.labelRow}>
-            <label
-              className={classes.title}
-              style={{ cursor: props.disabled ? "not-allowed" : "pointer" }}>
-              {props.children}
-            </label>
-            {props.tooltipText ? (
-              <Tooltip
-                text={props.tooltipText}
-                position={props.tooltipPosition}
-                shouldShow={Boolean(props.tooltipText)}
-                className={Flex.Align.CENTER}
-                style={{ height: "100%" }}>
-                {button}
-              </Tooltip>
-            ) : (
-              button
-            )}
-          </div>
-          {props.note && (
-            <FormText.DESCRIPTION className={classes.note}>{props.note}</FormText.DESCRIPTION>
-          )}
-        </Flex.Child>
-      </Flex>
-      {!hideBorder && <Divider className={classes.dividerDefault} />}
-    </div>
+    <FormControl disabled={disabled} layout="horizontal" {...props}>
+      <Button color={color} disabled={disabled} onClick={onClick}>
+        {button}
+      </Button>
+    </FormControl>
   );
-};
+}

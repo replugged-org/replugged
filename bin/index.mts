@@ -301,7 +301,7 @@ const CONFIG_PATH = (() => {
       return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
 })();
-const CHROME_VERSION = "130";
+const CHROME_VERSION = "134";
 
 function buildAddons(buildFn: (args: Args) => Promise<void>, args: Args, type: AddonType): void {
   const addons = getAddonFolder(type);
@@ -397,6 +397,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
     plugins,
     sourcemap: !production,
     target: `chrome${CHROME_VERSION}`,
+    sourceRoot: `replugged://plugin/${manifest.id}/${isMonoRepo ? "monoRepo/src" : "src"}`,
   };
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
@@ -449,7 +450,9 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const distPath = addon ? `dist/${manifest.id}` : "dist";
   const folderPath = addon ? path.join(directory, "themes", addon) : directory;
 
-  const main = path.join(folderPath, manifest.main || "src/main.css");
+  const main = existsSync(path.join(folderPath, manifest.main || "src/main.css"))
+    ? path.join(folderPath, manifest.main || "src/main.css")
+    : undefined;
   const splash = existsSync(path.join(folderPath, manifest.splash || "src/main.css"))
     ? path.join(folderPath, manifest.splash || "src/main.css")
     : undefined;
@@ -490,6 +493,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
     jsx: "transform",
     jsxFactory: "window.replugged.common.React.createElement",
     jsxFragment: "window.replugged.common.React.Fragment",
+    sourceRoot: `replugged://theme/${manifest.id}/${isMonoRepo ? "monoRepo/src" : "src"}`,
   };
 
   const targets: Array<Promise<esbuild.BuildContext>> = [];
@@ -522,6 +526,21 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
     );
 
     manifest.splash = "splash.css";
+  }
+
+  if (manifest.presets) {
+    targets.push(
+      esbuild.context({
+        ...common,
+        entryPoints: manifest.presets.map((p) => p.path),
+        outdir: `${distPath}/presets`,
+      }),
+    );
+
+    manifest.presets = manifest.presets.map((p) => ({
+      ...p,
+      path: `presets/${path.basename(p.path).split(".")[0]}.css`,
+    }));
   }
 
   if (!existsSync(distPath)) mkdirSync(distPath, { recursive: true });

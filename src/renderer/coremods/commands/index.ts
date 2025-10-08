@@ -246,6 +246,33 @@ async function injectApplicationCommandIndexStore(): Promise<void> {
   );
 }
 
+async function injectCommandCache(): Promise<void> {
+  const mod = await waitForModule<Record<string, (channel: Channel, id: string) => Promise<void>>>(
+    filters.bySource("placeholder-section"),
+  );
+  const getCachedCommand = getFunctionKeyBySource(mod, "application:void 0,command:void 0")!;
+  injector.after(
+    mod,
+    getCachedCommand,
+    ([, id], res: { application?: RepluggedCommandSection; command?: AnyRepluggedCommand }) => {
+      const commandAndSectionsArray = Array.from(commandAndSections.values()).filter(
+        (commandAndSection) => commandAndSection.commands.size,
+      );
+      const rpCached = commandAndSectionsArray
+        .map((commandAndSection) => ({
+          application: commandAndSection.section,
+          command: Array.from(commandAndSection.commands.values()).find(
+            (command) => command.id === id,
+          ),
+        }))
+        .find((applicationAndCommand) => applicationAndCommand.command);
+      res.application ??= rpCached?.application;
+      res.command ??= rpCached?.command;
+      return res;
+    },
+  );
+}
+
 async function injectProfileFetch(): Promise<void> {
   const userActionCreatorsMod = await waitForModule<Record<string, FetchProfile>>(
     filters.bySource("fetchProfile"),
@@ -274,6 +301,7 @@ export async function start(): Promise<void> {
   await injectRepluggedBotIcon();
   await injectRepluggedSectionIcon();
   await injectApplicationCommandIndexStore();
+  await injectCommandCache();
   await injectProfileFetch();
   await injectCommandAuthorization();
   loadCommands();

@@ -1,7 +1,7 @@
-import { React, channels, flux, fluxDispatcher, guilds } from "@common";
+import { React, channels, flux, fluxDispatcher, guilds, lodash } from "@common";
 import type { Fiber } from "react-reconciler";
 import type { Jsonifiable } from "type-fest";
-import type { ObjectExports } from "../types";
+import type { AnyFunction, ObjectExports } from "../types";
 import { SettingsManager } from "./apis/settings";
 import { getByProps, getBySource, getFunctionBySource } from "./modules/webpack";
 
@@ -170,41 +170,88 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
 }
 
 export async function openExternal(url: string): Promise<void> {
-  const mod = getBySource<(url: string) => Promise<void>>(/href=\w,\w\.target="_blank"/);
+  const mod = getBySource<(url: string) => Promise<void>>(/href=\i,\i\.target="_blank"/);
   if (!mod) {
     throw new Error("Could not find openExternal");
   }
   await mod(url);
 }
 
-type ValType<T> =
+type InputType<T> =
   | T
   | React.ChangeEvent<HTMLInputElement>
   | (Record<string, unknown> & { value?: T; checked?: T });
 
-export function useSetting<
+type ObjectPath<T> =
+  T extends Record<string, unknown>
+    ? {
+        [K in keyof T]-?: K extends string ? `${K}` | `${K}.${ObjectPath<T[K]>}` : never;
+      }[keyof T]
+    : never;
+
+type ValueAtPath<T, P> = P extends `${infer K}.${infer NestedKey}`
+  ? K extends keyof T
+    ? ValueAtPath<NonNullable<T[K]>, NestedKey>
+    : undefined
+  : P extends keyof T
+    ? NonNullable<T[P]>
+    : undefined;
+
+type InferredPath<
   T extends Record<string, Jsonifiable>,
   D extends keyof T,
   K extends Extract<keyof T, string>,
-  F extends T[K] | undefined,
->(
-  settings: SettingsManager<T, D>,
-  key: K,
-  fallback?: F,
-): {
-  value: K extends D
-    ? NonNullable<T[K]>
+  P extends ObjectPath<T>,
+  F extends ValueAtPath<T, P> | T[K] | undefined,
+> = P extends `${K}.${string}`
+  ? NonNullable<ValueAtPath<T, P>>
+  : P extends D
+    ? NonNullable<T[P]>
     : F extends null | undefined
-      ? T[K] | undefined
-      : NonNullable<T[K]> | F;
-  onChange: (newValue: ValType<T[K]>) => void;
+      ? T[P] | undefined
+      : NonNullable<T[P]> | F;
+
+/**
+ * React hook for managing settings.
+ * @param settings Settings manager to use.
+ * @param key Key of the setting to manage.
+ * @param fallback Value to return if the key does not already exist.
+ * @returns A tuple containing the current value of the setting, and a function to set the value. Works like `useState`.
+ * @example
+ * ```tsx
+ * import { components, settings } from "replugged";
+ * const { TextInput } = components;
+ *
+ * const cfg = settings.init<{ hello: string }>("dev.replugged.Example");
+ *
+ * export function Settings() {
+ *  return <TextInput {...cfg.useSetting("hello", "world")} />;
+ * }
+ * ```
+ */
+export function useSetting<
+  Settings extends Record<string, Jsonifiable>,
+  Defaults extends keyof Settings,
+  PathKey extends Extract<keyof Settings, string>,
+  Fallback extends ValueAtPath<Settings, Path> | Settings[PathKey] | undefined,
+  Path extends ObjectPath<Settings>,
+  Value extends InferredPath<Settings, Defaults, PathKey, Path, Fallback>,
+>(
+  settings: SettingsManager<Settings, Defaults>,
+  key: Path,
+  fallback?: Fallback,
+): {
+  value: Value;
+  onChange: (
+    newValue: InputType<ValueAtPath<Settings, Path>> | InputType<Settings[PathKey]>,
+  ) => void;
 } {
-  const initial = settings.get(key, fallback);
-  const [value, setValue] = React.useState(initial);
+  const initial = settings.get(key) ?? lodash.get(settings.all(), key) ?? fallback;
+  const [value, setValue] = React.useState(initial as Value);
 
   return {
     value,
-    onChange: (newValue: ValType<T[K]>) => {
+    onChange: (newValue: InputType<ValueAtPath<Settings, Path>> | InputType<Settings[PathKey]>) => {
       const isObj = newValue && typeof newValue === "object";
       const value = isObj && "value" in newValue ? newValue.value : newValue;
       const checked = isObj && "checked" in newValue ? newValue.checked : undefined;
@@ -214,34 +261,46 @@ export function useSetting<
           : undefined;
       const targetValue = target && "value" in target ? target.value : undefined;
       const targetChecked = target && "checked" in target ? target.checked : undefined;
-      const finalValue = (checked ?? targetChecked ?? targetValue ?? value ?? newValue) as T[K];
+      const finalValue = (checked ??
+        targetChecked ??
+        targetValue ??
+        value ??
+        newValue) as Settings[Path];
 
-      // @ts-expect-error ts doesn't understand
-      setValue(finalValue);
-      settings.set(key, finalValue);
+      // Update local state
+      setValue(finalValue as Value);
+
+      // Update settings
+      if (settings.get(key)) {
+        settings.set(key, finalValue);
+      } else {
+        const [rootKey] = key.split(".") as [PathKey];
+        // Without cloning this changes property in default settings
+        const setting = lodash.set(lodash.cloneDeep(settings.all()), key, finalValue)[rootKey];
+        settings.set(rootKey, setting);
+      }
     },
   };
 }
+
 export function useSettingArray<
-  T extends Record<string, Jsonifiable>,
-  D extends keyof T,
-  K extends Extract<keyof T, string>,
-  F extends T[K] | undefined,
+  Settings extends Record<string, Jsonifiable>,
+  Defaults extends keyof Settings,
+  PathKey extends Extract<keyof Settings, string>,
+  Fallback extends ValueAtPath<Settings, Path> | Settings[PathKey] | undefined,
+  Path extends ObjectPath<Settings>,
+  Value extends InferredPath<Settings, Defaults, PathKey, Path, Fallback>,
 >(
-  settings: SettingsManager<T, D>,
-  key: K,
-  fallback?: F,
+  settings: SettingsManager<Settings, Defaults>,
+  key: Path,
+  fallback?: Fallback,
 ): [
-  K extends D
-    ? NonNullable<T[K]>
-    : F extends null | undefined
-      ? T[K] | undefined
-      : NonNullable<T[K]> | F,
-  (newValue: ValType<T[K]>) => void,
+  Value,
+  (newValue: InputType<ValueAtPath<Settings, Path>> | InputType<Settings[PathKey]>) => void,
 ] {
   const { value, onChange } = useSetting(settings, key, fallback);
 
-  return [value, onChange];
+  return [value as Value, onChange];
 }
 
 // Credit to @Vendicated - https://github.com/Vendicated/virtual-merge
@@ -269,7 +328,7 @@ export function virtualMerge<O extends ObjectType[]>(...objects: O): ExtractObje
 
   const handler: ProxyHandler<ExtractObjectType<O>> = {
     ownKeys() {
-      return objects.map((obj) => Reflect.ownKeys(obj)).flat();
+      return Array.from(new Set(objects.map((obj) => Reflect.ownKeys(obj)).flat()));
     },
   };
 
@@ -377,4 +436,41 @@ export function findInReactTree(
     walkable: ["props", "children", "child", "sibling"],
     maxRecursion,
   });
+}
+
+type MethodNames<T> = {
+  [K in keyof T]: T[K] extends AnyFunction ? K : never;
+}[keyof T];
+
+type BoundMethodMap<T> = {
+  [K in MethodNames<T>]: T[K];
+};
+
+/**
+ * Creates a new object containing all methods from the prototype of the given instance,
+ * with each method bound to the original instance.
+ *
+ * @template T The type of the instance object
+ * @param instance The object instance whose methods should be bound
+ * @returns A new object containing all prototype methods bound to the original instance
+ */
+export function getBoundMethods<T extends object>(instance: T): BoundMethodMap<T> {
+  const proto: T = Object.getPrototypeOf(instance);
+  const bound = Object.create(proto);
+
+  for (const key of Reflect.ownKeys(proto) as Array<keyof T>) {
+    Object.defineProperty(bound, key, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        const val = proto[key];
+        return typeof val === "function" ? val.bind(instance) : val;
+      },
+      set(newValue) {
+        proto[key] = newValue;
+      },
+    });
+  }
+
+  return bound;
 }

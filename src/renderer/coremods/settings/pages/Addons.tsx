@@ -1,44 +1,60 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, api, fluxDispatcher, modal, toast, users } from "@common";
+import { React, contextMenu, marginStyles, modal, toast } from "@common";
+import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
 import {
+  Anchor,
+  Breadcrumbs,
   Button,
-  Divider,
+  ContextMenu,
   ErrorBoundary,
   Flex,
+  FormSection,
   Notice,
+  SearchBar,
+  Select,
+  Stack,
   Switch,
   Text,
-  TextInput,
   Tooltip,
 } from "@components";
 import { Logger, plugins, themes, webpack } from "@replugged";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
 import Icons from "../icons";
-import { generalSettings } from "./General";
 
 import "./Addons.css";
 
-interface Breadcrumb {
-  id: string;
-  label: string;
+interface OpenUserProfileModalProps {
+  userId: string;
+  guildId?: string | null;
+  channelId?: string;
+  messageId?: string;
+  roleId?: string;
+  sessionId?: string;
+  joinRequestId?: string;
+  section?: string;
+  subsection?: string;
+  showGuildProfile?: boolean;
+  hideRestrictedProfile?: boolean;
+  sourceAnalyticsLocations?: string[];
+  appContext?: string;
+  customStatusPrompt?: { value: string; label: () => string };
+  disableActionsForPreview?: boolean;
 }
 
-interface BreadcrumbProps {
-  activeId: string;
-  breadcrumbs: Breadcrumb[];
-  onBreadcrumbClick: (breadcrumb: Breadcrumb) => void;
-  renderCustomBreadcrumb: (breadcrumb: Breadcrumb, active: boolean) => React.ReactNode;
+interface UserProfileModalActionCreators {
+  openUserProfileModal: (props: OpenUserProfileModalProps) => Promise<void>;
+  closeUserProfileModal: () => void;
 }
 
 const logger = Logger.coremod("AddonSettings");
 
-const Breadcrumbs = await webpack.waitForModule<React.ComponentClass<BreadcrumbProps>>(
-  webpack.filters.bySource(/\.interactiveBreadcrumb]:null/),
-);
+const { openUserProfileModal } =
+  await webpack.waitForProps<UserProfileModalActionCreators>("openUserProfileModal");
 
 export enum AddonType {
   Plugin = "plugin",
@@ -77,11 +93,55 @@ function getManager(type: AddonType): typeof plugins | typeof themes {
   throw new Error("Invalid addon type");
 }
 
+function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
+  const settings = themes.settings.useValue(id, { chosenPreset: undefined });
+  const theme = themes.themes.get(id)!;
+
+  return (
+    <Select
+      label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
+      options={theme.manifest.presets!.map((preset) => ({
+        label: preset.label,
+        value: preset.path,
+      }))}
+      value={settings.chosenPreset || theme.manifest.presets![0].path}
+      onChange={(val) => {
+        try {
+          themes.settings.set(id, { chosenPreset: val });
+          if (!themes.getDisabled().includes(id)) {
+            themes.reload(id);
+          }
+          toast.toast(
+            intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
+              name: theme.manifest.presets!.find((p) => p.path === val)?.label || val,
+            }),
+          );
+        } catch (error) {
+          logger.error("Error changing theme preset", error);
+          toast.toast(
+            intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
+              name: theme.manifest.name,
+            }),
+            toast.Kind.FAILURE,
+          );
+        }
+      }}
+    />
+  );
+}
+
 function getSettingsElement(id: string, type: AddonType): React.ComponentType | undefined {
   if (type === AddonType.Plugin) {
     return plugins.getExports(id)?.Settings;
   }
   if (type === AddonType.Theme) {
+    if (themes.getDisabled().includes(id)) return undefined;
+
+    const theme = themes.themes.get(id)!;
+
+    if (theme.manifest.presets?.length) {
+      return () => <ThemePresetSettings id={id} />;
+    }
     return undefined;
   }
 
@@ -96,40 +156,6 @@ function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string,
     return themes.themes;
   }
   throw new Error("Invalid addon type");
-}
-
-async function openUserProfile(id: string): Promise<void> {
-  if (!users.getUser(id)) {
-    try {
-      const { body } = await api.HTTP.get({
-        url: `/users/${id}/profile`,
-        query: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_friends_count: "true",
-
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_guilds: "true",
-        },
-      });
-      fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body.user });
-      fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
-    } catch {
-      try {
-        const { body } = await api.HTTP.get({
-          url: `/users/${id}`,
-        });
-        fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
-      } catch (e) {
-        logger.error(`Failed to fetch user profile for ${id}`, e);
-        toast.toast(intl.string(t.REPLUGGED_TOAST_PROFILE_FETCH_FAILED), toast.Kind.FAILURE);
-        return;
-      }
-    }
-  }
-  fluxDispatcher.dispatch({
-    type: "USER_PROFILE_MODAL_OPEN",
-    userId: id,
-  });
 }
 
 function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
@@ -203,80 +229,57 @@ export function label(
   return base;
 }
 
-function replaceVariable(
-  str: string,
-  variables: Record<string, React.ReactElement | string>,
-): React.ReactElement {
-  const els: Array<React.ReactElement | string> = [];
-  let last = 0;
-  for (const [match, el] of Object.entries(variables)) {
-    const index = str.indexOf(`{${match}}`, last);
-    if (index === -1) continue;
-    els.push(<>{str.slice(last, index)}</>);
-    els.push(el);
-    last = index + match.length + 2;
-  }
-  els.push(<>{str.slice(last)}</>);
-  return <>{els}</>;
+function AuthorContextMenu({
+  author,
+  ...props
+}: { author: Author } & ContextMenuProps): React.ReactElement {
+  return (
+    <ContextMenu.ContextMenu {...props} onClose={contextMenu.close} navId="replugged-addon-authors">
+      <ContextMenu.MenuGroup>
+        {author.discordID && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: intl.string(discordT.DISCORD),
+            })}
+            id="replugged-addon-author-discord"
+            icon={Icons.Discord}
+            action={() => openUserProfileModal({ userId: author.discordID! })}
+          />
+        )}
+        {author.github && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: "GitHub",
+            })}
+            id="replugged-addon-author-github"
+            icon={Icons.GitHub}
+            action={() => open(`https://github.com/${author.github}`)}
+          />
+        )}
+      </ContextMenu.MenuGroup>
+    </ContextMenu.ContextMenu>
+  );
 }
 
-function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactElement {
+function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactNode {
   const els = getAuthors(addon).map((author) => (
-    <Flex
+    <Anchor
       key={JSON.stringify(author)}
-      align={Flex.Align.CENTER}
-      style={{
-        gap: "5px",
-        display: "inline-flex",
+      onClick={() => author.discordID && openUserProfileModal({ userId: author.discordID })}
+      onContextMenu={(event) => {
+        if (!author.github && !author.discordID) return;
+        contextMenu.open(event, (props) => <AuthorContextMenu {...props} author={author} />);
       }}>
       <b>{author.name}</b>
-      {author.discordID ? (
-        <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
-            type: intl.string(discordT.NOTIFICATION_TITLE_DISCORD),
-          })}
-          className="replugged-addon-icon replugged-addon-icon-author">
-          <a onClick={() => openUserProfile(author.discordID!)}>
-            <Icons.Discord />
-          </a>
-        </Tooltip>
-      ) : null}
-      {author.github ? (
-        <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, { type: "GitHub" })}
-          className="replugged-addon-icon replugged-addon-icon-author">
-          <a href={`https://github.com/${author.github}`} target="_blank" rel="noopener noreferrer">
-            <Icons.GitHub />
-          </a>
-        </Tooltip>
-      ) : null}
-    </Flex>
+    </Anchor>
   ));
 
-  let message = "";
-
-  if (els.length === 1) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_ONE);
-  }
-  if (els.length === 2) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_TWO);
-  }
-  if (els.length === 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_THREE);
-  }
-  if (els.length > 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_MANY);
-  }
-
-  return replaceVariable(message, {
+  return intl.format(t.REPLUGGED_ADDON_AUTHORS, {
     author1: els[0],
     author2: els[1],
     author3: els[2],
-    count: (els.length - 3).toString(),
+    count: els.length.toString(),
+    others: (els.length - 3).toString(),
   });
 }
 
@@ -303,7 +306,10 @@ function Card({
 
   return (
     <div className="replugged-addon-card">
-      <Flex align={Flex.Align.START} justify={Flex.Justify.BETWEEN} style={{ marginBottom: "5px" }}>
+      <Flex
+        align={Flex.Align.START}
+        justify={Flex.Justify.BETWEEN}
+        className={marginStyles.marginBottom4}>
         <span>
           <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
             <Text variant="heading-md/bold" tag="span" color="header-primary">
@@ -312,10 +318,25 @@ function Card({
             <span>
               {" "}
               <b>v{addon.manifest.version}</b>
-            </span>{" "}
-            <Authors addon={addon} />
+            </span>
           </Text>
         </span>
+        <Switch checked={!disabled} onChange={toggleDisabled} />
+      </Flex>
+      <Text.Normal markdown allowMarkdownLinks>
+        {addon.manifest.description}
+      </Text.Normal>
+      {addon.manifest.updater?.type !== "store" ? (
+        <Notice messageType={Notice.Types.ERROR} className={marginStyles.marginTop8}>
+          {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+            type: label(type),
+          })}
+        </Notice>
+      ) : null}
+      <Flex className={marginStyles.marginTop8}>
+        <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
+          <Authors addon={addon} />
+        </Text>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
           {sourceLink ? (
             <Tooltip
@@ -323,9 +344,9 @@ function Card({
                 type: label(type, { caps: "title" }),
               })}
               className="replugged-addon-icon">
-              <a href={sourceLink} target="_blank" rel="noopener noreferrer">
+              <Anchor href={sourceLink}>
                 <Icons.Link />
-              </a>
+              </Anchor>
             </Tooltip>
           ) : null}
           {hasSettings ? (
@@ -334,9 +355,9 @@ function Card({
                 type: label(type, { caps: "title" }),
               })}
               className="replugged-addon-icon">
-              <a onClick={() => openSettings()}>
+              <Anchor onClick={() => openSettings()}>
                 <Icons.Settings />
-              </a>
+              </Anchor>
             </Tooltip>
           ) : null}
           <Tooltip
@@ -344,9 +365,9 @@ function Card({
               type: label(type, { caps: "title" }),
             })}
             className="replugged-addon-icon">
-            <a onClick={() => uninstall()}>
+            <Anchor onClick={() => uninstall()}>
               <Icons.Trash />
-            </a>
+            </Anchor>
           </Tooltip>
           {disabled ? null : (
             <Tooltip
@@ -354,26 +375,13 @@ function Card({
                 type: label(type, { caps: "title" }),
               })}
               className="replugged-addon-icon">
-              <a onClick={() => reload()}>
+              <Anchor onClick={() => reload()}>
                 <Icons.Reload />
-              </a>
+              </Anchor>
             </Tooltip>
           )}
-          <Switch checked={!disabled} onChange={toggleDisabled} />
         </Flex>
       </Flex>
-      <Text.Normal style={{ margin: "5px 0" }} markdown allowMarkdownLinks>
-        {addon.manifest.description}
-      </Text.Normal>
-      {addon.manifest.updater?.type !== "store" ? (
-        <div style={{ marginTop: "8px" }}>
-          <Notice messageType={Notice.Types.ERROR}>
-            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-              type: label(type),
-            })}
-          </Notice>
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -396,7 +404,7 @@ function Cards({
   setRequiresReload: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): React.ReactElement {
   return (
-    <div className="replugged-addon-cards">
+    <Stack gap={16}>
       {list.map((addon) => (
         <Card
           type={type}
@@ -514,13 +522,13 @@ function Cards({
             refreshList();
           }}
           openSettings={() => {
-            setSection(`rp_plugin_${addon.manifest.id}`);
+            setSection(`rp_${type}_${addon.manifest.id}`);
 
             document.querySelector('div[class^="contentRegionScroller"]')!.scrollTo({ top: 0 });
           }}
         />
       ))}
-    </div>
+    </Stack>
   );
 }
 
@@ -555,12 +563,18 @@ export const Addons = (type: AddonType): React.ReactElement => {
     setDisabled(new Set(getManager(type).getDisabled()));
   }
 
-  React.useEffect(refreshList, [search]);
+  React.useEffect(refreshList, [search, type]);
+
+  function getAddonIdFromSection(section: string): string {
+    const prefix = `rp_${type}_`;
+    return section.startsWith(prefix) ? section.slice(prefix.length) : section;
+  }
 
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-        <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
+    <FormSection
+      tag="h1"
+      title={
+        <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
           {section === `rp_${type}` ? (
             <Text.H2
               style={{
@@ -584,11 +598,10 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   }),
                 },
                 {
-                  id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
+                  id: `rp_${type}_${getAddonIdFromSection(section)}`,
                   label:
-                    list?.filter?.(
-                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
-                    )?.[0]?.manifest.name || "",
+                    list?.find((x) => x.manifest.id === getAddonIdFromSection(section))?.manifest
+                      .name || "",
                 },
               ]}
               onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
@@ -610,14 +623,18 @@ export const Addons = (type: AddonType): React.ReactElement => {
             />
           )}
         </Flex>
+      }>
+      <Stack gap={16}>
         {section === `rp_${type}` && (
-          <div style={{ display: "flex" }}>
-            <Button onClick={() => openFolder(type)}>
+          // TODO: Replace with ButtonGroup from Mana Design System; after Button has been migrated as well
+          <Stack gap={8} justify="space-between" direction="horizontal">
+            <Button fullWidth onClick={() => openFolder(type)}>
               {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
             <Button
+              fullWidth
               onClick={async () => {
                 try {
                   await loadMissing(type);
@@ -639,42 +656,40 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 refreshList();
               }}
               color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
+              look={Button.Looks.OUTLINED}>
               {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
             <Button
+              fullWidth
               onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
               color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
+              look={Button.Looks.OUTLINED}>
               {intl.format(t.REPLUGGED_ADDON_BROWSE, {
                 type: label(type, { caps: "title", plural: true }),
               })}
             </Button>
-          </div>
+          </Stack>
         )}
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
-      {section === `rp_${type}` && unfilteredCount ? (
-        <div style={{ marginBottom: "20px" }}>
-          <TextInput
+        {section === `rp_${type}` && unfilteredCount ? (
+          <SearchBar
+            query={search}
+            onChange={(query) => setSearch(query)}
+            onClear={() => setSearch("")}
             placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
               type: label(type),
             })}
-            onChange={(e) => setSearch(e)}
             autoFocus
           />
-        </div>
-      ) : null}
-      {section === `rp_${type}` && search && list?.length ? (
-        <Text variant="heading-md/bold" style={{ marginBottom: "10px" }}>
-          {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
-        </Text>
-      ) : null}
-      {section === `rp_${type}` ? (
-        list?.length ? (
-          <>
+        ) : null}
+        {section === `rp_${type}` && search && list?.length ? (
+          <Text variant="heading-md/bold" className={marginStyles.marginBottom8}>
+            {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
+          </Text>
+        ) : null}
+        {section === `rp_${type}` ? (
+          list?.length ? (
             <Cards
               type={type}
               disabled={disabled}
@@ -684,24 +699,23 @@ export const Addons = (type: AddonType): React.ReactElement => {
               refreshList={refreshList}
               setRequiresReload={setRequiresReload}
             />
-          </>
-        ) : list ? (
-          <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
-            {unfilteredCount
-              ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
-              : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
-                  type: label(type, { plural: true }),
-                })}
-          </Text>
-        ) : null
-      ) : (
-        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length), type)) && (
-          <ErrorBoundary>
-            <SettingsElement />
-          </ErrorBoundary>
-        )
-      )}
-      {requiresReload.size && (
+          ) : list ? (
+            <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
+              {unfilteredCount
+                ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
+                : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
+                    type: label(type, { plural: true }),
+                  })}
+            </Text>
+          ) : null
+        ) : (
+          (SettingsElement = getSettingsElement(getAddonIdFromSection(section), type)) && (
+            <ErrorBoundary>
+              <SettingsElement />
+            </ErrorBoundary>
+          )
+        )}
+         {requiresReload.size && (
         <Notice className="replugged-addon-reload-notice" messageType={Notice.Types.WARNING}>
           <Flex justify={Flex.Justify.BETWEEN}>
             <Text.Normal>{intl.string(t.REPLUGGED_ADDON_RELOAD_REQUIRED)}</Text.Normal>
@@ -715,7 +729,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Flex>
         </Notice>
       )}
-    </>
+      </Stack>
+    </FormSection>
   );
 };
 

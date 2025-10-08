@@ -1,9 +1,10 @@
+import { ErrorBoundary } from "@components";
 import type React from "react";
 import type {
   LabelCallback,
   Section as SectionType,
   SettingsTools,
-} from "../../../types/coremods/settings";
+} from "src/types/coremods/settings";
 
 const getPos = (pos: number | undefined): number => pos ?? -4;
 
@@ -12,25 +13,32 @@ export const Section = ({
   _id,
   label,
   color,
-  elem,
+  elem: Page,
   pos,
   fromEnd,
+  tabPredicate,
 }: {
   name: string;
   _id?: string;
   label?: string | LabelCallback;
   color?: string;
-  elem: (args: unknown) => React.ReactElement;
+  elem: React.FC;
   pos?: number;
   fromEnd?: boolean;
+  tabPredicate?: () => boolean;
 }): SectionType => ({
   section: name,
   _id,
   label,
   color,
-  element: elem,
+  element: (props) => (
+    <ErrorBoundary>
+      <Page {...props} />
+    </ErrorBoundary>
+  ),
   pos: getPos(pos),
   fromEnd: fromEnd ?? getPos(pos) < 0,
+  tabPredicate,
 });
 
 export const Divider = (pos?: number): SectionType => ({

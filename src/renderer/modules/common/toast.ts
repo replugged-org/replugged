@@ -1,63 +1,37 @@
-import type React from "react";
 import { components } from ".";
 
-const Kind = {
-  MESSAGE: "message",
-  SUCCESS: "success",
-  FAILURE: "failure",
-  CUSTOM: "custom",
-  CLIP: "clip",
-  LINK: "link",
-  FORWARD: "forward",
-  BOOKMARK: "bookmark",
-  CLOCK: "clock",
-} as const;
-
-const Position = {
-  TOP: 0,
-  BOTTOM: 1,
-} as const;
-
-interface ToastOptions {
-  position?: (typeof Position)[keyof typeof Position];
-  duration?: number;
-  component?: React.ReactElement;
+enum ToastType {
+  MESSAGE = "message",
+  SUCCESS = "success",
+  FAILURE = "failure",
+  CUSTOM = "custom",
+  CLIP = "clip",
+  LINK = "link",
+  FORWARD = "forward",
+  INVITE = "invite",
+  BOOKMARK = "bookmark",
+  CLOCK = "clock",
+  AI = "ai",
 }
 
-interface ToastProps {
-  message: string | React.ReactElement | null;
-  id: string;
-  type: (typeof Kind)[keyof typeof Kind];
-  options: ToastOptions;
+enum ToastPosition {
+  TOP = 0,
+  BOTTOM = 1,
 }
-
-export type CreateToast = (
-  content: string | React.ReactElement | null,
-  kind?: (typeof Kind)[keyof typeof Kind],
-  opts?: ToastOptions,
-) => ToastProps;
-
-export type ShowToast = (props: ToastProps) => void;
-
-type ToastFn = (
-  content: string | React.ReactElement | null,
-  kind?: (typeof Kind)[keyof typeof Kind],
-  opts?: ToastOptions,
-) => void;
 
 export interface Toast {
-  toast: ToastFn;
-  Kind: typeof Kind;
-  Position: typeof Position;
+  toast: typeof toast;
+  Kind: typeof ToastType;
+  Position: typeof ToastPosition;
 }
 
-const toast: ToastFn = (content, kind = Kind.SUCCESS, opts = undefined) => {
+const toast = (content: string, kind = ToastType.SUCCESS, opts = undefined): void => {
   const props = components.createToast(content, kind, opts);
   components.showToast(props);
 };
 
 export default {
   toast,
-  Kind,
-  Position,
+  Kind: ToastType,
+  Position: ToastPosition,
 } as Toast;

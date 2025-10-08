@@ -3,6 +3,7 @@ import { contextBridge, ipcRenderer, webFrame } from "electron";
 import { RepluggedIpcChannels } from "./types";
 // eslint-disable-next-line no-duplicate-imports -- these are only used for types, the other import is for the actual code
 import type {
+  BackgroundMaterialType,
   CheckResultFailure,
   CheckResultSuccess,
   InstallResultFailure,
@@ -10,6 +11,7 @@ import type {
   InstallerType,
   RepluggedPlugin,
   RepluggedTheme,
+  VibrancyType,
 } from "./types";
 
 const version = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_VERSION);
@@ -89,6 +91,16 @@ const RepluggedNative = {
   reactDevTools: {
     downloadExtension: (): Promise<void> =>
       ipcRenderer.invoke(RepluggedIpcChannels.DOWNLOAD_REACT_DEVTOOLS),
+    removeExtension: (): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.REMOVE_REACT_DEVTOOLS),
+  },
+
+  transparency: {
+    setBackgroundMaterial: (effect: BackgroundMaterialType): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_BACKGROUND_MATERIAL, effect),
+    setVibrancy: (vibrancy: VibrancyType | null): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.SET_VIBRANCY, vibrancy),
+    // visualEffectState does not need to be implemented until https://github.com/electron/electron/issues/25513 is implemented.
   },
 
   getVersion: (): string => version,
@@ -100,10 +112,10 @@ export type RepluggedNativeType = typeof RepluggedNative;
 
 contextBridge.exposeInMainWorld("RepluggedNative", RepluggedNative);
 
-const renderer = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
+const renderer: string = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_RENDERER);
 
 // webFrame.executeJavaScript returns a Promise, but we don't have any use for it
-void webFrame.executeJavaScript(`(() => {${renderer}})();//# sourceURL=replugged://renderer.js`);
+void webFrame.executeJavaScript(renderer);
 
 try {
   // Get and execute Discord preload
