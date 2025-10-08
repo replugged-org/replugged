@@ -178,12 +178,12 @@ export function runPlaintextPatches(): void {
         try {
           // eslint-disable-next-line no-eval
           patches = (0, eval)(code);
-        } catch (err) {
-          logger.error(
-            `Error evaluating plaintext patches for ${plugin.manifest.id}, Falling Back from CJS to ESM`,
-            err,
+        } catch {
+          logger.warn(
+            `Error evaluating plaintext patches for ${plugin.manifest.id}, Falling Back from CJS to ESM.`,
+            `It is recommended for plugin devs to update replugged to latest release and release a new version with it`,
           );
-          // TODO: remove at v5.0?
+          // TODO: remove at v5.xx?
           const wrap = (src: string): string =>
             `((module) => {\n${src}return module.exports})({exports:{}})\n//# sourceURL=replugged://plugin/${plugin.manifest.id}/plaintextPatches.js?t=${Date.now()}`;
 
