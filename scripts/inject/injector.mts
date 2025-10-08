@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import { createPackage, extractAll, statFile, uncache } from "@electron/asar";
 import { CONFIG_PATH } from "src/util.mjs";
 import { entryPoint as argEntryPoint, exitCode } from "./index.mjs";
+
 import type { DiscordPlatform, PlatformModule, ProcessInfo } from "./types.mjs";
 import {
   AnsiEscapes,
@@ -16,6 +17,7 @@ import {
   killProcessByPID,
   openProcess,
 } from "./util.mjs";
+import elevate from "./checks/elevate.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 let processInfo: ProcessInfo | ProcessInfo[] | null;
@@ -140,7 +142,7 @@ export const inject = async (
     } com.discordapp.${discordName}${accessDirs.reduce((str, dir) => `${str} --filesystem=${dir}`, "")}`;
 
     console.log(
-      `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to Replugged files (${accessDirs.join(", ")}), ${overrideCommand}${AnsiEscapes.RESET}`,
+      `${AnsiEscapes.YELLOW}Flatpak detected, allowing Discord access to Replugged files (${accessDirs.join(", ")})${AnsiEscapes.RESET}`,
     );
     execSync(overrideCommand);
     console.log("Done!");
@@ -237,6 +239,10 @@ export const smartInject = async (
   production: boolean,
   noRelaunch: boolean,
 ): Promise<boolean> => {
+  const appDir = await platformModule.getAppDir(platform);
+
+  if (!appDir.startsWith("/home") || process.platform !== "linux") elevate();
+
   const processName =
     process.platform === "darwin"
       ? PlatformNames[platform]
@@ -257,7 +263,6 @@ export const smartInject = async (
 
   if (!noRelaunch) {
     if (((replug && cmd !== "uninject") || !replug) && processInfo) {
-      const appDir = await platformModule.getAppDir(platform);
       switch (process.platform) {
         case "win32":
           openProcess(
