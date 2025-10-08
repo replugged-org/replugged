@@ -1412,32 +1412,6 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `RIDq4u`
-   * 
-   * ### Definition
-   * ```text
-   * Reconnect Dev Companion
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
-   */
-  'REPLUGGED_SETTINGS_DEV_COMPANION': TypedIntlMessageGetter<{}>,
-  /**
-   * Key: `oGh+VF`
-   * 
-   * ### Definition
-   * ```text
-   * Reconnects the Dev Companion coremod to the VSCode extension.
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
-   */
-  'REPLUGGED_SETTINGS_DEV_COMPANION_DESC': TypedIntlMessageGetter<{}>,
-  /**
    * Key: `Zy83NT`
    * 
    * ### Definition

@@ -179,8 +179,6 @@ export default defineMessages({
   "REPLUGGED_ADDON_NOT_REVIEWED_DESC": "This {type} has not been reviewed by the Replugged team and could harm your computer. Use at your own risk.",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY": "Automatically Apply Quick CSS",
   "REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC": "Automatically apply changes to Quick CSS as you type.",
-  "REPLUGGED_SETTINGS_DEV_COMPANION": "Reconnect Dev Companion",
-  "REPLUGGED_SETTINGS_DEV_COMPANION_DESC": "Reconnects the Dev Companion coremod to the VSCode extension.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS": "Enable React DevTools",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC": "Loads the React DevTools extension, allowing you to inspect the React tree and debug more easily. **Requires restart**.",
   "REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED": "Failed to download React DevTools.",
