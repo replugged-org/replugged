@@ -393,6 +393,7 @@ function Cards({
   setDisabled,
   list,
   refreshList,
+  setRequiresReload,
 }: {
   type: AddonType;
   disabled: Set<string>;
@@ -400,6 +401,7 @@ function Cards({
   setDisabled: (disabled: Set<string>) => void;
   list: Array<RepluggedPlugin | RepluggedTheme>;
   refreshList: () => void;
+  setRequiresReload: React.Dispatch<React.SetStateAction<Set<string>>>;
 }): React.ReactElement {
   return (
     <Stack gap={16}>
@@ -441,6 +443,15 @@ function Cards({
                     name: addon.manifest.name,
                   }),
                 );
+                if (
+                  addon.manifest.type === "replugged-plugin" &&
+                  (addon.manifest.plaintextPatches || addon.manifest.reloadRequired)
+                )
+                  setRequiresReload((ids) => {
+                    if (ids.has(addon.manifest.id)) ids.delete(addon.manifest.id);
+                    else ids.add(addon.manifest.id);
+                    return ids;
+                  });
               } catch (e) {
                 logger.error("Error disabling", addon, e);
                 toast.toast(
@@ -471,6 +482,14 @@ function Cards({
                   name: addon.manifest.name,
                 }),
               );
+              if (
+                addon.manifest.type === "replugged-plugin" &&
+                (addon.manifest.plaintextPatches || addon.manifest.reloadRequired)
+              )
+                setRequiresReload((ids) => {
+                  ids.add(addon.manifest.id);
+                  return ids;
+                });
             } catch (e) {
               logger.error("Error uninstalling", addon, e);
               toast.toast(
@@ -519,6 +538,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
   const [list, setList] = React.useState<Array<RepluggedPlugin | RepluggedTheme> | null>();
   const [unfilteredCount, setUnfilteredCount] = React.useState(0);
   const [section, setSection] = React.useState(`rp_${type}`);
+  const [requiresReload, setRequiresReload] = React.useState<Set<string>>(new Set());
 
   let SettingsElement: React.ComponentType | undefined;
 
@@ -677,6 +697,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               setDisabled={setDisabled}
               list={list}
               refreshList={refreshList}
+              setRequiresReload={setRequiresReload}
             />
           ) : list ? (
             <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
@@ -693,6 +714,20 @@ export const Addons = (type: AddonType): React.ReactElement => {
               <SettingsElement />
             </ErrorBoundary>
           )
+        )}
+        {requiresReload.size && (
+          <Notice className="replugged-addon-reload-notice" messageType={Notice.Types.WARNING}>
+            <Flex justify={Flex.Justify.BETWEEN}>
+              <Text.Normal>{intl.string(t.REPLUGGED_ADDON_RELOAD_REQUIRED)}</Text.Normal>
+              <Button
+                color={Button.Colors.RED}
+                look={Button.Looks.OUTLINED}
+                size={Button.Sizes.TINY}
+                onClick={() => setTimeout(() => window.location.reload(), 250)}>
+                {intl.string(discordT.ERRORS_RELOAD)}
+              </Button>
+            </Flex>
+          </Notice>
         )}
       </Stack>
     </FormSection>

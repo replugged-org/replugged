@@ -34,3 +34,23 @@
 .replugged-addon-breadcrumbsInactive:hover {
   color: var(--header-primary);
 }
+
+.replugged-addon-reload-notice {
+  z-index: 999;
+  background: var(--background-base-lowest);
+  margin-top: 2.5em;
+  align-items: center;
+  position: fixed;
+  bottom: 4.5em;
+  max-width: 660px;
+  width: 100%;
+  opacity: 0.75;
+}
+
+.replugged-addon-reload-notice:hover {
+  opacity: 1;
+}
+
+.replugged-addon-reload-notice div {
+  align-items: inherit;
+}
