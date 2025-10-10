@@ -1,4 +1,4 @@
-import { cpSync, existsSync, readdirSync, renameSync } from "fs";
+import { cpSync, existsSync, readdirSync, renameSync } from "original-fs";
 import { basename, join } from "path";
 import { getSetting } from "../ipc/settings";
 
@@ -10,12 +10,11 @@ function getPathBefore(path: string, before: string): string {
   return join(path.substring(0, path.indexOf(before)));
 }
 
-const winUpdater = getSetting<boolean>("dev.replugged.Settings", "winUpdater", false);
-
-const mainPath = require.main?.filename;
-
-if (process.platform === "win32" && winUpdater && mainPath)
+function patchWinUpdater(): void {
   try {
+    const mainPath = require.main?.filename;
+    if (!mainPath) return;
+
     const origAsarPath = getPathBefore(mainPath, "\\app_bootstrap\\index");
     const currentAsarDir = join(origAsarPath, "..", "app.asar");
     const currentVersion = basename(getPathBefore(origAsarPath, "\\resources\\app."));
@@ -59,3 +58,8 @@ if (process.platform === "win32" && winUpdater && mainPath)
   } catch (err) {
     console.error("Failed to patch autoStart updater:", err);
   }
+}
+
+const winUpdater = getSetting<boolean>("dev.replugged.Settings", "winUpdater", true);
+
+if (process.platform === "win32" && winUpdater) patchWinUpdater();
