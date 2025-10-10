@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import { readFileSync } from "fs";
+import { existsSync, readFileSync, rmSync } from "fs";
 import { writeFile as originalWriteFile } from "original-fs";
 import { join, resolve, sep } from "path";
 import { WEBSITE_URL } from "src/constants";
@@ -234,6 +234,8 @@ export async function installAddon(
   }
 
   try {
+    if (existsSync(filePath)) rmSync(filePath, { recursive: true, force: true });
+    await writeFile(filePath, buf);
     await writeFile(filePath, buf);
   } catch (err) {
     return {
