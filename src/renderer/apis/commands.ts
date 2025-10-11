@@ -22,7 +22,7 @@ import type {
 } from "../modules/common/messages";
 import { t } from "../modules/i18n";
 import { Logger } from "../modules/logger";
-import { filters, getByStoreName, waitForModule } from "../modules/webpack";
+import { filters, getByStoreName, getFunctionBySource, waitForModule } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
 
@@ -33,8 +33,13 @@ interface CommandsAndSection {
   commands: Map<string, AnyRepluggedCommand>;
 }
 
-void waitForModule<typeof User>(filters.bySource("hasHadPremium(){")).then((User) => {
-  RepluggedUser = new User({
+void waitForModule(filters.bySource("hasHadPremium(){")).then((mod) => {
+  const UserRecord = getFunctionBySource<typeof User>(mod, "username");
+  if (!UserRecord) {
+    logger.error("Could not find UserRecord");
+    return;
+  }
+  RepluggedUser = new UserRecord({
     avatar: "replugged",
     id: REPLUGGED_CLYDE_ID,
     bot: true,
