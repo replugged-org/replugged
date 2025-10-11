@@ -9,7 +9,6 @@ import {
   ContextMenu,
   ErrorBoundary,
   Flex,
-  FormSection,
   Notice,
   SearchBar,
   Select,
@@ -24,6 +23,7 @@ import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
+import { UserSettingsForm } from "..";
 import Icons from "../icons";
 
 import "./Addons.css";
@@ -551,8 +551,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
   }
 
   return (
-    <FormSection
-      tag="h1"
+    <UserSettingsForm
       title={
         <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
           {section === `rp_${type}` ? (
@@ -604,98 +603,96 @@ export const Addons = (type: AddonType): React.ReactElement => {
           )}
         </Flex>
       }>
-      <Stack gap={16}>
-        {section === `rp_${type}` && (
-          // TODO: Replace with ButtonGroup from Mana Design System; after Button has been migrated as well
-          <Stack gap={8} justify="space-between" direction="horizontal">
-            <Button fullWidth onClick={() => openFolder(type)}>
-              {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-            <Button
-              fullWidth
-              onClick={async () => {
-                try {
-                  await loadMissing(type);
-                  toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
-                      type: label(type, { plural: true }),
-                    }),
-                  );
-                } catch (e) {
-                  logger.error("Error loading missing", e);
-                  toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
-                      type: label(type, { plural: true }),
-                    }),
-                    toast.Kind.FAILURE,
-                  );
-                }
-
-                refreshList();
-              }}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.OUTLINED}>
-              {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-            <Button
-              fullWidth
-              onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.OUTLINED}>
-              {intl.format(t.REPLUGGED_ADDON_BROWSE, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-          </Stack>
-        )}
-        {section === `rp_${type}` && unfilteredCount ? (
-          <SearchBar
-            query={search}
-            onChange={(query) => setSearch(query)}
-            onClear={() => setSearch("")}
-            placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
-              type: label(type),
+      {section === `rp_${type}` && (
+        // TODO: Replace with ButtonGroup from Mana Design System; after Button has been migrated as well
+        <Stack gap={8} justify="space-between" direction="horizontal">
+          <Button fullWidth onClick={() => openFolder(type)}>
+            {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
+              type: label(type, { caps: "title", plural: true }),
             })}
-            autoFocus
-          />
-        ) : null}
-        {section === `rp_${type}` && search && list?.length ? (
-          <Text variant="heading-md/bold" className={marginStyles.marginBottom8}>
-            {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
-          </Text>
-        ) : null}
-        {section === `rp_${type}` ? (
-          list?.length ? (
-            <Cards
-              type={type}
-              disabled={disabled}
-              setSection={setSection}
-              setDisabled={setDisabled}
-              list={list}
-              refreshList={refreshList}
-            />
-          ) : list ? (
-            <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
-              {unfilteredCount
-                ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
-                : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
+          </Button>
+          <Button
+            fullWidth
+            onClick={async () => {
+              try {
+                await loadMissing(type);
+                toast.toast(
+                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
                     type: label(type, { plural: true }),
-                  })}
-            </Text>
-          ) : null
-        ) : (
-          (SettingsElement = getSettingsElement(getAddonIdFromSection(section), type)) && (
-            <ErrorBoundary>
-              <SettingsElement />
-            </ErrorBoundary>
-          )
-        )}
-      </Stack>
-    </FormSection>
+                  }),
+                );
+              } catch (e) {
+                logger.error("Error loading missing", e);
+                toast.toast(
+                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
+                    type: label(type, { plural: true }),
+                  }),
+                  toast.Kind.FAILURE,
+                );
+              }
+
+              refreshList();
+            }}
+            color={Button.Colors.PRIMARY}
+            look={Button.Looks.OUTLINED}>
+            {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
+              type: label(type, { caps: "title", plural: true }),
+            })}
+          </Button>
+          <Button
+            fullWidth
+            onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
+            color={Button.Colors.PRIMARY}
+            look={Button.Looks.OUTLINED}>
+            {intl.format(t.REPLUGGED_ADDON_BROWSE, {
+              type: label(type, { caps: "title", plural: true }),
+            })}
+          </Button>
+        </Stack>
+      )}
+      {section === `rp_${type}` && unfilteredCount ? (
+        <SearchBar
+          query={search}
+          onChange={(query) => setSearch(query)}
+          onClear={() => setSearch("")}
+          placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
+            type: label(type),
+          })}
+          autoFocus
+        />
+      ) : null}
+      {section === `rp_${type}` && search && list?.length ? (
+        <Text variant="heading-md/bold" className={marginStyles.marginBottom8}>
+          {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
+        </Text>
+      ) : null}
+      {section === `rp_${type}` ? (
+        list?.length ? (
+          <Cards
+            type={type}
+            disabled={disabled}
+            setSection={setSection}
+            setDisabled={setDisabled}
+            list={list}
+            refreshList={refreshList}
+          />
+        ) : list ? (
+          <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
+            {unfilteredCount
+              ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
+              : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
+                  type: label(type, { plural: true }),
+                })}
+          </Text>
+        ) : null
+      ) : (
+        (SettingsElement = getSettingsElement(getAddonIdFromSection(section), type)) && (
+          <ErrorBoundary>
+            <SettingsElement />
+          </ErrorBoundary>
+        )
+      )}
+    </UserSettingsForm>
   );
 };
 

@@ -68,9 +68,6 @@ importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default
 export let FormNotice: Design.FormNotice;
 importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
 
-export let FormSection: Design.FormSection;
-importTimeout("FormSection", import("./FormSection"), (mod) => (FormSection = mod.default));
-
 export let Loader: Design.Spinner;
 importTimeout("Loader", import("./Spinner"), (mod) => (Loader = mod.default));
 

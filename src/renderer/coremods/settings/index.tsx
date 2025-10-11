@@ -1,7 +1,9 @@
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
+import { filters, waitForModule } from "@webpack";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
+import type { UserSettingsFormType } from "src/types";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
@@ -20,6 +22,10 @@ export function _getVersionString(): string {
     version: window.RepluggedNative.getVersion(),
   });
 }
+
+export const UserSettingsForm = await waitForModule<UserSettingsFormType>(
+  filters.bySource(/title:\i,className:\i,children:\i}=\i,\i=\(0/),
+);
 
 export function start(): void {
   settingsTools.addAfter("Billing", [

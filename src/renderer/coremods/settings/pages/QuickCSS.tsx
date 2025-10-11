@@ -2,11 +2,12 @@ import { css } from "@codemirror/lang-css";
 import { EditorState } from "@codemirror/state";
 import { React, toast } from "@common";
 import { intl } from "@common/i18n";
-import { Button, Flex, FormSection } from "@components";
+import { Button, Flex } from "@components";
 import { webpack } from "@replugged";
 import { EditorView, basicSetup } from "codemirror";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
+import { UserSettingsForm } from "..";
 import { githubDark, githubLight } from "./codemirror-github";
 
 import "./QuickCSS.css";
@@ -171,8 +172,7 @@ export const QuickCSS = (): React.ReactElement => {
   }, [value]);
 
   return (
-    <FormSection
-      tag="h1"
+    <UserSettingsForm
       title={
         <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
           {intl.string(t.REPLUGGED_QUICKCSS)}
@@ -192,6 +192,6 @@ export const QuickCSS = (): React.ReactElement => {
         </Flex>
       }>
       <div ref={ref} id="replugged-quickcss-wrapper" />
-    </FormSection>
+    </UserSettingsForm>
   );
 };
