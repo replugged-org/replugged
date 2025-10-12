@@ -9,7 +9,7 @@ export type CustomHelpMessage = CommonDesign.HelpMessage & {
   HelpMessageTypes: typeof CommonDesign.HelpMessageTypes;
 };
 
-const HelpMessage = getFunctionBySource<CustomHelpMessage>(components, "messageType:")!;
+const HelpMessage = getFunctionBySource<CustomHelpMessage>(components, /messageType:\i,action/)!;
 const HelpMessageTypes = getExportsForProps<typeof CommonDesign.HelpMessageTypes>(components, [
   "INFO",
   "ERROR",
