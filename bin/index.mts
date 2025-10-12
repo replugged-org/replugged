@@ -194,7 +194,7 @@ async function reload(id: string): Promise<void> {
      * @returns
      */
     const onMessage = async (data: string): Promise<void> => {
-      const message = JSON.parse(data.toString());
+      const message = JSON.parse(data);
       if (message.nonce !== nonce) {
         return;
       }
@@ -315,7 +315,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
   const manifestPath = addon
     ? path.join(directory, "plugins", addon, "manifest.json")
     : path.join(directory, "manifest.json");
-  const manifest: PluginManifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const manifest: PluginManifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const distPath = addon ? `dist/${manifest.id}` : "dist";
   const folderPath = addon ? path.join(directory, "plugins", addon) : directory;
 
@@ -446,7 +446,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const manifestPath = addon
     ? path.join(directory, "themes", addon, "manifest.json")
     : "manifest.json";
-  const manifest: ThemeManifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const manifest: ThemeManifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const distPath = addon ? `dist/${manifest.id}` : "dist";
   const folderPath = addon ? path.join(directory, "themes", addon) : directory;
 

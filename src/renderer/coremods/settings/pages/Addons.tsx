@@ -567,7 +567,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
             </Text.H2>
           ) : (
             <Breadcrumbs
-              activeId={section.toString()}
+              activeId={section}
               breadcrumbs={[
                 {
                   id: `rp_${type}`,
