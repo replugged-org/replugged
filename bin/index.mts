@@ -41,10 +41,12 @@ export const directory = process.cwd();
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
 
-const extraESBuildPath = path.join(directory, "esbuild.extra.mjs");
+const extraESBuildPaths = ["mjs", "mts"].map((ext) => path.join(directory, `esbuild.extra.${ext}`));
+
 const extraESBuildConfig = new Promise<(config: esbuild.BuildOptions) => esbuild.BuildOptions>(
   (resolve) => {
-    if (existsSync(extraESBuildPath))
+    const extraESBuildPath = extraESBuildPaths.find((p) => existsSync(p));
+    if (extraESBuildPath)
       resolve(
         import(pathToFileURL(extraESBuildPath).href).then((m) => m.default) as Promise<
           (config: esbuild.BuildOptions) => esbuild.BuildOptions
