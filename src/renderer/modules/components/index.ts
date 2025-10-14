@@ -80,9 +80,6 @@ importTimeout("SearchBar", import("./SearchBar"), (mod) => (SearchBar = mod.defa
 export let Stack: Design.Stack;
 importTimeout("Stack", import("./Stack"), (mod) => (Stack = mod.default));
 
-export let Switch: Design.Switch;
-importTimeout("Switch", import("./Switch"), (mod) => (Switch = mod.default));
-
 export let TabBar: Design.TabBar;
 importTimeout("TabBar", import("./TabBar"), (mod) => (TabBar = mod.default));
 
@@ -154,6 +151,11 @@ import type { CustomSliderType } from "./Slider";
 export type { CustomSliderType };
 export let Slider: CustomSliderType;
 importTimeout("Slider", import("./Slider"), (mod) => (Slider = mod.default));
+
+import type { CustomSwitchType } from "./Switch";
+export type { CustomSwitchType };
+export let Switch: CustomSwitchType;
+importTimeout("Switch", import("./Switch"), (mod) => (Switch = mod.default));
 
 import type { CustomTextType } from "./Text";
 export type { CustomTextType };
