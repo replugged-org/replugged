@@ -4,3 +4,7 @@
   padding: var(--space-16);
   border-radius: var(--radius-sm);
 }
+
+.replugged-updater-tabBarPanel {
+  margin-top: var(--space-24);
+}
