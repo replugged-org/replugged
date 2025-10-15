@@ -3,7 +3,7 @@ import { Injector } from "@replugged";
 import type React from "react";
 import type { Capture, DefaultInRule } from "simple-markdown";
 import { plugins } from "src/renderer/managers/plugins";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import { themes } from "src/renderer/managers/themes";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import type { ObjectExports } from "src/types";
@@ -115,7 +115,7 @@ async function injectLinks(): Promise<void> {
       const installLink = parseInstallLink(match[1]);
       if (!installLink) return null;
       if (installLink.source !== "store") return null;
-      if (!generalSettings.get("addonEmbeds")) return null;
+      if (!repluggedSettings.get("addonEmbeds")) return null;
       return match;
     },
     parse: (capture: Capture) => {

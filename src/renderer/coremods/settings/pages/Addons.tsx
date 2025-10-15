@@ -18,7 +18,7 @@ import {
   Tooltip,
 } from "@components";
 import { Logger, plugins, themes, webpack } from "@replugged";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
@@ -170,7 +170,7 @@ export function getSourceLink(addon: AnyAddonManifest): string | undefined {
     case "github":
       return `https://github.com/${updaterId}`;
     case "store":
-      return `${generalSettings.get("apiUrl")}/store/${addonId}`;
+      return `${repluggedSettings.get("apiUrl")}/store/${addonId}`;
   }
   return undefined;
 }
@@ -641,7 +641,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Button>
           <Button
             fullWidth
-            onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
+            onClick={() => openExternal(`${repluggedSettings.get("apiUrl")}/store/${type}s`)}
             color={Button.Colors.PRIMARY}
             look={Button.Looks.OUTLINED}>
             {intl.format(t.REPLUGGED_ADDON_BROWSE, {

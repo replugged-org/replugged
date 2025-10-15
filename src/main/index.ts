@@ -33,10 +33,11 @@ Object.defineProperty(global, "appSettings", {
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
   public constructor(opts: Electron.BrowserWindowConstructorOptions) {
-    const generalSettings = getAllSettings("dev.replugged.Settings");
+    const repluggedSettings = getAllSettings("dev.replugged.Settings");
     const originalPreload = opts.webPreferences?.preload;
 
-    if (opts.frame && process.platform === "linux" && generalSettings.titleBar) opts.frame = void 0;
+    if (opts.frame && process.platform === "linux" && repluggedSettings.titleBar)
+      opts.frame = void 0;
 
     // Load our preload script if it's the main window or the splash screen
     if (
@@ -45,25 +46,25 @@ class BrowserWindow extends electron.BrowserWindow {
     ) {
       opts.webPreferences.preload = join(__dirname, "./preload.js");
 
-      if (generalSettings.transparency) {
+      if (repluggedSettings.transparency) {
         opts.transparent = true;
         opts.backgroundColor = "#00000000";
-        if (process.platform === "win32" && generalSettings.backgroundMaterial) {
-          opts.backgroundMaterial = generalSettings.backgroundMaterial as BackgroundMaterialType;
+        if (process.platform === "win32" && repluggedSettings.backgroundMaterial) {
+          opts.backgroundMaterial = repluggedSettings.backgroundMaterial as BackgroundMaterialType;
         }
-        if (process.platform === "darwin" && generalSettings.vibrancy) {
-          opts.vibrancy = generalSettings.vibrancy as VibrancyType;
+        if (process.platform === "darwin" && repluggedSettings.vibrancy) {
+          opts.vibrancy = repluggedSettings.vibrancy as VibrancyType;
         }
       }
 
-      if (generalSettings.disableMinimumSize) {
+      if (repluggedSettings.disableMinimumSize) {
         opts.minWidth = 0;
         opts.minHeight = 0;
       }
 
       super(opts);
 
-      if (generalSettings.disableMinimumSize) this.setMinimumSize = () => undefined;
+      if (repluggedSettings.disableMinimumSize) this.setMinimumSize = () => undefined;
       (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
     }
   }

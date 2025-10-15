@@ -14,12 +14,13 @@ import {
 } from "@components";
 import { WEBSITE_URL } from "src/constants";
 import * as QuickCSS from "src/renderer/managers/quick-css";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { useSetting, useSettingArray } from "src/renderer/util";
 import { BACKGROUND_MATERIALS, VIBRANCY_SELECT_OPTIONS } from "src/types";
+import { UserSettingsForm } from "..";
 
-import "./General.css";
+import "./Configuration.css";
 
 const konamiCode = [
   "ArrowUp",
@@ -59,32 +60,32 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
     .then((answer) => answer && restart());
 }
 
-const GeneralSettingsTabs = { GENERAL: "general", ADVANCED: "advanced" } as const;
+const ConfigurationTabs = { GENERAL: "general", ADVANCED: "advanced" } as const;
 
 function GeneralTab(): React.ReactElement {
-  const [quickCSS, setQuickCSS] = useSettingArray(generalSettings, "quickCSS");
+  const [quickCSS, setQuickCSS] = useSettingArray(repluggedSettings, "quickCSS");
   const [disableMinimumSize, setDisableMinimumSize] = useSettingArray(
-    generalSettings,
+    repluggedSettings,
     "disableMinimumSize",
   );
-  const [titleBar, setTitleBar] = useSettingArray(generalSettings, "titleBar");
-  const [transparency, setTransparency] = useSettingArray(generalSettings, "transparency");
+  const [titleBar, setTitleBar] = useSettingArray(repluggedSettings, "titleBar");
+  const [transparency, setTransparency] = useSettingArray(repluggedSettings, "transparency");
   const [backgroundMaterial, setBackgroundMaterial] = useSettingArray(
-    generalSettings,
+    repluggedSettings,
     "backgroundMaterial",
   );
-  const [vibrancy, setVibrancy] = useSettingArray(generalSettings, "vibrancy");
+  const [vibrancy, setVibrancy] = useSettingArray(repluggedSettings, "vibrancy");
 
   return (
     <Stack gap={24}>
       <Stack gap={16}>
         <Switch
-          {...useSetting(generalSettings, "badges")}
+          {...useSetting(repluggedSettings, "badges")}
           label={intl.string(t.REPLUGGED_SETTINGS_BADGES)}
           description={intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}
         />
         <Switch
-          {...useSetting(generalSettings, "addonEmbeds")}
+          {...useSetting(repluggedSettings, "addonEmbeds")}
           label={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS)}
           description={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC)}
         />
@@ -102,7 +103,7 @@ function GeneralTab(): React.ReactElement {
           description={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC)}
         />
         <Switch
-          {...useSetting(generalSettings, "autoApplyQuickCss")}
+          {...useSetting(repluggedSettings, "autoApplyQuickCss")}
           disabled={!quickCSS}
           label={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
           description={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}
@@ -185,10 +186,10 @@ function GeneralTab(): React.ReactElement {
 }
 
 function AdvancedTab(): React.ReactElement {
-  const [experiments, setExperiments] = useSettingArray(generalSettings, "experiments");
-  const [staffDevTools, setStaffDevTools] = useSettingArray(generalSettings, "staffDevTools");
-  const [reactDevTools, setReactDevTools] = useSettingArray(generalSettings, "reactDevTools");
-  const [keepToken, setKeepToken] = useSettingArray(generalSettings, "keepToken");
+  const [experiments, setExperiments] = useSettingArray(repluggedSettings, "experiments");
+  const [staffDevTools, setStaffDevTools] = useSettingArray(repluggedSettings, "staffDevTools");
+  const [reactDevTools, setReactDevTools] = useSettingArray(repluggedSettings, "reactDevTools");
+  const [keepToken, setKeepToken] = useSettingArray(repluggedSettings, "keepToken");
 
   return (
     <Stack gap={24}>
@@ -264,13 +265,13 @@ function AdvancedTab(): React.ReactElement {
         />
         {window.DiscordNative.process.platform === "win32" && (
           <Switch
-            {...useSetting(generalSettings, "winUpdater")}
+            {...useSetting(repluggedSettings, "winUpdater")}
             label={intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER)}
             description={intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER_DESC)}
           />
         )}
         <TextInput
-          {...useSetting(generalSettings, "apiUrl")}
+          {...useSetting(repluggedSettings, "apiUrl")}
           label={intl.string(t.REPLUGGED_SETTINGS_BACKEND)}
           description={intl.string(t.REPLUGGED_SETTINGS_BACKEND_DESC)}
           placeholder={WEBSITE_URL}
@@ -281,8 +282,8 @@ function AdvancedTab(): React.ReactElement {
   );
 }
 
-export function General(): React.ReactElement {
-  const [selectedTab, setSelectedTab] = React.useState<string>(GeneralSettingsTabs.GENERAL);
+export function Configuration(): React.ReactElement {
+  const [selectedTab, setSelectedTab] = React.useState<string>(ConfigurationTabs.GENERAL);
 
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
@@ -311,27 +312,27 @@ export function General(): React.ReactElement {
   }, [kKeys, isEasterEgg, listener]);
 
   return (
-    <>
+    <UserSettingsForm title={intl.string(t.REPLUGGED_CONFIGURATION)}>
       <TabBar selectedItem={selectedTab} type="top" look="brand" onItemSelect={setSelectedTab}>
-        <TabBar.Item id={GeneralSettingsTabs.GENERAL}>
+        <TabBar.Item id={ConfigurationTabs.GENERAL}>
           {intl.string(discordT.SETTINGS_GENERAL)}
         </TabBar.Item>
-        <TabBar.Item id={GeneralSettingsTabs.ADVANCED}>
+        <TabBar.Item id={ConfigurationTabs.ADVANCED}>
           {intl.string(discordT.SETTINGS_ADVANCED)}
         </TabBar.Item>
       </TabBar>
-      <TabBar.Panel id={selectedTab} className="replugged-general-tabBarPanel">
-        {selectedTab === GeneralSettingsTabs.GENERAL && <GeneralTab />}
-        {selectedTab === GeneralSettingsTabs.ADVANCED && <AdvancedTab />}
+      <TabBar.Panel id={selectedTab} className="replugged-configuration-tabBarPanel">
+        {selectedTab === ConfigurationTabs.GENERAL && <GeneralTab />}
+        {selectedTab === ConfigurationTabs.ADVANCED && <AdvancedTab />}
       </TabBar.Panel>
       {isEasterEgg && (
         <Text.H1
           variant="heading-xxl/semibold"
-          className="replugged-general-easter-egg"
+          className="replugged-configuration-easter-egg"
           style={{ color: `hsl(${hue}, 100%, 50%)` }}>
           Wake up. Wake up. Wake up.
         </Text.H1>
       )}
-    </>
+    </UserSettingsForm>
   );
 }

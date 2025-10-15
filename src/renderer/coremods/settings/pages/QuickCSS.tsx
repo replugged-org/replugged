@@ -5,7 +5,7 @@ import { intl } from "@common/i18n";
 import { Button, Flex } from "@components";
 import { webpack } from "@replugged";
 import { EditorView, basicSetup } from "codemirror";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { UserSettingsForm } from "..";
 import { githubDark, githubLight } from "./codemirror-github";
@@ -118,7 +118,7 @@ export const QuickCSS = (): React.ReactElement => {
   });
   const [ready, setReady] = React.useState(false);
 
-  const autoApply = generalSettings.get("autoApplyQuickCss");
+  const autoApply = repluggedSettings.get("autoApplyQuickCss");
 
   const reload = (): void => window.replugged.quickCSS.reload();
   const reloadAndToast = (): void => {
