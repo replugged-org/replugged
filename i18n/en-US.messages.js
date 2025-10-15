@@ -117,6 +117,8 @@ export default defineMessages({
   "REPLUGGED_UPDATES_UPDATING": "Updating Replugged…",
   "REPLUGGED_UPDATES_UPDATING_ITEM": "Updating…",
   "REPLUGGED_UPDATES_UP_TO_DATE": "Everything is up to date.",
+  "REPLUGGED_UPDATES_UPDATES": "Updates",
+  "REPLUGGED_UPDATES_CONFIGURATION": "Configuration",
   "REPLUGGED_PLUGIN_EMBED_VIEW_REPO": "View Repo",
   "REPLUGGED_ADDON_DELETE": "Delete {type}",
   "REPLUGGED_ADDON_PAGE_OPEN": "Open {type} Page",

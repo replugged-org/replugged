@@ -1408,7 +1408,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS': TypedIntlMessageGetter<{}>,
   /**
@@ -1824,7 +1824,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_WIN_UPDATER': TypedIntlMessageGetter<{}>,
   /**
@@ -1837,7 +1837,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_WIN_UPDATER_DESC': TypedIntlMessageGetter<{}>,
   /**
@@ -2218,6 +2218,19 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_CHECK': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `eFNZS0`
+   * 
+   * ### Definition
+   * ```text
+   * Configuration
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_UPDATES_CONFIGURATION': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `DCXylp`
    * 
    * ### Definition
@@ -2594,6 +2607,19 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
   'REPLUGGED_UPDATES_UPDATER': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `s4evKC`
+   * 
+   * ### Definition
+   * ```text
+   * Updates
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_UPDATES_UPDATES': TypedIntlMessageGetter<{}>,
   /**
    * Key: `uMS9c3`
    * 

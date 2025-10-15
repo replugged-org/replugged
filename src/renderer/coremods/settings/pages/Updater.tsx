@@ -3,12 +3,12 @@ import { t as discordT, intl } from "@common/i18n";
 import {
   Anchor,
   Button,
-  Divider,
   Flex,
   Notice,
   Slider,
   Stack,
   Switch,
+  TabBar,
   Text,
   Tooltip,
 } from "@components";
@@ -33,13 +33,15 @@ import "./Updater.css";
 
 const logger = Logger.coremod("Settings:Updater");
 
-export function Updater(): React.ReactElement {
+const UpdaterTabs = { UPDATES: "updates", CONFIGURATION: "configuration" } as const;
+
+function UpdatesTab(): React.ReactElement {
   const [checking, setChecking] = React.useState(false);
   const [updatesAvailable, setUpdatesAvailable] =
     React.useState<Array<UpdateSettings & { id: string }>>(getAvailableUpdates());
   const [updatePromises, setUpdatePromises] = React.useState<Record<string, Promise<boolean>>>({});
   const [didInstallAll, setDidInstallAll] = React.useState(false);
-  const [autoCheck, setAutoCheck] = useSettingArray(updaterSettings, "autoCheck");
+
   const [lastChecked, setLastChecked] = useSettingArray(updaterSettings, "lastChecked");
 
   React.useEffect(() => {
@@ -125,38 +127,8 @@ export function Updater(): React.ReactElement {
   };
 
   return (
-    <UserSettingsForm title={intl.string(t.REPLUGGED_UPDATES_UPDATER)}>
-      <Switch
-        checked={autoCheck}
-        onChange={setAutoCheck}
-        label={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO)}
-        description={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}
-      />
-      <Slider
-        {...useSetting(updaterSettings, "checkIntervalMinutes")}
-        disabled={!autoCheck}
-        label={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
-        description={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
-        markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
-        equidistant
-        onMarkerRender={(value) => {
-          // Format as xh and/or xm
-          const hours = Math.floor(value / 60);
-          const minutes = value % 60;
-
-          const hourString =
-            hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
-          const minuteString =
-            minutes > 0
-              ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes })
-              : "";
-
-          const label = [hourString, minuteString].filter(Boolean).join(" ");
-          return label;
-        }}
-        stickToMarkers
-      />
-      <Divider />
+    <Stack gap={24}>
+      {" "}
       {isRepluggedDev && (
         <Notice messageType={Notice.Types.WARNING}>
           {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
@@ -276,6 +248,65 @@ export function Updater(): React.ReactElement {
           );
         })}
       </Stack>
+    </Stack>
+  );
+}
+
+function ConfigurationTab(): React.ReactElement {
+  const [autoCheck, setAutoCheck] = useSettingArray(updaterSettings, "autoCheck");
+  return (
+    <Stack gap={24}>
+      <Switch
+        checked={autoCheck}
+        onChange={setAutoCheck}
+        label={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO)}
+        description={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}
+      />
+      <Slider
+        {...useSetting(updaterSettings, "checkIntervalMinutes")}
+        disabled={!autoCheck}
+        label={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
+        description={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
+        markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
+        equidistant
+        onMarkerRender={(value) => {
+          // Format as xh and/or xm
+          const hours = Math.floor(value / 60);
+          const minutes = value % 60;
+
+          const hourString =
+            hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
+          const minuteString =
+            minutes > 0
+              ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes })
+              : "";
+
+          const label = [hourString, minuteString].filter(Boolean).join(" ");
+          return label;
+        }}
+        stickToMarkers
+      />
+    </Stack>
+  );
+}
+
+export function Updater(): React.ReactElement {
+  const [selectedTab, setSelectedTab] = React.useState<string>(UpdaterTabs.UPDATES);
+
+  return (
+    <UserSettingsForm title={intl.string(t.REPLUGGED_UPDATES_UPDATER)}>
+      <TabBar selectedItem={selectedTab} type="top" look="brand" onItemSelect={setSelectedTab}>
+        <TabBar.Item id={UpdaterTabs.UPDATES}>
+          {intl.string(t.REPLUGGED_UPDATES_UPDATES)}
+        </TabBar.Item>
+        <TabBar.Item id={UpdaterTabs.CONFIGURATION}>
+          {intl.string(t.REPLUGGED_UPDATES_CONFIGURATION)}
+        </TabBar.Item>
+      </TabBar>
+      <TabBar.Panel id={selectedTab} className="replugged-updater-tabBarPanel">
+        {selectedTab === UpdaterTabs.UPDATES && <UpdatesTab />}
+        {selectedTab === UpdaterTabs.CONFIGURATION && <ConfigurationTab />}
+      </TabBar.Panel>
     </UserSettingsForm>
   );
 }
