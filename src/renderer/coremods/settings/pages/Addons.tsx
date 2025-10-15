@@ -102,65 +102,72 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
 
   return (
     <Stack gap={16}>
-      <Select
-        label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
-        options={theme.manifest.presets!.map((preset) => ({
-          label: preset.label,
-          value: preset.main,
-        }))}
-        value={settings.chosenMainPreset || theme.manifest.presets![0].main}
-        onChange={(val) => {
-          try {
-            themes.settings.set(id, { ...settings, chosenMainPreset: val });
-            if (!themes.getDisabled().includes(id)) {
-              themes.reload(id);
+      {theme.manifest.presets!.some((p) => p.main) && (
+        <Select
+          label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
+          options={theme.manifest
+            .presets!.filter((preset) => preset.main)
+            .map((preset) => ({
+              label: preset.label,
+              value: preset.main,
+            }))}
+          value={settings.chosenMainPreset || theme.manifest.presets![0].main}
+          onChange={(val) => {
+            try {
+              themes.settings.set(id, { ...settings, chosenMainPreset: val });
+              if (!themes.getDisabled().includes(id)) {
+                themes.reload(id);
+              }
+              toast.toast(
+                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
+                  name: theme.manifest.presets!.find((p) => p.main === val)?.label || val,
+                }),
+              );
+            } catch (error) {
+              logger.error("Error changing theme preset", error);
+              toast.toast(
+                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
+                  name: theme.manifest.name,
+                }),
+                toast.Kind.FAILURE,
+              );
             }
-            toast.toast(
-              intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
-                name: theme.manifest.presets!.find((p) => p.main === val)?.label || val,
-              }),
-            );
-          } catch (error) {
-            logger.error("Error changing theme preset", error);
-            toast.toast(
-              intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
-                name: theme.manifest.name,
-              }),
-              toast.Kind.FAILURE,
-            );
-          }
-        }}
-      />
-
-      <Select
-        label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_SPLASH_PRESET)}
-        options={theme.manifest.presets!.map((preset) => ({
-          label: preset.label,
-          value: preset.splash,
-        }))}
-        value={settings.chosenSplashPreset || theme.manifest.presets![0].splash}
-        onChange={(val) => {
-          try {
-            themes.settings.set(id, { ...settings, chosenSplashPreset: val });
-            if (!themes.getDisabled().includes(id)) {
-              themes.reloadSplash(id);
+          }}
+        />
+      )}
+      {theme.manifest.presets!.some((p) => p.splash) && (
+        <Select
+          label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_SPLASH_PRESET)}
+          options={theme.manifest
+            .presets!.filter((preset) => preset.splash)
+            .map((preset) => ({
+              label: preset.label,
+              value: preset.splash,
+            }))}
+          value={settings.chosenSplashPreset || theme.manifest.presets![0].splash}
+          onChange={(val) => {
+            try {
+              themes.settings.set(id, { ...settings, chosenSplashPreset: val });
+              if (!themes.getDisabled().includes(id)) {
+                themes.reloadSplash(id);
+              }
+              toast.toast(
+                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_SPLASH_PRESET_CHANGED, {
+                  name: theme.manifest.presets!.find((p) => p.splash === val)?.label || val,
+                }),
+              );
+            } catch (error) {
+              logger.error("Error changing theme preset", error);
+              toast.toast(
+                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_SPLASH_PRESET_FAILED, {
+                  name: theme.manifest.name,
+                }),
+                toast.Kind.FAILURE,
+              );
             }
-            toast.toast(
-              intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_SPLASH_PRESET_CHANGED, {
-                name: theme.manifest.presets!.find((p) => p.splash === val)?.label || val,
-              }),
-            );
-          } catch (error) {
-            logger.error("Error changing theme preset", error);
-            toast.toast(
-              intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_SPLASH_PRESET_FAILED, {
-                name: theme.manifest.name,
-              }),
-              toast.Kind.FAILURE,
-            );
-          }
-        }}
-      />
+          }}
+        />
+      )}
     </Stack>
   );
 }
