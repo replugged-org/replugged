@@ -1,4 +1,4 @@
 export * from "./Addons";
-export * from "./General";
+export * from "./Configuration";
 export * from "./QuickCSS";
 export * from "./Updater";

@@ -1,7 +1,7 @@
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import type { PlaintextPatch } from "src/types";
 
-export default (navigator.userAgent.includes("Linux") && generalSettings.get("titleBar")
+export default (navigator.userAgent.includes("Linux") && repluggedSettings.get("titleBar")
   ? [
       // Patch the title bar to show the buttons
       {

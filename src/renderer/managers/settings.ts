@@ -3,7 +3,7 @@ import { init } from "src/renderer/apis/settings";
 import type { BackgroundMaterialType, VibrancyType } from "src/types";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type GeneralSettings = {
+export type RepluggedSettings = {
   apiUrl?: string;
   experiments?: boolean;
   staffDevTools?: boolean;
@@ -39,9 +39,9 @@ const defaultSettings = {
   backgroundMaterial: "auto",
   vibrancy: null,
   disableMinimumSize: false,
-} satisfies Partial<GeneralSettings>;
+} satisfies Partial<RepluggedSettings>;
 
-export const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(
+export const repluggedSettings = init<RepluggedSettings, keyof typeof defaultSettings>(
   "dev.replugged.Settings",
   defaultSettings,
 );

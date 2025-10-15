@@ -1,11 +1,11 @@
-import { t as discordT, intl } from "@common/i18n";
+import { intl } from "@common/i18n";
 import { Text } from "@components";
 import { filters, waitForModule } from "@webpack";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import type { UserSettingsFormType } from "src/types";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
+import { Configuration, Plugins, QuickCSS, Themes, Updater } from "./pages";
 
 export { insertSections };
 
@@ -32,14 +32,14 @@ export function start(): void {
     Divider(),
     Header("Replugged"),
     Section({
-      name: "rp-general",
-      label: () => intl.string(discordT.SETTINGS_GENERAL),
-      elem: General,
+      name: "rp-configuration",
+      label: () => intl.string(t.REPLUGGED_CONFIGURATION),
+      elem: Configuration,
     }),
     Section({
       name: "rp-quickcss",
       label: () => intl.string(t.REPLUGGED_QUICKCSS),
-      tabPredicate: () => generalSettings.useValue("quickCSS"),
+      tabPredicate: () => repluggedSettings.useValue("quickCSS"),
       elem: QuickCSS,
     }),
     Section({
