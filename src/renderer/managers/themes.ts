@@ -54,10 +54,10 @@ export function load(id: string): void {
   try {
     if (theme.manifest.presets?.length) {
       if (!themeSettings.chosenPreset) {
-        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.path;
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.main;
         if (!themeSettings.chosenPreset) {
           // Fallback to first preset
-          themeSettings.chosenPreset = theme.manifest.presets[0]?.path;
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.main;
         }
         settings.set(id, themeSettings);
       }
@@ -71,7 +71,7 @@ export function load(id: string): void {
     } else if (theme.manifest.main) {
       el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
     } else {
-      logger.error("Manager", `Theme ${id} has neither main CSS nor presets.`);
+      logger.error("Manager", `Theme ${id} has neither main CSS nor main presets.`);
       return;
     }
 
@@ -92,14 +92,39 @@ export function loadSplash(id: string): void {
   }
 
   const theme = themes.get(id)!;
-  if (!theme.manifest.splash) {
-    logger.error("Manager", `Theme ${id} does not have a splash variant.`);
-    return;
-  }
-  unload(id);
+  const themeSettings = settings.get(id, { chosenPreset: undefined });
 
-  const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.splash}`);
-  themeElements.set(id, el);
+  let el: HTMLLinkElement;
+
+  try {
+    if (theme.manifest.presets?.length) {
+      if (!themeSettings.chosenPreset) {
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.splash;
+        if (!themeSettings.chosenPreset) {
+          // Fallback to first preset
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.splash;
+        }
+        settings.set(id, themeSettings);
+      }
+
+      if (themeSettings.chosenPreset) {
+        el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenPreset}`);
+      } else {
+        logger.error("Manager", `No valid preset found for theme ${id}`);
+        return;
+      }
+    } else if (theme.manifest.splash) {
+      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.splash}`);
+    } else {
+      logger.error("Manager", `Theme ${id} has neither splash CSS nor splash presets.`);
+      return;
+    }
+
+    unload(id);
+    themeElements.set(id, el);
+  } catch (error) {
+    logger.error("Manager", `Failed to load Splash theme ${id}:`, String(error));
+  }
 }
 
 /**
@@ -108,7 +133,10 @@ export function loadSplash(id: string): void {
 export function loadAll(): void {
   for (const id of themes.keys()) {
     const theme = themes.get(id);
-    if (!disabled.includes(id) && (theme?.manifest.main || theme?.manifest.presets)) {
+    if (
+      !disabled.includes(id) &&
+      (theme?.manifest.main || theme?.manifest.presets?.some((p) => p.main))
+    ) {
       load(id);
     }
   }
@@ -119,7 +147,11 @@ export function loadAll(): void {
  */
 export function loadAllSplash(): void {
   for (const id of themes.keys()) {
-    if (!disabled.includes(id) && themes.get(id)?.manifest.splash) {
+    const theme = themes.get(id);
+    if (
+      !disabled.includes(id) &&
+      (theme?.manifest.splash || theme?.manifest.presets?.some((p) => p.splash))
+    ) {
       loadSplash(id);
     }
   }

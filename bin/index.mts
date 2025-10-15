@@ -534,14 +534,23 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
     targets.push(
       esbuild.context({
         ...common,
-        entryPoints: manifest.presets.map((p) => p.path),
-        outdir: `${distPath}/presets`,
+        entryPoints: manifest.presets.map((p) => p.main!).filter(Boolean),
+        outdir: `${distPath}/presets/main/`,
       }),
     );
 
-    manifest.presets = manifest.presets.map((p) => ({
+    targets.push(
+      esbuild.context({
+        ...common,
+        entryPoints: manifest.presets.map((p) => p.splash!).filter(Boolean),
+        outdir: `${distPath}/presets/splash/`,
+      }),
+    );
+
+    manifest.presets = manifest.presets.map(({ main, splash, ...p }) => ({
       ...p,
-      path: `presets/${path.basename(p.path).split(".")[0]}.css`,
+      main: main && `presets/main/${path.basename(main).split(".")[0]}.css`,
+      splash: splash && `presets/splash/${path.basename(splash).split(".")[0]}.css`,
     }));
   }
 
