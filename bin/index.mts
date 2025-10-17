@@ -553,8 +553,8 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
     manifest.presets = manifest.presets.map(({ main, splash, ...p }) => ({
       ...p,
-      main: main && `presets/main/${path.basename(main).split(".")[0]}.css`,
-      splash: splash && `presets/splash/${path.basename(splash).split(".")[0]}.css`,
+      main: main && `presets/main/${main.replace(path.extname(main), ".css")}`,
+      splash: splash && `presets/splash/${splash.replace(path.extname(splash), ".css")}`,
     }));
   }
 
