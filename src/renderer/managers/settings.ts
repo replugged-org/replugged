@@ -16,7 +16,7 @@ export type GeneralSettings = {
   quickCSS?: boolean;
   keepToken?: boolean;
   winUpdater?: boolean;
-  transparency?: boolean;
+  transparency?: "off" | "splash" | "app";
   backgroundMaterial?: BackgroundMaterialType;
   vibrancy?: VibrancyType | null;
   disableMinimumSize?: boolean;
@@ -35,7 +35,7 @@ const defaultSettings = {
   quickCSS: true,
   keepToken: false,
   winUpdater: true,
-  transparency: false,
+  transparency: "off",
   backgroundMaterial: "auto",
   vibrancy: null,
   disableMinimumSize: false,
