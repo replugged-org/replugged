@@ -6,7 +6,7 @@ export default [
     replacements: [
       {
         match: /"high-contrast-mode":\i/,
-        replace: `$&,replugged:true,"april-fools":(new Date()).toGMTString().includes("01 Apr")`,
+        replace: `$&,...(replugged.coremods.coremods.themeUtils?._insertHTMLClasses() ?? {})`,
       },
     ],
   },
