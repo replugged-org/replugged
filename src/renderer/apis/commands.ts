@@ -22,7 +22,7 @@ import type {
 } from "../modules/common/messages";
 import { t } from "../modules/i18n";
 import { Logger } from "../modules/logger";
-import { filters, getByStoreName, getFunctionBySource, waitForModule } from "../modules/webpack";
+import { getByStoreName, waitForPrototype } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
 
@@ -33,8 +33,8 @@ interface CommandsAndSection {
   commands: Map<string, AnyRepluggedCommand>;
 }
 
-void waitForModule(filters.bySource("hasHadPremium(){")).then((mod) => {
-  const UserRecord = getFunctionBySource<typeof User>(mod, "username");
+void waitForPrototype<typeof User>("isSystemUser", "isPhoneVerified").then((UserRecord) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!UserRecord) {
     logger.error("Could not find UserRecord");
     return;

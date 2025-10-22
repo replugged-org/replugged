@@ -1,4 +1,4 @@
-import type { GetModuleOptions, RawModule, WaitForOptions } from "src/types";
+import type { AbstractConstructor, GetModuleOptions, RawModule, WaitForOptions } from "src/types";
 import { flux } from "../common";
 import type { Store } from "../common/flux";
 import * as filters from "./filters";
@@ -182,45 +182,52 @@ export async function waitForProps<T, P extends PropertyKey = keyof T>(
 
 // Get by prototype
 
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options?: { all?: false; raw?: false },
-): T | undefined;
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options: { all: true; raw?: false },
-): T[];
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options: { all?: false; raw: true },
-): RawModule<T> | undefined;
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options: { all: true; raw: true },
-): Array<RawModule<T>>;
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options?: { all: true; raw?: boolean },
-): T[] | Array<RawModule<T>>;
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options: { all?: false; raw?: boolean },
-): T | RawModule<T> | undefined;
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options?: { all?: false; raw?: false }): T | undefined;
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options: { all: true; raw?: false }): T[];
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options: { all?: false; raw: true }): RawModule<T> | undefined;
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options: { all: true; raw: true }): Array<RawModule<T>>;
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options?: { all: true; raw?: boolean }): T[] | Array<RawModule<T>>;
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options: { all?: false; raw?: boolean }): T | RawModule<T> | undefined;
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(
   props: P[],
   options: { all?: boolean; raw: true },
 ): RawModule<T> | Array<RawModule<T>> | undefined;
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options: { all?: boolean; raw?: false },
-): T | T[] | undefined;
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options: { all?: boolean; raw?: false }): T | T[] | undefined;
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(
   props: P[],
   options?: { all?: boolean; raw?: boolean },
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined;
-export function getByPrototype<T, P extends PropertyKey[] = Array<keyof T>>(
-  ...props: P
-): T | undefined;
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey[] = Array<keyof InstanceType<T>>,
+>(...props: P): T | undefined;
 
 /**
  * Retrieves a module(s) by matching properties on their prototype.
@@ -234,7 +241,10 @@ export function getByPrototype<T, P extends PropertyKey[] = Array<keyof T>>(
  * @see {@link filters.byPrototype}
  * @see {@link getModule}
  */
-export function getByPrototype<T, P extends PropertyKey = keyof T>(
+export function getByPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(
   ...args: [P[], GetModuleOptions] | P[]
 ): T | T[] | RawModule<T> | Array<RawModule<T>> | undefined {
   const props = (typeof args[0] === "string" ? args : args[0]) as P[];
@@ -259,19 +269,22 @@ export function getByPrototype<T, P extends PropertyKey = keyof T>(
 
 // Wait for prototype
 
-export function waitForPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options: WaitForOptions & { raw?: false },
-): Promise<T>;
-export function waitForPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options: WaitForOptions & { raw: true },
-): Promise<RawModule<T>>;
-export function waitForPrototype<T, P extends PropertyKey = keyof T>(
-  props: P[],
-  options?: WaitForOptions,
-): Promise<T | RawModule<T>>;
-export function waitForPrototype<T, P extends PropertyKey = keyof T>(...props: P[]): Promise<T>;
+export function waitForPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options: WaitForOptions & { raw?: false }): Promise<T>;
+export function waitForPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options: WaitForOptions & { raw: true }): Promise<RawModule<T>>;
+export function waitForPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(props: P[], options?: WaitForOptions): Promise<T | RawModule<T>>;
+export function waitForPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(...props: P[]): Promise<T>;
 
 /**
  * Waits for a module that contains the specified prototype properties and returns it.
@@ -285,9 +298,10 @@ export function waitForPrototype<T, P extends PropertyKey = keyof T>(...props: P
  * @see {@link getByPrototype}
  * @see {@link waitForModule}
  */
-export async function waitForPrototype<T, P extends PropertyKey = keyof T>(
-  ...args: [P[], WaitForOptions] | P[]
-): Promise<T | RawModule<T>> {
+export async function waitForPrototype<
+  T extends AbstractConstructor,
+  P extends PropertyKey = keyof InstanceType<T>,
+>(...args: [P[], WaitForOptions] | P[]): Promise<T | RawModule<T>> {
   const props = (typeof args[0] === "string" ? args : args[0]) as P[];
   const raw = typeof args[0] === "string" ? false : (args[1] as WaitForOptions | undefined)?.raw;
 
