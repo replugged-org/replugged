@@ -1,4 +1,5 @@
 import { i18n } from "@common";
+import semver from "semver";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
 import notices from "../apis/notices";
@@ -63,6 +64,17 @@ export const updaterSettings = init<MainUpdaterSettings, keyof typeof mainUpdate
 const updaterState = init<Record<string, UpdateSettings>>("dev.replugged.Updater.State");
 
 const completedUpdates = new Set<string>();
+
+function isUpToDate(local: string, remote: string): boolean {
+  if (local === remote) return true;
+
+  const localVersion = semver.clean(local) ?? semver.coerce(local)?.version ?? null;
+  const remoteVersion = semver.clean(remote) ?? semver.coerce(remote)?.version ?? null;
+
+  if (!localVersion || !remoteVersion) return false;
+
+  return semver.gte(localVersion, remoteVersion);
+}
 
 export function getUpdateState(id: string): UpdateSettings | null {
   const setting = updaterState.get(id);
@@ -136,7 +148,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
 
   const newVersion = res.manifest.version;
 
-  if (newVersion === version) {
+  if (isUpToDate(version, newVersion)) {
     if (verbose) logger.log(`Entity ${id} is up to date`);
     updaterState.set(id, {
       available: false,
