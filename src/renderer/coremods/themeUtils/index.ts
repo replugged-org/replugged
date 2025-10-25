@@ -7,9 +7,8 @@ import {
   waitForModule,
   waitForStore,
 } from "@webpack";
-import { generalSettings } from "src/renderer/managers/settings";
-
 import type { Message } from "discord-types/general";
+import { generalSettings } from "src/renderer/managers/settings";
 import type { Store } from "src/renderer/modules/common/flux";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
