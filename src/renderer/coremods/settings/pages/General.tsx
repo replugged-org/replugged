@@ -132,9 +132,14 @@ function GeneralTab(): React.ReactElement {
             description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
           />
         )}
-        <div>
-          <Switch
-            checked={transparency}
+        <Stack gap={10}>
+          <Select
+            options={[
+              { label: "Turn off", value: "Off" },
+              { label: "Whole App", value: "app" },
+              { label: "Splash", value: "splash" },
+            ]}
+            value={transparency}
             onChange={(value) => {
               setTransparency(value);
               restartModal(true);
@@ -150,7 +155,7 @@ function GeneralTab(): React.ReactElement {
                 : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
             </Notice>
           )}
-        </div>
+        </Stack>
         {window.DiscordNative.process.platform === "win32" && (
           <Select
             value={backgroundMaterial}
