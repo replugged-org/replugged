@@ -106,9 +106,9 @@ export interface DataType {
 
 const Sections = new Map<string, DataType>();
 
-export const AddbleLayout = { Section: "SECTION", Sidebar: "SIDEBAR" } as const;
+export const AddableLayout = { Section: "SECTION", Sidebar: "SIDEBAR" } as const;
 
-// mmaybe we should make an enum of setting keys for parent/after like context menu navids but this is for replugged's internal use so its fine?
+// maybe we should make an enum of setting keys for parent/after like context menu ids but this is for replugged's internal use so its fine?
 export function add({
   key,
   parent,
@@ -133,7 +133,7 @@ export function add({
     parent,
     after,
     buildLayout: () =>
-      !type || type === AddbleLayout.Section
+      !type || type === AddableLayout.Section
         ? buildSection(settings)
         : buildSidebar(settings as RawSettingsSidebarLayout),
   };
