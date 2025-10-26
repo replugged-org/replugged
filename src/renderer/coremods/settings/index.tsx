@@ -6,13 +6,22 @@ import { t } from "src/renderer/modules/i18n";
 import type { UserSettingsFormType } from "src/types";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
+import SettingsLibs from "./SettingsLibs";
 
-export { insertSections };
+export { SettingsLibs, insertSections };
 
 export function VersionInfo(): React.ReactElement {
   return (
     <Text variant="text-xs/normal" color="text-muted" tag="span" style={{ textTransform: "none" }}>
       {intl.format(t.REPLUGGED_VERSION, { version: window.RepluggedNative.getVersion() })}
+    </Text>
+  );
+}
+
+export function _getCompactVersionInfo(): React.ReactElement {
+  return (
+    <Text variant="text-xxs/normal" color="text-muted" tag="span" style={{ textTransform: "none" }}>
+      {`[${window.RepluggedNative.getVersion()}]`}
     </Text>
   );
 }
@@ -58,6 +67,44 @@ export function start(): void {
       elem: Updater,
     }),
   ]);
+
+  // TODO: add icons for each section
+  SettingsLibs.add({
+    key: "replugged.coremod.settings",
+    parent: "$Root",
+    after: "billing_section",
+    settings: {
+      header: () => "Replugged",
+      layout: [
+        {
+          key: "rp-general",
+          title: () => intl.string(discordT.SETTINGS_GENERAL),
+          render: General,
+        },
+        {
+          key: "rp-quickcss",
+          title: () => intl.string(t.REPLUGGED_QUICKCSS),
+          predicate: () => generalSettings.useValue("quickCSS"),
+          render: QuickCSS,
+        },
+        {
+          key: "rp-plugins",
+          title: () => intl.string(t.REPLUGGED_PLUGINS),
+          render: Plugins,
+        },
+        {
+          key: "rp-themes",
+          title: () => intl.string(t.REPLUGGED_THEMES),
+          render: Themes,
+        },
+        {
+          key: "rp-updater",
+          title: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
+          render: Updater,
+        },
+      ],
+    },
+  });
 }
 
 export function stop(): void {
