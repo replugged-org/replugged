@@ -4,6 +4,7 @@
 import { defineMessages } from "@discord/intl";
 
 export default defineMessages({
+  "REPLUGGED": "Replugged",
   "REPLUGGED_ACCOUNT": "Replugged Account",
   "REPLUGGED_BADGES_CONTRIBUTOR": "Replugged Contributor",
   "REPLUGGED_BADGES_DEVELOPER": "Replugged Developer",

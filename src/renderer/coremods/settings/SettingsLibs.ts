@@ -1,4 +1,5 @@
 export interface RawSettingsSectionLayout {
+  key?: string;
   header: () => string;
   predicate?: () => boolean;
   layout: RawSettingsSidebarLayout[];
@@ -47,11 +48,11 @@ export interface SettingsLayoutContents {
 }
 
 export function buildSection({
+  key: sectionKey,
   header,
   layout,
   predicate,
 }: RawSettingsSectionLayout): SettingsLayoutSection {
-  const sectionKey = header().toLowerCase();
   return {
     key: `${sectionKey}_section`,
     type: 1,
@@ -73,7 +74,7 @@ export function buildSidebar({
   predicate,
 }: RawSettingsSidebarLayout): SettingsLayoutSidebar {
   return {
-    key: `${parentKey}-sidebar-${key}`,
+    key: `${parentKey ?? "replugged-custom"}-sidebar-${key}`,
     icon: icon || (() => null),
     useTitle: title,
     legacySearchKey: title(),
@@ -134,7 +135,7 @@ export function add({
     after,
     buildLayout: () =>
       !type || type === AddableLayout.Section
-        ? buildSection(settings)
+        ? buildSection({ key, ...settings })
         : buildSidebar(settings as RawSettingsSidebarLayout),
   };
   Sections.set(key, data);

@@ -697,4 +697,33 @@ export const Addons = (type: AddonType): React.ReactElement => {
 };
 
 export const Plugins = (): React.ReactElement => Addons(AddonType.Plugin);
+
+export function PluginsIcon(props: React.SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path
+        d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 export const Themes = (): React.ReactElement => Addons(AddonType.Theme);
+
+export function ThemesIcon(props: React.SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 -960 960 960"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}>
+      <path
+        d="M440-80q-33 0-56.5-23.5T360-160v-160H240q-33 0-56.5-23.5T160-400v-280q0-66 47-113t113-47h480v440q0 33-23.5 56.5T720-320H600v160q0 33-23.5 56.5T520-80h-80ZM240-560h480v-200h-40v160h-80v-160h-40v80h-80v-80H320q-33 0-56.5 23.5T240-680v120Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
