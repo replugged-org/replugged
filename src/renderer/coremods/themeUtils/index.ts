@@ -8,7 +8,7 @@ import {
   waitForStore,
 } from "@webpack";
 import type { Message } from "discord-types/general";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import type { Store } from "src/renderer/modules/common/flux";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
@@ -133,7 +133,7 @@ export function _insertAvatarAttributes({
 export function _insertHTMLClasses(): Record<string, string | number | boolean | undefined> {
   return {
     replugged: true,
-    transparent: generalSettings.get("transparency"),
+    transparent: repluggedSettings.get("transparency"),
     "april-fools": new Date().toUTCString().includes("01 Apr"),
   };
 }
