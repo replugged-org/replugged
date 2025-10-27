@@ -26,24 +26,24 @@ export function getExports<T>(m: RawModule): T | undefined {
 function* iterateModuleExports(
   m: unknown,
   secondLevel?: boolean,
-): IterableIterator<Record<PropertyKey, unknown>> {
+): IterableIterator<[string | null, Record<PropertyKey, unknown>]> {
   // if m is null or not an object/function, then it will obviously not have the props
   // if it has no props, then it definitely has no children either
   try {
     if (m && (typeof m === "object" || typeof m === "function")) {
-      yield m as Record<PropertyKey, unknown>;
+      yield [null, m as Record<PropertyKey, unknown>];
       for (const key in m) {
         // This could throw an error ("illegal invocation") if val === DOMTokenList.prototype
         // and key === "length"
         // There could be other cases too, hence this try-catch instead of a specific exclusion
         const val = (m as Record<PropertyKey, unknown>)[key];
         if (val && (typeof val === "object" || typeof val === "function")) {
-          yield val as Record<PropertyKey, unknown>;
+          yield [key, val as Record<PropertyKey, unknown>];
           if (secondLevel && typeof val === "object") {
             for (const subKey in val) {
               const subVal = (val as Record<PropertyKey, unknown>)[subKey];
               if (subVal && (typeof subVal === "object" || typeof subVal === "function")) {
-                yield subVal as Record<PropertyKey, unknown>;
+                yield [subKey, subVal as Record<PropertyKey, unknown>];
                 continue;
               }
             }
@@ -71,7 +71,7 @@ export function getExportsForProps<T, P extends PropertyKey = keyof T>(
   // Loop over the module and its exports at the top level
   // Return the first thing that has all the indicated props
   // Checks only in prototypes if specified, usually to look for functions
-  for (const exported of iterateModuleExports(m, byPrototype)) {
+  for (const [_, exported] of iterateModuleExports(m, byPrototype)) {
     if (
       props.every((p) =>
         byPrototype
@@ -85,6 +85,37 @@ export function getExportsForProps<T, P extends PropertyKey = keyof T>(
 }
 
 // This doesn't have anywhere else to go
+
+/**
+ * Retrieves the key of first export from a module that contains all the specified properties.
+ * @template T The expected type of the export that matches the specified properties.
+ * @template P The type of the property keys to look for.
+ * @param m The module to search through.
+ * @param props An array of property keys to look for in the exports.
+ * @param byPrototype Whether to search only in the prototype of the exports. Defaults to `false`.
+ * @returns The key of first export that contains all the specified properties, or `undefined` if none is found.
+ */
+export function getExportsKeyForProps<T, P extends PropertyKey = keyof T>(
+  m: unknown,
+  props: P[],
+  byPrototype?: boolean,
+): string | undefined {
+  // Loop over the module and its exports at the top level
+  // Return the first thing that has all the indicated props
+  // Checks only in prototypes if specified, usually to look for functions
+  for (const [key, exported] of iterateModuleExports(m, byPrototype)) {
+    if (
+      key &&
+      props.every((p) =>
+        byPrototype
+          ? exported.prototype && p in (exported.prototype as Record<P, unknown>)
+          : p in (exported as Record<P, unknown>),
+      )
+    ) {
+      return key;
+    }
+  }
+}
 
 export function getById<T>(id: number | string, raw?: false): T | undefined;
 export function getById<T>(id: number | string, raw: true): RawModule<T> | undefined;
