@@ -1,16 +1,16 @@
 import { getExportsForProps, getFunctionBySource } from "@webpack";
 import components from "../common/components";
 
-import type * as CommonDesign from "discord-client-types/discord_common/packages/design/web";
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-export type CustomHelpMessage = CommonDesign.HelpMessage & {
+export type CustomHelpMessage = Design.HelpMessage & {
   // Backwards compatibility
-  Types: typeof CommonDesign.HelpMessageTypes;
-  HelpMessageTypes: typeof CommonDesign.HelpMessageTypes;
+  Types: typeof Design.HelpMessageTypes;
+  HelpMessageTypes: typeof Design.HelpMessageTypes;
 };
 
 const HelpMessage = getFunctionBySource<CustomHelpMessage>(components, /messageType:\i,action/)!;
-const HelpMessageTypes = getExportsForProps<typeof CommonDesign.HelpMessageTypes>(components, [
+const HelpMessageTypes = getExportsForProps<typeof Design.HelpMessageTypes>(components, [
   "INFO",
   "ERROR",
 ])!;
