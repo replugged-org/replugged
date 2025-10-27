@@ -79,7 +79,6 @@ export function start(): void {
     }),
   ]);
 
-  // TODO: add icons for each section
   SettingsLibs.add({
     key: "replugged.coremod.settings",
     parent: "$Root",
