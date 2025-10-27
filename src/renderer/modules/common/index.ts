@@ -122,6 +122,11 @@ export type { Typing };
 export let typing: Typing;
 importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 
+import type { CreateZustandStore } from "./zustand";
+export type { CreateZustandStore };
+export let zustand: CreateZustandStore;
+importTimeout("zustand", import("./zustand"), (mod) => (zustand = mod.default));
+
 // External Libraries
 
 /**
