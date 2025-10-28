@@ -55,9 +55,9 @@ export default (generalSettings.get("experiments")
       alwaysTruePatch("user-settings-cog", /isStaff\(\)/g),
       // Show the ExperimentEmbed
       alwaysTruePatch("dev://experiment/", ".isStaffPersonal())"),
-      // Show the ManaPlaygroundEmbed
-      alwaysTruePatch("dev://mana(/", ".isStaffPersonal())"),
-      // Show the Playgrounds tab in the StaffHelpPopout
-      alwaysTruePatch("Playgrounds", ".isStaffPersonal())===!0"),
+      // Show the PlaygroundEmbed
+      alwaysTruePatch("data-has-story", ".isStaffPersonal())"),
+      // Show the Playgrounds tab in the UserSettingsCogContextMenu
+      alwaysTruePatch('label:"Playgrounds"', ".isStaffPersonal())===!0"),
     ]
   : []) as PlaintextPatch[];
