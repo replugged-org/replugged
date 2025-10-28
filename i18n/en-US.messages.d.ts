@@ -957,6 +957,19 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_SUCCESS_GENERIC': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `rKwDiI`
+   * 
+   * ### Definition
+   * ```text
+   * Configuration
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_CONFIGURATION': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `zENqYW`
    * 
    * ### Definition

@@ -1,11 +1,11 @@
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import type { PlaintextPatch } from "src/types";
 
 function alwaysTruePatch(find: string | RegExp, match: string | RegExp): PlaintextPatch {
   return { find, replacements: [{ match, replace: `$&||true` }] };
 }
 
-export default (generalSettings.get("experiments")
+export default (repluggedSettings.get("experiments")
   ? [
       {
         find: /"displayName","(Developer)?ExperimentStore"/,
@@ -32,7 +32,7 @@ export default (generalSettings.get("experiments")
           },
         ],
       },
-      ...(generalSettings.get("staffDevTools")
+      ...(repluggedSettings.get("staffDevTools")
         ? [
             {
               // Set the resulting experiment configuration of the bug reporter to be always true

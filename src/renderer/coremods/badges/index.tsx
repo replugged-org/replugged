@@ -3,7 +3,7 @@ import React from "@common/react";
 import { Logger } from "@replugged";
 import { filters, getFunctionKeyBySource, waitForModule } from "@webpack";
 import { DISCORD_BLURPLE, DISCORD_INVITE, WEBLATE_URL } from "src/constants";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import type { Badge, DisplayProfile } from "src/types";
 import { Injector } from "../../modules/injector";
@@ -49,7 +49,7 @@ interface BadgeCache {
 const cache = new Map<string, BadgeCache>();
 const REFRESH_INTERVAL = 1000 * 60 * 30;
 
-const contributorsUrl = `${generalSettings.get("apiUrl")}/contributors`;
+const contributorsUrl = `${repluggedSettings.get("apiUrl")}/contributors`;
 const inviteUrl = `https://discord.gg/${DISCORD_INVITE}`;
 
 const badgeElements = [
@@ -104,7 +104,7 @@ export async function start(): Promise<void> {
   const useBadgesKey = getFunctionKeyBySource(useBadgesMod, "")!;
 
   injector.after(useBadgesMod, useBadgesKey, ([displayProfile], badges) => {
-    if (!generalSettings.get("badges")) return badges;
+    if (!repluggedSettings.get("badges")) return badges;
 
     const [badgeCache, setBadgeCache] = React.useState<APIRepluggedBadges | undefined>();
 
@@ -120,7 +120,7 @@ export async function start(): Promise<void> {
         }
 
         try {
-          const response = await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${userId}`);
+          const response = await fetch(`${repluggedSettings.get("apiUrl")}/api/v1/users/${userId}`);
           const body = await response.json();
 
           const badges: APIRepluggedBadges =
