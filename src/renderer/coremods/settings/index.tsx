@@ -5,14 +5,36 @@ import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import type { UserSettingsFormType } from "src/types";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
+import {
+  General,
+  GeneralIcon,
+  Plugins,
+  PluginsHeader,
+  PluginsIcon,
+  QuickCSS,
+  QuickCSSIcon,
+  Themes,
+  ThemesHeader,
+  ThemesIcon,
+  Updater,
+  UpdaterIcon,
+} from "./pages";
+import SettingsLibs from "./SettingsLibs";
 
-export { insertSections };
+export { SettingsLibs, insertSections };
 
 export function VersionInfo(): React.ReactElement {
   return (
     <Text variant="text-xs/normal" color="text-muted" tag="span" style={{ textTransform: "none" }}>
       {intl.format(t.REPLUGGED_VERSION, { version: window.RepluggedNative.getVersion() })}
+    </Text>
+  );
+}
+
+export function _getCompactVersionInfo(): React.ReactElement {
+  return (
+    <Text variant="text-xxs/normal" color="text-muted" tag="span" style={{ textTransform: "none" }}>
+      {`[${window.RepluggedNative.getVersion()}]`}
     </Text>
   );
 }
@@ -30,7 +52,7 @@ export const UserSettingsForm = await waitForModule<UserSettingsFormType>(
 export function start(): void {
   settingsTools.addAfter("Billing", [
     Divider(),
-    Header("Replugged"),
+    Header(intl.string(t.REPLUGGED)),
     Section({
       name: "rp-general",
       label: () => intl.string(discordT.SETTINGS_GENERAL),
@@ -58,6 +80,50 @@ export function start(): void {
       elem: Updater,
     }),
   ]);
+
+  SettingsLibs.add({
+    key: "replugged.coremod.settings",
+    parent: "$Root",
+    after: "billing_section",
+    settings: {
+      header: () => intl.string(t.REPLUGGED),
+      layout: [
+        {
+          key: "rp-general",
+          title: () => intl.string(discordT.SETTINGS_GENERAL),
+          render: General,
+          icon: GeneralIcon,
+        },
+        {
+          key: "rp-quickcss",
+          title: () => intl.string(t.REPLUGGED_QUICKCSS),
+          predicate: () => generalSettings.useValue("quickCSS"),
+          render: QuickCSS,
+          icon: QuickCSSIcon,
+        },
+        {
+          key: "rp-plugins",
+          title: () => intl.string(t.REPLUGGED_PLUGINS),
+          render: Plugins,
+          icon: PluginsIcon,
+          header: PluginsHeader,
+        },
+        {
+          key: "rp-themes",
+          title: () => intl.string(t.REPLUGGED_THEMES),
+          render: Themes,
+          icon: ThemesIcon,
+          header: ThemesHeader,
+        },
+        {
+          key: "rp-updater",
+          title: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
+          render: Updater,
+          icon: UpdaterIcon,
+        },
+      ],
+    },
+  });
 }
 
 export function stop(): void {
