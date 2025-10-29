@@ -360,15 +360,6 @@ function Card({
               </Anchor>
             </Tooltip>
           ) : null}
-          <Tooltip
-            text={intl.formatToPlainString(t.REPLUGGED_ADDON_DELETE, {
-              type: label(type, { caps: "title" }),
-            })}
-            className="replugged-addon-icon">
-            <Anchor onClick={() => uninstall()}>
-              <Icons.Trash />
-            </Anchor>
-          </Tooltip>
           {disabled ? null : (
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_RELOAD, {
@@ -380,6 +371,15 @@ function Card({
               </Anchor>
             </Tooltip>
           )}
+          <Tooltip
+            text={intl.formatToPlainString(t.REPLUGGED_ADDON_DELETE, {
+              type: label(type, { caps: "title" }),
+            })}
+            className="replugged-addon-icon">
+            <Anchor onClick={() => uninstall()}>
+              <Icons.Trash />
+            </Anchor>
+          </Tooltip>
         </Flex>
       </Flex>
     </div>
