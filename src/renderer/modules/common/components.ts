@@ -3,6 +3,13 @@ import { waitForProps } from "@webpack";
 import type * as Design from "discord-client-types/discord_app/design/web";
 
 export type DiscordComponents = {
+  Anchor: Design.Anchor;
+  Button: Design.Button;
+  ButtonGroup: Design.ButtonGroup;
+  Checkbox: Design.Checkbox;
+  ConfirmModal: Design.ConfirmModal;
+  H: Design.H;
+  Heading: Design.Heading;
   Text: Design.Text;
   ToastPosition: typeof Design.ToastPosition;
   ToastType: typeof Design.ToastType;

@@ -8,6 +8,7 @@ export interface CustomModalType {
   ModalContent: Design.ModalContent;
   ModalFooter: Design.ModalFooter;
   ModalCloseButton: Design.ModalCloseButton;
+  ModalListContent: Design.ModalListContent;
 }
 
 const ModalComponents = await waitForModule<Record<string, CustomModalType[keyof CustomModalType]>>(
@@ -20,6 +21,7 @@ const remappedModalComponents: CustomModalType = {
   ModalContent: getFunctionBySource(ModalComponents, /\i\.content/)!,
   ModalFooter: getFunctionBySource(ModalComponents, /\i\.footerSeparator/)!,
   ModalCloseButton: getFunctionBySource(ModalComponents, /\i\.closeWithCircleBackground/)!,
+  ModalListContent: getFunctionBySource(ModalComponents, /className:\i,scrollerRef/)!,
 };
 
 export default remappedModalComponents;

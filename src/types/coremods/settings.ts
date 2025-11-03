@@ -31,3 +31,10 @@ export interface SettingsTools {
   addAfter: (sectionName: string, sections: Section | Section[]) => Section[];
   removeAfter: (sectionName: string) => void;
 }
+
+interface UserSettingsFormProps {
+  title?: React.ReactNode;
+  className?: string;
+}
+
+export type UserSettingsFormType = React.FC<React.PropsWithChildren<UserSettingsFormProps>>;

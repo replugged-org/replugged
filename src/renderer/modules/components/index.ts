@@ -44,9 +44,6 @@ importTimeout("Breadcrumbs", import("./Breadcrumbs"), (mod) => (Breadcrumbs = mo
 export let Button: VoidDesign.Button;
 importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
 
-export let Checkbox: Design.Checkbox;
-importTimeout("Checkbox", import("./Checkbox"), (mod) => (Checkbox = mod.default));
-
 export let Clickable: typeof Design.Clickable;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
@@ -68,9 +65,6 @@ importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default
 export let FormNotice: Design.FormNotice;
 importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
 
-export let FormSection: Design.FormSection;
-importTimeout("FormSection", import("./FormSection"), (mod) => (FormSection = mod.default));
-
 export let Loader: Design.Spinner;
 importTimeout("Loader", import("./Spinner"), (mod) => (Loader = mod.default));
 
@@ -82,9 +76,6 @@ importTimeout("SearchBar", import("./SearchBar"), (mod) => (SearchBar = mod.defa
 
 export let Stack: Design.Stack;
 importTimeout("Stack", import("./Stack"), (mod) => (Stack = mod.default));
-
-export let Switch: Design.Switch;
-importTimeout("Switch", import("./Switch"), (mod) => (Switch = mod.default));
 
 export let TabBar: Design.TabBar;
 importTimeout("TabBar", import("./TabBar"), (mod) => (TabBar = mod.default));
@@ -109,6 +100,11 @@ import type { ButtonItemType } from "./ButtonItem";
 export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
 importTimeout("ButtonItem", import("./ButtonItem"), (mod) => (ButtonItem = mod.ButtonItem));
+
+import type { CustomCheckboxType } from "./Checkbox";
+export type { CustomCheckboxType };
+export let Checkbox: CustomCheckboxType;
+importTimeout("Checkbox", import("./Checkbox"), (mod) => (Checkbox = mod.default));
 
 import type { ColorPickerItemType } from "./ColorPickerItem";
 export type { ColorPickerItemType };
@@ -157,6 +153,11 @@ import type { CustomSliderType } from "./Slider";
 export type { CustomSliderType };
 export let Slider: CustomSliderType;
 importTimeout("Slider", import("./Slider"), (mod) => (Slider = mod.default));
+
+import type { CustomSwitchType } from "./Switch";
+export type { CustomSwitchType };
+export let Switch: CustomSwitchType;
+importTimeout("Switch", import("./Switch"), (mod) => (Switch = mod.default));
 
 import type { CustomTextType } from "./Text";
 export type { CustomTextType };

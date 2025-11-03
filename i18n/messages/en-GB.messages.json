@@ -188,5 +188,21 @@
   "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC": "Use Discord's custom title bar instead of the system title bar. **Requires restart**.",
   "REPLUGGED_TOAST_ADDON_ENABLE_FAILED": "Failed to enable {name}",
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS": "Enable Discord Internal DevTools",
-  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**."
+  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Replaces the help button in the title bar with Discord's internal developer tools (different from Chrome DevTools). This setting requires Discord experiments to be enabled first. **Requires restart**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "Unlocks Discord's experiments tab and developer options in settings. **Requires restart**.",
+  "REPLUGGED_ADDON_AUTHORS": "{count, plural, =1 {Author: {author1}} =2 {Authors: {author1} and {author2}} =3 {Authors: {author1}, {author2}, and {author3}} other {Authors: {author1}, {author2}, {author3}, and {others, plural, =1 {# other} other {# others}}}}",
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE": "Enable Quick CSS",
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Apply custom styles to Discord instantly. Change colours, layout, and appearance in real time without installing themes.",
+  "REPLUGGED_ADDON_SETTINGS_THEME_PRESET": "Choose Theme Preset",
+  "REPLUGGED_TOAST_THEME_PRESET_CHANGED": "Switched to preset {name}",
+  "REPLUGGED_TOAST_THEME_PRESET_FAILED": "Failed to change preset for {name}",
+  "REPLUGGED_SETTINGS_WINDOW": "Window Customisation",
+  "REPLUGGED_SETTINGS_WINDOW_DESC": "Manage the Discord window appearance and behaviour.",
+  "REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL": "Background Material",
+  "REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY": "Vibrancy",
+  "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE": "Disable Minimum Window Size",
+  "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC": "Remove Discord's minimum window size restrictions. **Requires restart**.",
+  "REPLUGGED_SETTINGS_WIN_UPDATER": "Keep Replugged After Updates",
+  "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Automatically reapplies Replugged after Discord updates.",
+  "REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS": "Development Tools"
 }

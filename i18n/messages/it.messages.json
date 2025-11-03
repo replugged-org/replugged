@@ -188,5 +188,16 @@
   "REPLUGGED_TOAST_ADDON_DISABLE_FAILED": "Impossibile disabilitare {name}",
   "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC": "Utilizza la barra del titolo personalizzata di Discord invece della barra del titolo di sistema. **Necessita di un riavvio**.",
   "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS": "Attiva i DevTools interni di Discord",
-  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Sostituisce il pulsante di aiuto nella barra del titolo con gli strumenti di sviluppo interni di Discord (diversi da Chrome DevTools). Questa impostazione richiede che gli esperimenti su Discord siano prima attivati. **Necessita di un riavvio**."
+  "REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC": "Sostituisce il pulsante di aiuto nella barra del titolo con gli strumenti di sviluppo interni di Discord (diversi da Chrome DevTools). Questa impostazione richiede che gli esperimenti su Discord siano prima attivati. **Necessita di un riavvio**.",
+  "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC": "Sblocca la scheda degli esperimenti di Discord e le opzioni sviluppatore nelle impostazioni. **Necessita di un riavvio**.",
+  "REPLUGGED_ADDON_AUTHORS": "{count, plural, =1 {Autore: {author1}} =2 {Autori: {author1} e {author2}} =3 {Autori: {author1}, {author2}, e {author3}} other {Autori: {author1}, {author2}, {author3}, e {others, plural, =1 {# other} other {# others}}}}",
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE": "Abilita Quick CSS",
+  "REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC": "Applica stili personalizzati a Discord all'istante. Cambia colori, layout e aspetto in tempo reale senza installare temi.",
+  "REPLUGGED_SETTINGS_WINDOW": "Personalizzazione della finestra",
+  "REPLUGGED_SETTINGS_WINDOW_DESC": "Gestisci l'aspetto e il comportamento della finestra di Discord.",
+  "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE": "Disabilita la dimensione minima della finestra",
+  "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC": "Rimuove le restrizioni sulle dimensioni minime della finestra di Discord. **Necessita di un riavvio**.",
+  "REPLUGGED_SETTINGS_WIN_UPDATER": "Mantieni Replugged dopo gli aggiornamenti",
+  "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Riapplica automaticamente Replugged dopo gli aggiornamenti di Discord.",
+  "REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS": "Strumenti di sviluppo"
 }

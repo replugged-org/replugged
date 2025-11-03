@@ -4,10 +4,7 @@ import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-const SingleSelect = getFunctionBySource<Design.SingleSelect>(
-  components,
-  /var{value:\i,onChange:\i}/,
-)!;
+const SingleSelect = getFunctionBySource<Design.SingleSelect>(components, /\.serialize\(/)!;
 
 interface CustomSingleSelectProps<
   TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],

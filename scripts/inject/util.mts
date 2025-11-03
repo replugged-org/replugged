@@ -96,9 +96,9 @@ export const openProcess = (command: string, args?: string[], options?: SpawnOpt
 };
 
 export const getUserData = (): UserData => {
-  const name = execSync("logname", { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
+  const name = execSync("logname", { encoding: "utf8" }).trim().replace(/\n$/, "");
   const env = Object.assign({}, process.env, { HOME: `/home/${name}` });
-  const uid = execSync(`id -u ${name}`, { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
-  const gid = execSync(`id -g ${name}`, { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
+  const uid = execSync(`id -u ${name}`, { encoding: "utf8" }).trim().replace(/\n$/, "");
+  const gid = execSync(`id -g ${name}`, { encoding: "utf8" }).trim().replace(/\n$/, "");
   return { env, uid: Number(uid), gid: Number(gid) };
 };
