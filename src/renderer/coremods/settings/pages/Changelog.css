@@ -1,0 +1,37 @@
+.replugged-changelog-header {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.replugged-changelog-subHeader {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-muted);
+}
+.replugged-changelog-container {
+  width: 25em;
+  white-space: nowrap;
+}
+
+.replugged-changelog-contentContainer {
+  margin: 18px 0;
+}
+
+.replugged-changelog-content {
+  width: 100%;
+}
+
+.replugged-changelog-diff {
+  width: 100%;
+}
+
+.replugged-changelog-diffContainer {
+  gap: 5px;
+  text-align: center;
+}
+
+.replugged-changelog-diffIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-default);
+}

@@ -5,7 +5,8 @@ import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import type { UserSettingsFormType } from "src/types";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
+
+import { General, Plugins, QuickCSS, Themes, Updater, openChangelog } from "./pages";
 
 export { insertSections };
 
@@ -56,6 +57,11 @@ export function start(): void {
       name: "rp-updater",
       label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
       elem: Updater,
+    }),
+    Section({
+      name: "rp-changelog",
+      label: () => intl.string(t.REPLUGGED_CHANGELOG),
+      onClick: openChangelog,
     }),
   ]);
 }

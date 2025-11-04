@@ -25,6 +25,7 @@ import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
 import { UserSettingsForm } from "..";
 import Icons from "../icons";
+import { openChangelog } from "./index";
 
 import "./Addons.css";
 
@@ -288,6 +289,7 @@ function Card({
   addon,
   disabled,
   hasSettings,
+  hasChangelog,
   openSettings,
   toggleDisabled,
   reload,
@@ -297,6 +299,7 @@ function Card({
   addon: RepluggedPlugin | RepluggedTheme;
   disabled: boolean;
   hasSettings: boolean;
+  hasChangelog: boolean;
   openSettings: () => void;
   toggleDisabled: () => void;
   reload: () => void;
@@ -338,6 +341,21 @@ function Card({
           <Authors addon={addon} />
         </Text>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
+          {hasChangelog ? (
+            <Tooltip text={intl.string(t.REPLUGGED_CHANGELOG)} className="replugged-addon-icon">
+              <Anchor
+                onClick={(e) =>
+                  openChangelog(e, {
+                    content: addon.manifest.changelog!,
+                    diff: addon.manifest.diff,
+                    source: addon.manifest.source,
+                    subHeader: addon.manifest.version,
+                  })
+                }>
+                <Icons.Clock />
+              </Anchor>
+            </Tooltip>
+          ) : null}
           {sourceLink ? (
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
@@ -409,6 +427,7 @@ function Cards({
           addon={addon}
           key={JSON.stringify(addon.manifest)}
           hasSettings={Boolean(getSettingsElement(addon.manifest.id, type))}
+          hasChangelog={Boolean(addon.manifest.changelog)}
           disabled={disabled.has(addon.manifest.id)}
           toggleDisabled={async () => {
             const isDisabled = disabled.has(addon.manifest.id);

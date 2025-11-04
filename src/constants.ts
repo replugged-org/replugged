@@ -1,4 +1,5 @@
 export const DISCORD_INVITE = "HnYFUhv4x4";
+export const REPO_URL = "https://github.com/replugged-org/replugged";
 export const WEBLATE_URL = "https://i18n.replugged.dev";
 export const WEBSITE_URL = "https://replugged.dev";
 export const BETA_WEBSITE_URL = "https://beta.replugged.dev";

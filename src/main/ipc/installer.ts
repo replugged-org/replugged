@@ -275,3 +275,30 @@ export function getRepluggedVersion(): string {
 ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_VERSION, (event) => {
   event.returnValue = getRepluggedVersion();
 });
+
+ipcMain.handle(
+  RepluggedIpcChannels.GET_GITHUB_DIFF,
+  async (_, url: string): Promise<string | void> => {
+    const REPO_ID = /https:\/\/github\.com\/([^/]+\/[^/]+)\/?/.exec(url)?.[1];
+    if (!REPO_ID) throw Error("Invalid Source URL");
+
+    const res = await fetch(`https://api.github.com/repos/${REPO_ID}/releases`);
+    if (!res.ok) throw Error("Failed to get releases");
+
+    const releases = await res
+      .json() // eslint-disable-next-line @typescript-eslint/naming-convention
+      .then((json: Array<{ published_at: string; tag_name: string } | void>) =>
+        json.sort((a, b) => {
+          const aDate = new Date(a!.published_at);
+          const bDate = new Date(b!.published_at);
+          return bDate.getTime() - aDate.getTime();
+        }),
+      );
+
+    const [firstRelease, secondRelease] = releases;
+    if (!firstRelease || !secondRelease) {
+      throw Error("Failed to get latest releases");
+    }
+    return `https://github.com/${REPO_ID}/compare/${secondRelease.tag_name}...${firstRelease.tag_name}`;
+  },
+);

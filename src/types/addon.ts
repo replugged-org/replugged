@@ -35,6 +35,8 @@ export const common = z.object({
   license: z.string(),
   image: z.union([urlType, urlType.array().nonempty()]).optional(),
   source: urlType.optional(),
+  changelog: z.string().optional(),
+  diff: z.string().optional(),
 });
 
 export type Common = z.infer<typeof common>;

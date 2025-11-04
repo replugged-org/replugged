@@ -66,6 +66,8 @@ const RepluggedNative = {
       version: string,
     ): Promise<InstallResultSuccess | InstallResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, false, version),
+    getGithubDiff: async (sourceUrl: string): Promise<string> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_GITHUB_DIFF, sourceUrl),
   },
 
   quickCSS: {

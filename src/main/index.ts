@@ -3,6 +3,7 @@ import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
+
 import type { BackgroundMaterialType, RepluggedWebContents, VibrancyType } from "../types";
 import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
 import { getAllSettings, getSetting } from "./ipc/settings";
