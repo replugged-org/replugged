@@ -3,7 +3,7 @@ import type { Channel, Message } from "discord-types/general";
 import type { GetButtonItem, HoverBarButtonProps } from "../../../types/coremods/message";
 import { Logger } from "../../modules/logger";
 
-const logger = Logger.api("MessagePopover");
+const logger = Logger.coremod("MessagePopover");
 
 export const buttons = new Map<GetButtonItem, string>();
 

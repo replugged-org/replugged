@@ -3,11 +3,11 @@ import { Injector } from "@replugged";
 import type React from "react";
 import type { Capture, DefaultInRule } from "simple-markdown";
 import { plugins } from "src/renderer/managers/plugins";
+import { generalSettings } from "src/renderer/managers/settings";
 import { themes } from "src/renderer/managers/themes";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import type { ObjectExports } from "src/types";
 import rpc from "../../apis/rpc";
-import { generalSettings } from "../settings/pages";
 import AddonEmbed from "./AddonEmbed";
 import { loadCommands } from "./commands";
 import {

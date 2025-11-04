@@ -1,7 +1,7 @@
 import type { PlaintextPatch, RawPlaintextPatch, RegexReplacement, WebpackModule } from "src/types";
 import { Logger } from "../logger";
 
-const logger = Logger.api("plaintext-patch");
+const logger = Logger.api("PlaintextPatch");
 
 const plaintextPatches: RawPlaintextPatch[] = [];
 

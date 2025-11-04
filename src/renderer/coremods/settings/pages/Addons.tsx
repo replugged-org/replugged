@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, classNames, contextMenu, marginStyles, modal, toast } from "@common";
+import { React, contextMenu, marginStyles, modal, toast } from "@common";
 import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
 import {
@@ -9,21 +9,22 @@ import {
   ContextMenu,
   ErrorBoundary,
   Flex,
-  FormSection,
   Notice,
   SearchBar,
-  SelectItem,
+  Select,
+  Stack,
   Switch,
   Text,
   Tooltip,
 } from "@components";
 import { Logger, plugins, themes, webpack } from "@replugged";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
+import { UserSettingsForm } from "..";
 import Icons from "../icons";
-import { generalSettings } from "./General";
 import { openChangelog } from "./index";
 
 import "./Addons.css";
@@ -98,7 +99,8 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
   const theme = themes.themes.get(id)!;
 
   return (
-    <SelectItem
+    <Select
+      label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
       options={theme.manifest.presets!.map((preset) => ({
         label: preset.label,
         value: preset.path,
@@ -124,9 +126,8 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
             toast.Kind.FAILURE,
           );
         }
-      }}>
-      {intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
-    </SelectItem>
+      }}
+    />
   );
 }
 
@@ -419,7 +420,7 @@ function Cards({
   refreshList: () => void;
 }): React.ReactElement {
   return (
-    <div className="replugged-addon-cards">
+    <Stack gap={16}>
       {list.map((addon) => (
         <Card
           type={type}
@@ -527,7 +528,7 @@ function Cards({
           }}
         />
       ))}
-    </div>
+    </Stack>
   );
 }
 
@@ -561,7 +562,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
     setDisabled(new Set(getManager(type).getDisabled()));
   }
 
-  React.useEffect(refreshList, [search]);
+  React.useEffect(refreshList, [search, type]);
 
   function getAddonIdFromSection(section: string): string {
     const prefix = `rp_${type}_`;
@@ -569,8 +570,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
   }
 
   return (
-    <FormSection
-      tag="h1"
+    <UserSettingsForm
       title={
         <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
           {section === `rp_${type}` ? (
@@ -586,7 +586,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
             </Text.H2>
           ) : (
             <Breadcrumbs
-              activeId={section.toString()}
+              activeId={section}
               breadcrumbs={[
                 {
                   id: `rp_${type}`,
@@ -623,9 +623,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
         </Flex>
       }>
       {section === `rp_${type}` && (
-        <Flex
-          justify={Flex.Justify.BETWEEN}
-          className={classNames("replugged-addon-header-buttons", marginStyles.marginBottom20)}>
+        // TODO: Replace with ButtonGroup from Mana Design System; after Button has been migrated as well
+        <Stack gap={8} justify="space-between" direction="horizontal">
           <Button fullWidth onClick={() => openFolder(type)}>
             {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
               type: label(type, { caps: "title", plural: true }),
@@ -668,20 +667,18 @@ export const Addons = (type: AddonType): React.ReactElement => {
               type: label(type, { caps: "title", plural: true }),
             })}
           </Button>
-        </Flex>
+        </Stack>
       )}
       {section === `rp_${type}` && unfilteredCount ? (
-        <div className={marginStyles.marginBottom20}>
-          <SearchBar
-            query={search}
-            onChange={(query) => setSearch(query)}
-            onClear={() => setSearch("")}
-            placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
-              type: label(type),
-            })}
-            autoFocus
-          />
-        </div>
+        <SearchBar
+          query={search}
+          onChange={(query) => setSearch(query)}
+          onClear={() => setSearch("")}
+          placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
+            type: label(type),
+          })}
+          autoFocus
+        />
       ) : null}
       {section === `rp_${type}` && search && list?.length ? (
         <Text variant="heading-md/bold" className={marginStyles.marginBottom8}>
@@ -690,16 +687,14 @@ export const Addons = (type: AddonType): React.ReactElement => {
       ) : null}
       {section === `rp_${type}` ? (
         list?.length ? (
-          <>
-            <Cards
-              type={type}
-              disabled={disabled}
-              setSection={setSection}
-              setDisabled={setDisabled}
-              list={list}
-              refreshList={refreshList}
-            />
-          </>
+          <Cards
+            type={type}
+            disabled={disabled}
+            setSection={setSection}
+            setDisabled={setDisabled}
+            list={list}
+            refreshList={refreshList}
+          />
         ) : list ? (
           <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
             {unfilteredCount
@@ -716,7 +711,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </ErrorBoundary>
         )
       )}
-    </FormSection>
+    </UserSettingsForm>
   );
 };
 

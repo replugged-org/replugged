@@ -1,12 +1,9 @@
-import { React, classNames, marginStyles } from "@common";
-import { waitForProps } from "@webpack";
-import { Divider, Flex, FormText } from ".";
+import { React, classNames } from "@common";
+import { FormControl } from ".";
 
-import type { FormSwitchStyles } from "discord-client-types/discord_app/design/components/Forms/web/FormSwitch.module";
+import type * as Design from "discord-client-types/discord_app/design/web";
 
 import "./Category.css";
-
-const classes = await waitForProps<Record<FormSwitchStyles, string>>("dividerDefault");
 
 export function ChevronIcon({
   isOpen,
@@ -23,20 +20,18 @@ export function ChevronIcon({
       fill="none"
       viewBox="0 0 24 24"
       className={classNames("replugged-category-icon", className)}
-      style={{ transform: isOpen ? "rotate(90deg)" : undefined }}>
+      style={{ transform: isOpen ? "rotate(180deg)" : undefined }}>
       <path
         fill="var(--header-primary)"
-        d="M9.3 5.3a1 1 0 0 0 0 1.4l5.29 5.3-5.3 5.3a1 1 0 1 0 1.42 1.4l6-6a1 1 0 0 0 0-1.4l-6-6a1 1 0 0 0-1.42 0Z"
+        d="M5.3 14.7a1 1 0 0 0 1.4 0L12 9.42l5.3 5.3a1 1 0 0 0 1.4-1.42l-6-6a1 1 0 0 0-1.4 0l-6 6a1 1 0 0 0 0 1.42Z"
       />
     </svg>
   );
 }
 
-interface CategoryProps {
-  title: string;
+interface CategoryProps
+  extends Pick<Design.FormControlProps, "label" | "description" | "disabled"> {
   open?: boolean;
-  note?: string;
-  disabled?: boolean;
   onChange?: () => void;
 }
 
@@ -44,9 +39,9 @@ export type CategoryType = React.FC<React.PropsWithChildren<CategoryProps>>;
 
 function Category({
   children,
-  title,
+  label,
+  description,
   open,
-  note,
   disabled,
   onChange,
 }: React.PropsWithChildren<CategoryProps>): React.ReactElement {
@@ -60,36 +55,33 @@ function Category({
   };
 
   return (
-    <div
-      className={classNames(marginStyles.marginBottom20, {
-        [classes.disabled]: disabled,
-      })}>
-      <Flex align={Flex.Align.CENTER} onClick={handleClick}>
-        <ChevronIcon
-          isOpen={isOpen}
-          className={classNames({ "replugged-category-disabled": disabled })}
-        />
-        <Flex direction={Flex.Direction.VERTICAL}>
-          <Flex align={Flex.Align.CENTER} direction={Flex.Direction.HORIZONTAL}>
-            <label className={classes.title}>{title}</label>
-          </Flex>
-          {note && (
-            <FormText.DESCRIPTION disabled={disabled} className={classes.note}>
-              {note}
-            </FormText.DESCRIPTION>
-          )}
-        </Flex>
-      </Flex>
-      {isOpen ? (
-        <div
-          className={classNames("replugged-category-content", {
-            "replugged-category-disabled": disabled,
-          })}>
-          {children}
-        </div>
-      ) : (
-        <Divider className={classes.dividerDefault} />
-      )}
+    <div>
+      <FormControl label={label} description={description} disabled={disabled} layout="horizontal">
+        {({ controlId, describedById, labelId }) => (
+          <label
+            htmlFor={controlId}
+            className={classNames({
+              "replugged-category-disabled": disabled,
+              "replugged-category-input": !disabled,
+            })}>
+            <input
+              id={controlId}
+              type="checkbox"
+              checked={isOpen}
+              onChange={handleClick}
+              aria-describedby={describedById}
+              aria-labelledby={labelId}
+              disabled={disabled}
+              className="replugged-category-hidden-input"
+            />
+            <ChevronIcon
+              isOpen={isOpen}
+              className={classNames({ "replugged-category-disabled": disabled })}
+            />
+          </label>
+        )}
+      </FormControl>
+      {isOpen && !disabled && <div className="replugged-category-content">{children}</div>}
     </div>
   );
 }

@@ -1,14 +1,14 @@
-import { marginStyles, toast } from "@common";
+import { React, marginStyles, toast } from "@common";
 import { t as discordT, intl } from "@common/i18n";
-import React from "@common/react";
 import {
   Anchor,
   Button,
+  Divider,
   Flex,
-  FormSection,
   Notice,
-  SliderItem,
-  SwitchItem,
+  Slider,
+  Stack,
+  Switch,
   Text,
   Tooltip,
 } from "@components";
@@ -25,6 +25,7 @@ import {
 } from "src/renderer/managers/updater";
 import { t } from "src/renderer/modules/i18n";
 import { sleep, useSetting, useSettingArray } from "src/renderer/util";
+import { UserSettingsForm } from "..";
 import Icons from "../icons";
 import { getAddonType, label } from "./Addons";
 
@@ -32,12 +33,13 @@ import "./Updater.css";
 
 const logger = Logger.coremod("Settings:Updater");
 
-export const Updater = (): React.ReactElement => {
+export function Updater(): React.ReactElement {
   const [checking, setChecking] = React.useState(false);
   const [updatesAvailable, setUpdatesAvailable] =
     React.useState<Array<UpdateSettings & { id: string }>>(getAvailableUpdates());
   const [updatePromises, setUpdatePromises] = React.useState<Record<string, Promise<boolean>>>({});
   const [didInstallAll, setDidInstallAll] = React.useState(false);
+  const [autoCheck, setAutoCheck] = useSettingArray(updaterSettings, "autoCheck");
   const [lastChecked, setLastChecked] = useSettingArray(updaterSettings, "lastChecked");
 
   React.useEffect(() => {
@@ -123,16 +125,18 @@ export const Updater = (): React.ReactElement => {
   };
 
   return (
-    <FormSection tag="h1" title={intl.string(t.REPLUGGED_UPDATES_UPDATER)}>
-      <SwitchItem
-        {...useSetting(updaterSettings, "autoCheck")}
-        note={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}>
-        {intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO)}
-      </SwitchItem>
-      <SliderItem
+    <UserSettingsForm title={intl.string(t.REPLUGGED_UPDATES_UPDATER)}>
+      <Switch
+        checked={autoCheck}
+        onChange={setAutoCheck}
+        label={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO)}
+        description={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}
+      />
+      <Slider
         {...useSetting(updaterSettings, "checkIntervalMinutes")}
-        disabled={!updaterSettings.get("autoCheck")}
-        note={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
+        disabled={!autoCheck}
+        label={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
+        description={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
         markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
         equidistant
         onMarkerRender={(value) => {
@@ -150,20 +154,17 @@ export const Updater = (): React.ReactElement => {
           const label = [hourString, minuteString].filter(Boolean).join(" ");
           return label;
         }}
-        stickToMarkers>
-        {intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
-      </SliderItem>
+        stickToMarkers
+      />
+      <Divider />
       {isRepluggedDev && (
-        <Notice messageType={Notice.Types.WARNING} className={marginStyles.marginBottom20}>
+        <Notice messageType={Notice.Types.WARNING}>
           {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
             url: "https://replugged.dev/download",
           })}
         </Notice>
       )}
-      <Flex
-        justify={Flex.Justify.BETWEEN}
-        align={Flex.Align.CENTER}
-        className="replugged-updater-header">
+      <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
         <Flex justify={Flex.Justify.CENTER} direction={Flex.Direction.VERTICAL}>
           <Text variant="heading-md/bold" color="header-primary">
             {updatesAvailable.length
@@ -180,7 +181,6 @@ export const Updater = (): React.ReactElement => {
         </Flex>
         {!hasAnyUpdates ? (
           <Button
-            className="replugged-updater-check"
             onClick={checkForUpdates}
             disabled={isAnyUpdating || isAnyComplete}
             color={checking ? Button.Colors.PRIMARY : Button.Colors.BRAND}
@@ -201,7 +201,7 @@ export const Updater = (): React.ReactElement => {
           </Button>
         )}
       </Flex>
-      <Flex className="replugged-updater-items" direction={Flex.Direction.VERTICAL}>
+      <Stack>
         {updatesAvailable.map((update) => {
           const isReplugged = update.id === "dev.replugged.Replugged";
           const addon =
@@ -247,7 +247,9 @@ export const Updater = (): React.ReactElement => {
                     ) : null}
                   </Flex>
                   <Text.Normal>
-                    {intl.format(t.REPLUGGED_UPDATES_UPDATE_TO, { version: `v${update.version}` })}
+                    {intl.format(t.REPLUGGED_UPDATES_UPDATE_TO, {
+                      version: `v${update.version}`,
+                    })}
                   </Text.Normal>
                 </div>
                 {update.available ? (
@@ -273,7 +275,7 @@ export const Updater = (): React.ReactElement => {
             </div>
           );
         })}
-      </Flex>
-    </FormSection>
+      </Stack>
+    </UserSettingsForm>
   );
-};
+}

@@ -1,16 +1,12 @@
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
+import { filters, waitForModule } from "@webpack";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
+import type { UserSettingsFormType } from "src/types";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
-import {
-  General,
-  Plugins,
-  QuickCSS,
-  Themes,
-  Updater,
-  generalSettings,
-  openChangelog,
-} from "./pages";
+
+import { General, Plugins, QuickCSS, Themes, Updater, openChangelog } from "./pages";
 
 export { insertSections };
 
@@ -21,6 +17,16 @@ export function VersionInfo(): React.ReactElement {
     </Text>
   );
 }
+
+export function _getVersionString(): string {
+  return intl.formatToPlainString(t.REPLUGGED_VERSION, {
+    version: window.RepluggedNative.getVersion(),
+  });
+}
+
+export const UserSettingsForm = await waitForModule<UserSettingsFormType>(
+  filters.bySource(/title:\i,className:\i,children:\i}=\i,\i=\(0/),
+);
 
 export function start(): void {
   settingsTools.addAfter("Billing", [

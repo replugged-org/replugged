@@ -1,8 +1,9 @@
-import { filters, getFunctionBySource, waitForModule } from "@webpack";
+import { getFunctionBySource } from "@webpack";
+import components from "../common/components";
 
-import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-const textAreaString = "this.getIsOverflowing()";
-const mod = await waitForModule(filters.bySource(textAreaString));
-
-export default getFunctionBySource<typeof VoidDesign.TextAreaLegacy>(mod, textAreaString)!;
+export default getFunctionBySource<Design.TextArea>(
+  components,
+  /\i\.textArea,\i\.scrollbarDefault/,
+)!;

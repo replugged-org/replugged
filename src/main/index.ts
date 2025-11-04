@@ -3,14 +3,18 @@ import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
-import type { RepluggedWebContents } from "../types";
-import { getAddonInfo, getRepluggedPackage, installAddon } from "./ipc/installer";
-import { getSetting } from "./ipc/settings";
+
+import type { BackgroundMaterialType, RepluggedWebContents, VibrancyType } from "../types";
+import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
+import { getAllSettings, getSetting } from "./ipc/settings";
+import patchAutoStartUpdate from "./winUpdaterPatch";
 
 const electronPath = require.resolve("electron");
 const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
 const discordPackage: PackageJson = require(join(discordPath, "package.json"));
 require.main!.filename = join(discordPath, discordPackage.main!);
+
+patchAutoStartUpdate();
 
 Object.defineProperty(global, "appSettings", {
   set: (v /* : typeof global.appSettings*/) => {
@@ -30,10 +34,10 @@ Object.defineProperty(global, "appSettings", {
 // Thank you, Ven, for pointing this out!
 class BrowserWindow extends electron.BrowserWindow {
   public constructor(opts: Electron.BrowserWindowConstructorOptions) {
-    const titleBarSetting = getSetting<boolean>("dev.replugged.Settings", "titleBar", false);
-    if (opts.frame && process.platform === "linux" && titleBarSetting) opts.frame = void 0;
-
+    const generalSettings = getAllSettings("dev.replugged.Settings");
     const originalPreload = opts.webPreferences?.preload;
+
+    if (opts.frame && process.platform === "linux" && generalSettings.titleBar) opts.frame = void 0;
 
     // Load our preload script if it's the main window or the splash screen
     if (
@@ -41,10 +45,28 @@ class BrowserWindow extends electron.BrowserWindow {
       (opts.title || opts.webPreferences.preload.includes("splash"))
     ) {
       opts.webPreferences.preload = join(__dirname, "./preload.js");
-    }
 
-    super(opts);
-    (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
+      if (generalSettings.transparency) {
+        opts.transparent = true;
+        opts.backgroundColor = "#00000000";
+        if (process.platform === "win32" && generalSettings.backgroundMaterial) {
+          opts.backgroundMaterial = generalSettings.backgroundMaterial as BackgroundMaterialType;
+        }
+        if (process.platform === "darwin" && generalSettings.vibrancy) {
+          opts.vibrancy = generalSettings.vibrancy as VibrancyType;
+        }
+      }
+
+      if (generalSettings.disableMinimumSize) {
+        opts.minWidth = 0;
+        opts.minHeight = 0;
+      }
+
+      super(opts);
+
+      if (generalSettings.disableMinimumSize) this.setMinimumSize = () => undefined;
+      (this.webContents as RepluggedWebContents).originalPreload = originalPreload;
+    }
   }
 }
 
@@ -112,7 +134,7 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
   if (items[0]?.label !== "Discord" || items.some((e) => e.label === "Replugged"))
     return originalBuildFromTemplate(items);
 
-  const currentVersion = getRepluggedPackage("version");
+  const currentVersion = getRepluggedVersion();
 
   const repluggedMenuItems: Electron.MenuItemConstructorOptions = {
     label: "Replugged",

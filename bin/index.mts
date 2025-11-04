@@ -41,10 +41,12 @@ export const directory = process.cwd();
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
 
-const extraESBuildPath = path.join(directory, "esbuild.extra.mjs");
+const extraESBuildPaths = ["mjs", "mts"].map((ext) => path.join(directory, `esbuild.extra.${ext}`));
+
 const extraESBuildConfig = new Promise<(config: esbuild.BuildOptions) => esbuild.BuildOptions>(
   (resolve) => {
-    if (existsSync(extraESBuildPath))
+    const extraESBuildPath = extraESBuildPaths.find((p) => existsSync(p));
+    if (extraESBuildPath)
       resolve(
         import(pathToFileURL(extraESBuildPath).href).then((m) => m.default) as Promise<
           (config: esbuild.BuildOptions) => esbuild.BuildOptions
@@ -194,7 +196,7 @@ async function reload(id: string): Promise<void> {
      * @returns
      */
     const onMessage = async (data: string): Promise<void> => {
-      const message = JSON.parse(data.toString());
+      const message = JSON.parse(data);
       if (message.nonce !== nonce) {
         return;
       }
@@ -315,7 +317,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
   const manifestPath = addon
     ? path.join(directory, "plugins", addon, "manifest.json")
     : path.join(directory, "manifest.json");
-  const manifest: PluginManifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const manifest: PluginManifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const distPath = addon ? `dist/${manifest.id}` : "dist";
   const folderPath = addon ? path.join(directory, "plugins", addon) : directory;
 
@@ -460,7 +462,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const manifestPath = addon
     ? path.join(directory, "themes", addon, "manifest.json")
     : "manifest.json";
-  const manifest: ThemeManifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const manifest: ThemeManifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const distPath = addon ? `dist/${manifest.id}` : "dist";
   const folderPath = addon ? path.join(directory, "themes", addon) : directory;
 
