@@ -345,7 +345,9 @@ function Card({
               <Anchor
                 onClick={(e) =>
                   openChangelog(e, {
-                    ...addon.manifest.changelog!,
+                    content: addon.manifest.changelog!,
+                    diff: addon.manifest.diff,
+                    source: addon.manifest.source,
                     subHeader: addon.manifest.version,
                   })
                 }>

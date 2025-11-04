@@ -432,18 +432,18 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
     manifest.plaintextPatches = "plaintextPatches.js";
   }
 
-  if ("changelog" in manifest && "content" in manifest.changelog!) {
+  if ("changelog" in manifest) {
     targets.push(
       esbuild.context(
         overwrites({
           ...common,
-          entryPoints: [path.join(folderPath, manifest.changelog.content)],
+          entryPoints: [path.join(folderPath, manifest.changelog!)],
           outfile: `${distPath}/changelog.md`,
         }),
       ),
     );
     const addonId = `${manifest.id}${production ? ".asar" : ""}`;
-    manifest.changelog.content = `replugged://plugin/${addonId}/changelog.md`;
+    manifest.changelog = `replugged://plugin/${addonId}/changelog.md`;
   }
 
   if (!existsSync(distPath)) mkdirSync(distPath, { recursive: true });

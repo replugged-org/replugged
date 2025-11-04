@@ -14,8 +14,6 @@ import type {
 
 const version = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_VERSION);
 
-const diff = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_DIFF);
-
 const RepluggedNative = {
   themes: {
     list: async (): Promise<RepluggedTheme[]> =>
@@ -66,6 +64,8 @@ const RepluggedNative = {
       version: string,
     ): Promise<InstallResultSuccess | InstallResultFailure> =>
       ipcRenderer.invoke(RepluggedIpcChannels.INSTALL_ADDON, type, path, url, false, version),
+    getGithubDiff: async (sourceUrl: string): Promise<string> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.GET_GITHUB_DIFF, sourceUrl),
   },
 
   quickCSS: {
@@ -96,8 +96,6 @@ const RepluggedNative = {
   },
 
   getVersion: (): string => version,
-
-  getDiff: (): string => diff,
 
   // @todo We probably want to move these somewhere else, but I'm putting them here for now because I'm too lazy to set anything else up
 };

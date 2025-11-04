@@ -17,7 +17,6 @@ export default {
           main: "main.js",
           name: "replugged",
           version: mainPackage.version,
-          diff: mainPackage.diff,
         }),
       );
       void createPackage(distDir, "replugged.asar");
