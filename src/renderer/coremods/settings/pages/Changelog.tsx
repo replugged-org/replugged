@@ -80,6 +80,7 @@ export const ChangelogModal = ({
             allowHeading: true,
             allowList: true,
             allowLinks: true,
+            previewLinkTarget: true,
           })}
         </Text>
       </Modal.ModalContent>
