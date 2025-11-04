@@ -5,7 +5,7 @@ import { intl } from "@common/i18n";
 import { REPO_URL } from "src/constants";
 import { t } from "src/renderer/modules/i18n";
 import Icons from "../icons";
-import ChangelogContent from "src/renderer/assets/changelog.md";
+import ChangelogContent from "changelog.md";
 
 import "./Changelog.css";
 

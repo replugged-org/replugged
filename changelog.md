@@ -24,6 +24,7 @@
   - Organize the General page with TabBars for clearer navigation
     ([0f74600](https://github.com/replugged-org/replugged/commit/0f74600)) (by
     [@fedeericodl](https://github.com/fedeericodl))
+
 - Added a new coremod for decoding React error codes, showing the error message directly instead of
   a code ([1bd34cf](https://github.com/replugged-org/replugged/commit/1bd34cf)) (by
   [@yofukashino](https://github.com/yofukashino) in
@@ -82,6 +83,7 @@
   - Show Playgrounds and Build Overrides menus, and add the Playgrounds tab in the Staff Help Popout
     ([7834bf4](https://github.com/replugged-org/replugged/commit/7834bf4)) (by
     [@fedeericodl](https://github.com/fedeericodl))
+
 - Download and use React DevTools from Chrome Web Store; always updated to latest version
   ([ea67967](https://github.com/replugged-org/replugged/commit/ea67967)) (by
   [@fedeericodl](https://github.com/fedeericodl))
@@ -100,6 +102,7 @@
   - Add new components: `Anchor`, `Breadcrumbs`, `SearchBar`, `TabBar`
   - Replace legacy `TextInput` with the new one from Mana
   - Add `marginStyles` common module
+
 - Added `KeyRecorder` component for recording keyboard combinations
   ([d616afc](https://github.com/replugged-org/replugged/commit/d616afc)) (by
   [@yofukashino](https://github.com/yofukashino) in
