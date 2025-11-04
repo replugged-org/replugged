@@ -279,7 +279,7 @@ ipcMain.on(RepluggedIpcChannels.GET_REPLUGGED_VERSION, (event) => {
 ipcMain.handle(
   RepluggedIpcChannels.GET_GITHUB_DIFF,
   async (_, url: string): Promise<string | void> => {
-    const REPO_ID = /https:\/\/github.com\/(.+?\/.+?)\//.exec(url)?.[1];
+    const REPO_ID = /https:\/\/github\.com\/([^/]+\/[^/]+)\/?/.exec(url)?.[1];
     if (!REPO_ID) throw Error("Invalid Source URL");
 
     const res = await fetch(`https://api.github.com/repos/${REPO_ID}/releases`);
