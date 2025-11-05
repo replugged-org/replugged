@@ -1,6 +1,6 @@
 import { i18n } from "@common";
 import semver from "semver";
-import type { RepluggedPlugin, RepluggedTheme } from "src/types";
+import { RepluggedBranches, type RepluggedPlugin, type RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
 import notices from "../apis/notices";
 import { init } from "../apis/settings";
@@ -9,6 +9,7 @@ import { Logger } from "../modules/logger";
 import { waitForProps } from "../modules/webpack";
 import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
+import { generalSettings } from "./settings";
 
 const logger = Logger.coremod("Updater");
 
@@ -117,6 +118,7 @@ async function getAddonFromManager(
  * @param id Entity ID to check updates for
  */
 export async function checkUpdate(id: string, verbose = true): Promise<void> {
+  const isReplugged = id === REPLUGGED_ID;
   const entity = await getAddonFromManager(id);
   if (!entity) {
     logger.error(`Entity ${id} not found`);
@@ -138,7 +140,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
   const res = await window.RepluggedNative.updater.check(
     updater.type,
     updater.id,
-    id === REPLUGGED_ID ? "replugged" : id,
+    isReplugged ? "replugged" : id,
   );
 
   if (!res.success) {
@@ -148,7 +150,9 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
 
   const newVersion = res.manifest.version;
 
-  if (isUpToDate(version, newVersion)) {
+  const skipCheck = isReplugged && generalSettings.get("branch") === RepluggedBranches.NIGHTLY;
+
+  if (!skipCheck && isUpToDate(version, newVersion)) {
     if (verbose) logger.log(`Entity ${id} is up to date`);
     updaterState.set(id, {
       available: false,
