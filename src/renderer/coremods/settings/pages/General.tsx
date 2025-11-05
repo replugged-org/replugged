@@ -81,6 +81,7 @@ function GeneralTab(): React.ReactElement {
       <Stack gap={16}>
         <RadioGroup
           {...useSetting(generalSettings, "branch")}
+          disabled={RepluggedNative.getVersion() === "dev"}
           label={intl.string(t.REPLUGGED_SETTINGS_RELEASE_BRANCH)}
           description={intl.string(t.REPLUGGED_SETTINGS_RELEASE_BRANCH_DESC)}
           options={[

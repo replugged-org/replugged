@@ -228,10 +228,12 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
           const label = RepluggedBranchs.STABLE === value ? "Stable" : "Nightly";
           return {
             label,
+            enabled: currentVersion !== "dev",
             type: "radio",
             checked: currentBranch === value,
-            onClick: async (): Promise<void> => {
+            click: async (): Promise<void> => {
               if (currentBranch === value) return;
+
               const response = await confirm(
                 "Change Branch?",
                 `Are you sure you want to change release branch to ${label}?`,
