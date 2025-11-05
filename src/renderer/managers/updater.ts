@@ -150,7 +150,10 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
 
   const newVersion = res.manifest.version;
 
-  const skipCheck = isReplugged && generalSettings.get("branch") === RepluggedBranches.NIGHTLY;
+  const skipCheck =
+    isReplugged &&
+    generalSettings.get("branch") === RepluggedBranches.NIGHTLY &&
+    version !== newVersion;
 
   if (!skipCheck && isUpToDate(version, newVersion)) {
     if (verbose) logger.log(`Entity ${id} is up to date`);
