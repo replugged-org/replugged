@@ -229,9 +229,7 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
           return {
             label,
             type: "radio",
-
             checked: currentBranch === value,
-
             onClick: async (): Promise<void> => {
               if (currentBranch === value) return;
               const response = await confirm(
@@ -250,8 +248,8 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
                     ? "Replugged release branch changed but we can't relaunch automatically on Linux. Discord will close now."
                     : "Replugged release branch changed and will relaunch Discord now to take effect!",
                 );
-                electron.app.relaunch();
-                electron.app.exit(0);
+                app.relaunch();
+                app.quit();
               } catch (err) {
                 console.error(err);
                 await showError(
