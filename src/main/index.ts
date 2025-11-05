@@ -5,7 +5,7 @@ import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
 import {
   type BackgroundMaterialType,
-  RepluggedBranchs,
+  RepluggedBranches,
   type RepluggedWebContents,
   type VibrancyType,
 } from "../types";
@@ -142,7 +142,7 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
   if (items[0]?.label !== "Discord" || items.some((e) => e.label === "Replugged"))
     return originalBuildFromTemplate(items);
   const currentVersion = getRepluggedVersion();
-  const currentBranch = getSetting("dev.replugged.Settings", "branch", RepluggedBranchs.STABLE);
+  const currentBranch = getSetting("dev.replugged.Settings", "branch", RepluggedBranches.STABLE);
 
   const repluggedMenuItems: Electron.MenuItemConstructorOptions = {
     label: "Replugged",
@@ -224,8 +224,8 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
       },
       {
         label: "Release Branch",
-        submenu: Object.values(RepluggedBranchs).map((value) => {
-          const label = RepluggedBranchs.STABLE === value ? "Stable" : "Nightly";
+        submenu: Object.values(RepluggedBranches).map((value) => {
+          const label = RepluggedBranches.STABLE === value ? "Stable" : "Nightly";
           return {
             label,
             enabled: currentVersion !== "dev",
