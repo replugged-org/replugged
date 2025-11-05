@@ -3,9 +3,14 @@ import { dirname, join } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
-import type { BackgroundMaterialType, RepluggedWebContents, VibrancyType } from "../types";
+import {
+  type BackgroundMaterialType,
+  RepluggedBranchs,
+  type RepluggedWebContents,
+  type VibrancyType,
+} from "../types";
 import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
-import { getAllSettings, getSetting } from "./ipc/settings";
+import { getAllSettings, getSetting, writeTransaction } from "./ipc/settings";
 import patchAutoStartUpdate from "./winUpdaterPatch";
 
 const electronPath = require.resolve("electron");
@@ -122,6 +127,10 @@ protocol.registerSchemesAsPrivileged = (customSchemes: Electron.CustomScheme[]) 
 // Monkey patch to add our menu items into the tray context menu
 const originalBuildFromTemplate = Menu.buildFromTemplate.bind(Menu);
 
+async function confirm(title: string, message: string): Promise<Electron.MessageBoxReturnValue> {
+  return dialog.showMessageBox({ type: "question", title, message, buttons: ["OK", "Cancel"] });
+}
+
 async function showInfo(title: string, message: string): Promise<Electron.MessageBoxReturnValue> {
   return dialog.showMessageBox({ type: "info", title, message, buttons: ["Ok"] });
 }
@@ -132,8 +141,8 @@ async function showError(title: string, message: string): Promise<Electron.Messa
 Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
   if (items[0]?.label !== "Discord" || items.some((e) => e.label === "Replugged"))
     return originalBuildFromTemplate(items);
-
   const currentVersion = getRepluggedVersion();
+  const currentBranch = getSetting("dev.replugged.Settings", "branch", RepluggedBranchs.STABLE);
 
   const repluggedMenuItems: Electron.MenuItemConstructorOptions = {
     label: "Replugged",
@@ -212,6 +221,47 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
             );
           }
         },
+      },
+      {
+        label: "Release Branch",
+        submenu: Object.values(RepluggedBranchs).map((value) => {
+          const label = RepluggedBranchs.STABLE === value ? "Stable" : "Nightly";
+          return {
+            label,
+            type: "radio",
+
+            checked: currentBranch === value,
+
+            onClick: async (): Promise<void> => {
+              if (currentBranch === value) return;
+              const response = await confirm(
+                "Change Branch?",
+                `Are you sure you want to change release branch to ${label}?`,
+              );
+              if (response.response !== 0) return;
+
+              try {
+                writeTransaction("dev.replugged.Settings", (settings) =>
+                  settings.set("branch", value),
+                );
+                await showInfo(
+                  "Successfully Changed Branch",
+                  process.platform === "linux"
+                    ? "Replugged release branch changed but we can't relaunch automatically on Linux. Discord will close now."
+                    : "Replugged release branch changed and will relaunch Discord now to take effect!",
+                );
+                electron.app.relaunch();
+                electron.app.exit(0);
+              } catch (err) {
+                console.error(err);
+                await showError(
+                  "Update Error",
+                  "An unexpected error occurred. Check logs for details.",
+                );
+              }
+            },
+          };
+        }),
       },
       {
         enabled: false,

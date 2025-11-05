@@ -1,6 +1,11 @@
 import type { WebContents } from "electron";
 import type { PluginManifest, ThemeManifest } from "./addon";
 
+export enum RepluggedBranchs {
+  STABLE = "REPLUGGED_STABLE",
+  NIGHTLY = "REPLUGGED_NIGHTLY",
+}
+
 export type RepluggedWebContents = WebContents & {
   originalPreload?: string;
 };
