@@ -41,5 +41,4 @@ jobs:
           body: "Automated nightly release for commit `${{ env.GIT_HASH }}`."
           artifacts: "*.asar"
           prerelease: true
-          allowUpdates: true
           makeLatest: false
