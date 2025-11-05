@@ -1,0 +1,45 @@
+name: Nightly Builds
+
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Setup env
+        run: |
+          echo "GIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "BUILD_BRANCH=nightly" >> $GITHUB_ENV
+          echo "TAG=$(jq -r .version ./package.json)-${GIT_HASH}" >> $GITHUB_ENV
+
+      - name: Build TypeScript and bundle into asar
+        run: pnpm run bundle
+        env:
+          BUILD_BRANCH: ${{ env.BUILD_BRANCH }}
+          GIT_HASH: ${{ env.GIT_HASH }}
+
+      - name: Create Pre-Release
+        uses: ncipollo/release-action@v1
+        env:
+          GIT_HASH: ${{ env.GIT_HASH }}
+          TAG: ${{ env.TAG }}
+        with:
+          tag: ${{ env.TAG }}
+          name: ${{ env.TAG }}
+          body: "Automated nightly release for commit `${{ env.GIT_HASH }}`."
+          artifacts: "*.asar"
+          prerelease: true
+          allowUpdates: true
+          makeLatest: false
