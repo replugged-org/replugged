@@ -30,6 +30,8 @@ import Icons from "../icons";
 import { getAddonType, label } from "./Addons";
 
 import "./Updater.css";
+import { generalSettings } from "src/renderer/managers/settings";
+import { RepluggedBranches } from "src/types";
 
 const logger = Logger.coremod("Settings:Updater");
 
@@ -75,6 +77,8 @@ export function Updater(): React.ReactElement {
   const isAllComplete = hasAnyUpdates && updatesAvailable.every((u) => !u.available);
   const isAnyComplete = hasAnyUpdates && updatesAvailable.some((u) => !u.available);
   const isRepluggedDev = window.RepluggedNative.getVersion() === "dev";
+  const isRepluggedNightly =
+    !isRepluggedDev && generalSettings.get("branch") === RepluggedBranches.NIGHTLY;
 
   const checkForUpdates = async (): Promise<void> => {
     const previousUpdates = getAvailableUpdates();
@@ -160,6 +164,13 @@ export function Updater(): React.ReactElement {
       {isRepluggedDev && (
         <Notice messageType={Notice.Types.WARNING}>
           {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
+            url: "https://replugged.dev/download",
+          })}
+        </Notice>
+      )}
+      {isRepluggedNightly && (
+        <Notice messageType={Notice.Types.WARNING}>
+          {intl.format(t.REPLUGGED_NIGHTLY_RELEASE_WARNING, {
             url: "https://replugged.dev/download",
           })}
         </Notice>

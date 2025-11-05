@@ -214,4 +214,5 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_RELEASE_BRANCH_DESC": "Stable will give you the officially tested and reliable version, while Nightly provides the latest changes and features directly from the github, which may be less stable.",
   "REPLUGGED_SETTINGS_RELEASE_BRANCH_STABLE": "Stable",
   "REPLUGGED_SETTINGS_RELEASE_BRANCH_NIGHTLY": "Nightly",
+  "REPLUGGED_NIGHTLY_RELEASE_WARNING": "You are currently on Replugged's Nightly branch. Updates may be unstable. Switch to Stable for a more reliable and officially supported experience.",
 });
