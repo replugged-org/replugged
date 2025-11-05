@@ -195,7 +195,7 @@ export async function release(): Promise<void> {
     }
   }
 
-  const updateVerison = (version: string): void => {
+  const updateVersion = (version: string): void => {
     // Update manifest.json and package.json
     manifest.version = version!;
     if (packageJson) packageJson.version = version;
@@ -206,13 +206,13 @@ export async function release(): Promise<void> {
   };
 
   const revertAndCancel = (): void => {
-    updateVerison(version);
+    updateVersion(version);
     onCancel();
   };
 
-  const onFail = (): void => updateVerison(version);
+  const onFail = (): void => updateVersion(version);
 
-  updateVerison(nextVersion!);
+  updateVersion(nextVersion!);
 
   // Stage changes
   if (isMonoRepo)
