@@ -1126,6 +1126,19 @@ export declare const messages: {
    */
   'REPLUGGED_LIST_RESULTS': TypedIntlMessageGetter<{count: any | number | string}>,
   /**
+   * Key: `EOJEBw`
+   * 
+   * ### Definition
+   * ```text
+   * You are currently on Replugged's Nightly branch. Updates may be unstable. Switch to Stable for a more reliable and officially supported experience.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_NIGHTLY_RELEASE_WARNING': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `neLAkZ`
    * 
    * ### Definition
@@ -1684,6 +1697,58 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `nl`, `no`, `ro`, `sv-SE`, `th`
    */
   'REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `8XW5yc`
+   * 
+   * ### Definition
+   * ```text
+   * Release Branch
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_RELEASE_BRANCH': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `mk6xTE`
+   * 
+   * ### Definition
+   * ```text
+   * Stable will give you the officially tested and reliable version, while Nightly provides the latest changes and features directly from the github, which may be less stable.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_RELEASE_BRANCH_DESC': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `qkh2nZ`
+   * 
+   * ### Definition
+   * ```text
+   * Nightly
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_RELEASE_BRANCH_NIGHTLY': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `g9f/7e`
+   * 
+   * ### Definition
+   * ```text
+   * Stable
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_RELEASE_BRANCH_STABLE': TypedIntlMessageGetter<{}>,
   /**
    * Key: `LBwcjY`
    * 
