@@ -57,7 +57,8 @@ export const theme = common.extend({
   presets: z
     .object({
       label: z.string(),
-      path: z.string(),
+      main: z.string().optional(),
+      splash: z.string().optional(),
       default: z.boolean().optional(),
     })
     .array()
@@ -95,4 +96,5 @@ export type AddonSettings = {
   disabled?: string[];
 };
 
-export type ThemeSettings = AddonSettings & Record<string, { chosenPreset?: string }>;
+export type ThemeSettings = AddonSettings &
+  Record<string, { chosenMainPreset?: string; chosenSplashPreset?: string }>;
