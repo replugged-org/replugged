@@ -81,3 +81,5 @@ export interface WaitForOptions {
   /** If nothing is found after this delay (ms), stop and throw an error. */
   timeout?: number;
 }
+
+export type AbstractConstructor<T = unknown> = abstract new (args: unknown[]) => T;

@@ -1,12 +1,14 @@
 import type { PlaintextPatch } from "src/types";
 
+const coremodStr = "replugged.coremods.coremods.themeUtils";
+
 export default [
   {
     find: "useRootElementContext",
     replacements: [
       {
         match: /"high-contrast-mode":\i/,
-        replace: `$&,replugged:true,"april-fools":(new Date()).toGMTString().includes("01 Apr")`,
+        replace: `$&,...(${coremodStr}?._insertHTMLClasses() ?? {})`,
       },
     ],
   },
@@ -15,8 +17,7 @@ export default [
     replacements: [
       {
         match: /\.messageListItem,/,
-        replace:
-          "$&...(replugged.coremods.coremods.themeUtils?._insertMessageAttributes(arguments[0].message) ?? {}),",
+        replace: `$&...(${coremodStr}?._insertMessageAttributes(arguments[0].message) ?? {}),`,
       },
     ],
   },
@@ -25,7 +26,7 @@ export default [
     replacements: [
       {
         match: /className:\i\(\)\(\i\.mask/g,
-        replace: `...(replugged.coremods.coremods.themeUtils?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
+        replace: `...(${coremodStr}?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
       },
     ],
   },
