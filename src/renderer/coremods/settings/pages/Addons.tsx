@@ -278,8 +278,8 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
     author1: els[0],
     author2: els[1],
     author3: els[2],
-    count: els.length.toString(),
-    others: (els.length - 3).toString(),
+    count: els.length,
+    others: els.length - 3,
   });
 }
 
