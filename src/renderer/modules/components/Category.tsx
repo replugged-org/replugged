@@ -1,5 +1,5 @@
 import { React, classNames } from "@common";
-import Field from "./Field";
+import { Field } from ".";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 

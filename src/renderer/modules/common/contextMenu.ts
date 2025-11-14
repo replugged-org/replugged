@@ -26,25 +26,25 @@ export interface ContextMenuProps {
   context: string;
 }
 
-export interface ContextMenu {
-  close: () => void;
-  open: (
-    event: React.MouseEvent,
-    render?: (props: ContextMenuProps) => React.ReactNode,
-    options?: ContextMenusOptions,
-    renderLazy?: Promise<(props: ContextMenuProps) => React.ReactNode>,
-  ) => void;
-  openLazy: (
-    event: React.MouseEvent,
-    renderLazy?: () => Promise<(props: ContextMenuProps) => React.ReactNode>,
-    options?: ContextMenusOptions,
-  ) => void;
-}
+export type Close = () => void;
+
+export type Open = (
+  event: React.MouseEvent,
+  render?: (props: ContextMenuProps) => React.ReactNode,
+  options?: ContextMenusOptions,
+  renderLazy?: Promise<(props: ContextMenuProps) => React.ReactNode>,
+) => void;
+
+export type OpenLazy = (
+  event: React.MouseEvent,
+  renderLazy?: () => Promise<(props: ContextMenuProps) => React.ReactNode>,
+  options?: ContextMenusOptions,
+) => void;
 
 const mod = await waitForModule(filters.bySource('type:"CONTEXT_MENU_OPEN"'));
 
 export default {
-  open: getFunctionBySource(mod, "stopPropagation")!,
-  openLazy: getFunctionBySource(mod, (f) => f.toString().length < 50)!,
-  close: getFunctionBySource(mod, "CONTEXT_MENU_CLOSE")!,
-} as ContextMenu;
+  open: getFunctionBySource<Open>(mod, "stopPropagation")!,
+  openLazy: getFunctionBySource<OpenLazy>(mod, (f) => f.toString().length < 50)!,
+  close: getFunctionBySource<Close>(mod, "CONTEXT_MENU_CLOSE")!,
+};
