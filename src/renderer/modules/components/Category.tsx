@@ -1,5 +1,5 @@
 import { React, classNames } from "@common";
-import { FormControl } from ".";
+import Field from "./Field";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
@@ -29,8 +29,7 @@ export function ChevronIcon({
   );
 }
 
-interface CategoryProps
-  extends Pick<Design.FormControlProps, "label" | "description" | "disabled"> {
+interface CategoryProps extends Pick<Design.FieldProps, "label" | "description" | "disabled"> {
   open?: boolean;
   onChange?: () => void;
 }
@@ -56,7 +55,7 @@ function Category({
 
   return (
     <div>
-      <FormControl label={label} description={description} disabled={disabled} layout="horizontal">
+      <Field label={label} description={description} disabled={disabled} layout="horizontal">
         {({ controlId, describedById, labelId }) => (
           <label
             htmlFor={controlId}
@@ -80,7 +79,7 @@ function Category({
             />
           </label>
         )}
-      </FormControl>
+      </Field>
       {isOpen && !disabled && <div className="replugged-category-content">{children}</div>}
     </div>
   );
