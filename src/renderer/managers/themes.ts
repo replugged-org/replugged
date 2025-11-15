@@ -4,7 +4,7 @@ import { init } from "../apis/settings";
 import * as logger from "../modules/logger";
 import { loadStyleSheet } from "../util";
 
-const themeElements = new Map<string, HTMLLinkElement>();
+export const themeElements = new Map<string, HTMLLinkElement>();
 
 /**
  * @hidden
