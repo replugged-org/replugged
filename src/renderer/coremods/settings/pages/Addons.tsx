@@ -293,7 +293,7 @@ function Card({
   toggleDisabled,
   reload,
   uninstall,
-  errored
+  errored,
 }: {
   type: AddonType;
   addon: RepluggedPlugin | RepluggedTheme;
@@ -303,7 +303,7 @@ function Card({
   toggleDisabled: () => void;
   reload: () => void;
   uninstall: () => void;
-  errored: boolean
+  errored: boolean;
 }): React.ReactElement {
   const sourceLink = getSourceLink(addon.manifest);
 
@@ -420,7 +420,11 @@ function Cards({
           key={JSON.stringify(addon.manifest)}
           hasSettings={Boolean(getSettingsElement(addon.manifest.id, type))}
           disabled={disabled.has(addon.manifest.id)}
-          errored={!(type === AddonType.Theme ? themes.themeElements.has(addon.manifest.id) : plugins.running.has(addon.manifest.id)) && !disabled.has(addon.manifest.id)}
+          errored={
+            !(type === AddonType.Theme
+              ? themes.themeElements.has(addon.manifest.id)
+              : plugins.running.has(addon.manifest.id)) && !disabled.has(addon.manifest.id)
+          }
           toggleDisabled={async () => {
             const isDisabled = disabled.has(addon.manifest.id);
             const clonedDisabled = new Set(disabled);
@@ -692,8 +696,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
             {unfilteredCount
               ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
               : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
-                type: label(type, { plural: true }),
-              })}
+                  type: label(type, { plural: true }),
+                })}
           </Text>
         ) : null
       ) : (
