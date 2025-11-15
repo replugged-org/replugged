@@ -1,13 +1,14 @@
 import { getLanguages, intl } from "@common/i18n";
-import { Flex, FormNotice, Text } from "@components";
+import { Flex, Text } from "@components";
 import { messagesLoader } from "i18n/en-US.messages";
 import type React from "react";
-import { WEBLATE_URL } from "src/constants";
 import { t } from "../../modules/i18n";
 
 export const percentages = new Map<string, number>();
 
-export function Card(): React.ReactElement {
+// ? Website is down for now
+// TODO: Will need to replace FormNotice with Card
+/* export function Card(): React.ReactElement {
   return (
     <FormNotice
       title={intl.string(t.REPLUGGED_I18N)}
@@ -15,7 +16,7 @@ export function Card(): React.ReactElement {
       type={FormNotice.Types.PRIMARY}
     />
   );
-}
+} */
 
 export function Percentage(
   localeName: React.ReactElement<{ className: string; children: string }>,

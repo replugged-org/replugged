@@ -1,7 +1,8 @@
 import { css } from "@codemirror/lang-css";
 import { EditorState } from "@codemirror/state";
-import { React, toast } from "@common";
+import { React } from "@common";
 import { intl } from "@common/i18n";
+import { toast } from "@common/toast";
 import { Button, Flex } from "@components";
 import { webpack } from "@replugged";
 import { EditorView, basicSetup } from "codemirror";
@@ -123,7 +124,7 @@ export const QuickCSS = (): React.ReactElement => {
   const reload = (): void => window.replugged.quickCSS.reload();
   const reloadAndToast = (): void => {
     reload();
-    toast.toast(intl.string(t.REPLUGGED_TOAST_QUICKCSS_RELOAD));
+    toast(intl.string(t.REPLUGGED_TOAST_QUICKCSS_RELOAD));
   };
 
   React.useEffect(() => {
