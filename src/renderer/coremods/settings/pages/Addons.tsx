@@ -339,17 +339,17 @@ function Card({
           <Authors addon={addon} />
         </Text>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
-          {sourceLink ? (
+          {disabled ? null : (
             <Tooltip
-              text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
+              text={intl.formatToPlainString(t.REPLUGGED_ADDON_RELOAD, {
                 type: label(type, { caps: "title" }),
               })}
               className="replugged-addon-icon">
-              <Anchor href={sourceLink}>
-                <Icons.Link />
+              <Anchor onClick={() => reload()}>
+                <Icons.Reload />
               </Anchor>
             </Tooltip>
-          ) : null}
+          )}
           {hasSettings ? (
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_SETTINGS, {
@@ -358,6 +358,17 @@ function Card({
               className="replugged-addon-icon">
               <Anchor onClick={() => openSettings()}>
                 <Icons.Settings />
+              </Anchor>
+            </Tooltip>
+          ) : null}
+          {sourceLink ? (
+            <Tooltip
+              text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
+                type: label(type, { caps: "title" }),
+              })}
+              className="replugged-addon-icon">
+              <Anchor href={sourceLink}>
+                <Icons.Link />
               </Anchor>
             </Tooltip>
           ) : null}
@@ -370,17 +381,6 @@ function Card({
               <Icons.Trash />
             </Anchor>
           </Tooltip>
-          {disabled ? null : (
-            <Tooltip
-              text={intl.formatToPlainString(t.REPLUGGED_ADDON_RELOAD, {
-                type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <Anchor onClick={() => reload()}>
-                <Icons.Reload />
-              </Anchor>
-            </Tooltip>
-          )}
         </Flex>
       </Flex>
     </div>
