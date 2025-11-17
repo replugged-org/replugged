@@ -534,34 +534,35 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   if (manifest.presets) {
     targets.push(
       ...manifest.presets
-        .map(
-          (preset) =>
-            [
-              preset.main &&
-                esbuild.context(
-                  overwrites({
-                    ...common,
-                    entryPoints: [preset.main],
-                    outdir: `${distPath}/presets/${preset.label}/splash.css`,
-                  }),
-                ),
-              preset.splash &&
-                esbuild.context(
-                  overwrites({
-                    ...common,
-                    entryPoints: [preset.splash],
-                    outdir: `${distPath}/presets/${preset.label}/splash.css`,
-                  }),
-                ),
-            ].filter(Boolean) as Array<Promise<esbuild.BuildContext>>,
-        )
+        .map((preset) => {
+          const path = `${distPath}/presets/${preset.id || preset.label.replaceAll(/[\s<>:"|?*]/g, "_")}`;
+          return [
+            preset.main &&
+              esbuild.context(
+                overwrites({
+                  ...common,
+                  entryPoints: [preset.main],
+                  outfile: `${path}/splash.css`,
+                }),
+              ),
+            preset.splash &&
+              esbuild.context(
+                overwrites({
+                  ...common,
+                  entryPoints: [preset.splash],
+                  outfile: `${path}/splash.css`,
+                }),
+              ),
+          ].filter(Boolean) as Array<Promise<esbuild.BuildContext>>;
+        })
 
         .flat(10),
     );
 
-    manifest.presets = manifest.presets.map(({ main, splash, label, ...p }) => ({
+    manifest.presets = manifest.presets.map(({ main, splash, label, id, ...p }) => ({
       ...p,
       label,
+      id: id || label.replaceAll(/[\s<>:"|?*]/g, "_"),
       main: main && `main.css`,
       splash: splash && `splash.css`,
     }));
