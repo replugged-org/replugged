@@ -47,23 +47,25 @@ export function load(id: string): void {
   }
 
   const theme = themes.get(id)!;
-  const themeSettings = settings.get(id, { chosenMainPreset: undefined });
+  const themeSettings = settings.get(id, { chosenPreset: undefined });
 
   let el: HTMLLinkElement;
 
   try {
     if (theme.manifest.presets?.length) {
-      if (!themeSettings.chosenMainPreset) {
-        themeSettings.chosenMainPreset = theme.manifest.presets.find((x) => x.default)?.main;
-        if (!themeSettings.chosenMainPreset) {
+      if (!themeSettings.chosenPreset) {
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.label;
+        if (!themeSettings.chosenPreset) {
           // Fallback to first preset
-          themeSettings.chosenMainPreset = theme.manifest.presets[0]?.main;
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.label;
         }
         settings.set(id, themeSettings);
       }
 
-      if (themeSettings.chosenMainPreset) {
-        el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenMainPreset}`);
+      if (themeSettings.chosenPreset) {
+        el = loadStyleSheet(
+          `replugged://theme/${theme.path}/presets/${themeSettings.chosenPreset}/main.css`,
+        );
       } else {
         logger.error("Manager", `No valid preset found for theme ${id}`);
         return;
@@ -92,31 +94,33 @@ export function loadSplash(id: string): void {
   }
 
   const theme = themes.get(id)!;
-  const themeSettings = settings.get(id, { chosenSplashPreset: undefined });
+  const themeSettings = settings.get(id, { chosenPreset: undefined });
 
   let el: HTMLLinkElement;
 
   try {
     if (theme.manifest.presets?.length) {
-      if (!themeSettings.chosenSplashPreset) {
-        themeSettings.chosenSplashPreset = theme.manifest.presets.find((x) => x.default)?.splash;
-        if (!themeSettings.chosenSplashPreset) {
+      if (!themeSettings.chosenPreset) {
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.label;
+        if (!themeSettings.chosenPreset) {
           // Fallback to first preset
-          themeSettings.chosenSplashPreset = theme.manifest.presets[0]?.splash;
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.label;
         }
         settings.set(id, themeSettings);
       }
 
-      if (themeSettings.chosenSplashPreset) {
-        el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenSplashPreset}`);
+      if (themeSettings.chosenPreset) {
+        el = loadStyleSheet(
+          `replugged://theme/${theme.path}/presets/${themeSettings.chosenPreset}/splash.css`,
+        );
       } else {
         logger.error("Manager", `No valid preset found for theme ${id}`);
         return;
       }
-    } else if (theme.manifest.main) {
-      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+    } else if (theme.manifest.splash) {
+      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.splash}`);
     } else {
-      logger.error("Manager", `Theme ${id} has neither main CSS nor presets.`);
+      logger.error("Manager", `Theme ${id} has neither splash CSS nor presets.`);
       return;
     }
 

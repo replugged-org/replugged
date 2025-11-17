@@ -25,6 +25,7 @@ import { hideBin } from "yargs/helpers";
 import logBuildPlugin from "../scripts/build-plugins/log-build.mjs";
 import { type AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
 import { release } from "./release.mjs";
+import type { BuildOptions } from "typescript";
 
 interface BaseArgs {
   watch?: boolean;
@@ -532,29 +533,37 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (manifest.presets) {
     targets.push(
-      esbuild.context(
-        overwrites({
-          ...common,
-          entryPoints: manifest.presets.map((p) => p.main!).filter(Boolean),
-          outdir: `${distPath}/presets/main/`,
-        }),
-      ),
+      ...manifest.presets
+        .map(
+          (preset) =>
+            [
+              preset.main &&
+                esbuild.context(
+                  overwrites({
+                    ...common,
+                    entryPoints: [preset.main],
+                    outdir: `${distPath}/presets/${preset.label}/splash.css`,
+                  }),
+                ),
+              preset.splash &&
+                esbuild.context(
+                  overwrites({
+                    ...common,
+                    entryPoints: [preset.splash],
+                    outdir: `${distPath}/presets/${preset.label}/splash.css`,
+                  }),
+                ),
+            ].filter(Boolean) as Array<Promise<esbuild.BuildContext>>,
+        )
+
+        .flat(10),
     );
 
-    targets.push(
-      esbuild.context(
-        overwrites({
-          ...common,
-          entryPoints: manifest.presets.map((p) => p.splash!).filter(Boolean),
-          outdir: `${distPath}/presets/splash/`,
-        }),
-      ),
-    );
-
-    manifest.presets = manifest.presets.map(({ main, splash, ...p }) => ({
+    manifest.presets = manifest.presets.map(({ main, splash, label, ...p }) => ({
       ...p,
-      main: main && `presets/main/${main.replace(path.extname(main), ".css")}`,
-      splash: splash && `presets/splash/${splash.replace(path.extname(splash), ".css")}`,
+      label,
+      main: main && `main.css`,
+      splash: splash && `splash.css`,
     }));
   }
 

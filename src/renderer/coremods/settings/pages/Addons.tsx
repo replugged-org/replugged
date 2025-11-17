@@ -95,81 +95,39 @@ function getManager(type: AddonType): typeof plugins | typeof themes {
 }
 
 function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
-  const settings = themes.settings.useValue(id, {
-    chosenMainPreset: undefined,
-    chosenSplashPreset: undefined,
-  });
+  const settings = themes.settings.useValue(id, { chosenPreset: undefined });
   const theme = themes.themes.get(id)!;
 
   return (
-    <Stack gap={16}>
-      {theme.manifest.presets!.some((p) => p.main) && (
-        <Select
-          label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
-          options={theme.manifest
-            .presets!.filter((preset) => preset.main)
-            .map((preset) => ({
-              label: preset.label,
-              value: preset.main,
-            }))}
-          value={settings.chosenMainPreset || theme.manifest.presets![0].main}
-          onChange={(val) => {
-            try {
-              themes.settings.set(id, { ...settings, chosenMainPreset: val });
-              if (!themes.getDisabled().includes(id)) {
-                themes.reload(id);
-              }
-              toast.toast(
-                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
-                  name: theme.manifest.presets!.find((p) => p.main === val)?.label || val,
-                }),
-              );
-            } catch (error) {
-              logger.error("Error changing theme preset", error);
-              toast.toast(
-                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
-                  name: theme.manifest.name,
-                }),
-                ToastType.FAILURE,
-              );
-            }
-          }}
-        />
-      )}
-      {theme.manifest.presets!.some((p) => p.splash) && (
-        <Select
-          label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_SPLASH_PRESET)}
-          options={theme.manifest
-            .presets!.filter((preset) => preset.splash)
-            .map((preset) => ({
-              label: preset.label,
-              value: preset.splash,
-            }))}
-          value={settings.chosenSplashPreset || theme.manifest.presets![0].splash}
-          onChange={(val) => {
-            try {
-              themes.settings.set(id, { ...settings, chosenSplashPreset: val });
-              if (!themes.getDisabled().includes(id)) {
-                themes.reloadSplash(id);
-              }
-              toast.toast(
-                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_SPLASH_PRESET_CHANGED, {
-                  name: theme.manifest.presets!.find((p) => p.splash === val)?.label || val,
-                }),
-              );
-            } catch (error) {
-              logger.error("Error changing theme preset", error);
-              toast.toast(
-                intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_SPLASH_PRESET_FAILED, {
-                  name: theme.manifest.name,
-                }),
-                ToastType.FAILURE,
-              );
-            }
-          }}
-        />
-      )}
-    </Stack>
+    <Select
+      label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
+      options={theme.manifest.presets!.map((preset) => ({
+        label: preset.label,
+        value: preset.label,
+      }))}
+      value={settings.chosenPreset || theme.manifest.presets![0].label}
+      onChange={(val) => {
+        try {
+          themes.settings.set(id, { chosenPreset: val });
+          if (!themes.getDisabled().includes(id)) {
+            themes.reload(id);
+          }
+          toast(
+            intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
+              name: theme.manifest.presets!.find((p) => p.label === val)?.label || val,
+            }),
+          );
+        } catch (error) {
+          logger.error("Error changing theme preset", error);
+          toast(
+            intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
+              name: theme.manifest.name,
+            }),
+            ToastType.FAILURE,
+          );
+        }
+      }}
+    />
   );
 }
 
@@ -260,7 +218,6 @@ export function label(
     base = intl.string(t[`REPLUGGED_PLUGIN${plural ? "S" : ""}`]);
   }
   if (type === AddonType.Theme) {
-    <Stack gap={16}></Stack>;
     base = intl.string(t[`REPLUGGED_THEME${plural ? "S" : ""}`]);
   }
   if (caps === "lower") {
@@ -725,8 +682,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
             {unfilteredCount
               ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
               : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
-                  type: label(type, { plural: true }),
-                })}
+                type: label(type, { plural: true }),
+              })}
           </Text>
         ) : null
       ) : (

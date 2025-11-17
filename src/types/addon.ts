@@ -96,5 +96,4 @@ export type AddonSettings = {
   disabled?: string[];
 };
 
-export type ThemeSettings = AddonSettings &
-  Record<string, { chosenMainPreset?: string; chosenSplashPreset?: string }>;
+export type ThemeSettings = AddonSettings & Record<string, { chosenPreset?: string }>;
