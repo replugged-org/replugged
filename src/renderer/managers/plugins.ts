@@ -17,7 +17,7 @@ interface PluginWrapper extends RepluggedPlugin {
  * @hidden
  */
 export const plugins = new Map<string, PluginWrapper>();
-const running = new Set<string>();
+export const running = new Set<string>();
 
 const styleElements = new Map<string, HTMLLinkElement>();
 

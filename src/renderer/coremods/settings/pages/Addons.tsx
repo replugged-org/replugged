@@ -293,6 +293,7 @@ function Card({
   toggleDisabled,
   reload,
   uninstall,
+  errored,
 }: {
   type: AddonType;
   addon: RepluggedPlugin | RepluggedTheme;
@@ -302,6 +303,7 @@ function Card({
   toggleDisabled: () => void;
   reload: () => void;
   uninstall: () => void;
+  errored: boolean;
 }): React.ReactElement {
   const sourceLink = getSourceLink(addon.manifest);
 
@@ -334,6 +336,13 @@ function Card({
           })}
         </Notice>
       ) : null}
+      {errored && (
+        <Notice messageType={Notice.Types.WARNING} className={marginStyles.marginTop8}>
+          {intl.format(t.REPLUGGED_ADDON_IGNITION_ERROR, {
+            type: label(type),
+          })}
+        </Notice>
+      )}
       <Flex className={marginStyles.marginTop8}>
         <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
           <Authors addon={addon} />
@@ -411,6 +420,11 @@ function Cards({
           key={JSON.stringify(addon.manifest)}
           hasSettings={Boolean(getSettingsElement(addon.manifest.id, type))}
           disabled={disabled.has(addon.manifest.id)}
+          errored={
+            !(type === AddonType.Theme
+              ? themes.themeElements.has(addon.manifest.id)
+              : plugins.running.has(addon.manifest.id)) && !disabled.has(addon.manifest.id)
+          }
           toggleDisabled={async () => {
             const isDisabled = disabled.has(addon.manifest.id);
             const clonedDisabled = new Set(disabled);

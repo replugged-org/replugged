@@ -209,5 +209,6 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC": "Remove Discord's minimum window size restrictions. **Requires restart**.",
   "REPLUGGED_SETTINGS_WIN_UPDATER": "Keep Replugged After Updates",
   "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Automatically reapplies Replugged after Discord updates.",
-  "REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS": "Development Tools"
+  "REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS": "Development Tools",
+  "REPLUGGED_ADDON_IGNITION_ERROR": "This {type} had an error while starting, it may not work as expected.",
 });
