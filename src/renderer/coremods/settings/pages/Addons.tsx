@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, contextMenu, marginStyles, modal, toast } from "@common";
+import { React, contextMenu, marginStyles, modal } from "@common";
 import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
+import { ToastType, toast } from "@common/toast";
 import {
   Anchor,
   Breadcrumbs,
@@ -129,7 +130,7 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
                 intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
                   name: theme.manifest.name,
                 }),
-                toast.Kind.FAILURE,
+                ToastType.FAILURE,
               );
             }
           }}
@@ -162,7 +163,7 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
                 intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_SPLASH_PRESET_FAILED, {
                   name: theme.manifest.name,
                 }),
-                toast.Kind.FAILURE,
+                ToastType.FAILURE,
               );
             }
           }}
@@ -321,8 +322,8 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
     author1: els[0],
     author2: els[1],
     author3: els[2],
-    count: els.length.toString(),
-    others: (els.length - 3).toString(),
+    count: els.length,
+    others: els.length - 3,
   });
 }
 
@@ -461,36 +462,36 @@ function Cards({
               try {
                 await manager.enable(addon.manifest.id);
                 clonedDisabled.delete(addon.manifest.id);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS, {
                     name: addon.manifest.name,
                   }),
                 );
               } catch (e) {
                 logger.error("Error enabling", addon, e);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_FAILED, {
                     name: label(type),
                   }),
-                  toast.Kind.FAILURE,
+                  ToastType.FAILURE,
                 );
               }
             } else {
               try {
                 await manager.disable(addon.manifest.id);
                 clonedDisabled.add(addon.manifest.id);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS, {
                     name: addon.manifest.name,
                   }),
                 );
               } catch (e) {
                 logger.error("Error disabling", addon, e);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_DISABLE_FAILED, {
                     name: label(type),
                   }),
-                  toast.Kind.FAILURE,
+                  ToastType.FAILURE,
                 );
               }
             }
@@ -509,18 +510,18 @@ function Cards({
             const manager = getManager(type);
             try {
               await manager.uninstall(addon.manifest.id);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS, {
                   name: addon.manifest.name,
                 }),
               );
             } catch (e) {
               logger.error("Error uninstalling", addon, e);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED, {
                   name: addon.manifest.name,
                 }),
-                toast.Kind.FAILURE,
+                ToastType.FAILURE,
               );
             }
             refreshList();
@@ -529,18 +530,18 @@ function Cards({
             const manager = getManager(type);
             try {
               await manager.reload(addon.manifest.id);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS, {
                   name: addon.manifest.name,
                 }),
               );
             } catch (e) {
               logger.error("Error reloading", addon, e);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_FAILED, {
                   name: addon.manifest.name,
                 }),
-                toast.Kind.FAILURE,
+                ToastType.FAILURE,
               );
             }
             refreshList();
@@ -659,18 +660,18 @@ export const Addons = (type: AddonType): React.ReactElement => {
             onClick={async () => {
               try {
                 await loadMissing(type);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
                     type: label(type, { plural: true }),
                   }),
                 );
               } catch (e) {
                 logger.error("Error loading missing", e);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
                     type: label(type, { plural: true }),
                   }),
-                  toast.Kind.FAILURE,
+                  ToastType.FAILURE,
                 );
               }
 
