@@ -114,7 +114,7 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
           }
           toast(
             intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
-              name: theme.manifest.presets!.find((p) => p.id === val)?.id || val,
+              name: theme.manifest.presets!.find((p) => p.id === val)?.label || val,
             }),
           );
         } catch (error) {
