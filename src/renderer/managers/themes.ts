@@ -54,10 +54,10 @@ export function load(id: string): void {
   try {
     if (theme.manifest.presets?.length) {
       if (!themeSettings.chosenPreset) {
-        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.label;
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.id;
         if (!themeSettings.chosenPreset) {
           // Fallback to first preset
-          themeSettings.chosenPreset = theme.manifest.presets[0]?.label;
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.id;
         }
         settings.set(id, themeSettings);
       }
@@ -101,10 +101,10 @@ export function loadSplash(id: string): void {
   try {
     if (theme.manifest.presets?.length) {
       if (!themeSettings.chosenPreset) {
-        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.label;
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.id;
         if (!themeSettings.chosenPreset) {
           // Fallback to first preset
-          themeSettings.chosenPreset = theme.manifest.presets[0]?.label;
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.id;
         }
         settings.set(id, themeSettings);
       }

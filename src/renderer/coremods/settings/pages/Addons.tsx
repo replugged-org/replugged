@@ -114,7 +114,7 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
           }
           toast(
             intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
-              name: theme.manifest.presets!.find((p) => p.label === val)?.id || val,
+              name: theme.manifest.presets!.find((p) => p.id === val)?.id || val,
             }),
           );
         } catch (error) {
@@ -682,8 +682,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
             {unfilteredCount
               ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
               : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
-                  type: label(type, { plural: true }),
-                })}
+                type: label(type, { plural: true }),
+              })}
           </Text>
         ) : null
       ) : (
