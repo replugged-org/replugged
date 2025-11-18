@@ -533,30 +533,30 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (manifest.presets) {
     targets.push(
-      ...manifest.presets
-        .map((preset) => {
-          const path = `${distPath}/presets/${preset.id || preset.label.replaceAll(/[\s<>:"|?*]/g, "_")}`;
-          return [
-            preset.main &&
-              esbuild.context(
-                overwrites({
-                  ...common,
-                  entryPoints: [preset.main],
-                  outfile: `${path}/splash.css`,
-                }),
-              ),
-            preset.splash &&
-              esbuild.context(
-                overwrites({
-                  ...common,
-                  entryPoints: [preset.splash],
-                  outfile: `${path}/splash.css`,
-                }),
-              ),
-          ].filter(Boolean) as Array<Promise<esbuild.BuildContext>>;
-        })
-
-        .flat(10),
+      ...manifest.presets.reduce((accumulator: Array<Promise<esbuild.BuildContext>>, preset) => {
+        const path = `${distPath}/presets/${preset.id || preset.label.replaceAll(/[\s<>:"|?*]/g, "_")}`;
+        if (preset.main)
+          accumulator.push(
+            esbuild.context(
+              overwrites({
+                ...common,
+                entryPoints: [preset.main],
+                outfile: `${path}/splash.css`,
+              }),
+            ),
+          );
+        if (preset.splash)
+          accumulator.push(
+            esbuild.context(
+              overwrites({
+                ...common,
+                entryPoints: [preset.splash],
+                outfile: `${path}/splash.css`,
+              }),
+            ),
+          );
+        return accumulator;
+      }, []),
     );
 
     manifest.presets = manifest.presets.map(({ main, splash, label, id, ...p }) => ({
