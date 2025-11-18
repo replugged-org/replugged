@@ -682,8 +682,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
             {unfilteredCount
               ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
               : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
-                type: label(type, { plural: true }),
-              })}
+                  type: label(type, { plural: true }),
+                })}
           </Text>
         ) : null
       ) : (
