@@ -1,6 +1,6 @@
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
-import { filters, waitForModule } from "@webpack";
+import { filters, waitForModule, waitForProps } from "@webpack";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import type { UserSettingsFormType } from "src/types";
@@ -26,6 +26,28 @@ import {
 } from "./pages";
 import SettingsLibs from "./SettingsLibs";
 
+
+interface UserSettingUtils {
+  USER_SETTINGS_MODAL_KEY: "USER_SETTINGS_MODAL_MODAL_KEY";
+  getUserSettingsSectionsByWebUserSettings: () => Map<string, string>;
+  getWebUserSettingsByUserSettingsSections: () => Map<string, string>;
+  openUserSettings: (key: string, analytics?: Record<string, unknown>) => Promise<void>;
+  openUserSettingsFromParsedUrl: (parsedUrl: {
+    match: {
+      params: Record<string, unknown>;
+      section: string;
+      subsection?: string;
+    };
+    urlOrigin: string;
+    analyticsLocations?: Record<string, unknown>;
+  }) => void;
+}
+
+// I don't know where else to put this for now, from https://github.com/replugged-org/replugged/pull/767
+export const UserSettingUtils = await waitForProps<UserSettingUtils>(
+  "openUserSettings",
+  "openUserSettingsFromParsedUrl",
+);
 
 export { SettingsLibs, insertSections };
 

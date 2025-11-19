@@ -6,7 +6,6 @@ import notices from "../apis/notices";
 import { init } from "../apis/settings";
 import { t } from "../modules/i18n";
 import { Logger } from "../modules/logger";
-import { waitForProps } from "../modules/webpack";
 import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 
@@ -266,10 +265,7 @@ export function installAllUpdates(
 
 let clearActiveNotification: (() => void) | null = null;
 let didRun = false;
-const openSettingsModPromise = waitForProps<{
-  open: (id: string) => void;
-  updateAccount: unknown;
-}>("open", "updateAccount");
+const UserSettingUtilsPromise = import("../coremods/settings");
 
 async function autoUpdateCheck(): Promise<void> {
   if (!updaterSettings.get("autoCheck")) return;
@@ -301,7 +297,7 @@ async function autoUpdateCheck(): Promise<void> {
   if (isAnUpdate && (areNewUpdates || isFirstRun)) {
     logger.log("Showing update notification");
 
-    const { open } = await openSettingsModPromise;
+    const { UserSettingUtils } = await UserSettingUtilsPromise;
 
     clearActiveNotification?.();
     clearActiveNotification = notices.sendAnnouncement({
@@ -312,7 +308,7 @@ async function autoUpdateCheck(): Promise<void> {
         text: i18n.intl.formatToPlainString(t.REPLUGGED_VIEW_UPDATES, {
           count: newUpdateCount,
         }),
-        onClick: () => open("rp-updater"),
+        onClick: () => UserSettingUtils.openUserSettings("replugged-updater"),
       },
     });
   }
