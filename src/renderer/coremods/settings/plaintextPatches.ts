@@ -4,7 +4,7 @@ const coremodStr = "replugged.coremods.coremods.settings";
 
 export default [
   {
-    find: "$Root",
+    find: '"$Root"',
     replacements: [
       {
         match: /(\i)\.buildLayout\(\)/,
