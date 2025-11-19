@@ -511,10 +511,4 @@ const MessageUtils = {
   userRecordToServer: getFunctionBySource(MessageUtilsMod, "global_name:"),
 } as MessageUtils;
 
-export type Messages = MessageActions & MessageStore & MessageUtils;
-
-export default virtualMerge(
-  MessageActionCreators,
-  getBoundMethods(MessageStore),
-  MessageUtils,
-) as Messages;
+export default virtualMerge(MessageActionCreators, getBoundMethods(MessageStore), MessageUtils);

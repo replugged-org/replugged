@@ -1,7 +1,5 @@
 import { error } from "../logger";
 
-import type { LocalStorage } from "discord-client-types/discord_common/packages/storage/web/Storage";
-
 const modulePromises: Array<() => Promise<void>> = [];
 
 function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) => void): void {
@@ -28,56 +26,46 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
 
 // Stores
 
-import type { Channels } from "./channels";
-export type { Channels };
-export let channels: Channels;
+import type Channels from "./channels";
+export let channels: typeof Channels;
 importTimeout("channels", import("./channels"), (mod) => (channels = mod.default));
 
-import type { Guilds } from "./guilds";
-export type { Guilds };
-export let guilds: Guilds;
+import type Guilds from "./guilds";
+export let guilds: typeof Guilds;
 importTimeout("guilds", import("./guilds"), (mod) => (guilds = mod.default));
 
-import type { Messages } from "./messages";
-export type { Messages };
-export let messages: Messages;
+import type Messages from "./messages";
+export let messages: typeof Messages;
 importTimeout("messages", import("./messages"), (mod) => (messages = mod.default));
 
-import type { Users } from "./users";
-export type { Users };
-export let users: Users;
+import type Users from "./users";
+export let users: typeof Users;
 importTimeout("users", import("./users"), (mod) => (users = mod.default));
 
 // Utilities
 
 import type { API } from "./api";
-export type { API };
 export let api: API;
 importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
-import type { DiscordComponents } from "./components";
-export type { DiscordComponents };
-export let components: DiscordComponents;
+import type Components from "./components";
+export let components: typeof Components;
 importTimeout("components", import("./components"), (mod) => (components = mod.default));
 
 import type * as Constants from "./constants";
-export type { Constants };
 export let constants: typeof Constants;
 importTimeout("constants", import("./constants"), (mod) => (constants = mod));
 
-import type { ContextMenu } from "./contextMenu";
-export type { ContextMenu };
-export let contextMenu: ContextMenu;
+import type ContextMenu from "./contextMenu";
+export let contextMenu: typeof ContextMenu;
 importTimeout("contextMenu", import("./contextMenu"), (mod) => (contextMenu = mod.default));
 
-import type { Flux } from "./flux";
-export type { Flux };
-export let flux: Flux;
+import type Flux from "./flux";
+export let flux: typeof Flux;
 importTimeout("flux", import("./flux"), (mod) => (flux = mod.default));
 
-import type { FluxDispatcher } from "./fluxDispatcher";
-export type { FluxDispatcher };
-export let fluxDispatcher: FluxDispatcher;
+import type FluxDispatcher from "./fluxDispatcher";
+export let fluxDispatcher: typeof FluxDispatcher;
 importTimeout(
   "fluxDispatcher",
   import("./fluxDispatcher"),
@@ -85,41 +73,35 @@ importTimeout(
 );
 
 import type { FluxHooks } from "./fluxHooks";
-export type { FluxHooks };
 export let fluxHooks: FluxHooks;
 importTimeout("fluxHooks", import("./fluxHooks"), (mod) => (fluxHooks = mod.default));
 
-import type { I18n } from "./i18n";
-export type { I18n };
-export let i18n: I18n;
+import type * as I18n from "./i18n";
+export let i18n: typeof I18n;
 importTimeout("i18n", import("./i18n"), (mod) => (i18n = mod));
 
-export let localStorage: LocalStorage;
+import type LocalStorage from "./localStorage";
+export let localStorage: typeof LocalStorage;
 importTimeout("localStorage", import("./localStorage"), (mod) => (localStorage = mod.default));
 
-import type { MarginStyles } from "./marginStyles";
-export type { MarginStyles };
-export let marginStyles: MarginStyles;
+import type MarginStyles from "./marginStyles";
+export let marginStyles: typeof MarginStyles;
 importTimeout("marginStyles", import("./marginStyles"), (mod) => (marginStyles = mod.default));
 
-import type { Modal } from "./modal";
-export type { Modal };
-export let modal: Modal;
+import type Modal from "./modal";
+export let modal: typeof Modal;
 importTimeout("modal", import("./modal"), (mod) => (modal = mod.default));
 
-import type { Parser } from "./parser";
-export type { Parser };
-export let parser: Parser;
+import type Parser from "./parser";
+export let parser: typeof Parser;
 importTimeout("parser", import("./parser"), (mod) => (parser = mod.default));
 
-import type { Toast } from "./toast";
-export type { Toast };
-export let toast: Toast;
-importTimeout("toast", import("./toast"), (mod) => (toast = mod.default));
+import type * as Toast from "./toast";
+export let toast: typeof Toast;
+importTimeout("toast", import("./toast"), (mod) => (toast = mod));
 
-import type { Typing } from "./typing";
-export type { Typing };
-export let typing: Typing;
+import type Typing from "./typing";
+export let typing: typeof Typing;
 importTimeout("typing", import("./typing"), (mod) => (typing = mod.default));
 
 import type { CreateZustandStore } from "./zustand";
@@ -132,9 +114,8 @@ importTimeout("zustand", import("./zustand"), (mod) => (zustand = mod.default));
 /**
  * @see {@link https://github.com/JedWatson/classnames}
  */
-import type { ClassNames } from "./classnames";
-export type { ClassNames };
-export let classNames: ClassNames;
+import type ClassNames from "./classnames";
+export let classNames: typeof ClassNames;
 importTimeout("classnames", import("./classnames"), (mod) => (classNames = mod.default));
 
 /**
@@ -146,7 +127,7 @@ importTimeout("hljs", import("./hljs"), (mod) => (hljs = mod.default));
 /**
  * @see {@link https://lodash.com/docs}
  */
-export let lodash: typeof window._;
+export let lodash: typeof import("lodash");
 importTimeout("lodash", import("./lodash"), (mod) => (lodash = mod.default));
 
 /**

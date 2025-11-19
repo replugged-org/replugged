@@ -2,6 +2,11 @@ import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type { ValueOf } from "type-fest";
 import type { Store } from "./flux";
 
+import type {
+  AreArraysShallowEqual,
+  ShallowEqual,
+} from "discord-client-types/discord_common/packages/shallow-equal/shallowEqual";
+
 export interface FluxHooks {
   useStateFromStores: <T>(
     stores: Store[],
@@ -23,19 +28,6 @@ export interface FluxHooks {
     deps?: React.DependencyList,
   ) => T;
 }
-
-interface ShallowEqualOptions {
-  shouldWarnLargeObjects?: boolean;
-  logCallback?: (message: string) => void;
-}
-
-type ShallowEqual = <T>(
-  a: T,
-  b: T,
-  excludeKeys?: string[],
-  options?: ShallowEqualOptions,
-) => boolean;
-type AreArraysShallowEqual = <T extends []>(a: T, b: T, options?: ShallowEqualOptions) => boolean;
 
 const shallowEqualMod = await waitForModule(
   filters.bySource(/{shouldWarnLargeObjects:\i,logCallback:\i}/),

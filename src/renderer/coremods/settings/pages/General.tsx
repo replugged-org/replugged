@@ -1,5 +1,6 @@
-import { React, modal, toast } from "@common";
+import { React, modal } from "@common";
 import { t as discordT, intl } from "@common/i18n";
+import { ToastType, toast } from "@common/toast";
 import {
   Button,
   Divider,
@@ -241,10 +242,7 @@ function AdvancedTab(): React.ReactElement {
                   // Ignore cleanup errors
                 }
               }
-              toast.toast(
-                intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
-                toast.Kind.FAILURE,
-              );
+              toast(intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED), ToastType.FAILURE);
             }
           }}
           label={intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
