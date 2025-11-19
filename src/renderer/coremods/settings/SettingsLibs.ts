@@ -8,7 +8,6 @@ export interface RawSettingsSectionLayout {
 export interface SettingsLayoutSection {
   key: string;
   type: 1;
-
   useLabel: () => string;
   usePredicate?: () => boolean;
   buildLayout: () => SettingsLayoutSidebar[];
@@ -22,6 +21,7 @@ export interface RawSettingsSidebarLayout {
   render: React.FC;
   header?: React.FC;
   predicate?: () => boolean;
+  strings?: () => string[];
 }
 
 export interface SettingsLayoutSidebar {
@@ -31,6 +31,7 @@ export interface SettingsLayoutSidebar {
   legacySearchKey: string;
   type: 2;
   usePredicate?: () => boolean;
+  useSearchTerms?: () => string[];
   buildLayout: () => SettingsLayoutPanel[];
 }
 
@@ -61,8 +62,11 @@ export function buildSection({
     useLabel: header,
     usePredicate: predicate,
     buildLayout: () =>
-      layout.map(({ key, icon, title, render, predicate, header }) => {
-        return buildSidebar({ key, icon, title, render, predicate, header, parentKey: sectionKey });
+      layout.map((l) => {
+        return buildSidebar({
+          ...l,
+          parentKey: sectionKey,
+        });
       }),
   };
 }
@@ -75,6 +79,7 @@ export function buildSidebar({
   render,
   predicate,
   header,
+  strings,
 }: RawSettingsSidebarLayout): SettingsLayoutSidebar {
   return {
     key: `${parentKey ?? "replugged-custom"}-sidebar-${key}`,
@@ -83,6 +88,7 @@ export function buildSidebar({
     legacySearchKey: title(),
     type: 2,
     usePredicate: predicate,
+    useSearchTerms: strings,
     buildLayout: () => [
       {
         key,
