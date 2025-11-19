@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, contextMenu, marginStyles, modal, toast, zustand } from "@common";
+import { React, contextMenu, marginStyles, modal, zustand } from "@common";
 import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
 import { ToastType, toast } from "@common/toast";
