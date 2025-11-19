@@ -60,28 +60,28 @@ export function start(): void {
     Divider(),
     Header(intl.string(t.REPLUGGED)),
     Section({
-      name: "rp-general",
+      name: "replugged-general",
       label: () => intl.string(discordT.SETTINGS_GENERAL),
       elem: General,
     }),
     Section({
-      name: "rp-quickcss",
+      name: "replugged-quickcss",
       label: () => intl.string(t.REPLUGGED_QUICKCSS),
       tabPredicate: () => generalSettings.useValue("quickCSS"),
       elem: QuickCSS,
     }),
     Section({
-      name: "rp-plugins",
+      name: "replugged-plugins",
       label: () => intl.string(t.REPLUGGED_PLUGINS),
       elem: Plugins,
     }),
     Section({
-      name: "rp-themes",
+      name: "replugged-themes",
       label: () => intl.string(t.REPLUGGED_THEMES),
       elem: Themes,
     }),
     Section({
-      name: "rp-updater",
+      name: "replugged-updater",
       label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
       elem: Updater,
     }),
@@ -95,14 +95,14 @@ export function start(): void {
       header: () => intl.string(t.REPLUGGED),
       layout: [
         {
-          key: "rp-general",
+          key: "replugged-general",
           title: () => intl.string(discordT.SETTINGS_GENERAL),
           render: General,
           icon: GeneralIcon,
           strings: GeneralStrings
         },
         {
-          key: "rp-quickcss",
+          key: "replugged-quickcss",
           title: () => intl.string(t.REPLUGGED_QUICKCSS),
           predicate: () => generalSettings.useValue("quickCSS"),
           render: QuickCSS,
@@ -110,7 +110,7 @@ export function start(): void {
           strings: QuickCSSStrings
         },
         {
-          key: "rp-plugins",
+          key: "replugged-plugins",
           title: () => intl.string(t.REPLUGGED_PLUGINS),
           render: Plugins,
           icon: PluginsIcon,
@@ -118,7 +118,7 @@ export function start(): void {
           strings: PluginsStrings
         },
         {
-          key: "rp-themes",
+          key: "replugged-themes",
           title: () => intl.string(t.REPLUGGED_THEMES),
           render: Themes,
           icon: ThemesIcon,
@@ -126,7 +126,7 @@ export function start(): void {
           strings: ThemesStrings
         },
         {
-          key: "rp-updater",
+          key: "replugged-updater",
           title: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
           render: Updater,
           icon: UpdaterIcon,
