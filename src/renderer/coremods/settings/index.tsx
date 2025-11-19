@@ -82,7 +82,7 @@ export function start(): void {
   ]);
 
   SettingsLibs.add({
-    key: "replugged.coremod.settings",
+    key: "replugged-coremod-settings",
     parent: "$Root",
     after: "billing_section",
     settings: {
@@ -128,4 +128,5 @@ export function start(): void {
 
 export function stop(): void {
   settingsTools.removeAfter("Billing");
+  SettingsLibs.remove("replugged.coremod.settings");
 }

@@ -57,7 +57,7 @@ export function buildSection({
   predicate,
 }: RawSettingsSectionLayout): SettingsLayoutSection {
   return {
-    key: `${sectionKey}_section`,
+    key: `${sectionKey}-section`,
     type: 1,
     useLabel: header,
     usePredicate: predicate,
