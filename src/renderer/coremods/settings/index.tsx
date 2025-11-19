@@ -8,18 +8,24 @@ import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import {
   General,
   GeneralIcon,
+  GeneralStrings,
   Plugins,
   PluginsHeader,
   PluginsIcon,
+  PluginsStrings,
   QuickCSS,
   QuickCSSIcon,
+  QuickCSSStrings,
   Themes,
   ThemesHeader,
   ThemesIcon,
+  ThemesStrings,
   Updater,
   UpdaterIcon,
+  UpdaterStrings,
 } from "./pages";
 import SettingsLibs from "./SettingsLibs";
+
 
 export { SettingsLibs, insertSections };
 
@@ -93,6 +99,7 @@ export function start(): void {
           title: () => intl.string(discordT.SETTINGS_GENERAL),
           render: General,
           icon: GeneralIcon,
+          strings: GeneralStrings
         },
         {
           key: "rp-quickcss",
@@ -100,6 +107,7 @@ export function start(): void {
           predicate: () => generalSettings.useValue("quickCSS"),
           render: QuickCSS,
           icon: QuickCSSIcon,
+          strings: QuickCSSStrings
         },
         {
           key: "rp-plugins",
@@ -107,6 +115,7 @@ export function start(): void {
           render: Plugins,
           icon: PluginsIcon,
           header: PluginsHeader,
+          strings: PluginsStrings
         },
         {
           key: "rp-themes",
@@ -114,12 +123,14 @@ export function start(): void {
           render: Themes,
           icon: ThemesIcon,
           header: ThemesHeader,
+          strings: ThemesStrings
         },
         {
           key: "rp-updater",
           title: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
           render: Updater,
           icon: UpdaterIcon,
+          strings: UpdaterStrings
         },
       ],
     },

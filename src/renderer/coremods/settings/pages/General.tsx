@@ -145,12 +145,12 @@ function GeneralTab(): React.ReactElement {
           />
           {(window.DiscordNative.process.platform === "linux" ||
             window.DiscordNative.process.platform === "win32") && (
-            <Notice messageType={Notice.Types.WARNING}>
-              {window.DiscordNative.process.platform === "linux"
-                ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
-                : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
-            </Notice>
-          )}
+              <Notice messageType={Notice.Types.WARNING}>
+                {window.DiscordNative.process.platform === "linux"
+                  ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
+                  : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
+              </Notice>
+            )}
         </div>
         {window.DiscordNative.process.platform === "win32" && (
           <Select
@@ -345,3 +345,23 @@ export function GeneralIcon(props: React.SVGProps<SVGSVGElement>): React.ReactEl
     </svg>
   );
 }
+
+export const GeneralStrings = (): string[] => [
+  intl.string(discordT.SETTINGS_GENERAL),
+  intl.string(t.REPLUGGED_SETTINGS_BADGES),
+  intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS),
+  intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE),
+  intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY),
+  intl.string(t.REPLUGGED_SETTINGS_DISABLE_MIN_SIZE),
+  intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR),
+  intl.string(t.REPLUGGED_SETTINGS_TRANSPARENT),
+  intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL),
+  intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY),
+  intl.string(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS),
+  intl.string(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS),
+  intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS),
+  intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN),
+  intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER),
+  intl.string(t.REPLUGGED_SETTINGS_BACKEND),
+]
+

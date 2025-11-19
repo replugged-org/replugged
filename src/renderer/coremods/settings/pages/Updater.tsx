@@ -207,12 +207,12 @@ export function Updater(): React.ReactElement {
             themes.get(update.id) ||
             (isReplugged
               ? {
-                  manifest: {
-                    type: "replugged",
-                    name: "Replugged",
-                    version: window.RepluggedNative.getVersion(),
-                  },
-                }
+                manifest: {
+                  type: "replugged",
+                  name: "Replugged",
+                  version: window.RepluggedNative.getVersion(),
+                },
+              }
               : null);
           const isUpdating = update.id in updatePromises;
           if (!addon) return null;
@@ -293,3 +293,13 @@ export function UpdaterIcon(props: React.SVGProps<SVGSVGElement>): React.ReactEl
     </svg>
   );
 }
+
+export const UpdaterStrings = (): string[] => [
+  intl.string(t.REPLUGGED_UPDATES_UPDATE_ALL),
+  intl.string(t.REPLUGGED_UPDATES_CHECK),
+  intl.string(discordT.UPDATE),
+  intl.string(t.REPLUGGED_UPDATES_UPDATER),
+  intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO),
+  intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL),
+  intl.string(t.REPLUGGED_UPDATES_UPDATER),
+]

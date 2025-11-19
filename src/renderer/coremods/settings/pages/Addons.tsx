@@ -708,8 +708,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
             {unfilteredCount
               ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
               : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
-                  type: label(type, { plural: true }),
-                })}
+                type: label(type, { plural: true }),
+              })}
           </Text>
         ) : null
       ) : (
@@ -792,6 +792,30 @@ export function PluginsIcon(props: React.SVGProps<SVGSVGElement>): React.ReactEl
   );
 }
 
+export const PluginsStrings = (): string[] => [...plugins.plugins.values()].reduce(
+  (acc: string[], x) => {
+    acc.push(
+      x.manifest.name,
+      x.manifest.id,
+      x.manifest.description,
+      ...([x.manifest.author].flat().map(Object.values).flat() as string[]),
+    );
+    return acc;
+  },
+  [
+    intl.string(t.REPLUGGED_PLUGINS),
+    intl.formatToPlainString(t.REPLUGGED_ADDON_BROWSE, {
+      type: intl.string(t.REPLUGGED_PLUGINS),
+    }),
+    intl.formatToPlainString(t.REPLUGGED_ADDONS_LOAD_MISSING, {
+      type: intl.string(t.REPLUGGED_PLUGINS),
+    }),
+    intl.formatToPlainString(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
+      type: intl.string(t.REPLUGGED_PLUGINS),
+    }),
+  ],
+)
+
 export const ThemesHeader = (): React.ReactElement => <AddonsHeader type={AddonType.Theme} />;
 
 export const Themes = (): React.ReactElement => Addons(AddonType.Theme);
@@ -811,3 +835,27 @@ export function ThemesIcon(props: React.SVGProps<SVGSVGElement>): React.ReactEle
     </svg>
   );
 }
+
+export const ThemesStrings = (): string[] => [...themes.themes.values()].reduce(
+  (acc: string[], x) => {
+    acc.push(
+      x.manifest.name,
+      x.manifest.id,
+      x.manifest.description,
+      ...([x.manifest.author].flat().map(Object.values).flat() as string[]),
+    );
+    return acc;
+  },
+  [
+    intl.string(t.REPLUGGED_THEMES),
+    intl.formatToPlainString(t.REPLUGGED_ADDON_BROWSE, {
+      type: intl.string(t.REPLUGGED_THEMES),
+    }),
+    intl.formatToPlainString(t.REPLUGGED_ADDONS_LOAD_MISSING, {
+      type: intl.string(t.REPLUGGED_THEMES),
+    }),
+    intl.formatToPlainString(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
+      type: intl.string(t.REPLUGGED_THEMES),
+    }),
+  ],
+)
