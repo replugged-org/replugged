@@ -128,5 +128,5 @@ export function start(): void {
 
 export function stop(): void {
   settingsTools.removeAfter("Billing");
-  SettingsLibs.remove("replugged.coremod.settings");
+  SettingsLibs.remove("replugged-coremod-settings");
 }
