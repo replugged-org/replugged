@@ -212,5 +212,4 @@ export function QuickCSSIcon(props: React.SVGProps<SVGSVGElement>): React.ReactE
 export const QuickCSSStrings = (): string[] => [
   intl.string(t.REPLUGGED_QUICKCSS),
   intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN),
-]
-
+];

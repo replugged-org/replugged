@@ -207,12 +207,12 @@ export function Updater(): React.ReactElement {
             themes.get(update.id) ||
             (isReplugged
               ? {
-                manifest: {
-                  type: "replugged",
-                  name: "Replugged",
-                  version: window.RepluggedNative.getVersion(),
-                },
-              }
+                  manifest: {
+                    type: "replugged",
+                    name: "Replugged",
+                    version: window.RepluggedNative.getVersion(),
+                  },
+                }
               : null);
           const isUpdating = update.id in updatePromises;
           if (!addon) return null;
@@ -302,4 +302,4 @@ export const UpdaterStrings = (): string[] => [
   intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO),
   intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL),
   intl.string(t.REPLUGGED_UPDATES_UPDATER),
-]
+];

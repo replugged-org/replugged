@@ -26,7 +26,6 @@ import {
 } from "./pages";
 import SettingsLibs from "./SettingsLibs";
 
-
 interface UserSettingUtils {
   USER_SETTINGS_MODAL_KEY: "USER_SETTINGS_MODAL_MODAL_KEY";
   getUserSettingsSectionsByWebUserSettings: () => Map<string, string>;
@@ -121,7 +120,7 @@ export function start(): void {
           title: () => intl.string(discordT.SETTINGS_GENERAL),
           render: General,
           icon: GeneralIcon,
-          strings: GeneralStrings
+          strings: GeneralStrings,
         },
         {
           key: "replugged-quickcss",
@@ -129,7 +128,7 @@ export function start(): void {
           predicate: () => generalSettings.useValue("quickCSS"),
           render: QuickCSS,
           icon: QuickCSSIcon,
-          strings: QuickCSSStrings
+          strings: QuickCSSStrings,
         },
         {
           key: "replugged-plugins",
@@ -137,7 +136,7 @@ export function start(): void {
           render: Plugins,
           icon: PluginsIcon,
           header: PluginsHeader,
-          strings: PluginsStrings
+          strings: PluginsStrings,
         },
         {
           key: "replugged-themes",
@@ -145,14 +144,14 @@ export function start(): void {
           render: Themes,
           icon: ThemesIcon,
           header: ThemesHeader,
-          strings: ThemesStrings
+          strings: ThemesStrings,
         },
         {
           key: "replugged-updater",
           title: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
           render: Updater,
           icon: UpdaterIcon,
-          strings: UpdaterStrings
+          strings: UpdaterStrings,
         },
       ],
     },

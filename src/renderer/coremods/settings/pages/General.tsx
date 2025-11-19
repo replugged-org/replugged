@@ -145,12 +145,12 @@ function GeneralTab(): React.ReactElement {
           />
           {(window.DiscordNative.process.platform === "linux" ||
             window.DiscordNative.process.platform === "win32") && (
-              <Notice messageType={Notice.Types.WARNING}>
-                {window.DiscordNative.process.platform === "linux"
-                  ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
-                  : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
-              </Notice>
-            )}
+            <Notice messageType={Notice.Types.WARNING}>
+              {window.DiscordNative.process.platform === "linux"
+                ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
+                : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
+            </Notice>
+          )}
         </div>
         {window.DiscordNative.process.platform === "win32" && (
           <Select
@@ -363,5 +363,4 @@ export const GeneralStrings = (): string[] => [
   intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN),
   intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER),
   intl.string(t.REPLUGGED_SETTINGS_BACKEND),
-]
-
+];
