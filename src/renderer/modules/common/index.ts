@@ -26,20 +26,20 @@ function importTimeout<T>(name: string, moduleImport: Promise<T>, cb: (mod: T) =
 
 // Stores
 
-import type Channels from "./channels";
-export let channels: typeof Channels;
+import type { Channels } from "./channels";
+export let channels: Channels;
 importTimeout("channels", import("./channels"), (mod) => (channels = mod.default));
 
-import type Guilds from "./guilds";
-export let guilds: typeof Guilds;
+import type { Guilds } from "./guilds";
+export let guilds: Guilds;
 importTimeout("guilds", import("./guilds"), (mod) => (guilds = mod.default));
 
-import type Messages from "./messages";
-export let messages: typeof Messages;
+import type { Messages } from "./messages";
+export let messages: Messages;
 importTimeout("messages", import("./messages"), (mod) => (messages = mod.default));
 
-import type Users from "./users";
-export let users: typeof Users;
+import type { Users } from "./users";
+export let users: Users;
 importTimeout("users", import("./users"), (mod) => (users = mod.default));
 
 // Utilities
