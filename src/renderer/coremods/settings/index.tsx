@@ -1,11 +1,15 @@
+import { Injector } from "@replugged";
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
 import { filters, waitForModule } from "@webpack";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
-import type { UserSettingsFormType } from "src/types";
+import { ContextMenuTypes, type UserSettingsFormType } from "src/types";
 import { Divider, Header, Section, insertSections, settingsTools } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
+import settingsContext from "./contextMenu";
+
+const injector = new Injector();
 
 export { insertSections };
 
@@ -28,32 +32,33 @@ export const UserSettingsForm = await waitForModule<UserSettingsFormType>(
 );
 
 export function start(): void {
+  injector.utils.addMenuItem(ContextMenuTypes.UserSettingsCog, settingsContext);
   settingsTools.addAfter("Billing", [
     Divider(),
     Header("Replugged"),
     Section({
-      name: "rp-general",
+      name: "replugged-general",
       label: () => intl.string(discordT.SETTINGS_GENERAL),
       elem: General,
     }),
     Section({
-      name: "rp-quickcss",
+      name: "replugged-quickcss",
       label: () => intl.string(t.REPLUGGED_QUICKCSS),
       tabPredicate: () => generalSettings.useValue("quickCSS"),
       elem: QuickCSS,
     }),
     Section({
-      name: "rp-plugins",
+      name: "replugged-plugins",
       label: () => intl.string(t.REPLUGGED_PLUGINS),
       elem: Plugins,
     }),
     Section({
-      name: "rp-themes",
+      name: "replugged-themes",
       label: () => intl.string(t.REPLUGGED_THEMES),
       elem: Themes,
     }),
     Section({
-      name: "rp-updater",
+      name: "replugged-updater",
       label: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
       elem: Updater,
     }),
@@ -61,5 +66,6 @@ export function start(): void {
 }
 
 export function stop(): void {
+  injector.uninjectAll();
   settingsTools.removeAfter("Billing");
 }
