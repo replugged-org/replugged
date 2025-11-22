@@ -50,4 +50,9 @@ const SelectedChannelStore = await waitForStore<SelectedChannelStore & Store>(
 );
 const ChannelStore = await waitForStore<ChannelStore & Store>("ChannelStore");
 
-export default virtualMerge(getBoundMethods(SelectedChannelStore), getBoundMethods(ChannelStore));
+export type Channels = SelectedChannelStore & ChannelStore;
+
+export default virtualMerge(
+  getBoundMethods(SelectedChannelStore),
+  getBoundMethods(ChannelStore),
+) as Channels;

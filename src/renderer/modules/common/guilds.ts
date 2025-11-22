@@ -52,6 +52,10 @@ export function getCurrentGuild(): Guild | undefined {
   return GuildStore.getGuild(guildId);
 }
 
+export type Guilds = SelectedGuildStore &
+  GuildStore &
+  GuildRoleStore & { getCurrentGuild: () => Guild | undefined };
+
 export default virtualMerge(
   getBoundMethods(SelectedGuildStore),
   getBoundMethods(GuildStore),
@@ -65,4 +69,4 @@ export default virtualMerge(
     getSortedRoles,
     getCurrentGuild,
   },
-);
+) as Guilds;
