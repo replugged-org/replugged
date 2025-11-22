@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, contextMenu, marginStyles, modal } from "@common";
+import { React, contextMenu, marginStyles, modal, zustand } from "@common";
 import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
 import { ToastType, toast } from "@common/toast";
@@ -514,12 +514,30 @@ function Cards({
   );
 }
 
+const AddonsHook = zustand<{
+  unfilteredCount: number;
+  list: Array<RepluggedPlugin | RepluggedTheme> | null;
+  section: string;
+  type: AddonType;
+}>(() => ({
+  type: AddonType.Plugin,
+  unfilteredCount: 0,
+  list: [],
+  section: "rp_plugin",
+}));
+
+function getAddonIdFromSection(section: string, type: AddonType): string {
+  const prefix = `rp_${type}_`;
+  return section.startsWith(prefix) ? section.slice(prefix.length) : section;
+}
+
 export const Addons = (type: AddonType): React.ReactElement => {
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
   const [list, setList] = React.useState<Array<RepluggedPlugin | RepluggedTheme> | null>();
   const [unfilteredCount, setUnfilteredCount] = React.useState(0);
   const [section, setSection] = React.useState(`rp_${type}`);
+  const headerSection = AddonsHook.useField("section");
 
   let SettingsElement: React.ComponentType | undefined;
 
@@ -546,10 +564,18 @@ export const Addons = (type: AddonType): React.ReactElement => {
 
   React.useEffect(refreshList, [search, type]);
 
-  function getAddonIdFromSection(section: string): string {
-    const prefix = `rp_${type}_`;
-    return section.startsWith(prefix) ? section.slice(prefix.length) : section;
-  }
+  React.useEffect(() => {
+    AddonsHook.setState({ list, unfilteredCount, section, type });
+  }, [list, unfilteredCount, section, type]);
+
+  React.useEffect(() => {
+    if (
+      // headerSection at start is always rp_plugin making things get bad
+      ![`rp_${AddonType.Plugin}`, `rp_${AddonType.Theme}`].includes(section) &&
+      headerSection !== section
+    )
+      setSection(headerSection);
+  }, [headerSection]);
 
   return (
     <UserSettingsForm
@@ -578,10 +604,10 @@ export const Addons = (type: AddonType): React.ReactElement => {
                   }),
                 },
                 {
-                  id: `rp_${type}_${getAddonIdFromSection(section)}`,
+                  id: `rp_${type}_${getAddonIdFromSection(section, type)}`,
                   label:
-                    list?.find((x) => x.manifest.id === getAddonIdFromSection(section))?.manifest
-                      .name || "",
+                    list?.find((x) => x.manifest.id === getAddonIdFromSection(section, type))
+                      ?.manifest.name || "",
                 },
               ]}
               onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
@@ -687,7 +713,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Text>
         ) : null
       ) : (
-        (SettingsElement = getSettingsElement(getAddonIdFromSection(section), type)) && (
+        (SettingsElement = getSettingsElement(getAddonIdFromSection(section, type), type)) && (
           <ErrorBoundary>
             <SettingsElement />
           </ErrorBoundary>
@@ -697,5 +723,141 @@ export const Addons = (type: AddonType): React.ReactElement => {
   );
 };
 
+export function AddonsHeader({ type }: { type: AddonType }): React.ReactElement {
+  const unfilteredCount = AddonsHook.useField("unfilteredCount");
+  const section = AddonsHook.useField("section");
+  const list = AddonsHook.useField("list");
+
+  const setSection = (section: string): void =>
+    AddonsHook.setState({ type, unfilteredCount, section, list });
+
+  return (
+    <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
+      {section === `rp_${type}` ? (
+        intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+          type: label(type, { caps: "title", plural: true }),
+          count: unfilteredCount,
+        })
+      ) : (
+        <Breadcrumbs
+          className="replugged-breadcrumbs"
+          activeId={section}
+          breadcrumbs={[
+            {
+              id: `rp_${type}`,
+              label: intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+                type: label(type, { caps: "title", plural: true }),
+                count: unfilteredCount,
+              }),
+            },
+            {
+              id: `rp_${type}_${getAddonIdFromSection(section, type)}`,
+              label:
+                list?.find((x) => x.manifest.id === getAddonIdFromSection(section, type))?.manifest
+                  .name || "",
+            },
+          ]}
+          onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
+          renderCustomBreadcrumb={(breadcrumb, active) => (
+            <span
+              className={
+                active ? "replugged-addon-breadcrumbsActive" : "replugged-addon-breadcrumbsInactive"
+              }
+              style={{
+                fontVariantLigatures: "none",
+              }}>
+              {breadcrumb.label}
+            </span>
+          )}
+        />
+      )}
+    </Flex>
+  );
+}
+
+// gotta return a AddonsHeader as a element because of hooks
+export const PluginsHeader = (): React.ReactElement => <AddonsHeader type={AddonType.Plugin} />;
+
 export const Plugins = (): React.ReactElement => Addons(AddonType.Plugin);
+
+export function PluginsIcon(props: React.SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path
+        d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+export const PluginsStrings = (): string[] =>
+  [...plugins.plugins.values()].reduce(
+    (acc: string[], x) => {
+      acc.push(
+        x.manifest.name,
+        x.manifest.id,
+        x.manifest.description,
+        ...([x.manifest.author].flat().map(Object.values).flat() as string[]),
+      );
+      return acc;
+    },
+    [
+      intl.string(t.REPLUGGED_PLUGINS),
+      intl.formatToPlainString(t.REPLUGGED_ADDON_BROWSE, {
+        type: intl.string(t.REPLUGGED_PLUGINS),
+      }),
+      intl.formatToPlainString(t.REPLUGGED_ADDONS_LOAD_MISSING, {
+        type: intl.string(t.REPLUGGED_PLUGINS),
+      }),
+      intl.formatToPlainString(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
+        type: intl.string(t.REPLUGGED_PLUGINS),
+      }),
+    ],
+  );
+
+export const ThemesHeader = (): React.ReactElement => <AddonsHeader type={AddonType.Theme} />;
+
 export const Themes = (): React.ReactElement => Addons(AddonType.Theme);
+
+export function ThemesIcon(props: React.SVGProps<SVGSVGElement>): React.ReactElement {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 -960 960 960"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}>
+      <path
+        d="M440-80q-33 0-56.5-23.5T360-160v-160H240q-33 0-56.5-23.5T160-400v-280q0-66 47-113t113-47h480v440q0 33-23.5 56.5T720-320H600v160q0 33-23.5 56.5T520-80h-80ZM240-560h480v-200h-40v160h-80v-160h-40v80h-80v-80H320q-33 0-56.5 23.5T240-680v120Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+export const ThemesStrings = (): string[] =>
+  [...themes.themes.values()].reduce(
+    (acc: string[], x) => {
+      acc.push(
+        x.manifest.name,
+        x.manifest.id,
+        x.manifest.description,
+        ...([x.manifest.author].flat().map(Object.values).flat() as string[]),
+      );
+      return acc;
+    },
+    [
+      intl.string(t.REPLUGGED_THEMES),
+      intl.formatToPlainString(t.REPLUGGED_ADDON_BROWSE, {
+        type: intl.string(t.REPLUGGED_THEMES),
+      }),
+      intl.formatToPlainString(t.REPLUGGED_ADDONS_LOAD_MISSING, {
+        type: intl.string(t.REPLUGGED_THEMES),
+      }),
+      intl.formatToPlainString(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
+        type: intl.string(t.REPLUGGED_THEMES),
+      }),
+    ],
+  );
