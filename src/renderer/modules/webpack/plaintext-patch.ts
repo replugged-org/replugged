@@ -28,7 +28,8 @@ export function parseReplace(
   input: RegexReplacement["replace"],
   id: string,
 ): RegexReplacement["replace"] {
-  const coremodId = /replugged\.coremod\.(?!coremod)(softCrash)/.exec(id);
+  const coremodId =
+    id.startsWith("replugged.coremod") && /replugged\.coremod\.(?!coremod)(.+)/.exec(id);
   const replacement = coremodId
     ? `replugged.coremods.coremods.${coremodId[1]}`
     : `replugged.plugins.getExports("${id}")`;

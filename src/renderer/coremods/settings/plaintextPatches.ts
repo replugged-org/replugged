@@ -1,7 +1,5 @@
 import type { PlaintextPatch } from "src/types";
 
-const coremodStr = "replugged.coremods.coremods.settings";
-
 export default [
   {
     find: "getPredicateSections",
@@ -9,7 +7,7 @@ export default [
       {
         match: /(this\.props\.sections\.filter\(.+?\))}/,
         replace: (_, filteredSections) =>
-          `${coremodStr}?.insertSections(${filteredSections}) ?? ${filteredSections}};`,
+          `$exports?.insertSections(${filteredSections}) ?? ${filteredSections}};`,
       },
     ],
   },
@@ -18,12 +16,12 @@ export default [
     replacements: [
       {
         match: /\i\.line,\i\.os\),variant:"text-xs\/normal",color:"text-muted",children:\i}\):null/,
-        replace: (prefix) => `${prefix},${coremodStr}?.VersionInfo() ?? null`,
+        replace: (prefix) => `${prefix},$exports?.VersionInfo() ?? null`,
       },
       {
         match: /copyValue:(\i).join\(" "\)/g,
         replace: (_, copyValues) =>
-          `copyValue:[...${copyValues},${coremodStr}?._getVersionString()].join(" ")`,
+          `copyValue:[...${copyValues},$exports?._getVersionString()].join(" ")`,
       },
     ],
   },
