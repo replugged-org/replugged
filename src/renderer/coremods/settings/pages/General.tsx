@@ -333,34 +333,3 @@ export function General(): React.ReactElement {
     </>
   );
 }
-
-export function GeneralIcon(props: React.SVGProps<SVGSVGElement>): React.ReactElement {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path d="M0 0h24v24H0z" fill="none" />
-      <path
-        d="M16.01 7L16 3h-2v4h-4V3H8v4h-.01C7 6.99 6 7.99 6 8.99v5.49L9.5 18v3h5v-3l3.5-3.51v-5.5c0-1-1-2-1.99-1.99z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-export const GeneralStrings = (): string[] => [
-  intl.string(discordT.SETTINGS_GENERAL),
-  intl.string(t.REPLUGGED_SETTINGS_BADGES),
-  intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS),
-  intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE),
-  intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY),
-  intl.string(t.REPLUGGED_SETTINGS_DISABLE_MIN_SIZE),
-  intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR),
-  intl.string(t.REPLUGGED_SETTINGS_TRANSPARENT),
-  intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL),
-  intl.string(t.REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY),
-  intl.string(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS),
-  intl.string(t.REPLUGGED_SETTINGS_DISCORD_DEVTOOLS),
-  intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS),
-  intl.string(t.REPLUGGED_SETTINGS_KEEP_TOKEN),
-  intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER),
-  intl.string(t.REPLUGGED_SETTINGS_BACKEND),
-];

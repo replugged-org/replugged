@@ -8,17 +8,7 @@ export default [
     replacements: [
       {
         match: /(\i)\.buildLayout\(\)/,
-        replace: (layout, root) => `(${coremodStr}?.SettingsLibs?.insert?.(${root})??${layout})`,
-      },
-    ],
-  },
-  {
-    find: "getPredicateSections",
-    replacements: [
-      {
-        match: /(this\.props\.sections\.filter\(.+?\))}/,
-        replace: (_, filteredSections) =>
-          `${coremodStr}?.insertSections(${filteredSections}) ?? ${filteredSections}};`,
+        replace: (layout, root) => `(${coremodStr}?._insertNodes?.(${root})??${layout})`,
       },
     ],
   },
@@ -26,12 +16,8 @@ export default [
     find: ".versionHash",
     replacements: [
       {
-        match: /.appArch,children:.{30,60}\("span",{children:\[" \(",\i,"\)"\]}\)\]}\)/,
-        replace: (prefix) => `${prefix},${coremodStr}?._getCompactVersionInfo() ?? null`,
-      },
-      {
-        match: /\i\.line,\i\.os\),variant:"text-xs\/normal",color:"text-muted",children:\i}\):null/,
-        replace: (prefix) => `${prefix},${coremodStr}?.VersionInfo() ?? null`,
+        match: /\.appArch,children:.{30,60}\("span",{children:\[" \(",\i,"\)"\]}\)\]}\)/,
+        replace: (prefix) => `${prefix},${coremodStr}?._renderVersionInfo() ?? null`,
       },
       {
         match: /copyValue:(\i).join\(" "\)/g,

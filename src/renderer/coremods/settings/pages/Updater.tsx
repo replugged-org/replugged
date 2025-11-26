@@ -27,7 +27,7 @@ import {
 import { t } from "src/renderer/modules/i18n";
 import { sleep, useSetting, useSettingArray } from "src/renderer/util";
 import { UserSettingsForm } from "..";
-import Icons from "../icons";
+import { LinkIcon } from "../icons";
 import { getAddonType, label } from "./Addons";
 
 import "./Updater.css";
@@ -236,10 +236,13 @@ export function Updater(): React.ReactElement {
                       <Tooltip
                         text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
                           type: intl.string(discordT.UPDATE_BADGE_HEADER),
-                        })}
-                        className="replugged-addon-icon replugged-addon-icon-md">
-                        <Anchor href={sourceLink}>
-                          <Icons.Link />
+                        })}>
+                        <Anchor href={sourceLink} className="replugged-addon-icon-container">
+                          <LinkIcon
+                            size="refresh_sm"
+                            color="currentColor"
+                            className="replugged-addon-icon"
+                          />
                         </Anchor>
                       </Tooltip>
                     ) : null}
@@ -277,29 +280,3 @@ export function Updater(): React.ReactElement {
     </UserSettingsForm>
   );
 }
-
-export function UpdaterIcon(props: React.SVGProps<SVGSVGElement>): React.ReactElement {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 -960 960 960"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}>
-      <path
-        d="m482-200 114-113-114-113-42 42 43 43q-28 1-54.5-9T381-381q-20-20-30.5-46T340-479q0-17 4.5-34t12.5-33l-44-44q-17 25-25 53t-8 57q0 38 15 75t44 66q29 29 65 43.5t74 15.5l-38 38 42 42Zm165-170q17-25 25-53t8-57q0-38-14.5-75.5T622-622q-29-29-65.5-43T482-679l38-39-42-42-114 113 114 113 42-42-44-44q27 0 55 10.5t48 30.5q20 20 30.5 46t10.5 52q0 17-4.5 34T603-414l44 44ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-export const UpdaterStrings = (): string[] => [
-  intl.string(t.REPLUGGED_UPDATES_UPDATE_ALL),
-  intl.string(t.REPLUGGED_UPDATES_CHECK),
-  intl.string(discordT.UPDATE),
-  intl.string(t.REPLUGGED_UPDATES_UPDATER),
-  intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO),
-  intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL),
-  intl.string(t.REPLUGGED_UPDATES_UPDATER),
-];

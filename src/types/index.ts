@@ -59,11 +59,11 @@ export interface RepluggedPlugin {
 }
 
 export type { AnyAddonManifest, PluginExports, PluginManifest, ThemeManifest } from "./addon";
+export * from "./coremods/badges";
 export * from "./coremods/commands";
 export * from "./coremods/contextMenu";
-export * from "./coremods/message";
+export * from "./coremods/messagePopover";
 export * from "./coremods/settings";
-export * from "./coremods/transparency";
 export * from "./discord";
 export * from "./installer";
 export * from "./settings";
