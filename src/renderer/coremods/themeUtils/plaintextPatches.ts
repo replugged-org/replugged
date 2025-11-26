@@ -1,14 +1,12 @@
 import type { PlaintextPatch } from "src/types";
 
-const coremodStr = "replugged.coremods.coremods.themeUtils";
-
 export default [
   {
     find: "useRootElementContext",
     replacements: [
       {
         match: /"high-contrast-mode":\i/,
-        replace: `$&,...(${coremodStr}?._insertHTMLClasses() ?? {})`,
+        replace: `$&,...($exports?._insertHTMLClasses() ?? {})`,
       },
     ],
   },
@@ -17,7 +15,7 @@ export default [
     replacements: [
       {
         match: /\.messageListItem,/,
-        replace: `$&...(${coremodStr}?._insertMessageAttributes(arguments[0].message) ?? {}),`,
+        replace: `$&...($exports?._insertMessageAttributes(arguments[0].message) ?? {}),`,
       },
     ],
   },
@@ -26,7 +24,7 @@ export default [
     replacements: [
       {
         match: /className:\i\(\)\(\i\.mask/g,
-        replace: `...(${coremodStr}?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
+        replace: `...($exports?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
       },
     ],
   },
