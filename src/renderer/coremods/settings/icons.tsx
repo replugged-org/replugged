@@ -1,0 +1,126 @@
+import { components } from "@common";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
+
+import type { GetIconSize, ICON_SIZE } from "discord-client-types/discord_app/design/web";
+
+interface IconProps extends React.ComponentPropsWithoutRef<"svg"> {
+  size?: keyof ICON_SIZE;
+  width?: string | number;
+  height?: string | number;
+  color?: string;
+  colorClass?: string;
+}
+
+type Icon = React.FC<IconProps>;
+
+function getIcon(source: string, from: Record<string, unknown> = components): Icon {
+  return getFunctionBySource<Icon>(from, source)!;
+}
+
+export const ClydeIcon = getIcon("M19.73 4.87a18.2 18.2 0 0 0-4.6-1.44c");
+export const DownloadIcon = getIcon("M12 2a1 1 0 0 1 1 1v10.59l3.3-3.3a1");
+export const LinkIcon = getIcon("M16.32 14.72a1 1 0 0 1 0-1.41l2.51-2.51a3.98");
+export const MagicWandIcon = getIcon("M12.37 9.04c.25-.26.73-.2 1.06.13L15");
+export const PaintPaletteIcon = getIcon(
+  "",
+  await waitForModule(filters.bySource("M19 16h-5a2 2 0 0 0-2 2v2c0 1.66-1.37")),
+);
+export const RefreshIcon = getIcon("M21 2a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-6a1");
+export const SettingsIcon = getIcon("11.1 0 0 0-2.88 0ZM16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z");
+export const TrashIcon = getIcon("M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3");
+
+// We should probably use 'makeIconCompat' function, instead of remaking the prop compatibility ourselves.
+
+const getIconSize = (await waitForModule<Record<string, GetIconSize>>(
+  filters.bySource(/if\("custom"===\i\)/),
+).then((mod) => Object.values(mod).find((x) => typeof x === "function")))!;
+
+// ? Icon is not imported in the source, so it gets stripped out when compiled. We define it here manually.
+export function PuzzlePieceIcon({
+  size = "md",
+  width,
+  height,
+  color,
+  colorClass = "",
+  ...props
+}: IconProps): React.ReactElement {
+  const iconSize = getIconSize(size);
+  const iconWidth = iconSize?.width ?? width;
+  const iconHeight = iconSize?.height ?? height;
+
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={iconWidth}
+      height={iconHeight}
+      fill="none"
+      viewBox="0 0 24 24">
+      <path
+        fill={color}
+        d="M16 4a3 3 0 1 1-5.98-.31c.03-.35-.21-.69-.56-.69H7a3 3 0 0 0-3 3v2.5c0 .28-.23.5-.5.54a3 3 0 0 0 0 5.92c.27.04.5.26.5.54V18a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3h-2.46c-.35 0-.6.34-.56.69L16 4Z"
+        className={colorClass}
+      />
+    </svg>
+  );
+}
+
+export function RepluggedIcon({
+  size = "md",
+  width,
+  height,
+  color,
+  colorClass = "",
+  ...props
+}: IconProps): React.ReactElement {
+  const iconSize = getIconSize(size);
+  const iconWidth = iconSize?.width ?? width;
+  const iconHeight = iconSize?.height ?? height;
+
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={iconWidth}
+      height={iconHeight}
+      fill="none"
+      viewBox="0 0 24 24">
+      <path
+        fill={color}
+        d="M21.2113 21.1165C21.2464 21.1564 21.2752 21.2014 21.2968 21.25C21.4437 21.5798 21.4422 21.9631 21.2807 22.2974C21.2421 22.3773 21.1956 22.4519 21.1424 22.5202C20.8902 22.8457 20.4534 22.9654 20.0705 22.8139C18.4792 22.2067 16.3815 21.6664 14.9953 20.8932C12.2999 19.3898 10.4439 17.9543 11.7315 13.9728C11.7549 13.9004 11.82 13.8495 11.8959 13.8442C13.5122 13.7215 14.9486 12.5981 15.3919 10.9434C15.5359 10.4061 15.6714 9.90039 15.7793 9.49769C15.8427 9.26099 15.8095 9.00879 15.687 8.79657C15.5645 8.58434 15.3627 8.42949 15.126 8.36606L14.7476 8.26469L15.534 5.33001C15.5791 5.16148 15.5555 4.98192 15.4682 4.83083C15.381 4.67973 15.2373 4.56948 15.0688 4.52433C14.9003 4.47917 14.7207 4.50281 14.5696 4.59004C14.4185 4.67728 14.3083 4.82096 14.2631 4.98948L13.4768 7.92416L10.9718 7.25295L11.7581 4.31827C11.8033 4.14975 11.7796 3.97019 11.6924 3.8191C11.6052 3.66801 11.4615 3.55775 11.293 3.5126C11.2928 3.51256 11.2927 3.51253 11.2926 3.5125C11.1242 3.46737 10.9447 3.49099 10.7937 3.57818C10.6427 3.66537 10.5325 3.80897 10.4874 3.97739L9.70094 6.91244L9.3226 6.81106C9.0859 6.74763 8.83369 6.78084 8.62147 6.90336C8.40925 7.02589 8.25439 7.2277 8.19097 7.46441C8.08306 7.86711 7.94756 8.3728 7.80358 8.91014C7.37539 10.5082 7.99704 12.1402 9.24573 13.0739C9.31053 13.1217 9.33726 13.2057 9.31199 13.2822C7.78699 17.8996 9.66177 20.1706 11.4389 21.5908C11.8093 21.8869 12.2146 22.1659 12.639 22.4247C12.7573 22.4973 12.813 22.6397 12.7753 22.7733C12.7376 22.9069 12.6157 22.9992 12.4769 22.9992C9.93721 22.9999 4.2432 22.9999 4.2432 22.9999C3.5566 22.9999 3 22.4433 3 21.7567V2.2432C3 1.91333 3.13111 1.59697 3.36445 1.3638C3.5978 1.13063 3.91425 0.999754 4.24413 1C7.47472 1.00242 15.8805 1.0087 15.8805 1.0087C17.3449 1.0087 18.7494 1.59044 19.7849 2.62595C20.8204 3.66145 21.4021 5.0659 21.4021 6.53033V10.5142C21.4021 11.9786 20.8204 13.3831 19.7849 14.4186C18.4481 15.7554 18.38 17.9008 19.6293 19.3197C20.4155 20.2126 21.0433 20.9256 21.2113 21.1164L21.2113 21.1165L21.2113 21.1165Z"
+        className={colorClass}
+      />
+    </svg>
+  );
+}
+
+export function GitHubIcon({
+  size = "md",
+  width,
+  height,
+  color,
+  colorClass = "",
+  ...props
+}: IconProps): React.ReactElement {
+  const iconSize = getIconSize(size);
+  const iconWidth = iconSize?.width ?? width;
+  const iconHeight = iconSize?.height ?? height;
+
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={iconWidth}
+      height={iconHeight}
+      fill="none"
+      viewBox="0 0 24 24">
+      <path
+        fill={color}
+        clipRule="evenodd"
+        d="m12.0001 2.00001c-2.37642-.00242-4.67599.84151-6.48665 2.38056-1.81066 1.53904-3.01406 3.67259-3.39455 6.01833-.38048 2.3457.08682 4.7502 1.31816 6.7827 1.23135 2.0325 3.14625 3.56 5.40154 4.3089.50338.0921.6814-.221.6814-.485v-1.7004c-2.79312.6077-3.38244-1.3444-3.38244-1.3444-.1853-.605-.57896-1.1248-1.11111-1.4671-.90239-.6139.07367-.6139.07367-.6139.31632.0447.61834.1607.88316.3394.26483.1787.48553.4153.64538.6919.13583.2463.31895.4633.53886.6387.21991.1753.47228.3055.74263.3831.27034.0775.55335.1009.83277.0689.27942-.0321.54976-.119.7955-.2558.03853-.505.25624-.9797.61388-1.3383-2.22223-.2517-4.55495-1.1111-4.55495-4.911-.01526-.9926.3518-1.95311 1.02517-2.6826-.2999-.86309-.26485-1.80732.09822-2.64579 0 0 .84101-.27011 2.75015 1.02517 1.63941-.45012 3.36981-.45012 5.00921 0 1.9091-1.29528 2.744-1.02517 2.744-1.02517.3681.8296.412 1.76706.1228 2.62737.6734.72949 1.0404 1.69002 1.0252 2.68262 0 3.8429-2.3389 4.6839-4.5673 4.911.239.2402.4235.5289.5411.8467.1175.3177.1654.657.1403.9949v2.744c0 .3254.1781.5771.6876.4789 2.2296-.7687 4.1158-2.3006 5.3254-4.3251 1.2096-2.0246 1.6648-4.4115 1.285-6.7391-.3797-2.32761-1.5699-4.44612-3.3602-5.98125-1.7904-1.53514-4.0657-2.38812-6.4239-2.40824z"
+        fillRule="evenodd"
+        className={colorClass}
+      />
+    </svg>
+  );
+}
