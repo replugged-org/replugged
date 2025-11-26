@@ -6,8 +6,6 @@ export type ModuleExports =
   | string
   | boolean
   | symbol;
-export type ModuleExportsWithProps<P extends string> = Record<P, unknown> &
-  Record<PropertyKey, unknown>;
 
 export interface RawModule<T = unknown> {
   id: number;

@@ -2,12 +2,11 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
-    find: "getPredicateSections",
+    find: '"$Root"',
     replacements: [
       {
-        match: /(this\.props\.sections\.filter\(.+?\))}/,
-        replace: (_, filteredSections) =>
-          `$exports?.insertSections(${filteredSections}) ?? ${filteredSections}};`,
+        match: /(\i)\.buildLayout\(\)/,
+        replace: (layout, root) => `($exports?._insertNodes?.(${root})??${layout})`,
       },
     ],
   },
@@ -15,8 +14,8 @@ export default [
     find: ".versionHash",
     replacements: [
       {
-        match: /\i\.line,\i\.os\),variant:"text-xs\/normal",color:"text-muted",children:\i}\):null/,
-        replace: (prefix) => `${prefix},$exports?.VersionInfo() ?? null`,
+        match: /\.appArch,children:.{30,60}\("span",{children:\[" \(",\i,"\)"\]}\)\]}\)/,
+        replace: (prefix) => `${prefix},$exports?._renderVersionInfo() ?? null`,
       },
       {
         match: /copyValue:(\i).join\(" "\)/g,
