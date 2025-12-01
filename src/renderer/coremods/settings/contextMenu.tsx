@@ -70,7 +70,7 @@ export default (_data: unknown, menu: MenuProps): void => {
       <MenuItem
         id="replugged-configuration"
         label={intl.string(discordT.SETTINGS_GENERAL)}
-        action={() => UserSettingUtils.openUserSettings("replugged-general")}>
+        action={() => UserSettingUtils.openUserSettings("replugged_general_panel")}>
         <MenuCheckboxItem
           id="replugged-general-quickcss"
           label={intl.string(t.REPLUGGED_QUICKCSS)}
@@ -82,25 +82,25 @@ export default (_data: unknown, menu: MenuProps): void => {
         <MenuItem
           id="replugged-quick-css"
           label={intl.string(t.REPLUGGED_QUICKCSS)}
-          action={() => UserSettingUtils.openUserSettings("replugged-quick-css")}
+          action={() => UserSettingUtils.openUserSettings("replugged_quickcss_panel")}
         />
       )}
       <MenuItem
         id="replugged-plugins"
         label={intl.string(t.REPLUGGED_PLUGINS)}
-        action={() => UserSettingUtils.openUserSettings("replugged-plugins")}>
+        action={() => UserSettingUtils.openUserSettings("replugged_plugins_panel")}>
         {MapAddonMenuItems(plugins.plugins, plugins)}
       </MenuItem>
       <MenuItem
         id="replugged-themes"
         label={intl.string(t.REPLUGGED_THEMES)}
-        action={() => UserSettingUtils.openUserSettings("replugged-themes")}>
+        action={() => UserSettingUtils.openUserSettings("replugged_themes_panel")}>
         {MapAddonMenuItems(themes.themes, themes)}
       </MenuItem>
       <MenuItem
         id="replugged-updater"
         label={intl.string(t.REPLUGGED_UPDATES_UPDATER)}
-        action={() => UserSettingUtils.openUserSettings("replugged-updater")}
+        action={() => UserSettingUtils.openUserSettings("replugged_updater_panel")}
       />
     </>,
   );
