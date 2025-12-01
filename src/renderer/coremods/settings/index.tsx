@@ -5,8 +5,9 @@ import { filters, waitForModule } from "@webpack";
 import type React from "react";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
-import { ContextMenuTypes, type UserSettingsFormType } from "src/types";
-import { type UserSettingsFormType } from "src/types";
+import { ContextMenuTypes } from "src/types";
+// eslint-disable-next-line no-duplicate-imports
+import type { UserSettingsFormType } from "src/types";
 import {
   DownloadIcon,
   MagicWandIcon,
@@ -71,7 +72,6 @@ export function start(): void {
       }),
     ],
   });
-
 
   addSettingNode(section, { after: "billing_section" });
 }
