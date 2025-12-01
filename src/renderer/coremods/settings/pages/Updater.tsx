@@ -27,7 +27,7 @@ import {
 import { t } from "src/renderer/modules/i18n";
 import { sleep, useSetting, useSettingArray } from "src/renderer/util";
 import { UserSettingsForm } from "..";
-import Icons from "../icons";
+import { LinkIcon } from "../icons";
 import { getAddonType, label } from "./Addons";
 
 import "./Updater.css";
@@ -236,10 +236,13 @@ export function Updater(): React.ReactElement {
                       <Tooltip
                         text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
                           type: intl.string(discordT.UPDATE_BADGE_HEADER),
-                        })}
-                        className="replugged-addon-icon replugged-addon-icon-md">
-                        <Anchor href={sourceLink}>
-                          <Icons.Link />
+                        })}>
+                        <Anchor href={sourceLink} className="replugged-addon-icon-container">
+                          <LinkIcon
+                            size="refresh_sm"
+                            color="currentColor"
+                            className="replugged-addon-icon"
+                          />
                         </Anchor>
                       </Tooltip>
                     ) : null}

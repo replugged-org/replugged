@@ -67,9 +67,8 @@ export const UserFlags = getExportsForProps<Record<string, string | number>>(Con
 ])!;
 
 // ThemeColor
-export const CSSVariables = await waitForProps<Record<string, string>>(
-  "TEXT_NORMAL",
-  "BACKGROUND_PRIMARY",
+export const CSSVariables = await waitForModule<Record<string, string>>(
+  filters.bySource('APP_BORDER_FRAME="var(--app-border-frame)"'),
 );
 
 interface ColorResponse {
