@@ -3,8 +3,9 @@ import type React from "react";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-const mod = await waitForModule(filters.bySource('"SingleSelect"'));
-const SingleSelect = getFunctionBySource<Design.SingleSelect>(mod, '"SingleSelect"')!;
+const selectSource = '"renderLeading","renderTrailing","value","onChange"';
+const mod = await waitForModule(filters.bySource(selectSource));
+const SingleSelect = getFunctionBySource<Design.SingleSelect>(mod, selectSource)!;
 
 interface CustomSingleSelectProps<
   TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
