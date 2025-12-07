@@ -1,10 +1,13 @@
+import { Injector } from "@replugged";
 import { t as discordT, intl } from "@common/i18n";
 import { Text } from "@components";
 import { filters, waitForModule } from "@webpack";
 import type React from "react";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
-import { type UserSettingsFormType } from "src/types";
+import { ContextMenuTypes } from "src/types";
+// eslint-disable-next-line no-duplicate-imports
+import type { UserSettingsFormType } from "src/types";
 import {
   DownloadIcon,
   MagicWandIcon,
@@ -14,6 +17,9 @@ import {
 } from "./icons";
 import { addSettingNode, createCustomSettingsPane, createSection, removeSettingNode } from "./lib";
 import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
+import settingsContext from "./contextMenu";
+
+const injector = new Injector();
 
 export function _renderVersionInfo(): React.ReactElement {
   return (
@@ -34,6 +40,7 @@ export const UserSettingsForm = await waitForModule<UserSettingsFormType>(
 );
 
 export function start(): void {
+  injector.utils.addMenuItem(ContextMenuTypes.UserSettingsCog, settingsContext);
   const section = createSection("replugged_section", {
     useLabel: () => intl.string(t.REPLUGGED_SETTINGS),
     buildLayout: () => [
@@ -69,6 +76,7 @@ export function start(): void {
   addSettingNode(section, { after: "billing_section" });
 }
 export function stop(): void {
+  injector.uninjectAll();
   removeSettingNode("replugged_section");
 }
 
