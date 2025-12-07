@@ -35,17 +35,18 @@ class BrowserWindow extends electron.BrowserWindow {
   public constructor(opts: Electron.BrowserWindowConstructorOptions) {
     const generalSettings = getAllSettings("dev.replugged.Settings");
     const originalPreload = opts.webPreferences?.preload;
+    const isSplash = originalPreload?.endsWith("splashScreenPreload.js");
 
     if (opts.frame && process.platform === "linux" && generalSettings.titleBar) opts.frame = void 0;
 
     // Load our preload script if it's the main window or the splash screen
-    if (
-      opts.webPreferences?.preload &&
-      (opts.title || opts.webPreferences.preload.includes("splash"))
-    ) {
+    if (opts.webPreferences?.preload && (opts.title || isSplash)) {
       opts.webPreferences.preload = join(__dirname, "./preload.js");
 
-      if (generalSettings.transparency) {
+      if (
+        generalSettings.transparency === "app" ||
+        (generalSettings.transparency === "splash" && isSplash)
+      ) {
         opts.transparent = true;
         opts.backgroundColor = "#00000000";
         if (process.platform === "win32" && generalSettings.backgroundMaterial) {
