@@ -1,10 +1,10 @@
-import { getFunctionBySource } from "@webpack";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
-import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-const SingleSelect = getFunctionBySource<Design.SingleSelect>(components, /\.serialize\(/)!;
+const mod = await waitForModule(filters.bySource('"SingleSelect"'));
+const SingleSelect = getFunctionBySource<Design.SingleSelect>(mod, '"SingleSelect"')!;
 
 interface CustomSingleSelectProps<
   TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
