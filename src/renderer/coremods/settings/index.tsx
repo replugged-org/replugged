@@ -12,8 +12,16 @@ import {
   PuzzlePieceIcon,
   RepluggedIcon,
 } from "./icons";
-import { addSettingNode, createCustomSettingsPane, createSection, removeSettingNode } from "./lib";
-import { General, Plugins, QuickCSS, Themes, Updater } from "./pages";
+import { addSettingNode, createCustomSettingsPanel, createSection, removeSettingNode } from "./lib";
+import {
+  AddonType,
+  General,
+  Plugins,
+  QuickCSS,
+  Themes,
+  Updater,
+  useAddonPanelTitle,
+} from "./pages";
 
 export function _renderVersionInfo(): React.ReactElement {
   return (
@@ -35,30 +43,34 @@ export const UserSettingsForm = await waitForModule<UserSettingsFormType>(
 
 export function start(): void {
   const section = createSection("replugged_section", {
-    useLabel: () => intl.string(t.REPLUGGED_SETTINGS),
+    useTitle: () => intl.string(t.REPLUGGED_SETTINGS),
     buildLayout: () => [
-      createCustomSettingsPane("general", {
+      createCustomSettingsPanel("general", {
         icon: RepluggedIcon,
         useTitle: () => intl.string(discordT.SETTINGS_GENERAL),
         render: General,
       }),
-      createCustomSettingsPane("quickcss", {
+      createCustomSettingsPanel("quickcss", {
         icon: MagicWandIcon,
         useTitle: () => intl.string(t.REPLUGGED_QUICKCSS),
         render: QuickCSS,
         usePredicate: () => generalSettings.useValue("quickCSS"),
       }),
-      createCustomSettingsPane("plugins", {
+      createCustomSettingsPanel("plugins", {
         icon: PuzzlePieceIcon,
         useTitle: () => intl.string(t.REPLUGGED_PLUGINS),
+        usePanelTitle: () => useAddonPanelTitle(AddonType.Plugin),
+        getLegacySearchKey: () => intl.string(t.REPLUGGED_PLUGINS),
         render: Plugins,
       }),
-      createCustomSettingsPane("themes", {
+      createCustomSettingsPanel("themes", {
         icon: PaintPaletteIcon,
         useTitle: () => intl.string(t.REPLUGGED_THEMES),
+        usePanelTitle: () => useAddonPanelTitle(AddonType.Theme),
+        getLegacySearchKey: () => intl.string(t.REPLUGGED_THEMES),
         render: Themes,
       }),
-      createCustomSettingsPane("updater", {
+      createCustomSettingsPanel("updater", {
         icon: DownloadIcon,
         useTitle: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
         render: Updater,

@@ -4,14 +4,15 @@ import type React from "react";
 export enum NodeType {
   ROOT,
   SECTION,
-  SIDEBAR,
+  SIDEBAR_ITEM,
   PANEL,
-  PANE,
   SPLIT,
   CATEGORY,
   ACCORDION,
   LIST,
+  RELATED,
   FIELD_SET,
+  TAB_ITEM,
   STATIC,
   BUTTON,
   TOGGLE,
@@ -24,7 +25,6 @@ export enum NodeType {
 }
 
 enum TrailingType {
-  POPOVER,
   BADGE_NEW,
   BADGE_COUNT,
   STRONGLY_DISCOURAGED_CUSTOM,
@@ -32,21 +32,19 @@ enum TrailingType {
 
 export interface CommonNodeProps {
   useTitle?: (state?: boolean) => string;
-  useNavigationTitle?: () => string;
   usePredicate?: () => boolean;
   useSearchTerms?: () => string[];
   getLegacySearchKey?: () => string;
 }
 
 export interface SectionNode extends CommonNodeProps {
-  useLabel?: () => string;
   hoisted?: boolean;
 }
 
 interface TrailingBadgeNew {
   type: TrailingType.BADGE_NEW;
   getDismissibleContentTypes?: () => number[];
-  badgeComponent?: React.ElementType;
+  stronglyDiscouragedBadgeComponent?: React.ElementType;
 }
 
 interface TrailingBadgeCount {
@@ -57,7 +55,7 @@ interface TrailingBadgeCount {
 interface TrailingStronglyDiscouragedCustom {
   type: TrailingType.STRONGLY_DISCOURAGED_CUSTOM;
   getDismissibleContentTypes?: () => number[];
-  useDecoration?: (visibleContent: number | null, isSelected: boolean) => React.ReactNode;
+  useCustomDecoration?: (visibleContent: number | null, isSelected: boolean) => React.ReactNode;
 }
 
 type SidebarItemTrailingType =
@@ -73,12 +71,10 @@ export interface SidebarItemNode extends CommonNodeProps {
 
 export interface PanelNode extends CommonNodeProps {
   useTitle: (state?: boolean) => string;
+  StronglyDiscouragedCustomComponent?: React.ElementType;
   useBadge?: () => React.ReactNode;
   notice?: { stores?: Store[]; element: React.ElementType };
-}
-
-export interface PaneNode extends CommonNodeProps {
-  render?: React.ElementType;
+  hideInStreamerMode?: boolean;
 }
 
 export interface ProcessedNode {
@@ -88,7 +84,7 @@ export interface ProcessedNode {
   [key: string]: unknown;
 }
 
-export type FactoryFunction<T = Record<string, unknown>> = (
+export type BuilderFunction<T = Record<string, unknown>> = (
   key: string,
   config: T & { buildLayout: () => ProcessedNode[] },
 ) => T & ProcessedNode;

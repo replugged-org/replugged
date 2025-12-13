@@ -1,8 +1,7 @@
 import { ErrorBoundary } from "@components";
 import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type {
-  FactoryFunction,
-  PaneNode,
+  BuilderFunction,
   PanelNode,
   ProcessedNode,
   SectionNode,
@@ -13,13 +12,12 @@ import { NodeType } from "src/types";
 
 const mod = await waitForModule(filters.bySource('"$Root"'));
 
-export const createSection = getFunctionBySource<FactoryFunction<SectionNode>>(mod, "SECTION,")!;
-export const createSidebarItem = getFunctionBySource<FactoryFunction<SidebarItemNode>>(
+export const createSection = getFunctionBySource<BuilderFunction<SectionNode>>(mod, "SECTION,")!;
+export const createSidebarItem = getFunctionBySource<BuilderFunction<SidebarItemNode>>(
   mod,
   "SIDEBAR_ITEM,",
 )!;
-export const createPanel = getFunctionBySource<FactoryFunction<PanelNode>>(mod, "PANEL,")!;
-export const createPane = getFunctionBySource<FactoryFunction<PaneNode>>(mod, "PANE,")!;
+export const createPanel = getFunctionBySource<BuilderFunction<PanelNode>>(mod, "PANEL,")!;
 
 interface CustomNode {
   node: ProcessedNode;
@@ -54,39 +52,43 @@ export function removeSettingNode(key: string): void {
   if (index !== -1) customNodes.splice(index, 1);
 }
 
-type CustomSettingsPaneOptions = Required<
-  Pick<SidebarItemNode, "icon" | "useTitle"> & Pick<PaneNode, "render">
-> &
-  Pick<SidebarItemNode, "usePredicate">;
+type CustomSettingsPaneOptions = Required<Pick<SidebarItemNode, "icon" | "useTitle">> &
+  Pick<SidebarItemNode, "usePredicate" | "getLegacySearchKey"> & {
+    usePanelTitle?: PanelNode["useTitle"];
+    render: React.ElementType;
+  };
 
 /**
- * Creates a custom settings pane with a sidebar item and panel.
- * @param key The unique key for the custom settings pane.
- * @param options The options for the custom settings pane including icon, title, render function, and predicate.
- * @returns A sidebar item node representing the custom settings pane.
+ * Creates a custom settings panel with a sidebar item.
+ * @param key The unique key for the custom settings panel.
+ * @param options The options for the custom settings panel including icon, title, render function, and predicate.
+ * @returns The custom settings node.
  */
-export function createCustomSettingsPane(
+export function createCustomSettingsPanel(
   key: string,
-  { icon, useTitle, render: Pane, usePredicate }: CustomSettingsPaneOptions,
+  {
+    icon,
+    useTitle,
+    render: Panel,
+    usePredicate,
+    getLegacySearchKey,
+    usePanelTitle,
+  }: CustomSettingsPaneOptions,
 ): ReturnType<typeof createSidebarItem> {
   return createSidebarItem(`replugged_${key}_sidebar_item`, {
     icon,
     useTitle,
-    getLegacySearchKey: useTitle,
+    getLegacySearchKey: getLegacySearchKey ?? useTitle,
     ...(usePredicate && { usePredicate }),
     buildLayout: () => [
       createPanel(`replugged_${key}_panel`, {
-        useTitle,
-        buildLayout: () => [
-          createPane(`replugged_${key}_pane`, {
-            render: () => (
-              <ErrorBoundary>
-                <Pane />
-              </ErrorBoundary>
-            ),
-            buildLayout: () => [],
-          }),
-        ],
+        useTitle: usePanelTitle ?? useTitle,
+        StronglyDiscouragedCustomComponent: () => (
+          <ErrorBoundary>
+            <Panel />
+          </ErrorBoundary>
+        ),
+        buildLayout: () => [],
       }),
     ],
   });
@@ -96,7 +98,7 @@ export function _insertNodes(root: ProcessedNode): ProcessedNode[] {
   const layout = [...root.buildLayout()];
   const expectedChildType: NodeType = root.type + 1;
 
-  if (expectedChildType !== NodeType.SECTION && expectedChildType !== NodeType.SIDEBAR) {
+  if (expectedChildType !== NodeType.SECTION && expectedChildType !== NodeType.SIDEBAR_ITEM) {
     return layout;
   }
 

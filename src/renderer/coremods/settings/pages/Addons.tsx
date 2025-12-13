@@ -527,6 +527,14 @@ function getAddonIdFromSection(section: string, type: AddonType): string {
   return section.startsWith(prefix) ? section.slice(prefix.length) : section;
 }
 
+export function useAddonPanelTitle(type: AddonType): string {
+  const count = listAddons(type).size;
+  return intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+    type: label(type, { caps: "title", plural: true }),
+    count,
+  });
+}
+
 export const Addons = (type: AddonType): React.ReactElement => {
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
@@ -657,7 +665,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
         ) : null
       ) : (
         (SettingsElement = getSettingsElement(getAddonIdFromSection(section, type), type)) && (
-          <ErrorBoundary>
+          <>
             <Button
               className="replugged-addon-back"
               innerClassName="replugged-addon-back-button"
@@ -669,8 +677,10 @@ export const Addons = (type: AddonType): React.ReactElement => {
                 {intl.string(discordT.BACK)}
               </Text>
             </Button>
-            <SettingsElement />
-          </ErrorBoundary>
+            <ErrorBoundary>
+              <SettingsElement />
+            </ErrorBoundary>
+          </>
         )
       )}
     </UserSettingsForm>
