@@ -6,10 +6,10 @@ import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { type UserSettingsFormType } from "src/types";
 import {
-  DownloadIcon,
   MagicWandIcon,
-  PaintPaletteIcon,
+  PaintbrushThinIcon,
   PuzzlePieceIcon,
+  RefreshIcon,
   RepluggedIcon,
 } from "./icons";
 import { addSettingNode, createCustomSettingsPanel, createSection, removeSettingNode } from "./lib";
@@ -64,14 +64,14 @@ export function start(): void {
         render: Plugins,
       }),
       createCustomSettingsPanel("themes", {
-        icon: PaintPaletteIcon,
+        icon: PaintbrushThinIcon,
         useTitle: () => intl.string(t.REPLUGGED_THEMES),
         usePanelTitle: () => useAddonPanelTitle(AddonType.Theme),
         getLegacySearchKey: () => intl.string(t.REPLUGGED_THEMES),
         render: Themes,
       }),
       createCustomSettingsPanel("updater", {
-        icon: DownloadIcon,
+        icon: RefreshIcon,
         useTitle: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
         render: Updater,
       }),

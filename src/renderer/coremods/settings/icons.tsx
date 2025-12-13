@@ -18,13 +18,9 @@ function getIcon(source: string, from: Record<string, unknown> = components): Ic
 }
 
 export const ClydeIcon = getIcon("M19.73 4.87a18.2 18.2 0 0 0-4.6-1.44c");
-export const DownloadIcon = getIcon("M12 2a1 1 0 0 1 1 1v10.59l3.3-3.3a1");
 export const LinkIcon = getIcon("M16.32 14.72a1 1 0 0 1 0-1.41l2.51-2.51a3.98");
 export const MagicWandIcon = getIcon("M12.37 9.04c.25-.26.73-.2 1.06.13L15");
-export const PaintPaletteIcon = getIcon(
-  "",
-  await waitForModule(filters.bySource("M19 16h-5a2 2 0 0 0-2 2v2c0 1.66-1.37")),
-);
+export const PaintbrushThinIcon = getIcon(".99.25l2.57-.75A3 3 0 0 0 16.6 13l4.91-8.05a1.8");
 export const RefreshIcon = getIcon("M21 2a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-6a1");
 export const SettingsIcon = getIcon("11.1 0 0 0-2.88 0ZM16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z");
 export const TrashIcon = getIcon("M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3");

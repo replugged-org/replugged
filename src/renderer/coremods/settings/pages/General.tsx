@@ -133,7 +133,7 @@ function GeneralTab(): React.ReactElement {
             description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
           />
         )}
-        <div>
+        <Stack gap={8}>
           <Switch
             checked={transparency}
             onChange={(value) => {
@@ -151,7 +151,7 @@ function GeneralTab(): React.ReactElement {
                 : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
             </Notice>
           )}
-        </div>
+        </Stack>
         {window.DiscordNative.process.platform === "win32" && (
           <Select
             value={backgroundMaterial}
@@ -197,7 +197,7 @@ function AdvancedTab(): React.ReactElement {
         {intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}
       </Notice>
       <FieldSet label={intl.string(t.REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS)}>
-        <div>
+        <Stack gap={8}>
           <Switch
             checked={experiments}
             onChange={(value) => {
@@ -210,7 +210,7 @@ function AdvancedTab(): React.ReactElement {
           <Notice messageType={Notice.Types.WARNING}>
             {intl.format(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING, {})}
           </Notice>
-        </div>
+        </Stack>
         <Switch
           disabled={!experiments}
           checked={staffDevTools}
