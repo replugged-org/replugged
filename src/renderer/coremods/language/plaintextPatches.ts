@@ -2,17 +2,11 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
-    find: ".flagImage",
+    find: ".LANGUAGE_AND_TIME_PANEL,{section:",
     replacements: [
-      // ? Website is down for now, so disabling this patch
-      /* {
-        match: /\(0,\i\.jsx\).{0,100}options:\i,value:\i}\)/,
-        replace: `[$exports?.Card() ?? null,$&]`,
-      }, */
       {
-        match: /children:\[(.+?\.localeName[^\]]*?)]/,
-        replace: (_, ogChild) =>
-          `children:$exports?.Percentage?$exports.Percentage(${ogChild}):[${ogChild}]`,
+        match: /value:(\i),options/,
+        replace: `helperText:$exports?.getFormattedPercentage($1),$&`,
       },
     ],
   },
