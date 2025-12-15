@@ -6,7 +6,7 @@ export default [
     replacements: [
       {
         match: /"high-contrast-mode":\i/,
-        replace: `$&,replugged:true,"april-fools":(new Date()).toGMTString().includes("01 Apr")`,
+        replace: `$&,...($exports?._insertHTMLClasses() ?? {})`,
       },
     ],
   },
@@ -15,8 +15,7 @@ export default [
     replacements: [
       {
         match: /\.messageListItem,/,
-        replace:
-          "$&...(replugged.coremods.coremods.themeUtils?._insertMessageAttributes(arguments[0].message) ?? {}),",
+        replace: `$&...($exports?._insertMessageAttributes(arguments[0].message) ?? {}),`,
       },
     ],
   },
@@ -25,7 +24,7 @@ export default [
     replacements: [
       {
         match: /className:\i\(\)\(\i\.mask/g,
-        replace: `...(replugged.coremods.coremods.themeUtils?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
+        replace: `...($exports?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
       },
     ],
   },

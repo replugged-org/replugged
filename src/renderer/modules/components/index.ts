@@ -44,9 +44,6 @@ importTimeout("Breadcrumbs", import("./Breadcrumbs"), (mod) => (Breadcrumbs = mo
 export let Button: VoidDesign.Button;
 importTimeout("Button", import("./ButtonItem"), (mod) => (Button = mod.Button));
 
-export let Checkbox: Design.Checkbox;
-importTimeout("Checkbox", import("./Checkbox"), (mod) => (Checkbox = mod.default));
-
 export let Clickable: typeof Design.Clickable;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
@@ -56,20 +53,11 @@ importTimeout("ColorPicker", import("./ColorPickerItem"), (mod) => (ColorPicker 
 export let Divider: Design.Divider;
 importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
 
+export let Field: Design.Field;
+importTimeout("Field", import("./Field"), (mod) => (Field = mod.default));
+
 export let FieldSet: Design.FieldSet;
 importTimeout("FieldSet", import("./FieldSet"), (mod) => (FieldSet = mod.default));
-
-export let FormControl: Design.FormControl;
-importTimeout("FormControl", import("./FormControl"), (mod) => (FormControl = mod.default));
-
-export let FormItem: Design.FormItem;
-importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
-
-export let FormNotice: Design.FormNotice;
-importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
-
-export let FormSection: Design.FormSection;
-importTimeout("FormSection", import("./FormSection"), (mod) => (FormSection = mod.default));
 
 export let Loader: Design.Spinner;
 importTimeout("Loader", import("./Spinner"), (mod) => (Loader = mod.default));
@@ -83,9 +71,6 @@ importTimeout("SearchBar", import("./SearchBar"), (mod) => (SearchBar = mod.defa
 export let Stack: Design.Stack;
 importTimeout("Stack", import("./Stack"), (mod) => (Stack = mod.default));
 
-export let Switch: Design.Switch;
-importTimeout("Switch", import("./Switch"), (mod) => (Switch = mod.default));
-
 export let TabBar: Design.TabBar;
 importTimeout("TabBar", import("./TabBar"), (mod) => (TabBar = mod.default));
 
@@ -95,7 +80,7 @@ importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default
 export let TextInput: Design.TextInput;
 importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
 
-export let Tooltip: Design.TooltipContainer;
+export let Tooltip: Design.VoidTooltipContainer;
 importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
 
 // Other
@@ -110,6 +95,11 @@ export type { ButtonItemType };
 export let ButtonItem: ButtonItemType;
 importTimeout("ButtonItem", import("./ButtonItem"), (mod) => (ButtonItem = mod.ButtonItem));
 
+import type { CustomCheckboxType } from "./Checkbox";
+export type { CustomCheckboxType };
+export let Checkbox: CustomCheckboxType;
+importTimeout("Checkbox", import("./Checkbox"), (mod) => (Checkbox = mod.default));
+
 import type { ColorPickerItemType } from "./ColorPickerItem";
 export type { ColorPickerItemType };
 export let ColorPickerItem: ColorPickerItemType;
@@ -123,11 +113,6 @@ import type { CustomContextMenuType } from "./Menu";
 export type { CustomContextMenuType };
 export let ContextMenu: CustomContextMenuType;
 importTimeout("ContextMenu", import("./Menu"), (mod) => (ContextMenu = mod.default));
-
-import type { CustomFormTextType } from "./FormText";
-export type { CustomFormTextType };
-export let FormText: CustomFormTextType;
-importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.CustomFormText));
 
 import type { CustomKeyRecorderType } from "./KeyRecorder";
 export type { CustomKeyRecorderType };
@@ -157,6 +142,11 @@ import type { CustomSliderType } from "./Slider";
 export type { CustomSliderType };
 export let Slider: CustomSliderType;
 importTimeout("Slider", import("./Slider"), (mod) => (Slider = mod.default));
+
+import type { CustomSwitchType } from "./Switch";
+export type { CustomSwitchType };
+export let Switch: CustomSwitchType;
+importTimeout("Switch", import("./Switch"), (mod) => (Switch = mod.default));
 
 import type { CustomTextType } from "./Text";
 export type { CustomTextType };

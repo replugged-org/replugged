@@ -8,7 +8,7 @@ export declare const messagesLoader: MessageLoader;
 
 export declare const messages: {
   /**
-   * Key: `Xyo9Z2`
+   * Key: `Xyo9Z+`
    * 
    * ### Definition
    * ```text
@@ -21,7 +21,7 @@ export declare const messages: {
    */
   'REPLUGGED_ACCOUNT': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `oDaOkJ`
+   * Key: `oDaOkA`
    * 
    * ### Definition
    * ```text
@@ -34,7 +34,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDONS_FOLDER_OPEN': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `bQBP1t`
+   * Key: `bQBP1m`
    * 
    * ### Definition
    * ```text
@@ -47,7 +47,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDONS_LOAD_MISSING': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `vX/Z3N`
+   * Key: `vX/Z3K`
    * 
    * ### Definition
    * ```text
@@ -60,7 +60,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDONS_TITLE_COUNT': TypedIntlMessageGetter<{count: number | string, type: any}>,
   /**
-   * Key: `ov+bm5`
+   * Key: `ov+bm9`
    * 
    * ### Definition
    * ```text
@@ -69,9 +69,9 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
-  'REPLUGGED_ADDON_AUTHORS': TypedIntlMessageGetter<{author1: any, author2: any, author3: any, count: any | number, others: any | number | string}>,
+  'REPLUGGED_ADDON_AUTHORS': TypedIntlMessageGetter<{author1: any, author2: any, author3: any, count: number, others: number | string}>,
   /**
    * Key: `XuYvz8`
    * 
@@ -84,9 +84,9 @@ export declare const messages: {
    * 
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`
    */
-  'REPLUGGED_ADDON_AUTHORS_MANY': TypedIntlMessageGetter<{author1: any, author2: any, author3: any, count: any | number | string}>,
+  'REPLUGGED_ADDON_AUTHORS_MANY': TypedIntlMessageGetter<{author1: any, author2: any, author3: any, count: number | string}>,
   /**
-   * Key: `H/KS9/`
+   * Key: `H/KS92`
    * 
    * ### Definition
    * ```text
@@ -99,7 +99,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_AUTHORS_ONE': TypedIntlMessageGetter<{author1: any}>,
   /**
-   * Key: `2rQVGR`
+   * Key: `2rQVGW`
    * 
    * ### Definition
    * ```text
@@ -112,7 +112,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_AUTHORS_THREE': TypedIntlMessageGetter<{author1: any, author2: any, author3: any}>,
   /**
-   * Key: `t0iUjY`
+   * Key: `t0iUje`
    * 
    * ### Definition
    * ```text
@@ -125,7 +125,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_AUTHORS_TWO': TypedIntlMessageGetter<{author1: any, author2: any}>,
   /**
-   * Key: `r7ScHB`
+   * Key: `r7ScHI`
    * 
    * ### Definition
    * ```text
@@ -138,7 +138,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_BROWSE': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `oYIqAQ`
+   * Key: `oYIqAf`
    * 
    * ### Definition
    * ```text
@@ -151,7 +151,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_DELETE': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `Vu4iKC`
+   * Key: `Vu4iKE`
    * 
    * ### Definition
    * ```text
@@ -164,7 +164,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_NOT_REVIEWED': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `QkGpp6`
+   * Key: `QkGpp9`
    * 
    * ### Definition
    * ```text
@@ -177,7 +177,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_NOT_REVIEWED_DESC': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `SxMPW1`
+   * Key: `SxMPWy`
    * 
    * ### Definition
    * ```text
@@ -190,7 +190,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_PAGE_OPEN': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `kxDIJy`
+   * Key: `kxDIJw`
    * 
    * ### Definition
    * ```text
@@ -203,7 +203,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_PROFILE_OPEN': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `BfSK7e`
+   * Key: `BfSK7f`
    * 
    * ### Definition
    * ```text
@@ -216,7 +216,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_RELOAD': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `rDXyPT`
+   * Key: `rDXyPc`
    * 
    * ### Definition
    * ```text
@@ -238,11 +238,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_ADDON_SETTINGS_THEME_PRESET': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `WqqBfH`
+   * Key: `WqqBfE`
    * 
    * ### Definition
    * ```text
@@ -255,7 +255,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_UNINSTALL': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `n8oLCQ`
+   * Key: `n8oLCZ`
    * 
    * ### Definition
    * ```text
@@ -268,7 +268,7 @@ export declare const messages: {
    */
   'REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY': TypedIntlMessageGetter<{type: 'plugin' | any | string}>,
   /**
-   * Key: `x8YaWl`
+   * Key: `x8YaWh`
    * 
    * ### Definition
    * ```text
@@ -281,7 +281,7 @@ export declare const messages: {
    */
   'REPLUGGED_BADGES_BOOSTER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `vtpx0t`
+   * Key: `vtpx0h`
    * 
    * ### Definition
    * ```text
@@ -294,7 +294,7 @@ export declare const messages: {
    */
   'REPLUGGED_BADGES_CONTRIBUTOR': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `ueaJho`
+   * Key: `ueaJhp`
    * 
    * ### Definition
    * ```text
@@ -307,7 +307,7 @@ export declare const messages: {
    */
   'REPLUGGED_BADGES_DEVELOPER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `GeyL7+`
+   * Key: `GeyL71`
    * 
    * ### Definition
    * ```text
@@ -320,7 +320,7 @@ export declare const messages: {
    */
   'REPLUGGED_BADGES_EARLY': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `gQ9ld3`
+   * Key: `gQ9ld8`
    * 
    * ### Definition
    * ```text
@@ -333,7 +333,7 @@ export declare const messages: {
    */
   'REPLUGGED_BADGES_HUNTER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `K87yaW`
+   * Key: `K87yaR`
    * 
    * ### Definition
    * ```text
@@ -346,7 +346,7 @@ export declare const messages: {
    */
   'REPLUGGED_BADGES_STAFF': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `XSdK+f`
+   * Key: `XSdK+b`
    * 
    * ### Definition
    * ```text
@@ -359,7 +359,7 @@ export declare const messages: {
    */
   'REPLUGGED_BADGES_SUPPORT': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `AMqRmJ`
+   * Key: `AMqRmC`
    * 
    * ### Definition
    * ```text
@@ -372,7 +372,7 @@ export declare const messages: {
    */
   'REPLUGGED_BADGES_TRANSLATOR': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `nnLVsb`
+   * Key: `nnLVsY`
    * 
    * ### Definition
    * ```text
@@ -385,7 +385,7 @@ export declare const messages: {
    */
   'REPLUGGED_BUTTON_INSTALLER_DOWNLOAD': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `E6bNoK`
+   * Key: `E6bNoI`
    * 
    * ### Definition
    * ```text
@@ -398,7 +398,7 @@ export declare const messages: {
    */
   'REPLUGGED_BUTTON_INSTALLER_INSTALLED': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `j9kNoq`
+   * Key: `j9kNoh`
    * 
    * ### Definition
    * ```text
@@ -411,7 +411,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_ADDONS_OPTION_ADDON_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `AYihy8`
+   * Key: `AYihyw`
    * 
    * ### Definition
    * ```text
@@ -424,7 +424,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_DISABLE_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `kxd08P`
+   * Key: `kxd08G`
    * 
    * ### Definition
    * ```text
@@ -437,7 +437,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_DISABLE_MESSAGE_ENABLED': TypedIntlMessageGetter<{name: any, type: any}>,
   /**
-   * Key: `2VoRpa`
+   * Key: `2VoRpS`
    * 
    * ### Definition
    * ```text
@@ -463,7 +463,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `14Ixlp`
+   * Key: `14Ixln`
    * 
    * ### Definition
    * ```text
@@ -476,7 +476,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_DISABLE_OPTION_ADDON_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `OcnVf3`
+   * Key: `OcnVfy`
    * 
    * ### Definition
    * ```text
@@ -489,7 +489,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_ENABLE_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `SB+cDQ`
+   * Key: `SB+cDY`
    * 
    * ### Definition
    * ```text
@@ -502,7 +502,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_ENABLE_MESSAGE_ENABLED': TypedIntlMessageGetter<{name: any, type: any}>,
   /**
-   * Key: `I46ICw`
+   * Key: `I46ICz`
    * 
    * ### Definition
    * ```text
@@ -515,7 +515,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_ENABLE_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `mgPYDQ`
+   * Key: `mgPYDe`
    * 
    * ### Definition
    * ```text
@@ -528,7 +528,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_ENABLE_OPTION_ADDON_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `0su4/v`
+   * Key: `0su4/g`
    * 
    * ### Definition
    * ```text
@@ -541,7 +541,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_ERROR_GENERIC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `uEKO6O`
+   * Key: `uEKO6N`
    * 
    * ### Definition
    * ```text
@@ -554,7 +554,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_INSTALL_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `ccp7Mj`
+   * Key: `ccp7Mi`
    * 
    * ### Definition
    * ```text
@@ -567,7 +567,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_INSTALL_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `fw8KhI`
+   * Key: `fw8KhN`
    * 
    * ### Definition
    * ```text
@@ -580,7 +580,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `qrawCQ`
+   * Key: `qrawCd`
    * 
    * ### Definition
    * ```text
@@ -593,7 +593,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_ADDON_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `7eLI9P`
+   * Key: `7eLI9F`
    * 
    * ### Definition
    * ```text
@@ -606,7 +606,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_ID_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `4LCo9P`
+   * Key: `4LCo9O`
    * 
    * ### Definition
    * ```text
@@ -619,7 +619,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_ID_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `cfzF9P`
+   * Key: `cfzF9J`
    * 
    * ### Definition
    * ```text
@@ -632,7 +632,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `fuLlFh`
+   * Key: `fuLlFq`
    * 
    * ### Definition
    * ```text
@@ -645,7 +645,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_INSTALL_OPTION_SOURCE_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `99AWnp`
+   * Key: `99AWnt`
    * 
    * ### Definition
    * ```text
@@ -658,7 +658,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `CCQadn`
+   * Key: `CCQadk`
    * 
    * ### Definition
    * ```text
@@ -671,7 +671,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_ERROR_SPECIFY': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `4U9kk5`
+   * Key: `4U9kk3`
    * 
    * ### Definition
    * ```text
@@ -684,7 +684,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_HEADER_DISABLED': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `yPSO4O`
+   * Key: `yPSO4L`
    * 
    * ### Definition
    * ```text
@@ -697,7 +697,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_HEADER_ENABLED': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `edMBSE`
+   * Key: `edMBSD`
    * 
    * ### Definition
    * ```text
@@ -710,7 +710,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `0wF2go`
+   * Key: `0wF2gt`
    * 
    * ### Definition
    * ```text
@@ -723,7 +723,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_SEND_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `lgmT39`
+   * Key: `lgmT32`
    * 
    * ### Definition
    * ```text
@@ -736,7 +736,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_SEND_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `IRl+z8`
+   * Key: `IRl+z1`
    * 
    * ### Definition
    * ```text
@@ -762,7 +762,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_DISABLED': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Vx9HW1`
+   * Key: `Vx9HW+`
    * 
    * ### Definition
    * ```text
@@ -775,7 +775,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_STATUS_CHOICE_ENABLED': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `asrAw8`
+   * Key: `asrAw7`
    * 
    * ### Definition
    * ```text
@@ -788,7 +788,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_STATUS_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `kwqOfH`
+   * Key: `kwqOfG`
    * 
    * ### Definition
    * ```text
@@ -801,7 +801,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_STATUS_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `+4SVXl`
+   * Key: `+4SVXj`
    * 
    * ### Definition
    * ```text
@@ -814,7 +814,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_PLUGIN': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `uZAN3N`
+   * Key: `uZAN3D`
    * 
    * ### Definition
    * ```text
@@ -827,7 +827,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_TYPE_CHOICE_THEME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `JvNekZ`
+   * Key: `JvNekX`
    * 
    * ### Definition
    * ```text
@@ -840,7 +840,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_TYPE_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `MJhj3d`
+   * Key: `MJhj3Z`
    * 
    * ### Definition
    * ```text
@@ -866,7 +866,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_VERSION_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `9k1eEx`
+   * Key: `9k1eE6`
    * 
    * ### Definition
    * ```text
@@ -879,7 +879,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_LIST_OPTION_VERSION_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `ZDurVV`
+   * Key: `ZDurVW`
    * 
    * ### Definition
    * ```text
@@ -892,7 +892,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_RELOAD_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `zr04NT`
+   * Key: `zr04NU`
    * 
    * ### Definition
    * ```text
@@ -918,7 +918,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_RELOAD_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `trfssL`
+   * Key: `trfssE`
    * 
    * ### Definition
    * ```text
@@ -931,7 +931,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `OBctb2`
+   * Key: `OBctby`
    * 
    * ### Definition
    * ```text
@@ -944,7 +944,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_RELOAD_OPTION_ADDON_NAME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `73G4zM`
+   * Key: `73G4zP`
    * 
    * ### Definition
    * ```text
@@ -957,7 +957,7 @@ export declare const messages: {
    */
   'REPLUGGED_COMMAND_SUCCESS_GENERIC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `zENqYW`
+   * Key: `zENqYa`
    * 
    * ### Definition
    * ```text
@@ -970,7 +970,7 @@ export declare const messages: {
    */
   'REPLUGGED_CONFIRM_INSTALL': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `5A4ZGh`
+   * Key: `5A4ZGk`
    * 
    * ### Definition
    * ```text
@@ -983,7 +983,7 @@ export declare const messages: {
    */
   'REPLUGGED_DEVELOPER_MODE_WARNING': TypedIntlMessageGetter<{$link?: LinkFunction, url: any}>,
   /**
-   * Key: `noTXKC`
+   * Key: `noTXKF`
    * 
    * ### Definition
    * ```text
@@ -996,7 +996,7 @@ export declare const messages: {
    */
   'REPLUGGED_ERROR_ALREADY_INSTALLED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `0D5GGx`
+   * Key: `0D5GG0`
    * 
    * ### Definition
    * ```text
@@ -1009,7 +1009,7 @@ export declare const messages: {
    */
   'REPLUGGED_ERROR_AN_ERROR_OCCURRED_COMMAND': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `LacFoK`
+   * Key: `LacFoP`
    * 
    * ### Definition
    * ```text
@@ -1022,7 +1022,7 @@ export declare const messages: {
    */
   'REPLUGGED_ERROR_CHECK_CONSOLE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `BS/AJC`
+   * Key: `BS/AJM`
    * 
    * ### Definition
    * ```text
@@ -1035,7 +1035,7 @@ export declare const messages: {
    */
   'REPLUGGED_I18N': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `5wPKhY`
+   * Key: `5wPKhc`
    * 
    * ### Definition
    * ```text
@@ -1048,7 +1048,7 @@ export declare const messages: {
    */
   'REPLUGGED_I18N_CONTRIBUTE': TypedIntlMessageGetter<{$link?: LinkFunction, weblateUrl: any}>,
   /**
-   * Key: `hrc76+`
+   * Key: `hrc762`
    * 
    * ### Definition
    * ```text
@@ -1061,7 +1061,7 @@ export declare const messages: {
    */
   'REPLUGGED_I18N_TRANSLATED_PERCENTAGE': TypedIntlMessageGetter<{translated: number | string}>,
   /**
-   * Key: `0impV1`
+   * Key: `0impV8`
    * 
    * ### Definition
    * ```text
@@ -1087,7 +1087,7 @@ export declare const messages: {
    */
   'REPLUGGED_INSTALLER_OPEN_STORE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Cng03d`
+   * Key: `Cng03W`
    * 
    * ### Definition
    * ```text
@@ -1100,7 +1100,7 @@ export declare const messages: {
    */
   'REPLUGGED_INSTALL_MODAL_HEADER': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `BfrDAw`
+   * Key: `BfrDAx`
    * 
    * ### Definition
    * ```text
@@ -1124,9 +1124,9 @@ export declare const messages: {
    * 
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `lt`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
-  'REPLUGGED_LIST_RESULTS': TypedIntlMessageGetter<{count: any | number | string}>,
+  'REPLUGGED_LIST_RESULTS': TypedIntlMessageGetter<{count: number | string}>,
   /**
-   * Key: `neLAkZ`
+   * Key: `neLAkY`
    * 
    * ### Definition
    * ```text
@@ -1139,7 +1139,7 @@ export declare const messages: {
    */
   'REPLUGGED_NOTICES_JOIN_SERVER_BUTTON': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `zKRtMD`
+   * Key: `zKRtMB`
    * 
    * ### Definition
    * ```text
@@ -1152,7 +1152,7 @@ export declare const messages: {
    */
   'REPLUGGED_NOTICES_WELCOME_NEW_USER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `+cl+ra`
+   * Key: `+cl+rT`
    * 
    * ### Definition
    * ```text
@@ -1165,7 +1165,7 @@ export declare const messages: {
    */
   'REPLUGGED_NO_ADDONS_INSTALLED': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `nT98BQ`
+   * Key: `nT98BV`
    * 
    * ### Definition
    * ```text
@@ -1178,7 +1178,7 @@ export declare const messages: {
    */
   'REPLUGGED_NO_ADDON_RESULTS': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `nrTCTU`
+   * Key: `nrTCTQ`
    * 
    * ### Definition
    * ```text
@@ -1191,7 +1191,7 @@ export declare const messages: {
    */
   'REPLUGGED_PLUGIN': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Jyz+XV`
+   * Key: `Jyz+XY`
    * 
    * ### Definition
    * ```text
@@ -1204,7 +1204,7 @@ export declare const messages: {
    */
   'REPLUGGED_PLUGINS': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `sl1Dvb`
+   * Key: `sl1Dvd`
    * 
    * ### Definition
    * ```text
@@ -1217,7 +1217,7 @@ export declare const messages: {
    */
   'REPLUGGED_PLUGIN_EMBED_VIEW_REPO': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `OjncuL`
+   * Key: `OjncuB`
    * 
    * ### Definition
    * ```text
@@ -1230,7 +1230,7 @@ export declare const messages: {
    */
   'REPLUGGED_PLUGIN_INSTALL_RELOAD_PROMPT_BODY': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `NhWNBQ`
+   * Key: `NhWNBd`
    * 
    * ### Definition
    * ```text
@@ -1256,7 +1256,7 @@ export declare const messages: {
    */
   'REPLUGGED_QUICKCSS_CHANGES_APPLY': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Nk3LNj`
+   * Key: `Nk3LNs`
    * 
    * ### Definition
    * ```text
@@ -1269,7 +1269,7 @@ export declare const messages: {
    */
   'REPLUGGED_QUICKCSS_FOLDER_OPEN': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `e5G3RE`
+   * Key: `e5G3RN`
    * 
    * ### Definition
    * ```text
@@ -1282,7 +1282,20 @@ export declare const messages: {
    */
   'REPLUGGED_SEARCH_FOR_ADDON': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `wxHqIi`
+   * Key: `U0OONn`
+   * 
+   * ### Definition
+   * ```text
+   * Replugged Settings
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `wxHqIq`
    * 
    * ### Definition
    * ```text
@@ -1295,7 +1308,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_ADDON_EMBEDS': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `T1XIIy`
+   * Key: `T1XII9`
    * 
    * ### Definition
    * ```text
@@ -1308,7 +1321,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `vdzF9v`
+   * Key: `vdzF9i`
    * 
    * ### Definition
    * ```text
@@ -1321,7 +1334,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_ADVANCED_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `oiDUNz`
+   * Key: `oiDUN3`
    * 
    * ### Definition
    * ```text
@@ -1334,7 +1347,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_BACKEND': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `zE/g8v`
+   * Key: `zE/g8l`
    * 
    * ### Definition
    * ```text
@@ -1360,7 +1373,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_BADGES': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Vtw/EB`
+   * Key: `Vtw/EL`
    * 
    * ### Definition
    * ```text
@@ -1373,7 +1386,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_BADGES_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `5D5ltL`
+   * Key: `5D5ltO`
    * 
    * ### Definition
    * ```text
@@ -1386,7 +1399,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `x5PfoK`
+   * Key: `x5PfoO`
    * 
    * ### Definition
    * ```text
@@ -1399,7 +1412,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `6RMznZ`
+   * Key: `6RMznQ`
    * 
    * ### Definition
    * ```text
@@ -1408,11 +1421,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Zy83NT`
+   * Key: `Zy83NY`
    * 
    * ### Definition
    * ```text
@@ -1421,7 +1434,7 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_DISABLE_MIN_SIZE': TypedIntlMessageGetter<{}>,
   /**
@@ -1434,11 +1447,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `ET71DA`
+   * Key: `ET71DC`
    * 
    * ### Definition
    * ```text
@@ -1451,7 +1464,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_DISCORD_DEVTOOLS': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `DMs+IS`
+   * Key: `DMs+IV`
    * 
    * ### Definition
    * ```text
@@ -1464,7 +1477,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_DISCORD_DEVTOOLS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `ObxHdn`
+   * Key: `ObxHdj`
    * 
    * ### Definition
    * ```text
@@ -1477,7 +1490,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `efBu/P`
+   * Key: `efBu/G`
    * 
    * ### Definition
    * ```text
@@ -1486,11 +1499,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `cmmlCA`
+   * Key: `cmmlCC`
    * 
    * ### Definition
    * ```text
@@ -1503,7 +1516,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `V58dvb`
+   * Key: `V58dvZ`
    * 
    * ### Definition
    * ```text
@@ -1516,7 +1529,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_ERROR_COMPONENT_STACK': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `qlA8Ii`
+   * Key: `qlA8In`
    * 
    * ### Definition
    * ```text
@@ -1529,7 +1542,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_ERROR_HEADER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `em6Xqa`
+   * Key: `em6Xqe`
    * 
    * ### Definition
    * ```text
@@ -1542,7 +1555,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_ERROR_PLUGIN_NAME': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `sC+4pa`
+   * Key: `sC+4pW`
    * 
    * ### Definition
    * ```text
@@ -1555,7 +1568,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_ERROR_RENDER_PANEL': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `aXsXW1`
+   * Key: `aXsXWx`
    * 
    * ### Definition
    * ```text
@@ -1568,7 +1581,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_ERROR_SUB_HEADER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `RbreAA`
+   * Key: `RbreAP`
    * 
    * ### Definition
    * ```text
@@ -1581,7 +1594,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_KEEP_TOKEN': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Z/7+YG`
+   * Key: `Z/7+YM`
    * 
    * ### Definition
    * ```text
@@ -1594,7 +1607,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_KEEP_TOKEN_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `eXvP6O`
+   * Key: `eXvP6I`
    * 
    * ### Definition
    * ```text
@@ -1607,7 +1620,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `YPxTlZ`
+   * Key: `YPxTld`
    * 
    * ### Definition
    * ```text
@@ -1620,7 +1633,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `iAl99/`
+   * Key: `iAl998`
    * 
    * ### Definition
    * ```text
@@ -1629,11 +1642,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_QUICKCSS_ENABLE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `pKkVIi`
+   * Key: `pKkVIp`
    * 
    * ### Definition
    * ```text
@@ -1642,11 +1655,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `ojp79/`
+   * Key: `ojp799`
    * 
    * ### Definition
    * ```text
@@ -1659,7 +1672,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_REACT_DEVTOOLS': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `CXRYCg`
+   * Key: `CXRYCm`
    * 
    * ### Definition
    * ```text
@@ -1672,7 +1685,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_REACT_DEVTOOLS_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `7VpRfX`
+   * Key: `7VpRff`
    * 
    * ### Definition
    * ```text
@@ -1685,7 +1698,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `LBwcjY`
+   * Key: `LBwcjQ`
    * 
    * ### Definition
    * ```text
@@ -1711,7 +1724,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_RESTART_TITLE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `e6ACBQ`
+   * Key: `e6ACBb`
    * 
    * ### Definition
    * ```text
@@ -1720,11 +1733,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `sO01jI`
+   * Key: `sO01jJ`
    * 
    * ### Definition
    * ```text
@@ -1733,11 +1746,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `F1Fb1N`
+   * Key: `F1Fb1H`
    * 
    * ### Definition
    * ```text
@@ -1763,7 +1776,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `x4OZi4`
+   * Key: `x4OZi+`
    * 
    * ### Definition
    * ```text
@@ -1776,7 +1789,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `KZ4tws`
+   * Key: `KZ4twt`
    * 
    * ### Definition
    * ```text
@@ -1789,7 +1802,7 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS': TypedIntlMessageGetter<{$b?: HookFunction}>,
   /**
-   * Key: `J3A61d`
+   * Key: `J3A61V`
    * 
    * ### Definition
    * ```text
@@ -1798,11 +1811,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_WINDOW': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `XuDbXF`
+   * Key: `XuDbXP`
    * 
    * ### Definition
    * ```text
@@ -1811,11 +1824,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_WINDOW_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `fXfpW1`
+   * Key: `fXfpW2`
    * 
    * ### Definition
    * ```text
@@ -1824,11 +1837,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_WIN_UPDATER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `0ljedn`
+   * Key: `0ljedv`
    * 
    * ### Definition
    * ```text
@@ -1837,11 +1850,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_WIN_UPDATER_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `b2oqX1`
+   * Key: `b2oqX9`
    * 
    * ### Definition
    * ```text
@@ -1854,7 +1867,7 @@ export declare const messages: {
    */
   'REPLUGGED_SNIPPET_APPLIED': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Fhn1Mz`
+   * Key: `Fhn1M4`
    * 
    * ### Definition
    * ```text
@@ -1867,7 +1880,7 @@ export declare const messages: {
    */
   'REPLUGGED_SNIPPET_APPLY': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `TTn6PD`
+   * Key: `TTn6PF`
    * 
    * ### Definition
    * ```text
@@ -1880,7 +1893,7 @@ export declare const messages: {
    */
   'REPLUGGED_SNIPPET_LINE1': TypedIntlMessageGetter<{date: Date | number}>,
   /**
-   * Key: `vL1+go`
+   * Key: `vL1+gu`
    * 
    * ### Definition
    * ```text
@@ -1893,7 +1906,7 @@ export declare const messages: {
    */
   'REPLUGGED_SNIPPET_LINE2': TypedIntlMessageGetter<{authorId: any, authorTag: any}>,
   /**
-   * Key: `haZx5+`
+   * Key: `haZx54`
    * 
    * ### Definition
    * ```text
@@ -1906,7 +1919,7 @@ export declare const messages: {
    */
   'REPLUGGED_STORE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `kZXj5O`
+   * Key: `kZXj5E`
    * 
    * ### Definition
    * ```text
@@ -1919,7 +1932,7 @@ export declare const messages: {
    */
   'REPLUGGED_THEME': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `nivuVl`
+   * Key: `nivuVj`
    * 
    * ### Definition
    * ```text
@@ -1945,7 +1958,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `pNMhv7`
+   * Key: `pNMhv1`
    * 
    * ### Definition
    * ```text
@@ -1958,7 +1971,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS': TypedIntlMessageGetter<{type: any}>,
   /**
-   * Key: `LV9nQ0`
+   * Key: `LV9nQ6`
    * 
    * ### Definition
    * ```text
@@ -1971,7 +1984,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDON_DISABLE_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `bikK6u`
+   * Key: `bikK6v`
    * 
    * ### Definition
    * ```text
@@ -1984,7 +1997,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `j+ClUl`
+   * Key: `j+ClUm`
    * 
    * ### Definition
    * ```text
@@ -1997,7 +2010,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDON_ENABLE_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `k0hIQ0`
+   * Key: `k0hIQz`
    * 
    * ### Definition
    * ```text
@@ -2010,7 +2023,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `iG2TFR`
+   * Key: `iG2TFU`
    * 
    * ### Definition
    * ```text
@@ -2023,7 +2036,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDON_RELOAD_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `3ZmGZG`
+   * Key: `3ZmGZI`
    * 
    * ### Definition
    * ```text
@@ -2036,7 +2049,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `3L5Ego`
+   * Key: `3L5Egm`
    * 
    * ### Definition
    * ```text
@@ -2049,7 +2062,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDON_TOGGLE_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `IO1HHh`
+   * Key: `IO1HHr`
    * 
    * ### Definition
    * ```text
@@ -2062,7 +2075,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `Dthsfn`
+   * Key: `Dthsfl`
    * 
    * ### Definition
    * ```text
@@ -2088,7 +2101,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `1P0W0t`
+   * Key: `1P0W0i`
    * 
    * ### Definition
    * ```text
@@ -2101,7 +2114,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `1RiUEx`
+   * Key: `1RiUEy`
    * 
    * ### Definition
    * ```text
@@ -2114,7 +2127,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `/YMwrq`
+   * Key: `/YMwrn`
    * 
    * ### Definition
    * ```text
@@ -2127,7 +2140,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `NqlJ39`
+   * Key: `NqlJ3+`
    * 
    * ### Definition
    * ```text
@@ -2140,7 +2153,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `rLb2kJ`
+   * Key: `rLb2kN`
    * 
    * ### Definition
    * ```text
@@ -2153,7 +2166,7 @@ export declare const messages: {
    */
   'REPLUGGED_TOAST_QUICKCSS_RELOAD': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `TGExoq`
+   * Key: `TGExol`
    * 
    * ### Definition
    * ```text
@@ -2162,11 +2175,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_TOAST_THEME_PRESET_CHANGED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `oSw5Aw`
+   * Key: `oSw5A+`
    * 
    * ### Definition
    * ```text
@@ -2175,11 +2188,11 @@ export declare const messages: {
    * 
    * ### Problems
    * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_TOAST_THEME_PRESET_FAILED': TypedIntlMessageGetter<{name: any}>,
   /**
-   * Key: `VowTIi`
+   * Key: `VowTIp`
    * 
    * ### Definition
    * ```text
@@ -2190,9 +2203,9 @@ export declare const messages: {
    * 
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `ro`, `th`
    */
-  'REPLUGGED_UPDATES_AVAILABLE': TypedIntlMessageGetter<{count: any | number | string}>,
+  'REPLUGGED_UPDATES_AVAILABLE': TypedIntlMessageGetter<{count: number | string}>,
   /**
-   * Key: `+bwUnJ`
+   * Key: `+bwUnC`
    * 
    * ### Definition
    * ```text
@@ -2205,7 +2218,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_AWAITING_RELOAD_TITLE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `4PckvL`
+   * Key: `4PckvA`
    * 
    * ### Definition
    * ```text
@@ -2218,7 +2231,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_CHECK': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `DCXylp`
+   * Key: `DCXylt`
    * 
    * ### Definition
    * ```text
@@ -2231,7 +2244,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_ENABLE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `0WdWvL`
+   * Key: `0WdWvN`
    * 
    * ### Definition
    * ```text
@@ -2244,7 +2257,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_FAILED': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Jlkmxc`
+   * Key: `JlkmxV`
    * 
    * ### Definition
    * ```text
@@ -2257,7 +2270,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_FORCE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `c2FNBw`
+   * Key: `c2FNB+`
    * 
    * ### Definition
    * ```text
@@ -2270,7 +2283,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_LAST_CHECKED': TypedIntlMessageGetter<{date: any}>,
   /**
-   * Key: `27q8zc`
+   * Key: `27q8zX`
    * 
    * ### Definition
    * ```text
@@ -2283,7 +2296,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPEN_UPDATER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `X0pjLy`
+   * Key: `X0pjL/`
    * 
    * ### Definition
    * ```text
@@ -2296,7 +2309,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_AUTO': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `8Ko1gI`
+   * Key: `8Ko1gH`
    * 
    * ### Definition
    * ```text
@@ -2309,7 +2322,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_AUTO_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `aB8UjI`
+   * Key: `aB8UjF`
    * 
    * ### Definition
    * ```text
@@ -2322,7 +2335,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_CHANGE_LOGS': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `DM7iqq`
+   * Key: `DM7iqt`
    * 
    * ### Definition
    * ```text
@@ -2335,7 +2348,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_CHANGE_LOGS_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `ftHbLi`
+   * Key: `ftHbLm`
    * 
    * ### Definition
    * ```text
@@ -2348,7 +2361,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_CONCURRENCY': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `fmENlJ`
+   * Key: `fmENlC`
    * 
    * ### Definition
    * ```text
@@ -2361,7 +2374,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_CONCURRENCY_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `D0hYHB`
+   * Key: `D0hYHA`
    * 
    * ### Definition
    * ```text
@@ -2374,7 +2387,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_INTERVAL': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `QUYCx8`
+   * Key: `QUYCx3`
    * 
    * ### Definition
    * ```text
@@ -2387,7 +2400,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_INTERVAL_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `Efudw8`
+   * Key: `Efudw+`
    * 
    * ### Definition
    * ```text
@@ -2400,7 +2413,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `MrEYwc`
+   * Key: `MrEYwZ`
    * 
    * ### Definition
    * ```text
@@ -2413,7 +2426,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `U0yy09`
+   * Key: `U0yy0y`
    * 
    * ### Definition
    * ```text
@@ -2426,7 +2439,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_DEVELOP_BTN': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `CQoun5`
+   * Key: `CQoun7`
    * 
    * ### Definition
    * ```text
@@ -2439,7 +2452,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_MODAL': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `QMvHwc`
+   * Key: `QMvHwU`
    * 
    * ### Definition
    * ```text
@@ -2452,7 +2465,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_MODAL_HEADER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `FlBncX`
+   * Key: `FlBncS`
    * 
    * ### Definition
    * ```text
@@ -2465,7 +2478,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_STABLE_BTN': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `QWWrMD`
+   * Key: `QWWrMI`
    * 
    * ### Definition
    * ```text
@@ -2478,7 +2491,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_RELEASE_SWITCH': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `4ZUrOT`
+   * Key: `4ZUrOb`
    * 
    * ### Definition
    * ```text
@@ -2491,7 +2504,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_TOAST_ENABLED': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `JgzaWF`
+   * Key: `JgzaWA`
    * 
    * ### Definition
    * ```text
@@ -2504,7 +2517,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `P+IFIi`
+   * Key: `P+IFIp`
    * 
    * ### Definition
    * ```text
@@ -2517,7 +2530,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_TOAST_FAILED_ALL': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `A0CEr6`
+   * Key: `A0CErw`
    * 
    * ### Definition
    * ```text
@@ -2530,7 +2543,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_TOAST_FAILED_ONE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `fpehXV`
+   * Key: `fpehXQ`
    * 
    * ### Definition
    * ```text
@@ -2541,9 +2554,9 @@ export declare const messages: {
    * 
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `lt`, `no`, `ro`, `th`, `zh-CN`
    */
-  'REPLUGGED_UPDATES_TOAST_NEW': TypedIntlMessageGetter<{count: any | number | string}>,
+  'REPLUGGED_UPDATES_TOAST_NEW': TypedIntlMessageGetter<{count: number | string}>,
   /**
-   * Key: `qPHJU1`
+   * Key: `qPHJU7`
    * 
    * ### Definition
    * ```text
@@ -2556,7 +2569,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_TOAST_NO_NEW': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `6ACGz8`
+   * Key: `6ACGz9`
    * 
    * ### Definition
    * ```text
@@ -2569,7 +2582,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_TOAST_SUCCESS_ALL': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `wKwXx8`
+   * Key: `wKwXx/`
    * 
    * ### Definition
    * ```text
@@ -2582,7 +2595,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_TOAST_SUCCESS_ONE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `DIZGSk`
+   * Key: `DIZGSi`
    * 
    * ### Definition
    * ```text
@@ -2595,7 +2608,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_UPDATER': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `uMS9c3`
+   * Key: `uMS9cz`
    * 
    * ### Definition
    * ```text
@@ -2608,7 +2621,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_UPDATE_ALL': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `JdG85+`
+   * Key: `JdG856`
    * 
    * ### Definition
    * ```text
@@ -2621,7 +2634,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_UPDATE_TO': TypedIntlMessageGetter<{version: any}>,
   /**
-   * Key: `UbD+4u`
+   * Key: `UbD+4l`
    * 
    * ### Definition
    * ```text
@@ -2647,7 +2660,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_UPDATING_ITEM': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `CUNjg4`
+   * Key: `CUNjg/`
    * 
    * ### Definition
    * ```text
@@ -2660,7 +2673,7 @@ export declare const messages: {
    */
   'REPLUGGED_UPDATES_UP_TO_DATE': TypedIntlMessageGetter<{}>,
   /**
-   * Key: `q8qpAw`
+   * Key: `q8qpAz`
    * 
    * ### Definition
    * ```text
@@ -2673,7 +2686,7 @@ export declare const messages: {
    */
   'REPLUGGED_VERSION': TypedIntlMessageGetter<{version: 'dev' | any | string}>,
   /**
-   * Key: `rHZSz8`
+   * Key: `rHZSz7`
    * 
    * ### Definition
    * ```text
@@ -2684,6 +2697,6 @@ export declare const messages: {
    * 
    * Missing translations: `bg`, `da`, `el`, `es-419`, `hi`, `hr`, `hu`, `ko`, `lt`, `no`, `ro`, `sv-SE`, `th`, `zh-CN`
    */
-  'REPLUGGED_VIEW_UPDATES': TypedIntlMessageGetter<{count: any | number | string}>,
+  'REPLUGGED_VIEW_UPDATES': TypedIntlMessageGetter<{count: number | string}>,
 };
 export default messages;

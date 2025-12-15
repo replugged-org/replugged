@@ -54,10 +54,10 @@ export default (generalSettings.get("experiments")
       // Show the Playgrounds and Build Overrides menu items in the UserSettingsCogContextMenu
       alwaysTruePatch("user-settings-cog", /isStaff\(\)/g),
       // Show the ExperimentEmbed
-      alwaysTruePatch("dev://experiment/", ".isStaffPersonal())"),
-      // Show the ManaPlaygroundEmbed
-      alwaysTruePatch("dev://mana(/", ".isStaffPersonal())"),
-      // Show the Playgrounds tab in the StaffHelpPopout
-      alwaysTruePatch("Playgrounds", ".isStaffPersonal())===!0"),
+      alwaysTruePatch(/className:\i\.experimentOverride,/, ".isStaffPersonal())"),
+      // Show the PlaygroundEmbed
+      alwaysTruePatch("data-has-story", ".isStaffPersonal())"),
+      // Show the Playgrounds tab in the UserSettingsCogContextMenu
+      alwaysTruePatch('label:"Playgrounds"', ".isStaffPersonal())===!0"),
     ]
   : []) as PlaintextPatch[];

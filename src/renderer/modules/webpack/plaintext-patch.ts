@@ -1,7 +1,7 @@
 import type { PlaintextPatch, RawPlaintextPatch, RegexReplacement, WebpackModule } from "src/types";
 import { Logger } from "../logger";
 
-const logger = Logger.api("plaintext-patch");
+const logger = Logger.api("PlaintextPatch");
 
 const plaintextPatches: RawPlaintextPatch[] = [];
 
@@ -28,10 +28,15 @@ export function parseReplace(
   input: RegexReplacement["replace"],
   id: string,
 ): RegexReplacement["replace"] {
+  const coremodId =
+    id.startsWith("replugged.coremod") && /replugged\.coremod\.(?!coremod)(.+)/.exec(id);
+  const replacement = coremodId
+    ? `replugged.coremods.coremods.${coremodId[1]}`
+    : `replugged.plugins.getExports("${id}")`;
+
   if (typeof input === "function")
-    return (...args): string =>
-      input(...args).replaceAll("$exports", `replugged.plugins.getExports("${id}")`);
-  return input.replaceAll("$exports", `replugged.plugins.getExports("${id}")`);
+    return (...args): string => input(...args).replaceAll("$exports", replacement);
+  return input.replaceAll("$exports", replacement);
 }
 
 /**

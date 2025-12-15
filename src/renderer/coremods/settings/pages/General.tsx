@@ -1,5 +1,6 @@
-import { React, modal, toast } from "@common";
+import { React, modal } from "@common";
 import { t as discordT, intl } from "@common/i18n";
+import { ToastType, toast } from "@common/toast";
 import {
   Button,
   Divider,
@@ -62,13 +63,7 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
 const GeneralSettingsTabs = { GENERAL: "general", ADVANCED: "advanced" } as const;
 
 function GeneralTab(): React.ReactElement {
-  const [badges, setBadges] = useSettingArray(generalSettings, "badges");
-  const [addonEmbeds, setAddonEmbeds] = useSettingArray(generalSettings, "addonEmbeds");
   const [quickCSS, setQuickCSS] = useSettingArray(generalSettings, "quickCSS");
-  const [autoApplyQuickCss, setAutoApplyQuickCssOnChange] = useSettingArray(
-    generalSettings,
-    "autoApplyQuickCss",
-  );
   const [disableMinimumSize, setDisableMinimumSize] = useSettingArray(
     generalSettings,
     "disableMinimumSize",
@@ -85,14 +80,12 @@ function GeneralTab(): React.ReactElement {
     <Stack gap={24}>
       <Stack gap={16}>
         <Switch
-          checked={badges}
-          onChange={setBadges}
+          {...useSetting(generalSettings, "badges")}
           label={intl.string(t.REPLUGGED_SETTINGS_BADGES)}
           description={intl.string(t.REPLUGGED_SETTINGS_BADGES_DESC)}
         />
         <Switch
-          checked={addonEmbeds}
-          onChange={setAddonEmbeds}
+          {...useSetting(generalSettings, "addonEmbeds")}
           label={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS)}
           description={intl.string(t.REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC)}
         />
@@ -110,8 +103,7 @@ function GeneralTab(): React.ReactElement {
           description={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_ENABLE_DESC)}
         />
         <Switch
-          checked={autoApplyQuickCss}
-          onChange={setAutoApplyQuickCssOnChange}
+          {...useSetting(generalSettings, "autoApplyQuickCss")}
           disabled={!quickCSS}
           label={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY)}
           description={intl.string(t.REPLUGGED_SETTINGS_QUICKCSS_AUTO_APPLY_DESC)}
@@ -141,7 +133,7 @@ function GeneralTab(): React.ReactElement {
             description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
           />
         )}
-        <div>
+        <Stack gap={8}>
           <Switch
             checked={transparency}
             onChange={(value) => {
@@ -159,7 +151,7 @@ function GeneralTab(): React.ReactElement {
                 : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
             </Notice>
           )}
-        </div>
+        </Stack>
         {window.DiscordNative.process.platform === "win32" && (
           <Select
             value={backgroundMaterial}
@@ -198,7 +190,6 @@ function AdvancedTab(): React.ReactElement {
   const [staffDevTools, setStaffDevTools] = useSettingArray(generalSettings, "staffDevTools");
   const [reactDevTools, setReactDevTools] = useSettingArray(generalSettings, "reactDevTools");
   const [keepToken, setKeepToken] = useSettingArray(generalSettings, "keepToken");
-  const [winUpdater, setWinUpdater] = useSettingArray(generalSettings, "winUpdater");
 
   return (
     <Stack gap={24}>
@@ -206,7 +197,7 @@ function AdvancedTab(): React.ReactElement {
         {intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}
       </Notice>
       <FieldSet label={intl.string(t.REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS)}>
-        <div>
+        <Stack gap={8}>
           <Switch
             checked={experiments}
             onChange={(value) => {
@@ -219,7 +210,7 @@ function AdvancedTab(): React.ReactElement {
           <Notice messageType={Notice.Types.WARNING}>
             {intl.format(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING, {})}
           </Notice>
-        </div>
+        </Stack>
         <Switch
           disabled={!experiments}
           checked={staffDevTools}
@@ -251,10 +242,7 @@ function AdvancedTab(): React.ReactElement {
                   // Ignore cleanup errors
                 }
               }
-              toast.toast(
-                intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
-                toast.Kind.FAILURE,
-              );
+              toast(intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED), ToastType.FAILURE);
             }
           }}
           label={intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}
@@ -274,8 +262,7 @@ function AdvancedTab(): React.ReactElement {
         />
         {window.DiscordNative.process.platform === "win32" && (
           <Switch
-            checked={winUpdater}
-            onChange={setWinUpdater}
+            {...useSetting(generalSettings, "winUpdater")}
             label={intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER)}
             description={intl.string(t.REPLUGGED_SETTINGS_WIN_UPDATER_DESC)}
           />

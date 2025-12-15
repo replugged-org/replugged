@@ -1,6 +1,6 @@
 import { getBySource, getComponentBySource } from "@webpack";
 import type { Channel, Message } from "discord-types/general";
-import type { GetButtonItem, HoverBarButtonProps } from "../../../types/coremods/message";
+import type { GetButtonItem, HoverBarButtonProps } from "src/types";
 import { Logger } from "../../modules/logger";
 
 const logger = Logger.coremod("MessagePopover");
