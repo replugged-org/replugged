@@ -16,7 +16,7 @@ export function ChevronIcon({ isOpen }: { isOpen: boolean }): React.ReactElement
       className="replugged-category-icon"
       style={{ transform: isOpen ? "rotate(-180deg)" : undefined }}>
       <path
-        fill="var(--header-primary)"
+        fill="var(--text-strong)"
         d="M5.3 9.3a1 1 0 0 1 1.4 0l5.3 5.29 5.3-5.3a1 1 0 1 1 1.4 1.42l-6 6a1 1 0 0 1-1.4 0l-6-6a1 1 0 0 1 0-1.42Z"
       />
     </svg>

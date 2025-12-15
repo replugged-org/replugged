@@ -164,7 +164,7 @@ export function Updater(): React.ReactElement {
       )}
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
         <Flex justify={Flex.Justify.CENTER} direction={Flex.Direction.VERTICAL}>
-          <Text variant="heading-md/bold" color="header-primary">
+          <Text variant="heading-md/bold" color="text-strong">
             {updatesAvailable.length
               ? intl.format(t.REPLUGGED_UPDATES_AVAILABLE, { count: updatesAvailable.length })
               : intl.string(t.REPLUGGED_UPDATES_UP_TO_DATE)}
@@ -226,8 +226,8 @@ export function Updater(): React.ReactElement {
                     align={Flex.Align.CENTER}
                     style={{ gap: "5px" }}
                     className={marginStyles.marginBottom4}>
-                    <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-                      <Text variant="heading-md/bold" color="header-primary" tag="span">
+                    <Text variant="heading-sm/normal" tag="h2" color="text-default">
+                      <Text variant="heading-md/bold" color="text-strong" tag="span">
                         {manifest.name}
                       </Text>{" "}
                       v{manifest.version}

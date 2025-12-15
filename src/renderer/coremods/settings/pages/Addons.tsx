@@ -318,8 +318,8 @@ function Card({
         justify={Flex.Justify.BETWEEN}
         className={marginStyles.marginBottom4}>
         <span>
-          <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-            <Text variant="heading-md/bold" tag="span" color="header-primary">
+          <Text variant="heading-sm/normal" tag="h2" color="text-default">
+            <Text variant="heading-md/bold" tag="span" color="text-strong">
               {addon.manifest.name}
             </Text>
             <span>
@@ -341,7 +341,7 @@ function Card({
         </Notice>
       ) : null}
       <Flex className={marginStyles.marginTop8}>
-        <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
+        <Text variant="heading-sm/normal" tag="h2" color="text-default">
           <Authors addon={addon} />
         </Text>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
@@ -673,7 +673,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
               size={Button.Sizes.MIN}
               onClick={() => setSection(`rp_${type}`)}>
               <Arrow direction="left" />
-              <Text variant="text-sm/semibold" color="interactive-normal">
+              <Text variant="text-sm/semibold" color="interactive-text-default">
                 {intl.string(discordT.BACK)}
               </Text>
             </Button>

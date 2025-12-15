@@ -11,10 +11,10 @@
 }
 
 .replugged-addon-icon-container {
-  color: var(--icon-tertiary);
+  color: var(--icon-muted);
 }
 .replugged-addon-icon-container:hover {
-  color: var(--interactive-hover);
+  color: var(--interactive-text-hover);
 }
 
 .replugged-addon-back {
@@ -23,7 +23,7 @@
 
 .replugged-addon-back-button {
   align-items: center;
-  color: var(--interactive-normal);
+  color: var(--interactive-text-default);
   display: flex;
   gap: var(--space-4);
   text-transform: uppercase;
