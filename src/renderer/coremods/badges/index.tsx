@@ -121,15 +121,19 @@ export async function start(): Promise<void> {
 
         try {
           const response = await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${userId}`);
-          const body = await response.json();
 
-          const badges: APIRepluggedBadges =
-            response.status === 200 || response.status === 404 ? body.badges || {} : {};
+          if (!response.ok) {
+            logger.error(`Failed to fetch badges`, response.statusText);
+            return;
+          }
+
+          const body = await response.json();
+          const badges: APIRepluggedBadges = body.badges || {};
           cache.set(userId, { badges, lastFetch: Date.now() });
 
           setBadgeCache(badges);
         } catch (error) {
-          logger.error("Failed to fetch badges:", error);
+          logger.error("Failed to fetch badges", error);
         }
       }
 

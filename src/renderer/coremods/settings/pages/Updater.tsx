@@ -1,5 +1,6 @@
-import { React, marginStyles, toast } from "@common";
+import { React, marginStyles } from "@common";
 import { t as discordT, intl } from "@common/i18n";
+import { ToastType, toast } from "@common/toast";
 import {
   Anchor,
   Button,
@@ -26,7 +27,7 @@ import {
 import { t } from "src/renderer/modules/i18n";
 import { sleep, useSetting, useSettingArray } from "src/renderer/util";
 import { UserSettingsForm } from "..";
-import Icons from "../icons";
+import { LinkIcon } from "../icons";
 import { getAddonType, label } from "./Addons";
 
 import "./Updater.css";
@@ -61,7 +62,7 @@ export function Updater(): React.ReactElement {
         })
         .catch((err: unknown) => {
           if (cancelled) return;
-          toast.toast("Update failed.", toast.Kind.FAILURE);
+          toast(intl.string(t.REPLUGGED_UPDATES_TOAST_FAILED_ONE), ToastType.FAILURE);
           logger.error(err);
         });
     });
@@ -90,12 +91,9 @@ export function Updater(): React.ReactElement {
     setUpdatesAvailable(newUpdates);
     if (newUpdates.length > previousUpdates.length) {
       const count = newUpdates.length - previousUpdates.length;
-      toast.toast(
-        intl.formatToPlainString(t.REPLUGGED_UPDATES_TOAST_NEW, { count }),
-        toast.Kind.SUCCESS,
-      );
+      toast(intl.formatToPlainString(t.REPLUGGED_UPDATES_TOAST_NEW, { count }), ToastType.SUCCESS);
     } else {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_NO_NEW), toast.Kind.SUCCESS);
+      toast(intl.string(t.REPLUGGED_UPDATES_TOAST_NO_NEW), ToastType.SUCCESS);
     }
   };
 
@@ -106,9 +104,9 @@ export function Updater(): React.ReactElement {
     const statuses = await Promise.allSettled(Object.values(promises));
     const didAllSucceed = statuses.every((s) => s.status === "fulfilled" && s.value);
     if (didAllSucceed) {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_SUCCESS_ALL), toast.Kind.SUCCESS);
+      toast(intl.string(t.REPLUGGED_UPDATES_TOAST_SUCCESS_ALL), ToastType.SUCCESS);
     } else {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_FAILED_ALL), toast.Kind.FAILURE);
+      toast(intl.string(t.REPLUGGED_UPDATES_TOAST_FAILED_ALL), ToastType.FAILURE);
     }
   };
 
@@ -118,9 +116,9 @@ export function Updater(): React.ReactElement {
     setUpdatePromises((prev) => ({ ...prev, [id]: promise }));
     const status = await promise.catch(() => false);
     if (status) {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_SUCCESS_ONE), toast.Kind.SUCCESS);
+      toast(intl.string(t.REPLUGGED_UPDATES_TOAST_SUCCESS_ONE), ToastType.SUCCESS);
     } else {
-      toast.toast(intl.string(t.REPLUGGED_UPDATES_TOAST_FAILED_ONE), toast.Kind.FAILURE);
+      toast(intl.string(t.REPLUGGED_UPDATES_TOAST_FAILED_ONE), ToastType.FAILURE);
     }
   };
 
@@ -177,7 +175,7 @@ export function Updater(): React.ReactElement {
       )}
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
         <Flex justify={Flex.Justify.CENTER} direction={Flex.Direction.VERTICAL}>
-          <Text variant="heading-md/bold" color="header-primary">
+          <Text variant="heading-md/bold" color="text-strong">
             {updatesAvailable.length
               ? intl.format(t.REPLUGGED_UPDATES_AVAILABLE, { count: updatesAvailable.length })
               : intl.string(t.REPLUGGED_UPDATES_UP_TO_DATE)}
@@ -239,8 +237,8 @@ export function Updater(): React.ReactElement {
                     align={Flex.Align.CENTER}
                     style={{ gap: "5px" }}
                     className={marginStyles.marginBottom4}>
-                    <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-                      <Text variant="heading-md/bold" color="header-primary" tag="span">
+                    <Text variant="heading-sm/normal" tag="h2" color="text-default">
+                      <Text variant="heading-md/bold" color="text-strong" tag="span">
                         {manifest.name}
                       </Text>{" "}
                       v{manifest.version}
@@ -249,10 +247,13 @@ export function Updater(): React.ReactElement {
                       <Tooltip
                         text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
                           type: intl.string(discordT.UPDATE_BADGE_HEADER),
-                        })}
-                        className="replugged-addon-icon replugged-addon-icon-md">
-                        <Anchor href={sourceLink}>
-                          <Icons.Link />
+                        })}>
+                        <Anchor href={sourceLink} className="replugged-addon-icon-container">
+                          <LinkIcon
+                            size="refresh_sm"
+                            color="currentColor"
+                            className="replugged-addon-icon"
+                          />
                         </Anchor>
                       </Tooltip>
                     ) : null}

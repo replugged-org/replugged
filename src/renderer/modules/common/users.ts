@@ -1,5 +1,5 @@
 import type { Channel, GuildMember, User } from "discord-types/general";
-import { virtualMerge } from "src/renderer/util";
+import { getBoundMethods, virtualMerge } from "src/renderer/util";
 import { waitForStore } from "../webpack";
 import type { Store } from "./flux";
 
@@ -60,7 +60,4 @@ const GuildMemberStore = await waitForStore<GuildMemberStore & Store>("GuildMemb
 
 export type Users = UserStore & GuildMemberStore;
 
-export default virtualMerge(
-  Object.getPrototypeOf(UserStore),
-  Object.getPrototypeOf(GuildMemberStore),
-) as Users;
+export default virtualMerge(getBoundMethods(UserStore), getBoundMethods(GuildMemberStore)) as Users;

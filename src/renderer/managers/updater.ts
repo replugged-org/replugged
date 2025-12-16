@@ -274,9 +274,12 @@ export function installAllUpdates(
 let clearActiveNotification: (() => void) | null = null;
 let didRun = false;
 const openSettingsModPromise = waitForProps<{
-  open: (id: string) => void;
-  updateAccount: unknown;
-}>("open", "updateAccount");
+  openUserSettings: (
+    target: string,
+    options?: Record<string, unknown>,
+    callback?: () => void,
+  ) => void;
+}>("openUserSettings");
 
 async function autoUpdateCheck(): Promise<void> {
   if (!updaterSettings.get("autoCheck")) return;
@@ -308,7 +311,7 @@ async function autoUpdateCheck(): Promise<void> {
   if (isAnUpdate && (areNewUpdates || isFirstRun)) {
     logger.log("Showing update notification");
 
-    const { open } = await openSettingsModPromise;
+    const { openUserSettings } = await openSettingsModPromise;
 
     clearActiveNotification?.();
     clearActiveNotification = notices.sendAnnouncement({
@@ -319,7 +322,7 @@ async function autoUpdateCheck(): Promise<void> {
         text: i18n.intl.formatToPlainString(t.REPLUGGED_VIEW_UPDATES, {
           count: newUpdateCount,
         }),
-        onClick: () => open("rp-updater"),
+        onClick: () => openUserSettings("replugged_updater_panel"),
       },
     });
   }

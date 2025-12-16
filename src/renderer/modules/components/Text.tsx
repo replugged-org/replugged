@@ -40,12 +40,12 @@ const CustomText = TextWithDefaultProps({}) as CustomTextType;
 CustomText.Normal = TextWithDefaultProps({ variant: "text-sm/normal", tag: "span" });
 CustomText.H1 = TextWithDefaultProps({
   variant: "heading-xl/bold",
-  color: "header-primary",
+  color: "text-strong",
   tag: "h1",
 });
 CustomText.H2 = TextWithDefaultProps({
   variant: "heading-lg/semibold",
-  color: "header-primary",
+  color: "text-strong",
   tag: "h2",
 });
 CustomText.H3 = TextWithDefaultProps({ variant: "heading-md/bold", tag: "h3" });
