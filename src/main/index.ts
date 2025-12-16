@@ -137,6 +137,11 @@ async function showInfo(title: string, message: string): Promise<Electron.Messag
 async function showError(title: string, message: string): Promise<Electron.MessageBoxReturnValue> {
   return dialog.showMessageBox({ type: "error", title, message, buttons: ["Close"] });
 }
+async function restartWithInfo(title: string, message: string): Promise<void> {
+  await showInfo(title, message);
+  app.relaunch();
+  app.quit();
+}
 
 Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
   if (items[0]?.label !== "Discord" || items.some((e) => e.label === "Replugged"))
@@ -204,15 +209,12 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
               return;
             }
 
-            await showInfo(
+            await restartWithInfo(
               "Successfully Updated",
               process.platform === "linux"
                 ? "Replugged updated but we can't relaunch automatically on Linux. Discord will close now."
                 : "Replugged updated and will relaunch Discord now to take effect!",
             );
-
-            app.relaunch();
-            app.quit();
           } catch (err) {
             console.error(err);
             await showError(
@@ -244,14 +246,12 @@ Menu.buildFromTemplate = (items: Electron.MenuItemConstructorOptions[]) => {
                 writeTransaction("dev.replugged.Settings", (settings) =>
                   settings.set("branch", value),
                 );
-                await showInfo(
+                await restartWithInfo(
                   "Successfully Changed Branch",
                   process.platform === "linux"
                     ? "Replugged release branch changed but we can't relaunch automatically on Linux. Discord will close now."
                     : "Replugged release branch changed and will relaunch Discord now to take effect!",
                 );
-                app.relaunch();
-                app.quit();
               } catch (err) {
                 console.error(err);
                 await showError(
