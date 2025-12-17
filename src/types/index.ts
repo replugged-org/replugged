@@ -31,6 +31,8 @@ export enum RepluggedIpcChannels {
   GET_REPLUGGED_VERSION = "REPLUGGED_GET_REPLUGGED_VERSION",
   DOWNLOAD_REACT_DEVTOOLS = "REPLUGGED_DOWNLOAD_REACT_DEVTOOLS",
   REMOVE_REACT_DEVTOOLS = "REPLUGGED_REMOVE_REACT_DEVTOOLS",
+  SET_BACKGROUND_MATERIAL = "REPLUGGED_SET_BACKGROUND_MATERIAL",
+  SET_VIBRANCY = "REPLUGGED_SET_VIBRANCY",
 }
 
 export interface RepluggedAnnouncement {
@@ -57,9 +59,10 @@ export interface RepluggedPlugin {
 }
 
 export type { AnyAddonManifest, PluginExports, PluginManifest, ThemeManifest } from "./addon";
+export * from "./coremods/badges";
 export * from "./coremods/commands";
 export * from "./coremods/contextMenu";
-export * from "./coremods/message";
+export * from "./coremods/messagePopover";
 export * from "./coremods/settings";
 export * from "./discord";
 export * from "./installer";

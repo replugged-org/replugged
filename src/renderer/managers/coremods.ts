@@ -31,7 +31,6 @@ export namespace coremods {
   export let badges: Coremod;
   export let commands: Coremod;
   export let contextMenu: Coremod;
-  export let devCompanion: Coremod;
   export let installer: Coremod;
   export let language: Coremod;
   export let messagePopover: Coremod;
@@ -86,7 +85,7 @@ export async function startAll(): Promise<void> {
 }
 
 export async function stopAll(): Promise<void> {
-  await Promise.allSettled(Object.values(coremods).map((c) => c.stop?.()));
+  await Promise.allSettled(Object.values(coremods).map((c) => Promise.resolve(c.stop?.())));
 }
 
 export function runPlaintextPatches(): void {

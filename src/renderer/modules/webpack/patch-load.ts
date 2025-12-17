@@ -74,7 +74,7 @@ function loadWebpackModules(chunksGlobal: WebpackChunkGlobal): void {
     (r: WebpackRequire | undefined) => {
       const { stack } = new Error();
       const match = stack?.match(/\/assets\/(.+?)\..+?\.js/);
-      if (!match || match[1] !== "web") return;
+      if (match?.[1] !== "web") return;
 
       wpRequire = r!;
       if (wpRequire.c && !webpackChunks) webpackChunks = wpRequire.c;

@@ -1,5 +1,6 @@
-import { marginStyles, modal, toast } from "@common";
+import { marginStyles, modal } from "@common";
 import { t as discordT, intl } from "@common/i18n";
+import { ToastType, toast } from "@common/toast";
 import { Button, Notice } from "@components";
 import { Logger } from "@replugged";
 import { generalSettings } from "src/renderer/managers/settings";
@@ -85,7 +86,7 @@ export async function getInfo(
     return cached.data;
   }
 
-  const info = await RepluggedNative.installer.getInfo(source, identifier, id);
+  const info = await window.RepluggedNative.installer.getInfo(source, identifier, id);
   if (!info.success) {
     logger.error(`Failed to get info for ${identifier}: ${info.error}`);
     cache.set(cacheIdentifier, {
@@ -154,7 +155,7 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
     manifest: { name, type, id, version },
   } = data;
 
-  const res = await RepluggedNative.installer.install(
+  const res = await window.RepluggedNative.installer.install(
     type,
     `${id}.asar`,
     url,
@@ -162,9 +163,9 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
   );
   if (!res.success) {
     logger.error(`Failed to install ${name}: ${res.error}`);
-    toast.toast(
+    toast(
       intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED, { name }),
-      toast.Kind.FAILURE,
+      ToastType.FAILURE,
     );
     return false;
   }
@@ -180,16 +181,16 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
   const loaded = await loadNew(data);
 
   if (!loaded) {
-    toast.toast(
+    toast(
       intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED, { name }),
-      toast.Kind.FAILURE,
+      ToastType.FAILURE,
     );
     return false;
   }
 
-  toast.toast(
+  toast(
     intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS, { name }),
-    toast.Kind.SUCCESS,
+    ToastType.SUCCESS,
   );
   return true;
 }
@@ -306,10 +307,7 @@ export async function installFlow(
   const info = await getInfo(identifier, source, id);
   if (!info) {
     if (showToasts)
-      toast.toast(
-        intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED),
-        toast.Kind.FAILURE,
-      );
+      toast(intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED), ToastType.FAILURE);
     return {
       kind: "FAILED",
     };
@@ -321,9 +319,9 @@ export async function installFlow(
 
   if (checkIsInstalled(info)) {
     if (showToasts)
-      toast.toast(
+      toast(
         intl.formatToPlainString(t.REPLUGGED_ERROR_ALREADY_INSTALLED, { name: info.manifest.name }),
-        toast.Kind.MESSAGE,
+        ToastType.MESSAGE,
       );
     return {
       kind: "ALREADY_INSTALLED",
@@ -337,10 +335,7 @@ export async function installFlow(
   if (!confirm) {
     if (confirm === false && showToasts) {
       // Do not show if null ("open in store" clicked)
-      toast.toast(
-        intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL),
-        toast.Kind.MESSAGE,
-      );
+      toast(intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL), ToastType.MESSAGE);
     }
     return {
       kind: "CANCELLED",
