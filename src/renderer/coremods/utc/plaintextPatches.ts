@@ -5,9 +5,8 @@ export default [
     find: `.jsx=`,
     replacements: [
       {
-        match: /return{\$\$typeof:\w+,type:(\w+).+?props:(\w+)/,
-        replace: (suffix, type, props) =>
-          ` ${props}.className && ${type} !== "html" && (${props}.className = replugged.coremods.coremods.utc?._getClassName(${props}.className));${suffix}`,
+        match: /return{\$\$typeof:\i,type:(\i).+?props:(\i)/,
+        replace: (suffix, type, props) => `$exports?._patchClassName(${props}, ${type});${suffix}`,
       },
     ],
   },

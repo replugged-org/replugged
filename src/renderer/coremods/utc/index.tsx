@@ -1,23 +1,47 @@
-type RegExpReducible<T> = RegExpStringIterator<T> & { reduce: T[]["reduce"] };
-const classMap = new Map<string, string>();
+const UTC_CLASS_PREFIX = "utc_";
+
+const ClassMap = new Map<string, string>();
+
+const utcRegex = new RegExp(`${UTC_CLASS_PREFIX}\\S+\\s*`, "g");
+
+const classNameRegex = /([\w\d_$]+?)-(\w+)/g;
+
+const classPrefixHashRegex = /[_\d$]/;
 
 /**
  * @internal
  * @hidden
  */
 
-export function _getClassName(input: string): string {
-  if (classMap.has(input)) return classMap.get(input)!;
+function getClassName(input: string): string {
+  const cached = ClassMap.get(input);
+  if (cached) return cached;
 
-  const baseClasses = input.includes("utc_") ? input.replaceAll(/utc_\S+\s*/g, "").trim() : input;
+  const baseClasses = input.includes(UTC_CLASS_PREFIX)
+    ? input.replaceAll(utcRegex, "").trim()
+    : input;
 
-  const suffixMatch = baseClasses.matchAll(/([\w\d_$]+?)-(\w+)/g) as RegExpReducible<RegExpExecArray>;
+  const utcSuffixes = [...baseClasses.matchAll(classNameRegex)].reduce(
+    (suffix, [_, prefix, name]) =>
+      classPrefixHashRegex.test(prefix) && !suffix.includes(name)
+        ? `${suffix} utc_${name}`
+        : suffix,
+    "",
+  );
 
-  const suffix = suffixMatch.reduce((suffix, [_, prefix, name]) => (/[_\d]+/.exec(prefix)) ? `${suffix}_${name}` : suffix, "");
-
-  const unified = suffix.length ? `${baseClasses} utc${suffix}` : baseClasses;
-
-  classMap.set(input, unified);
-
+  const unified = `${baseClasses}${utcSuffixes}`;
+  ClassMap.set(input, unified);
   return unified;
+}
+
+/**
+ * @internal
+ * @hidden
+ */
+
+
+export function _patchClassName(props: Record<string, string>, type: string): void {
+  if (!props.className || type === "html") return;
+
+  props.className = getClassName(props.className);
 }
