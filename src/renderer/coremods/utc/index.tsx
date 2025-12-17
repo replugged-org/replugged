@@ -11,9 +11,9 @@ export function _getClassName(input: string): string {
 
   const baseClasses = input.includes("utc_") ? input.replaceAll(/utc_\S+\s*/g, "").trim() : input;
 
-  const suffixMatch = baseClasses.matchAll(/(\w+?)_/g) as RegExpReducible<RegExpExecArray>;
+  const suffixMatch = baseClasses.matchAll(/([\w\d_$]+?)-(\w+)/g) as RegExpReducible<RegExpExecArray>;
 
-  const suffix = suffixMatch.reduce((suffix, [_, name]) => `${suffix}_${name}`, "");
+  const suffix = suffixMatch.reduce((suffix, [_, prefix, name]) => (/[_\d]+/.exec(prefix)) ? `${suffix}_${name}` : suffix, "");
 
   const unified = suffix.length ? `${baseClasses} utc${suffix}` : baseClasses;
 
