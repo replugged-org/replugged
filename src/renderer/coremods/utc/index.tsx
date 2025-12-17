@@ -39,7 +39,6 @@ function getClassName(input: string): string {
  * @hidden
  */
 
-
 export function _patchClassName(props: Record<string, string>, type: string): void {
   if (!props.className || type === "html") return;
 
