@@ -27,7 +27,7 @@ import {
 import { t } from "src/renderer/modules/i18n";
 import { sleep, useSetting, useSettingArray } from "src/renderer/util";
 import { UserSettingsForm } from "..";
-import Icons from "../icons";
+import { LinkIcon } from "../icons";
 import { getAddonType, label } from "./Addons";
 
 import "./Updater.css";
@@ -164,7 +164,7 @@ export function Updater(): React.ReactElement {
       )}
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
         <Flex justify={Flex.Justify.CENTER} direction={Flex.Direction.VERTICAL}>
-          <Text variant="heading-md/bold" color="header-primary">
+          <Text variant="heading-md/bold" color="text-strong">
             {updatesAvailable.length
               ? intl.format(t.REPLUGGED_UPDATES_AVAILABLE, { count: updatesAvailable.length })
               : intl.string(t.REPLUGGED_UPDATES_UP_TO_DATE)}
@@ -226,8 +226,8 @@ export function Updater(): React.ReactElement {
                     align={Flex.Align.CENTER}
                     style={{ gap: "5px" }}
                     className={marginStyles.marginBottom4}>
-                    <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-                      <Text variant="heading-md/bold" color="header-primary" tag="span">
+                    <Text variant="heading-sm/normal" tag="h2" color="text-default">
+                      <Text variant="heading-md/bold" color="text-strong" tag="span">
                         {manifest.name}
                       </Text>{" "}
                       v{manifest.version}
@@ -236,10 +236,13 @@ export function Updater(): React.ReactElement {
                       <Tooltip
                         text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
                           type: intl.string(discordT.UPDATE_BADGE_HEADER),
-                        })}
-                        className="replugged-addon-icon replugged-addon-icon-md">
-                        <Anchor href={sourceLink}>
-                          <Icons.Link />
+                        })}>
+                        <Anchor href={sourceLink} className="replugged-addon-icon-container">
+                          <LinkIcon
+                            size="refresh_sm"
+                            color="currentColor"
+                            className="replugged-addon-icon"
+                          />
                         </Anchor>
                       </Tooltip>
                     ) : null}

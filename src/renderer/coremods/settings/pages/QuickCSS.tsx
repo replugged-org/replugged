@@ -173,25 +173,20 @@ export const QuickCSS = (): React.ReactElement => {
   }, [value]);
 
   return (
-    <UserSettingsForm
-      title={
-        <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-          {intl.string(t.REPLUGGED_QUICKCSS)}
-          <Flex justify={Flex.Justify.END}>
-            {autoApply ? null : (
-              <Button onClick={reloadAndToast}>
-                {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
-              </Button>
-            )}
-            <Button
-              onClick={() => window.RepluggedNative.quickCSS.openFolder()}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.LINK}>
-              {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
-            </Button>
-          </Flex>
-        </Flex>
-      }>
+    <UserSettingsForm title={intl.string(t.REPLUGGED_QUICKCSS)}>
+      <Flex justify={Flex.Justify.END}>
+        {autoApply ? null : (
+          <Button onClick={reloadAndToast}>
+            {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
+          </Button>
+        )}
+        <Button
+          onClick={() => window.RepluggedNative.quickCSS.openFolder()}
+          color={Button.Colors.PRIMARY}
+          look={Button.Looks.LINK}>
+          {intl.string(t.REPLUGGED_QUICKCSS_FOLDER_OPEN)}
+        </Button>
+      </Flex>
       <div ref={ref} id="replugged-quickcss-wrapper" />
     </UserSettingsForm>
   );

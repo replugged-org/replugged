@@ -7,7 +7,7 @@ export default [
       {
         match: /((\i)\){)(var\s*\i;let{navId:)/,
         replace: (_, prefix, props, suffix) =>
-          `${prefix}${props}=replugged.coremods.coremods.contextMenu?._insertMenuItems(${props});${suffix}`,
+          `${prefix}${props}=$exports?._insertMenuItems(${props});${suffix}`,
       },
     ],
   },

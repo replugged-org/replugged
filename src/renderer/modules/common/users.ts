@@ -58,4 +58,6 @@ export interface GuildMemberStore {
 const UserStore = await waitForStore<UserStore & Store>("UserStore");
 const GuildMemberStore = await waitForStore<GuildMemberStore & Store>("GuildMemberStore");
 
-export default virtualMerge(getBoundMethods(UserStore), getBoundMethods(GuildMemberStore));
+export type Users = UserStore & GuildMemberStore;
+
+export default virtualMerge(getBoundMethods(UserStore), getBoundMethods(GuildMemberStore)) as Users;

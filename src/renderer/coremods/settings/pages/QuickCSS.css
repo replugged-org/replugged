@@ -84,7 +84,7 @@
 /* Active line */
 #replugged-quickcss-wrapper .cm-activeLine,
 #replugged-quickcss-wrapper .cm-activeLineGutter {
-  background-color: var(--background-modifier-hover);
+  background-color: var(--interactive-background-hover);
 }
 
 /* Auto-complete */
@@ -98,7 +98,7 @@
   border: 2px solid transparent;
 }
 #replugged-quickcss-wrapper .cm-tooltip [role="listbox"] {
-  background-color: var(--background-floating);
+  background-color: var(--background-surface-high);
 }
 
 /* Line gutter */
@@ -140,7 +140,7 @@
 
 /* Find "ctrl+f" */
 #replugged-quickcss-wrapper .cm-panels [name="close"] {
-  color: var(--interactive-normal);
+  color: var(--interactive-text-default);
 }
 #replugged-quickcss-wrapper .cm-panels {
   background: var(--bg-overlay-2, var(--background-base-lower));

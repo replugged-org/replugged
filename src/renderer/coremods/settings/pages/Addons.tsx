@@ -5,7 +5,6 @@ import { t as discordT, intl } from "@common/i18n";
 import { ToastType, toast } from "@common/toast";
 import {
   Anchor,
-  Breadcrumbs,
   Button,
   ContextMenu,
   ErrorBoundary,
@@ -25,9 +24,16 @@ import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
 import { UserSettingsForm } from "..";
-import Icons from "../icons";
+import { ClydeIcon, GitHubIcon, LinkIcon, RefreshIcon, SettingsIcon, TrashIcon } from "../icons";
 
 import "./Addons.css";
+
+interface ArrowProps {
+  direction: "up" | "right" | "down" | "left";
+  className?: string;
+}
+
+const Arrow = webpack.getBySource<React.ComponentClass<ArrowProps>>('UP:"up",RIGHT:"right"')!;
 
 interface OpenUserProfileModalProps {
   userId: string;
@@ -243,7 +249,7 @@ function AuthorContextMenu({
               type: intl.string(discordT.DISCORD),
             })}
             id="replugged-addon-author-discord"
-            icon={Icons.Discord}
+            icon={ClydeIcon}
             action={() => openUserProfileModal({ userId: author.discordID! })}
           />
         )}
@@ -253,7 +259,7 @@ function AuthorContextMenu({
               type: "GitHub",
             })}
             id="replugged-addon-author-github"
-            icon={Icons.GitHub}
+            icon={GitHubIcon}
             action={() => open(`https://github.com/${author.github}`)}
           />
         )}
@@ -312,8 +318,8 @@ function Card({
         justify={Flex.Justify.BETWEEN}
         className={marginStyles.marginBottom4}>
         <span>
-          <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-            <Text variant="heading-md/bold" tag="span" color="header-primary">
+          <Text variant="heading-sm/normal" tag="h2" color="text-default">
+            <Text variant="heading-md/bold" tag="span" color="text-strong">
               {addon.manifest.name}
             </Text>
             <span>
@@ -335,7 +341,7 @@ function Card({
         </Notice>
       ) : null}
       <Flex className={marginStyles.marginTop8}>
-        <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
+        <Text variant="heading-sm/normal" tag="h2" color="text-default">
           <Authors addon={addon} />
         </Text>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
@@ -343,10 +349,9 @@ function Card({
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
                 type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <Anchor href={sourceLink}>
-                <Icons.Link />
+              })}>
+              <Anchor href={sourceLink} className="replugged-addon-icon-container">
+                <LinkIcon size="refresh_sm" color="currentColor" className="replugged-addon-icon" />
               </Anchor>
             </Tooltip>
           ) : null}
@@ -354,30 +359,35 @@ function Card({
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_SETTINGS, {
                 type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <Anchor onClick={() => openSettings()}>
-                <Icons.Settings />
+              })}>
+              <Anchor onClick={() => openSettings()} className="replugged-addon-icon-container">
+                <SettingsIcon
+                  size="refresh_sm"
+                  color="currentColor"
+                  className="replugged-addon-icon"
+                />
               </Anchor>
             </Tooltip>
           ) : null}
           <Tooltip
             text={intl.formatToPlainString(t.REPLUGGED_ADDON_DELETE, {
               type: label(type, { caps: "title" }),
-            })}
-            className="replugged-addon-icon">
-            <Anchor onClick={() => uninstall()}>
-              <Icons.Trash />
+            })}>
+            <Anchor onClick={() => uninstall()} className="replugged-addon-icon-container">
+              <TrashIcon size="refresh_sm" color="currentColor" className="replugged-addon-icon" />
             </Anchor>
           </Tooltip>
           {disabled ? null : (
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_RELOAD, {
                 type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <Anchor onClick={() => reload()}>
-                <Icons.Reload />
+              })}>
+              <Anchor onClick={() => reload()} className="replugged-addon-icon-container">
+                <RefreshIcon
+                  size="refresh_sm"
+                  color="currentColor"
+                  className="replugged-addon-icon"
+                />
               </Anchor>
             </Tooltip>
           )}
@@ -505,13 +515,24 @@ function Cards({
           }}
           openSettings={() => {
             setSection(`rp_${type}_${addon.manifest.id}`);
-
-            document.querySelector('div[class^="contentRegionScroller"]')!.scrollTo({ top: 0 });
           }}
         />
       ))}
     </Stack>
   );
+}
+
+function getAddonIdFromSection(section: string, type: AddonType): string {
+  const prefix = `rp_${type}_`;
+  return section.startsWith(prefix) ? section.slice(prefix.length) : section;
+}
+
+export function useAddonPanelTitle(type: AddonType): string {
+  const count = listAddons(type).size;
+  return intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+    type: label(type, { caps: "title", plural: true }),
+    count,
+  });
 }
 
 export const Addons = (type: AddonType): React.ReactElement => {
@@ -546,63 +567,19 @@ export const Addons = (type: AddonType): React.ReactElement => {
 
   React.useEffect(refreshList, [search, type]);
 
-  function getAddonIdFromSection(section: string): string {
-    const prefix = `rp_${type}_`;
-    return section.startsWith(prefix) ? section.slice(prefix.length) : section;
-  }
-
   return (
     <UserSettingsForm
       title={
-        <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-          {section === `rp_${type}` ? (
-            <Text.H2
-              style={{
-                // Do not turn "(num)" into a single symbol
-                fontVariantLigatures: "none",
-              }}>
-              {intl.format(t.REPLUGGED_ADDONS_TITLE_COUNT, {
-                type: label(type, { caps: "title", plural: true }),
-                count: unfilteredCount,
-              })}
-            </Text.H2>
-          ) : (
-            <Breadcrumbs
-              activeId={section}
-              breadcrumbs={[
-                {
-                  id: `rp_${type}`,
-                  label: intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
-                    type: label(type, { caps: "title", plural: true }),
-                    count: unfilteredCount,
-                  }),
-                },
-                {
-                  id: `rp_${type}_${getAddonIdFromSection(section)}`,
-                  label:
-                    list?.find((x) => x.manifest.id === getAddonIdFromSection(section))?.manifest
-                      .name || "",
-                },
-              ]}
-              onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
-              renderCustomBreadcrumb={(breadcrumb, active) => (
-                <Text.H2
-                  color={active ? "header-primary" : "inherit"}
-                  className={
-                    active
-                      ? "replugged-addon-breadcrumbsActive"
-                      : "replugged-addon-breadcrumbsInactive"
-                  }
-                  style={{
-                    // Do not turn "(num)" into a single symbol
-                    fontVariantLigatures: "none",
-                  }}>
-                  {breadcrumb.label}
-                </Text.H2>
-              )}
-            />
-          )}
-        </Flex>
+        <Text.H2
+          style={{
+            // Do not turn "(num)" into a single symbol
+            fontVariantLigatures: "none",
+          }}>
+          {intl.format(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+            type: label(type, { caps: "title", plural: true }),
+            count: unfilteredCount,
+          })}
+        </Text.H2>
       }>
       {section === `rp_${type}` && (
         // TODO: Replace with ButtonGroup from Mana Design System; after Button has been migrated as well
@@ -687,10 +664,23 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Text>
         ) : null
       ) : (
-        (SettingsElement = getSettingsElement(getAddonIdFromSection(section), type)) && (
-          <ErrorBoundary>
-            <SettingsElement />
-          </ErrorBoundary>
+        (SettingsElement = getSettingsElement(getAddonIdFromSection(section, type), type)) && (
+          <>
+            <Button
+              className="replugged-addon-back"
+              innerClassName="replugged-addon-back-button"
+              look={Button.Looks.BLANK}
+              size={Button.Sizes.MIN}
+              onClick={() => setSection(`rp_${type}`)}>
+              <Arrow direction="left" />
+              <Text variant="text-sm/semibold" color="interactive-text-default">
+                {intl.string(discordT.BACK)}
+              </Text>
+            </Button>
+            <ErrorBoundary>
+              <SettingsElement />
+            </ErrorBoundary>
+          </>
         )
       )}
     </UserSettingsForm>

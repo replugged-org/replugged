@@ -1,20 +1,12 @@
 import type { PlaintextPatch } from "src/types";
 
-const coremodStr = "replugged.coremods.coremods.language";
-
 export default [
   {
-    find: ".flagImage",
+    find: ".LANGUAGE_AND_TIME_PANEL,{section:",
     replacements: [
-      // ? Website is down for now, so disabling this patch
-      /* {
-        match: /\(0,\i\.jsx\).{0,100}options:\i,value:\i}\)/,
-        replace: `[${coremodStr}?.Card() ?? null,$&]`,
-      }, */
       {
-        match: /children:\[(.+?\.localeName[^\]]*?)]/,
-        replace: (_, ogChild) =>
-          `children:${coremodStr}?.Percentage?${coremodStr}.Percentage(${ogChild}):[${ogChild}]`,
+        match: /value:(\i),options/,
+        replace: `renderOptionLabel:$exports?._renderLabel,helperText:$exports?.getFormattedPercentage($1),$&`,
       },
     ],
   },

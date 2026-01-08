@@ -210,4 +210,6 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_WIN_UPDATER": "Keep Replugged After Updates",
   "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Automatically reapplies Replugged after Discord updates.",
   "REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS": "Development Tools"
+  "REPLUGGED_SETTINGS": "Replugged Settings"
 });
+
