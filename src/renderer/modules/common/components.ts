@@ -1,5 +1,6 @@
 import { waitForProps } from "@webpack";
 
+import type { VoidConfirmModal } from "discord-client-types/discord_app/design/void/components/VoidConfirmModal/VoidConfirmModal";
 import type * as Design from "discord-client-types/discord_app/design/web";
 
 export type DiscordComponents = {
@@ -12,7 +13,7 @@ export type DiscordComponents = {
   Text: Design.Text;
   ToastPosition: typeof Design.ToastPosition;
   ToastType: typeof Design.ToastType;
-  VoidConfirmModal: Design.ConfirmModal;
+  VoidConfirmModal: VoidConfirmModal;
   createToast: Design.CreateToast;
   popToast: Design.PopToast;
   showToast: Design.ShowToast;

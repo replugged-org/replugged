@@ -151,7 +151,7 @@ const Embed = React.memo(
             <div className={barLoader} />
           ) : (
             <>
-              <Tooltip text={props.authors} className="replugged-addon-embed-title-tooltip">
+              <Tooltip text={props.authors}>
                 <strong className={classNames(title, "replugged-addon-embed-title")}>
                   {props.authors}
                 </strong>
@@ -210,7 +210,6 @@ const Embed = React.memo(
               text={intl.formatToPlainString(t.REPLUGGED_ERROR_ALREADY_INSTALLED, {
                 name: props.name,
               })}
-              className="replugged-addon-embed-button-tooltip"
               shouldShow={props.isInstalled ? undefined : false}
               hideOnClick={false}>
               <Button

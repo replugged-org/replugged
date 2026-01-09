@@ -1,6 +1,7 @@
 import type { ModuleExports } from "../../../types";
 import { error } from "../logger";
 
+import type { Tooltip as TooltipType } from "discord-client-types/discord_app/design/mana/components/Tooltip/Tooltip";
 import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 import type * as Design from "discord-client-types/discord_app/design/web";
 import type { Flex as FlexType } from "discord-client-types/discord_app/modules/core/web/Flex";
@@ -80,7 +81,7 @@ importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default
 export let TextInput: Design.TextInput;
 importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
 
-export let Tooltip: Design.VoidTooltipContainer;
+export let Tooltip: TooltipType;
 importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
 
 // Other
