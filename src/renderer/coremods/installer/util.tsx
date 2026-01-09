@@ -1,16 +1,15 @@
 import { marginStyles, modal } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { ToastType, toast } from "@common/toast";
-import { Button, Notice } from "@components";
+import { Notice } from "@components";
 import { Logger } from "@replugged";
 import { generalSettings } from "src/renderer/managers/settings";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import { t } from "src/renderer/modules/i18n";
-import { openExternal } from "src/renderer/util";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
-import { getAddonType, getSourceLink, label } from "../settings/pages";
+import { getAddonType, label } from "../settings/pages";
 
 const logger = Logger.coremod("Installer");
 
@@ -226,7 +225,7 @@ export function authorList(authors: string[]): string {
 async function showInstallPrompt(
   manifest: AnyAddonManifest,
   source: InstallerSource | undefined,
-  linkToStore = true,
+  _linkToStore = true,
 ): Promise<boolean | null> {
   let type: string;
   switch (manifest.type) {
@@ -245,7 +244,9 @@ async function showInstallPrompt(
     authors,
   });
 
-  const storeUrl = linkToStore ? getSourceLink(manifest) : undefined;
+  // TODO: Fix this! Mana ConfirmModals do not support secondary confirm buttons
+
+  // const storeUrl = linkToStore ? getSourceLink(manifest) : undefined;
 
   const res = await modal.confirm({
     title,
@@ -263,8 +264,8 @@ async function showInstallPrompt(
     ),
     confirmText: intl.string(discordT.CONFIRM),
     cancelText: intl.string(discordT.CANCEL),
-    secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
-    onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : undefined),
+    // secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
+    // onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : undefined),
   });
 
   return res;
@@ -357,7 +358,6 @@ export async function installFlow(
         }),
         confirmText: intl.string(discordT.ERRORS_RELOAD),
         cancelText: intl.string(discordT.CANCEL),
-        confirmColor: Button.Colors.RED,
       })
       .then((answer) => {
         if (answer) {

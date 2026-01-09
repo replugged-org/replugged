@@ -1,9 +1,8 @@
-import { getFunctionBySource } from "@webpack";
-import components from "../common/components";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 
-import type * as Design from "discord-client-types/discord_app/design/web";
+import type { Tooltip } from "discord-client-types/discord_app/design/mana/components/Tooltip/Tooltip";
 
-export default getFunctionBySource<Design.VoidTooltipContainer>(
-  components,
-  /className:\i,element:\i="div"/,
-)!;
+const tooltipString = ".tooltipWithShortcut,";
+const mod = await waitForModule(filters.bySource(tooltipString));
+
+export default getFunctionBySource<Tooltip>(mod, tooltipString)!;

@@ -144,9 +144,9 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
   if (type === AddonType.Theme) {
     if (themes.getDisabled().includes(id)) return undefined;
 
-    const theme = themes.themes.get(id)!;
+    const theme = themes.themes.get(id);
 
-    if (theme.manifest.presets?.length) {
+    if (theme?.manifest.presets?.length) {
       return () => <ThemePresetSettings id={id} />;
     }
     return undefined;
@@ -470,7 +470,6 @@ function Cards({
               body: intl.format(t.REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY, { type: label(type) }),
               confirmText: intl.string(discordT.APPLICATION_UNINSTALL_PROMPT_CONFIRM),
               cancelText: intl.string(discordT.CANCEL),
-              confirmColor: Button.Colors.RED,
             });
             if (!confirmation) return;
 
