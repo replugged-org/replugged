@@ -1,15 +1,15 @@
 import { intl } from "@common/i18n";
-import toast from "@common/toast";
+import { ToastType, toast } from "@common/toast";
 import { Logger, plugins, themes } from "@replugged";
 import { t } from "src/renderer/modules/i18n";
-import { registerRPCCommand } from "../rpc";
+import rpc from "../../apis/rpc";
 
 const logger = Logger.coremod("Watcher");
 
 const uninjectors: Array<() => void> = [];
 
 export function start(): void {
-  const uninjectRpc = registerRPCCommand("REPLUGGED_ADDON_WATCHER", {
+  const uninjectRpc = rpc.registerRPCCommand("REPLUGGED_ADDON_WATCHER", {
     scope: "REPLUGGED_LOCAL",
     handler: async (data) => {
       const { id } = data.args;
@@ -40,7 +40,7 @@ export function start(): void {
           themes.reload(id);
         }
 
-        toast.toast(
+        toast(
           intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS, {
             name: addon.manifest.name,
           }),
@@ -52,11 +52,11 @@ export function start(): void {
       } catch (err) {
         logger.error(`Failed to reload ${addon.manifest.id}`, err);
 
-        toast.toast(
+        toast(
           intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_FAILED, {
             name: addon.manifest.name,
           }),
-          toast.Kind.FAILURE,
+          ToastType.FAILURE,
         );
 
         return {

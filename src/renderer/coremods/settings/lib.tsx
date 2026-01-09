@@ -1,100 +1,132 @@
-import type React from "react";
+import { ErrorBoundary } from "@components";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type {
-  LabelCallback,
-  Section as SectionType,
-  SettingsTools,
-} from "../../../types/coremods/settings";
+  BuilderFunction,
+  PanelNode,
+  ProcessedNode,
+  SectionNode,
+  SidebarItemNode,
+} from "src/types";
+// eslint-disable-next-line no-duplicate-imports
+import { NodeType } from "src/types";
 
-const getPos = (pos: number | undefined): number => pos ?? -4;
+const mod = await waitForModule(filters.bySource('"$Root"'));
 
-export const Section = ({
-  name,
-  _id,
-  label,
-  color,
-  elem,
-  pos,
-  fromEnd,
-  tabPredicate,
-}: {
-  name: string;
-  _id?: string;
-  label?: string | LabelCallback;
-  color?: string;
-  elem: (args: unknown) => React.ReactElement;
-  pos?: number;
-  fromEnd?: boolean;
-  tabPredicate?: () => boolean;
-}): SectionType => ({
-  section: name,
-  _id,
-  label,
-  color,
-  element: elem,
-  pos: getPos(pos),
-  fromEnd: fromEnd ?? getPos(pos) < 0,
-  tabPredicate,
-});
+export const createSection = getFunctionBySource<BuilderFunction<SectionNode>>(mod, "SECTION,")!;
+export const createSidebarItem = getFunctionBySource<BuilderFunction<SidebarItemNode>>(
+  mod,
+  "SIDEBAR_ITEM,",
+)!;
+export const createPanel = getFunctionBySource<BuilderFunction<PanelNode>>(mod, "PANEL,")!;
 
-export const Divider = (pos?: number): SectionType => ({
-  section: "DIVIDER",
-  pos: getPos(pos),
-});
+interface CustomNode {
+  node: ProcessedNode;
+  parent: string;
+  after?: string;
+}
 
-export const Header = (label: string | LabelCallback, pos?: number): SectionType => ({
-  section: "HEADER",
-  label,
-  pos: getPos(pos),
-});
+const customNodes: CustomNode[] = [];
 
-export const settingsTools: SettingsTools = {
-  rpSections: [],
-  rpSectionsAfter: new Map(),
-  addSection(opts) {
-    const data = Section(opts);
+/**
+ * Adds a custom setting node.
+ * @param node The setting node to add.
+ * @param options Options for where to insert the node.
+ */
+export function addSettingNode(
+  node: ProcessedNode,
+  options?: { after?: string; parent?: string },
+): void {
+  customNodes.push({
+    node,
+    parent: options?.parent ?? "$Root",
+    after: options?.after,
+  });
+}
 
-    settingsTools.rpSections.push(data);
-    return data;
-  },
-  removeSection(sectionName) {
-    settingsTools.rpSections = settingsTools.rpSections.filter(
-      (s) => s.section !== sectionName && s._id !== sectionName,
-    );
-  },
-  addAfter(sectionName, sections) {
-    if (!Array.isArray(sections)) sections = [sections];
-    settingsTools.rpSectionsAfter.set(sectionName, sections);
+/**
+ * Removes a custom setting node by its key.
+ * @param key The key of the setting node to remove.
+ */
+export function removeSettingNode(key: string): void {
+  const index = customNodes.findIndex((item) => item.node.key === key);
+  if (index !== -1) customNodes.splice(index, 1);
+}
 
-    return sections;
-  },
-  removeAfter(sectionName) {
-    settingsTools.rpSectionsAfter.delete(sectionName);
-  },
-};
+type CustomSettingsPaneOptions = Required<Pick<SidebarItemNode, "icon" | "useTitle">> &
+  Pick<SidebarItemNode, "usePredicate" | "getLegacySearchKey"> & {
+    usePanelTitle?: PanelNode["useTitle"];
+    render: React.ElementType;
+  };
 
-export function insertSections(sections: SectionType[]): SectionType[] {
-  for (const section of settingsTools.rpSections) {
-    sections.splice(section.fromEnd ? sections.length + section.pos : section.pos, 0, section);
+/**
+ * Creates a custom settings panel with a sidebar item.
+ * @param key The unique key for the custom settings panel.
+ * @param options The options for the custom settings panel including icon, title, render function, and predicate.
+ * @returns The custom settings node.
+ */
+export function createCustomSettingsPanel(
+  key: string,
+  {
+    icon,
+    useTitle,
+    render: Panel,
+    usePredicate,
+    getLegacySearchKey,
+    usePanelTitle,
+  }: CustomSettingsPaneOptions,
+): ReturnType<typeof createSidebarItem> {
+  return createSidebarItem(`replugged_${key}_sidebar_item`, {
+    icon,
+    useTitle,
+    getLegacySearchKey: getLegacySearchKey ?? useTitle,
+    ...(usePredicate && { usePredicate }),
+    buildLayout: () => [
+      createPanel(`replugged_${key}_panel`, {
+        useTitle: usePanelTitle ?? useTitle,
+        StronglyDiscouragedCustomComponent: () => (
+          <ErrorBoundary>
+            <Panel />
+          </ErrorBoundary>
+        ),
+        buildLayout: () => [],
+      }),
+    ],
+  });
+}
+
+export function _insertNodes(root: ProcessedNode): ProcessedNode[] {
+  const layout = [...root.buildLayout()];
+  const expectedChildType: NodeType = root.type + 1;
+
+  if (expectedChildType !== NodeType.SECTION && expectedChildType !== NodeType.SIDEBAR_ITEM) {
+    return layout;
   }
 
-  for (const sectionName of settingsTools.rpSectionsAfter.keys()) {
-    const section = sections.findIndex((s) => s.section === sectionName);
-    if (section === -1) continue;
+  const relevant = customNodes.filter(
+    (r) => r.parent === root.key && r.node.type === expectedChildType,
+  );
 
-    for (const section of settingsTools.rpSectionsAfter.get(sectionName)!) {
-      const labelFn = section.__$$label;
+  if (relevant.length === 0) return layout;
 
-      if (typeof section.label === "function" || typeof labelFn === "function") {
-        if (!labelFn) {
-          section.__$$label = section.label as LabelCallback;
-        }
+  const afterAnchored = relevant.filter((r) => r.after);
+  const appendOnly = relevant.filter((r) => !r.after);
 
-        section.label = section.__$$label?.();
-      }
-    }
-
-    sections.splice(section + 1, 0, ...settingsTools.rpSectionsAfter.get(sectionName)!);
+  const grouped = new Map<string, CustomNode[]>();
+  for (const rule of afterAnchored) {
+    const key = rule.after!;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key)!.push(rule);
   }
 
-  return sections;
+  for (const [afterKey, rules] of grouped) {
+    const idx = layout.findIndex((node) => node.key === afterKey);
+    if (idx === -1) continue;
+    layout.splice(idx + 1, 0, ...rules.map((r) => r.node));
+  }
+
+  if (appendOnly.length > 0) {
+    layout.push(...appendOnly.map((r) => r.node));
+  }
+
+  return layout;
 }

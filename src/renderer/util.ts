@@ -170,7 +170,7 @@ export async function goToOrJoinServer(invite: string): Promise<void> {
 }
 
 export async function openExternal(url: string): Promise<void> {
-  const mod = getBySource<(url: string) => Promise<void>>(/href=\w,\w\.target="_blank"/);
+  const mod = getBySource<(url: string) => Promise<void>>(/href=\i,\i\.target="_blank"/);
   if (!mod) {
     throw new Error("Could not find openExternal");
   }
@@ -419,6 +419,9 @@ export function findInTree(
   return tempReturn;
 }
 
+export type ReactTree = (Tree & React.ReactElement) | Tree;
+type ReactTreeFilter = string | ((reactTree: ReactTree) => boolean);
+
 /**
  * Find the component you are looking for in a tree, recursively.
  *
@@ -428,10 +431,10 @@ export function findInTree(
  * @returns The component you are looking for
  */
 export function findInReactTree(
-  tree: Tree,
-  searchFilter: TreeFilter,
+  tree: ReactTree,
+  searchFilter: ReactTreeFilter,
   maxRecursion = 100,
-): Tree | null | undefined {
+): ReactTree | null | undefined {
   return findInTree(tree, searchFilter, {
     walkable: ["props", "children", "child", "sibling"],
     maxRecursion,

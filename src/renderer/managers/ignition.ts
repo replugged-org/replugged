@@ -1,6 +1,4 @@
 import { ready as commonReady } from "@common";
-import { type GeneralSettings, defaultSettings } from "src/types";
-import * as settings from "../apis/settings";
 import { ready as componentsReady } from "../modules/components";
 import * as i18n from "../modules/i18n";
 import { error, log } from "../modules/logger";
@@ -8,14 +6,9 @@ import { loadStyleSheet } from "../util";
 import * as coremods from "./coremods";
 import * as plugins from "./plugins";
 import * as quickCSS from "./quick-css";
+import { generalSettings } from "./settings";
 import * as themes from "./themes";
 import { startAutoUpdateChecking } from "./updater";
-
-// TODO: see if we can import this from General.tsx
-const generalSettings = settings.init<GeneralSettings, keyof typeof defaultSettings>(
-  "dev.replugged.Settings",
-  defaultSettings,
-);
 
 export async function start(): Promise<void> {
   log("Ignition", "Start", void 0, "Igniting Replugged...");

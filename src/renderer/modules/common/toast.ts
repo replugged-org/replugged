@@ -1,64 +1,8 @@
-import type React from "react";
-import { components } from ".";
+import components from "./components";
 
-const Kind = {
-  MESSAGE: "message",
-  SUCCESS: "success",
-  FAILURE: "failure",
-  CUSTOM: "custom",
-  CLIP: "clip",
-  LINK: "link",
-  FORWARD: "forward",
-  BOOKMARK: "bookmark",
-  CLOCK: "clock",
-  AI: "ai",
-} as const;
+export const { ToastType, ToastPosition, createToast, showToast, popToast } = components;
 
-const Position = {
-  TOP: 0,
-  BOTTOM: 1,
-} as const;
-
-interface ToastOptions {
-  position?: (typeof Position)[keyof typeof Position];
-  duration?: number;
-  component?: React.ReactElement;
-}
-
-interface ToastProps {
-  message: string | React.ReactElement | null;
-  id: string;
-  type: (typeof Kind)[keyof typeof Kind];
-  options: ToastOptions;
-}
-
-export type CreateToast = (
-  content: string | React.ReactElement | null,
-  kind?: (typeof Kind)[keyof typeof Kind],
-  opts?: ToastOptions,
-) => ToastProps;
-
-export type ShowToast = (props: ToastProps) => void;
-
-type ToastFn = (
-  content: string | React.ReactElement | null,
-  kind?: (typeof Kind)[keyof typeof Kind],
-  opts?: ToastOptions,
-) => void;
-
-export interface Toast {
-  toast: ToastFn;
-  Kind: typeof Kind;
-  Position: typeof Position;
-}
-
-const toast: ToastFn = (content, kind = Kind.SUCCESS, opts = undefined) => {
-  const props = components.createToast(content, kind, opts);
-  components.showToast(props);
+export const toast = (content: string, type = ToastType.SUCCESS, opts = undefined): void => {
+  const props = createToast(content, type, opts);
+  showToast(props);
 };
-
-export default {
-  toast,
-  Kind,
-  Position,
-} as Toast;

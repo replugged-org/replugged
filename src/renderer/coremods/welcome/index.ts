@@ -1,8 +1,8 @@
 import { intl } from "@common/i18n";
 import { notices, util } from "@replugged";
 import { DISCORD_INVITE } from "src/constants";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
-import { generalSettings } from "../settings/pages/General";
 
 export function start(): void {
   if (!generalSettings.get("showWelcomeNoticeOnOpen")) return;

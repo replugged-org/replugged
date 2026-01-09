@@ -1,8 +1,3 @@
-.replugged-addon-cards {
-  display: grid;
-  gap: var(--space-md);
-}
-
 .replugged-addon-card {
   background-color: var(--background-base-lower);
   border: 1px solid var(--border-subtle);
@@ -11,42 +6,28 @@
   border-radius: var(--radius-sm);
 }
 
-.replugged-addon-icon,
-.replugged-addon-icon a {
+.replugged-addon-icon {
+  display: block;
+}
+
+.replugged-addon-icon-container {
+  color: var(--icon-muted);
+}
+.replugged-addon-icon-container:hover {
+  color: var(--interactive-text-hover);
+}
+
+.replugged-addon-back {
+  margin-bottom: var(--space-16);
+}
+
+.replugged-addon-back-button {
+  align-items: center;
+  color: var(--interactive-text-default);
   display: flex;
+  gap: var(--space-4);
+  text-transform: uppercase;
 }
-
-.replugged-addon-icon svg {
-  color: var(--interactive-normal);
-  height: 2ch;
-}
-
-.replugged-addon-icon-md svg {
-  height: 1.75ch;
-}
-
-.replugged-addon-icon-author svg {
-  height: 1.5ch;
-}
-
-.replugged-addon-icon:hover svg {
-  color: var(--interactive-hover);
-}
-
-.replugged-addon-breadcrumbs {
-  margin-bottom: 20px;
-}
-.replugged-addon-breadcrumbsActive {
-  color: var(--header-primary);
-}
-.replugged-addon-breadcrumbsInactive {
-  cursor: pointer;
-  color: var(--header-secondary);
-}
-.replugged-addon-breadcrumbsInactive:hover {
-  color: var(--header-primary);
-}
-
-.replugged-addon-header-buttons {
-  gap: 5px;
+.replugged-addon-back-button:hover {
+  text-decoration: underline;
 }

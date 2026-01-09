@@ -1,11 +1,9 @@
-import { init } from "src/renderer/apis/settings";
-import { type GeneralSettings, type PlaintextPatch, defaultSettings } from "src/types";
+import { generalSettings } from "src/renderer/managers/settings";
+import type { PlaintextPatch } from "src/types";
 
-// TODO: see if we can import this from General.tsx
-const generalSettings = init<GeneralSettings, keyof typeof defaultSettings>(
-  "dev.replugged.Settings",
-  defaultSettings,
-);
+function alwaysTruePatch(find: string | RegExp, match: string | RegExp): PlaintextPatch {
+  return { find, replacements: [{ match, replace: `$&||true` }] };
+}
 
 export default (generalSettings.get("experiments")
   ? [
@@ -24,80 +22,42 @@ export default (generalSettings.get("experiments")
         replacements: [
           // Force the 'isDeveloper' property to true
           {
-            match: /(isDeveloper:{configurable:!1,get:\(\)=>)\w+/g,
+            match: /(isDeveloper:{configurable:!1,get:\(\)=>)\i/g,
             replace: `$1true`,
           },
           // Set the result of 'isStaffEnv' to be always true
           {
-            match: /=\(0,\w+\.\w+\)\(\w+\.default\.getCurrentUser\(\)\)/,
+            match: /=\(0,\i\.\i\)\(\i\.default\.getCurrentUser\(\)\)/,
             replace: "=true",
-          },
-        ],
-      },
-      {
-        // Always return true for the 'isStaff' property in SettingRendererUtils
-        find: `header:"Developer Only"`,
-        replacements: [
-          {
-            match: /isStaff:\w+/,
-            replace: `$&||true`,
-          },
-        ],
-      },
-      {
-        // Add developer only settings to the UserSettingsCogContextMenu
-        find: `layoutDebuggingEnabled,isStaff:`,
-        replacements: [
-          {
-            match: /isStaff\(\)\)===!0/,
-            replace: `$&||true`,
           },
         ],
       },
       ...(generalSettings.get("staffDevTools")
         ? [
             {
-              // Patch the StaffHelpButton component to always show the "Toggle DevTools" button
-              find: `staff-help-popout`,
-              replacements: [
-                {
-                  match: /isDiscordDeveloper:\w+/,
-                  replace: `$&=true`,
-                },
-              ],
-            },
-            {
               // Set the resulting experiment configuration of the bug reporter to be always true
               // This is necessary to ensure the StaffHelpButton is shown instead of the classic HelpButton
-              find: /hasBugReporterAccess:\w+}=\w+\.\w+\.useExperiment/,
+              find: /hasBugReporterAccess:\i}=\i\.\i\.useExperiment/,
               replacements: [
                 {
-                  match: /hasBugReporterAccess:\w+/,
+                  match: /hasBugReporterAccess:\i/,
                   replace: `_$&=true`,
                 },
               ],
             },
           ]
         : []),
-      {
-        // Always show the ExperimentEmbed
-        find: "dev://experiment/",
-        replacements: [
-          {
-            match: ".isStaffPersonal())",
-            replace: `$&||true`,
-          },
-        ],
-      },
-      {
-        // Always show the ManaPlaygroundEmbed
-        find: "dev://mana(/",
-        replacements: [
-          {
-            match: ".isStaffPersonal())",
-            replace: `$&||true`,
-          },
-        ],
-      },
+      // Always return true for the 'isStaff' property in SettingRendererUtils
+      alwaysTruePatch(`header:"Developer Only"`, /isStaff:\i/),
+      // Add developer only settings to the UserSettingsCogContextMenu
+      alwaysTruePatch(`layoutDebuggingEnabled,isStaff:`, "isStaff())===!0"),
+      // Show the Playgrounds and Build Overrides menu items in the UserSettingsCogContextMenu
+      alwaysTruePatch("user-settings-cog", /isStaff\(\)/g),
+      // Show the ExperimentEmbed
+      alwaysTruePatch(/className:\i\.experimentOverride,/, ".isStaffPersonal())"),
+      // Show the PlaygroundEmbed
+      alwaysTruePatch("data-has-story", ".isStaffPersonal())"),
+      // Show the Playgrounds tab in the UserSettingsCogContextMenu
+      alwaysTruePatch('label:"Playgrounds"', ".isStaffPersonal())===!0"),
     ]
   : []) as PlaintextPatch[];

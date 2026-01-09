@@ -6,8 +6,6 @@ export type ModuleExports =
   | string
   | boolean
   | symbol;
-export type ModuleExportsWithProps<P extends string> = Record<P, unknown> &
-  Record<PropertyKey, unknown>;
 
 export interface RawModule<T = unknown> {
   id: number;
@@ -17,7 +15,7 @@ export interface RawModule<T = unknown> {
 
 export type WebpackRawModules = Record<string | number, RawModule>;
 
-export type WebpackRequire = ((e: number) => unknown) & {
+export type WebpackRequire = ((e: number | string) => unknown) & {
   c?: WebpackRawModules;
   d: (module: unknown, exports: Record<string, () => unknown>) => void;
   m: WebpackChunk[1];
@@ -30,8 +28,8 @@ export type WebpackModule = (
 ) => void;
 
 export type WebpackChunk = [
-  Array<symbol | number>,
-  Record<number, WebpackModule>,
+  Array<symbol | number | string>,
+  Record<number | string, WebpackModule>,
   ((r: WebpackRequire) => unknown)?,
 ];
 
@@ -81,3 +79,5 @@ export interface WaitForOptions {
   /** If nothing is found after this delay (ms), stop and throw an error. */
   timeout?: number;
 }
+
+export type AbstractConstructor<T = unknown> = abstract new (args: unknown[]) => T;

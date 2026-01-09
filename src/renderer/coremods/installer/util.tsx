@@ -1,14 +1,15 @@
-import { modal, toast } from "@common";
+import { marginStyles, modal } from "@common";
 import { t as discordT, intl } from "@common/i18n";
-import { Button, Notice } from "@components";
+import { ToastType, toast } from "@common/toast";
+import { Notice } from "@components";
 import { Logger } from "@replugged";
+import { generalSettings } from "src/renderer/managers/settings";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import { t } from "src/renderer/modules/i18n";
-import { openExternal } from "src/renderer/util";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
 import * as pluginManager from "../../managers/plugins";
 import * as themeManager from "../../managers/themes";
-import { generalSettings, getAddonType, getSourceLink, label } from "../settings/pages";
+import { getAddonType, label } from "../settings/pages";
 
 const logger = Logger.coremod("Installer");
 
@@ -84,7 +85,7 @@ export async function getInfo(
     return cached.data;
   }
 
-  const info = await RepluggedNative.installer.getInfo(source, identifier, id);
+  const info = await window.RepluggedNative.installer.getInfo(source, identifier, id);
   if (!info.success) {
     logger.error(`Failed to get info for ${identifier}: ${info.error}`);
     cache.set(cacheIdentifier, {
@@ -153,7 +154,7 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
     manifest: { name, type, id, version },
   } = data;
 
-  const res = await RepluggedNative.installer.install(
+  const res = await window.RepluggedNative.installer.install(
     type,
     `${id}.asar`,
     url,
@@ -161,9 +162,9 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
   );
   if (!res.success) {
     logger.error(`Failed to install ${name}: ${res.error}`);
-    toast.toast(
+    toast(
       intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_FAILED, { name }),
-      toast.Kind.FAILURE,
+      ToastType.FAILURE,
     );
     return false;
   }
@@ -179,16 +180,16 @@ export async function install(data: CheckResultSuccess): Promise<boolean> {
   const loaded = await loadNew(data);
 
   if (!loaded) {
-    toast.toast(
+    toast(
       intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_LOAD_FAILED, { name }),
-      toast.Kind.FAILURE,
+      ToastType.FAILURE,
     );
     return false;
   }
 
-  toast.toast(
+  toast(
     intl.formatToPlainString(t.REPLUGGED_TOAST_INSTALLER_ADDON_INSTALL_SUCCESS, { name }),
-    toast.Kind.SUCCESS,
+    ToastType.SUCCESS,
   );
   return true;
 }
@@ -224,7 +225,7 @@ export function authorList(authors: string[]): string {
 async function showInstallPrompt(
   manifest: AnyAddonManifest,
   source: InstallerSource | undefined,
-  linkToStore = true,
+  _linkToStore = true,
 ): Promise<boolean | null> {
   let type: string;
   switch (manifest.type) {
@@ -243,7 +244,9 @@ async function showInstallPrompt(
     authors,
   });
 
-  const storeUrl = linkToStore ? getSourceLink(manifest) : undefined;
+  // TODO: Fix this! Mana ConfirmModals do not support secondary confirm buttons
+
+  // const storeUrl = linkToStore ? getSourceLink(manifest) : undefined;
 
   const res = await modal.confirm({
     title,
@@ -251,20 +254,18 @@ async function showInstallPrompt(
       <>
         {text}
         {(source ?? DEFAULT_INSTALLER_SOURCE) !== "store" ? (
-          <div style={{ marginTop: "16px" }}>
-            <Notice messageType={Notice.Types.ERROR}>
-              {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-                type: label(getAddonType(manifest.type)),
-              })}
-            </Notice>
-          </div>
+          <Notice messageType={Notice.Types.ERROR} className={marginStyles.marginTop20}>
+            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+              type: label(getAddonType(manifest.type)),
+            })}
+          </Notice>
         ) : null}
       </>
     ),
     confirmText: intl.string(discordT.CONFIRM),
     cancelText: intl.string(discordT.CANCEL),
-    secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
-    onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : null),
+    // secondaryConfirmText: storeUrl ? intl.string(t.REPLUGGED_INSTALLER_OPEN_STORE) : undefined,
+    // onConfirmSecondary: () => (storeUrl ? openExternal(storeUrl) : undefined),
   });
 
   return res;
@@ -307,10 +308,7 @@ export async function installFlow(
   const info = await getInfo(identifier, source, id);
   if (!info) {
     if (showToasts)
-      toast.toast(
-        intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED),
-        toast.Kind.FAILURE,
-      );
+      toast(intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_FETCH_INFO_FAILED), ToastType.FAILURE);
     return {
       kind: "FAILED",
     };
@@ -322,9 +320,9 @@ export async function installFlow(
 
   if (checkIsInstalled(info)) {
     if (showToasts)
-      toast.toast(
+      toast(
         intl.formatToPlainString(t.REPLUGGED_ERROR_ALREADY_INSTALLED, { name: info.manifest.name }),
-        toast.Kind.MESSAGE,
+        ToastType.MESSAGE,
       );
     return {
       kind: "ALREADY_INSTALLED",
@@ -338,10 +336,7 @@ export async function installFlow(
   if (!confirm) {
     if (confirm === false && showToasts) {
       // Do not show if null ("open in store" clicked)
-      toast.toast(
-        intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL),
-        toast.Kind.MESSAGE,
-      );
+      toast(intl.string(t.REPLUGGED_TOAST_INSTALLER_ADDON_CANCELED_INSTALL), ToastType.MESSAGE);
     }
     return {
       kind: "CANCELLED",
@@ -362,7 +357,7 @@ export async function installFlow(
           name: info.manifest.name,
         }),
         confirmText: intl.string(discordT.ERRORS_RELOAD),
-        confirmColor: Button.Colors.RED,
+        cancelText: intl.string(discordT.CANCEL),
       })
       .then((answer) => {
         if (answer) {

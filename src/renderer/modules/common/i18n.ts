@@ -56,17 +56,17 @@ export interface Hash {
   runtimeHashMessageKey: (key: string) => string;
 }
 
-const intlMod = await waitForModule<I18n>(filters.bySource(/new \w+\.IntlManager/));
+const intlMod = await waitForModule<I18n>(filters.bySource(/new \i\.IntlManager/));
 
 const getAvailableLocales = getFunctionBySource<I18n["getAvailableLocales"]>(
   intlMod,
   ".runtimeHashMessageKey",
 )!;
-const getLanguages = getFunctionBySource<I18n["getLanguages"]>(intlMod, /{return \w+\(\d+\)}/)!;
+const getLanguages = getFunctionBySource<I18n["getLanguages"]>(intlMod, /{return \i\(\d+\)}/)!;
 const intl = getExportsForProps<I18n["intl"]>(intlMod, ["defaultLocale", "currentLocale"])!;
 const useSyncMessages = getFunctionBySource<I18n["useSyncMessages"]>(
   intlMod,
-  /\w+=>\(0,\w+\.\w+\)\(\w+,\w+\)/,
+  /\i=>\(0,\i\.\i\)\(\i,\i\)/,
 )!;
 
 // In case the name gets mangled

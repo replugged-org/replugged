@@ -3,11 +3,11 @@ import { Injector } from "@replugged";
 import type React from "react";
 import type { Capture, DefaultInRule } from "simple-markdown";
 import { plugins } from "src/renderer/managers/plugins";
+import { generalSettings } from "src/renderer/managers/settings";
 import { themes } from "src/renderer/managers/themes";
 import { filters, getFunctionKeyBySource, waitForModule } from "src/renderer/modules/webpack";
 import type { ObjectExports } from "src/types";
-import { registerRPCCommand } from "../rpc";
-import { generalSettings } from "../settings/pages";
+import rpc from "../../apis/rpc";
 import AddonEmbed from "./AddonEmbed";
 import { loadCommands } from "./commands";
 import {
@@ -18,12 +18,9 @@ import {
   parseInstallLink,
 } from "./util";
 
-const injector = new Injector();
+import type * as Design from "discord-client-types/discord_app/design/web";
 
-interface AnchorProps extends React.ComponentPropsWithoutRef<"a"> {
-  useDefaultUnderlineStyles?: boolean;
-  focusProps?: Record<string, unknown>;
-}
+const injector = new Injector();
 
 const uninjectFns: Array<() => void> = [];
 
@@ -35,7 +32,7 @@ if (window.RepluggedNative.getVersion() === "dev") {
 }
 
 function injectRpc(): void {
-  const uninjectInstall = registerRPCCommand("REPLUGGED_INSTALL", {
+  const uninjectInstall = rpc.registerRPCCommand("REPLUGGED_INSTALL", {
     scope: {
       $any: scopes,
     },
@@ -59,7 +56,7 @@ function injectRpc(): void {
     },
   });
 
-  const uninjectList = registerRPCCommand("REPLUGGED_LIST_ADDONS", {
+  const uninjectList = rpc.registerRPCCommand("REPLUGGED_LIST_ADDONS", {
     scope: {
       $any: scopes,
     },
@@ -92,7 +89,7 @@ async function injectLinks(): Promise<void> {
     raw: true,
   });
   const exports = linkMod.exports as ObjectExports & {
-    Anchor: React.FC<React.PropsWithChildren<AnchorProps>>;
+    Anchor: Design.Anchor;
   };
   const anchorKey = getFunctionKeyBySource(exports, "")! as "Anchor"; // It's actually a mangled name, but TS can sit down and shut up
   injector.before(exports, anchorKey, (args) => {

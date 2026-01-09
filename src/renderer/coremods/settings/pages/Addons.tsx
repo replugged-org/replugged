@@ -1,44 +1,67 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, api, fluxDispatcher, modal, toast, users } from "@common";
+import { React, contextMenu, marginStyles, modal } from "@common";
+import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
+import { ToastType, toast } from "@common/toast";
 import {
+  Anchor,
   Button,
-  Divider,
+  ContextMenu,
   ErrorBoundary,
   Flex,
   Notice,
+  SearchBar,
+  Select,
+  Stack,
   Switch,
   Text,
-  TextInput,
   Tooltip,
 } from "@components";
 import { Logger, plugins, themes, webpack } from "@replugged";
+import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
-import Icons from "../icons";
-import { generalSettings } from "./General";
+import { UserSettingsForm } from "..";
+import { ClydeIcon, GitHubIcon, LinkIcon, RefreshIcon, SettingsIcon, TrashIcon } from "../icons";
 
 import "./Addons.css";
 
-interface Breadcrumb {
-  id: string;
-  label: string;
+interface ArrowProps {
+  direction: "up" | "right" | "down" | "left";
+  className?: string;
 }
 
-interface BreadcrumbProps {
-  activeId: string;
-  breadcrumbs: Breadcrumb[];
-  onBreadcrumbClick: (breadcrumb: Breadcrumb) => void;
-  renderCustomBreadcrumb: (breadcrumb: Breadcrumb, active: boolean) => React.ReactNode;
+const Arrow = webpack.getBySource<React.ComponentClass<ArrowProps>>('UP:"up",RIGHT:"right"')!;
+
+interface OpenUserProfileModalProps {
+  userId: string;
+  guildId?: string | null;
+  channelId?: string;
+  messageId?: string;
+  roleId?: string;
+  sessionId?: string;
+  joinRequestId?: string;
+  section?: string;
+  subsection?: string;
+  showGuildProfile?: boolean;
+  hideRestrictedProfile?: boolean;
+  sourceAnalyticsLocations?: string[];
+  appContext?: string;
+  customStatusPrompt?: { value: string; label: () => string };
+  disableActionsForPreview?: boolean;
+}
+
+interface UserProfileModalActionCreators {
+  openUserProfileModal: (props: OpenUserProfileModalProps) => Promise<void>;
+  closeUserProfileModal: () => void;
 }
 
 const logger = Logger.coremod("AddonSettings");
 
-const Breadcrumbs = await webpack.waitForModule<React.ComponentClass<BreadcrumbProps>>(
-  webpack.filters.bySource(/\.interactiveBreadcrumb]:null/),
-);
+const { openUserProfileModal } =
+  await webpack.waitForProps<UserProfileModalActionCreators>("openUserProfileModal");
 
 export enum AddonType {
   Plugin = "plugin",
@@ -77,11 +100,55 @@ function getManager(type: AddonType): typeof plugins | typeof themes {
   throw new Error("Invalid addon type");
 }
 
+function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
+  const settings = themes.settings.useValue(id, { chosenPreset: undefined });
+  const theme = themes.themes.get(id)!;
+
+  return (
+    <Select
+      label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
+      options={theme.manifest.presets!.map((preset) => ({
+        label: preset.label,
+        value: preset.path,
+      }))}
+      value={settings.chosenPreset || theme.manifest.presets![0].path}
+      onChange={(val) => {
+        try {
+          themes.settings.set(id, { chosenPreset: val });
+          if (!themes.getDisabled().includes(id)) {
+            themes.reload(id);
+          }
+          toast(
+            intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
+              name: theme.manifest.presets!.find((p) => p.path === val)?.label || val,
+            }),
+          );
+        } catch (error) {
+          logger.error("Error changing theme preset", error);
+          toast(
+            intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
+              name: theme.manifest.name,
+            }),
+            ToastType.FAILURE,
+          );
+        }
+      }}
+    />
+  );
+}
+
 function getSettingsElement(id: string, type: AddonType): React.ComponentType | undefined {
   if (type === AddonType.Plugin) {
     return plugins.getExports(id)?.Settings;
   }
   if (type === AddonType.Theme) {
+    if (themes.getDisabled().includes(id)) return undefined;
+
+    const theme = themes.themes.get(id);
+
+    if (theme?.manifest.presets?.length) {
+      return () => <ThemePresetSettings id={id} />;
+    }
     return undefined;
   }
 
@@ -96,40 +163,6 @@ function listAddons(type: AddonType): Map<string, RepluggedPlugin> | Map<string,
     return themes.themes;
   }
   throw new Error("Invalid addon type");
-}
-
-async function openUserProfile(id: string): Promise<void> {
-  if (!users.getUser(id)) {
-    try {
-      const { body } = await api.HTTP.get({
-        url: `/users/${id}/profile`,
-        query: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_friends_count: "true",
-
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          with_mutual_guilds: "true",
-        },
-      });
-      fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body.user });
-      fluxDispatcher.dispatch({ type: "USER_PROFILE_FETCH_SUCCESS", ...body });
-    } catch {
-      try {
-        const { body } = await api.HTTP.get({
-          url: `/users/${id}`,
-        });
-        fluxDispatcher.dispatch({ type: "USER_UPDATE", user: body });
-      } catch (e) {
-        logger.error(`Failed to fetch user profile for ${id}`, e);
-        toast.toast(intl.string(t.REPLUGGED_TOAST_PROFILE_FETCH_FAILED), toast.Kind.FAILURE);
-        return;
-      }
-    }
-  }
-  fluxDispatcher.dispatch({
-    type: "USER_PROFILE_MODAL_OPEN",
-    userId: id,
-  });
 }
 
 function getAuthors(addon: RepluggedPlugin | RepluggedTheme): Author[] {
@@ -203,80 +236,57 @@ export function label(
   return base;
 }
 
-function replaceVariable(
-  str: string,
-  variables: Record<string, React.ReactElement | string>,
-): React.ReactElement {
-  const els: Array<React.ReactElement | string> = [];
-  let last = 0;
-  for (const [match, el] of Object.entries(variables)) {
-    const index = str.indexOf(`{${match}}`, last);
-    if (index === -1) continue;
-    els.push(<>{str.slice(last, index)}</>);
-    els.push(el);
-    last = index + match.length + 2;
-  }
-  els.push(<>{str.slice(last)}</>);
-  return <>{els}</>;
+function AuthorContextMenu({
+  author,
+  ...props
+}: { author: Author } & ContextMenuProps): React.ReactElement {
+  return (
+    <ContextMenu.ContextMenu {...props} onClose={contextMenu.close} navId="replugged-addon-authors">
+      <ContextMenu.MenuGroup>
+        {author.discordID && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: intl.string(discordT.DISCORD),
+            })}
+            id="replugged-addon-author-discord"
+            icon={ClydeIcon}
+            action={() => openUserProfileModal({ userId: author.discordID! })}
+          />
+        )}
+        {author.github && (
+          <ContextMenu.MenuItem
+            label={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
+              type: "GitHub",
+            })}
+            id="replugged-addon-author-github"
+            icon={GitHubIcon}
+            action={() => open(`https://github.com/${author.github}`)}
+          />
+        )}
+      </ContextMenu.MenuGroup>
+    </ContextMenu.ContextMenu>
+  );
 }
 
-function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactElement {
+function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.ReactNode {
   const els = getAuthors(addon).map((author) => (
-    <Flex
+    <Anchor
       key={JSON.stringify(author)}
-      align={Flex.Align.CENTER}
-      style={{
-        gap: "5px",
-        display: "inline-flex",
+      onClick={() => author.discordID && openUserProfileModal({ userId: author.discordID })}
+      onContextMenu={(event) => {
+        if (!author.github && !author.discordID) return;
+        contextMenu.open(event, (props) => <AuthorContextMenu {...props} author={author} />);
       }}>
       <b>{author.name}</b>
-      {author.discordID ? (
-        <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, {
-            type: intl.string(discordT.NOTIFICATION_TITLE_DISCORD),
-          })}
-          className="replugged-addon-icon replugged-addon-icon-author">
-          <a onClick={() => openUserProfile(author.discordID!)}>
-            <Icons.Discord />
-          </a>
-        </Tooltip>
-      ) : null}
-      {author.github ? (
-        <Tooltip
-          text={intl.formatToPlainString(t.REPLUGGED_ADDON_PROFILE_OPEN, { type: "GitHub" })}
-          className="replugged-addon-icon replugged-addon-icon-author">
-          <a href={`https://github.com/${author.github}`} target="_blank" rel="noopener noreferrer">
-            <Icons.GitHub />
-          </a>
-        </Tooltip>
-      ) : null}
-    </Flex>
+    </Anchor>
   ));
 
-  let message = "";
-
-  if (els.length === 1) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_ONE);
-  }
-  if (els.length === 2) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_TWO);
-  }
-  if (els.length === 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_THREE);
-  }
-  if (els.length > 3) {
-    // @ts-expect-error We replace the variables with replaceVariable later
-    message = intl.string(t.REPLUGGED_ADDON_AUTHORS_MANY);
-  }
-
-  return replaceVariable(message, {
+  return intl.format(t.REPLUGGED_ADDON_AUTHORS, {
     author1: els[0],
     author2: els[1],
     author3: els[2],
-    count: (els.length - 3).toString(),
+    count: els.length,
+    others: els.length - 3,
   });
 }
 
@@ -303,77 +313,86 @@ function Card({
 
   return (
     <div className="replugged-addon-card">
-      <Flex align={Flex.Align.START} justify={Flex.Justify.BETWEEN} style={{ marginBottom: "5px" }}>
+      <Flex
+        align={Flex.Align.START}
+        justify={Flex.Justify.BETWEEN}
+        className={marginStyles.marginBottom4}>
         <span>
-          <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-            <Text variant="heading-md/bold" tag="span" color="header-primary">
+          <Text variant="heading-sm/normal" tag="h2" color="text-default">
+            <Text variant="heading-md/bold" tag="span" color="text-strong">
               {addon.manifest.name}
             </Text>
             <span>
               {" "}
               <b>v{addon.manifest.version}</b>
-            </span>{" "}
-            <Authors addon={addon} />
+            </span>
           </Text>
         </span>
+        <Switch checked={!disabled} onChange={toggleDisabled} />
+      </Flex>
+      <Text.Normal markdown allowMarkdownLinks>
+        {addon.manifest.description}
+      </Text.Normal>
+      {addon.manifest.updater?.type !== "store" ? (
+        <Notice messageType={Notice.Types.ERROR} className={marginStyles.marginTop8}>
+          {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
+            type: label(type),
+          })}
+        </Notice>
+      ) : null}
+      <Flex className={marginStyles.marginTop8}>
+        <Text variant="heading-sm/normal" tag="h2" color="text-default">
+          <Authors addon={addon} />
+        </Text>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
           {sourceLink ? (
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
                 type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <a href={sourceLink} target="_blank" rel="noopener noreferrer">
-                <Icons.Link />
-              </a>
+              })}>
+              <Anchor href={sourceLink} className="replugged-addon-icon-container">
+                <LinkIcon size="refresh_sm" color="currentColor" className="replugged-addon-icon" />
+              </Anchor>
             </Tooltip>
           ) : null}
           {hasSettings ? (
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_SETTINGS, {
                 type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <a onClick={() => openSettings()}>
-                <Icons.Settings />
-              </a>
+              })}>
+              <Anchor onClick={() => openSettings()} className="replugged-addon-icon-container">
+                <SettingsIcon
+                  size="refresh_sm"
+                  color="currentColor"
+                  className="replugged-addon-icon"
+                />
+              </Anchor>
             </Tooltip>
           ) : null}
           <Tooltip
             text={intl.formatToPlainString(t.REPLUGGED_ADDON_DELETE, {
               type: label(type, { caps: "title" }),
-            })}
-            className="replugged-addon-icon">
-            <a onClick={() => uninstall()}>
-              <Icons.Trash />
-            </a>
+            })}>
+            <Anchor onClick={() => uninstall()} className="replugged-addon-icon-container">
+              <TrashIcon size="refresh_sm" color="currentColor" className="replugged-addon-icon" />
+            </Anchor>
           </Tooltip>
           {disabled ? null : (
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_RELOAD, {
                 type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <a onClick={() => reload()}>
-                <Icons.Reload />
-              </a>
+              })}>
+              <Anchor onClick={() => reload()} className="replugged-addon-icon-container">
+                <RefreshIcon
+                  size="refresh_sm"
+                  color="currentColor"
+                  className="replugged-addon-icon"
+                />
+              </Anchor>
             </Tooltip>
           )}
-          <Switch checked={!disabled} onChange={toggleDisabled} />
         </Flex>
       </Flex>
-      <Text.Normal style={{ margin: "5px 0" }} markdown allowMarkdownLinks>
-        {addon.manifest.description}
-      </Text.Normal>
-      {addon.manifest.updater?.type !== "store" ? (
-        <div style={{ marginTop: "8px" }}>
-          <Notice messageType={Notice.Types.ERROR}>
-            {intl.format(t.REPLUGGED_ADDON_NOT_REVIEWED_DESC, {
-              type: label(type),
-            })}
-          </Notice>
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -394,7 +413,7 @@ function Cards({
   refreshList: () => void;
 }): React.ReactElement {
   return (
-    <div className="replugged-addon-cards">
+    <Stack gap={16}>
       {list.map((addon) => (
         <Card
           type={type}
@@ -410,36 +429,36 @@ function Cards({
               try {
                 await manager.enable(addon.manifest.id);
                 clonedDisabled.delete(addon.manifest.id);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS, {
                     name: addon.manifest.name,
                   }),
                 );
               } catch (e) {
                 logger.error("Error enabling", addon, e);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_FAILED, {
                     name: label(type),
                   }),
-                  toast.Kind.FAILURE,
+                  ToastType.FAILURE,
                 );
               }
             } else {
               try {
                 await manager.disable(addon.manifest.id);
                 clonedDisabled.add(addon.manifest.id);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS, {
                     name: addon.manifest.name,
                   }),
                 );
               } catch (e) {
                 logger.error("Error disabling", addon, e);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_DISABLE_FAILED, {
                     name: label(type),
                   }),
-                  toast.Kind.FAILURE,
+                  ToastType.FAILURE,
                 );
               }
             }
@@ -451,25 +470,24 @@ function Cards({
               body: intl.format(t.REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY, { type: label(type) }),
               confirmText: intl.string(discordT.APPLICATION_UNINSTALL_PROMPT_CONFIRM),
               cancelText: intl.string(discordT.CANCEL),
-              confirmColor: Button.Colors.RED,
             });
             if (!confirmation) return;
 
             const manager = getManager(type);
             try {
               await manager.uninstall(addon.manifest.id);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS, {
                   name: addon.manifest.name,
                 }),
               );
             } catch (e) {
               logger.error("Error uninstalling", addon, e);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED, {
                   name: addon.manifest.name,
                 }),
-                toast.Kind.FAILURE,
+                ToastType.FAILURE,
               );
             }
             refreshList();
@@ -478,31 +496,42 @@ function Cards({
             const manager = getManager(type);
             try {
               await manager.reload(addon.manifest.id);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS, {
                   name: addon.manifest.name,
                 }),
               );
             } catch (e) {
               logger.error("Error reloading", addon, e);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_FAILED, {
                   name: addon.manifest.name,
                 }),
-                toast.Kind.FAILURE,
+                ToastType.FAILURE,
               );
             }
             refreshList();
           }}
           openSettings={() => {
-            setSection(`rp_plugin_${addon.manifest.id}`);
-
-            document.querySelector('div[class^="contentRegionScroller"]')!.scrollTo({ top: 0 });
+            setSection(`rp_${type}_${addon.manifest.id}`);
           }}
         />
       ))}
-    </div>
+    </Stack>
   );
+}
+
+function getAddonIdFromSection(section: string, type: AddonType): string {
+  const prefix = `rp_${type}_`;
+  return section.startsWith(prefix) ? section.slice(prefix.length) : section;
+}
+
+export function useAddonPanelTitle(type: AddonType): string {
+  const count = listAddons(type).size;
+  return intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+    type: label(type, { caps: "title", plural: true }),
+    count,
+  });
 }
 
 export const Addons = (type: AddonType): React.ReactElement => {
@@ -535,137 +564,95 @@ export const Addons = (type: AddonType): React.ReactElement => {
     setDisabled(new Set(getManager(type).getDisabled()));
   }
 
-  React.useEffect(refreshList, [search]);
+  React.useEffect(refreshList, [search, type]);
 
   return (
-    <>
-      <Flex justify={Flex.Justify.BETWEEN} direction={Flex.Direction.VERTICAL}>
-        <Flex align={Flex.Align.CENTER} className="replugged-addon-breadcrumbs">
-          {section === `rp_${type}` ? (
-            <Text.H2
-              style={{
-                // Do not turn "(num)" into a single symbol
-                fontVariantLigatures: "none",
-              }}>
-              {intl.format(t.REPLUGGED_ADDONS_TITLE_COUNT, {
-                type: label(type, { caps: "title", plural: true }),
-                count: unfilteredCount,
-              })}
-            </Text.H2>
-          ) : (
-            <Breadcrumbs
-              activeId={section.toString()}
-              breadcrumbs={[
-                {
-                  id: `rp_${type}`,
-                  label: intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
-                    type: label(type, { caps: "title", plural: true }),
-                    count: unfilteredCount,
-                  }),
-                },
-                {
-                  id: `rp_${type}_${section.slice(`rp_${type}_`.length)}`,
-                  label:
-                    list?.filter?.(
-                      (x) => x.manifest.id === section.slice(`rp_${type}_`.length),
-                    )?.[0]?.manifest.name || "",
-                },
-              ]}
-              onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
-              renderCustomBreadcrumb={(breadcrumb, active) => (
-                <Text.H2
-                  color={active ? "header-primary" : "inherit"}
-                  className={
-                    active
-                      ? "replugged-addon-breadcrumbsActive"
-                      : "replugged-addon-breadcrumbsInactive"
-                  }
-                  style={{
-                    // Do not turn "(num)" into a single symbol
-                    fontVariantLigatures: "none",
-                  }}>
-                  {breadcrumb.label}
-                </Text.H2>
-              )}
-            />
-          )}
-        </Flex>
-        {section === `rp_${type}` && (
-          <Flex className="replugged-addon-header-buttons" justify={Flex.Justify.BETWEEN}>
-            <Button fullWidth={true} onClick={() => openFolder(type)}>
-              {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-            <Button
-              fullWidth={true}
-              onClick={async () => {
-                try {
-                  await loadMissing(type);
-                  toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
-                      type: label(type, { plural: true }),
-                    }),
-                  );
-                } catch (e) {
-                  logger.error("Error loading missing", e);
-                  toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
-                      type: label(type, { plural: true }),
-                    }),
-                    toast.Kind.FAILURE,
-                  );
-                }
-
-                refreshList();
-              }}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.OUTLINED}>
-              {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-            <Button
-              fullWidth={true}
-              onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.OUTLINED}>
-              {intl.format(t.REPLUGGED_ADDON_BROWSE, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-          </Flex>
-        )}
-      </Flex>
-      <Divider style={{ margin: "20px 0px" }} />
-      {section === `rp_${type}` && unfilteredCount ? (
-        <div style={{ marginBottom: "20px" }}>
-          <TextInput
-            placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
-              type: label(type),
+    <UserSettingsForm
+      title={
+        <Text.H2
+          style={{
+            // Do not turn "(num)" into a single symbol
+            fontVariantLigatures: "none",
+          }}>
+          {intl.format(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+            type: label(type, { caps: "title", plural: true }),
+            count: unfilteredCount,
+          })}
+        </Text.H2>
+      }>
+      {section === `rp_${type}` && (
+        // TODO: Replace with ButtonGroup from Mana Design System; after Button has been migrated as well
+        <Stack gap={8} justify="space-between" direction="horizontal">
+          <Button fullWidth onClick={() => openFolder(type)}>
+            {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
+              type: label(type, { caps: "title", plural: true }),
             })}
-            onChange={(e) => setSearch(e)}
-            autoFocus
-          />
-        </div>
+          </Button>
+          <Button
+            fullWidth
+            onClick={async () => {
+              try {
+                await loadMissing(type);
+                toast(
+                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
+                    type: label(type, { plural: true }),
+                  }),
+                );
+              } catch (e) {
+                logger.error("Error loading missing", e);
+                toast(
+                  intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
+                    type: label(type, { plural: true }),
+                  }),
+                  ToastType.FAILURE,
+                );
+              }
+
+              refreshList();
+            }}
+            color={Button.Colors.PRIMARY}
+            look={Button.Looks.OUTLINED}>
+            {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
+              type: label(type, { caps: "title", plural: true }),
+            })}
+          </Button>
+          <Button
+            fullWidth
+            onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
+            color={Button.Colors.PRIMARY}
+            look={Button.Looks.OUTLINED}>
+            {intl.format(t.REPLUGGED_ADDON_BROWSE, {
+              type: label(type, { caps: "title", plural: true }),
+            })}
+          </Button>
+        </Stack>
+      )}
+      {section === `rp_${type}` && unfilteredCount ? (
+        <SearchBar
+          query={search}
+          onChange={(query) => setSearch(query)}
+          onClear={() => setSearch("")}
+          placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
+            type: label(type),
+          })}
+          autoFocus
+        />
       ) : null}
       {section === `rp_${type}` && search && list?.length ? (
-        <Text variant="heading-md/bold" style={{ marginBottom: "10px" }}>
+        <Text variant="heading-md/bold" className={marginStyles.marginBottom8}>
           {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
         </Text>
       ) : null}
       {section === `rp_${type}` ? (
         list?.length ? (
-          <>
-            <Cards
-              type={type}
-              disabled={disabled}
-              setSection={setSection}
-              setDisabled={setDisabled}
-              list={list}
-              refreshList={refreshList}
-            />
-          </>
+          <Cards
+            type={type}
+            disabled={disabled}
+            setSection={setSection}
+            setDisabled={setDisabled}
+            list={list}
+            refreshList={refreshList}
+          />
         ) : list ? (
           <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
             {unfilteredCount
@@ -676,13 +663,26 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Text>
         ) : null
       ) : (
-        (SettingsElement = getSettingsElement(section.slice(`rp_${type}_`.length), type)) && (
-          <ErrorBoundary>
-            <SettingsElement />
-          </ErrorBoundary>
+        (SettingsElement = getSettingsElement(getAddonIdFromSection(section, type), type)) && (
+          <>
+            <Button
+              className="replugged-addon-back"
+              innerClassName="replugged-addon-back-button"
+              look={Button.Looks.BLANK}
+              size={Button.Sizes.MIN}
+              onClick={() => setSection(`rp_${type}`)}>
+              <Arrow direction="left" />
+              <Text variant="text-sm/semibold" color="interactive-text-default">
+                {intl.string(discordT.BACK)}
+              </Text>
+            </Button>
+            <ErrorBoundary>
+              <SettingsElement />
+            </ErrorBoundary>
+          </>
         )
       )}
-    </>
+    </UserSettingsForm>
   );
 };
 

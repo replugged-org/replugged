@@ -1,43 +1,29 @@
-import { getLanguages, intl } from "@common/i18n";
-import { Flex, FormNotice, Text } from "@components";
+import { intl } from "@common/i18n";
+import { Flex, Text } from "@components";
 import { messagesLoader } from "i18n/en-US.messages";
 import type React from "react";
-import { WEBLATE_URL } from "src/constants";
 import { t } from "../../modules/i18n";
 
-export const percentages = new Map<string, number>();
+const percentages = new Map<string, number>();
 
-export function Card(): React.ReactElement {
-  return (
-    <FormNotice
-      title={intl.string(t.REPLUGGED_I18N)}
-      body={intl.format(t.REPLUGGED_I18N_CONTRIBUTE, { weblateUrl: WEBLATE_URL })}
-      type={FormNotice.Types.PRIMARY}
-      style={{ marginBottom: 20 }}
-    />
-  );
+export function getFormattedPercentage(locale: string): React.ReactNode {
+  const percentage = percentages.get(locale);
+  return intl.format(t.REPLUGGED_I18N_TRANSLATED_PERCENTAGE, { translated: Number(percentage) });
 }
 
-export function Percentage(
-  localeName: React.ReactElement<{ className: string; children: string }>,
-  localizedName: React.ReactElement,
-  flag: React.ReactElement,
-): React.ReactElement {
-  const name = localeName.props.children;
-  const locale = getLanguages().find((language) => language.name === name)!.code;
-  const percentage = percentages.get(locale);
-
+export function _renderLabel({
+  label,
+  value,
+}: {
+  label: string;
+  localizedName: string;
+  value: string;
+}): React.ReactElement {
   return (
-    <>
-      <Flex direction={Flex.Direction.VERTICAL}>
-        {localeName}
-        <Text variant="text-sm/normal" color="interactive-normal">
-          {intl.format(t.REPLUGGED_I18N_TRANSLATED_PERCENTAGE, { translated: Number(percentage) })}
-        </Text>
-      </Flex>
-      {localizedName}
-      {flag}
-    </>
+    <Flex direction={Flex.Direction.VERTICAL}>
+      <Text variant="text-md/normal">{label}</Text>
+      <Text variant="text-xs/normal">{getFormattedPercentage(value)}</Text>
+    </Flex>
   );
 }
 
