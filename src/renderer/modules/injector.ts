@@ -114,28 +114,53 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
 
       let res: unknown;
 
+      const promises: Array<Promise<unknown>> = [];
+      let insteadPromise: undefined | Promise<unknown>;
+
       if (injectionsForProp.instead.size === 0) {
         res = originalFunc.apply(this, args);
       } else {
         let newFunc: AnyFunction = originalFunc;
         for (const i of injectionsForProp.instead) {
           const newResult = i.call(this, args, newFunc, this);
-          if (newResult !== undefined) {
+          const processInstead = (newResult: unknown): void => {
             if (typeof newResult === "function") newFunc = newResult as AnyFunction;
             else res = newResult;
+          };
+
+          if (newResult !== null && newResult !== undefined) {
+            // eslint-disable-next-line @typescript-eslint/no-base-to-string
+            if (newResult.toString().endsWith("Promise]"))
+              promises.push(
+                (newResult as Promise<unknown>).then((promiseResult) => {
+                  processInstead(promiseResult);
+                }),
+              );
+            else processInstead(newResult);
           }
         }
-        res ??= newFunc.apply(this, args);
+
+        const setResult = (): void => {
+          res ??= newFunc.apply(this, args);
+        };
+
+        if (promises.length) insteadPromise = Promise.allSettled(promises).then(setResult);
+        else setResult();
       }
 
-      for (const a of injectionsForProp.after) {
-        const newResult = a.call(this, args, res, this);
-        if (newResult !== void 0) {
-          res = newResult;
+      const processAfter = (): unknown => {
+        for (const a of injectionsForProp.after) {
+          const newResult = a.call(this, args, res, this);
+          if (newResult !== void 0) {
+            res = newResult;
+          }
         }
-      }
+        return res;
+      };
 
-      return res;
+      if (promises.length && insteadPromise) return insteadPromise.then(processAfter);
+
+      return processAfter();
     };
 
     Object.defineProperties(obj[funcName], Object.getOwnPropertyDescriptors(originalFunc));
