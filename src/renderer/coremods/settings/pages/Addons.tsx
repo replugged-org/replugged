@@ -25,7 +25,7 @@ import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
 import { UserSettingsForm } from "..";
 import { ClydeIcon, GitHubIcon, LinkIcon, RefreshIcon, SettingsIcon, TrashIcon } from "../icons";
-import { SearchStore } from "../searchTerms"
+import { SearchStore } from "../searchTerms";
 
 import "./Addons.css";
 
@@ -536,7 +536,7 @@ export function useAddonPanelTitle(type: AddonType): string {
 }
 
 export const Addons = (type: AddonType): React.ReactElement => {
-  const settingQuery = SearchStore.useField("query")
+  const settingQuery = SearchStore.useField("query");
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
   const [list, setList] = React.useState<Array<RepluggedPlugin | RepluggedTheme> | null>();
@@ -660,8 +660,8 @@ export const Addons = (type: AddonType): React.ReactElement => {
             {unfilteredCount
               ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
               : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
-                type: label(type, { plural: true }),
-              })}
+                  type: label(type, { plural: true }),
+                })}
           </Text>
         ) : null
       ) : (

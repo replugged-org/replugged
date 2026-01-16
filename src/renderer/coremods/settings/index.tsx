@@ -23,7 +23,7 @@ import {
   useAddonPanelTitle,
 } from "./pages";
 
-import { PageTypes, usePageSearchTerms } from "./searchTerms"
+import { PageTypes, usePageSearchTerms } from "./searchTerms";
 
 export function _renderVersionInfo(): React.ReactElement {
   return (
@@ -51,14 +51,14 @@ export function start(): void {
         icon: RepluggedIcon,
         useTitle: () => intl.string(discordT.SETTINGS_GENERAL),
         render: General,
-        useSearchTerms: usePageSearchTerms(PageTypes.General)
+        useSearchTerms: usePageSearchTerms(PageTypes.General),
       }),
       createCustomSettingsPanel("quickcss", {
         icon: MagicWandIcon,
         useTitle: () => intl.string(t.REPLUGGED_QUICKCSS),
         render: QuickCSS,
         usePredicate: () => generalSettings.useValue("quickCSS"),
-        useSearchTerms: usePageSearchTerms(PageTypes.QuickCSS)
+        useSearchTerms: usePageSearchTerms(PageTypes.QuickCSS),
       }),
       createCustomSettingsPanel("plugins", {
         icon: PuzzlePieceIcon,
@@ -66,7 +66,7 @@ export function start(): void {
         usePanelTitle: () => useAddonPanelTitle(AddonType.Plugin),
         getLegacySearchKey: () => intl.string(t.REPLUGGED_PLUGINS),
         render: Plugins,
-        useSearchTerms: usePageSearchTerms(PageTypes.Addon, AddonType.Plugin)
+        useSearchTerms: usePageSearchTerms(PageTypes.Addon, AddonType.Plugin),
       }),
       createCustomSettingsPanel("themes", {
         icon: PaintbrushThinIcon,
@@ -74,13 +74,13 @@ export function start(): void {
         usePanelTitle: () => useAddonPanelTitle(AddonType.Theme),
         getLegacySearchKey: () => intl.string(t.REPLUGGED_THEMES),
         render: Themes,
-        useSearchTerms: usePageSearchTerms(PageTypes.Addon, AddonType.Theme)
+        useSearchTerms: usePageSearchTerms(PageTypes.Addon, AddonType.Theme),
       }),
       createCustomSettingsPanel("updater", {
         icon: RefreshIcon,
         useTitle: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
         render: Updater,
-        useSearchTerms: usePageSearchTerms(PageTypes.Updater)
+        useSearchTerms: usePageSearchTerms(PageTypes.Updater),
       }),
     ],
   });
