@@ -79,7 +79,6 @@ export function createCustomSettingsPanel(
   return createSidebarItem(`replugged_${key}_sidebar_item`, {
     icon,
     useTitle,
-
     getLegacySearchKey: getLegacySearchKey ?? useTitle,
     ...(usePredicate && { usePredicate }),
     buildLayout: () => [
