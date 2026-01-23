@@ -7,11 +7,11 @@ import type * as Design from "discord-client-types/discord_app/design/web";
 
 import "./ButtonItem.css";
 
-const buttonString = ".disabledButtonWrapper,";
-const mod = await waitForModule(filters.bySource(buttonString));
+const buttonRegex = /fullWidth:\i=!1,grow:\i=!0/;
+const mod = await waitForModule(filters.bySource(buttonRegex));
 
 // TODO: Replace with Button from Mana Design System
-export const Button = getFunctionBySource<VoidDesign.Button>(mod, buttonString)!;
+export const Button = getFunctionBySource<VoidDesign.Button>(mod, buttonRegex)!;
 
 interface ButtonItemProps extends Omit<Design.FieldProps, "layout" | "children"> {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;

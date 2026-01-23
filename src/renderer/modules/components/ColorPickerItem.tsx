@@ -22,7 +22,7 @@ interface ColorSwatchProps
 
 type ColorSwatchType = React.FC<ColorSwatchProps>;
 
-const ColorSwatch = await waitForModule<ColorSwatchType>(filters.bySource(".editPencilIcon,"));
+const ColorSwatch = await waitForModule<ColorSwatchType>(filters.bySource(/colorPickerMiddle:\i,/));
 
 interface ColorPickerItemProps
   extends ColorSwatchProps,

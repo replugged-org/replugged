@@ -5,5 +5,5 @@ import type * as Design from "discord-client-types/discord_app/design/web";
 
 export default getFunctionBySource<typeof Design.Breadcrumbs>(
   components,
-  ".interactiveBreadcrumb]:null",
+  ".map(this.renderBreadcrumb)",
 )!;
