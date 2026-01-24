@@ -4,9 +4,9 @@ const ClassMap = new Map<string, string>();
 
 const utcRegex = new RegExp(`${UTC_CLASS_PREFIX}\\S+\\s*`, "g");
 
-const classNameRegex = /([\w\d_$]+?)-(\w+)/g;
+const classNameRegex = /(\w+?)_([\w\d_$]+)/g;
 
-const classPrefixHashRegex = /[_\d$]/;
+const classSuffixHashRegex = /[_\d$]/;
 
 /**
  * @internal
@@ -22,10 +22,10 @@ function getClassName(input: string): string {
     : input;
 
   const utcSuffixes = [...baseClasses.matchAll(classNameRegex)].reduce(
-    (suffix, [_, prefix, name]) =>
-      classPrefixHashRegex.test(prefix) && !suffix.includes(name)
-        ? `${suffix} utc_${name}`
-        : suffix,
+    (prefix, [_, name, suffix]) =>
+      classSuffixHashRegex.test(suffix) && !prefix.includes(name)
+        ? `${prefix} utc_${name}`
+        : prefix,
     "",
   );
 
@@ -39,7 +39,9 @@ function getClassName(input: string): string {
  * @hidden
  */
 
+
 export function _patchClassName(props: Record<string, string>, type: string): void {
+
   if (!props.className || type === "html") return;
 
   props.className = getClassName(props.className);
