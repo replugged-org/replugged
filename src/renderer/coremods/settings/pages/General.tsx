@@ -2,7 +2,6 @@ import { React, modal } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { ToastType, toast } from "@common/toast";
 import {
-  Button,
   Divider,
   FieldSet,
   Notice,
@@ -53,7 +52,6 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
         ? intl.string(discordT.BUNDLE_READY_RESTART)
         : intl.string(discordT.ERRORS_RELOAD),
       cancelText: intl.string(discordT.CANCEL),
-      confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
     })

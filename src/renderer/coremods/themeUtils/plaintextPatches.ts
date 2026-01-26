@@ -14,7 +14,7 @@ export default [
     find: "Message must not be a thread starter message",
     replacements: [
       {
-        match: /\.messageListItem,/,
+        match: /className:\i\.\i,"aria-setsize":-1,/,
         replace: `$&...($exports?._insertMessageAttributes(arguments[0].message) ?? {}),`,
       },
     ],
@@ -23,7 +23,7 @@ export default [
     find: "getMaskId()",
     replacements: [
       {
-        match: /className:\i\(\)\(\i\.mask/g,
+        match: /viewBox:"0 0 "\.concat\(\i," "\)\.concat\(\i\),className:\i\(\)/g,
         replace: `...($exports?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
       },
     ],
