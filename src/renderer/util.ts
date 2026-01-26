@@ -477,3 +477,11 @@ export function getBoundMethods<T extends object>(instance: T): BoundMethodMap<T
 
   return bound;
 }
+
+export const mapClassNames = <T extends Record<string, string>>(object: T): T => {
+  return Object.values(object).reduce((current: Record<string, string>, className) => {
+    const match = /(.+?)_/.exec(className)?.[1];
+    if (match) current[match] = className;
+    return current;
+  }, {}) as T;
+};

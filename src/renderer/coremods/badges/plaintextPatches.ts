@@ -7,7 +7,7 @@ export default [
     replacements: [
       // Add the "replugged-badge" class if it's our custom badge
       {
-        match: /src:null!=\(\i=(\i)\.iconSrc\).{15,30}?,className:\i\(\)\(\i\.badge,\i/,
+        match: /src:null!=\(\i=(\i)\.iconSrc\).{15,30}?,className:\i\(\)\(\i\.\i,\i/,
         replace: `$&,{["replugged-badge"]:$1.component}`,
       },
       // Change to a div and add a children for our custom badge

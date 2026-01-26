@@ -49,12 +49,10 @@ export default (generalSettings.get("experiments")
         : []),
       // Always return true for the 'isStaff' property in SettingRendererUtils
       alwaysTruePatch(`header:"Developer Only"`, /isStaff:\i/),
-      // Add developer only settings to the UserSettingsCogContextMenu
-      alwaysTruePatch(`layoutDebuggingEnabled,isStaff:`, "isStaff())===!0"),
       // Show the Playgrounds and Build Overrides menu items in the UserSettingsCogContextMenu
       alwaysTruePatch("user-settings-cog", /isStaff\(\)/g),
       // Show the ExperimentEmbed
-      alwaysTruePatch(/className:\i\.experimentOverride,/, ".isStaffPersonal())"),
+      alwaysTruePatch('"Clear Treatment ".concat(', ".isStaffPersonal())"),
       // Show the PlaygroundEmbed
       alwaysTruePatch("data-has-story", ".isStaffPersonal())"),
       // Show the Playgrounds tab in the UserSettingsCogContextMenu

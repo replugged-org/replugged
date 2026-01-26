@@ -2,9 +2,9 @@ import { React, classNames } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { Button, Clickable, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
-import { getByProps } from "@webpack";
+import { getBySource } from "@webpack";
 import { t } from "src/renderer/modules/i18n";
-import { openExternal } from "src/renderer/util";
+import { mapClassNames, openExternal } from "src/renderer/util";
 import type { CheckResultSuccess } from "src/types";
 import { getSourceLink } from "../settings/pages";
 import { type InstallLinkProps, authorList, checkIsInstalled, getInfo, install } from "./util";
@@ -61,12 +61,13 @@ function Link({ className }: { className?: string }): React.ReactElement {
 }
 
 const Icon = React.memo(({ className }: { className?: string }): React.ReactElement | null => {
-  const svgMod = getByProps<SvgMod>("svgContentRight");
+  const svgMod = getBySource<SvgMod>("svgContentRight_");
   if (!svgMod) {
     logger.error("Failed to get svgMod");
     return null;
   }
-  const { svgContentRight, svgContentLines, svgContentLeft, svgDots, svgTag } = svgMod;
+  const { svgContentRight, svgContentLines, svgContentLeft, svgDots, svgTag } =
+    mapClassNames(svgMod);
 
   return (
     <svg width="57" height="40" viewBox="0 0 57 40" fill="none" className={className}>
@@ -119,7 +120,7 @@ const Embed = React.memo(
           installClick: () => void;
         },
   ): React.ReactElement | null => {
-    const classMod = getByProps<ClassMod>("titleRegion");
+    const classMod = getBySource<ClassMod>("titleRegion_");
     if (!classMod) {
       logger.error("Failed to find classMod");
       return null;
@@ -142,7 +143,7 @@ const Embed = React.memo(
       copyLink,
       copyLinkIcon,
       copied,
-    } = classMod;
+    } = mapClassNames(classMod);
 
     return (
       <div className={wrapper}>
