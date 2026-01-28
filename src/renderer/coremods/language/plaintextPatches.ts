@@ -6,7 +6,7 @@ export default [
     replacements: [
       {
         match: /value:(\i),options/,
-        replace: `renderOptionLabel:$exports?._renderLabel,helperText:$exports?.getFormattedPercentage($1),$&`,
+        replace: `helperText:$exports?.getFormattedPercentage($1),$&`,
       },
     ],
   },

@@ -33,8 +33,8 @@ importers:
         specifier: ^6.0.2
         version: 6.0.2
       discord-client-types:
-        specifier: ^0.0.11
-        version: 0.0.11
+        specifier: ^0.0.12
+        version: 0.0.12
       esbuild:
         specifier: ^0.27.0
         version: 0.27.0
@@ -1785,8 +1785,8 @@ packages:
     engines: {node: '>=0.10'}
     hasBin: true
 
-  discord-client-types@0.0.11:
-    resolution: {integrity: sha512-P2HNiYXY12tveYA4XY4wOD/sEVVGexhRaoJjYuwgivpzQ1wFY9+6yVA5CwMrhk+2ZOZRyf7GZnV3hCuDdxEJXw==}
+  discord-client-types@0.0.12:
+    resolution: {integrity: sha512-9QOg1r9mu/3VoC91yD1jdmCdtykWPrj/5+4IjRJMiHQPiLZ8+BDAQJg4xW9nBhMCp+gS9XkwTjRlF4mWbTICRg==}
 
   discord-types@1.3.3:
     resolution: {integrity: sha512-6LGLIw8RBWKdio7FoIfwExSZQuej2XXDKgT7mfR3qMOpEspknVDFQJcfhPuiD1iy2NdcAygvvVfJMliYwiUwqw==}
@@ -5250,7 +5250,7 @@ snapshots:
   detect-libc@1.0.3:
     optional: true
 
-  discord-client-types@0.0.11: {}
+  discord-client-types@0.0.12: {}
 
   discord-types@1.3.3:
     dependencies:
