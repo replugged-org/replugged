@@ -32,21 +32,16 @@ export default (generalSettings.get("experiments")
           },
         ],
       },
-      ...(generalSettings.get("staffDevTools")
-        ? [
-            {
-              // Set the resulting experiment configuration of the bug reporter to be always true
-              // This is necessary to ensure the StaffHelpButton is shown instead of the classic HelpButton
-              find: /hasBugReporterAccess:\i}=\i\.\i\.useExperiment/,
-              replacements: [
-                {
-                  match: /hasBugReporterAccess:\i/,
-                  replace: `_$&=true`,
-                },
-              ],
-            },
-          ]
-        : []),
+      {
+        // Patches the AppTitleBar component by gating the isDeveloper check behind the 'staffDevTools' setting
+        find: /focusSectionProps:"TITLEBAR_FAST_TRAVEL"/,
+        replacements: [
+          {
+            match: /\i\.\i\.isDeveloper/,
+            replace: `$&&&${generalSettings.get("staffDevTools")}`,
+          },
+        ],
+      },
       // Always return true for the 'isStaff' property in SettingRendererUtils
       alwaysTruePatch(`header:"Developer Only"`, /isStaff:\i/),
       // Show the Playgrounds and Build Overrides menu items in the UserSettingsCogContextMenu
