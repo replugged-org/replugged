@@ -185,5 +185,5 @@
   "REPLUGGED_STORE": "Speichern",
   "REPLUGGED_TOAST_ADDON_DISABLE_FAILED": "{name} konnte nicht deaktiviert werden",
   "REPLUGGED_TOAST_ADDON_ENABLE_FAILED": "{name} konnte nicht aktiviert werden",
-  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Benutzerdefinierte titelleiste"
+  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Native titelleiste"
 }

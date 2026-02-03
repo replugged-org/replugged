@@ -185,6 +185,6 @@
   "REPLUGGED_STORE": "Sklep",
   "REPLUGGED_TOAST_ADDON_DISABLE_FAILED": "Nie udało się wyłączyć {name}",
   "REPLUGGED_TOAST_ADDON_ENABLE_FAILED": "Nie udało się włączyć {name}",
-  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Niestandardowy pasek tytułu",
-  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC": "Użyj niestandardowego paska tytułu Discorda zamiast systemowego paska tytułu. **Wymaga ponownego uruchomienia**."
+  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR": "Natywny pasek tytułu",
+  "REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC": "Użyj natywnego paska tytułu systemu zamiast paska tytułu Discorda. **Wymaga ponownego uruchomienia**."
 }

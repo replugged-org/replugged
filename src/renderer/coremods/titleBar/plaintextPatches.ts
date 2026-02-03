@@ -1,35 +1,35 @@
 import { generalSettings } from "src/renderer/managers/settings";
 import type { PlaintextPatch } from "src/types";
 
-export default (navigator.userAgent.includes("Linux") && generalSettings.get("titleBar")
+export default (generalSettings.get("titleBar")
   ? [
-      // Patch the title bar to show the buttons
+      // Patch the title bar to hide the buttons
       {
-        find: ".winButtons,",
+        find: /{leading:\i,title:\i/,
         replacements: [
           {
             match: /\(0,.{1,3}\.getPlatform\)\(\)/g,
-            replace: `"WINDOWS"`,
+            replace: `"WEB"`,
           },
         ],
       },
-      // Disable the 'frame' option for popout windows
+      // Enable the 'frame' option for popout windows
       {
         find: "menubar:!1,toolbar:!1",
         replacements: [
           {
             match: "menubar:",
-            replace: "frame:!1,menubar:",
+            replace: "frame:!0,$&",
           },
         ],
       },
-      // Add the 'platform-win' class name to get styles for the custom title bar
+      // Change the platform class name to 'platform-web' to not apply title bar styles
       {
-        find: "platform-linux",
+        find: "platform-web",
         replacements: [
           {
-            match: "platform-linux",
-            replace: "platform-linux platform-win",
+            match: /(platform-overlay"\):)\i/,
+            replace: '$1"platform-web"',
           },
         ],
       },
