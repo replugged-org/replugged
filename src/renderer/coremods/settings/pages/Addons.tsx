@@ -25,6 +25,7 @@ import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
 import { UserSettingsForm } from "..";
 import { ClydeIcon, GitHubIcon, LinkIcon, RefreshIcon, SettingsIcon, TrashIcon } from "../icons";
+import { SearchStore } from "../searchTerms";
 
 import "./Addons.css";
 
@@ -535,6 +536,7 @@ export function useAddonPanelTitle(type: AddonType): string {
 }
 
 export const Addons = (type: AddonType): React.ReactElement => {
+  const settingQuery = SearchStore.useField("query");
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
   const [list, setList] = React.useState<Array<RepluggedPlugin | RepluggedTheme> | null>();
@@ -556,7 +558,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
             ...[x.manifest.author].flat().map(Object.values).flat(),
           ].map((x) => x.toLowerCase());
 
-          return props.some((x) => x.includes(search.toLowerCase()));
+          return props.some((x) => x.includes((search || settingQuery).toLowerCase()));
         })
         .sort((a, b) => a.manifest.name.toLowerCase().localeCompare(b.manifest.name.toLowerCase())),
     );
@@ -564,7 +566,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
     setDisabled(new Set(getManager(type).getDisabled()));
   }
 
-  React.useEffect(refreshList, [search, type]);
+  React.useEffect(refreshList, [settingQuery, search, type]);
 
   return (
     <UserSettingsForm
@@ -627,7 +629,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
           </Button>
         </Stack>
       )}
-      {section === `rp_${type}` && unfilteredCount ? (
+      {section === `rp_${type}` && unfilteredCount && (!settingQuery || search) ? (
         <SearchBar
           query={search}
           onChange={(query) => setSearch(query)}
