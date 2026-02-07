@@ -1,5 +1,4 @@
 // Pre-inject checks
-import "./checks/elevate.mjs";
 import "./checks/env.mjs";
 
 import { createContext, getPositionalArg } from "@marshift/argus";
@@ -73,6 +72,7 @@ const run = async (cmd = ctx.getPositionalArg(2), replug = false): Promise<void>
       for (const current of VALID_PLATFORMS) {
         try {
           const appDir = await platformModule.getAppDir(current);
+
           const installed = checkInstalled(appDir);
           if (installed) {
             console.warn(
