@@ -5,6 +5,7 @@ import {
   Divider,
   FieldSet,
   Notice,
+  RadioGroup,
   Select,
   Stack,
   Switch,
@@ -17,7 +18,7 @@ import * as QuickCSS from "src/renderer/managers/quick-css";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { useSetting, useSettingArray } from "src/renderer/util";
-import { BACKGROUND_MATERIALS, VIBRANCY_SELECT_OPTIONS } from "src/types";
+import { BACKGROUND_MATERIALS, RepluggedBranches, VIBRANCY_SELECT_OPTIONS } from "src/types";
 
 import "./General.css";
 
@@ -77,6 +78,22 @@ function GeneralTab(): React.ReactElement {
   return (
     <Stack gap={24}>
       <Stack gap={16}>
+        <RadioGroup
+          {...useSetting(generalSettings, "branch")}
+          disabled={RepluggedNative.getVersion() === "dev"}
+          label={intl.string(t.REPLUGGED_SETTINGS_RELEASE_BRANCH)}
+          description={intl.string(t.REPLUGGED_SETTINGS_RELEASE_BRANCH_DESC)}
+          options={[
+            {
+              name: intl.string(t.REPLUGGED_SETTINGS_RELEASE_BRANCH_STABLE),
+              value: RepluggedBranches.STABLE,
+            },
+            {
+              name: intl.string(t.REPLUGGED_SETTINGS_RELEASE_BRANCH_NIGHTLY),
+              value: RepluggedBranches.NIGHTLY,
+            },
+          ]}
+        />
         <Switch
           {...useSetting(generalSettings, "badges")}
           label={intl.string(t.REPLUGGED_SETTINGS_BADGES)}
