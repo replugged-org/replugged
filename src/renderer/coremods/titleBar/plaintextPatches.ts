@@ -28,7 +28,7 @@ export default (generalSettings.get("titleBar")
         find: "platform-web",
         replacements: [
           {
-            match: /(platform-overlay"\):)\i/,
+            match: /(platform-overlay`:)\i/,
             replace: '$1"platform-web"',
           },
         ],

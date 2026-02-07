@@ -14,8 +14,8 @@ export default [
     find: "window.DiscordSentry",
     replacements: [
       {
-        match: /\i=window\.DiscordSentry/g,
-        replace: "null",
+        match: /window\.DiscordSentry\?/g,
+        replace: "null?",
       },
     ],
   },

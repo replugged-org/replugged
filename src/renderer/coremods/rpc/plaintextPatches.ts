@@ -5,8 +5,8 @@ export default [
     find: "RPC_STORE_WAIT",
     replacements: [
       {
-        match: /this,"commands",{}/,
-        replace: () => `this,"commands",replugged.rpc?._getCommands({}),`,
+        match: /commands={}/,
+        replace: () => `commands=replugged.rpc?._getCommands({})`,
       },
     ],
   },

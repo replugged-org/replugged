@@ -5,7 +5,7 @@ export default [
     find: "♫ (つ｡◕‿‿◕｡)つ ♪",
     replacements: [
       {
-        match: /((\i)\){)(var\s*\i;let{navId:)/,
+        match: /((\i)\){)(let{navId:)/,
         replace: (_, prefix, props, suffix) =>
           `${prefix}${props}=$exports?._insertMenuItems(${props});${suffix}`,
       },

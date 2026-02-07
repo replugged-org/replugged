@@ -23,7 +23,7 @@ export default [
     find: "getMaskId()",
     replacements: [
       {
-        match: /viewBox:"0 0 "\.concat\(\i," "\)\.concat\(\i\),className:\i\(\)/g,
+        match: /viewBox:`0 0 \${\i} \${\i}`,className:\i\(\)/g,
         replace: `...($exports?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
       },
     ],

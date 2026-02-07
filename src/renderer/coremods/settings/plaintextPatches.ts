@@ -11,10 +11,10 @@ export default [
     ],
   },
   {
-    find: ".versionHash",
+    find: ".push(`Build Override: ",
     replacements: [
       {
-        match: /\.appArch,children:.{30,60}\("span",{children:\[" \(",\i,"\)"\]}\)\]}\)/,
+        match: /\i,children:.{30,60}\("span",{children:\[" \(",\i,"\)"\]}\)\]}\)/,
         replace: (prefix) => `${prefix},$exports?._renderVersionInfo() ?? null`,
       },
       {
