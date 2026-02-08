@@ -17,6 +17,7 @@ import rpcPlaintext from "../coremods/rpc/plaintextPatches";
 import settingsPlaintext from "../coremods/settings/plaintextPatches";
 import themeUtilsPlaintext from "../coremods/themeUtils/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
+import utcPlaintext from "../coremods/utc/plaintextPatches";
 
 const logger = Logger.api("Coremods");
 
@@ -39,6 +40,7 @@ export namespace coremods {
   export let reactErrorDecoder: Coremod;
   export let rpc: Coremod;
   export let settings: Coremod;
+  export let utc: Coremod;
   export let themeUtils: Coremod;
   export let watcher: Coremod;
   export let welcome: Coremod;
@@ -66,6 +68,7 @@ export async function startAll(): Promise<void> {
   coremods.reactErrorDecoder = await import("../coremods/reactErrorDecoder");
   coremods.rpc = await import("../coremods/rpc");
   coremods.settings = await import("../coremods/settings");
+  coremods.utc = await import("../coremods/utc");
   coremods.themeUtils = await import("../coremods/themeUtils");
   coremods.watcher = await import("../coremods/watcher");
   coremods.welcome = await import("../coremods/welcome");
@@ -102,5 +105,6 @@ export function runPlaintextPatches(): void {
     { patch: settingsPlaintext, name: "replugged.coremod.settings" },
     { patch: themeUtilsPlaintext, name: "replugged.coremod.themeUtils" },
     { patch: titleBarPlaintext, name: "replugged.coremod.titleBar" },
+    { patch: utcPlaintext, name: "replugged.coremod.utc" },
   ].forEach(({ patch, name }) => patchPlaintext(patch, name));
 }
