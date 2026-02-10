@@ -11,6 +11,7 @@ import { extname, join, sep } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
 import { plugin } from "../../types/addon";
+import { unpackAsar } from "../asar";
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
 
@@ -19,11 +20,14 @@ export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
 };
 
 function getPlugin(pluginName: string): RepluggedPlugin {
-  const manifestPath = join(PLUGINS_DIR, pluginName, "manifest.json");
+  const pluginPath = join(PLUGINS_DIR, pluginName);
+  const manifestPath = join(pluginPath, "manifest.json");
   if (!manifestPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
     throw new Error("Invalid plugin name");
   }
+
+  unpackAsar(pluginPath);
 
   const manifest: unknown = JSON.parse(
     readFileSync(manifestPath, {
