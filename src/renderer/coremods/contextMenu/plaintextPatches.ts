@@ -12,12 +12,15 @@ export default [
     ],
   },
   {
-    find: "navId",
+    find: "navId:",
     warn: false,
     replacements: [
       {
-        match: /navId:(?![^(})]*?}=)[^)]*?\)/g,
-        replace: (suffix) => `data:arguments,${suffix}`,
+        match: /(}=this\.props.*?navId:)|(navId:(?![^(})]*?}=)[^)]*?\))/g,
+        replace: (match, classComponentMatch) => {
+          if (classComponentMatch) return match;
+          return `_rpData:arguments,${match}`;
+        },
       },
     ],
   },
