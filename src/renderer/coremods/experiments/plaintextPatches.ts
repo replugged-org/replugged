@@ -50,7 +50,7 @@ export default (generalSettings.get("experiments")
       alwaysTruePatch("`Clear Treatment ${`", ".isStaffPersonal()"),
       // Show the PlaygroundEmbed
       alwaysTruePatch("data-has-story", ".isStaffPersonal()"),
-      // Show the Playgrounds tab in the UserSettingsCogContextMenu
-      alwaysTruePatch('label:"Playgrounds"', ".isStaffPersonal()===!0"),
+      // Patch the mana-playground-access experiment to always allow access to the playground
+      alwaysTruePatch("mana-playground-access", /\.isStaffPersonal\(\)===!0/g),
     ]
   : []) as PlaintextPatch[];
