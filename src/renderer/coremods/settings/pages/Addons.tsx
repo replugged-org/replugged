@@ -109,9 +109,9 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
       label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
       options={theme.manifest.presets!.map((preset) => ({
         label: preset.label,
-        value: preset.path,
+        value: preset.id,
       }))}
-      value={settings.chosenPreset || theme.manifest.presets![0].path}
+      value={settings.chosenPreset || theme.manifest.presets![0].id}
       onChange={(val) => {
         try {
           themes.settings.set(id, { chosenPreset: val });
@@ -120,7 +120,7 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
           }
           toast(
             intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
-              name: theme.manifest.presets!.find((p) => p.path === val)?.label || val,
+              name: theme.manifest.presets!.find((p) => p.id === val)?.label || val,
             }),
           );
         } catch (error) {

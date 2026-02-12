@@ -25,6 +25,7 @@ import { hideBin } from "yargs/helpers";
 import logBuildPlugin from "../scripts/build-plugins/log-build.mjs";
 import { type AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
 import { release } from "./release.mjs";
+import type { BuildOptions } from "typescript";
 
 interface BaseArgs {
   watch?: boolean;
@@ -532,16 +533,38 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (manifest.presets) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: manifest.presets.map((p) => p.path),
-        outdir: `${distPath}/presets`,
-      }),
+      ...manifest.presets.reduce((accumulator: Array<Promise<esbuild.BuildContext>>, preset) => {
+        const path = `${distPath}/presets/${preset.id || preset.label.replaceAll(/[\s<>:"|?*]/g, "_")}`;
+        if (preset.main)
+          accumulator.push(
+            esbuild.context(
+              overwrites({
+                ...common,
+                entryPoints: [preset.main],
+                outfile: `${path}/splash.css`,
+              }),
+            ),
+          );
+        if (preset.splash)
+          accumulator.push(
+            esbuild.context(
+              overwrites({
+                ...common,
+                entryPoints: [preset.splash],
+                outfile: `${path}/splash.css`,
+              }),
+            ),
+          );
+        return accumulator;
+      }, []),
     );
 
-    manifest.presets = manifest.presets.map((p) => ({
+    manifest.presets = manifest.presets.map(({ main, splash, label, id, ...p }) => ({
       ...p,
-      path: `presets/${path.basename(p.path).split(".")[0]}.css`,
+      label,
+      id: id || label.replaceAll(/[\s<>:"|?*]/g, "_"),
+      main: main && `main.css`,
+      splash: splash && `splash.css`,
     }));
   }
 

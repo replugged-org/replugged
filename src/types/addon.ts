@@ -57,7 +57,9 @@ export const theme = common.extend({
   presets: z
     .object({
       label: z.string(),
-      path: z.string(),
+      id: z.string().optional(),
+      main: z.string().optional(),
+      splash: z.string().optional(),
       default: z.boolean().optional(),
     })
     .array()
