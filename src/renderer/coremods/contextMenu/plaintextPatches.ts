@@ -16,11 +16,8 @@ export default [
     warn: false,
     replacements: [
       {
-        match: /(}=this\.props.*?navId:)|(navId:(?![^(})]*?}=)[^)]*?\))/g,
-        replace: (match, classComponentMatch) => {
-          if (classComponentMatch) return match;
-          return `_rpData:arguments,${match}`;
-        },
+        match: /(?<!}=this\.props.*?)navId:(?![^(})]*?}=)[^)]*?\)/g,
+        replace: `_rpData:arguments,$&`,
       },
     ],
   },

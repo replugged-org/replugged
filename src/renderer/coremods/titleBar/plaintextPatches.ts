@@ -23,6 +23,16 @@ export default (generalSettings.get("titleBar")
           },
         ],
       },
+      // Hide the title bar in popout windows
+      {
+        find: "Missing guestWindow reference",
+        replacements: [
+          {
+            match: /(\i\({withTitleBar:)\i/,
+            replace: "$1!1",
+          },
+        ],
+      },
       // Change the platform class name to 'platform-web' to not apply title bar styles
       {
         find: "platform-web",
