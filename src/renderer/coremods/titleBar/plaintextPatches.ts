@@ -1,47 +1,50 @@
 import { generalSettings } from "src/renderer/managers/settings";
 import type { PlaintextPatch } from "src/types";
 
-export default (generalSettings.get("titleBar")
-  ? [
-      // Patch the title bar to hide the buttons
+export default [
+  ...(generalSettings.get("titleBar")
+    ? [
+        // Patch the title bar to hide the buttons
+        {
+          find: /{leading:\i,title:\i/,
+          replacements: [
+            {
+              match: /\(0,.{1,3}\.getPlatform\)\(\)/g,
+              replace: `"WEB"`,
+            },
+          ],
+        },
+        // Hide the title bar in popout windows
+        {
+          find: "Missing guestWindow reference",
+          replacements: [
+            {
+              match: /(\i\({withTitleBar:)\i/,
+              replace: "$1!1",
+            },
+          ],
+        },
+        // Change the platform class name to 'platform-web' to not apply title bar styles
+        {
+          find: "platform-web",
+          replacements: [
+            {
+              match: /(platform-overlay`:)\i/,
+              replace: '$1"platform-web"',
+            },
+          ],
+        },
+      ]
+    : []),
+  // Toggle the 'frame' option for popout windows
+  // ? This also fixes an issue on Linux where the title bar would always be visible in popout windows
+  {
+    find: "menubar:!1,toolbar:!1",
+    replacements: [
       {
-        find: /{leading:\i,title:\i/,
-        replacements: [
-          {
-            match: /\(0,.{1,3}\.getPlatform\)\(\)/g,
-            replace: `"WEB"`,
-          },
-        ],
+        match: "menubar:",
+        replace: `frame:${generalSettings.get("titleBar")},$&`,
       },
-      // Enable the 'frame' option for popout windows
-      {
-        find: "menubar:!1,toolbar:!1",
-        replacements: [
-          {
-            match: "menubar:",
-            replace: "frame:!0,$&",
-          },
-        ],
-      },
-      // Hide the title bar in popout windows
-      {
-        find: "Missing guestWindow reference",
-        replacements: [
-          {
-            match: /(\i\({withTitleBar:)\i/,
-            replace: "$1!1",
-          },
-        ],
-      },
-      // Change the platform class name to 'platform-web' to not apply title bar styles
-      {
-        find: "platform-web",
-        replacements: [
-          {
-            match: /(platform-overlay`:)\i/,
-            replace: '$1"platform-web"',
-          },
-        ],
-      },
-    ]
-  : []) as PlaintextPatch[];
+    ],
+  },
+] as PlaintextPatch[];
