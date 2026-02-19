@@ -4,7 +4,6 @@ import type { VoidConfirmModal } from "discord-client-types/discord_app/design/v
 import type * as Design from "discord-client-types/discord_app/design/web";
 
 export type DiscordComponents = {
-  Anchor: Design.Anchor;
   Button: Design.Button;
   ButtonGroup: Design.ButtonGroup;
   Checkbox: Design.Checkbox;

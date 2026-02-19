@@ -120,18 +120,16 @@ function GeneralTab(): React.ReactElement {
           label={intl.string(t.REPLUGGED_SETTINGS_DISABLE_MIN_SIZE)}
           description={intl.format(t.REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC, {})}
         />
-        {window.DiscordNative.process.platform === "linux" && (
-          <Switch
-            checked={titleBar}
-            onChange={(value) => {
-              setTitleBar(value);
-              restartModal(true);
-            }}
-            label={intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
-            description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
-          />
-        )}
-        <Stack gap={8}>
+        <Switch
+          checked={titleBar}
+          onChange={(value) => {
+            setTitleBar(value);
+            restartModal(true);
+          }}
+          label={intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+          description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
+        />
+        <Stack>
           <Switch
             checked={transparency}
             onChange={(value) => {
@@ -195,7 +193,7 @@ function AdvancedTab(): React.ReactElement {
         {intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}
       </Notice>
       <FieldSet label={intl.string(t.REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS)}>
-        <Stack gap={8}>
+        <Stack>
           <Switch
             checked={experiments}
             onChange={(value) => {

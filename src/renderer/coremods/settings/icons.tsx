@@ -1,5 +1,4 @@
-import { components } from "@common";
-import { filters, getFunctionBySource, waitForModule } from "@webpack";
+import { filters, waitForModule, waitForProps } from "@webpack";
 
 import type { GetIconSize, ICON_SIZE } from "discord-client-types/discord_app/design/web";
 
@@ -13,53 +12,24 @@ interface IconProps extends React.ComponentPropsWithoutRef<"svg"> {
 
 type Icon = React.FC<IconProps>;
 
-function getIcon(source: string, from: Record<string, unknown> = components): Icon {
-  return getFunctionBySource<Icon>(from, source)!;
-}
+const mod = await waitForProps<Record<string, Icon>>("PaintbrushThinIcon");
 
-export const ClydeIcon = getIcon("M19.73 4.87a18.2 18.2 0 0 0-4.6-1.44c");
-export const LinkIcon = getIcon("M16.32 14.72a1 1 0 0 1 0-1.41l2.51-2.51a3.98");
-export const MagicWandIcon = getIcon("M12.37 9.04c.25-.26.73-.2 1.06.13L15");
-export const PaintbrushThinIcon = getIcon(".99.25l2.57-.75A3 3 0 0 0 16.6 13l4.91-8.05a1.8");
-export const RefreshIcon = getIcon("M21 2a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-6a1");
-export const SettingsIcon = getIcon("11.1 0 0 0-2.88 0ZM16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z");
-export const TrashIcon = getIcon("M5.06 7a1 1 0 0 0-1 1.06l.76 12.13a3");
+export const {
+  ClydeIcon,
+  LinkIcon,
+  MagicWandIcon,
+  PaintbrushThinIcon,
+  PuzzlePieceIcon,
+  RefreshIcon,
+  SettingsIcon,
+  TrashIcon,
+} = mod;
 
 // We should probably use 'makeIconCompat' function, instead of remaking the prop compatibility ourselves.
 
 const getIconSize = (await waitForModule<Record<string, GetIconSize>>(
   filters.bySource(/if\("custom"===\i\)/),
 ).then((mod) => Object.values(mod).find((x) => typeof x === "function")))!;
-
-// ? Icon is not imported in the source, so it gets stripped out when compiled. We define it here manually.
-export function PuzzlePieceIcon({
-  size = "md",
-  width,
-  height,
-  color,
-  colorClass = "",
-  ...props
-}: IconProps): React.ReactElement {
-  const iconSize = getIconSize(size);
-  const iconWidth = iconSize?.width ?? width;
-  const iconHeight = iconSize?.height ?? height;
-
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width={iconWidth}
-      height={iconHeight}
-      fill="none"
-      viewBox="0 0 24 24">
-      <path
-        fill={color}
-        d="M16 4a3 3 0 1 1-5.98-.31c.03-.35-.21-.69-.56-.69H7a3 3 0 0 0-3 3v2.5c0 .28-.23.5-.5.54a3 3 0 0 0 0 5.92c.27.04.5.26.5.54V18a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3h-2.46c-.35 0-.6.34-.56.69L16 4Z"
-        className={colorClass}
-      />
-    </svg>
-  );
-}
 
 export function RepluggedIcon({
   size = "md",

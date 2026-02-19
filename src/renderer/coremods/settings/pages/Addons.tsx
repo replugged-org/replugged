@@ -582,7 +582,7 @@ export const Addons = (type: AddonType): React.ReactElement => {
       }>
       {section === `rp_${type}` && (
         // TODO: Replace with ButtonGroup from Mana Design System; after Button has been migrated as well
-        <Stack gap={8} justify="space-between" direction="horizontal">
+        <Stack justify="space-between" direction="horizontal">
           <Button fullWidth onClick={() => openFolder(type)}>
             {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
               type: label(type, { caps: "title", plural: true }),

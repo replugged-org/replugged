@@ -36,7 +36,7 @@ class BrowserWindow extends electron.BrowserWindow {
     const generalSettings = getAllSettings("dev.replugged.Settings");
     const originalPreload = opts.webPreferences?.preload;
 
-    if (opts.frame && process.platform === "linux" && generalSettings.titleBar) opts.frame = void 0;
+    if (opts.title && !opts.frame && generalSettings.titleBar) opts.frame = true;
 
     // Load our preload script if it's the main window or the splash screen
     if (
