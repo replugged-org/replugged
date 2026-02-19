@@ -236,7 +236,6 @@ export async function installAddon(
   try {
     if (existsSync(filePath)) rmSync(filePath, { recursive: true, force: true });
     await writeFile(filePath, buf);
-    await writeFile(filePath, buf);
   } catch (err) {
     return {
       success: false,
