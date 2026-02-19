@@ -61,7 +61,8 @@ export const theme = common.extend({
       default: z.boolean().optional(),
     })
     .array()
-    .optional(),
+    .optional()
+    .nullable(),
 });
 
 export type ThemeManifest = z.infer<typeof theme>;
