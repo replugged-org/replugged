@@ -235,8 +235,11 @@ export async function installAddon(
 
   try {
     if (existsSync(filePath)) rmSync(filePath, { recursive: true, force: true });
+
     const unpacked = `${filePath}.unpacked`;
-    if (existsSync(unpacked)) rmSync(unpacked, { recursive: true, force: true });
+    if (path.endsWith(".unpacked") && existsSync(unpacked))
+      rmSync(unpacked, { recursive: true, force: true });
+
     await writeFile(filePath, buf);
   } catch (err) {
     return {
