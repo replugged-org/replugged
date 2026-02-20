@@ -224,7 +224,7 @@ export async function installAddon(
   const buf = Buffer.from(file);
 
   const base = getBaseName(type);
-  const filePath = resolve(base, path);
+  const filePath = resolve(base, path.replace(/\.unpacked$/, ""));
   if (!filePath.startsWith(`${base}${sep}`)) {
     // Ensure file changes are restricted to the base path
     return {
@@ -235,6 +235,8 @@ export async function installAddon(
 
   try {
     if (existsSync(filePath)) rmSync(filePath, { recursive: true, force: true });
+    const unpacked = `${filePath}.unpacked`;
+    if (existsSync(unpacked)) rmSync(unpacked, { recursive: true, force: true });
     await writeFile(filePath, buf);
   } catch (err) {
     return {

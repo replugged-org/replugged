@@ -20,14 +20,13 @@ export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
 };
 
 function getPlugin(pluginName: string): RepluggedPlugin {
+  pluginName = unpackAsar(PLUGINS_DIR, pluginName);
   const pluginPath = join(PLUGINS_DIR, pluginName);
   const manifestPath = join(pluginPath, "manifest.json");
   if (!manifestPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
     throw new Error("Invalid plugin name");
   }
-
-  unpackAsar(pluginPath);
 
   const manifest: unknown = JSON.parse(
     readFileSync(manifestPath, {

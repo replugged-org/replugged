@@ -20,14 +20,14 @@ export const isFileATheme = (f: Dirent | Stats, name: string): boolean => {
 };
 
 async function getTheme(path: string): Promise<RepluggedTheme> {
+  path = unpackAsar(THEMES_DIR, path);
+
   const themePath = join(THEMES_DIR, path);
   const manifestPath = join(themePath, "manifest.json");
   if (!manifestPath.startsWith(`${THEMES_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
     throw new Error("Invalid theme name");
   }
-
-  unpackAsar(themePath);
 
   const manifest: unknown = JSON.parse(
     await readFile(manifestPath, {

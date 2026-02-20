@@ -122,7 +122,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
     logger.error(`Entity ${id} not found`);
     return;
   }
-  if (!entity.path.endsWith(".asar")) {
+  if (!entity.path.endsWith(".asar") && !entity.path.endsWith(".unpacked")) {
     if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
     return;
   }
@@ -176,7 +176,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
     logger.error(`Entity ${id} not found`);
     return false;
   }
-  if (!entity.path.endsWith(".asar")) {
+  if (!entity.path.endsWith(".asar") && !entity.path.endsWith(".unpacked")) {
     if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
     return false;
   }
