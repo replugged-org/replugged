@@ -15,7 +15,7 @@ import {
 import { addSettingNode, createCustomSettingsPanel, createSection, removeSettingNode } from "./lib";
 import {
   AddonType,
-  General,
+  GeneralCategories,
   Plugins,
   QuickCSS,
   Themes,
@@ -48,7 +48,7 @@ export function start(): void {
       createCustomSettingsPanel("general", {
         icon: RepluggedIcon,
         useTitle: () => intl.string(discordT.SETTINGS_GENERAL),
-        render: General,
+        categories: GeneralCategories,
       }),
       createCustomSettingsPanel("quickcss", {
         icon: MagicWandIcon,

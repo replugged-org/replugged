@@ -25,7 +25,7 @@ const settingBuilders = Object.fromEntries(
   }),
 ) as SettingBuilders;
 
-export const { createPanel, createSection, createSidebarItem } = settingBuilders;
+export const { createPanel, createSection, createSidebarItem, createCategory, createCustom } = settingBuilders;
 
 interface RepluggedCustomNode {
   node: NodeConfig;
@@ -63,9 +63,13 @@ export function removeSettingNode(key: string): void {
 type CustomSettingsPaneOptions = Required<Pick<SidebarItemNode, "icon" | "useTitle">> &
   Pick<SidebarItemNode, "usePredicate" | "getLegacySearchKey"> & {
     usePanelTitle?: PanelNode["useTitle"];
+  } & ({
     render: React.ElementType;
-  };
-
+    categories?: never;
+  } | {
+    render?: never;
+    categories: Array<Pick<SidebarItemNode, "useTitle"> & { render: React.ElementType; }>
+  });
 /**
  * Creates a custom settings panel with a sidebar item.
  * @param key The unique key for the custom settings panel.
@@ -81,8 +85,22 @@ export function createCustomSettingsPanel(
     usePredicate,
     getLegacySearchKey,
     usePanelTitle,
+    categories
   }: CustomSettingsPaneOptions,
 ): ReturnType<typeof createSidebarItem> {
+  const panelLayout = (categories ?? [{ render: Panel }]).map(({ render: Panel, useTitle }, i) => {
+    return createCategory(`replugged_${key}_category_${i}`, {
+      useTitle,
+      buildLayout: () => [
+        createCustom(`replugged_${key}`, {
+          Component: () => (
+            <ErrorBoundary>
+              <Panel />
+            </ErrorBoundary>
+          ),
+        })]
+    });
+  });
   return createSidebarItem(`replugged_${key}_sidebar_item`, {
     icon,
     useTitle,
@@ -91,12 +109,7 @@ export function createCustomSettingsPanel(
     buildLayout: () => [
       createPanel(`replugged_${key}_panel`, {
         useTitle: usePanelTitle ?? useTitle,
-        StronglyDiscouragedCustomComponent: () => (
-          <ErrorBoundary>
-            <Panel />
-          </ErrorBoundary>
-        ),
-        buildLayout: () => [],
+        buildLayout: () => panelLayout,
       }),
     ],
   });
