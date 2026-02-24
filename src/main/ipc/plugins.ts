@@ -21,6 +21,7 @@ export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
 
 function getPlugin(pluginName: string): RepluggedPlugin {
   const pluginPath = unpackAsar(PLUGINS_DIR, pluginName);
+  if (!pluginPath.endsWith(pluginName)) pluginName = `${pluginName}.unpacked`;
   const manifestPath = join(pluginPath, "manifest.json");
   if (!manifestPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path

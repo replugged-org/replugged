@@ -21,6 +21,7 @@ export const isFileATheme = (f: Dirent | Stats, name: string): boolean => {
 
 async function getTheme(path: string): Promise<RepluggedTheme> {
   const themePath = unpackAsar(THEMES_DIR, path);
+  if (!themePath.endsWith(path)) path = `${path}.unpacked`;
   const manifestPath = join(themePath, "manifest.json");
   if (!manifestPath.startsWith(`${THEMES_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
