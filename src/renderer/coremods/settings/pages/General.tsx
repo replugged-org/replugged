@@ -1,16 +1,7 @@
 import { React, modal } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { ToastType, toast } from "@common/toast";
-import {
-  Divider,
-  FieldSet,
-  Notice,
-  Select,
-  Stack,
-  Switch,
-  Text,
-  TextInput,
-} from "@components";
+import { Divider, FieldSet, Notice, Select, Stack, Switch, Text, TextInput } from "@components";
 import { WEBSITE_URL } from "src/constants";
 import * as QuickCSS from "src/renderer/managers/quick-css";
 import { generalSettings } from "src/renderer/managers/settings";
@@ -138,12 +129,12 @@ function General(): React.ReactElement {
           />
           {(window.DiscordNative.process.platform === "linux" ||
             window.DiscordNative.process.platform === "win32") && (
-              <Notice messageType={Notice.Types.WARNING}>
-                {window.DiscordNative.process.platform === "linux"
-                  ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
-                  : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
-              </Notice>
-            )}
+            <Notice messageType={Notice.Types.WARNING}>
+              {window.DiscordNative.process.platform === "linux"
+                ? intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_LINUX, {})
+                : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
+            </Notice>
+          )}
         </Stack>
         {window.DiscordNative.process.platform === "win32" && (
           <Select
@@ -299,13 +290,15 @@ export function EasterEgg(): React.ReactElement | false {
     return () => document.removeEventListener("keydown", listener);
   }, [kKeys, isEasterEgg, listener]);
 
-  return isEasterEgg && (
-    <Text.H1
-      variant="heading-xxl/semibold"
-      className="replugged-configuration-easter-egg"
-      style={{ color: `hsl(${hue}, 100%, 50%)` }}>
-      Wake up. Wake up. Wake up.
-    </Text.H1>
+  return (
+    isEasterEgg && (
+      <Text.H1
+        variant="heading-xxl/semibold"
+        className="replugged-configuration-easter-egg"
+        style={{ color: `hsl(${hue}, 100%, 50%)` }}>
+        Wake up. Wake up. Wake up.
+      </Text.H1>
+    )
   );
 }
 
@@ -313,4 +306,4 @@ export const GeneralCategories = [
   { useTitle: () => intl.string(discordT.SETTINGS_GENERAL), render: General },
   { useTitle: () => intl.string(discordT.SETTINGS_ADVANCED), render: Advanced },
   { render: EasterEgg },
-]
+];
