@@ -2,7 +2,7 @@
   font-size: 24px;
   font-family: var(--font-display);
   font-weight: bold;
-  color: var(--header-primary);
+  color: var(--text-strong);
   text-align: center;
   margin-bottom: 16px;
 }
@@ -11,7 +11,7 @@
   font-size: 14px;
   font-family: var(--font-primary);
   font-weight: 500;
-  color: var(--header-primary);
+  color: var(--text-strong);
 }
 
 .replugged-error-boundary .replugged-error-boundary-plugin {
@@ -28,7 +28,7 @@
 }
 
 .replugged-error-boundary-collapsible {
-  color: var(--header-primary);
+  color: var(--text-strong);
   background-color: var(--background-secondary-alt);
   border-radius: 8px;
   transition: background-color 0.1s ease;

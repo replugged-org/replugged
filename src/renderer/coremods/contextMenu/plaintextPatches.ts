@@ -5,19 +5,19 @@ export default [
     find: "♫ (つ｡◕‿‿◕｡)つ ♪",
     replacements: [
       {
-        match: /((\i)\){)(var\s*\i;let{navId:)/,
+        match: /((\i)\){)(let{navId:)/,
         replace: (_, prefix, props, suffix) =>
-          `${prefix}${props}=replugged.coremods.coremods.contextMenu?._insertMenuItems(${props});${suffix}`,
+          `${prefix}${props}=$exports?._insertMenuItems(${props});${suffix}`,
       },
     ],
   },
   {
-    find: "navId",
+    find: "navId:",
     warn: false,
     replacements: [
       {
-        match: /navId:(?![^(})]*?}=)[^)]*?\)/g,
-        replace: (suffix) => `data:arguments,${suffix}`,
+        match: /(?<!}=this\.props.*?)navId:(?![^(})]*?}=)[^)]*?\)/g,
+        replace: `_rpData:arguments,$&`,
       },
     ],
   },

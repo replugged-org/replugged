@@ -8,7 +8,7 @@ function alwaysTruePatch(find: string | RegExp, match: string | RegExp): Plainte
 export default (repluggedSettings.get("experiments")
   ? [
       {
-        find: /"displayName","(Developer)?ExperimentStore"/,
+        find: /displayName="(Developer)?ExperimentStore"/,
         replacements: [
           // Force the release channel to 'staging'
           {
@@ -18,7 +18,7 @@ export default (repluggedSettings.get("experiments")
         ],
       },
       {
-        find: '"displayName","DeveloperExperimentStore"',
+        find: 'displayName="DeveloperExperimentStore"',
         replacements: [
           // Force the 'isDeveloper' property to true
           {
@@ -32,32 +32,25 @@ export default (repluggedSettings.get("experiments")
           },
         ],
       },
-      ...(repluggedSettings.get("staffDevTools")
-        ? [
-            {
-              // Set the resulting experiment configuration of the bug reporter to be always true
-              // This is necessary to ensure the StaffHelpButton is shown instead of the classic HelpButton
-              find: /hasBugReporterAccess:\i}=\i\.\i\.useExperiment/,
-              replacements: [
-                {
-                  match: /hasBugReporterAccess:\i/,
-                  replace: `_$&=true`,
-                },
-              ],
-            },
-          ]
-        : []),
+      {
+        // Patches the AppTitleBar component by gating the isDeveloper check behind the 'staffDevTools' setting
+        find: /focusSectionProps:"TITLEBAR_FAST_TRAVEL"/,
+        replacements: [
+          {
+            match: /\i\.\i\.isDeveloper/,
+            replace: `$&&&${repluggedSettings.get("staffDevTools")}`,
+          },
+        ],
+      },
       // Always return true for the 'isStaff' property in SettingRendererUtils
       alwaysTruePatch(`header:"Developer Only"`, /isStaff:\i/),
-      // Add developer only settings to the UserSettingsCogContextMenu
-      alwaysTruePatch(`layoutDebuggingEnabled,isStaff:`, "isStaff())===!0"),
       // Show the Playgrounds and Build Overrides menu items in the UserSettingsCogContextMenu
       alwaysTruePatch("user-settings-cog", /isStaff\(\)/g),
       // Show the ExperimentEmbed
-      alwaysTruePatch("dev://experiment/", ".isStaffPersonal())"),
-      // Show the ManaPlaygroundEmbed
-      alwaysTruePatch("dev://mana(/", ".isStaffPersonal())"),
-      // Show the Playgrounds tab in the StaffHelpPopout
-      alwaysTruePatch("Playgrounds", ".isStaffPersonal())===!0"),
+      alwaysTruePatch("`Clear Treatment ${`", ".isStaffPersonal()"),
+      // Show the PlaygroundEmbed
+      alwaysTruePatch("data-has-story", ".isStaffPersonal()"),
+      // Patch the mana-playground-access experiment to always allow access to the playground
+      alwaysTruePatch("mana-playground-access", /\.isStaffPersonal\(\)===!0/g),
     ]
   : []) as PlaintextPatch[];

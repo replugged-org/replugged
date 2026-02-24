@@ -1,4 +1,5 @@
-import { filters, getFunctionBySource, waitForModule, waitForProps } from "../webpack";
+import { getFunctionBySource, waitForProps } from "../webpack";
+import components from "./components";
 
 import type {
   Close,
@@ -14,22 +15,14 @@ interface AlertActionCreators {
   confirm: Confirm;
 }
 
-export interface Modal {
-  openModal: Design.OpenModal;
-  closeModal: Design.CloseModal;
-  alert: Show;
-  confirm: (props: ShowProps) => Promise<boolean | null>;
-}
-
-const ModalAPI = await waitForModule(filters.bySource("onCloseRequest:null!="));
 const { show } = await waitForProps<AlertActionCreators>("show", "close");
 
 export default {
-  openModal: getFunctionBySource<Design.OpenModal>(ModalAPI, "onCloseRequest:null!=")!,
-  closeModal: getFunctionBySource<Design.CloseModal>(ModalAPI, "onCloseCallback&&")!,
+  openModal: getFunctionBySource<Design.OpenModal>(components, "?.stackNextByDefault===")!,
+  closeModal: getFunctionBySource<Design.CloseModal>(components, "onCloseCallback&&")!,
   alert: show,
   confirm: (props: ShowProps) =>
-    new Promise((resolve) => {
+    new Promise<boolean | null>((resolve) => {
       let didResolve = false;
       const onConfirm = (): void => {
         if (props.onConfirm) void props.onConfirm();
@@ -49,4 +42,4 @@ export default {
       };
       show({ ...props, onConfirm, onCancel, onCloseCallback });
     }),
-} as Modal;
+};

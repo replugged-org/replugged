@@ -1,7 +1,7 @@
-import { React, modal, toast } from "@common";
+import { React, modal } from "@common";
 import { t as discordT, intl } from "@common/i18n";
+import { ToastType, toast } from "@common/toast";
 import {
-  Button,
   Divider,
   FieldSet,
   Notice,
@@ -53,7 +53,6 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
         ? intl.string(discordT.BUNDLE_READY_RESTART)
         : intl.string(discordT.ERRORS_RELOAD),
       cancelText: intl.string(discordT.CANCEL),
-      confirmColor: Button.Colors.RED,
       onConfirm,
       onCancel,
     })
@@ -122,18 +121,16 @@ function GeneralTab(): React.ReactElement {
           label={intl.string(t.REPLUGGED_SETTINGS_DISABLE_MIN_SIZE)}
           description={intl.format(t.REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC, {})}
         />
-        {window.DiscordNative.process.platform === "linux" && (
-          <Switch
-            checked={titleBar}
-            onChange={(value) => {
-              setTitleBar(value);
-              restartModal(true);
-            }}
-            label={intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
-            description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
-          />
-        )}
-        <div>
+        <Switch
+          checked={titleBar}
+          onChange={(value) => {
+            setTitleBar(value);
+            restartModal(true);
+          }}
+          label={intl.string(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR)}
+          description={intl.format(t.REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC, {})}
+        />
+        <Stack>
           <Switch
             checked={transparency}
             onChange={(value) => {
@@ -151,7 +148,7 @@ function GeneralTab(): React.ReactElement {
                 : intl.format(t.REPLUGGED_SETTINGS_TRANSPARENT_ISSUES_WINDOWS, {})}
             </Notice>
           )}
-        </div>
+        </Stack>
         {window.DiscordNative.process.platform === "win32" && (
           <Select
             value={backgroundMaterial}
@@ -197,7 +194,7 @@ function AdvancedTab(): React.ReactElement {
         {intl.string(t.REPLUGGED_SETTINGS_ADVANCED_DESC)}
       </Notice>
       <FieldSet label={intl.string(t.REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS)}>
-        <div>
+        <Stack>
           <Switch
             checked={experiments}
             onChange={(value) => {
@@ -210,7 +207,7 @@ function AdvancedTab(): React.ReactElement {
           <Notice messageType={Notice.Types.WARNING}>
             {intl.format(t.REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS_WARNING, {})}
           </Notice>
-        </div>
+        </Stack>
         <Switch
           disabled={!experiments}
           checked={staffDevTools}
@@ -242,10 +239,7 @@ function AdvancedTab(): React.ReactElement {
                   // Ignore cleanup errors
                 }
               }
-              toast.toast(
-                intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED),
-                toast.Kind.FAILURE,
-              );
+              toast(intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS_FAILED), ToastType.FAILURE);
             }
           }}
           label={intl.string(t.REPLUGGED_SETTINGS_REACT_DEVTOOLS)}

@@ -17,11 +17,6 @@ div[class] .addon-embed-copied:hover {
   max-width: 210px;
 }
 
-.replugged-addon-embed-button-tooltip {
-  display: flex;
-  flex: 1;
-}
-
 .replugged-addon-embed-button {
   flex: 1;
 }

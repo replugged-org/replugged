@@ -92,7 +92,7 @@ async function injectRepluggedSectionIcon(): Promise<void> {
 
 async function injectApplicationCommandIndexStore(): Promise<void> {
   const applicationCommandIndexStoreMod = await waitForModule<Record<string, UseDiscoveryState>>(
-    filters.bySource("APPLICATION_COMMAND_INDEX"),
+    filters.bySource(".APPLICATION_COMMAND_CACHE_FETCH,"),
   );
   const useDiscoveryStateKey = getFunctionKeyBySource(
     applicationCommandIndexStoreMod,

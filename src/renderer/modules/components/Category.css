@@ -1,13 +1,8 @@
 .replugged-category-content {
-  margin-top: var(--space-4);
+  margin-top: var(--space-8);
   margin-left: var(--space-12);
   border-left: 1px solid var(--border-subtle);
   padding-left: var(--space-20);
-}
-
-.replugged-category-disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .replugged-category-icon {
@@ -18,6 +13,10 @@
 
 .replugged-category-input {
   cursor: pointer;
+}
+
+.replugged-category-disabled {
+  opacity: 0.5;
 }
 
 .replugged-category-hidden-input {

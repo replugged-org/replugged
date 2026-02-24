@@ -1,6 +1,7 @@
 import type { ModuleExports } from "../../../types";
 import { error } from "../logger";
 
+import type { Tooltip as TooltipType } from "discord-client-types/discord_app/design/mana/components/Tooltip/Tooltip";
 import type * as VoidDesign from "discord-client-types/discord_app/design/void/web";
 import type * as Design from "discord-client-types/discord_app/design/web";
 import type { Flex as FlexType } from "discord-client-types/discord_app/modules/core/web/Flex";
@@ -53,17 +54,11 @@ importTimeout("ColorPicker", import("./ColorPickerItem"), (mod) => (ColorPicker 
 export let Divider: Design.Divider;
 importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
 
+export let Field: Design.Field;
+importTimeout("Field", import("./Field"), (mod) => (Field = mod.default));
+
 export let FieldSet: Design.FieldSet;
 importTimeout("FieldSet", import("./FieldSet"), (mod) => (FieldSet = mod.default));
-
-export let FormControl: Design.FormControl;
-importTimeout("FormControl", import("./FormControl"), (mod) => (FormControl = mod.default));
-
-export let FormItem: Design.FormItem;
-importTimeout("FormItem", import("./FormItem"), (mod) => (FormItem = mod.default));
-
-export let FormNotice: Design.FormNotice;
-importTimeout("FormNotice", import("./FormNotice"), (mod) => (FormNotice = mod.default));
 
 export let Loader: Design.Spinner;
 importTimeout("Loader", import("./Spinner"), (mod) => (Loader = mod.default));
@@ -86,7 +81,7 @@ importTimeout("TextArea", import("./TextArea"), (mod) => (TextArea = mod.default
 export let TextInput: Design.TextInput;
 importTimeout("TextInput", import("./TextInput"), (mod) => (TextInput = mod.default));
 
-export let Tooltip: Design.TooltipContainer;
+export let Tooltip: TooltipType;
 importTimeout("Tooltip", import("./Tooltip"), (mod) => (Tooltip = mod.default));
 
 // Other
@@ -119,11 +114,6 @@ import type { CustomContextMenuType } from "./Menu";
 export type { CustomContextMenuType };
 export let ContextMenu: CustomContextMenuType;
 importTimeout("ContextMenu", import("./Menu"), (mod) => (ContextMenu = mod.default));
-
-import type { CustomFormTextType } from "./FormText";
-export type { CustomFormTextType };
-export let FormText: CustomFormTextType;
-importTimeout("FormText", import("./FormText"), (mod) => (FormText = mod.CustomFormText));
 
 import type { CustomKeyRecorderType } from "./KeyRecorder";
 export type { CustomKeyRecorderType };

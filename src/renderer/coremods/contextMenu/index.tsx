@@ -18,7 +18,7 @@ interface MenuItem {
 }
 
 export type ContextMenuProps = MenuProps & {
-  data: Array<Record<string, unknown>>;
+  _rpData: Array<Record<string, unknown>>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: React.ReactElement<any> | Array<React.ReactElement<any>>;
 };
@@ -99,7 +99,7 @@ export function _insertMenuItems(props: ContextMenuProps): ContextMenuProps {
 
   menuItemsPatches.forEach(({ getItem, sectionId, indexInSection }) => {
     try {
-      const item = makeItem(getItem(props.data[0], props));
+      const item = makeItem(getItem(props._rpData[0], props));
       if (!item) return;
 
       if (sectionId !== undefined && Array.isArray(props.children)) {

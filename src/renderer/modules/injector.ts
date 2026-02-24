@@ -1,9 +1,12 @@
-import type { RepluggedCommand } from "../../types/coremods/commands";
-import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
-import type { GetButtonItem } from "../../types/coremods/message";
-import type { CommandOptions } from "../../types/discord";
-import type { AnyFunction } from "../../types/util";
-import type { ObjectExports } from "../../types/webpack";
+import type {
+  AnyFunction,
+  CommandOptions,
+  ContextMenuTypes,
+  GetButtonItem,
+  GetContextItem,
+  ObjectExports,
+  RepluggedCommand,
+} from "src/types";
 import { CommandManager } from "../apis/commands";
 import { type ContextMenuProps, addContextMenuItem } from "../coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
