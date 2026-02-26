@@ -101,29 +101,25 @@ export function setUpdaterState(id: string, state: UpdateSettings): void {
   updaterState.set(id, state);
 }
 
-async function getAddonFromManager(
+function getAddonFromManager(
   id: string,
-): Promise<RepluggedPlugin | RepluggedTheme | RepluggedEntity | undefined> {
+): RepluggedPlugin | RepluggedTheme | RepluggedEntity | undefined {
   if (id === REPLUGGED_ID) {
     const version = window.RepluggedNative.getVersion();
     if (version === "dev") return undefined;
     return REPLUGGED_ENTITY;
   }
 
-  return pluginManager.plugins.get(id) || (await themeManager.get(id));
+  return pluginManager.plugins.get(id) || themeManager.get(id);
 }
 
 /**
  * @param id Entity ID to check updates for
  */
 export async function checkUpdate(id: string, verbose = true): Promise<void> {
-  const entity = await getAddonFromManager(id);
+  const entity = getAddonFromManager(id);
   if (!entity) {
     logger.error(`Entity ${id} not found`);
-    return;
-  }
-  if (!entity.path.endsWith(".asar") && !entity.path.endsWith(".unpacked")) {
-    if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
     return;
   }
 
@@ -171,13 +167,9 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
 }
 
 export async function installUpdate(id: string, force = false, verbose = true): Promise<boolean> {
-  const entity = await getAddonFromManager(id);
+  const entity = getAddonFromManager(id);
   if (!entity) {
     logger.error(`Entity ${id} not found`);
-    return false;
-  }
-  if (!entity.path.endsWith(".asar") && !entity.path.endsWith(".unpacked")) {
-    if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
     return false;
   }
 
@@ -221,7 +213,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
 
 export async function checkAllUpdates(autoCheck = false, verbose = false): Promise<void> {
   const plugins = Array.from(pluginManager.plugins.values());
-  const themes = await themeManager.list();
+  const themes = themeManager.list();
 
   // For auto checking, only check for store updates since GitHub has a higher rate limit
   const filterFn = autoCheck

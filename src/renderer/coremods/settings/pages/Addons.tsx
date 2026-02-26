@@ -201,7 +201,7 @@ async function loadMissing(type: AddonType): Promise<void> {
     const manager = themes;
     const disabled = manager.getDisabled();
     const existingThemes = new Set(manager.themes.keys());
-    await manager.loadMissing();
+    manager.loadMissing();
     const newThemes = Array.from(manager.themes.keys()).filter(
       (x) => !existingThemes.has(x) && !disabled.includes(x),
     );
