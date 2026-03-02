@@ -18,20 +18,21 @@ const version = ipcRenderer.sendSync(RepluggedIpcChannels.GET_REPLUGGED_VERSION)
 
 const RepluggedNative = {
   themes: {
-    list: async (): Promise<RepluggedTheme[]> =>
-      ipcRenderer.invoke(RepluggedIpcChannels.LIST_THEMES),
-    uninstall: async (themeName: string) =>
-      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName), // whether theme was successfully uninstalled
+    get: (path: string): RepluggedTheme | undefined =>
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_THEME, path),
+    list: (): RepluggedTheme[] => ipcRenderer.sendSync(RepluggedIpcChannels.LIST_THEMES),
+    uninstall: async (themeName: string): Promise<void> =>
+      ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_THEME, themeName),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_THEMES_FOLDER),
   },
 
   plugins: {
-    get: (pluginPath: string): RepluggedPlugin | undefined =>
-      ipcRenderer.sendSync(RepluggedIpcChannels.GET_PLUGIN, pluginPath),
+    get: (path: string): RepluggedPlugin | undefined =>
+      ipcRenderer.sendSync(RepluggedIpcChannels.GET_PLUGIN, path),
     getPlaintextPatches: (pluginName: string): string =>
       ipcRenderer.sendSync(RepluggedIpcChannels.GET_PLUGIN_PLAINTEXT_PATCHES, pluginName),
     list: (): RepluggedPlugin[] => ipcRenderer.sendSync(RepluggedIpcChannels.LIST_PLUGINS),
-    uninstall: async (pluginPath: string): Promise<RepluggedPlugin> =>
+    uninstall: async (pluginPath: string): Promise<void> =>
       ipcRenderer.invoke(RepluggedIpcChannels.UNINSTALL_PLUGIN, pluginPath),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_PLUGINS_FOLDER),
   },
@@ -69,7 +70,7 @@ const RepluggedNative = {
   },
 
   quickCSS: {
-    get: async () => ipcRenderer.invoke(RepluggedIpcChannels.GET_QUICK_CSS),
+    get: async (): Promise<string> => ipcRenderer.invoke(RepluggedIpcChannels.GET_QUICK_CSS),
     save: (css: string) => ipcRenderer.send(RepluggedIpcChannels.SAVE_QUICK_CSS, css),
     openFolder: () => ipcRenderer.send(RepluggedIpcChannels.OPEN_QUICKCSS_FOLDER),
   },

@@ -1,6 +1,5 @@
 import { ipcMain } from "electron";
-import { readFileSync } from "fs";
-import { writeFile as originalWriteFile } from "original-fs";
+import { existsSync, readFileSync, rmSync } from "fs";
 import { join, resolve, sep } from "path";
 import { WEBSITE_URL } from "src/constants";
 import {
@@ -14,10 +13,8 @@ import {
 import { type AnyAddonManifestOrReplugged, anyAddonOrReplugged } from "src/types/addon";
 import { CONFIG_PATH, CONFIG_PATHS } from "src/util.mjs";
 import type { PackageJson } from "type-fest";
-import { promisify } from "util";
+import { extractAll } from "../asar";
 import { getSetting } from "./settings";
-
-const writeFile = promisify(originalWriteFile);
 
 /* eslint-disable @typescript-eslint/naming-convention */
 interface ReleaseAsset {
@@ -224,8 +221,8 @@ export async function installAddon(
   const buf = Buffer.from(file);
 
   const base = getBaseName(type);
-  const filePath = resolve(base, path);
-  if (!filePath.startsWith(`${base}${sep}`)) {
+  const destPath = resolve(base, path.replace(/(\.asar)?$/, ""));
+  if (!destPath.startsWith(`${base}${sep}`)) {
     // Ensure file changes are restricted to the base path
     return {
       success: false,
@@ -234,7 +231,9 @@ export async function installAddon(
   }
 
   try {
-    await writeFile(filePath, buf);
+    if (existsSync(destPath)) rmSync(destPath, { recursive: true, force: true });
+
+    extractAll(buf, destPath);
   } catch (err) {
     return {
       success: false,
