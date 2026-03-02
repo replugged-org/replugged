@@ -133,7 +133,7 @@ function tryPort(port: number): Promise<WebSocket | undefined> {
  * If a connection cannot be made or failed previously, none will be made and undefined will be returned.
  */
 async function connectWebsocket(): Promise<WebSocket | null | undefined> {
-  if (ws && ws.readyState === WebSocket.OPEN) {
+  if (ws?.readyState === WebSocket.OPEN) {
     return ws;
   }
   if (failed) return null;

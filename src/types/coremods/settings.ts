@@ -187,7 +187,8 @@ export interface ToggleNode extends CommonNodeProps {
 }
 
 export interface SliderNode
-  extends CommonNodeProps,
+  extends
+    CommonNodeProps,
     Pick<
       SliderProps,
       | "minValue"
