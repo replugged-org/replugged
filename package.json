@@ -2,20 +2,17 @@
   "name": "replugged",
   "version": "4.11.1",
   "description": "A lightweight @discord client mod focused on simplicity and performance",
-  "license": "MIT",
-  "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=10.0.0"
-  },
-  "repository": "https://github.com/replugged-org/replugged.git",
   "bugs": {
     "url": "https://github.com/replugged-org/replugged/issues"
   },
+  "repository": "https://github.com/replugged-org/replugged.git",
+  "license": "MIT",
   "author": "Replugged",
+  "main": "dist/main.js",
+  "types": "dist/renderer/replugged.d.ts",
   "bin": {
     "replugged": "bin.mjs"
   },
-  "main": "dist/main.mjs",
   "files": [
     "dist",
     "bin",
@@ -46,8 +43,6 @@
     "docs:watch": "pnpm run docs --watch",
     "generate-messages": "tsx scripts/generate-messages.mts && pnpm run build"
   },
-  "packageManager": "pnpm@10.30.3",
-  "types": "dist/renderer/replugged.d.ts",
   "dependencies": {
     "@codemirror/lang-css": "^6.3.1",
     "@codemirror/language": "^6.12.2",
@@ -101,5 +96,10 @@
     "typedoc": "^0.28.17",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.56.1"
+  },
+  "packageManager": "pnpm@10.30.3",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=10.0.0"
   }
 }
