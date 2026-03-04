@@ -42,9 +42,9 @@ export function _buildPopoverElements(msg: Message, channel: Channel): React.Rea
   const items: React.ReactElement[] = [];
 
   // Waiting for the module is not necessary, as it is already loaded by the time this function is called
-  const hoverBarButtonStr = ".hoverBarButton";
-  const hoverBarMod = getBySource<Record<string, HoverBarButton>>(hoverBarButtonStr)!;
-  const HoverBarButton = getComponentBySource<HoverBarButton>(hoverBarMod, hoverBarButtonStr);
+  const hoverBarButtonRegex = /disabled:\i,dangerous:\i/;
+  const hoverBarMod = getBySource<Record<string, HoverBarButton>>(hoverBarButtonRegex)!;
+  const HoverBarButton = getComponentBySource<HoverBarButton>(hoverBarMod, hoverBarButtonRegex);
 
   if (!HoverBarButton) {
     logger.error("Could not find HoverBarButton");

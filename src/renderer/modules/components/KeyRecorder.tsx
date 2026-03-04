@@ -17,7 +17,8 @@ const KeyRecorder = await waitForModule<typeof KeybindRecorder>(
 );
 
 interface CustomKeyRecorderProps
-  extends Omit<KeybindRecorderProps, "defaultValue">,
+  extends
+    Omit<KeybindRecorderProps, "defaultValue">,
     Pick<
       Design.FieldProps,
       "label" | "description" | "helperText" | "errorMessage" | "successMessage" | "layout"

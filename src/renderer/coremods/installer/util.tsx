@@ -132,7 +132,7 @@ export async function loadNew(data: CheckResultSuccess): Promise<boolean> {
         await pluginManager.enable(data.manifest.id);
         return true;
       case "replugged-theme":
-        await themeManager.loadMissing();
+        themeManager.loadMissing();
         themeManager.load(data.manifest.id);
         themeManager.enable(data.manifest.id);
         return true;

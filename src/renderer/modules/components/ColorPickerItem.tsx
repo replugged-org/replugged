@@ -10,8 +10,10 @@ export const ColorPicker = getFunctionBySource<Design.ColorPicker>(
   'id:"color-picker"',
 )!;
 
-interface ColorSwatchProps
-  extends Pick<Design.CustomColorPickerProps, "onChange" | "suggestedColors" | "showEyeDropper"> {
+interface ColorSwatchProps extends Pick<
+  Design.CustomColorPickerProps,
+  "onChange" | "suggestedColors" | "showEyeDropper"
+> {
   onClose?: Design.PopoutProps["onRequestClose"];
   color?: number;
   disabled?: boolean;
@@ -22,10 +24,11 @@ interface ColorSwatchProps
 
 type ColorSwatchType = React.FC<ColorSwatchProps>;
 
-const ColorSwatch = await waitForModule<ColorSwatchType>(filters.bySource(".editPencilIcon,"));
+const ColorSwatch = await waitForModule<ColorSwatchType>(filters.bySource(/colorPickerMiddle:\i,/));
 
 interface ColorPickerItemProps
-  extends ColorSwatchProps,
+  extends
+    ColorSwatchProps,
     Pick<
       Design.FieldProps,
       "label" | "description" | "helperText" | "successMessage" | "errorMessage"

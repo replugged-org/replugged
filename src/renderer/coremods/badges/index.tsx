@@ -99,7 +99,7 @@ const badgeElements = [
 
 export async function start(): Promise<void> {
   const useBadgesMod = await waitForModule<Record<string, UseBadges>>(
-    filters.bySource(/:\i\.getBadges\(\)/),
+    filters.bySource(/\i\?\.getBadges\(\)\?\?\[\]/),
   );
   const useBadgesKey = getFunctionKeyBySource(useBadgesMod, "")!;
 
@@ -177,7 +177,7 @@ export async function start(): Promise<void> {
   });
 
   const userProfileConstantsMod = await waitForModule<Record<string, GetBadgeAsset>>(
-    filters.bySource(/concat\(\i,"\/badge-icons\/"/),
+    filters.bySource(/https:\/\/\${\i}\/badge-icons\/\${\i}\.png/),
   );
   const getBadgeAssetKey = getFunctionKeyBySource(userProfileConstantsMod, "badge-icons")!;
 

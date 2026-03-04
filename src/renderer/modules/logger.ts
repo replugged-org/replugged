@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-argument, no-console */
 
 const blurple = "#5865F2";
 

@@ -13,16 +13,16 @@ interface NoticeMod {
 }
 
 const actualNoticeMod = await waitForModule<Record<string, ValueOf<NoticeMod>>>(
-  filters.bySource(".colorPremiumTier1,"),
+  filters.bySource(/PREMIUM_TIER_1:\i\.\i,/),
 );
 
 const remappedNoticeMod: NoticeMod = {
   NoticeColors: Object.values(actualNoticeMod).find((v) => typeof v === "object")!,
-  NoticeButton: getFunctionBySource(actualNoticeMod, "buttonMinor")!,
-  PrimaryCTANoticeButton: getFunctionBySource(actualNoticeMod, "additionalTrackingProps")!,
-  NoticeButtonAnchor: getFunctionBySource(actualNoticeMod, ".button,href:")!,
-  NoticeCloseButton: getFunctionBySource(actualNoticeMod, "closeIcon")!,
-  Notice: getFunctionBySource(actualNoticeMod, "isMobile")!,
+  NoticeButton: getFunctionBySource(actualNoticeMod, /minor:\i=!1/)!,
+  PrimaryCTANoticeButton: getFunctionBySource(actualNoticeMod, /\.onClick&&\i\.onClick/)!,
+  NoticeButtonAnchor: getFunctionBySource(actualNoticeMod, /href:\i,onClick/)!,
+  NoticeCloseButton: getFunctionBySource(actualNoticeMod, "focusProps:{offset:")!,
+  Notice: getFunctionBySource(actualNoticeMod, /color:\i=\i\.DEFAULT/)!,
 };
 
 export default remappedNoticeMod;

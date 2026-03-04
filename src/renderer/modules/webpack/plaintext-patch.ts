@@ -87,12 +87,9 @@ export function patchModuleSource(mod: WebpackModule, id: string): WebpackModule
     return mod;
   }
   try {
+    const footer = `\n// Patched by: ${patchedBy.filter(Boolean).join(", ")}\n//# sourceURL=${window.location.origin}/assets/patched/PatchedWebpack-${id}`;
     // eslint-disable-next-line no-eval
-    return (0, eval)(
-      `${
-        patchedSource.startsWith("function(") ? `0,${patchedSource}` : patchedSource
-      }\n// Patched by: ${patchedBy.filter(Boolean).join(", ")}\n//# sourceURL=${window.location.origin}/assets/patched/PatchedWebpack-${id}`,
-    );
+    return (0, eval)(`0,function${patchedSource.slice(patchedSource.indexOf("("))}${footer}`);
   } catch (err) {
     logger.error(`PatchedWebpack-${id}`, err);
     // Syntax error in patched module--fail

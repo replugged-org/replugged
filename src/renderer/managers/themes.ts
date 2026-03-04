@@ -19,8 +19,8 @@ export const settings = init<ThemeSettings>("themes");
  * @remarks
  * This does not apply the themes, only loads their metadata. You can call {@link load} or {@link loadAll} to apply a theme.
  */
-export async function loadMissing(): Promise<void> {
-  for (const theme of await window.RepluggedNative.themes.list()) {
+export function loadMissing(): void {
+  for (const theme of window.RepluggedNative.themes.list()) {
     themes.set(theme.manifest.id, theme);
   }
   disabled = settings.get("disabled", []);
@@ -176,8 +176,8 @@ export function unloadAll(): void {
  * @remarks
  * This may include themes that are not available until Discord is reloaded.
  */
-export async function get(path: string): Promise<RepluggedTheme | undefined> {
-  return await list().then((x) => x.find((p) => p.manifest.id === path));
+export function get(path: string): RepluggedTheme | undefined {
+  return list().find((p) => p.manifest.id === path);
 }
 
 /**
@@ -186,8 +186,8 @@ export async function get(path: string): Promise<RepluggedTheme | undefined> {
  * @remarks
  * This may include themes that are not available until Discord is reloaded.
  */
-export async function list(): Promise<RepluggedTheme[]> {
-  return await window.RepluggedNative.themes.list();
+export function list(): RepluggedTheme[] {
+  return window.RepluggedNative.themes.list();
 }
 
 /**

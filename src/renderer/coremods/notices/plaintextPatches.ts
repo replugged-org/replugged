@@ -6,7 +6,7 @@ export default [
     find: /hasNotice:\i,sidebarTheme:\i/,
     replacements: [
       {
-        match: /\i\.base,"data-fullscreen":\i,children:\[/,
+        match: /\.\i,"data-fullscreen":\i,children:\[/,
         replace: `$&$exports?.AnnouncementContainer?.(),`,
       },
     ],

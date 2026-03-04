@@ -1390,7 +1390,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Custom Title Bar
+   * Native Title Bar
    * ```
    * 
    * ### Problems
@@ -1403,7 +1403,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Use Discord's custom title bar instead of the system title bar. **Requires restart**.
+   * Use the system native title bar instead of Discord's custom title bar. **Requires restart**.
    * ```
    * 
    * ### Problems
