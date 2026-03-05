@@ -1,7 +1,6 @@
 import { spawnSync } from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
-import { exitCode } from "../index.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -16,7 +15,7 @@ const tryToElevate = (command: string): void => {
     process.exit(0);
   } else if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
     console.error(error);
-    process.exit(exitCode);
+    process.exit(1);
   }
 };
 

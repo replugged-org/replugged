@@ -1,10 +1,9 @@
-import path, { join } from "path";
-import { fileURLToPath } from "url";
-import { existsSync, readFileSync } from "fs";
 import { execSync } from "child_process";
-import { AnsiEscapes } from "../util.mjs";
-import { exitCode } from "../index.mjs";
+import { existsSync, readFileSync } from "fs";
+import path, { join } from "path";
 import type { PackageJson } from "type-fest";
+import { fileURLToPath } from "url";
+import { AnsiEscapes } from "../util.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -37,20 +36,24 @@ if (dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
   console.log(
     `Try re-opening your command prompt ${AnsiEscapes.BOLD}without${AnsiEscapes.RESET} opening it as administrator.`,
   );
-  process.exit(exitCode);
+  process.exit(1);
 }
 
-// Verify if we're on node 10.x
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-if (!(await import("fs")).promises) {
+// Verify that we're running on a supported Node.js version (>= 20.x)
+const REQ_NODEJS_VERSION = 20;
+const currentNodeVersion = parseInt(process.versions.node.split(".")[0], 10);
+if (Number.isNaN(currentNodeVersion) || currentNodeVersion < REQ_NODEJS_VERSION) {
   console.log(
     `${AnsiEscapes.BOLD}${AnsiEscapes.RED}Failed to plug Replugged :(${AnsiEscapes.RESET}`,
     "\n",
   );
   console.log("Replugged detected you're running an outdated version of NodeJS.");
-  console.log("You must have at least NodeJS 10 installed for Replugged to function.", "\n");
+  console.log(
+    `You must have at least NodeJS ${REQ_NODEJS_VERSION} installed for Replugged to function.`,
+    "\n",
+  );
   console.log("You can download the latest version of NodeJS at https://nodejs.org");
-  process.exit(exitCode);
+  process.exit(1);
 }
 
 // Verify if deps have been installed. If not, install them automatically
