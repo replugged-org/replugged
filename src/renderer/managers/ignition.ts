@@ -88,13 +88,19 @@ export function startSplash(): void {
   log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
   const startTime = performance.now();
 
-  themes.loadMissing();
-  themes.loadAllSplash();
+  window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+      themes.loadMissing();
+      themes.loadAllSplash();
+    },
+    { once: true },
+  );
 
   log(
     "Ignition",
     "Start",
     void 0,
-    `Finished igniting Replugged Splash Screen in ${performance.now() - startTime}ms`,
+    `Finished igniting Replugged Splash Screen in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
