@@ -25,7 +25,6 @@ import { hideBin } from "yargs/helpers";
 import logBuildPlugin from "../scripts/build-plugins/log-build.mjs";
 import { type AddonType, getAddonFolder, isMonoRepo, selectAddon } from "./mono.mjs";
 import { release } from "./release.mjs";
-import type { BuildOptions } from "typescript";
 
 interface BaseArgs {
   watch?: boolean;
@@ -456,8 +455,8 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const main = existsSync(path.join(folderPath, manifest.main || "src/main.css"))
     ? path.join(folderPath, manifest.main || "src/main.css")
     : undefined;
-  const splash = existsSync(path.join(folderPath, manifest.splash || "src/main.css"))
-    ? path.join(folderPath, manifest.splash || "src/main.css")
+  const splash = existsSync(path.join(folderPath, manifest.splash || "src/splash.css"))
+    ? path.join(folderPath, manifest.splash || "src/splash.css")
     : undefined;
 
   const install: esbuild.Plugin = {
@@ -534,14 +533,14 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   if (manifest.presets) {
     targets.push(
       ...manifest.presets.reduce((accumulator: Array<Promise<esbuild.BuildContext>>, preset) => {
-        const path = `${distPath}/presets/${preset.id || preset.label.replaceAll(/[\s<>:"|?*]/g, "_")}`;
+        const presetPath = `${distPath}/presets/${preset.id || preset.label.replaceAll(/[\s<>:"|?*]/g, "_")}`;
         if (preset.main)
           accumulator.push(
             esbuild.context(
               overwrites({
                 ...common,
                 entryPoints: [preset.main],
-                outfile: `${path}/splash.css`,
+                outfile: `${presetPath}/main.css`,
               }),
             ),
           );
@@ -551,7 +550,7 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
               overwrites({
                 ...common,
                 entryPoints: [preset.splash],
-                outfile: `${path}/splash.css`,
+                outfile: `${presetPath}/splash.css`,
               }),
             ),
           );

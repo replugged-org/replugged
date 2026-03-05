@@ -212,4 +212,3 @@ export default defineMessages({
   "REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS": "Development Tools",
   "REPLUGGED_SETTINGS": "Replugged Settings"
 });
-

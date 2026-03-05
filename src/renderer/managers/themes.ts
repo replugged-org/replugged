@@ -37,11 +37,7 @@ export function unload(id: string): void {
   }
 }
 
-/**
- * Load a theme's main variant, adding its stylesheet to the DOM
- * @param id Theme ID (RDNN)
- */
-export function load(id: string): void {
+function loadVariant(id: string, variant: "main" | "splash"): void {
   if (!themes.has(id)) {
     throw new Error(`Theme not found: ${id}`);
   }
@@ -64,16 +60,16 @@ export function load(id: string): void {
 
       if (themeSettings.chosenPreset) {
         el = loadStyleSheet(
-          `replugged://theme/${theme.path}/presets/${themeSettings.chosenPreset}/main.css`,
+          `replugged://theme/${theme.path}/presets/${themeSettings.chosenPreset}/${variant}.css`,
         );
       } else {
         logger.error("Manager", `No valid preset found for theme ${id}`);
         return;
       }
-    } else if (theme.manifest.main) {
-      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+    } else if (theme.manifest[variant]) {
+      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest[variant]}`);
     } else {
-      logger.error("Manager", `Theme ${id} has neither main CSS nor presets.`);
+      logger.error("Manager", `Theme ${id} has neither ${variant} CSS nor presets.`);
       return;
     }
 
@@ -85,50 +81,19 @@ export function load(id: string): void {
 }
 
 /**
+ * Load a theme's main variant, adding its stylesheet to the DOM
+ * @param id Theme ID (RDNN)
+ */
+export function load(id: string): void {
+  loadVariant(id, "main");
+}
+
+/**
  * Load a theme's splash variant, adding its stylesheet to the DOM
  * @param id Theme ID (RDNN)
  */
 export function loadSplash(id: string): void {
-  if (!themes.has(id)) {
-    throw new Error(`Theme not found: ${id}`);
-  }
-
-  const theme = themes.get(id)!;
-  const themeSettings = settings.get(id, { chosenPreset: undefined });
-
-  let el: HTMLLinkElement;
-
-  try {
-    if (theme.manifest.presets?.length) {
-      if (!themeSettings.chosenPreset) {
-        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.id;
-        if (!themeSettings.chosenPreset) {
-          // Fallback to first preset
-          themeSettings.chosenPreset = theme.manifest.presets[0]?.id;
-        }
-        settings.set(id, themeSettings);
-      }
-
-      if (themeSettings.chosenPreset) {
-        el = loadStyleSheet(
-          `replugged://theme/${theme.path}/presets/${themeSettings.chosenPreset}/splash.css`,
-        );
-      } else {
-        logger.error("Manager", `No valid preset found for theme ${id}`);
-        return;
-      }
-    } else if (theme.manifest.splash) {
-      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.splash}`);
-    } else {
-      logger.error("Manager", `Theme ${id} has neither splash CSS nor presets.`);
-      return;
-    }
-
-    unload(id);
-    themeElements.set(id, el);
-  } catch (error) {
-    logger.error("Manager", `Failed to load Splash theme ${id}:`, String(error));
-  }
+  loadVariant(id, "splash");
 }
 
 /**
