@@ -15,14 +15,12 @@ export const buttons = new Map<GetButtonItem, string>();
  */
 export function addButton(item: GetButtonItem, key?: string): () => void {
   buttons.set(item, `${key || "repluggedButton"}-${Math.random().toString(36).substring(2)}`);
-
   return () => removeButton(item);
 }
 
 /**
  * Removes a button from MessagePopover
- * @param item The function that creates the button to add
- * @returns
+ * @param item The function that creates the button to remove
  */
 export function removeButton(item: GetButtonItem): void {
   buttons.delete(item);
@@ -54,13 +52,9 @@ export function _buildPopoverElements(msg: Message, channel: Channel): React.Rea
   buttons.forEach((key, getItem) => {
     try {
       const item = getItem(msg, channel);
-      try {
-        if (item) {
-          item.key = key;
-          items.push(<HoverBarButton {...item} />);
-        }
-      } catch (err) {
-        logger.error(`Error in making the button [${item?.key}]`, err, item);
+      if (item) {
+        item.key = key;
+        items.push(<HoverBarButton {...item} />);
       }
     } catch (err) {
       logger.error("Error while running GetButtonItem function", err, getItem);
