@@ -455,8 +455,8 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const main = existsSync(path.join(folderPath, manifest.main || "src/main.css"))
     ? path.join(folderPath, manifest.main || "src/main.css")
     : undefined;
-  const splash = existsSync(path.join(folderPath, manifest.splash || "src/main.css"))
-    ? path.join(folderPath, manifest.splash || "src/main.css")
+  const splash = existsSync(path.join(folderPath, manifest.splash || "src/splash.css"))
+    ? path.join(folderPath, manifest.splash || "src/splash.css")
     : undefined;
 
   const install: esbuild.Plugin = {
@@ -532,16 +532,38 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (manifest.presets) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: manifest.presets.map((p) => p.path),
-        outdir: `${distPath}/presets`,
-      }),
+      ...manifest.presets.reduce((accumulator: Array<Promise<esbuild.BuildContext>>, preset) => {
+        const presetPath = `${distPath}/presets/${preset.id || preset.label.replaceAll(/[\s<>:"|?*]/g, "_")}`;
+        if (preset.main)
+          accumulator.push(
+            esbuild.context(
+              overwrites({
+                ...common,
+                entryPoints: [preset.main],
+                outfile: `${presetPath}/main.css`,
+              }),
+            ),
+          );
+        if (preset.splash)
+          accumulator.push(
+            esbuild.context(
+              overwrites({
+                ...common,
+                entryPoints: [preset.splash],
+                outfile: `${presetPath}/splash.css`,
+              }),
+            ),
+          );
+        return accumulator;
+      }, []),
     );
 
-    manifest.presets = manifest.presets.map((p) => ({
+    manifest.presets = manifest.presets.map(({ main, splash, label, id, ...p }) => ({
       ...p,
-      path: `presets/${path.basename(p.path).split(".")[0]}.css`,
+      label,
+      id: id || label.replaceAll(/[\s<>:"|?*]/g, "_"),
+      main: main && `main.css`,
+      splash: splash && `splash.css`,
     }));
   }
 

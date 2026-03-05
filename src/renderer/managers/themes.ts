@@ -37,11 +37,7 @@ export function unload(id: string): void {
   }
 }
 
-/**
- * Load a theme's main variant, adding its stylesheet to the DOM
- * @param id Theme ID (RDNN)
- */
-export function load(id: string): void {
+function loadVariant(id: string, variant: "main" | "splash"): void {
   if (!themes.has(id)) {
     throw new Error(`Theme not found: ${id}`);
   }
@@ -54,24 +50,26 @@ export function load(id: string): void {
   try {
     if (theme.manifest.presets?.length) {
       if (!themeSettings.chosenPreset) {
-        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.path;
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.id;
         if (!themeSettings.chosenPreset) {
           // Fallback to first preset
-          themeSettings.chosenPreset = theme.manifest.presets[0]?.path;
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.id;
         }
         settings.set(id, themeSettings);
       }
 
       if (themeSettings.chosenPreset) {
-        el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenPreset}`);
+        el = loadStyleSheet(
+          `replugged://theme/${theme.path}/presets/${themeSettings.chosenPreset}/${variant}.css`,
+        );
       } else {
         logger.error("Manager", `No valid preset found for theme ${id}`);
         return;
       }
-    } else if (theme.manifest.main) {
-      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+    } else if (theme.manifest[variant]) {
+      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest[variant]}`);
     } else {
-      logger.error("Manager", `Theme ${id} has neither main CSS nor presets.`);
+      logger.error("Manager", `Theme ${id} has neither ${variant} CSS nor presets.`);
       return;
     }
 
@@ -83,23 +81,19 @@ export function load(id: string): void {
 }
 
 /**
+ * Load a theme's main variant, adding its stylesheet to the DOM
+ * @param id Theme ID (RDNN)
+ */
+export function load(id: string): void {
+  loadVariant(id, "main");
+}
+
+/**
  * Load a theme's splash variant, adding its stylesheet to the DOM
  * @param id Theme ID (RDNN)
  */
 export function loadSplash(id: string): void {
-  if (!themes.has(id)) {
-    throw new Error(`Theme not found: ${id}`);
-  }
-
-  const theme = themes.get(id)!;
-  if (!theme.manifest.splash) {
-    logger.error("Manager", `Theme ${id} does not have a splash variant.`);
-    return;
-  }
-  unload(id);
-
-  const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.splash}`);
-  themeElements.set(id, el);
+  loadVariant(id, "splash");
 }
 
 /**
@@ -108,7 +102,10 @@ export function loadSplash(id: string): void {
 export function loadAll(): void {
   for (const id of themes.keys()) {
     const theme = themes.get(id);
-    if (!disabled.includes(id) && (theme?.manifest.main || theme?.manifest.presets)) {
+    if (
+      !disabled.includes(id) &&
+      (theme?.manifest.main || theme?.manifest.presets?.some((p) => p.main))
+    ) {
       load(id);
     }
   }
@@ -119,7 +116,11 @@ export function loadAll(): void {
  */
 export function loadAllSplash(): void {
   for (const id of themes.keys()) {
-    if (!disabled.includes(id) && themes.get(id)?.manifest.splash) {
+    const theme = themes.get(id);
+    if (
+      !disabled.includes(id) &&
+      (theme?.manifest.splash || theme?.manifest.presets?.some((p) => p.splash))
+    ) {
       loadSplash(id);
     }
   }
