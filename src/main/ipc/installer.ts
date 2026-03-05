@@ -47,7 +47,7 @@ async function github(
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  let res: { assets: ReleaseAsset[]; html_url: string };
+  let res: { assets?: ReleaseAsset[]; html_url?: string };
 
   try {
     res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`).then((res) =>
@@ -58,6 +58,13 @@ async function github(
       success: false,
       // @ts-expect-error ts error tbd
       error: err,
+    };
+  }
+
+  if (!res.assets || !Array.isArray(res.assets)) {
+    return {
+      success: false,
+      error: "Invalid API response",
     };
   }
 
