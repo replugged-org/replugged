@@ -1,8 +1,10 @@
 import type { ThemeSettings } from "src/types/addon";
 import type { RepluggedTheme } from "../../types";
 import { init } from "../apis/settings";
-import * as logger from "../modules/logger";
+import { Logger } from "../modules/logger";
 import { loadStyleSheet } from "../util";
+
+const logger = Logger.manager("Themes");
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
@@ -63,20 +65,20 @@ function loadVariant(id: string, variant: "main" | "splash"): void {
           `replugged://theme/${theme.path}/presets/${themeSettings.chosenPreset}/${variant}.css`,
         );
       } else {
-        logger.error("Manager", `No valid preset found for theme ${id}`);
+        logger.error(`No valid preset found for theme ${id}`);
         return;
       }
     } else if (theme.manifest[variant]) {
       el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest[variant]}`);
     } else {
-      logger.error("Manager", `Theme ${id} has neither ${variant} CSS nor presets.`);
+      logger.error(`Theme ${id} has neither ${variant} CSS nor presets.`);
       return;
     }
 
     unload(id);
     themeElements.set(id, el);
   } catch (error) {
-    logger.error("Manager", `Failed to load theme ${id}:`, String(error));
+    logger.error(`Failed to load theme ${id}:`, String(error));
   }
 }
 

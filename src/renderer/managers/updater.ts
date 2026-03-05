@@ -10,7 +10,7 @@ import { waitForProps } from "../modules/webpack";
 import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 
-const logger = Logger.coremod("Updater");
+const logger = Logger.manager("Updater");
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type UpdateSettings = {
