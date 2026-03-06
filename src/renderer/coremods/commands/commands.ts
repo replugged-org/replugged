@@ -332,11 +332,11 @@ export function loadCommands(): void {
             const allPlugins = Array.from(plugins.plugins.values())
               .map((p) => p.manifest)
               .sort((a, b) => a.name.localeCompare(b.name));
-            const enablePlugins = allPlugins.filter((p) => !plugins.getDisabled().includes(p.id));
+            const enabledPlugins = allPlugins.filter((p) => !plugins.getDisabled().includes(p.id));
             const disabledPlugins = allPlugins.filter((p) => plugins.getDisabled().includes(p.id));
 
             const enabledString = generateListString(
-              enablePlugins,
+              enabledPlugins,
               intl.formatToPlainString(t.REPLUGGED_COMMAND_LIST_HEADER_ENABLED, {
                 type: intl.string(t.REPLUGGED_PLUGINS),
               }),
@@ -364,11 +364,11 @@ export function loadCommands(): void {
             const allThemes = Array.from(themes.themes.values())
               .map((t) => t.manifest)
               .sort((a, b) => a.name.localeCompare(b.name));
-            const enableThemes = allThemes.filter((t) => !plugins.getDisabled().includes(t.id));
-            const disabledThemes = allThemes.filter((t) => plugins.getDisabled().includes(t.id));
+            const enabledThemes = allThemes.filter((t) => !themes.getDisabled().includes(t.id));
+            const disabledThemes = allThemes.filter((t) => themes.getDisabled().includes(t.id));
 
             const enabledString = generateListString(
-              enableThemes,
+              enabledThemes,
               intl.formatToPlainString(t.REPLUGGED_COMMAND_LIST_HEADER_ENABLED, {
                 type: intl.string(t.REPLUGGED_THEMES),
               }),

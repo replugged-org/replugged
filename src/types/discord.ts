@@ -37,14 +37,16 @@ export interface CommandOptionAutocompleteAndChoices {
 }
 
 export interface StringOptions
-  extends CommandOptionAutocompleteAndChoices,
+  extends
+    CommandOptionAutocompleteAndChoices,
     BaseCommandOptions<ApplicationCommandOptionType.String> {
   min_length?: number;
   max_length?: number;
 }
 
 export interface NumberOptions
-  extends CommandOptionAutocompleteAndChoices,
+  extends
+    CommandOptionAutocompleteAndChoices,
     BaseCommandOptions<ApplicationCommandOptionType.Integer | ApplicationCommandOptionType.Number> {
   min_value?: number;
   max_value?: number;

@@ -71,7 +71,6 @@ export function addContextMenuItem(
  * Remove an item from a context menu
  * @param navId The id of the menu the function was registered to
  * @param getItem The function to remove
- * @returns
  */
 export function removeContextMenuItem(navId: ContextMenuTypes, getItem: GetContextItem): void {
   menuItems[navId] = menuItems[navId]?.filter((item) => item.getItem !== getItem);

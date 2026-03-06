@@ -5,12 +5,21 @@ IPC events:
 */
 
 import { ipcMain, shell } from "electron";
-import type { Dirent, Stats } from "fs";
-import { readFile, readdir, readlink, rm, stat } from "fs/promises";
+import { rm } from "fs/promises";
+import {
+  type Dirent,
+  type Stats,
+  readFileSync,
+  readdirSync,
+  readlinkSync,
+  rmSync,
+  statSync,
+} from "original-fs";
 import { extname, join, sep } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels, type RepluggedTheme } from "../../types";
-import { theme } from "../../types/addon";
+import { type ThemeManifest, theme } from "../../types/addon";
+import { extractAll } from "../asar";
 
 const THEMES_DIR = CONFIG_PATHS.themes;
 
@@ -18,15 +27,26 @@ export const isFileATheme = (f: Dirent | Stats, name: string): boolean => {
   return f.isDirectory() || (f.isFile() && extname(name) === ".asar");
 };
 
-async function getTheme(path: string): Promise<RepluggedTheme> {
-  const manifestPath = join(THEMES_DIR, path, "manifest.json");
+function getTheme(path: string): RepluggedTheme {
+  const themeFilePath = join(THEMES_DIR, path);
+
+  // Extract asar themes
+  if (path.endsWith(".asar") && statSync(themeFilePath).isFile()) {
+    const dest = join(THEMES_DIR, path.slice(0, -5));
+    extractAll(readFileSync(themeFilePath), dest);
+    rmSync(themeFilePath);
+    path = path.slice(0, -5);
+  }
+
+  const themePath = join(THEMES_DIR, path);
+  const manifestPath = join(themePath, "manifest.json");
   if (!manifestPath.startsWith(`${THEMES_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
     throw new Error("Invalid theme name");
   }
 
-  const manifest: unknown = JSON.parse(
-    await readFile(manifestPath, {
+  const manifest: ThemeManifest = JSON.parse(
+    readFileSync(manifestPath, {
       encoding: "utf-8",
     }),
   );
@@ -37,44 +57,42 @@ async function getTheme(path: string): Promise<RepluggedTheme> {
   };
 }
 
-ipcMain.handle(
-  RepluggedIpcChannels.GET_THEME,
-  async (_, path: string): Promise<RepluggedTheme | undefined> => {
-    try {
-      return await getTheme(path);
-    } catch {}
-  },
-);
+ipcMain.on(RepluggedIpcChannels.GET_THEME, (event, path: string) => {
+  try {
+    event.returnValue = getTheme(path);
+  } catch {}
+});
 
-ipcMain.handle(RepluggedIpcChannels.LIST_THEMES, async (): Promise<RepluggedTheme[]> => {
+ipcMain.on(RepluggedIpcChannels.LIST_THEMES, (event) => {
   const themes = [];
 
-  const themeDirs = (
-    await Promise.all(
-      (
-        await readdir(THEMES_DIR, {
-          withFileTypes: true,
-        })
-      ).map(async (f) => {
-        if (isFileATheme(f, f.name)) return f;
-        if (f.isSymbolicLink()) {
-          const actualPath = await readlink(join(THEMES_DIR, f.name));
-          const actualFile = await stat(actualPath);
+  const themeDirs = readdirSync(THEMES_DIR, {
+    withFileTypes: true,
+  })
+    .map((f) => {
+      if (isFileATheme(f, f.name)) return f;
+      if (f.isSymbolicLink()) {
+        try {
+          const actualPath = readlinkSync(join(THEMES_DIR, f.name));
+          const actualFile = statSync(actualPath);
+
           if (isFileATheme(actualFile, actualPath)) return f;
-        }
-      }),
-    )
-  ).filter(Boolean) as Dirent[];
+        } catch {}
+      }
+
+      return void 0;
+    })
+    .filter(Boolean) as Dirent[];
 
   for (const themeDir of themeDirs) {
     try {
-      themes.push(await getTheme(themeDir.name));
+      themes.push(getTheme(themeDir.name));
     } catch (e) {
       console.error(e);
     }
   }
 
-  return themes;
+  event.returnValue = themes;
 });
 
 ipcMain.handle(RepluggedIpcChannels.UNINSTALL_THEME, async (_, themeName: string) => {

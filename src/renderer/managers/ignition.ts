@@ -22,7 +22,10 @@ export async function start(): Promise<void> {
     Promise.allSettled([
       coremods.startAll(),
       plugins.startAll(),
-      themes.loadMissing().then(themes.loadAll),
+      Promise.resolve().then(() => {
+        themes.loadMissing();
+        themes.loadAll();
+      }),
     ]),
     // Failsafe to ensure that we always start Replugged
     new Promise((resolve) =>
@@ -85,12 +88,19 @@ export function startSplash(): void {
   log("Ignition", "Start", void 0, "Igniting Replugged Splash Screen...");
   const startTime = performance.now();
 
-  void themes.loadMissing().then(themes.loadAllSplash);
+  window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+      themes.loadMissing();
+      themes.loadAllSplash();
+    },
+    { once: true },
+  );
 
   log(
     "Ignition",
     "Start",
     void 0,
-    `Finished igniting Replugged Splash Screen in ${performance.now() - startTime}ms`,
+    `Finished igniting Replugged Splash Screen in ${(performance.now() - startTime).toFixed(2)}ms`,
   );
 }
