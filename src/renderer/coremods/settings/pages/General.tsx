@@ -1,17 +1,7 @@
 import { React, modal } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { ToastType, toast } from "@common/toast";
-import {
-  Divider,
-  FieldSet,
-  Notice,
-  Select,
-  Stack,
-  Switch,
-  TabBar,
-  Text,
-  TextInput,
-} from "@components";
+import { Divider, FieldSet, Notice, Select, Stack, Switch, Text, TextInput } from "@components";
 import { WEBSITE_URL } from "src/constants";
 import * as QuickCSS from "src/renderer/managers/quick-css";
 import { generalSettings } from "src/renderer/managers/settings";
@@ -58,9 +48,7 @@ function restartModal(doRelaunch = false, onConfirm?: () => void, onCancel?: () 
     .then((answer) => answer && restart());
 }
 
-const GeneralSettingsTabs = { GENERAL: "general", ADVANCED: "advanced" } as const;
-
-function GeneralTab(): React.ReactElement {
+function General(): React.ReactElement {
   const [quickCSS, setQuickCSS] = useSettingArray(generalSettings, "quickCSS");
   const [disableMinimumSize, setDisableMinimumSize] = useSettingArray(
     generalSettings,
@@ -181,7 +169,7 @@ function GeneralTab(): React.ReactElement {
   );
 }
 
-function AdvancedTab(): React.ReactElement {
+function Advanced(): React.ReactElement {
   const [experiments, setExperiments] = useSettingArray(generalSettings, "experiments");
   const [staffDevTools, setStaffDevTools] = useSettingArray(generalSettings, "staffDevTools");
   const [reactDevTools, setReactDevTools] = useSettingArray(generalSettings, "reactDevTools");
@@ -275,9 +263,7 @@ function AdvancedTab(): React.ReactElement {
   );
 }
 
-export function General(): React.ReactElement {
-  const [selectedTab, setSelectedTab] = React.useState<string>(GeneralSettingsTabs.GENERAL);
-
+export function EasterEgg(): React.ReactElement | false {
   const [kKeys, setKKeys] = React.useState<string[]>([]);
   const isEasterEgg = kKeys.toString().includes(konamiCode.join(","));
   const [hue, setHue] = React.useState(0);
@@ -305,27 +291,19 @@ export function General(): React.ReactElement {
   }, [kKeys, isEasterEgg, listener]);
 
   return (
-    <>
-      <TabBar selectedItem={selectedTab} type="top" look="brand" onItemSelect={setSelectedTab}>
-        <TabBar.Item id={GeneralSettingsTabs.GENERAL}>
-          {intl.string(discordT.SETTINGS_GENERAL)}
-        </TabBar.Item>
-        <TabBar.Item id={GeneralSettingsTabs.ADVANCED}>
-          {intl.string(discordT.SETTINGS_ADVANCED)}
-        </TabBar.Item>
-      </TabBar>
-      <TabBar.Panel id={selectedTab} className="replugged-general-tabBarPanel">
-        {selectedTab === GeneralSettingsTabs.GENERAL && <GeneralTab />}
-        {selectedTab === GeneralSettingsTabs.ADVANCED && <AdvancedTab />}
-      </TabBar.Panel>
-      {isEasterEgg && (
-        <Text.H1
-          variant="heading-xxl/semibold"
-          className="replugged-general-easter-egg"
-          style={{ color: `hsl(${hue}, 100%, 50%)` }}>
-          Wake up. Wake up. Wake up.
-        </Text.H1>
-      )}
-    </>
+    isEasterEgg && (
+      <Text.H1
+        variant="heading-xxl/semibold"
+        className="replugged-configuration-easter-egg"
+        style={{ color: `hsl(${hue}, 100%, 50%)` }}>
+        Wake up. Wake up. Wake up.
+      </Text.H1>
+    )
   );
 }
+
+export const GeneralCategories = [
+  { useTitle: () => intl.string(discordT.SETTINGS_GENERAL), render: General },
+  { useTitle: () => intl.string(discordT.SETTINGS_ADVANCED), render: Advanced },
+  { render: EasterEgg },
+];
