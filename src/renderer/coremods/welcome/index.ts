@@ -1,22 +1,22 @@
 import { intl } from "@common/i18n";
 import { notices, util } from "@replugged";
 import { DISCORD_INVITE } from "src/constants";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 
 export function start(): void {
-  if (!generalSettings.get("showWelcomeNoticeOnOpen")) return;
+  if (!repluggedSettings.get("showWelcomeNoticeOnOpen")) return;
   notices.sendAnnouncement({
     message: intl.string(t.REPLUGGED_NOTICES_WELCOME_NEW_USER),
     button: {
       text: intl.string(t.REPLUGGED_NOTICES_JOIN_SERVER_BUTTON),
       onClick: () => {
         void util.goToOrJoinServer(DISCORD_INVITE);
-        generalSettings.set("showWelcomeNoticeOnOpen", false);
+        repluggedSettings.set("showWelcomeNoticeOnOpen", false);
       },
     },
     onClose: () => {
-      generalSettings.set("showWelcomeNoticeOnOpen", false);
+      repluggedSettings.set("showWelcomeNoticeOnOpen", false);
     },
   });
 }

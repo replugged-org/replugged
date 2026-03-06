@@ -3,7 +3,7 @@ import { t as discordT, intl } from "@common/i18n";
 import { ToastType, toast } from "@common/toast";
 import { Notice } from "@components";
 import { Logger } from "@replugged";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import { setUpdaterState } from "src/renderer/managers/updater";
 import { t } from "src/renderer/modules/i18n";
 import type { AnyAddonManifest, CheckResultSuccess } from "src/types";
@@ -39,7 +39,7 @@ export interface InstallLinkProps {
 export function parseInstallLink(href: string): InstallLinkProps | null {
   try {
     const url = new URL(href);
-    const repluggedHostname = new URL(generalSettings.get("apiUrl")).hostname;
+    const repluggedHostname = new URL(repluggedSettings.get("apiUrl")).hostname;
     if (url.hostname !== repluggedHostname) return null;
 
     if (url.pathname === "/install") {

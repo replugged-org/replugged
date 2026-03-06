@@ -1,8 +1,8 @@
-import { t as discordT, intl } from "@common/i18n";
+import { intl } from "@common/i18n";
 import { Text } from "@components";
 import { filters, waitForModule } from "@webpack";
 import type React from "react";
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { type UserSettingsFormType } from "src/types";
 import {
@@ -15,7 +15,7 @@ import {
 import { addSettingNode, createCustomSettingsPanel, createSection, removeSettingNode } from "./lib";
 import {
   AddonType,
-  General,
+  Configuration,
   Plugins,
   QuickCSS,
   Themes,
@@ -47,14 +47,14 @@ export function start(): void {
     buildLayout: () => [
       createCustomSettingsPanel("general", {
         icon: RepluggedIcon,
-        useTitle: () => intl.string(discordT.SETTINGS_GENERAL),
-        render: General,
+        useTitle: () => intl.string(t.REPLUGGED_CONFIGURATION),
+        render: Configuration,
       }),
       createCustomSettingsPanel("quickcss", {
         icon: MagicWandIcon,
         useTitle: () => intl.string(t.REPLUGGED_QUICKCSS),
         render: QuickCSS,
-        usePredicate: () => generalSettings.useValue("quickCSS"),
+        usePredicate: () => repluggedSettings.useValue("quickCSS"),
       }),
       createCustomSettingsPanel("plugins", {
         icon: PuzzlePieceIcon,

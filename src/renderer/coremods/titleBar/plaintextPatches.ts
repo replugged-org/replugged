@@ -1,8 +1,8 @@
-import { generalSettings } from "src/renderer/managers/settings";
+import { repluggedSettings } from "src/renderer/managers/settings";
 import type { PlaintextPatch } from "src/types";
 
 export default [
-  ...(generalSettings.get("titleBar")
+  ...(repluggedSettings.get("titleBar")
     ? [
         // Patch the title bar to hide the buttons
         {
@@ -43,7 +43,7 @@ export default [
     replacements: [
       {
         match: "menubar:",
-        replace: `frame:${generalSettings.get("titleBar")},$&`,
+        replace: `frame:${repluggedSettings.get("titleBar")},$&`,
       },
     ],
   },

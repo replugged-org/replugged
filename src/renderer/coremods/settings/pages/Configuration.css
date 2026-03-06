@@ -1,8 +1,8 @@
-.replugged-general-tabBarPanel {
+.replugged-configuration-tabBarPanel {
   margin-top: var(--space-24);
 }
 
-.replugged-general-easter-egg {
+.replugged-configuration-easter-egg {
   display: inherit;
   text-align: center;
 }
