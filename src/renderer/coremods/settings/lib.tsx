@@ -61,7 +61,7 @@ export function removeSettingNode(key: string): void {
 }
 
 type CustomSettingsPaneOptions = Required<Pick<SidebarItemNode, "icon" | "useTitle">> &
-  Pick<SidebarItemNode, "usePredicate" | "getLegacySearchKey"> & {
+  Pick<SidebarItemNode, "usePredicate" | "getLegacySearchKey" | "useSearchTerms"> & {
     usePanelTitle?: PanelNode["useTitle"];
     render: React.ElementType;
   };
@@ -81,6 +81,7 @@ export function createCustomSettingsPanel(
     usePredicate,
     getLegacySearchKey,
     usePanelTitle,
+    useSearchTerms,
   }: CustomSettingsPaneOptions,
 ): ReturnType<typeof createSidebarItem> {
   return createSidebarItem(`replugged_${key}_sidebar_item`, {
@@ -90,6 +91,7 @@ export function createCustomSettingsPanel(
     ...(usePredicate && { usePredicate }),
     buildLayout: () => [
       createPanel(`replugged_${key}_panel`, {
+        useSearchTerms,
         useTitle: usePanelTitle ?? useTitle,
         StronglyDiscouragedCustomComponent: () => (
           <ErrorBoundary>
