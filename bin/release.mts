@@ -233,7 +233,7 @@ export async function release(): Promise<void> {
       name: "tagName",
       message: "Tag name",
       initial: isMonoRepo
-        ? `v${nextVersion}-${manifest.name.replace(" ", "_")}`
+        ? `v${nextVersion}-${manifest.name.replaceAll(" ", "_")}`
         : `v${nextVersion}`,
       validate: (value: string) => {
         if (!value.trim()) return "Tag name is required";
