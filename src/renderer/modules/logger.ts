@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-argument, no-console */
 
 const DEFAULT_COLOR = "#5865F2"; // Blurple
 
@@ -135,7 +135,7 @@ export class Logger {
    * @param data The item(s) to log.
    */
   public log(...data: Parameters<typeof console.log>): void {
-    log(this.type, this.name, this.color, data);
+    log(this.type, this.name, this.color, ...data);
   }
 
   /**
@@ -144,7 +144,7 @@ export class Logger {
    * @param data The item(s) to log.
    */
   public warn(...data: Parameters<typeof console.warn>): void {
-    warn(this.type, this.name, this.color, data);
+    warn(this.type, this.name, this.color, ...data);
   }
 
   /**
@@ -153,7 +153,7 @@ export class Logger {
    * @param data The item(s) to log.
    */
   public error(...data: Parameters<typeof console.error>): void {
-    error(this.type, this.name, this.color, data);
+    error(this.type, this.name, this.color, ...data);
   }
 
   /**
@@ -162,7 +162,7 @@ export class Logger {
    * @param data The item(s) to log.
    */
   public info(...data: Parameters<typeof console.info>): void {
-    info(this.type, this.name, this.color, data);
+    info(this.type, this.name, this.color, ...data);
   }
 
   /**
@@ -171,7 +171,7 @@ export class Logger {
    * @param data The item(s) to log.
    */
   public verbose(...data: Parameters<typeof console.debug>): void {
-    verbose(this.type, this.name, this.color, data);
+    verbose(this.type, this.name, this.color, ...data);
   }
 
   /**
