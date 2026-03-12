@@ -18,7 +18,7 @@ import settingsPlaintext from "../coremods/settings/plaintextPatches";
 import themeUtilsPlaintext from "../coremods/themeUtils/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 
-const logger = Logger.api("Coremods");
+const logger = Logger.manager("Coremods");
 
 interface Coremod {
   start?: () => Promisable<void>;

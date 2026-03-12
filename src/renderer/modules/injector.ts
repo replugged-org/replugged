@@ -361,7 +361,7 @@ export class Injector {
     addMenuItem: <T extends Record<string, unknown> = Record<string, unknown>>(
       navId: ContextMenuTypes,
       item: GetContextItem<T>,
-      sectionId: number | ((props: ContextMenuProps) => number) | undefined = undefined,
+      sectionId?: number | ((props: ContextMenuProps) => number),
       indexInSection: number | ((props: ContextMenuProps) => number) = Infinity, // Last item
     ) => {
       const uninjector = addContextMenuItem(

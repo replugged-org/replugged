@@ -16,8 +16,8 @@ type WithRawChildren<T> = T extends { children: React.ReactNode }
   : T;
 
 export type RawContextItem<
-  T extends
-    RawContextMenuProps[keyof RawContextMenuProps] = RawContextMenuProps[keyof RawContextMenuProps],
+  T extends RawContextMenuProps[keyof RawContextMenuProps] =
+    RawContextMenuProps[keyof RawContextMenuProps],
 > = WithRawChildren<T>;
 
 export type GetContextItem<T extends Record<string, unknown> = Record<string, unknown>> = (
