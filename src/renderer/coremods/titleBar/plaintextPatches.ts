@@ -6,10 +6,10 @@ export default [
     ? [
         // Patch the title bar to hide the buttons
         {
-          find: /{leading:\i,title:\i/,
+          find: /trailing:\i,windowKey:\i/,
           replacements: [
             {
-              match: /\(0,.{1,3}\.getPlatform\)\(\)/g,
+              match: /\(0,\i\.getPlatform\)\(\)/g,
               replace: `"WEB"`,
             },
           ],
