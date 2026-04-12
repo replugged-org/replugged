@@ -12,7 +12,7 @@
   "REPLUGGED_LINK_NOW": "Привязать сейчас",
   "REPLUGGED_PLUGINS": "Плагины",
   "REPLUGGED_QUICKCSS": "Быстрая настройка CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Не трогайте здесь ничего, если вы не знаете, что делаете. С вашей кошкой может произойти что-то неожиданное.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Не трогайте здесь ничего, если вы не знаете, что делаете. С вашей кошкой может произойти что-то неожиданное.",
   "REPLUGGED_SETTINGS_BACKEND": "Адрес сервера",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL, используемый для получения некоторых ресурсов и запросов к REST API Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Включить эксперименты Discord",

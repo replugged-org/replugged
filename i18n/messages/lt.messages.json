@@ -13,7 +13,7 @@
   "REPLUGGED_PLUGINS": "Įskiepiai",
   "REPLUGGED_I18N_CONTRIBUTE": "Nori padėti išversti „Replugged“? Peržiūrėk mūsų [Weblate]({weblateUrl})!",
   "REPLUGGED_QUICKCSS": "Greitasis CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Neliesk čia esančių jungiklių, jei nežinai, ką darai. Kitaip tavo katei gali kažkas atsitikti.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Neliesk čia esančių jungiklių, jei nežinai, ką darai. Kitaip tavo katei gali kažkas atsitikti.",
   "REPLUGGED_SETTINGS_BACKEND": "\"Backend\" nuoroda",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Nuoroda, naudojama kai kuriems ištekliams gauti ir „Replugged“ REST API užklausoms pateikti.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Įgalinti „Discord“ eksperimentus",

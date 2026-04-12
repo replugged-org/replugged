@@ -12,7 +12,7 @@
   "REPLUGGED_LINK_NOW": "Połącz konto",
   "REPLUGGED_PLUGINS": "Wtyczki",
   "REPLUGGED_QUICKCSS": "Szybki CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Nie zmieniaj tych ustawień, jeśli nie wiesz co robisz. Twojemu kotu mogą przydarzyć się niespodziewane rzeczy.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Nie zmieniaj tych ustawień, jeśli nie wiesz co robisz. Twojemu kotu mogą przydarzyć się niespodziewane rzeczy.",
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Adres URL używany do pobierania niektórych zasobów i do wysyłania zapytań do REST API Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Włącz Eksperymenty Discorda",

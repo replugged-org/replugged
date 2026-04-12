@@ -13,7 +13,7 @@
   "REPLUGGED_LINK_NOW": "Liên kết",
   "REPLUGGED_PLUGINS": "Các Plugins",
   "REPLUGGED_QUICKCSS": "CSS Nhanh",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Đừng động vào đây nếu bạn không biết mình đang làm gì. Những điều không ngờ tới có thể xảy ra đối với bé mèo của bạn.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Đừng động vào đây nếu bạn không biết mình đang làm gì. Những điều không ngờ tới có thể xảy ra đối với bé mèo của bạn.",
   "REPLUGGED_SETTINGS_BACKEND": "Đường liên kết phụ trợ",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Đường liện kết dùng để lấy một số những tài nguyên cũng như truy cập REST API của Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Bật các Thí nghiệm của Discord",

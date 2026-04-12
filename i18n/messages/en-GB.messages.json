@@ -13,7 +13,7 @@
   "REPLUGGED_ACCOUNT": "Replugged Account",
   "REPLUGGED_BADGES_CONTRIBUTOR": "Replugged Contributor",
   "REPLUGGED_I18N_CONTRIBUTE": "Want to help translate Replugged? Go to our [Weblate]({weblateUrl})!",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Don't touch stuff in here if you don't know what you're doing. Unexpected things can happen to your cat.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Don't touch stuff in here if you don't know what you're doing. Unexpected things can happen to your cat.",
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL used to fetch some assets and to query Replugged's REST API.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Enable Discord Experiments",
@@ -203,6 +203,5 @@
   "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE": "Disable Minimum Window Size",
   "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC": "Remove Discord's minimum window size restrictions. **Requires restart**.",
   "REPLUGGED_SETTINGS_WIN_UPDATER": "Keep Replugged After Updates",
-  "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Automatically reapplies Replugged after Discord updates.",
-  "REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS": "Development Tools"
+  "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Automatically reapplies Replugged after Discord updates."
 }

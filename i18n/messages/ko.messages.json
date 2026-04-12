@@ -13,7 +13,7 @@
   "REPLUGGED_LINK_NOW": "지금 연동",
   "REPLUGGED_PLUGINS": "플러그인",
   "REPLUGGED_QUICKCSS": "커스텀 CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "무엇을 하는지 모른다면 여기는 건드리지 마세요. 예상치 못한 일이 당신의 냥이까지도 발생할 수 있어요.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "무엇을 하는지 모른다면 여기는 건드리지 마세요. 예상치 못한 일이 당신의 냥이까지도 발생할 수 있어요.",
   "REPLUGGED_SETTINGS_BACKEND": "백엔드 URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Replugged의 API와 에셋 파일을 불러오기 위한 URL이에요.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "디스코드 실험 기능 활성화",

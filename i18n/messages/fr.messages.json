@@ -12,7 +12,7 @@
   "REPLUGGED_LINK_NOW": "Le lier maintenant",
   "REPLUGGED_PLUGINS": "Plugins",
   "REPLUGGED_QUICKCSS": "CSS Rapide",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Ne touchez à rien ici si vous n'êtes pas sur de ce que vous faites. Des choses inattendues peuvent arriver à votre chat.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Ne touchez à rien ici si vous n'êtes pas sur de ce que vous faites. Des choses inattendues peuvent arriver à votre chat.",
   "REPLUGGED_SETTINGS_BACKEND": "URL du serveur",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL utilisée pour récupérer certaines données et pour envoyer des requêtes à l'API REST de Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Activer les Expérimentations de Discord",

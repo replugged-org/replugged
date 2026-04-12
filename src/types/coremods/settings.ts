@@ -5,10 +5,11 @@ import type { PascalCase } from "type-fest";
 import type {
   ButtonProps,
   InlineNoticeType,
+  MenuSubmenuItemProps,
+  MenuSubmenuListItemProps,
+  RadioGroupProps,
   SliderProps,
-  SwitchProps,
 } from "discord-client-types/discord_app/design/web";
-import type { BaseRadioGroupProps } from "discord-client-types/discord_common/packages/design/components/RadioGroup/BaseRadioGroup";
 
 export enum NodeType {
   ROOT,
@@ -33,18 +34,33 @@ export enum NodeType {
   CUSTOM,
 }
 
-export enum SidebarItemTrailingType {
-  BADGE_NEW,
-  BADGE_COUNT,
+export enum NavigatorTrailingDecorationType {
+  STACKED_ICONS,
+}
+
+export enum NavigatorTrailingDecorationStackedIconsType {
+  ROUNDED,
+  SQUIRCLE,
+}
+
+export enum NestedPanelLeadingDecorationType {
+  ICON,
+}
+
+export enum NestedPanelTrailingDecorationType {
+  TEXT,
+}
+
+export enum PanelDecorationType {
   STRONGLY_DISCOURAGED_CUSTOM,
 }
 
-enum NoticeType {
+export enum CategoryInlineNoticeType {
   INLINE_NOTICE,
   STRONGLY_DISCOURAGED_CUSTOM,
 }
 
-enum CategoryHeaderDecorationButtonGroupType {
+export enum CategoryHeaderDecorationButtonGroupType {
   BUTTON,
   STRONGLY_DISCOURAGED_CUSTOM,
 }
@@ -53,12 +69,23 @@ export enum CategoryHeaderDecorationType {
   BUTTON_GROUP,
 }
 
+export enum SidebarItemBadgeType {
+  NEW,
+  BETA,
+  COUNT,
+  STRONGLY_DISCOURAGED_CUSTOM,
+}
+
+export enum ButtonTrailingContentType {
+  TEXT,
+  STRONGLY_DISCOURAGED_CUSTOM,
+}
+
 export interface CommonNodeProps {
   initialize?: () => void;
   useTitle?: (state?: boolean) => string;
   usePredicate?: () => boolean;
   useSearchTerms?: () => string[];
-  getLegacySearchKey?: () => string;
 }
 
 export type RootNode = CommonNodeProps;
@@ -67,56 +94,81 @@ export interface SectionNode extends CommonNodeProps {
   hoisted?: boolean;
 }
 
-interface TrailingBadgeNew {
-  type: SidebarItemTrailingType.BADGE_NEW;
-  getDismissibleContentTypes?: () => number[];
-  stronglyDiscouragedBadgeComponent?: React.ElementType;
+interface TrailingBeta {
+  badgeType: SidebarItemBadgeType.BETA;
 }
 
-interface TrailingBadgeCount {
-  type: SidebarItemTrailingType.BADGE_COUNT;
+interface TrailingCount {
+  badgeType: SidebarItemBadgeType.COUNT;
   useCount: () => number;
 }
 
 interface TrailingStronglyDiscouragedCustom {
-  type: SidebarItemTrailingType.STRONGLY_DISCOURAGED_CUSTOM;
-  getDismissibleContentTypes?: () => number[];
-  useCustomDecoration?: (visibleContent: number | null, isSelected: boolean) => React.ReactNode;
+  badgeType: SidebarItemBadgeType.STRONGLY_DISCOURAGED_CUSTOM;
+  useCustomBadge?: () => React.ReactNode;
+}
+
+interface DismissibleBadgeNew {
+  badgeType: SidebarItemBadgeType.NEW;
+  dismissibleContent?: number;
+}
+
+interface DismissibleBadgeStronglyDiscouragedCustom {
+  badgeType: SidebarItemBadgeType.STRONGLY_DISCOURAGED_CUSTOM;
+  dismissibleContent?: number;
+  StronglyDiscouragedCustomComponent: React.ElementType;
 }
 
 export interface SidebarItemNode extends CommonNodeProps {
   icon?: React.ElementType;
   StronglyDiscouragedCustomComponent?: React.ElementType;
-  trailing?: TrailingBadgeNew | TrailingBadgeCount | TrailingStronglyDiscouragedCustom;
+  usePersistentBadge?: (
+    active: boolean,
+  ) => TrailingBeta | TrailingCount | TrailingStronglyDiscouragedCustom;
   variant?: "default" | "destructive";
+  getDismissibleBadges?: () => Array<
+    DismissibleBadgeNew | DismissibleBadgeStronglyDiscouragedCustom
+  >;
+  useMenu?: () =>
+    | React.PropsWithChildren<MenuSubmenuItemProps>
+    | React.PropsWithChildren<MenuSubmenuListItemProps>;
+}
+
+interface PanelDecorationStronglyDiscouragedCustom {
+  type: PanelDecorationType.STRONGLY_DISCOURAGED_CUSTOM;
+  component: React.ElementType;
+  sticky?: boolean;
 }
 
 export interface PanelNode extends CommonNodeProps {
   useTitle: (state?: boolean) => string;
-  StronglyDiscouragedCustomComponent?: React.ElementType;
-  useBadge?: () => React.ReactNode;
+  decoration?: PanelDecorationStronglyDiscouragedCustom;
+  useObscuredNotice?: () => React.ElementType;
   notice?: { stores?: Store[]; element: React.ElementType };
-  hideInStreamerMode?: boolean;
+  usePersistentBadge?: () => TrailingBeta | TrailingCount | TrailingStronglyDiscouragedCustom;
 }
 
 export type SplitNode = CommonNodeProps;
 
 interface NoticeInlineNotice {
-  type: NoticeType.INLINE_NOTICE;
+  type: CategoryInlineNoticeType.INLINE_NOTICE;
   noticeType: InlineNoticeType;
-  useText: () => string;
+  useTitle?: () => React.ReactNode;
+  useText: () => React.ReactNode;
+  button?: {
+    useText: () => React.ReactNode;
+    onClick: () => void | Promise<void>;
+  };
 }
 
 interface NoticeStronglyDiscouragedCustom {
-  type: NoticeType.STRONGLY_DISCOURAGED_CUSTOM;
+  type: CategoryInlineNoticeType.STRONGLY_DISCOURAGED_CUSTOM;
   notice: React.ElementType;
 }
 
-interface CategoryHeaderDecorationButton {
+interface CategoryHeaderDecorationButton extends Omit<ButtonProps, "type" | "variant"> {
   type: CategoryHeaderDecorationButtonGroupType.BUTTON;
   id: string;
-  useText: () => string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 interface CategoryHeaderDecorationStronglyDiscouragedCustom {
@@ -127,51 +179,86 @@ interface CategoryHeaderDecorationStronglyDiscouragedCustom {
 
 interface CategoryHeaderDecorationButtonGroup {
   type: CategoryHeaderDecorationType.BUTTON_GROUP;
-  buttons: CategoryHeaderDecorationButton[] | CategoryHeaderDecorationStronglyDiscouragedCustom[];
+  buttons: Array<
+    CategoryHeaderDecorationButton | CategoryHeaderDecorationStronglyDiscouragedCustom
+  >;
 }
 
 export interface CategoryNode extends CommonNodeProps {
   icon?: React.ElementType;
-  useSubnavLabel?: () => string;
-  useSubtitle?: () => string;
-  useInlineNotice?: () => NoticeInlineNotice | NoticeStronglyDiscouragedCustom;
+  useSubnavLabel?: () => React.ReactNode;
+  useSubtitle?: () => React.ReactNode;
+  useInlineNotice?: () => NoticeInlineNotice | NoticeStronglyDiscouragedCustom | undefined;
   useHeaderDecoration?: () => CategoryHeaderDecorationButtonGroup;
 }
 
-export interface AccordionNode extends Omit<CommonNodeProps, "useTitle"> {
-  useTitle?: (state: boolean) => string;
-  useCollapsedSubtitle?: () => string;
+export interface AccordionNode extends CommonNodeProps {
+  useCollapsedSubtitle?: () => React.ReactNode;
 }
 
 export interface ListNode extends CommonNodeProps {
   collapseAfter?: number;
-  useCollapsibleTitle?: (state: boolean) => string;
-  useCollapsedSubtitle?: () => string;
+  useCollapsibleTitle?: (state: boolean, numVisible: number) => React.ReactNode;
+  useCollapsedSubtitle?: () => React.ReactNode;
 }
 
 export type RelatedNode = CommonNodeProps;
 
 export interface FieldSetNode extends CommonNodeProps {
-  useSubtitle?: () => string;
+  useTitle: (state?: boolean) => string;
+  useSubtitle?: () => React.ReactNode;
+  variant?: "default" | "compact";
+  isTitleHiddenVisually?: boolean;
 }
 
-export type TabItemNode = CommonNodeProps;
+export interface TabItemNode extends CommonNodeProps {
+  getTitle: () => React.ReactNode;
+  onItemSelect?: () => void;
+}
+
+interface NestedPanelLeadingDecorationIcon {
+  type: NestedPanelLeadingDecorationType.ICON;
+  icon: React.ElementType;
+  color?: string;
+  backgroundColor?: string;
+}
+
+interface NestedPanelTrailingDecorationText {
+  type: NestedPanelTrailingDecorationType.TEXT;
+  useText: () => React.ReactNode;
+}
 
 export interface NestedPanelNode extends CommonNodeProps {
-  useSubtitle?: () => string;
+  useSubtitle?: () => React.ReactNode;
+  useLeadingDecoration?: () => NestedPanelLeadingDecorationIcon;
+  useTrailingDecoration?: () => NestedPanelTrailingDecorationText;
 }
 
 export interface StaticNode extends CommonNodeProps {
   useTitle: (state?: boolean) => string;
-  useSubtitle?: () => string;
+  useSubtitle?: () => React.ReactNode;
+}
+
+interface ButtonTrailingContentText {
+  type: ButtonTrailingContentType.TEXT;
+  useText: () => React.ReactNode;
+}
+
+interface ButtonTrailingContentStronglyDiscouragedCustom {
+  type: ButtonTrailingContentType.STRONGLY_DISCOURAGED_CUSTOM;
+  StronglyDiscouragedCustomComponent: React.ElementType;
 }
 
 export interface ButtonNode extends CommonNodeProps {
-  useLabel: () => string;
+  useLabel: () => React.ReactNode;
   useTitle: (state?: boolean) => string;
-  useSubtitle?: () => string;
+  useAriaLabel?: () => string;
+  useSubtitle?: () => React.ReactNode;
   useVariant?: () => ButtonProps["variant"];
   useDisabled?: () => boolean;
+  useTrailingContent?: () =>
+    | ButtonTrailingContentText
+    | ButtonTrailingContentStronglyDiscouragedCustom;
   onClick: () => void | Promise<void>;
 }
 
@@ -179,11 +266,12 @@ export interface ToggleNode extends CommonNodeProps {
   useValue: () => boolean;
   setValue: (value: boolean) => void;
   useTitle: (state?: boolean) => string;
-  useSubtitle?: () => string;
+  useSubtitle?: () => React.ReactNode;
   useDisabled?: () => boolean;
-  useDisabledMessage?: () => string;
-  useBadge?: () => SwitchProps["badge"];
+  useDisabledMessage?: () => React.ReactNode;
+  usePersistentBadge?: () => TrailingBeta;
   hasIcon?: boolean;
+  getDismissibleBadges?: () => DismissibleBadgeNew[];
 }
 
 export interface SliderNode
@@ -199,38 +287,62 @@ export interface SliderNode
       | "onMarkerRender"
       | "stickToMarkers"
     > {
-  setValue: SliderProps["onValueChange"];
+  setValue?: SliderProps["onValueChange"];
   getInitialValue: () => number;
   useDefaultValue?: () => number;
   useTitle: (state?: boolean) => string;
-  useSubtitle?: () => string;
-  useHintText?: () => string;
+  useSubtitle?: () => React.ReactNode;
+  useHintText?: () => React.ReactNode;
   useDisabled?: () => boolean;
+  useExternalValue?: () => number;
   fieldLayout?: SliderProps["layout"];
+  usePersistentBadge?: () => TrailingBeta;
+  getDismissibleBadges?: () => DismissibleBadgeNew[];
 }
 
 export interface SelectNode extends CommonNodeProps {
-  useValue: () => string | number;
   useTitle: (state?: boolean) => string;
-  useSubtitle?: () => string;
+  useSubtitle?: () => React.ReactNode;
+  useValue: () => string | number;
+  setValue: (value: string | number) => void;
   useOptions: () => Array<{ label: string; value: string | number; id: string }>;
   clearable?: boolean;
-  setValue: (value: string | number) => void;
+  closeOnSelect?: boolean;
+  wrapTags?: boolean;
+  selectionMode?: "single" | "multiple";
+  usePersistentBadge?: () => TrailingBeta;
+  getDismissibleBadges?: () => DismissibleBadgeNew[];
 }
 
 export interface RadioNode extends CommonNodeProps {
-  useValue: () => string;
-  setValue: (value: string) => void;
+  useValue: () => RadioGroupProps["value"];
+  setValue: RadioGroupProps["onChange"];
   useTitle: (state?: boolean) => string;
-  useSubtitle?: () => string;
-  useOptions: () => BaseRadioGroupProps["options"];
-  useBadge?: () => BaseRadioGroupProps["badge"];
+  useSubtitle?: () => React.ReactNode;
+  useOptions: () => RadioGroupProps["options"];
+  usePersistentBadge?: () => TrailingBeta;
+  getDismissibleBadges?: () => DismissibleBadgeNew[];
+}
+
+interface NavigatorTrailingDecorationStackedIconsIcon {
+  shape: NavigatorTrailingDecorationStackedIconsType;
+  icon: React.ElementType;
+}
+
+interface NavigatorTrailingDecorationStackedIcons {
+  type: NavigatorTrailingDecorationType.STACKED_ICONS;
+  useIcons: () =>
+    | Array<{
+        frontIcon: NavigatorTrailingDecorationStackedIconsIcon;
+        backIcon?: NavigatorTrailingDecorationStackedIconsIcon;
+      }>
+    | undefined;
 }
 
 export interface NavigatorNode extends CommonNodeProps {
   destinationKey: string;
-  useSubtitle?: () => string;
-  useBadge?: () => React.ReactNode;
+  useTrailingDecoration?: () => NavigatorTrailingDecorationStackedIcons;
+  useSubtitle?: () => React.ReactNode;
 }
 
 export interface CustomNode extends CommonNodeProps {
@@ -314,13 +426,6 @@ export type SettingBuilders = {
     ? ContainerBuilder<K>
     : LeafBuilder<K>;
 };
-
-interface UserSettingsFormProps {
-  title?: React.ReactNode;
-  className?: string;
-}
-
-export type UserSettingsFormType = React.FC<React.PropsWithChildren<UserSettingsFormProps>>;
 
 export const VIBRANCY_SELECT_OPTIONS = [
   { label: "Titlebar", value: "titlebar" },

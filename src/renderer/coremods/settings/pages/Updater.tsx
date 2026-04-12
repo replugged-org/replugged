@@ -1,18 +1,7 @@
 import { React, marginStyles } from "@common";
 import { t as discordT, intl } from "@common/i18n";
 import { ToastType, toast } from "@common/toast";
-import {
-  Anchor,
-  Button,
-  Divider,
-  Flex,
-  Notice,
-  Slider,
-  Stack,
-  Switch,
-  Text,
-  Tooltip,
-} from "@components";
+import { Anchor, Button, Flex, Notice, Slider, Stack, Text, Tooltip } from "@components";
 import { Logger } from "@replugged";
 import { plugins } from "src/renderer/managers/plugins";
 import { themes } from "src/renderer/managers/themes";
@@ -26,21 +15,76 @@ import {
 } from "src/renderer/managers/updater";
 import { t } from "src/renderer/modules/i18n";
 import { sleep, useSetting, useSettingArray } from "src/renderer/util";
-import { UserSettingsForm } from "..";
-import { LinkIcon } from "../icons";
+import { CategoryInlineNoticeType } from "src/types";
+import { LinkIcon, RefreshIcon } from "../icons";
+import {
+  createAccordion,
+  createCategory,
+  createCustom,
+  createPanel,
+  createSidebarItem,
+  createToggle,
+} from "../lib";
 import { getAddonType, label } from "./Addons";
 
 import "./Updater.css";
 
 const logger = Logger.coremod("Settings:Updater");
 
-export function Updater(): React.ReactElement {
+const UpdaterAutoCheckSetting = createToggle("updater_auto_check_setting", {
+  useTitle: () => intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO),
+  useSubtitle: () => intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC),
+  useValue: () => updaterSettings.useValue("autoCheck"),
+  setValue: (value) => updaterSettings.set("autoCheck", value),
+});
+
+const UpdaterCheckIntervalSetting = createCustom("updater_check_interval_setting", {
+  useSearchTerms: () => [intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)],
+  Component: () => (
+    <Slider
+      {...useSetting(updaterSettings, "checkIntervalMinutes")}
+      disabled={!updaterSettings.get("autoCheck")}
+      label={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
+      description={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
+      markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
+      equidistant
+      onMarkerRender={(value) => {
+        // Format as xh and/or xm
+        const hours = Math.floor(value / 60);
+        const minutes = value % 60;
+
+        const hourString =
+          hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
+        const minuteString =
+          minutes > 0 ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes }) : "";
+
+        const label = [hourString, minuteString].filter(Boolean).join(" ");
+        return label;
+      }}
+      stickToMarkers
+    />
+  ),
+});
+
+const UpdaterSettingsAccordion = createAccordion("updater_settings_accordion", {
+  useTitle: (state) =>
+    state
+      ? intl.string(t.REPLUGGED_UPDATES_SETTINGS_EXPANDED)
+      : intl.string(t.REPLUGGED_UPDATES_SETTINGS_COLLAPSED),
+  useCollapsedSubtitle: () => intl.string(t.REPLUGGED_UPDATES_SETTINGS_DESC),
+  buildLayout: () => [UpdaterAutoCheckSetting, UpdaterCheckIntervalSetting],
+});
+
+const UpdaterSettingsCategory = createCategory("updater_settings_category", {
+  buildLayout: () => [UpdaterSettingsAccordion],
+});
+
+function UpdaterOverview(): React.ReactElement {
   const [checking, setChecking] = React.useState(false);
   const [updatesAvailable, setUpdatesAvailable] =
     React.useState<Array<UpdateSettings & { id: string }>>(getAvailableUpdates());
   const [updatePromises, setUpdatePromises] = React.useState<Record<string, Promise<boolean>>>({});
   const [didInstallAll, setDidInstallAll] = React.useState(false);
-  const [autoCheck, setAutoCheck] = useSettingArray(updaterSettings, "autoCheck");
   const [lastChecked, setLastChecked] = useSettingArray(updaterSettings, "lastChecked");
 
   React.useEffect(() => {
@@ -75,7 +119,6 @@ export function Updater(): React.ReactElement {
   const isAnyUpdating = hasAnyUpdates && updatesAvailable.some((u) => u.id in updatePromises);
   const isAllComplete = hasAnyUpdates && updatesAvailable.every((u) => !u.available);
   const isAnyComplete = hasAnyUpdates && updatesAvailable.some((u) => !u.available);
-  const isRepluggedDev = window.RepluggedNative.getVersion() === "dev";
 
   const checkForUpdates = async (): Promise<void> => {
     const previousUpdates = getAvailableUpdates();
@@ -123,45 +166,7 @@ export function Updater(): React.ReactElement {
   };
 
   return (
-    <UserSettingsForm title={intl.string(t.REPLUGGED_UPDATES_UPDATER)}>
-      <Switch
-        checked={autoCheck}
-        onChange={setAutoCheck}
-        label={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO)}
-        description={intl.string(t.REPLUGGED_UPDATES_OPTS_AUTO_DESC)}
-      />
-      <Slider
-        {...useSetting(updaterSettings, "checkIntervalMinutes")}
-        disabled={!autoCheck}
-        label={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL)}
-        description={intl.string(t.REPLUGGED_UPDATES_OPTS_INTERVAL_DESC)}
-        markers={[10, 20, 30, 40, 50, 60, 60 * 2, 60 * 3, 60 * 4, 60 * 5, 60 * 6, 60 * 12]}
-        equidistant
-        onMarkerRender={(value) => {
-          // Format as xh and/or xm
-          const hours = Math.floor(value / 60);
-          const minutes = value % 60;
-
-          const hourString =
-            hours > 0 ? intl.formatToPlainString(discordT.DURATION_HOURS_SHORT, { hours }) : "";
-          const minuteString =
-            minutes > 0
-              ? intl.formatToPlainString(discordT.DURATION_MINUTES_SHORT, { minutes })
-              : "";
-
-          const label = [hourString, minuteString].filter(Boolean).join(" ");
-          return label;
-        }}
-        stickToMarkers
-      />
-      <Divider />
-      {isRepluggedDev && (
-        <Notice messageType={Notice.Types.WARNING}>
-          {intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
-            url: "https://replugged.dev/download",
-          })}
-        </Notice>
-      )}
+    <>
       <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.CENTER}>
         <Flex justify={Flex.Justify.CENTER} direction={Flex.Direction.VERTICAL}>
           <Text variant="heading-md/bold" color="text-strong">
@@ -277,6 +282,38 @@ export function Updater(): React.ReactElement {
           );
         })}
       </Stack>
-    </UserSettingsForm>
+    </>
   );
 }
+
+const UpdaterOverviewSetting = createCustom("updater_overview_setting", {
+  Component: UpdaterOverview,
+});
+
+const UpdaterOverviewCategory = createCategory("updater_overview_category", {
+  useInlineNotice() {
+    const isRepluggedDev = window.RepluggedNative.getVersion() === "dev";
+    if (isRepluggedDev) {
+      return {
+        type: CategoryInlineNoticeType.INLINE_NOTICE,
+        noticeType: "warning",
+        useText: () =>
+          intl.format(t.REPLUGGED_DEVELOPER_MODE_WARNING, {
+            url: "https://replugged.dev/download",
+          }),
+      };
+    }
+  },
+  buildLayout: () => [UpdaterOverviewSetting],
+});
+
+const UpdaterPanel = createPanel("updater_panel", {
+  useTitle: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
+  buildLayout: () => [UpdaterSettingsCategory, UpdaterOverviewCategory],
+});
+
+export const UpdaterSidebarItem = createSidebarItem("updater_sidebar_item", {
+  icon: RefreshIcon,
+  useTitle: () => intl.string(t.REPLUGGED_UPDATES_UPDATER),
+  buildLayout: () => [UpdaterPanel],
+});

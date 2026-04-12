@@ -13,7 +13,7 @@
   "REPLUGGED_LINK_NOW": "Συνδέστε τον τώρα",
   "REPLUGGED_PLUGINS": "Πρόσθετα",
   "REPLUGGED_QUICKCSS": "Γρήγορο CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Μην αγγίζετε πράγματα εδώ μέσα αν δεν ξέρετε τι κάνετε. Απροσδόκητα πράγματα μπορεί να συμβούν στη γάτα σας.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Μην αγγίζετε πράγματα εδώ μέσα αν δεν ξέρετε τι κάνετε. Απροσδόκητα πράγματα μπορεί να συμβούν στη γάτα σας.",
   "REPLUGGED_SETTINGS_BACKEND": "Διεύθυνση URL backend",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Το URL που χρησιμοποιείται για την ανάκτηση ορισμένων στοιχείων και για την υποβολή ερωτημάτων στο REST API του Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Ενεργοποίηση πειραμάτων του Discord",

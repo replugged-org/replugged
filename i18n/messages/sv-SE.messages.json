@@ -42,7 +42,7 @@
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Aktivera Experimentella Discord Funktioner",
   "REPLUGGED_SETTINGS_KEEP_TOKEN_DESC": "Förhindrar Discord från att ta bort din token från localStorage, minska antalet oönskade utloggningar. **Kräver omstart**.",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Förvara token",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Ändra ingenting här om du inte vet vad du gör. Oväntade saker kan hända med din katt.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Ändra ingenting här om du inte vet vad du gör. Oväntade saker kan hända med din katt.",
   "REPLUGGED_LINK_NOW": "Koppla nu",
   "REPLUGGED_ACCOUNT": "Replugged Konto",
   "REPLUGGED_BADGES_SUPPORT": "Replugged-supporten",

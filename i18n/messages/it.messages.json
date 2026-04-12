@@ -12,7 +12,7 @@
   "REPLUGGED_LINK_NOW": "Collegalo ora",
   "REPLUGGED_PLUGINS": "Plugin",
   "REPLUGGED_QUICKCSS": "Quick CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Non toccare roba qui se non sai cosa stai facendo. Cose inaspettate possono accadere al tuo gatto.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Non toccare roba qui se non sai cosa stai facendo. Cose inaspettate possono accadere al tuo gatto.",
   "REPLUGGED_SETTINGS_BACKEND": "URL del backend",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL usato per andare a prendere risorse e interrogare il REST API di Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Attiva le funzionalità sperimentali di Discord",
@@ -198,6 +198,5 @@
   "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE": "Disabilita la dimensione minima della finestra",
   "REPLUGGED_SETTINGS_DISABLE_MIN_SIZE_DESC": "Rimuove le restrizioni sulle dimensioni minime della finestra di Discord. **Necessita di un riavvio**.",
   "REPLUGGED_SETTINGS_WIN_UPDATER": "Mantieni Replugged dopo gli aggiornamenti",
-  "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Riapplica automaticamente Replugged dopo gli aggiornamenti di Discord.",
-  "REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS": "Strumenti di sviluppo"
+  "REPLUGGED_SETTINGS_WIN_UPDATER_DESC": "Riapplica automaticamente Replugged dopo gli aggiornamenti di Discord."
 }
