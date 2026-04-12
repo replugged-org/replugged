@@ -39,14 +39,14 @@ function Announcement({
   );
 }
 
-export function AnnouncementContainer(): React.ReactElement | undefined {
+export function AnnouncementContainer(): React.ReactElement | null {
   const [announcement, setAnnouncement] = React.useState<RepluggedAnnouncement | undefined>(
     undefined,
   );
 
-  const announcementUpdate = (): void => setAnnouncement(notices.getAnnouncement());
-
   React.useEffect(() => {
+    const announcementUpdate = (): void => setAnnouncement(notices.getAnnouncement());
+
     notices.addEventListener("rpAnnouncementUpdate", announcementUpdate);
     announcementUpdate();
 
@@ -55,5 +55,5 @@ export function AnnouncementContainer(): React.ReactElement | undefined {
     };
   }, []);
 
-  return announcement && <Announcement {...announcement} />;
+  return announcement ? <Announcement {...announcement} /> : null;
 }

@@ -54,8 +54,7 @@ export const getProcessInfoByName = (processName: string): ProcessInfo[] | null 
       };
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return processInfo || null;
+    return processInfo;
   } catch {
     return null;
   }
@@ -72,7 +71,10 @@ export const killCheckProcessExists = (pid: number): boolean => {
 
 export const killProcessByPID = (pid: number): Promise<void> => {
   return new Promise((resolve) => {
-    if (!pid) resolve();
+    if (!pid) {
+      resolve();
+      return;
+    }
     process.kill(pid, "SIGTERM");
     const checkInterval = setInterval(() => {
       if (!killCheckProcessExists(pid)) {

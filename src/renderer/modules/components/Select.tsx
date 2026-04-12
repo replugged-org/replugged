@@ -7,10 +7,10 @@ import type {
   VoidSingleSelectProps,
 } from "discord-client-types/discord_app/design/components/VoidSelect/web/VoidSelect";
 
-const selectStr = '"renderLeading","renderTrailing","value","onChange"';
-const mod = await waitForModule(filters.bySource(selectStr));
+const selectRegex = /renderLeading:\i,renderTrailing:\i,value:\i,onChange:\i/;
+const mod = await waitForModule(filters.bySource(selectRegex));
 
-const VoidSingleSelect = getFunctionBySource<VoidSingleSelect>(mod, selectStr)!;
+const VoidSingleSelect = getFunctionBySource<VoidSingleSelect>(mod, selectRegex)!;
 
 interface CustomSingleSelectProps<
   TOptions extends readonly VoidSelectOption[] = readonly VoidSelectOption[],

@@ -12,7 +12,7 @@
   "REPLUGGED_LINK_NOW": "Şimdi bağlayın",
   "REPLUGGED_PLUGINS": "Eklentiler",
   "REPLUGGED_QUICKCSS": "Quick CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Ne yaptığınızı bilmiyorsanız, buradaki şeylere dokunmayın. Kedinizin başına beklenmedik şeyler gelebilir.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Ne yaptığınızı bilmiyorsanız, buradaki şeylere dokunmayın. Kedinizin başına beklenmedik şeyler gelebilir.",
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Bazı kaynakları almak ve Replugged'un REST API'sini sorgulamak için kullanılan URL.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Discord Experiments'i aktif et",

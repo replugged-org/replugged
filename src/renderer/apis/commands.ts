@@ -281,7 +281,7 @@ export class CommandManager {
     currentSection.commands.set(command.id, command as AnyRepluggedCommand);
 
     const uninject = (): void => {
-      void currentSection.commands.delete(command.id!);
+      currentSection.commands.delete(command.id!);
       this.#unregister = this.#unregister.filter((u) => u !== uninject);
     };
     this.#unregister.push(uninject);

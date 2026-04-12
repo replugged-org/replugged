@@ -12,7 +12,7 @@
   "REPLUGGED_LINK_NOW": "Vincular ahora",
   "REPLUGGED_PLUGINS": "Complementos",
   "REPLUGGED_QUICKCSS": "CSS rápido",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "No toques cosas aquí si no sabes lo que estás haciendo. Pueden pasarle cosas inesperadas a tu gato.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "No toques cosas aquí si no sabes lo que estás haciendo. Pueden pasarle cosas inesperadas a tu gato.",
   "REPLUGGED_SETTINGS_BACKEND": "URL de backend",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL utilizada para obtener algunos recursos y para consultar la API REST de Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Habilitar experimentos de Discord",

@@ -19,7 +19,7 @@ import themeUtilsPlaintext from "../coremods/themeUtils/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 import utcPlaintext from "../coremods/utc/plaintextPatches";
 
-const logger = Logger.api("Coremods");
+const logger = Logger.manager("Coremods");
 
 interface Coremod {
   start?: () => Promisable<void>;

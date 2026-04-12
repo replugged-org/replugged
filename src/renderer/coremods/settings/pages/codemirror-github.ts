@@ -58,11 +58,7 @@ export const config = {
   gutterForeground: "#6e7781",
 };
 
-export const createTheme = ({
-  theme,
-  settings = {},
-  styles = [],
-}: CreateThemeOptions): Extension => {
+export const createTheme = ({ theme, settings, styles }: CreateThemeOptions): Extension => {
   const themeOptions: Record<string, StyleSpec> = {
     ".cm-gutters": {},
   };

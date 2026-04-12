@@ -1,6 +1,6 @@
 import { css } from "@codemirror/lang-css";
 import { EditorState } from "@codemirror/state";
-import { React } from "@common";
+import { React, marginStyles } from "@common";
 import { intl } from "@common/i18n";
 import { toast } from "@common/toast";
 import { Button, Flex } from "@components";
@@ -8,7 +8,8 @@ import { webpack } from "@replugged";
 import { EditorView, basicSetup } from "codemirror";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
-import { UserSettingsForm } from "..";
+import { MagicWandIcon } from "../icons";
+import { createCategory, createCustom, createPanel, createSidebarItem } from "../lib";
 import { githubDark, githubLight } from "./codemirror-github";
 
 import "./QuickCSS.css";
@@ -112,7 +113,7 @@ function useCodeMirror({ value: initialValueParam, onChange, container }: UseCod
   return { value, setValue: customSetValue };
 }
 
-export const QuickCSS = (): React.ReactElement => {
+function QuickCSSEditor(): React.ReactElement {
   const ref = React.useRef<HTMLDivElement>(null);
   const { value, setValue } = useCodeMirror({
     container: ref.current,
@@ -143,21 +144,8 @@ export const QuickCSS = (): React.ReactElement => {
     };
 
     window.addEventListener("keydown", listener);
-
-    // This is the best way I could come up with to not show the sticker picker when CTRL + S is pressed
-    // We want it to only be active when this tab is active
-    const hideStickerPickerCss = `
-    [class*="positionLayer-"] {
-      display: none;
-    }
-    `;
-    const style = document.createElement("style");
-    style.innerText = hideStickerPickerCss;
-    document.head.appendChild(style);
-
     return () => {
       window.removeEventListener("keydown", listener);
-      document.head.removeChild(style);
     };
   }, []);
 
@@ -173,8 +161,8 @@ export const QuickCSS = (): React.ReactElement => {
   }, [value]);
 
   return (
-    <UserSettingsForm title={intl.string(t.REPLUGGED_QUICKCSS)}>
-      <Flex justify={Flex.Justify.END}>
+    <>
+      <Flex justify={Flex.Justify.END} className={marginStyles.marginBottom20}>
         {autoApply ? null : (
           <Button onClick={reloadAndToast}>
             {intl.string(t.REPLUGGED_QUICKCSS_CHANGES_APPLY)}
@@ -188,6 +176,26 @@ export const QuickCSS = (): React.ReactElement => {
         </Button>
       </Flex>
       <div ref={ref} id="replugged-quickcss-wrapper" />
-    </UserSettingsForm>
+    </>
   );
-};
+}
+
+const QuickCSSEditorSetting = createCustom("quickcss_editor_setting", {
+  Component: QuickCSSEditor,
+});
+
+const QuickCSSCategory = createCategory("quickcss_category", {
+  buildLayout: () => [QuickCSSEditorSetting],
+});
+
+const QuickCSSPanel = createPanel("quickcss_panel", {
+  useTitle: () => intl.string(t.REPLUGGED_QUICKCSS),
+  buildLayout: () => [QuickCSSCategory],
+});
+
+export const QuickCSSSidebarItem = createSidebarItem("quickcss_sidebar_item", {
+  icon: MagicWandIcon,
+  useTitle: () => intl.string(t.REPLUGGED_QUICKCSS),
+  usePredicate: () => generalSettings.useValue("quickCSS"),
+  buildLayout: () => [QuickCSSPanel],
+});

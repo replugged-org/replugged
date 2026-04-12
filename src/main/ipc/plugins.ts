@@ -5,12 +5,21 @@ IPC events:
 */
 
 import { ipcMain, shell } from "electron";
-import { type Dirent, type Stats, readFileSync, readdirSync, readlinkSync, statSync } from "fs";
 import { rm } from "fs/promises";
+import {
+  type Dirent,
+  type Stats,
+  readFileSync,
+  readdirSync,
+  readlinkSync,
+  rmSync,
+  statSync,
+} from "original-fs";
 import { extname, join, sep } from "path";
 import { CONFIG_PATHS } from "src/util.mjs";
 import { RepluggedIpcChannels, type RepluggedPlugin } from "../../types";
-import { plugin } from "../../types/addon";
+import { type PluginManifest, plugin } from "../../types/addon";
+import { extractAll } from "../asar";
 
 const PLUGINS_DIR = CONFIG_PATHS.plugins;
 
@@ -19,13 +28,24 @@ export const isFileAPlugin = (f: Dirent | Stats, name: string): boolean => {
 };
 
 function getPlugin(pluginName: string): RepluggedPlugin {
-  const manifestPath = join(PLUGINS_DIR, pluginName, "manifest.json");
+  const pluginFilePath = join(PLUGINS_DIR, pluginName);
+
+  // Extract asar plugins
+  if (pluginName.endsWith(".asar") && statSync(pluginFilePath).isFile()) {
+    const dest = join(PLUGINS_DIR, pluginName.slice(0, -5));
+    extractAll(readFileSync(pluginFilePath), dest);
+    rmSync(pluginFilePath);
+    pluginName = pluginName.slice(0, -5);
+  }
+
+  const pluginPath = join(PLUGINS_DIR, pluginName);
+  const manifestPath = join(pluginPath, "manifest.json");
   if (!manifestPath.startsWith(`${PLUGINS_DIR}${sep}`)) {
     // Ensure file changes are restricted to the base path
     throw new Error("Invalid plugin name");
   }
 
-  const manifest: unknown = JSON.parse(
+  const manifest: PluginManifest = JSON.parse(
     readFileSync(manifestPath, {
       encoding: "utf-8",
     }),

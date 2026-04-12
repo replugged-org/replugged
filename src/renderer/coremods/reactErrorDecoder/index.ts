@@ -40,6 +40,9 @@ const reactErrorCodes = await getReactErrorCodes();
  * @internal
  * @hidden
  */
-export const _decodeError = (code: number, ...args: string[]): string | undefined =>
-  reactErrorCodes &&
-  `React error #${code}; ${reactErrorCodes[code].replace(/%s/g, () => args.shift()!)}`;
+export const _decodeError = (code: number, ...args: string[]): string | undefined => {
+  const template = reactErrorCodes?.[code];
+  if (!template) return;
+
+  return `React error #${code}; ${template.replace(/%s/g, () => args.shift()!)}`;
+};

@@ -1321,7 +1321,46 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_ADDON_EMBEDS_DESC': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `B578oF`
+   * 
+   * ### Definition
+   * ```text
+   * Show Advanced Settings
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_ADVANCED_COLLAPSED': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `vdzF9i`
+   * 
+   * ### Definition
+   * ```text
+   * Experiments, development tools and other settings for power users.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_ADVANCED_DESC': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `wSsGpA`
+   * 
+   * ### Definition
+   * ```text
+   * Hide Advanced Settings
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_ADVANCED_EXPANDED': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `14VYPW`
    * 
    * ### Definition
    * ```text
@@ -1332,7 +1371,7 @@ export declare const messages: {
    * 
    * Missing translations: `bg`, `da`, `es-419`, `hi`, `th`
    */
-  'REPLUGGED_SETTINGS_ADVANCED_DESC': TypedIntlMessageGetter<{}>,
+  'REPLUGGED_SETTINGS_ADVANCED_NOTICE': TypedIntlMessageGetter<{}>,
   /**
    * Key: `oiDUN3`
    * 
@@ -1390,7 +1429,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Custom Title Bar
+   * Native Title Bar
    * ```
    * 
    * ### Problems
@@ -1403,7 +1442,7 @@ export declare const messages: {
    * 
    * ### Definition
    * ```text
-   * Use Discord's custom title bar instead of the system title bar. **Requires restart**.
+   * Use the system native title bar instead of Discord's custom title bar. **Requires restart**.
    * ```
    * 
    * ### Problems
@@ -1411,19 +1450,6 @@ export declare const messages: {
    * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `nl`, `no`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_CUSTOM_TITLE_BAR_DESC': TypedIntlMessageGetter<{$b?: HookFunction}>,
-  /**
-   * Key: `6RMznQ`
-   * 
-   * ### Definition
-   * ```text
-   * Development Tools
-   * ```
-   * 
-   * ### Problems
-   * 
-   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `ja`, `ko`, `lt`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
-   */
-  'REPLUGGED_SETTINGS_DEVELOPMENT_TOOLS': TypedIntlMessageGetter<{}>,
   /**
    * Key: `Zy83NY`
    * 
@@ -1737,6 +1763,19 @@ export declare const messages: {
    */
   'REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL': TypedIntlMessageGetter<{}>,
   /**
+   * Key: `26SMh/`
+   * 
+   * ### Definition
+   * ```text
+   * Adjust the material effect used for the window background.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_TRANSPARENCY_BG_MATERIAL_DESC': TypedIntlMessageGetter<{}>,
+  /**
    * Key: `sO01jJ`
    * 
    * ### Definition
@@ -1749,6 +1788,19 @@ export declare const messages: {
    * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
    */
   'REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `4QA2J6`
+   * 
+   * ### Definition
+   * ```text
+   * Select the native macOS vibrancy effect applied to the transparent window.
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_SETTINGS_TRANSPARENCY_VIBRANCY_DESC': TypedIntlMessageGetter<{}>,
   /**
    * Key: `F1Fb1H`
    * 
@@ -2516,6 +2568,45 @@ export declare const messages: {
    * Missing translations: `bg`, `da`, `es-419`, `hi`, `no`, `th`
    */
   'REPLUGGED_UPDATES_OPTS_TOAST_ENABLED_DESC': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `8zlc/q`
+   * 
+   * ### Definition
+   * ```text
+   * Show Updater Settings
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_UPDATES_SETTINGS_COLLAPSED': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `siSHWY`
+   * 
+   * ### Definition
+   * ```text
+   * Configure how Replugged checks for updates
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_UPDATES_SETTINGS_DESC': TypedIntlMessageGetter<{}>,
+  /**
+   * Key: `5nmkcN`
+   * 
+   * ### Definition
+   * ```text
+   * Hide Updater Settings
+   * ```
+   * 
+   * ### Problems
+   * 
+   * Missing translations: `bg`, `cs`, `da`, `de`, `el`, `en-GB`, `es-419`, `es-ES`, `fi`, `fr`, `hi`, `hr`, `hu`, `it`, `ja`, `ko`, `lt`, `nl`, `no`, `pl`, `pt-BR`, `ro`, `ru`, `sv-SE`, `th`, `tr`, `uk`, `vi`, `zh-CN`, `zh-TW`
+   */
+  'REPLUGGED_UPDATES_SETTINGS_EXPANDED': TypedIntlMessageGetter<{}>,
   /**
    * Key: `P+IFIp`
    * 

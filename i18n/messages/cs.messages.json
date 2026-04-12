@@ -12,7 +12,7 @@
   "REPLUGGED_LINK_NOW": "Propojit účet",
   "REPLUGGED_PLUGINS": "Pluginy",
   "REPLUGGED_QUICKCSS": "Rychlé nastavení CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Nedotýkej se těchto nastavení, pokud nevíš, co děláš. Mohou se stát nečekané věci.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Nedotýkej se těchto nastavení, pokud nevíš, co děláš. Mohou se stát nečekané věci.",
   "REPLUGGED_SETTINGS_BACKEND": "URL backendu",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL použita k získání některých zdrojových souborů a přístupu k REST API Repluggedu.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Povolit experimenty Discordu",

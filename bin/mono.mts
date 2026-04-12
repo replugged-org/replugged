@@ -14,10 +14,8 @@ export type AddonType = "plugins" | "themes";
 export function getAddonFolder(type: AddonType): string[] {
   if (!existsSync(path.join(directory, type))) return [];
   const folder = readdirSync(path.join(directory, type), { withFileTypes: true });
-
-  folder.filter((dirent) => dirent.isDirectory());
-
-  return folder.map((direct) => direct.name);
+  const filtered = folder.filter((dirent) => dirent.isDirectory());
+  return filtered.map((direct) => direct.name);
 }
 
 interface SelectedAddon {

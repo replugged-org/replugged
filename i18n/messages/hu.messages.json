@@ -15,7 +15,7 @@
   "REPLUGGED_PLUGINS": "Pluginok",
   "REPLUGGED_UPDATES_FAILED": "Néhány frissítés sikertelen volt!",
   "REPLUGGED_QUICKCSS": "Gyors CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Itt ne nyúlj hozzá a dolgokhoz, ha nem tudod, hogy mit csinálsz. Váratlan dolgok történhetnek a macskáddal.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Itt ne nyúlj hozzá a dolgokhoz, ha nem tudod, hogy mit csinálsz. Váratlan dolgok történhetnek a macskáddal.",
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "A Replugged REST API-ja által használt URL.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Discord Kísérletek Engedélyezése",
