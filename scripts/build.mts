@@ -8,7 +8,7 @@ import intlTypeGeneratorPlugin from "./build-plugins/intl-type-generator.mjs";
 import logBuildPlugin from "./build-plugins/log-build.mjs";
 import preBundlePlugin from "./build-plugins/pre-bundle.mjs";
 
-const NODE_VERSION = "20";
+const NODE_VERSION = "22";
 const CHROME_VERSION = "138";
 
 const ctx = createContext(process.argv);
