@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument, no-console */
+/* eslint-disable no-console */
 
 const DEFAULT_COLOR = "#5865F2"; // Blurple
 
