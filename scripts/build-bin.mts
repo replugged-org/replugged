@@ -4,7 +4,7 @@ import path from "path";
 import type { PackageJson } from "type-fest";
 import { fileURLToPath } from "url";
 
-const NODE_VERSION = "20";
+const NODE_VERSION = "22";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 

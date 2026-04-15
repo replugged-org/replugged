@@ -39,8 +39,8 @@ if (dirname.toLowerCase().replace(/\\/g, "/").includes("/windows/system32")) {
   process.exit(1);
 }
 
-// Verify that we're running on a supported Node.js version (>= 20.x)
-const REQ_NODEJS_VERSION = 20;
+// Verify that we're running on a supported Node.js version (>= 22.x)
+const REQ_NODEJS_VERSION = 22;
 const currentNodeVersion = parseInt(process.versions.node.split(".")[0], 10);
 if (Number.isNaN(currentNodeVersion) || currentNodeVersion < REQ_NODEJS_VERSION) {
   console.log(
