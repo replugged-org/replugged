@@ -6,7 +6,7 @@ export default [
     replacements: [
       {
         match: /"high-contrast-mode":\i/,
-        replace: `$&,replugged:true,"april-fools":(new Date()).toGMTString().includes("01 Apr")`,
+        replace: `$&,...($exports?._insertHTMLClasses() ?? {})`,
       },
     ],
   },
@@ -14,9 +14,8 @@ export default [
     find: "Message must not be a thread starter message",
     replacements: [
       {
-        match: /\.messageListItem,/,
-        replace:
-          "$&...(replugged.coremods.coremods.themeUtils?._insertMessageAttributes(arguments[0].message) ?? {}),",
+        match: /className:\i\.\i,"aria-setsize":-1,/,
+        replace: `$&...($exports?._insertMessageAttributes(arguments[0].message) ?? {}),`,
       },
     ],
   },
@@ -24,8 +23,8 @@ export default [
     find: "getMaskId()",
     replacements: [
       {
-        match: /className:\i\(\)\(\i\.mask/g,
-        replace: `...(replugged.coremods.coremods.themeUtils?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
+        match: /viewBox:`0 0 \${\i} \${\i}`,className:\i\(\)/g,
+        replace: `...($exports?._insertAvatarAttributes(arguments[0]) ?? {}),$&`,
       },
     ],
   },

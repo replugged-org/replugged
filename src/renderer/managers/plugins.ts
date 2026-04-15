@@ -6,7 +6,7 @@ import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 import { loadStyleSheet } from "../util";
 
-const logger = Logger.api("Plugins");
+const logger = Logger.manager("Plugins");
 const settings = init<AddonSettings>("plugins");
 
 interface PluginWrapper extends RepluggedPlugin {

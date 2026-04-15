@@ -34,7 +34,7 @@ class RpcAPI {
    */
   public registerRPCCommand(name: string, command: RPCCommand): () => void {
     this.#checkName(name);
-    if (this.#commandMap.has(name)) throw new Error("RPC command already exists");
+    if (this.#commandMap.has(name)) throw new Error(`RPC command '${name}' already exists`);
     this.#commandMap.set(name, command);
     return () => this.#commandMap.delete(name);
   }

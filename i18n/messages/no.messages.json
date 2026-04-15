@@ -12,7 +12,7 @@
   "REPLUGGED_LINK_NOW": "Tilkoble nå",
   "REPLUGGED_PLUGINS": "Plugins",
   "REPLUGGED_QUICKCSS": "Hurtig CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Ikke gjør endringer her hvis du ikke vet hva du driver med. Uventede ting kan skje med katten din.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Ikke gjør endringer her hvis du ikke vet hva du driver med. Uventede ting kan skje med katten din.",
   "REPLUGGED_SETTINGS_BACKEND": "Backend URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL brukt til å hente noen elementer og til å sende forespørsler til Replugged sin REST API.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Aktiverer Discord Experiments",

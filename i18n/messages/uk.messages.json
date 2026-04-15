@@ -12,7 +12,7 @@
   "REPLUGGED_LINK_NOW": "Прив'язати зараз",
   "REPLUGGED_PLUGINS": "Плагіни",
   "REPLUGGED_QUICKCSS": "Швидкий CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Не чіпайте тут нічого, якщо ви не знаєте, що робите. Несподівані речі можуть трапитися з вашим котом.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Не чіпайте тут нічого, якщо ви не знаєте, що робите. Несподівані речі можуть трапитися з вашим котом.",
   "REPLUGGED_SETTINGS_BACKEND": "Бек-енд URL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "URL, який використовується для отримання деяких ресурсів і запиту REST API Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Ввімкнути Discord Experiments",

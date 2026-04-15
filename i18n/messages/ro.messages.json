@@ -13,7 +13,7 @@
   "REPLUGGED_LINK_NOW": "Conectează-l acum",
   "REPLUGGED_PLUGINS": "Plugin-uri",
   "REPLUGGED_QUICKCSS": "CSS Rapid",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Nu atinge lucrurile aici dacă nu știi ce faci. Lucruri neașteptate i se pot întâmpla pisicii tale.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Nu atinge lucrurile aici dacă nu știi ce faci. Lucruri neașteptate i se pot întâmpla pisicii tale.",
   "REPLUGGED_SETTINGS_BACKEND": "URL către Bckend",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "Adresa URL folosită pentru a prelua unele materiale și pentru a interoga API-ul REST Replugged.",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Activează Experimentele Discord-ului",

@@ -1,4 +1,4 @@
-import { cpSync, existsSync, readdirSync, renameSync } from "fs";
+import { cpSync, existsSync, readdirSync, renameSync } from "original-fs";
 import { basename, join } from "path";
 import { getSetting } from "./ipc/settings";
 
@@ -11,7 +11,7 @@ function getPathBefore(path: string, before: string): string {
 }
 
 export default function patchAutoStartUpdate(): void {
-  const winUpdater = getSetting<boolean>("dev.replugged.Settings", "winUpdater", false);
+  const winUpdater = getSetting<boolean>("dev.replugged.Settings", "winUpdater", true);
   if (process.platform !== "win32" || !winUpdater) return;
 
   try {

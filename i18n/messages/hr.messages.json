@@ -14,7 +14,7 @@
   "REPLUGGED_I18N_CONTRIBUTE": "Želite li pomoći prevesti Replugged? Idite na naš [Weblate]({weblateUrl})!",
   "REPLUGGED_I18N_TRANSLATED_PERCENTAGE": "Replugged: {translated,number}% prevedeno",
   "REPLUGGED_QUICKCSS": "Brzi CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "Ne diraj stvari ovdje ako ne znate što radite. Vašoj se mački mogu dogoditi neočekivane stvari.",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "Ne diraj stvari ovdje ako ne znate što radite. Vašoj se mački mogu dogoditi neočekivane stvari.",
   "REPLUGGED_SETTINGS_BACKEND": "Pozadinski URL",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Omogući Discord Eksperimente",
   "REPLUGGED_SETTINGS_KEEP_TOKEN": "Držite token pohranjen",

@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { React, contextMenu, marginStyles, modal, toast } from "@common";
+import { React, contextMenu, marginStyles, modal } from "@common";
 import type { ContextMenuProps } from "@common/contextMenu";
 import { t as discordT, intl } from "@common/i18n";
+import { ToastType, toast } from "@common/toast";
 import {
   Anchor,
-  Breadcrumbs,
   Button,
   ContextMenu,
   ErrorBoundary,
   Flex,
-  FormSection,
   Notice,
   SearchBar,
   Select,
@@ -22,9 +21,25 @@ import { Logger, plugins, themes, webpack } from "@replugged";
 import { generalSettings } from "src/renderer/managers/settings";
 import { t } from "src/renderer/modules/i18n";
 import { openExternal } from "src/renderer/util";
-import type { RepluggedPlugin, RepluggedTheme } from "src/types";
+import type { NodeConfig, RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, Author } from "src/types/addon";
-import Icons from "../icons";
+import {
+  ClydeIcon,
+  GitHubIcon,
+  LinkIcon,
+  PaintbrushThinIcon,
+  PuzzlePieceIcon,
+  RefreshIcon,
+  SettingsIcon,
+  TrashIcon,
+} from "../icons";
+import {
+  createCategory,
+  createCustom,
+  createNestedPanel,
+  createPanel,
+  createSidebarItem,
+} from "../lib";
 
 import "./Addons.css";
 
@@ -55,6 +70,14 @@ const logger = Logger.coremod("AddonSettings");
 
 const { openUserProfileModal } =
   await webpack.waitForProps<UserProfileModalActionCreators>("openUserProfileModal");
+
+const { openUserSettings } = await webpack.waitForProps<{
+  openUserSettings: (
+    key?: string,
+    options?: Record<string, unknown>,
+    callback?: () => void,
+  ) => void;
+}>("openUserSettings");
 
 export enum AddonType {
   Plugin = "plugin",
@@ -102,27 +125,27 @@ function ThemePresetSettings({ id }: { id: string }): React.ReactElement {
       label={intl.string(t.REPLUGGED_ADDON_SETTINGS_THEME_PRESET)}
       options={theme.manifest.presets!.map((preset) => ({
         label: preset.label,
-        value: preset.path,
+        value: preset.id,
       }))}
-      value={settings.chosenPreset || theme.manifest.presets![0].path}
+      value={settings.chosenPreset || theme.manifest.presets![0].id}
       onChange={(val) => {
         try {
           themes.settings.set(id, { chosenPreset: val });
           if (!themes.getDisabled().includes(id)) {
             themes.reload(id);
           }
-          toast.toast(
+          toast(
             intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_CHANGED, {
-              name: theme.manifest.presets!.find((p) => p.path === val)?.label || val,
+              name: theme.manifest.presets!.find((p) => p.id === val)?.label || val,
             }),
           );
         } catch (error) {
           logger.error("Error changing theme preset", error);
-          toast.toast(
+          toast(
             intl.formatToPlainString(t.REPLUGGED_TOAST_THEME_PRESET_FAILED, {
               name: theme.manifest.name,
             }),
-            toast.Kind.FAILURE,
+            ToastType.FAILURE,
           );
         }
       }}
@@ -137,9 +160,9 @@ function getSettingsElement(id: string, type: AddonType): React.ComponentType | 
   if (type === AddonType.Theme) {
     if (themes.getDisabled().includes(id)) return undefined;
 
-    const theme = themes.themes.get(id)!;
+    const theme = themes.themes.get(id);
 
-    if (theme.manifest.presets?.length) {
+    if (theme?.manifest.presets?.length) {
       return () => <ThemePresetSettings id={id} />;
     }
     return undefined;
@@ -194,7 +217,7 @@ async function loadMissing(type: AddonType): Promise<void> {
     const manager = themes;
     const disabled = manager.getDisabled();
     const existingThemes = new Set(manager.themes.keys());
-    await manager.loadMissing();
+    manager.loadMissing();
     const newThemes = Array.from(manager.themes.keys()).filter(
       (x) => !existingThemes.has(x) && !disabled.includes(x),
     );
@@ -242,7 +265,7 @@ function AuthorContextMenu({
               type: intl.string(discordT.DISCORD),
             })}
             id="replugged-addon-author-discord"
-            icon={Icons.Discord}
+            icon={ClydeIcon}
             action={() => openUserProfileModal({ userId: author.discordID! })}
           />
         )}
@@ -252,7 +275,7 @@ function AuthorContextMenu({
               type: "GitHub",
             })}
             id="replugged-addon-author-github"
-            icon={Icons.GitHub}
+            icon={GitHubIcon}
             action={() => open(`https://github.com/${author.github}`)}
           />
         )}
@@ -278,8 +301,8 @@ function Authors({ addon }: { addon: RepluggedPlugin | RepluggedTheme }): React.
     author1: els[0],
     author2: els[1],
     author3: els[2],
-    count: els.length.toString(),
-    others: (els.length - 3).toString(),
+    count: els.length,
+    others: els.length - 3,
   });
 }
 
@@ -311,8 +334,8 @@ function Card({
         justify={Flex.Justify.BETWEEN}
         className={marginStyles.marginBottom4}>
         <span>
-          <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
-            <Text variant="heading-md/bold" tag="span" color="header-primary">
+          <Text variant="heading-sm/normal" tag="h2" color="text-default">
+            <Text variant="heading-md/bold" tag="span" color="text-strong">
               {addon.manifest.name}
             </Text>
             <span>
@@ -334,7 +357,7 @@ function Card({
         </Notice>
       ) : null}
       <Flex className={marginStyles.marginTop8}>
-        <Text variant="heading-sm/normal" tag="h2" color="header-secondary">
+        <Text variant="heading-sm/normal" tag="h2" color="text-default">
           <Authors addon={addon} />
         </Text>
         <Flex align={Flex.Align.CENTER} justify={Flex.Justify.END} style={{ gap: "10px" }}>
@@ -342,10 +365,9 @@ function Card({
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_PAGE_OPEN, {
                 type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <Anchor href={sourceLink}>
-                <Icons.Link />
+              })}>
+              <Anchor href={sourceLink} className="replugged-addon-icon-container">
+                <LinkIcon size="refresh_sm" color="currentColor" className="replugged-addon-icon" />
               </Anchor>
             </Tooltip>
           ) : null}
@@ -353,30 +375,35 @@ function Card({
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_SETTINGS, {
                 type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <Anchor onClick={() => openSettings()}>
-                <Icons.Settings />
+              })}>
+              <Anchor onClick={() => openSettings()} className="replugged-addon-icon-container">
+                <SettingsIcon
+                  size="refresh_sm"
+                  color="currentColor"
+                  className="replugged-addon-icon"
+                />
               </Anchor>
             </Tooltip>
           ) : null}
           <Tooltip
             text={intl.formatToPlainString(t.REPLUGGED_ADDON_DELETE, {
               type: label(type, { caps: "title" }),
-            })}
-            className="replugged-addon-icon">
-            <Anchor onClick={() => uninstall()}>
-              <Icons.Trash />
+            })}>
+            <Anchor onClick={() => uninstall()} className="replugged-addon-icon-container">
+              <TrashIcon size="refresh_sm" color="currentColor" className="replugged-addon-icon" />
             </Anchor>
           </Tooltip>
           {disabled ? null : (
             <Tooltip
               text={intl.formatToPlainString(t.REPLUGGED_ADDON_RELOAD, {
                 type: label(type, { caps: "title" }),
-              })}
-              className="replugged-addon-icon">
-              <Anchor onClick={() => reload()}>
-                <Icons.Reload />
+              })}>
+              <Anchor onClick={() => reload()} className="replugged-addon-icon-container">
+                <RefreshIcon
+                  size="refresh_sm"
+                  color="currentColor"
+                  className="replugged-addon-icon"
+                />
               </Anchor>
             </Tooltip>
           )}
@@ -389,14 +416,12 @@ function Card({
 function Cards({
   type,
   disabled,
-  setSection,
   setDisabled,
   list,
   refreshList,
 }: {
   type: AddonType;
   disabled: Set<string>;
-  setSection: (section: string) => void;
   setDisabled: (disabled: Set<string>) => void;
   list: Array<RepluggedPlugin | RepluggedTheme>;
   refreshList: () => void;
@@ -418,36 +443,36 @@ function Cards({
               try {
                 await manager.enable(addon.manifest.id);
                 clonedDisabled.delete(addon.manifest.id);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_SUCCESS, {
                     name: addon.manifest.name,
                   }),
                 );
               } catch (e) {
                 logger.error("Error enabling", addon, e);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_ENABLE_FAILED, {
                     name: label(type),
                   }),
-                  toast.Kind.FAILURE,
+                  ToastType.FAILURE,
                 );
               }
             } else {
               try {
                 await manager.disable(addon.manifest.id);
                 clonedDisabled.add(addon.manifest.id);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_DISABLE_SUCCESS, {
                     name: addon.manifest.name,
                   }),
                 );
               } catch (e) {
                 logger.error("Error disabling", addon, e);
-                toast.toast(
+                toast(
                   intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_DISABLE_FAILED, {
                     name: label(type),
                   }),
-                  toast.Kind.FAILURE,
+                  ToastType.FAILURE,
                 );
               }
             }
@@ -459,25 +484,24 @@ function Cards({
               body: intl.format(t.REPLUGGED_ADDON_UNINSTALL_PROMPT_BODY, { type: label(type) }),
               confirmText: intl.string(discordT.APPLICATION_UNINSTALL_PROMPT_CONFIRM),
               cancelText: intl.string(discordT.CANCEL),
-              confirmColor: Button.Colors.RED,
             });
             if (!confirmation) return;
 
             const manager = getManager(type);
             try {
               await manager.uninstall(addon.manifest.id);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_UNINSTALL_SUCCESS, {
                   name: addon.manifest.name,
                 }),
               );
             } catch (e) {
               logger.error("Error uninstalling", addon, e);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_UNINSTALL_FAILED, {
                   name: addon.manifest.name,
                 }),
-                toast.Kind.FAILURE,
+                ToastType.FAILURE,
               );
             }
             refreshList();
@@ -486,26 +510,24 @@ function Cards({
             const manager = getManager(type);
             try {
               await manager.reload(addon.manifest.id);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_SUCCESS, {
                   name: addon.manifest.name,
                 }),
               );
             } catch (e) {
               logger.error("Error reloading", addon, e);
-              toast.toast(
+              toast(
                 intl.formatToPlainString(t.REPLUGGED_TOAST_ADDON_RELOAD_FAILED, {
                   name: addon.manifest.name,
                 }),
-                toast.Kind.FAILURE,
+                ToastType.FAILURE,
               );
             }
             refreshList();
           }}
           openSettings={() => {
-            setSection(`rp_${type}_${addon.manifest.id}`);
-
-            document.querySelector('div[class^="contentRegionScroller"]')!.scrollTo({ top: 0 });
+            openUserSettings(`rp_${type}_nested_panel_${addon.manifest.id}`);
           }}
         />
       ))}
@@ -513,14 +535,19 @@ function Cards({
   );
 }
 
-export const Addons = (type: AddonType): React.ReactElement => {
+export function useAddonPanelTitle(type: AddonType): string {
+  const count = listAddons(type).size;
+  return intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
+    type: label(type, { caps: "title", plural: true }),
+    count,
+  });
+}
+
+function Addons({ type }: { type: AddonType }): React.ReactElement {
   const [disabled, setDisabled] = React.useState<Set<string>>(new Set());
   const [search, setSearch] = React.useState("");
   const [list, setList] = React.useState<Array<RepluggedPlugin | RepluggedTheme> | null>();
   const [unfilteredCount, setUnfilteredCount] = React.useState(0);
-  const [section, setSection] = React.useState(`rp_${type}`);
-
-  let SettingsElement: React.ComponentType | undefined;
 
   function refreshList(): void {
     const list = [...listAddons(type).values()];
@@ -545,159 +572,158 @@ export const Addons = (type: AddonType): React.ReactElement => {
 
   React.useEffect(refreshList, [search, type]);
 
-  function getAddonIdFromSection(section: string): string {
-    const prefix = `rp_${type}_`;
-    return section.startsWith(prefix) ? section.slice(prefix.length) : section;
-  }
-
   return (
-    <FormSection
-      tag="h1"
-      title={
-        <Flex justify={Flex.Justify.BETWEEN} align={Flex.Align.START}>
-          {section === `rp_${type}` ? (
-            <Text.H2
-              style={{
-                // Do not turn "(num)" into a single symbol
-                fontVariantLigatures: "none",
-              }}>
-              {intl.format(t.REPLUGGED_ADDONS_TITLE_COUNT, {
-                type: label(type, { caps: "title", plural: true }),
-                count: unfilteredCount,
-              })}
-            </Text.H2>
-          ) : (
-            <Breadcrumbs
-              activeId={section.toString()}
-              breadcrumbs={[
-                {
-                  id: `rp_${type}`,
-                  label: intl.formatToPlainString(t.REPLUGGED_ADDONS_TITLE_COUNT, {
-                    type: label(type, { caps: "title", plural: true }),
-                    count: unfilteredCount,
-                  }),
-                },
-                {
-                  id: `rp_${type}_${getAddonIdFromSection(section)}`,
-                  label:
-                    list?.find((x) => x.manifest.id === getAddonIdFromSection(section))?.manifest
-                      .name || "",
-                },
-              ]}
-              onBreadcrumbClick={(breadcrumb) => setSection(breadcrumb.id)}
-              renderCustomBreadcrumb={(breadcrumb, active) => (
-                <Text.H2
-                  color={active ? "header-primary" : "inherit"}
-                  className={
-                    active
-                      ? "replugged-addon-breadcrumbsActive"
-                      : "replugged-addon-breadcrumbsInactive"
-                  }
-                  style={{
-                    // Do not turn "(num)" into a single symbol
-                    fontVariantLigatures: "none",
-                  }}>
-                  {breadcrumb.label}
-                </Text.H2>
-              )}
-            />
-          )}
-        </Flex>
-      }>
-      <Stack gap={16}>
-        {section === `rp_${type}` && (
-          // TODO: Replace with ButtonGroup from Mana Design System; after Button has been migrated as well
-          <Stack gap={8} justify="space-between" direction="horizontal">
-            <Button fullWidth onClick={() => openFolder(type)}>
-              {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-            <Button
-              fullWidth
-              onClick={async () => {
-                try {
-                  await loadMissing(type);
-                  toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
-                      type: label(type, { plural: true }),
-                    }),
-                  );
-                } catch (e) {
-                  logger.error("Error loading missing", e);
-                  toast.toast(
-                    intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
-                      type: label(type, { plural: true }),
-                    }),
-                    toast.Kind.FAILURE,
-                  );
-                }
+    <Stack gap={16}>
+      <Stack justify="space-between" direction="horizontal">
+        <Button fullWidth onClick={() => openFolder(type)}>
+          {intl.format(t.REPLUGGED_ADDONS_FOLDER_OPEN, {
+            type: label(type, { caps: "title", plural: true }),
+          })}
+        </Button>
+        <Button
+          fullWidth
+          onClick={async () => {
+            try {
+              await loadMissing(type);
+              toast(
+                intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_SUCCESS, {
+                  type: label(type, { plural: true }),
+                }),
+              );
+            } catch (e) {
+              logger.error("Error loading missing", e);
+              toast(
+                intl.formatToPlainString(t.REPLUGGED_TOAST_ADDONS_LOAD_MISSING_FAILED, {
+                  type: label(type, { plural: true }),
+                }),
+                ToastType.FAILURE,
+              );
+            }
 
-                refreshList();
-              }}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.OUTLINED}>
-              {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-            <Button
-              fullWidth
-              onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
-              color={Button.Colors.PRIMARY}
-              look={Button.Looks.OUTLINED}>
-              {intl.format(t.REPLUGGED_ADDON_BROWSE, {
-                type: label(type, { caps: "title", plural: true }),
-              })}
-            </Button>
-          </Stack>
-        )}
-        {section === `rp_${type}` && unfilteredCount ? (
-          <SearchBar
-            query={search}
-            onChange={(query) => setSearch(query)}
-            onClear={() => setSearch("")}
-            placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
-              type: label(type),
-            })}
-            autoFocus
-          />
-        ) : null}
-        {section === `rp_${type}` && search && list?.length ? (
-          <Text variant="heading-md/bold" className={marginStyles.marginBottom8}>
-            {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
-          </Text>
-        ) : null}
-        {section === `rp_${type}` ? (
-          list?.length ? (
-            <Cards
-              type={type}
-              disabled={disabled}
-              setSection={setSection}
-              setDisabled={setDisabled}
-              list={list}
-              refreshList={refreshList}
-            />
-          ) : list ? (
-            <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
-              {unfilteredCount
-                ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
-                : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
-                    type: label(type, { plural: true }),
-                  })}
-            </Text>
-          ) : null
-        ) : (
-          (SettingsElement = getSettingsElement(getAddonIdFromSection(section), type)) && (
-            <ErrorBoundary>
-              <SettingsElement />
-            </ErrorBoundary>
-          )
-        )}
+            refreshList();
+          }}
+          color={Button.Colors.PRIMARY}
+          look={Button.Looks.OUTLINED}>
+          {intl.format(t.REPLUGGED_ADDONS_LOAD_MISSING, {
+            type: label(type, { caps: "title", plural: true }),
+          })}
+        </Button>
+        <Button
+          fullWidth
+          onClick={() => openExternal(`${generalSettings.get("apiUrl")}/store/${type}s`)}
+          color={Button.Colors.PRIMARY}
+          look={Button.Looks.OUTLINED}>
+          {intl.format(t.REPLUGGED_ADDON_BROWSE, {
+            type: label(type, { caps: "title", plural: true }),
+          })}
+        </Button>
       </Stack>
-    </FormSection>
+      {unfilteredCount ? (
+        <SearchBar
+          query={search}
+          onChange={(query) => setSearch(query)}
+          onClear={() => setSearch("")}
+          placeholder={intl.formatToPlainString(t.REPLUGGED_SEARCH_FOR_ADDON, {
+            type: label(type),
+          })}
+          autoFocus
+        />
+      ) : null}
+      {search && list?.length ? (
+        <Text variant="heading-md/bold" className={marginStyles.marginBottom8}>
+          {intl.format(t.REPLUGGED_LIST_RESULTS, { count: list.length })}
+        </Text>
+      ) : null}
+      {list?.length ? (
+        <Cards
+          type={type}
+          disabled={disabled}
+          setDisabled={setDisabled}
+          list={list}
+          refreshList={refreshList}
+        />
+      ) : list ? (
+        <Text variant="heading-lg/bold" style={{ textAlign: "center" }}>
+          {unfilteredCount
+            ? intl.format(t.REPLUGGED_NO_ADDON_RESULTS, { type: label(type, { plural: true }) })
+            : intl.format(t.REPLUGGED_NO_ADDONS_INSTALLED, {
+                type: label(type, { plural: true }),
+              })}
+        </Text>
+      ) : null}
+    </Stack>
   );
-};
+}
 
-export const Plugins = (): React.ReactElement => Addons(AddonType.Plugin);
-export const Themes = (): React.ReactElement => Addons(AddonType.Theme);
+/**
+ * Creates a nested panel for addon settings.
+ *
+ * The navigator nodes are physically hidden from the settings list via a plaintext patch on the nested panel renderer,
+ * but they remain "accessible" in the settings directory structure, allowing us to open them via the user settings action.
+ */
+function createAddonSettingsNestedPanel(
+  addon: RepluggedPlugin | RepluggedTheme,
+  type: AddonType,
+): NodeConfig {
+  const addonId = addon.manifest.id;
+
+  return createNestedPanel(`rp_${type}_nested_panel_${addonId}`, {
+    buildLayout: () => [
+      createPanel(`rp_${type}_panel_${addonId}`, {
+        useTitle: () => addon.manifest.name,
+        buildLayout: () => [
+          createCategory(`rp_${type}_category_${addonId}`, {
+            buildLayout: () => [
+              createCustom(`rp_${type}_custom_${addonId}`, {
+                Component: () => {
+                  const Settings = getSettingsElement(addonId, type);
+                  return Settings ? (
+                    <ErrorBoundary>
+                      <Settings />
+                    </ErrorBoundary>
+                  ) : null;
+                },
+              }),
+            ],
+          }),
+        ],
+      }),
+    ],
+  });
+}
+
+function createAddonSidebarItem(type: AddonType): NodeConfig {
+  const pluralType = `${type}s`;
+  const isPlugin = type === AddonType.Plugin;
+  const icon = isPlugin ? PuzzlePieceIcon : PaintbrushThinIcon;
+  const title = isPlugin ? t.REPLUGGED_PLUGINS : t.REPLUGGED_THEMES;
+
+  const node = createCustom(`${pluralType}_custom`, {
+    Component: () => <Addons type={type} />,
+  });
+
+  const category = createCategory(`${pluralType}_category`, {
+    buildLayout: () => {
+      const addons = [...listAddons(type).values()];
+      const addonSettingsNestedPanels = addons
+        .filter((addon) => Boolean(getSettingsElement(addon.manifest.id, type)))
+        .map((addon) => createAddonSettingsNestedPanel(addon, type));
+
+      return [node, ...addonSettingsNestedPanels];
+    },
+  });
+
+  const panel = createPanel(`${pluralType}_panel`, {
+    useTitle: () => useAddonPanelTitle(type),
+    buildLayout: () => [category],
+  });
+
+  return createSidebarItem(`${pluralType}_sidebar_item`, {
+    icon,
+    useTitle: () => intl.string(title),
+    buildLayout: () => [panel],
+  });
+}
+
+export const PluginsSidebarItem = createAddonSidebarItem(AddonType.Plugin);
+export const ThemesSidebarItem = createAddonSidebarItem(AddonType.Theme);

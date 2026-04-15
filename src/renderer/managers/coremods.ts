@@ -18,7 +18,7 @@ import settingsPlaintext from "../coremods/settings/plaintextPatches";
 import themeUtilsPlaintext from "../coremods/themeUtils/plaintextPatches";
 import titleBarPlaintext from "../coremods/titleBar/plaintextPatches";
 
-const logger = Logger.api("Coremods");
+const logger = Logger.manager("Coremods");
 
 interface Coremod {
   start?: () => Promisable<void>;
@@ -82,7 +82,7 @@ export async function startAll(): Promise<void> {
 }
 
 export async function stopAll(): Promise<void> {
-  await Promise.allSettled(Object.values(coremods).map((c) => c.stop?.()));
+  await Promise.allSettled(Object.values(coremods).map((c) => Promise.resolve(c.stop?.())));
 }
 
 export function runPlaintextPatches(): void {

@@ -1,33 +1,36 @@
-import { getFunctionBySource } from "@webpack";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
-import components from "../common/components";
 
-import type * as Design from "discord-client-types/discord_app/design/web";
+import type {
+  VoidSelectOption,
+  VoidSingleSelect,
+  VoidSingleSelectProps,
+} from "discord-client-types/discord_app/design/components/VoidSelect/web/VoidSelect";
 
-const SingleSelect = getFunctionBySource<Design.SingleSelect>(
-  components,
-  /var{value:\i,onChange:\i}/,
-)!;
+const selectRegex = /renderLeading:\i,renderTrailing:\i,value:\i,onChange:\i/;
+const mod = await waitForModule(filters.bySource(selectRegex));
+
+const VoidSingleSelect = getFunctionBySource<VoidSingleSelect>(mod, selectRegex)!;
 
 interface CustomSingleSelectProps<
-  TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
+  TOptions extends readonly VoidSelectOption[] = readonly VoidSelectOption[],
   TClearable extends boolean = false,
-> extends Design.SingleSelectProps<TOptions, TClearable> {
+> extends VoidSingleSelectProps<TOptions, TClearable> {
   disabled?: boolean;
 }
 
 export type CustomSingleSelectType = <
-  TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
+  TOptions extends readonly VoidSelectOption[] = readonly VoidSelectOption[],
   TClearable extends boolean = false,
 >(
   props: React.PropsWithChildren<CustomSingleSelectProps<TOptions, TClearable>>,
 ) => React.ReactElement;
 
 function CustomSingleSelect<
-  TOptions extends readonly Design.SelectOption[] = readonly Design.SelectOption[],
+  TOptions extends readonly VoidSelectOption[] = readonly VoidSelectOption[],
   TClearable extends boolean = false,
 >({ disabled, ...props }: CustomSingleSelectProps<TOptions, TClearable>): React.ReactElement {
-  return <SingleSelect isDisabled={disabled} {...props} />;
+  return <VoidSingleSelect isDisabled={disabled} {...props} />;
 }
 
 export default CustomSingleSelect;

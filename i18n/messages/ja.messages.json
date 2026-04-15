@@ -13,7 +13,7 @@
   "REPLUGGED_LINK_NOW": "今すぐリンクする",
   "REPLUGGED_PLUGINS": "プラグイン",
   "REPLUGGED_QUICKCSS": "クイックCSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "あなたが何をしているのかわからない場合は、ここに触れないでください。あなたの猫に予期せぬことが起こるかもしれません。",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "あなたが何をしているのかわからない場合は、ここに触れないでください。あなたの猫に予期せぬことが起こるかもしれません。",
   "REPLUGGED_SETTINGS_BACKEND": "バックエンドURL",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "アセットを取得し、RepluggedのREST APIにクエリを実行するために使用するURLです。",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "Discord Experimentsを有効にする",

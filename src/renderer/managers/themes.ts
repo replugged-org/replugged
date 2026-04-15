@@ -1,8 +1,10 @@
 import type { ThemeSettings } from "src/types/addon";
 import type { RepluggedTheme } from "../../types";
 import { init } from "../apis/settings";
-import * as logger from "../modules/logger";
+import { Logger } from "../modules/logger";
 import { loadStyleSheet } from "../util";
+
+const logger = Logger.manager("Themes");
 
 const themeElements = new Map<string, HTMLLinkElement>();
 
@@ -19,8 +21,8 @@ export const settings = init<ThemeSettings>("themes");
  * @remarks
  * This does not apply the themes, only loads their metadata. You can call {@link load} or {@link loadAll} to apply a theme.
  */
-export async function loadMissing(): Promise<void> {
-  for (const theme of await window.RepluggedNative.themes.list()) {
+export function loadMissing(): void {
+  for (const theme of window.RepluggedNative.themes.list()) {
     themes.set(theme.manifest.id, theme);
   }
   disabled = settings.get("disabled", []);
@@ -37,11 +39,7 @@ export function unload(id: string): void {
   }
 }
 
-/**
- * Load a theme's main variant, adding its stylesheet to the DOM
- * @param id Theme ID (RDNN)
- */
-export function load(id: string): void {
+function loadVariant(id: string, variant: "main" | "splash"): void {
   if (!themes.has(id)) {
     throw new Error(`Theme not found: ${id}`);
   }
@@ -54,32 +52,42 @@ export function load(id: string): void {
   try {
     if (theme.manifest.presets?.length) {
       if (!themeSettings.chosenPreset) {
-        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.path;
+        themeSettings.chosenPreset = theme.manifest.presets.find((x) => x.default)?.id;
         if (!themeSettings.chosenPreset) {
           // Fallback to first preset
-          themeSettings.chosenPreset = theme.manifest.presets[0]?.path;
+          themeSettings.chosenPreset = theme.manifest.presets[0]?.id;
         }
         settings.set(id, themeSettings);
       }
 
       if (themeSettings.chosenPreset) {
-        el = loadStyleSheet(`replugged://theme/${theme.path}/${themeSettings.chosenPreset}`);
+        el = loadStyleSheet(
+          `replugged://theme/${theme.path}/presets/${themeSettings.chosenPreset}/${variant}.css`,
+        );
       } else {
-        logger.error("Manager", `No valid preset found for theme ${id}`);
+        logger.error(`No valid preset found for theme ${id}`);
         return;
       }
-    } else if (theme.manifest.main) {
-      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.main}`);
+    } else if (theme.manifest[variant]) {
+      el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest[variant]}`);
     } else {
-      logger.error("Manager", `Theme ${id} has neither main CSS nor presets.`);
+      logger.error(`Theme ${id} has neither ${variant} CSS nor presets.`);
       return;
     }
 
     unload(id);
     themeElements.set(id, el);
   } catch (error) {
-    logger.error("Manager", `Failed to load theme ${id}:`, String(error));
+    logger.error(`Failed to load theme ${id}:`, String(error));
   }
+}
+
+/**
+ * Load a theme's main variant, adding its stylesheet to the DOM
+ * @param id Theme ID (RDNN)
+ */
+export function load(id: string): void {
+  loadVariant(id, "main");
 }
 
 /**
@@ -87,19 +95,7 @@ export function load(id: string): void {
  * @param id Theme ID (RDNN)
  */
 export function loadSplash(id: string): void {
-  if (!themes.has(id)) {
-    throw new Error(`Theme not found: ${id}`);
-  }
-
-  const theme = themes.get(id)!;
-  if (!theme.manifest.splash) {
-    logger.error("Manager", `Theme ${id} does not have a splash variant.`);
-    return;
-  }
-  unload(id);
-
-  const el = loadStyleSheet(`replugged://theme/${theme.path}/${theme.manifest.splash}`);
-  themeElements.set(id, el);
+  loadVariant(id, "splash");
 }
 
 /**
@@ -108,7 +104,10 @@ export function loadSplash(id: string): void {
 export function loadAll(): void {
   for (const id of themes.keys()) {
     const theme = themes.get(id);
-    if (!disabled.includes(id) && (theme?.manifest.main || theme?.manifest.presets)) {
+    if (
+      !disabled.includes(id) &&
+      (theme?.manifest.main || theme?.manifest.presets?.some((p) => p.main))
+    ) {
       load(id);
     }
   }
@@ -119,7 +118,11 @@ export function loadAll(): void {
  */
 export function loadAllSplash(): void {
   for (const id of themes.keys()) {
-    if (!disabled.includes(id) && themes.get(id)?.manifest.splash) {
+    const theme = themes.get(id);
+    if (
+      !disabled.includes(id) &&
+      (theme?.manifest.splash || theme?.manifest.presets?.some((p) => p.splash))
+    ) {
       loadSplash(id);
     }
   }
@@ -140,8 +143,8 @@ export function unloadAll(): void {
  * @remarks
  * This may include themes that are not available until Discord is reloaded.
  */
-export async function get(path: string): Promise<RepluggedTheme | undefined> {
-  return await list().then((x) => x.find((p) => p.manifest.id === path));
+export function get(path: string): RepluggedTheme | undefined {
+  return list().find((p) => p.manifest.id === path);
 }
 
 /**
@@ -150,8 +153,8 @@ export async function get(path: string): Promise<RepluggedTheme | undefined> {
  * @remarks
  * This may include themes that are not available until Discord is reloaded.
  */
-export async function list(): Promise<RepluggedTheme[]> {
-  return await window.RepluggedNative.themes.list();
+export function list(): RepluggedTheme[] {
+  return window.RepluggedNative.themes.list();
 }
 
 /**

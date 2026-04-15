@@ -22,7 +22,7 @@ import type {
 } from "../modules/common/messages";
 import { t } from "../modules/i18n";
 import { Logger } from "../modules/logger";
-import { filters, getByStoreName, waitForModule } from "../modules/webpack";
+import { getByStoreName, waitForPrototype } from "../modules/webpack";
 
 const logger = Logger.api("Commands");
 
@@ -33,8 +33,13 @@ interface CommandsAndSection {
   commands: Map<string, AnyRepluggedCommand>;
 }
 
-void waitForModule<typeof User>(filters.bySource("hasHadPremium(){")).then((User) => {
-  RepluggedUser = new User({
+void waitForPrototype<typeof User>("isSystemUser", "isPhoneVerified").then((UserRecord) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!UserRecord) {
+    logger.error("Could not find UserRecord");
+    return;
+  }
+  RepluggedUser = new UserRecord({
     avatar: "replugged",
     id: REPLUGGED_CLYDE_ID,
     bot: true,
@@ -276,7 +281,7 @@ export class CommandManager {
     currentSection.commands.set(command.id, command as AnyRepluggedCommand);
 
     const uninject = (): void => {
-      void currentSection.commands.delete(command.id!);
+      currentSection.commands.delete(command.id!);
       this.#unregister = this.#unregister.filter((u) => u !== uninject);
     };
     this.#unregister.push(uninject);

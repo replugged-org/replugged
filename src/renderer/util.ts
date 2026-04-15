@@ -419,6 +419,9 @@ export function findInTree(
   return tempReturn;
 }
 
+export type ReactTree = (Tree & React.ReactElement) | Tree;
+type ReactTreeFilter = string | ((reactTree: ReactTree) => boolean);
+
 /**
  * Find the component you are looking for in a tree, recursively.
  *
@@ -428,10 +431,10 @@ export function findInTree(
  * @returns The component you are looking for
  */
 export function findInReactTree(
-  tree: Tree,
-  searchFilter: TreeFilter,
+  tree: ReactTree,
+  searchFilter: ReactTreeFilter,
   maxRecursion = 100,
-): Tree | null | undefined {
+): ReactTree | null | undefined {
   return findInTree(tree, searchFilter, {
     walkable: ["props", "children", "child", "sibling"],
     maxRecursion,
@@ -474,3 +477,11 @@ export function getBoundMethods<T extends object>(instance: T): BoundMethodMap<T
 
   return bound;
 }
+
+export const mapClassNames = <T extends Record<string, string>>(object: T): T => {
+  return Object.values(object).reduce((current: Record<string, string>, className) => {
+    const match = /(.+?)_/.exec(className)?.[1];
+    if (match) current[match] = className;
+    return current;
+  }, {}) as T;
+};

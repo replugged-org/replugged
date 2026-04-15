@@ -13,7 +13,7 @@
   "REPLUGGED_LINK_NOW": "立即連接",
   "REPLUGGED_PLUGINS": "插件",
   "REPLUGGED_QUICKCSS": "Quick CSS",
-  "REPLUGGED_SETTINGS_ADVANCED_DESC": "如果你不知道你在做什麽不要碰這裏的東西。出乎意料的事情會發生在你的貓上。",
+  "REPLUGGED_SETTINGS_ADVANCED_NOTICE": "如果你不知道你在做什麽不要碰這裏的東西。出乎意料的事情會發生在你的貓上。",
   "REPLUGGED_SETTINGS_BACKEND": "後端網址",
   "REPLUGGED_SETTINGS_BACKEND_DESC": "用於獲取一些資料和查詢Replugged的REST API的網址。",
   "REPLUGGED_SETTINGS_DISCORD_EXPERIMENTS": "啟用 Discord 試驗",

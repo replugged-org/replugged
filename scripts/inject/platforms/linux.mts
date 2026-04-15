@@ -1,11 +1,11 @@
-import path, { basename, join } from "path";
-import { fileURLToPath } from "url";
-import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execSync } from "child_process";
+import { existsSync, readFileSync, writeFileSync } from "fs";
+import path, { basename, join } from "path";
 import readline from "readline";
+import { fileURLToPath } from "url";
+import { exitCode } from "../index.mjs";
 import type { DiscordPlatform } from "../types.mjs";
 import { AnsiEscapes, PlatformNames } from "../util.mjs";
-import { exitCode } from "../index.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 

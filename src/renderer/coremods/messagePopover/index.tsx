@@ -1,6 +1,6 @@
 import { getBySource, getComponentBySource } from "@webpack";
 import type { Channel, Message } from "discord-types/general";
-import type { GetButtonItem, HoverBarButtonProps } from "../../../types/coremods/message";
+import type { GetButtonItem, HoverBarButtonProps } from "src/types";
 import { Logger } from "../../modules/logger";
 
 const logger = Logger.coremod("MessagePopover");
@@ -15,14 +15,12 @@ export const buttons = new Map<GetButtonItem, string>();
  */
 export function addButton(item: GetButtonItem, key?: string): () => void {
   buttons.set(item, `${key || "repluggedButton"}-${Math.random().toString(36).substring(2)}`);
-
   return () => removeButton(item);
 }
 
 /**
  * Removes a button from MessagePopover
- * @param item The function that creates the button to add
- * @returns
+ * @param item The function that creates the button to remove
  */
 export function removeButton(item: GetButtonItem): void {
   buttons.delete(item);
@@ -42,9 +40,9 @@ export function _buildPopoverElements(msg: Message, channel: Channel): React.Rea
   const items: React.ReactElement[] = [];
 
   // Waiting for the module is not necessary, as it is already loaded by the time this function is called
-  const hoverBarButtonStr = ".hoverBarButton";
-  const hoverBarMod = getBySource<Record<string, HoverBarButton>>(hoverBarButtonStr)!;
-  const HoverBarButton = getComponentBySource<HoverBarButton>(hoverBarMod, hoverBarButtonStr);
+  const hoverBarButtonRegex = /disabled:\i,dangerous:\i/;
+  const hoverBarMod = getBySource<Record<string, HoverBarButton>>(hoverBarButtonRegex)!;
+  const HoverBarButton = getComponentBySource<HoverBarButton>(hoverBarMod, hoverBarButtonRegex);
 
   if (!HoverBarButton) {
     logger.error("Could not find HoverBarButton");
@@ -54,13 +52,9 @@ export function _buildPopoverElements(msg: Message, channel: Channel): React.Rea
   buttons.forEach((key, getItem) => {
     try {
       const item = getItem(msg, channel);
-      try {
-        if (item) {
-          item.key = key;
-          items.push(<HoverBarButton {...item} />);
-        }
-      } catch (err) {
-        logger.error(`Error in making the button [${item?.key}]`, err, item);
+      if (item) {
+        item.key = key;
+        items.push(<HoverBarButton {...item} />);
       }
     } catch (err) {
       logger.error("Error while running GetButtonItem function", err, getItem);

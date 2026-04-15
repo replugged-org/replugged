@@ -1,6 +1,6 @@
 import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
-import { FormControl } from ".";
+import { Field } from ".";
 import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
@@ -10,8 +10,10 @@ export const ColorPicker = getFunctionBySource<Design.ColorPicker>(
   'id:"color-picker"',
 )!;
 
-interface ColorSwatchProps
-  extends Pick<Design.CustomColorPickerProps, "onChange" | "suggestedColors" | "showEyeDropper"> {
+interface ColorSwatchProps extends Pick<
+  Design.CustomColorPickerProps,
+  "onChange" | "suggestedColors" | "showEyeDropper"
+> {
   onClose?: Design.PopoutProps["onRequestClose"];
   color?: number;
   disabled?: boolean;
@@ -22,12 +24,13 @@ interface ColorSwatchProps
 
 type ColorSwatchType = React.FC<ColorSwatchProps>;
 
-const ColorSwatch = await waitForModule<ColorSwatchType>(filters.bySource(".editPencilIcon,"));
+const ColorSwatch = await waitForModule<ColorSwatchType>(filters.bySource(/colorPickerMiddle:\i,/));
 
 interface ColorPickerItemProps
-  extends ColorSwatchProps,
+  extends
+    ColorSwatchProps,
     Pick<
-      Design.FormControlProps,
+      Design.FieldProps,
       "label" | "description" | "helperText" | "successMessage" | "errorMessage"
     > {
   value?: number;
@@ -46,14 +49,14 @@ function ColorPickerItem({
   ...props
 }: ColorPickerItemProps): React.ReactElement {
   return (
-    <FormControl
+    <Field
       label={label}
       description={description}
       helperText={helperText}
       successMessage={successMessage}
       errorMessage={errorMessage}>
       <ColorSwatch color={value} disabled={disabled} {...props} />
-    </FormControl>
+    </Field>
   );
 }
 

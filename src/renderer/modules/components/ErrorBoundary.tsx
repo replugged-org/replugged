@@ -23,7 +23,7 @@ function CollapsibleErrorStack({ stack }: { stack: string }): React.ReactElement
           viewBox="0 0 24 24"
           style={{ transform: open ? "rotate(180deg)" : undefined, flex: "0 0 auto" }}>
           <path
-            fill="var(--header-primary)"
+            fill="var(--text-strong)"
             d="M16.59 8.59003L12 13.17L7.41 8.59003L6 10L12 16L18 10L16.59 8.59003Z"
           />
         </svg>

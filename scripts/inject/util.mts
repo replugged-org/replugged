@@ -54,8 +54,7 @@ export const getProcessInfoByName = (processName: string): ProcessInfo[] | null 
       };
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return processInfo || null;
+    return processInfo;
   } catch {
     return null;
   }
@@ -72,7 +71,10 @@ export const killCheckProcessExists = (pid: number): boolean => {
 
 export const killProcessByPID = (pid: number): Promise<void> => {
   return new Promise((resolve) => {
-    if (!pid) resolve();
+    if (!pid) {
+      resolve();
+      return;
+    }
     process.kill(pid, "SIGTERM");
     const checkInterval = setInterval(() => {
       if (!killCheckProcessExists(pid)) {
@@ -96,9 +98,9 @@ export const openProcess = (command: string, args?: string[], options?: SpawnOpt
 };
 
 export const getUserData = (): UserData => {
-  const name = execSync("logname", { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
+  const name = execSync("logname", { encoding: "utf8" }).trim().replace(/\n$/, "");
   const env = Object.assign({}, process.env, { HOME: `/home/${name}` });
-  const uid = execSync(`id -u ${name}`, { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
-  const gid = execSync(`id -g ${name}`, { encoding: "utf8" }).toString().trim().replace(/\n$/, "");
+  const uid = execSync(`id -u ${name}`, { encoding: "utf8" }).trim().replace(/\n$/, "");
+  const gid = execSync(`id -g ${name}`, { encoding: "utf8" }).trim().replace(/\n$/, "");
   return { env, uid: Number(uid), gid: Number(gid) };
 };

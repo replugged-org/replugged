@@ -6,7 +6,7 @@ import { logError } from "./util";
 
 /**
  * Retrieves the exported value from a module, attempting to resolve specific keys
- * ("default", "Z", "ZP") if the module's exports object contains only one key.
+ * ("default", "A", "Ay") if the module's exports object contains only one key.
  * @template T The expected type of the exported value.
  * @param m The raw module from which to retrieve the exports.
  * @returns The exported value, or `undefined` if the exports are not an object or if no suitable key is found.
@@ -15,7 +15,7 @@ import { logError } from "./util";
 export function getExports<T>(m: RawModule): T | undefined {
   if (typeof m.exports === "object" && m.exports) {
     if (Object.keys(m.exports).length === 1) {
-      for (const key of ["default", "Z", "ZP"] as const) {
+      for (const key of ["default", "A", "Ay"] as const) {
         if (key in m.exports) return (m.exports as Record<typeof key, T>)[key];
       }
     }

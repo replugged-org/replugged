@@ -38,10 +38,6 @@ export interface GuildRoleStore {
   }>;
 }
 
-export type Guilds = SelectedGuildStore &
-  GuildStore &
-  GuildRoleStore & { getCurrentGuild: () => Guild | undefined };
-
 const SelectedGuildStore = await waitForStore<SelectedGuildStore & Store>("SelectedGuildStore");
 const GuildStore = await waitForStore<GuildStore & Store>("GuildStore");
 const GuildRoleStore = await waitForStore<GuildRoleStore & Store>("GuildRoleStore");
@@ -55,6 +51,10 @@ export function getCurrentGuild(): Guild | undefined {
   if (!guildId) return undefined;
   return GuildStore.getGuild(guildId);
 }
+
+export type Guilds = SelectedGuildStore &
+  GuildStore &
+  GuildRoleStore & { getCurrentGuild: () => Guild | undefined };
 
 export default virtualMerge(
   getBoundMethods(SelectedGuildStore),

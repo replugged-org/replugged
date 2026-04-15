@@ -1,9 +1,12 @@
-import type { RepluggedCommand } from "../../types/coremods/commands";
-import type { ContextMenuTypes, GetContextItem } from "../../types/coremods/contextMenu";
-import type { GetButtonItem } from "../../types/coremods/message";
-import type { CommandOptions } from "../../types/discord";
-import type { AnyFunction } from "../../types/util";
-import type { ObjectExports } from "../../types/webpack";
+import type {
+  AnyFunction,
+  CommandOptions,
+  ContextMenuTypes,
+  GetButtonItem,
+  GetContextItem,
+  ObjectExports,
+  RepluggedCommand,
+} from "src/types";
 import { CommandManager } from "../apis/commands";
 import { type ContextMenuProps, addContextMenuItem } from "../coremods/contextMenu";
 import { addButton } from "../coremods/messagePopover";
@@ -358,7 +361,7 @@ export class Injector {
     addMenuItem: <T extends Record<string, unknown> = Record<string, unknown>>(
       navId: ContextMenuTypes,
       item: GetContextItem<T>,
-      sectionId: number | ((props: ContextMenuProps) => number) | undefined = undefined,
+      sectionId?: number | ((props: ContextMenuProps) => number),
       indexInSection: number | ((props: ContextMenuProps) => number) = Infinity, // Last item
     ) => {
       const uninjector = addContextMenuItem(

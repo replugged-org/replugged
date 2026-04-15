@@ -1,4 +1,5 @@
 import { i18n } from "@common";
+import semver from "semver";
 import type { RepluggedPlugin, RepluggedTheme } from "src/types";
 import type { AnyAddonManifest, RepluggedEntity } from "src/types/addon";
 import notices from "../apis/notices";
@@ -9,7 +10,7 @@ import { waitForProps } from "../modules/webpack";
 import * as pluginManager from "./plugins";
 import * as themeManager from "./themes";
 
-const logger = Logger.coremod("Updater");
+const logger = Logger.manager("Updater");
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type UpdateSettings = {
@@ -64,6 +65,17 @@ const updaterState = init<Record<string, UpdateSettings>>("dev.replugged.Updater
 
 const completedUpdates = new Set<string>();
 
+function isUpToDate(local: string, remote: string): boolean {
+  if (local === remote) return true;
+
+  const localVersion = semver.clean(local) ?? semver.coerce(local)?.version ?? null;
+  const remoteVersion = semver.clean(remote) ?? semver.coerce(remote)?.version ?? null;
+
+  if (!localVersion || !remoteVersion) return false;
+
+  return semver.gte(localVersion, remoteVersion);
+}
+
 export function getUpdateState(id: string): UpdateSettings | null {
   const setting = updaterState.get(id);
   if (!setting) return null;
@@ -89,29 +101,25 @@ export function setUpdaterState(id: string, state: UpdateSettings): void {
   updaterState.set(id, state);
 }
 
-async function getAddonFromManager(
+function getAddonFromManager(
   id: string,
-): Promise<RepluggedPlugin | RepluggedTheme | RepluggedEntity | undefined> {
+): RepluggedPlugin | RepluggedTheme | RepluggedEntity | undefined {
   if (id === REPLUGGED_ID) {
     const version = window.RepluggedNative.getVersion();
     if (version === "dev") return undefined;
     return REPLUGGED_ENTITY;
   }
 
-  return pluginManager.plugins.get(id) || (await themeManager.get(id));
+  return pluginManager.plugins.get(id) || themeManager.get(id);
 }
 
 /**
  * @param id Entity ID to check updates for
  */
 export async function checkUpdate(id: string, verbose = true): Promise<void> {
-  const entity = await getAddonFromManager(id);
+  const entity = getAddonFromManager(id);
   if (!entity) {
     logger.error(`Entity ${id} not found`);
-    return;
-  }
-  if (!entity.path.endsWith(".asar")) {
-    if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
     return;
   }
 
@@ -136,7 +144,7 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
 
   const newVersion = res.manifest.version;
 
-  if (newVersion === version) {
+  if (isUpToDate(version, newVersion)) {
     if (verbose) logger.log(`Entity ${id} is up to date`);
     updaterState.set(id, {
       available: false,
@@ -159,13 +167,9 @@ export async function checkUpdate(id: string, verbose = true): Promise<void> {
 }
 
 export async function installUpdate(id: string, force = false, verbose = true): Promise<boolean> {
-  const entity = await getAddonFromManager(id);
+  const entity = getAddonFromManager(id);
   if (!entity) {
     logger.error(`Entity ${id} not found`);
-    return false;
-  }
-  if (!entity.path.endsWith(".asar")) {
-    if (verbose) logger.log(`Entity ${id} is not an ASAR file, cannot be updated`);
     return false;
   }
 
@@ -209,7 +213,7 @@ export async function installUpdate(id: string, force = false, verbose = true): 
 
 export async function checkAllUpdates(autoCheck = false, verbose = false): Promise<void> {
   const plugins = Array.from(pluginManager.plugins.values());
-  const themes = await themeManager.list();
+  const themes = themeManager.list();
 
   // For auto checking, only check for store updates since GitHub has a higher rate limit
   const filterFn = autoCheck
@@ -255,9 +259,12 @@ export function installAllUpdates(
 let clearActiveNotification: (() => void) | null = null;
 let didRun = false;
 const openSettingsModPromise = waitForProps<{
-  open: (id: string) => void;
-  updateAccount: unknown;
-}>("open", "updateAccount");
+  openUserSettings: (
+    target: string,
+    options?: Record<string, unknown>,
+    callback?: () => void,
+  ) => void;
+}>("openUserSettings");
 
 async function autoUpdateCheck(): Promise<void> {
   if (!updaterSettings.get("autoCheck")) return;
@@ -289,7 +296,7 @@ async function autoUpdateCheck(): Promise<void> {
   if (isAnUpdate && (areNewUpdates || isFirstRun)) {
     logger.log("Showing update notification");
 
-    const { open } = await openSettingsModPromise;
+    const { openUserSettings } = await openSettingsModPromise;
 
     clearActiveNotification?.();
     clearActiveNotification = notices.sendAnnouncement({
@@ -300,7 +307,7 @@ async function autoUpdateCheck(): Promise<void> {
         text: i18n.intl.formatToPlainString(t.REPLUGGED_VIEW_UPDATES, {
           count: newUpdateCount,
         }),
-        onClick: () => open("rp-updater"),
+        onClick: () => openUserSettings("replugged_updater_panel"),
       },
     });
   }

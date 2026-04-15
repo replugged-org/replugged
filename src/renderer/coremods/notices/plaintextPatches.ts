@@ -1,15 +1,13 @@
 import type { PlaintextPatch } from "src/types";
 
-const coremodStr = "replugged.coremods.coremods.notices";
-
 export default [
   {
     // Add the AnnouncementContainer to the AppView component children
     find: /hasNotice:\i,sidebarTheme:\i/,
     replacements: [
       {
-        match: /\i\.base,"data-fullscreen":\i,children:\[/,
-        replace: `$&${coremodStr}?.AnnouncementContainer?.(),`,
+        match: /\.\i,"data-fullscreen":\i,children:\[/,
+        replace: `$&$exports?.AnnouncementContainer?.(),`,
       },
     ],
   },

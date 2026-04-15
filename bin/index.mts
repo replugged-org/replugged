@@ -41,10 +41,12 @@ export const directory = process.cwd();
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(path.resolve(dirname, "package.json"), "utf-8"));
 
-const extraESBuildPath = path.join(directory, "esbuild.extra.mjs");
+const extraESBuildPaths = ["mjs", "mts"].map((ext) => path.join(directory, `esbuild.extra.${ext}`));
+
 const extraESBuildConfig = new Promise<(config: esbuild.BuildOptions) => esbuild.BuildOptions>(
   (resolve) => {
-    if (existsSync(extraESBuildPath))
+    const extraESBuildPath = extraESBuildPaths.find((p) => existsSync(p));
+    if (extraESBuildPath)
       resolve(
         import(pathToFileURL(extraESBuildPath).href).then((m) => m.default) as Promise<
           (config: esbuild.BuildOptions) => esbuild.BuildOptions
@@ -131,7 +133,7 @@ function tryPort(port: number): Promise<WebSocket | undefined> {
  * If a connection cannot be made or failed previously, none will be made and undefined will be returned.
  */
 async function connectWebsocket(): Promise<WebSocket | null | undefined> {
-  if (ws && ws.readyState === WebSocket.OPEN) {
+  if (ws?.readyState === WebSocket.OPEN) {
     return ws;
   }
   if (failed) return null;
@@ -194,7 +196,7 @@ async function reload(id: string): Promise<void> {
      * @returns
      */
     const onMessage = async (data: string): Promise<void> => {
-      const message = JSON.parse(data.toString());
+      const message = JSON.parse(data);
       if (message.nonce !== nonce) {
         return;
       }
@@ -301,7 +303,7 @@ const CONFIG_PATH = (() => {
       return path.join(process.env.HOME || "", ".config", REPLUGGED_FOLDER_NAME);
   }
 })();
-const CHROME_VERSION = "134";
+const CHROME_VERSION = "138";
 
 function buildAddons(buildFn: (args: Args) => Promise<void>, args: Args, type: AddonType): void {
   const addons = getAddonFolder(type);
@@ -315,7 +317,7 @@ async function buildPlugin({ watch, noInstall, production, noReload, addon }: Ar
   const manifestPath = addon
     ? path.join(directory, "plugins", addon, "manifest.json")
     : path.join(directory, "manifest.json");
-  const manifest: PluginManifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const manifest: PluginManifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const distPath = addon ? `dist/${manifest.id}` : "dist";
   const folderPath = addon ? path.join(directory, "plugins", addon) : directory;
 
@@ -446,15 +448,15 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
   const manifestPath = addon
     ? path.join(directory, "themes", addon, "manifest.json")
     : "manifest.json";
-  const manifest: ThemeManifest = JSON.parse(readFileSync(manifestPath.toString(), "utf-8"));
+  const manifest: ThemeManifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const distPath = addon ? `dist/${manifest.id}` : "dist";
   const folderPath = addon ? path.join(directory, "themes", addon) : directory;
 
   const main = existsSync(path.join(folderPath, manifest.main || "src/main.css"))
     ? path.join(folderPath, manifest.main || "src/main.css")
     : undefined;
-  const splash = existsSync(path.join(folderPath, manifest.splash || "src/main.css"))
-    ? path.join(folderPath, manifest.splash || "src/main.css")
+  const splash = existsSync(path.join(folderPath, manifest.splash || "src/splash.css"))
+    ? path.join(folderPath, manifest.splash || "src/splash.css")
     : undefined;
 
   const install: esbuild.Plugin = {
@@ -530,16 +532,38 @@ async function buildTheme({ watch, noInstall, production, noReload, addon }: Arg
 
   if (manifest.presets) {
     targets.push(
-      esbuild.context({
-        ...common,
-        entryPoints: manifest.presets.map((p) => p.path),
-        outdir: `${distPath}/presets`,
-      }),
+      ...manifest.presets.reduce((accumulator: Array<Promise<esbuild.BuildContext>>, preset) => {
+        const presetPath = `${distPath}/presets/${preset.id || preset.label.replaceAll(/[\s<>:"|?*]/g, "_")}`;
+        if (preset.main)
+          accumulator.push(
+            esbuild.context(
+              overwrites({
+                ...common,
+                entryPoints: [preset.main],
+                outfile: `${presetPath}/main.css`,
+              }),
+            ),
+          );
+        if (preset.splash)
+          accumulator.push(
+            esbuild.context(
+              overwrites({
+                ...common,
+                entryPoints: [preset.splash],
+                outfile: `${presetPath}/splash.css`,
+              }),
+            ),
+          );
+        return accumulator;
+      }, []),
     );
 
-    manifest.presets = manifest.presets.map((p) => ({
+    manifest.presets = manifest.presets.map(({ main, splash, label, id, ...p }) => ({
       ...p,
-      path: `presets/${path.basename(p.path).split(".")[0]}.css`,
+      label,
+      id: id || label.replaceAll(/[\s<>:"|?*]/g, "_"),
+      main: main && `main.css`,
+      splash: splash && `splash.css`,
     }));
   }
 

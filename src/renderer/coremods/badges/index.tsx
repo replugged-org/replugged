@@ -99,7 +99,7 @@ const badgeElements = [
 
 export async function start(): Promise<void> {
   const useBadgesMod = await waitForModule<Record<string, UseBadges>>(
-    filters.bySource(/:\i\.getBadges\(\)/),
+    filters.bySource(/\i\?\.getBadges\(\)\?\?\[\]/),
   );
   const useBadgesKey = getFunctionKeyBySource(useBadgesMod, "")!;
 
@@ -121,15 +121,19 @@ export async function start(): Promise<void> {
 
         try {
           const response = await fetch(`${generalSettings.get("apiUrl")}/api/v1/users/${userId}`);
-          const body = await response.json();
 
-          const badges: APIRepluggedBadges =
-            response.status === 200 || response.status === 404 ? body.badges || {} : {};
+          if (!response.ok) {
+            logger.error(`Failed to fetch badges`, response.statusText);
+            return;
+          }
+
+          const body = await response.json();
+          const badges: APIRepluggedBadges = body.badges || {};
           cache.set(userId, { badges, lastFetch: Date.now() });
 
           setBadgeCache(badges);
         } catch (error) {
-          logger.error("Failed to fetch badges:", error);
+          logger.error("Failed to fetch badges", error);
         }
       }
 
@@ -173,7 +177,7 @@ export async function start(): Promise<void> {
   });
 
   const userProfileConstantsMod = await waitForModule<Record<string, GetBadgeAsset>>(
-    filters.bySource(/concat\(\i,"\/badge-icons\/"/),
+    filters.bySource(/https:\/\/\${\i}\/badge-icons\/\${\i}\.png/),
   );
   const getBadgeAssetKey = getFunctionKeyBySource(userProfileConstantsMod, "badge-icons")!;
 

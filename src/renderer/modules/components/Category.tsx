@@ -1,17 +1,11 @@
 import { React, classNames } from "@common";
-import { FormControl } from ".";
+import { Field } from ".";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
 import "./Category.css";
 
-export function ChevronIcon({
-  isOpen,
-  className,
-}: {
-  isOpen: boolean;
-  className?: string;
-}): React.ReactElement {
+export function ChevronIcon({ isOpen }: { isOpen: boolean }): React.ReactElement {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,18 +13,17 @@ export function ChevronIcon({
       height={24}
       fill="none"
       viewBox="0 0 24 24"
-      className={classNames("replugged-category-icon", className)}
-      style={{ transform: isOpen ? "rotate(180deg)" : undefined }}>
+      className="replugged-category-icon"
+      style={{ transform: isOpen ? "rotate(-180deg)" : undefined }}>
       <path
-        fill="var(--header-primary)"
-        d="M5.3 14.7a1 1 0 0 0 1.4 0L12 9.42l5.3 5.3a1 1 0 0 0 1.4-1.42l-6-6a1 1 0 0 0-1.4 0l-6 6a1 1 0 0 0 0 1.42Z"
+        fill="var(--text-strong)"
+        d="M5.3 9.3a1 1 0 0 1 1.4 0l5.3 5.29 5.3-5.3a1 1 0 1 1 1.4 1.42l-6 6a1 1 0 0 1-1.4 0l-6-6a1 1 0 0 1 0-1.42Z"
       />
     </svg>
   );
 }
 
-interface CategoryProps
-  extends Pick<Design.FormControlProps, "label" | "description" | "disabled"> {
+interface CategoryProps extends Pick<Design.FieldProps, "label" | "description" | "disabled"> {
   open?: boolean;
   onChange?: () => void;
 }
@@ -56,13 +49,17 @@ function Category({
 
   return (
     <div>
-      <FormControl label={label} description={description} disabled={disabled} layout="horizontal">
+      <Field
+        label={label}
+        description={description}
+        disabled={disabled}
+        layout="horizontal"
+        interactiveLabel>
         {({ controlId, describedById, labelId }) => (
           <label
             htmlFor={controlId}
-            className={classNames({
+            className={classNames("replugged-category-input", {
               "replugged-category-disabled": disabled,
-              "replugged-category-input": !disabled,
             })}>
             <input
               id={controlId}
@@ -74,14 +71,11 @@ function Category({
               disabled={disabled}
               className="replugged-category-hidden-input"
             />
-            <ChevronIcon
-              isOpen={isOpen}
-              className={classNames({ "replugged-category-disabled": disabled })}
-            />
+            <ChevronIcon isOpen={isOpen} />
           </label>
         )}
-      </FormControl>
-      {isOpen && !disabled && <div className="replugged-category-content">{children}</div>}
+      </Field>
+      {isOpen && <div className="replugged-category-content">{children}</div>}
     </div>
   );
 }
