@@ -280,8 +280,8 @@ async function injectProfileFetch(): Promise<void> {
   const fetchProfileKey = getFunctionKeyBySource(userActionCreatorsMod, "fetchProfile")!;
 
   injector.instead(userActionCreatorsMod, fetchProfileKey, (args, orig) => {
-    if (args[0] === REPLUGGED_CLYDE_ID) return;
-    return orig(...args);
+    if (args[0] === REPLUGGED_CLYDE_ID) return Promise.resolve();
+    return orig;
   });
 }
 
@@ -293,7 +293,7 @@ async function injectCommandAuthorization(): Promise<void> {
 
   injector.instead(commandAuthorizationMod, authorizationKey, (args, orig) => {
     if (args[0].applicationId === "replugged") return Promise.resolve({ isAuthorized: true });
-    return orig(...args);
+    return orig;
   });
 }
 

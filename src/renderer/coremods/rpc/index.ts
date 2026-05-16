@@ -37,7 +37,7 @@ export async function start(): Promise<void> {
       throw new Error("Invalid Client ID");
     }
 
-    return fn(...args);
+    return fn;
   });
 }
 export function stop(): void {

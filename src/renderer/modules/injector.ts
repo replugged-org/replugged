@@ -35,11 +35,12 @@ export type BeforeCallback<A extends unknown[] = unknown[], I = ObjectExports> =
  * @param self The module the injected function is on
  * @returns New result to return
  */
-export type InsteadCallback<A extends unknown[] = unknown[], R = unknown, I = ObjectExports> = (
-  args: A,
-  orig: (...args: A) => R,
-  self: I,
-) => R | void;
+export type InsteadCallback<
+  A extends unknown[] = unknown[],
+  R = unknown,
+  I = ObjectExports,
+  T extends AnyFunction = (...args: A) => R,
+> = (args: A, orig: T, self: I) => T | R | void;
 
 /**
  * Code to run after the original function
@@ -113,25 +114,53 @@ function replaceMethod<T extends Record<U, AnyFunction>, U extends keyof T & str
 
       let res: unknown;
 
+      const promises: Array<Promise<unknown>> = [];
+      let insteadPromise: undefined | Promise<unknown>;
+
       if (injectionsForProp.instead.size === 0) {
         res = originalFunc.apply(this, args);
       } else {
+        let newFunc: AnyFunction = originalFunc;
         for (const i of injectionsForProp.instead) {
-          const newResult = i.call(this, args, originalFunc, this);
+          const newResult = i.call(this, args, newFunc, this);
+          const processInstead = (newResult: unknown): void => {
+            if (typeof newResult === "function") newFunc = newResult as AnyFunction;
+            else res = newResult;
+          };
+
+          if (newResult !== null && newResult !== undefined) {
+            // eslint-disable-next-line @typescript-eslint/no-base-to-string
+            if (newResult.toString().endsWith("Promise]"))
+              promises.push(
+                (newResult as Promise<unknown>).then((promiseResult) => {
+                  processInstead(promiseResult);
+                }),
+              );
+            else processInstead(newResult);
+          }
+        }
+
+        const setResult = (): void => {
+          res ??= newFunc.apply(this, args);
+        };
+
+        if (promises.length) insteadPromise = Promise.allSettled(promises).then(setResult);
+        else setResult();
+      }
+
+      const processAfter = (): unknown => {
+        for (const a of injectionsForProp.after) {
+          const newResult = a.call(this, args, res, this);
           if (newResult !== void 0) {
             res = newResult;
           }
         }
-      }
+        return res;
+      };
 
-      for (const a of injectionsForProp.after) {
-        const newResult = a.call(this, args, res, this);
-        if (newResult !== void 0) {
-          res = newResult;
-        }
-      }
+      if (promises.length && insteadPromise) return insteadPromise.then(processAfter);
 
-      return res;
+      return processAfter();
     };
 
     Object.defineProperties(obj[funcName], Object.getOwnPropertyDescriptors(originalFunc));
