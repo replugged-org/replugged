@@ -24,12 +24,16 @@ export default [
     replacements: [{ match: /updateCrashReporter\(\i\){/, replace: "$&return;" }],
   },
   {
-    find: /this\._metrics\.push\(.\),/,
+    find: /this\._metrics\.push\(\i\),/,
     replacements: [
       {
-        match: /this\._metrics\.push\(.\),/,
+        match: /this\._metrics\.push\(\i\),/g,
         replace: "",
       },
     ],
+  },
+  {
+    find: "BdApi||null",
+    replacements: [{ match: /let \i=window;/, replace: "return false;$&" }],
   },
 ] as PlaintextPatch[];

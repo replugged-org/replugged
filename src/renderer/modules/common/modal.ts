@@ -1,5 +1,4 @@
-import { getFunctionBySource, waitForProps } from "../webpack";
-import components from "./components";
+import { waitForProps } from "../webpack";
 
 import type {
   Close,
@@ -7,7 +6,10 @@ import type {
   Show,
   ShowProps,
 } from "discord-client-types/discord_app/actions/web/AlertActionCreators";
-import type * as Design from "discord-client-types/discord_app/design/web";
+import type {
+  CloseModal,
+  OpenModal,
+} from "discord-client-types/discord_app/design/components/Modal/web/ModalAPI";
 
 interface AlertActionCreators {
   show: Show;
@@ -15,11 +17,17 @@ interface AlertActionCreators {
   confirm: Confirm;
 }
 
+interface ModalAPI {
+  openModal: OpenModal;
+  closeModal: CloseModal;
+}
+
 const { show } = await waitForProps<AlertActionCreators>("show", "close");
+const { openModal, closeModal } = await waitForProps<ModalAPI>("openModal", "closeModal");
 
 export default {
-  openModal: getFunctionBySource<Design.OpenModal>(components, "?.stackNextByDefault===")!,
-  closeModal: getFunctionBySource<Design.CloseModal>(components, "onCloseCallback&&")!,
+  openModal,
+  closeModal,
   alert: show,
   confirm: (props: ShowProps) =>
     new Promise<boolean | null>((resolve) => {

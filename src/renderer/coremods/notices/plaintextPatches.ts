@@ -7,7 +7,7 @@ export default [
     replacements: [
       {
         match: /\.\i,"data-fullscreen":\i,children:\[/,
-        replace: `$&$exports?.AnnouncementContainer?.(),`,
+        replace: `$&$exports?.renderAnnouncementContainer?.(),`,
       },
     ],
   },

@@ -48,10 +48,6 @@ import type { API } from "./api";
 export let api: API;
 importTimeout("api", import("./api"), (mod) => (api = mod.default));
 
-import type Components from "./components";
-export let components: typeof Components;
-importTimeout("components", import("./components"), (mod) => (components = mod.default));
-
 import type * as Constants from "./constants";
 export let constants: typeof Constants;
 importTimeout("constants", import("./constants"), (mod) => (constants = mod));

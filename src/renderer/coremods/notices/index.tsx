@@ -1,4 +1,5 @@
 import { React } from "@common";
+import { ErrorBoundary } from "@components";
 import { notices } from "@replugged";
 import type { RepluggedAnnouncement } from "src/types";
 import NoticeMod from "./noticeMod";
@@ -39,13 +40,14 @@ function Announcement({
   );
 }
 
-export function AnnouncementContainer(): React.ReactElement | null {
-  const [announcement, setAnnouncement] = React.useState<RepluggedAnnouncement | undefined>(
-    undefined,
-  );
+function AnnouncementContainer(): React.ReactElement | null {
+  const [announcement, setAnnouncement] = React.useState<RepluggedAnnouncement | null>(null);
 
   React.useEffect(() => {
-    const announcementUpdate = (): void => setAnnouncement(notices.getAnnouncement());
+    const announcementUpdate = (): void => {
+      const data = notices.getAnnouncement();
+      setAnnouncement(data ?? null);
+    };
 
     notices.addEventListener("rpAnnouncementUpdate", announcementUpdate);
     announcementUpdate();
@@ -55,5 +57,15 @@ export function AnnouncementContainer(): React.ReactElement | null {
     };
   }, []);
 
-  return announcement ? <Announcement {...announcement} /> : null;
+  if (!announcement) return null;
+
+  return <Announcement {...announcement} />;
+}
+
+export function renderAnnouncementContainer(): React.ReactElement {
+  return (
+    <ErrorBoundary fallback={null}>
+      <AnnouncementContainer />
+    </ErrorBoundary>
+  );
 }

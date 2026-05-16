@@ -1,6 +1,6 @@
 import { parser } from "@common";
+import { filters, getComponentBySource, waitForModule } from "@webpack";
 import type React from "react";
-import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
@@ -14,7 +14,10 @@ interface CustomTextProps extends Design.TextProps {
 export type CustomTextType = Design.Text &
   Record<"Normal" | "H1" | "H2" | "H3" | "H4" | "Eyebrow", React.FC<CustomTextProps>>;
 
-const { Text } = components;
+const textStr = '"data-text-variant":';
+const mod = await waitForModule(filters.bySource(textStr));
+
+const Text = getComponentBySource<Design.Text>(mod, textStr)!;
 
 function TextWithDefaultProps(defaultProps: CustomTextProps) {
   return (props: CustomTextProps) => {

@@ -1,13 +1,10 @@
-import { getFunctionBySource } from "@webpack";
+import { filters, waitForModule } from "@webpack";
 import type React from "react";
-import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-const Slider = getFunctionBySource<typeof Design.Slider>(
-  components,
-  /initialValue!==\i\.initialValueProp/,
-)!;
+const sliderRegex = /initialValue!==\i\.initialValueProp/;
+const Slider = await waitForModule<typeof Design.Slider>(filters.bySource(sliderRegex));
 
 interface CustomSliderProps extends Design.SliderProps {
   value?: number;

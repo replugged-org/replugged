@@ -1,6 +1,8 @@
-import { getFunctionBySource } from "@webpack";
-import components from "../common/components";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-export default getFunctionBySource<Design.Field>(components, /layout:\i="vertical",/)!;
+const fieldRegex = /layout:\i="vertical",/;
+const mod = await waitForModule(filters.bySource(fieldRegex));
+
+export default getFunctionBySource<Design.Field>(mod, fieldRegex)!;

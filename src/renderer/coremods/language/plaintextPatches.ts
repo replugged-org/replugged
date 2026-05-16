@@ -2,11 +2,11 @@ import type { PlaintextPatch } from "src/types";
 
 export default [
   {
-    find: ".LANGUAGE_AND_TIME_PANEL,{section:",
+    find: ".LANGUAGE_AND_TIME_PANEL)}",
     replacements: [
       {
-        match: /value:(\i),options/,
-        replace: `helperText:$exports?.getFormattedPercentage($1),$&`,
+        match: /(LANGUAGE_AND_TIME_PANEL\)}.{0,150})(value:(\i),options)/,
+        replace: `$1helperText:$exports?.getFormattedPercentage($3),$2`,
       },
     ],
   },

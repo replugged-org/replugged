@@ -1,5 +1,4 @@
-import { getExportsForProps, getFunctionBySource } from "@webpack";
-import components from "../common/components";
+import { filters, getExportsForProps, getFunctionBySource, waitForModule } from "@webpack";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
@@ -9,8 +8,11 @@ export type CustomHelpMessage = Design.HelpMessage & {
   HelpMessageTypes: typeof Design.HelpMessageTypes;
 };
 
-const HelpMessage = getFunctionBySource<CustomHelpMessage>(components, /messageType:\i,action/)!;
-const HelpMessageTypes = getExportsForProps<typeof Design.HelpMessageTypes>(components, [
+const helpMessageRegex = /messageType:\i,action/;
+const mod = await waitForModule(filters.bySource(helpMessageRegex));
+
+const HelpMessage = getFunctionBySource<CustomHelpMessage>(mod, /messageType:\i,action/)!;
+const HelpMessageTypes = getExportsForProps<typeof Design.HelpMessageTypes>(mod, [
   "INFO",
   "ERROR",
 ])!;

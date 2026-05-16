@@ -1,12 +1,7 @@
-import { classNames, components, users } from "@common";
+import { classNames, users } from "@common";
+import { TabBar } from "@components";
 import { Injector, Logger } from "@replugged";
-import {
-  filters,
-  getFunctionBySource,
-  getFunctionKeyBySource,
-  waitForModule,
-  waitForStore,
-} from "@webpack";
+import { filters, getFunctionKeyBySource, waitForModule, waitForStore } from "@webpack";
 import type { Message } from "discord-types/general";
 import { generalSettings } from "src/renderer/managers/settings";
 import type { Store } from "src/renderer/modules/common/flux";
@@ -18,12 +13,6 @@ const injector = new Injector();
 const logger = Logger.coremod("ThemeUtils");
 
 function injectTabBarItemId(): void {
-  const TabBar = getFunctionBySource<Design.TabBar>(components, "this.tabBarRef");
-  if (!TabBar) {
-    logger.error("Failed to find TabBar component");
-    return;
-  }
-
   injector.after(
     TabBar.Item.prototype,
     "render",

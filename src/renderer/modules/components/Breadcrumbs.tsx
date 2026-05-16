@@ -1,9 +1,7 @@
-import { getFunctionBySource } from "@webpack";
-import components from "../common/components";
+import { filters, waitForModule } from "@webpack";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-export default getFunctionBySource<typeof Design.Breadcrumbs>(
-  components,
-  ".map(this.renderBreadcrumb)",
-)!;
+export default await waitForModule<typeof Design.Breadcrumbs>(
+  filters.bySource(".map(this.renderBreadcrumb)"),
+);

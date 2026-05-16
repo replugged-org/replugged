@@ -1,9 +1,11 @@
-import { getFunctionBySource } from "@webpack";
-import components from "../common/components";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-const Switch = getFunctionBySource<Design.Switch>(components, /{switchIconsEnabled:\i}=\i\.use/)!;
+const switchRegex = /{switchIconsEnabled:\i}=\i\.use/;
+const mod = await waitForModule(filters.bySource(switchRegex));
+
+const Switch = getFunctionBySource<Design.Switch>(mod, switchRegex)!;
 
 type CustomSwitchProps = Design.SwitchProps & {
   value?: boolean;

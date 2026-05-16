@@ -1,6 +1,8 @@
-import { getFunctionBySource } from "@webpack";
-import components from "../common/components";
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-export default getFunctionBySource<Design.TextArea>(components, 'mana-component":"text-area"')!;
+const textAreaStr = 'mana-component":"text-area"';
+const mod = await waitForModule(filters.bySource(textAreaStr));
+
+export default getFunctionBySource<Design.TextArea>(mod, textAreaStr)!;

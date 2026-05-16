@@ -3,6 +3,7 @@ import { Logger } from "../modules/logger";
 import { patchPlaintext } from "../modules/webpack/plaintext-patch";
 
 import badgesPlaintext from "../coremods/badges/plaintextPatches";
+import bundlerFixesPlaintext from "../coremods/bundlerFixes/plaintextPatches";
 import commandsPlaintext from "../coremods/commands/plaintextPatches";
 import contextMenuPlaintext from "../coremods/contextMenu/plaintextPatches";
 import experimentsPlaintext from "../coremods/experiments/plaintextPatches";
@@ -34,7 +35,6 @@ export namespace coremods {
   export let language: Coremod;
   export let messagePopover: Coremod;
   export let notices: Coremod;
-  export let noTrack: Coremod;
   export let noXSSDefenses: Coremod;
   export let reactErrorDecoder: Coremod;
   export let rpc: Coremod;
@@ -62,7 +62,6 @@ export async function startAll(): Promise<void> {
   coremods.language = await import("../coremods/language");
   coremods.messagePopover = await import("../coremods/messagePopover");
   coremods.notices = await import("../coremods/notices");
-  coremods.noTrack = await import("../coremods/noTrack");
   coremods.reactErrorDecoder = await import("../coremods/reactErrorDecoder");
   coremods.rpc = await import("../coremods/rpc");
   coremods.settings = await import("../coremods/settings");
@@ -88,6 +87,7 @@ export async function stopAll(): Promise<void> {
 export function runPlaintextPatches(): void {
   [
     { patch: badgesPlaintext, name: "replugged.coremod.badges" },
+    { patch: bundlerFixesPlaintext, name: "replugged.coremod.bundlerFixes" },
     { patch: commandsPlaintext, name: "replugged.coremod.commands" },
     { patch: contextMenuPlaintext, name: "replugged.coremod.contextMenu" },
     { patch: experimentsPlaintext, name: "replugged.coremod.experiments" },

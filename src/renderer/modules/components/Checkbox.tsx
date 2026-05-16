@@ -1,9 +1,12 @@
+import { filters, getFunctionBySource, waitForModule } from "@webpack";
 import type React from "react";
-import components from "../common/components";
 
 import type * as Design from "discord-client-types/discord_app/design/web";
 
-const { Checkbox } = components;
+const checkboxRegex = /labelType:\i="primary",description:/;
+const mod = await waitForModule(filters.bySource(checkboxRegex));
+
+const Checkbox = getFunctionBySource<Design.Checkbox>(mod, "mana-toggle-inputs")!;
 
 type CustomCheckboxProps = Design.CheckboxProps & {
   value?: boolean;

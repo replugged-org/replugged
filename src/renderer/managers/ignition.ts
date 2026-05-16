@@ -19,14 +19,7 @@ export async function start(): Promise<void> {
 
   let started = false;
   await Promise.race([
-    Promise.allSettled([
-      coremods.startAll(),
-      plugins.startAll(),
-      Promise.resolve().then(() => {
-        themes.loadMissing();
-        themes.loadAll();
-      }),
-    ]),
+    Promise.allSettled([coremods.startAll(), plugins.startAll()]),
     // Failsafe to ensure that we always start Replugged
     new Promise((resolve) =>
       setTimeout(() => {
@@ -79,6 +72,17 @@ export function ignite(): void {
   coremods.runPlaintextPatches();
   plugins.loadAll();
   plugins.runPlaintextPatches();
+
+  // Load themes before waiting for common modules so that theme styles are applied as early as possible.
+  window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+      themes.loadMissing();
+      themes.loadAll();
+    },
+    { once: true },
+  );
+
   // At this point, Discord's code should run.
   // Wait for the designated common modules to load before continuing.
   void Promise.all([commonReady(), componentsReady()]).then(start);

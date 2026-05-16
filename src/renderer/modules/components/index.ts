@@ -18,7 +18,7 @@ function importTimeout<T extends ModuleExports>(
       new Promise<void>((res, rej) => {
         const timeout = setTimeout(() => {
           error("Components", name, void 0, `Could not find component "${name}"`);
-          rej(new Error(`Module not found: "${name}`));
+          rej(new Error(`Module not found: "${name}"`));
         }, 10_000);
         void moduleImport
           .then((mod) => {
@@ -49,7 +49,7 @@ export let Clickable: typeof Design.Clickable;
 importTimeout("Clickable", import("./Clickable"), (mod) => (Clickable = mod.default));
 
 export let ColorPicker: Design.ColorPicker;
-importTimeout("ColorPicker", import("./ColorPickerItem"), (mod) => (ColorPicker = mod.ColorPicker));
+importTimeout("ColorPicker", import("./ColorPicker"), (mod) => (ColorPicker = mod.default));
 
 export let Divider: Design.Divider;
 importTimeout("Divider", import("./Divider"), (mod) => (Divider = mod.default));
@@ -100,15 +100,6 @@ import type { CustomCheckboxType } from "./Checkbox";
 export type { CustomCheckboxType };
 export let Checkbox: CustomCheckboxType;
 importTimeout("Checkbox", import("./Checkbox"), (mod) => (Checkbox = mod.default));
-
-import type { ColorPickerItemType } from "./ColorPickerItem";
-export type { ColorPickerItemType };
-export let ColorPickerItem: ColorPickerItemType;
-importTimeout(
-  "ColorPickerItem",
-  import("./ColorPickerItem"),
-  (mod) => (ColorPickerItem = mod.default),
-);
 
 import type { CustomContextMenuType } from "./Menu";
 export type { CustomContextMenuType };

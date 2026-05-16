@@ -1,5 +1,4 @@
 import { filters, getFunctionBySource, waitForModule, waitForProps } from "@webpack";
-import components from "../common/components";
 import { sourceStrings } from "../webpack/patch-load";
 
 import type { MenuItemColors } from "discord-client-types/discord_app/design/components/Menu/web/MenuConstants";
@@ -30,27 +29,28 @@ const componentMap: Record<
   customitem: "MenuItem",
 } as const;
 
-const menuConstantsMod = await waitForProps<MenuItemColors>(["brand", "premium-gradient"]);
-
-const rawMod = await waitForModule(filters.bySource("menuitemcheckbox"), { raw: true });
-const source = sourceStrings[rawMod?.id].matchAll(
-  /if\(\w+\.type===\w+\.(\w+)(?:\.\w+)?\).+?type:"(.+?)"/gs,
+const rawMod = await waitForModule(filters.bySource('role:"menuitemcheckbox"'), { raw: true });
+const matches = Array.from(
+  sourceStrings[rawMod?.id]?.matchAll(/if\(\w+\.type===\w+\.(\w+)(?:\.\w+)?\).+?type:"(.+?)"/gs) ??
+    [],
 );
 
-const menuComponents = Object.entries(components as Record<string, () => null>)
-  .filter(([_, m]) => /^function.+\(e?\){(\s+)?return null(\s+)?}$/.test(m?.toString?.()))
-  .reduce<Record<string, () => null>>((components, [name, component]) => {
-    components[name.substring(0, 2)] = component;
-    return components;
-  }, {});
+const menuComponentsMod = await waitForProps<Record<string, () => null>>(
+  matches.map(([, identifier]) => identifier),
+  { raw: false },
+);
+
+const menuStr = "Menu API only allows";
+const mod = await waitForModule(filters.bySource(menuStr));
 
 const Menu = {
-  ItemColors: menuConstantsMod,
-  ContextMenu: getFunctionBySource(components, "getContainerProps"),
+  ContextMenu: getFunctionBySource(mod, menuStr),
 } as CustomContextMenuType;
 
-for (const [, identifier, type] of source) {
-  Menu[componentMap[type]] = menuComponents[identifier];
+for (const [, identifier, type] of matches) {
+  if (componentMap[type]) {
+    Menu[componentMap[type]] = menuComponentsMod[identifier];
+  }
 }
 
 export default Menu;
