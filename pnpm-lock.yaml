@@ -58,7 +58,7 @@ importers:
         version: 7.3.1
       ws:
         specifier: ^8.20.0
-        version: 8.20.0
+        version: 8.20.1
       yargs:
         specifier: ^18.0.0
         version: 18.0.0
@@ -170,8 +170,8 @@ packages:
     resolution: {integrity: sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q==}
     engines: {node: '>=6.9.0'}
 
-  '@bufbuild/protobuf@2.11.0':
-    resolution: {integrity: sha512-sBXGT13cpmPR5BMgHE6UEEfEaShh5Ror6rfN3yEK5si7QVrtZg8LEPQb0VVhiLRUslD2yLnXtnRzG035J/mZXQ==}
+  '@bufbuild/protobuf@2.12.0':
+    resolution: {integrity: sha512-B/XlCaFIP8LOwzo+bz5uFzATYokcwCKQcghqnlfwSmM5eX/qTkvDBnDPs+gXtX/RyjxJ4DRikECcPJbyALA8FA==}
 
   '@codemirror/autocomplete@6.20.1':
     resolution: {integrity: sha512-1cvg3Vz1dSSToCNlJfRA2WSI4ht3K+WplO0UMOgmUYPivCyy2oueZY6Lx7M9wThm7SDUBViRmuT+OG/i8+ON9A==}
@@ -2278,6 +2278,9 @@ packages:
   immutable@5.1.5:
     resolution: {integrity: sha512-t7xcm2siw+hlUM68I+UEOK+z84RzmN59as9DZ7P1l0994DKUWV7UXBMQZVxaoMSRQ+PBZbHCOoBt7a2wxOMt+A==}
 
+  immutable@5.1.6:
+    resolution: {integrity: sha512-q1swsS8K7L8usSHuOqF2TAoCCkonYz0SG38wLAggaa4Wml70zixIvt2ql4coQ2C2B3hTjltJry4r6bULwgAXLQ==}
+
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
@@ -3694,8 +3697,8 @@ packages:
     resolution: {integrity: sha512-42AtmgqjV+X1VpdOfyTGOYRi0/zsoLqtXQckTmqTeybT+BDIbM/Guxo7x3pE2vtpr1ok6xRqM9OpBe+Jyoqyww==}
     engines: {node: '>=18'}
 
-  ws@8.20.0:
-    resolution: {integrity: sha512-sAt8BhgNbzCtgGbt2OxmpuryO63ZoDk/sqaB/znQm94T4fCEsy/yV+7CdC1kJhOU9lboAEU7R3kquuycDoibVA==}
+  ws@8.20.1:
+    resolution: {integrity: sha512-It4dO0K5v//JtTXuPkfEOaI3uUN87iYPnqo/ZzqCoG3g8uhA66QUMs/SrM0YK7/NAu+r4LMh/9dq2A7k+rHs+w==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -3752,7 +3755,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.28.5': {}
 
-  '@bufbuild/protobuf@2.11.0': {}
+  '@bufbuild/protobuf@2.12.0': {}
 
   '@codemirror/autocomplete@6.20.1':
     dependencies:
@@ -5959,6 +5962,8 @@ snapshots:
 
   immutable@5.1.5: {}
 
+  immutable@5.1.6: {}
+
   import-fresh@3.3.1:
     dependencies:
       parent-module: 1.0.1
@@ -6928,9 +6933,9 @@ snapshots:
 
   sass-embedded@1.97.3:
     dependencies:
-      '@bufbuild/protobuf': 2.11.0
+      '@bufbuild/protobuf': 2.12.0
       colorjs.io: 0.5.2
-      immutable: 5.1.5
+      immutable: 5.1.6
       rxjs: 7.8.2
       supports-color: 8.1.1
       sync-child-process: 1.0.2
@@ -6958,7 +6963,7 @@ snapshots:
   sass@1.97.3:
     dependencies:
       chokidar: 4.0.3
-      immutable: 5.1.5
+      immutable: 5.1.6
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.6
@@ -7459,7 +7464,7 @@ snapshots:
       string-width: 7.2.0
       strip-ansi: 7.2.0
 
-  ws@8.20.0: {}
+  ws@8.20.1: {}
 
   wsl-utils@0.3.1:
     dependencies:
