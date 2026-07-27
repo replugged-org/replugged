@@ -88,6 +88,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
       `${flatpakDir}.Discord/current/active/files/discord`,
       `${homeFlatpakDir}.Discord/current/active/files/discord`,
       `${homedir}/.local/bin/Discord`,
+      `${homedir}/.config/discord`,
     ],
     ptb: [
       "/usr/share/discord-ptb",
@@ -96,6 +97,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
       "/opt/discord-ptb",
       "/opt/DiscordPTB",
       `${homedir}/.local/bin/DiscordPTB`,
+      `${homedir}/.config/discordptb`,
     ],
     canary: [
       "/usr/share/discord-canary",
@@ -106,6 +108,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
       `${flatpakDir}.DiscordCanary/current/active/files/discord-canary`,
       `${homeFlatpakDir}.DiscordCanary/current/active/files/discord-canary`,
       `${homedir}/.local/bin/DiscordCanary`, // https://github.com/powercord-org/powercord/pull/370
+      `${homedir}/.config/discordcanary`,
     ],
     dev: [
       "/usr/share/discord-development",
@@ -114,6 +117,7 @@ const findAppDir = async (platform: DiscordPlatform): Promise<string> => {
       "/opt/discord-development",
       "/opt/DiscordDevelopment",
       `${homedir}/.local/bin/DiscordDevelopment`,
+      `${homedir}/.config/discorddevelopment`,
     ],
   };
 
