@@ -1,7 +1,7 @@
 import electron, { Menu, app, dialog, net, protocol, session } from "electron";
 import { dirname, join } from "path";
+import { existsSync } from "fs";
 import { CONFIG_PATHS } from "src/util.mjs";
-import type { PackageJson } from "type-fest";
 import { pathToFileURL } from "url";
 import type { BackgroundMaterialType, RepluggedWebContents, VibrancyType } from "../types";
 import { getAddonInfo, getRepluggedVersion, installAddon } from "./ipc/installer";
@@ -9,9 +9,16 @@ import { getAllSettings, getSetting } from "./ipc/settings";
 import patchAutoStartUpdate from "./winUpdaterPatch";
 
 const electronPath = require.resolve("electron");
-const discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
-const discordPackage: PackageJson = require(join(discordPath, "package.json"));
-require.main!.filename = join(discordPath, discordPackage.main!);
+
+// This is for backwards compatibility, to be removed later.
+let discordPath = join(dirname(require.main!.filename), "..", "app.orig.asar");
+if (existsSync(discordPath)) {
+  const discordPackage: Record<string, string> = require(join(discordPath, "package.json"));
+  require.main!.filename = join(discordPath, discordPackage.main);
+} else {
+  // If using newer replugged file system
+  discordPath = join(dirname(require.main!.filename), "index.orig.js");
+}
 
 patchAutoStartUpdate();
 
