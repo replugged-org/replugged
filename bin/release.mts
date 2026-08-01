@@ -12,7 +12,7 @@ import { isMonoRepo, selectAddon } from "./mono.mjs";
 /**
  * Prompt a confirmation message and exit if the user does not confirm.
  */
-async function confirmOrExit(message: string, initial = false): Promise<void> {
+async function confirmOrExit(message: string, initial = false, cancel = onCancel): Promise<void> {
   const { doContinue } = await prompts(
     {
       type: "confirm",
@@ -20,7 +20,7 @@ async function confirmOrExit(message: string, initial = false): Promise<void> {
       message: chalk.yellow(message),
       initial,
     },
-    { onCancel },
+    { onCancel: cancel },
   );
 
   if (!doContinue) {
@@ -32,7 +32,7 @@ async function confirmOrExit(message: string, initial = false): Promise<void> {
 /**
  * Run a command and return the output.
  */
-function runCommand(command: string, exit = true): string {
+function runCommand(command: string, exit = true, onFail?: () => void): string {
   try {
     const result = execSync(command, {
       encoding: "utf8",
@@ -40,6 +40,7 @@ function runCommand(command: string, exit = true): string {
     });
     return result;
   } catch (error) {
+    onFail?.();
     // @ts-expect-error not unknown
     if (!exit) return error.stdout;
     // @ts-expect-error not unknown
@@ -194,17 +195,29 @@ export async function release(): Promise<void> {
     }
   }
 
-  // Update manifest.json and package.json
-  manifest.version = nextVersion!;
-  if (packageJson) packageJson.version = nextVersion;
+  const updateVersion = (version: string): void => {
+    // Update manifest.json and package.json
+    manifest.version = version!;
+    if (packageJson) packageJson.version = version;
 
-  // Write manifest.json and package.json (indent with 2 spaces and keep trailing newline)
-  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-  if (packageJson) writeFileSync(packagePath!, `${JSON.stringify(packageJson, null, 2)}\n`);
+    // Write manifest.json and package.json (indent with 2 spaces and keep trailing newline)
+    writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+    if (packageJson) writeFileSync(packagePath!, `${JSON.stringify(packageJson, null, 2)}\n`);
+  };
+
+  const revertAndCancel = (): void => {
+    updateVersion(version);
+    onCancel();
+  };
+
+  const onFail = (): void => updateVersion(version);
+
+  updateVersion(nextVersion!);
 
   // Stage changes
-  if (isMonoRepo) runCommand(`git add ${path.join(addon!.type, addon!.name, "manifest.json")}`);
-  else runCommand("git add manifest.json package.json");
+  if (isMonoRepo)
+    runCommand(`git add ${path.join(addon!.type, addon!.name, "manifest.json")}`, true, onFail);
+  else runCommand("git add manifest.json package.json", true, onFail);
 
   // Commit changes
   const { message } = await prompts(
@@ -221,11 +234,11 @@ export async function release(): Promise<void> {
         return true;
       },
     },
-    { onCancel },
+    { onCancel: revertAndCancel },
   );
 
   // Pick tag name
-  const existingTags = runCommand("git tag --list").split("\n").filter(Boolean);
+  const existingTags = runCommand("git tag --list", true, onFail).split("\n").filter(Boolean);
 
   const { tagName } = await prompts(
     {
@@ -243,13 +256,16 @@ export async function release(): Promise<void> {
         return true;
       },
     },
-    { onCancel },
+    { onCancel: revertAndCancel },
   );
 
-  const hasSigningKey = Boolean(runCommand("git config --get user.signingkey", false).trim());
+  const hasSigningKey = Boolean(
+    runCommand("git config --get user.signingkey", false, onFail).trim(),
+  );
   const commitSigningEnabled =
-    runCommand("git config --get commit.gpgsign", false).trim() === "true";
-  const tagSigningEnabled = runCommand("git config --get tag.gpgsign", false).trim() === "true";
+    runCommand("git config --get commit.gpgsign", false, onFail).trim() === "true";
+  const tagSigningEnabled =
+    runCommand("git config --get tag.gpgsign", false, onFail).trim() === "true";
 
   let sign = false;
   if (hasSigningKey && (!commitSigningEnabled || !tagSigningEnabled)) {
@@ -262,16 +278,16 @@ export async function release(): Promise<void> {
   }
 
   // Commit changes
-  runCommand(`git commit${sign ? " -S" : ""} -m "${message}"`);
+  runCommand(`git commit${sign ? " -S" : ""} -m "${message}"`, true, onFail);
 
   // Tag commit
-  runCommand(`git tag${sign ? " -s" : ""} -a -m "${message}" "${tagName}"`);
+  runCommand(`git tag${sign ? " -s" : ""} -a -m "${message}" "${tagName}"`, true, onFail);
 
   // Push changes
-  await confirmOrExit("Push changes to remote?", true);
+  await confirmOrExit("Push changes to remote?", true, onFail);
 
-  runCommand("git push");
+  runCommand("git push", true, onFail);
 
   // And the tag
-  runCommand("git push --tags");
+  runCommand("git push --tags", true, onFail);
 }
