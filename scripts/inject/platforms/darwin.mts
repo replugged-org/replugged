@@ -1,10 +1,27 @@
+import { stat } from "fs/promises";
+import { homedir } from "os";
+import { join } from "path";
 import type { DiscordPlatform } from "../types.mjs";
 
-const PATHS = {
-  stable: "/Applications/Discord.app/Contents/Resources/app.asar",
-  ptb: "/Applications/Discord PTB.app/Contents/Resources/app.asar",
-  canary: "/Applications/Discord Canary.app/Contents/Resources/app.asar",
-  dev: "/Applications/Discord Development.app/Contents/Resources/app.asar",
+const APP_NAMES = {
+  stable: "Discord.app",
+  ptb: "Discord PTB.app",
+  canary: "Discord Canary.app",
+  dev: "Discord Development.app",
 };
 
-export const getAppDir = (platform: DiscordPlatform): string => PATHS[platform];
+export const getAppDir = async (platform: DiscordPlatform): Promise<string> => {
+  const appName = APP_NAMES[platform];
+
+  // User-local installs live in ~/Applications and do not require admin rights to modify
+  for (const applicationsDir of [join(homedir(), "Applications"), "/Applications"]) {
+    const appDir = join(applicationsDir, appName, "Contents", "Resources", "app.asar");
+    const installed = await stat(appDir).then(
+      () => true,
+      () => false,
+    );
+    if (installed) return appDir;
+  }
+
+  return join("/Applications", appName, "Contents", "Resources", "app.asar");
+};
