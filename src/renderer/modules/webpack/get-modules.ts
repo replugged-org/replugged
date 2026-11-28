@@ -1,6 +1,9 @@
 import type { Filter, GetModuleOptions, RawModule } from "src/types";
+import { Logger } from "../logger";
 import { webpackChunks, wpRequire } from "./patch-load";
 import { logError } from "./util";
+
+const logger = Logger.api("webpack");
 
 // Export-finding utilities
 
@@ -187,9 +190,23 @@ export function getModule<T>(
       }
     };
 
-    const modules = options.all
-      ? Object.values(webpackChunks).filter(wrappedFilter)
-      : Object.values(webpackChunks).find(wrappedFilter);
+    const values = Object.values(webpackChunks);
+    let modules: RawModule | RawModule[] | undefined;
+    if (options.all) {
+      modules = values.filter(wrappedFilter);
+    } else {
+      const first = values.findIndex(wrappedFilter);
+      if (first !== -1) {
+        // Warn about ambiguous filters when only the first match is used (#525)
+        const second = values.findIndex((mod, i) => i > first && wrappedFilter(mod));
+        if (second !== -1) {
+          logger.warn(
+            "Filter matched more than one module, use the `all` option or a stricter filter",
+          );
+        }
+        modules = values[first];
+      }
+    }
 
     if (options.raw) {
       return modules as RawModule<T> | Array<RawModule<T>> | undefined;
